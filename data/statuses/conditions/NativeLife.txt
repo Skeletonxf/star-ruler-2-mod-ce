@@ -4,6 +4,7 @@ Status: NativeLife
 	Color: #73ff8d
 	Icon: ResourceIcon::8
 	Visible To: Owner
+	ForbidLaborExport()
 	ModPopulationGrowth(-1)
 	ModColonyShipAccel(Multiplier = 0.1)
 	ModTileDevelopRate(-1)

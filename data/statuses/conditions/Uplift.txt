@@ -6,6 +6,5 @@ Status: Uplift
 	ModLoyalty(10)
 	ModPopulationGrowth(1)
 	ModTileDevelopRate(1)
-	ModBuildingConstructRate(0.5)
-	CannotUseLabor()
+	ModBuildingConstructRate(1)
 	AddMaxPopulation(10)

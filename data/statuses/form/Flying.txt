@@ -1,0 +1,3 @@
+Status: Flying
+	Name: Flying
+	Visible To: Nobody

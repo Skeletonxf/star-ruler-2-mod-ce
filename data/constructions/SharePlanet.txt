@@ -2,13 +2,16 @@ Construction: SharePlanet
 	Time Cost: 120
 	Build Cost: 1000
 	Name: Uplift the natives
-	Description: Teach the natives the ways of space travel and befriend them, granting us access to their resources.
+	Description: Teach the natives the ways of space travel and befriend them, granting us access to their resources. Unfortunately we will have to give up on using the planet resource we found here.
 	Icon: VoteIcons::1
 	Category: Development
+	AddReso
+	TerraformTo(NativeNetwork)
+	GainPlanetResource(NativeFood)
 	ConsumeInfluence(5)
 	ConsumeEnergy(500)
 	AddStatus(Uplift)
 	OnCancel(AddStatus(NativeLife))
 	RequireStatus(NativeLife)
 	OnStart(RemoveStatus(NativeLife))
-	RequirePlanet()
+	GainPlanetResource(NativeWater)

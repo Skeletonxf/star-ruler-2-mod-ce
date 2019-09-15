@@ -1,0 +1,8 @@
+Trait: Flying
+	Name: Flying
+	Description: something
+	Icon: ActionBarIcons::8
+	Color: #c2fffd
+	Costs Points: 1
+	Category: Form
+	AddStatusOwnedPlanets(Flying)

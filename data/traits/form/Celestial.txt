@@ -1,0 +1,8 @@
+Trait: Celestial
+	Name: Celestial
+	Description: something
+	Icon: emp_bg_purple
+	Color: #c70fff
+	Costs Points: 1
+	Category: Form
+	AddStatusOwnedPlanets(Celestial)
