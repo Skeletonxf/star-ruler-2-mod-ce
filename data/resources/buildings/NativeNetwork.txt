@@ -1,0 +1,14 @@
+Resource: NativeNetwork
+	Name: Native subterranean network
+	Description: A vast underground network carved out over millenia, giving easy access to many precious metals.
+	Native Biome: Mountains
+	Class: Food
+
+	Icon: SupportYeaIcon
+	Small Icon: ResourceIcons::4
+	Display Weight: 10
+
+	Level: 1
+	Artificial: True
+	Exportable: False
+	Pressure: 2 Research

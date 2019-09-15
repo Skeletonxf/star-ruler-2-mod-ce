@@ -1,0 +1,13 @@
+Construction: StudyPrimitiveLife
+	Time Cost: 60
+	Build Cost: 250
+	Name: Study Primitive Life
+	Description: Declare the primitive life on this planet a resource to be studied
+	Icon: ResourceIcon::4
+	Category: Development
+	GainPlanetResource(PrimitiveLife)
+	OnCancel(AddStatus(PrimitiveLife))
+	RequireStatus(PrimitiveLife)
+	OnStart(RemoveStatus(PrimitiveLife))
+	ConsumeInfluence(3)
+	RequirePlanet()

@@ -1,0 +1,13 @@
+Construction: ConsumePrimitiveLife
+	Time Cost: 60
+	Build Cost: 50
+	Name: Consume Primitive Life
+	Description: Declare the primitive life on this planet a food to be eaten
+	Icon: ConditionIcons::10
+	Category: Development
+	GainPlanetResource(Soylent4)
+	OnCancel(AddStatus(PrimitiveLife))
+	RequireStatus(PrimitiveLife)
+	OnStart(RemoveStatus(PrimitiveLife))
+	ConsumeInfluence(1)
+	RequirePlanet()

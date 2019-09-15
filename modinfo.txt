@@ -1,0 +1,3 @@
+	Name: Colonisation Mod
+	Compatibility: 200
+	Description: Adds new colonising options to develop planets

@@ -1,0 +1,13 @@
+Construction: MeltIce
+	Time Cost: 60
+	Build Cost: 50
+	Name: Melt Ice
+	Description: Melt the frozen ice on this planet to provide a water resource
+	Icon: DesignationIcons::2
+	Category: Development
+	GainPlanetResource(MeltWater)
+	OnCancel(AddStatus(FrozenIce))
+	RequireStatus(FrozenIce)
+	OnStart(RemoveStatus(FrozenIce))
+	ConsumeEnergy(750)
+	RequirePlanet()

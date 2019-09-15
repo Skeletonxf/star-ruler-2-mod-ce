@@ -1,0 +1,14 @@
+Resource: NativeFood
+	Name: #Food
+	Description: Native food resource
+	Native Biome: Forest
+	Class: Food
+
+	Icon: ResourceIcons::4
+	Small Icon: ResourceIcons::4
+	Display Weight: 10
+
+	Level: 1
+	Artificial: True
+	Exportable: False
+	Pressure: 2 Research

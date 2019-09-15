@@ -1,0 +1,9 @@
+Status: FrozenIce
+	Name: Frozen Ice
+	Description: This planet has frozen ice reserves that can be melted to provide water
+
+	Icon: ConditionIcons::6
+	Color: #15efff
+
+
+	ConditionBiome(Ice)

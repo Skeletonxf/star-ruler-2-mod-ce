@@ -1,0 +1,12 @@
+Resource: MeltWater
+	Name: #WATER
+	Description: Water obtained from melted ice
+	Native Biome: Oceanic
+	Class: WaterType
+
+	Icon: ResourceIconsSmall::99
+	Small Icon: ResourceIconsSmall::99
+	Display Weight: -10
+
+	Level: 0
+	Artificial: True

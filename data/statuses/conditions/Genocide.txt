@@ -1,0 +1,6 @@
+Status: Genocide
+	Name: Genocide
+	Description: An entire civilisation was eradicated here
+	Color: #ff140b
+	Icon: ConditionIcons::10
+	AddInfluenceStake(-2)

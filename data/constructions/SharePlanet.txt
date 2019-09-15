@@ -1,0 +1,14 @@
+Construction: SharePlanet
+	Time Cost: 120
+	Build Cost: 1000
+	Name: Uplift the natives
+	Description: Teach the natives the ways of space travel and befriend them, granting us access to their resources.
+	Icon: VoteIcons::1
+	Category: Development
+	ConsumeInfluence(5)
+	ConsumeEnergy(500)
+	AddStatus(Uplift)
+	OnCancel(AddStatus(NativeLife))
+	RequireStatus(NativeLife)
+	OnStart(RemoveStatus(NativeLife))
+	RequirePlanet()

@@ -1,0 +1,14 @@
+Resource: NativeWater
+	Name: #WATER
+	Description: Native water rich in life
+	Native Biome: Oceanic
+	Class: WaterType
+
+	Icon: ResourceIconsSmall::102
+	Small Icon: ResourceIconsSmall::102
+	Display Weight: 10
+
+	Level: 1
+	Artificial: True
+	Exportable: False
+	Pressure: 2 Research

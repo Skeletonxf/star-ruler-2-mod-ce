@@ -1,0 +1,14 @@
+Resource: ExposedCore
+	Name: Exposed Core
+	Description: This planet's molten core is exposed, allowing access to precious metals.
+	Native Biome: Volcanic
+
+	Icon: ResourceIconsSmall::13
+	Small Icon: ResourceIconsSmall::13
+
+	Level: 2
+	Artificial: True
+	Pressure: 3 Energy
+	Affinity: Energy
+	Pressure: 1 Labor
+	Pressure: 1 Defense

@@ -1,0 +1,7 @@
+Status: PrimitiveLife
+	Name: Primitive Life
+	Description: This planet contains primitive life worth studying to understand our origins
+	Color: #27dbff
+	Icon: VoteIcons::5
+	Visible To: Owner
+	ConditionBiome(Oceanic)
