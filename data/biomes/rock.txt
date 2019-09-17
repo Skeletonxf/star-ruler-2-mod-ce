@@ -1,0 +1,11 @@
+Biome: Rock
+	Name: Rock
+
+	Humidity: 0.4
+
+	Frequency: 9.5
+
+	Color: #685856
+
+	Picks: 0.5, 0.0
+	Lookup Range: 0.65

@@ -4,7 +4,7 @@ Construction: MeltIce
 	Name: Melt Ice
 	Description: Melt the frozen ice on this planet to provide a water resource
 	Icon: DesignationIcons::2
-	Category: Development
+	Category: Terraforming
 
 	TriggerGeneric(CE_biome_hooks::SwapBiome(Ice, Oceanic))
 	GainPlanetResource(MeltWater)

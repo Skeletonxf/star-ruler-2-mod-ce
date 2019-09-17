@@ -1,0 +1,20 @@
+Construction: FloodRocks
+	Name: Flood Rocks
+	Build Cost: 100
+	Time Cost: 60
+	Icon: ResourceIconsSmall::100
+	Description: <<
+		Flood this planet's rocky landscape to make the ocean bigger.
+
+		Many important buildings have reduced build or maintenence costs on Oceanic biomes.
+	>>
+	Category: Terraforming
+	RequirePlanetBiome(Oceanic)
+	RequirePlanet()
+	ConsumeEnergy(250)
+	RequireNotStatus(FloodingRocks)
+	RemoveStatus(FloodingRocks)
+	OnCancel(RemoveStatus(FloodingRocks))
+	OnStart(AddStatus(FloodingRocks))
+	RequirePlanetBiome(Rock)
+	TriggerGeneric(CE_biome_hooks::SwapBiome(Rock, Oceanic))

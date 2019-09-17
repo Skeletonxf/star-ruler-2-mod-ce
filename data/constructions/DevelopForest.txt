@@ -1,15 +1,19 @@
 Construction: DevelopForest
 	Name: Develop Forest
-	Build Cost: 200
+	Build Cost: 100
 	Time Cost: 60
 	Icon: ConditionIcons::0 * aaff44
-	Description: Develop a forest on this planet's mountains
-	Category: Development
+	Description: <<
+		Develop a forest on this planet's rocky landscape.
+
+		Many important buildings have reduced build or maintenence costs on Forest biomes.
+	>>
+	Category: Terraforming
 	RequirePlanet()
 	ConsumeEnergy(250)
 	RequireNotStatus(DevelopingForest)
 	RemoveStatus(DevelopingForest)
 	OnCancel(RemoveStatus(DevelopingForest))
 	OnStart(AddStatus(DevelopingForest))
-	RequirePlanetBiome(Mountains)
-	TriggerGeneric(CE_biome_hooks::SwapBiome(Mountains, Forest))
+	RequirePlanetBiome(Rock)
+	TriggerGeneric(CE_biome_hooks::SwapBiome(Rock, Forest))

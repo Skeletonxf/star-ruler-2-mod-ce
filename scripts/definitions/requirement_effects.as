@@ -396,6 +396,24 @@ class RequirePlanetBiome : Requirement {
 		}
 	}
 };
+
+class RequirePlanetNotBiome : Requirement {
+	Document doc("Can only be used on planets without a particular biome.");
+	Argument biome(AT_PlanetBiome, doc="Biome type to check for.");
+
+	bool meets(Object& obj, bool ignoreState = false) const override {
+		int biome_id = getBiomeID(biome.str);
+		if (biome_id == -1) {
+			return false;
+		}
+		uint id = uint(biome_id);
+		if (obj.isPlanet) {
+			return obj.get_Biome0() != id && obj.get_Biome1() != id && obj.get_Biome2() != id;
+		} else {
+			return false;
+		}
+	}
+};
 // [[ MODIFY BASE GAME END ]]
 
 class RequireOnOrbital : Requirement {
