@@ -16,6 +16,6 @@ Construction: ExposeMoltenCore
 	OnStart(AddStatus(ExposingCore))
 	AddStatus(ExposedCore)
 	RequireNotStatus(ExposedCore)
-	AddSurfaceArea(Volcanic, (10, 1), Developed = False, Vertical = True)
+	AddSurfaceArea(Volcanic, (9, 1), Developed = False, Vertical = True)
 	GainPlanetResource(ExposedCore)
 	ConsumeEnergy(2000)

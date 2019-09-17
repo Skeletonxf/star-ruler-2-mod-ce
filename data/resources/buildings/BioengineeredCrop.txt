@@ -1,0 +1,17 @@
+Resource: BioengineeredCrop
+	Name: Bioengineered Crop
+	Description: <<
+		Unexportable crop designed for this planet's environment
+
+		Increases pressure capacity by 1.
+	>>
+	Native Biome: Forest
+	Class: Food
+
+	Icon: ConditionIcons::11 * 11ff00
+	Small Icon: ConditionIcons::11 * 11ff00
+	Display Weight: -10
+
+	Artificial: True
+	Exportable: False
+	AddPressureCap(1)

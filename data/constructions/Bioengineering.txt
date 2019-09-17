@@ -1,0 +1,16 @@
+Construction: Bioengineering
+	Name: Crop bioengineering
+	Description: <<
+		Develops an unexportable food resource using the planet's forest to bioengineer food suited to the environment.
+
+		[color=#70ee70][b]This research cost does not contribute to research effectiveness decay.[/b][/color]
+	>>
+	Icon: ConditionIcons::11 * 11ff00
+	Build Cost: 500
+	Category: Development
+	Time Cost: 180
+	ReduceResearchPenalty(500)
+	ConsumeResearch(500)
+	ConsumeEnergy(500)
+	GainPlanetResource(BioengineeredCrop)
+	RequirePlanetBiome(Forest)

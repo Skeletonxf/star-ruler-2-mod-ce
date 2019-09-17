@@ -3,7 +3,7 @@ Biome: Rock
 
 	Humidity: 0.4
 
-	Frequency: 9.5
+	Frequency: 12.5
 
 	Color: #685856
 
