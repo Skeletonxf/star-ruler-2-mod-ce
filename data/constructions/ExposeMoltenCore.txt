@@ -9,6 +9,7 @@ Construction: ExposeMoltenCore
 	Build Cost: 500
 	Labor Cost: 150
 
+	RequireNotStatus(ExposingCore)
 	RemoveStatus(ExposingCore)
 	OnCancel(RemoveStatus(ExposingCore))
 	OnStart(AddStatus(ExposingCore))
