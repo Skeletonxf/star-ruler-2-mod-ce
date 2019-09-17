@@ -467,8 +467,8 @@ class MakePlanet : MapHook {
 		// Give frozen ice status to all planets with ice biomes
 		// `hasBiome(getBiomeID("Ice"))`` checks don't seem to ever return true?
 		// check each of the three biomes instead to determine suitability
-		int ice = getBiomeID("Ice");
-		int ocean = getBiomeID("Oceanic");
+		uint ice = getBiomeID("Ice");
+		uint ocean = getBiomeID("Oceanic");
 		if (biome1.id == ice || biome2.id == ice || biome3.id == ice) {
 			planet.addStatus(getStatusID("FrozenIce"));
 		}

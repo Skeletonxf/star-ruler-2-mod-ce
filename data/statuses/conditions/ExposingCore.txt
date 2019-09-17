@@ -1,8 +1,8 @@
 Status: ExposingCore
-	Visible To: Owner
 	Name: Exposing Molten Core
 	Description: The process of exposing this planet's molten core makes the planet inhospitable, reducing pressure capacity by 6 and max population by 2
-	Icon: Explosion_color
+	Icon: ConditionIcons::1 * ffaa00
 	Color: #ff5816
+	Visible To: Owner
 	AddMaxPopulation(-2)
 	AddPressureCap(-6)
