@@ -1,15 +1,17 @@
 Status: NativeLife
 	Name: Native Life
-	Description: We have discovered that this planet has been inhabited by natives for millenia. They seem incapable of reaching space but will defend their planet from us unless we do something.
+	Description: <<
+		We have discovered that this planet has been inhabited by natives for millenia. They seem incapable of reaching space but will defend their planet from us unless we do something.
+
+		Pressure capacity, building rate and development rate are reduced to 0. Population is reduced to 1. Labor cannot be used.
+	>>
 	Color: #73ff8d
 	Icon: ResourceIcon::8
 	Visible To: Owner
 	ForbidLaborExport()
 	ModPopulationGrowth(-1)
-	ModColonyShipAccel(Multiplier = 0.1)
 	ModTileDevelopRate(-1)
 	ModBuildingConstructRate(-1)
 	AddPressureCap(-100)
-	SetMaxLevel(0)
 	CannotUseLabor()
 	AddMaxPopulation(-100)

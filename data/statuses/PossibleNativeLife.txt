@@ -1,0 +1,6 @@
+Status: PossibleNativeLife
+	Name: Possible native life
+	Icon: ResourceIcon::8 * ff0000
+	Visible To: Nobody
+	IfNativeLevel(1, AddStatus(NativeLife))
+	IfNativeClass(Scalable, AddStatus(NativeLife))

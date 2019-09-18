@@ -324,9 +324,9 @@ class MakePlanet : MapHook {
 	void trigger(SystemData@ data, SystemDesc@ system, Object@& current) const override {
 		const ResourceType@ resource;
 		if(resPossib.length > 0) {
-			if(resPossib.length == 1)
+			if (resPossib.length == 1) {
 				@resource = resPossib[0];
-			else if(distribute_resource.boolean) {
+			} else if(distribute_resource.boolean) {
 				double roll = randomd();
 				double freq = 0.0;
 				for(uint i = 0, cnt = resPossib.length; i < cnt; ++i) {
@@ -340,9 +340,9 @@ class MakePlanet : MapHook {
 						roll = (roll - chance) / (1.0 - chance);
 					}
 				}
-			}
-			else
+			} else {
 				@resource = resPossib[randomi(0, resPossib.length-1)];
+			}
 		}
 		if(data is null && distribute)
 			@resource = getDistributedResource();
@@ -391,13 +391,13 @@ class MakePlanet : MapHook {
 
 		//Generate biomes
 		const Biome@ biome1;
-		if(resource is null) {
+		if (resource is null) {
 			@biome1 = getDistributedBiome();
-		}
-		else {
+		} else {
 			@biome1 = getBiome(resource.nativeBiome);
-			if(biome1 is null)
+			if (biome1 is null) {
 				@biome1 = getDistributedBiome();
+			}
 		}
 		const Biome@ biome2 = getDistributedBiome();
 		const Biome@ biome3 = getDistributedBiome();
@@ -472,9 +472,21 @@ class MakePlanet : MapHook {
 		if (biome1.id == ice || biome2.id == ice || biome3.id == ice) {
 			planet.addStatus(getStatusID("FrozenIce"));
 		}
-		if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean) {
-			if (randomd() < 0.1) {
-				planet.addStatus(getStatusID("PrimitiveLife"));
+		if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean ||
+				biome1.id == ice || biome2.id == ice || biome3.id == ice) {
+			if (randomd() < 0.4) {
+				// `resource` is often null here even for planets that generate
+				// with a resource?
+				// instead add a status which will check for scalable or high
+				// level resource on this planet and then add nativelife
+				// if so. This ensures native life is always a dillema
+				// as it never generates on a planet where the resource is
+				// worth giving up.
+				planet.addStatus(getStatusID("PossibleNativeLife"));
+			} else {
+				if (randomd() < 0.1) {
+					planet.addStatus(getStatusID("PrimitiveLife"));
+				}
 			}
 		}
 		// [[ MODIFY BASE GAME END ]]

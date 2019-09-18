@@ -4,8 +4,8 @@ Construction: SharePlanet
 	Name: Uplift the natives
 	Description: Teach the natives the ways of space travel and befriend them, granting us access to their resources. Unfortunately we will have to give up on using the planet resource we found here.
 	Icon: VoteIcons::1
-	Category: Development
-	AddReso
+	Category: Dillema
+
 	TerraformTo(NativeNetwork)
 	GainPlanetResource(NativeFood)
 	ConsumeInfluence(5)

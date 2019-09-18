@@ -1,8 +1,10 @@
 Resource: NativeWater
-	Name: #WATER
-	Description: Native water rich in life
+	Description: <<
+		Native water rich in life
+
+		[color=#ee7070][b]Not a water resource for us![/b][/color]
+	>>
 	Native Biome: Oceanic
-	Class: WaterType
 
 	Icon: ResourceIconsSmall::102
 	Small Icon: ResourceIconsSmall::102
@@ -12,3 +14,4 @@ Resource: NativeWater
 	Artificial: True
 	Exportable: False
 	Pressure: 2 Research
+	Name: Native water

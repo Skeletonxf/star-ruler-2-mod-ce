@@ -1,8 +1,13 @@
 Status: Uplift
 	Name: Uplifted Native Life
-	Description: We are sharing this planet with natives.
+	Description: <<
+		We are sharing this planet with natives.
+
+		Max population, development, construction, population growth, pressure cap and loyalty increased. Original resource left to the natives, never to be used by our empire.
+	>>
 	Color: #73ff8d
-	Icon: ResourceIcon::8
+	Icon: ResourceIcon::8 * aaff11
+	AddPressureCap(10)
 	ModLoyalty(10)
 	ModPopulationGrowth(1)
 	ModTileDevelopRate(1)

@@ -1,0 +1,12 @@
+PlanetType: Oceanic
+	Icon: PlanetType::11
+	DistantIcon: DistantPlanetType::11
+	Atmosphere: TerranAtmosphere
+
+	BiomeWeights:
+		Oceanic: 3
+		Desert: -4
+		Mountains: -4
+		Rock: -4
+		Forest: -4
+		Volcanic: -4
