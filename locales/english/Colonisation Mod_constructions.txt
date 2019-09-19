@@ -1,0 +1,5 @@
+CONS_MOON_BASE_DESC: <<
+	Construct a large amount of infrastructure making more area available for placing buildings.
+
+	Moon bases can be built infintely on fractured planets but do not increase maximum population.
+>>

@@ -1,6 +1,0 @@
-Construction: DevelopForest
-	Name: Test
-	Build Cost: 1
-	Time Cost: 1
-	Icon: ConditionIcons::0 * aaff44
-	ReplaceAllBiomesWith(Forest)
