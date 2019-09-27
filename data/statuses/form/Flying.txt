@@ -1,4 +1,3 @@
 Status: Flying
 	Name: Flying
 	Visible To: Nobody
-	TriggerPeriodic(AddSurfaceArea(LowerAtmosphere, (2,2), Developed = False), Interval = 180, Trigger Immediate = True)

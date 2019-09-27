@@ -9,6 +9,7 @@ Construction: ExposeMoltenCore
 	Build Cost: 500
 	Labor Cost: 150
 
+	RequirePlanetNotBiome(Atmosphere)
 	RequirePlanetNotBiome(Oceanic)
 	RequireNotStatus(ExposingCore)
 	RemoveStatus(ExposingCore)

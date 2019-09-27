@@ -1,0 +1,14 @@
+Resource: HeavyGases
+	Name: Heavy Gases
+	Description: Heavy gases
+	Native Biome: Atmosphere
+
+	Icon: Gases
+	Small Icon: Gases
+
+	Level: 1
+	Affinity: Energy
+
+
+	Pressure: 3 Defense
+	Frequency: 0

@@ -311,6 +311,9 @@ class MakePlanet : MapHook {
 	Argument moons(AT_Boolean, "True", doc="Whether this planet should have a randomized amount of moons generated on it to start with.");
 	Argument rings(AT_Boolean, "True", doc="Whether the planet can have rings generated around it.");
 	Argument physics(AT_Boolean, "True", doc="Whether the planet should be a physical object.");
+	// [[ MODIFY BASE GAME START ]]
+	Argument gas(AT_Boolean, "False", doc="Whether the planet should be a gas planet");
+	// [[ MODIFY BASE GAME END ]]
 
 	bool instantiate() override {
 		if(arguments[0].str.equals_nocase("distributed"))
@@ -346,6 +349,12 @@ class MakePlanet : MapHook {
 		}
 		if(data is null && distribute)
 			@resource = getDistributedResource();
+		// [[ MODIFY BASE GAME START ]]
+		// set resources for gas giants seperately
+		if (gas.boolean) {
+			@resource = getResource("HeavyGases");
+		}
+		// [[ MODIFY BASE GAME END ]]
 		if(resource !is null)
 			markResourceUsed(resource);
 
@@ -353,6 +362,15 @@ class MakePlanet : MapHook {
 		if(arguments[1].isRange)
 			radius = normald(arguments[1].decimal, arguments[1].decimal2);
 		double spacing = arguments[2].fromRange() * config::SYSTEM_SIZE;
+
+		// [[ MODIFY BASE GAME START ]]
+		// Make gas giants bigger
+		if (gas.boolean) {
+			spacing *= 2;
+			radius += 20;
+			radius *= 2;
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		system.radius += spacing;
 
@@ -402,10 +420,26 @@ class MakePlanet : MapHook {
 		const Biome@ biome2 = getDistributedBiome();
 		const Biome@ biome3 = getDistributedBiome();
 
+		// [[ MODIFY BASE GAME START ]]
+		if (gas.boolean) {
+			// enforce all biomes as the base biome on gas giants
+			@biome2 = biome1;
+			@biome3 = biome1;
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		//Figure out planet size
 		double sizeFact = clamp(radius / 10.0, 0.1, 5.0);
 		int gridW = round(AVG_PLANET_GRID_WIDTH * sizeFact);
 		int gridH = round(AVG_PLANET_GRID_HEIGHT * sizeFact);
+		// [[ MODIFY BASE GAME START ]]
+		if (gas.boolean) {
+			// shrink the grid size on gas giants back down to
+			// a reasonable level without affecting planet size
+			gridW *= 0.25;
+			gridH *= 0.25;
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		vec2d givenGrid = arguments[3].fromPosition2D();
 		if(givenGrid.x > 0)
@@ -432,7 +466,10 @@ class MakePlanet : MapHook {
 		PlanetNode@ plNode = cast<PlanetNode>(bindNode(planet, "PlanetNode"));
 		plNode.establish(planet);
 		plNode.planetType = planet.PlanetType;
-		if(rings.boolean && randomi(0,9) == 0) {
+		// [[ MODIFY BASE GAME START ]]
+		// make gas giants have rings often even if `rings` is not set to true
+		if((rings.boolean && randomi(0,9) == 0) || (gas.boolean && randomi(0,9) > 1)) {
+			// [[ MODIFY BASE GAME END ]]
 			uint style = randomi();
 			plNode.addRing(style);
 			planet.setRing(style);
@@ -462,6 +499,21 @@ class MakePlanet : MapHook {
 				planet.addStatus(getStatusID("Moon"));
 			}
 		}
+		// [[ MODIFY BASE GAME START ]]
+		if (gas.boolean) {
+			// add lots of moons to gas giants
+			planet.addMoon();
+			planet.addStatus(getStatusID("Moon"));
+			planet.addMoon();
+			planet.addStatus(getStatusID("Moon"));
+			planet.addMoon();
+			planet.addStatus(getStatusID("Moon"));
+			while (randomd() < 0.5) {
+				planet.addMoon();
+				planet.addStatus(getStatusID("Moon"));
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
 		// Give frozen ice status to all planets with ice biomes
@@ -488,6 +540,9 @@ class MakePlanet : MapHook {
 					planet.addStatus(getStatusID("PrimitiveLife"));
 				}
 			}
+		}
+		if (gas.boolean) {
+			planet.addStatus(getStatusID("GasGiant"));
 		}
 		// [[ MODIFY BASE GAME END ]]
 

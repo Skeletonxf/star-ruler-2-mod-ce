@@ -1,0 +1,5 @@
+Status: GasGiant
+	Name: Gas Giant
+	Description: This planet is made of gases and has no solid surface. Building is still possible with floating constructions but much more expensive. It is better to make moon bases instead for building.
+	Icon: ConditionIcons::1 * 33ff55
+	Color: #40ff83

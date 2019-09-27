@@ -1,0 +1,7 @@
+PlanetType: GasGiant
+	Icon: PlanetType::7
+	DistantIcon: DistantPlanetType::7
+	Atmosphere: GasAtmosphere
+
+	BiomeWeights:
+		Atmosphere: 10000
