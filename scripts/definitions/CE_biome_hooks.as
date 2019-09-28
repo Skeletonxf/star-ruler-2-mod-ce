@@ -26,3 +26,20 @@ class SwapBiome : GenericEffect, TriggerableGeneric {
 	}
 #section all
 };
+
+class SetHomeworld : BonusEffect {
+		Document doc("Set the planet as the empire homeworld");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if (obj is null) {
+			return;
+		}
+		if (!obj.isPlanet) {
+			return;
+		}
+		@emp.Homeworld = cast<Planet>(obj);
+		@emp.HomeObj = cast<Planet>(obj);
+	}
+#section all
+}

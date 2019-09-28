@@ -367,7 +367,7 @@ class MakePlanet : MapHook {
 		// Make gas giants bigger
 		if (gas.boolean) {
 			spacing *= 2;
-			radius += 20;
+			radius += 5;
 			radius *= 2;
 		}
 		// [[ MODIFY BASE GAME END ]]
@@ -436,8 +436,8 @@ class MakePlanet : MapHook {
 		if (gas.boolean) {
 			// shrink the grid size on gas giants back down to
 			// a reasonable level without affecting planet size
-			gridW *= 0.25;
-			gridH *= 0.25;
+			gridW *= 0.35;
+			gridH *= 0.35;
 		}
 		// [[ MODIFY BASE GAME END ]]
 

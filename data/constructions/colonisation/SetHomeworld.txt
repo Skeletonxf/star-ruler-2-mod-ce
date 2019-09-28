@@ -1,0 +1,9 @@
+Construction: SetHomeworld
+	Name: Designate Homeworld
+	Description: Sets this planet as our homeworld
+	Icon: ResourceIcon::8 * ffaa00
+	Category: Political
+	Time Cost: 1
+	ConsumeInfluence(2)
+	CE_biome_hooks::SetHomeworld()
+	RequirePlanet()
