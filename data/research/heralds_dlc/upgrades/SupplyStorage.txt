@@ -1,0 +1,31 @@
+Technology: SupplyStorage
+	Name: #R_IMP_SUPPLY_STORAGE
+	Blurb: #R_IMP_SUPPLY_STORAGE_BLURB:1%
+	Description: #R_IMP_SUPPLY_STORAGE_DESC:1%
+
+	Icon: AttributeIcons::4
+	Color: #fefc61
+
+	Category: Basic Upgrades
+	Class: Boost
+
+	Point Cost: 500
+	Time Cost: 60
+
+	AddModifier( SupplyCapacityFactor(1.01) )
+
+Technology: SupplyStorage2
+	Name: #R_IMP_SUPPLY_STORAGE2
+	Blurb: #R_IMP_SUPPLY_STORAGE_BLURB:2%
+	Description: #R_IMP_SUPPLY_STORAGE_DESC:2%
+
+	Icon: AttributeIcons::4
+	Color: #fefc61
+
+	Category: Basic Upgrades
+	Class: Upgrade
+
+	Point Cost: 700
+	Time Cost: 80
+
+	AddModifier( SupplyCapacityFactor(1.02) )

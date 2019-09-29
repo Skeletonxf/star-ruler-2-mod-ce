@@ -1,0 +1,31 @@
+Technology: SupportCap
+	Name: #R_IMP_SUPPORT_CAP
+	Blurb: #R_IMP_SUPPORT_CAP_BLURB:1%
+	Description: #R_IMP_SUPPORT_CAP_DESC:1%
+
+	Icon: techOrganization*#00cffe
+	Color: #00cffe
+
+	Category: Basic Upgrades
+	Class: Boost
+
+	Point Cost: 500
+	Time Cost: 60
+
+	AddModifier( SupportCapacityFactor(1.01) )
+
+Technology: SupportCap2
+	Name: #R_IMP_SUPPORT_CAP2
+	Blurb: #R_IMP_SUPPORT_CAP_BLURB:2%
+	Description: #R_IMP_SUPPORT_CAP_DESC:2%
+
+	Icon: techOrganization*#00cffe
+	Color: #00cffe
+
+	Category: Basic Upgrades
+	Class: Upgrade
+
+	Point Cost: 700
+	Time Cost: 80
+
+	AddModifier( SupportCapacityFactor(1.02) )

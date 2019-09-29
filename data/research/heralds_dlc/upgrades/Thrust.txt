@@ -1,0 +1,34 @@
+Technology: Thrust
+	Name: #R_IMP_THRUST
+	Blurb: #R_IMP_THRUST_BLURB:5%
+	Description: #R_IMP_THRUST_DESC:5%
+
+	Icon: techPropulsion*#ffeba5
+	Color: #a77751
+
+	Category: Basic Upgrades
+
+	Point Cost: 500
+	Time Cost: 60
+
+	AddModifier( ThrustFactor(1.05) )
+	AddModifier( TurnThrustFactor(1.05) )
+	AddModifier( Hyperdrive::SpeedFactor(1.05) )
+
+Technology: Thrust2
+	Name: #R_IMP_THRUST2
+	Blurb: #R_IMP_THRUST_BLURB:20%
+	Description: #R_IMP_THRUST_DESC:20%
+
+	Icon: techPropulsion2*#ffeba5
+	Color: #a77751
+
+	Category: Basic Upgrades
+	Class: Upgrade
+
+	Point Cost: 700
+	Time Cost: 80
+
+	AddModifier( ThrustFactor(1.2) )
+	AddModifier( TurnThrustFactor(1.2) )
+	AddModifier( Hyperdrive::SpeedFactor(1.2) )

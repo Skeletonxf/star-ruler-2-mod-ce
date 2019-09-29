@@ -1,0 +1,65 @@
+Technology: ShieldCap
+	Name: #R_IMP_SHIELDCAP
+	Blurb: #R_IMP_SHIELDCAP_BLURB:2.5%
+	Description: #R_IMP_SHIELDCAP_DESC:2.5%
+
+	Icon: techPhaseContainment * #4040ff
+	Color: #149080
+
+	Category: Basic Upgrades
+	Class: Boost
+
+	Point Cost: 500
+	Time Cost: 70
+
+	AddModifier( ShieldCapacityFactor(1.025) )
+	AddModifier( ShieldHarmonizer::BonusShieldFactor(1.025) )
+
+
+Technology: ShieldCap2
+	Name: #R_IMP_SHIELDCAP2
+	Blurb: #R_IMP_SHIELDCAP_BLURB:5%
+	Description: #R_IMP_SHIELDCAP_DESC:5%
+
+	Icon: techPhaseContainment * #407bff
+	Color: #149080
+
+	Category: Basic Upgrades
+	Class: Upgrade
+
+	Point Cost: 700
+	Time Cost: 90
+
+	AddModifier( ShieldCapacityFactor(1.05) )
+	AddModifier( ShieldHarmonizer::BonusShieldFactor(1.05) )
+
+Technology: ShieldReg
+	Name: #R_IMP_SHIELDREG
+	Blurb: #R_IMP_SHIELDREG_BLURB:2.5%
+	Description: #R_IMP_SHIELDREG_DESC:2.5%
+
+	Icon: techPhaseHarmonics * #4040ff
+	Color: #429f5c
+
+	Category: Basic Upgrades
+
+	Point Cost: 500
+	Time Cost: 70
+
+	AddModifier(ShieldRegenFactor(1.025))
+
+Technology: ShieldReg2
+	Name: #R_IMP_SHIELDREG2
+	Blurb: #R_IMP_SHIELDREG_BLURB:5%
+	Description: #R_IMP_SHIELDREG_DESC:5%
+
+	Icon: techPhaseHarmonics * #407bff
+	Color: #429f5c
+
+	Category: Basic Upgrades
+	Class: Upgrade
+
+	Point Cost: 700
+	Time Cost: 90
+
+	AddModifier(ShieldRegenFactor(1.05))

@@ -1,0 +1,30 @@
+Technology: ArmorDR
+	Name: #R_IMP_ARMOR_DR
+	Blurb: #R_IMP_ARMOR_DR_BLURB:1%
+	Description: #R_IMP_ARMOR_DR_DESC:1%
+
+	Category: Basic Upgrades
+
+	Icon: techReinforcement
+	Color: #a9a9a9
+
+	Point Cost: 500
+	Time Cost: 60
+
+	AddModifier(any::ArmorResistFactor(1.01))
+
+Technology: ArmorDR2
+	Name: #R_IMP_ARMOR_DR2
+	Blurb: #R_IMP_ARMOR_DR_BLURB:2.5%
+	Description: #R_IMP_ARMOR_DR_DESC:2.5%
+
+	Class: Upgrade
+	Category: Basic Upgrades
+
+	Icon: techReinforcement * #a85f5f
+	Color: #a9a9a9
+
+	Point Cost: 700
+	Time Cost: 80
+
+	AddModifier(any::ArmorResistFactor(1.025))
