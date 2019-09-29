@@ -18,8 +18,8 @@ Technology: ArmorHealth
 
 Technology: ArmorHealth2
 	Name: #R_IMP_ARMOR_HEALTH2
-	Blurb: #R_IMP_ARMOR_HEALTH_BLURB:3.0%
-	Description: #R_IMP_ARMOR_HEALTH_DESC:3.0%
+	Blurb: #R_IMP_ARMOR_HEALTH_BLURB:3%
+	Description: #R_IMP_ARMOR_HEALTH_DESC:3%
 
 	Icon: techArmoring * #a85f5f
 	Color: #a9a9a9

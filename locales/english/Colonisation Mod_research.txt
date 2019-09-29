@@ -1,0 +1,25 @@
+R_IMP_ARMOR_DR_DESC: Increases all armor damage resistance by $1.
+R_MONEY_HURDLE: Financing
+R_INFLUENCE_HURDLE_DESC: <<
+	To progress further, we must make considerable financial investments.
+
+	[i]This technology gives no benefit, and must be researched by spending Money to study it.[/i]
+>>
+R_HIGH_NERGY_HURDLE: High Energy Experiments
+R_ENERGY_HURDLE_DESC: <<
+	To progress further, we must better understand the interactions of high energy particles.
+
+	[i]This technology gives no benefit, and must be researched by spending Energy to study it.[/i]
+>>
+R_HIGH_ENERGY_HURDLE_DESC: <<
+	To progress further, we must better understand the interactions of extremely high energy particles.
+
+	[i]This technology gives no benefit, and must be researched by spending Energy to study it.[/i]
+>>
+R_HIGH_ENRGY_HURDLE: High Energy Experiments
+R_SOFT_FTL_HURDLE_DESC: <<
+	To progress further, we must experiment with our existing FTL technology.
+
+	[i]This technology gives no benefit, and must be researched by spending FTL Energy to study it.[/i]
+>>
+R_SOFT_FTL_HURDLE: FTL Experimentation
