@@ -89,7 +89,6 @@ Grid: Heralds
 	CarrierHull: -8,1
 	SupportCap: -9,0
 	SupportCap: -3,-3
-	BldSpire: -8,-1
 	PlanetSupport2: -4,-6
 	ArmorHealth2: 6,-8
 	Energy: -6,3
@@ -144,24 +143,15 @@ Grid: Heralds
 	QuantumCompressor: -7,4
 	QuantumBattery: -7,3
 	SolarSatellite: -4,2
-	CloakPlating: -10,-2
 	VacuumTelescope: -3,-8
 	ConstructionBay: -3,-5
 	PlanetaryEngine: 3,5
-	FactoryLabor2: -7,-12
 	FactoryLabor: -6,-10
-	BroadcastAntenna: -9,-2
-	ImpCivConstructionRate: -10,-9
-	ImpImpConstructionRate: -11,-5
-	ImpTileDevelopment: -9,-5
 	SupplyStorage: -1,-11
 	Health2: 4,-10
 	NanoMesh: 7,-8
-	InfluenceHurdle: -10,-1
 	InfluenceHurdle: -7,0
 	MoneyHurdle: 2,5
-	GravitonChanneling: 5,10
-	InfiniteThrust: 5,9
 	Thrust2: 4,9
 	Thrust2: 4,8
 	MoneyHurdle: 3,7
@@ -191,8 +181,6 @@ Grid: Heralds
 	InfluenceHurdle: 0,-10
 	InfluenceHurdle: -2,-10
 	MoneyHurdle: -3,-10
-	FactoryLabor2: -8,-13
-	InfluenceHurdle: -7,-11
 	Abundance: -6,-5
 	InfluenceHurdle: -5,-8
 	MoneyHurdle: -2,-7
@@ -207,7 +195,6 @@ Grid: Heralds
 	EnergyHurdle: -5,3
 	IonCannon: -6,2
 	SupportCap2: -7,-1
-	InfiniteSupport: -10,0
 	FTLHurdle: -4,7
 	FTL: -3,6
 	HighEnergyHurdle: -4,8
@@ -234,16 +221,11 @@ Grid: Heralds
 	HighEnergyHurdle: -6,7
 	FTL: -5,7
 	FTLHurdle: -5,9
-	HyperfieldSequencing: -7,13
-	HyperfieldSequencing: -8,11
-	HyperfieldSequencing: -6,15
 	HighEnergyHurdle: -7,9
 	FTLHurdle: -7,10
-	HyperfieldSequencing: -4,15
 	FTL: -3,15
 	FTL: -6,12
 	DevFTL: -4,14
-	HyperfieldSequencing: -1,14
 	HighEnergyHurdle: -1,12
 	FTLHurdle: -2,13
 	HighEnergyHurdle: -4,12
@@ -257,7 +239,6 @@ Grid: Heralds
 	SoftFTLHurdle: -2,15
 	HighEnergyHurdle: -6,16
 	FTLHurdle: -7,17
-	FTLCost: -6,18
 	FTLCost: -8,17
 	MoneyHurdle: 3,-11
 	FTLHurdle: 3,-12
@@ -271,8 +252,6 @@ Grid: Heralds
 	KeyEmergencyShields: 0,7
 	MoneyHurdle: 6,-4
 	KeyRailgunKnockback: 6,-5
-	InfluenceHurdle: -7,-5
-	Wealth: -7,-6
 	ImpDecaySpeed2: -7,-9
 	ImpDecaySpeed: -5,-9
 	HighEnergyHurdle: -8,5
@@ -285,3 +264,43 @@ Grid: Heralds
 	Energy: -10,9
 	Ringworld: -6,-16
 	InfluenceHurdle: -6,-15
+	SysHyperdrive: -8,11
+	SysJumpdrive: -7,13
+	SysGateModule: -6,15
+	SysSlipstream: -1,14
+	SysFling: -4,15
+	InfiniteThrust: 5,10
+	GravitonChanneling: 5,9
+	SysWarpdrive: -7,18
+	FTL2: -6,18
+	ImpImpConstructionRate: -2,0
+	ImpImpConstructionRate: -4,1
+	ImpImpConstructionRate: -7,-2
+	InfiniteSupport: -12,0
+	SupportCap2: -11,0
+	Construction2: -10,0
+	InfluenceHurdle: -11,-1
+	CloakPlating: -11,-2
+	BroadcastAntenna: -10,-2
+	BldSpire: -8,-3
+	ImpImpConstructionRate: -9,-1
+	ImpCivConstructionRate: -6,-6
+	ImpCivConstructionRate: -3,1
+	Wealth: -8,-6
+	InfluenceHurdle: -7,-6
+	ImpCivConstructionRate2: -7,-5
+	ImpTileDevelopment: -6,-8
+	ImpTileDevelopment: -7,-10
+	FactoryLabor2: -9,-15
+	FactoryLabor2: -8,-14
+	InfluenceHurdle: -8,-13
+	ImpTileDevelopment: -7,-11
+	ImpTileDevelopment2: -7,-12
+	ImpTileDevelopment2: -7,-13
+	ImpDecaySpeed: -8,-11
+	FactoryLabor2: -9,-14
+	Obedience: -8,-7
+	Obedience: -10,3
+	ImpCivConstructionRate: -9,3
+	SoftFTLHurdle: -8,16
+	KeyFTL: -9,16

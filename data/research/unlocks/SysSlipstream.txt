@@ -1,0 +1,19 @@
+Technology: SysSlipstream
+	Name: Slipstream
+	Description: <<
+		[color=#aaa][i]Unlocks the Slipstream subsystem.[/i][/color]
+
+		[bbloc=#S_SLIPSTREAM_GENERATOR_DESC/]
+	>>
+	Class: Unlock
+
+	Point Cost: 1000
+	Time Cost: 120
+
+	Icon: GuiOrbitalIcons::4
+	Color: #cf5fde
+
+	UnlockSubsystem(Slipstream)
+	SkipOnUnlockedSubsystem(Slipstream)
+
+	SecondaryFTLCost(1000)

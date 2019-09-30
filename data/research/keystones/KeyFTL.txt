@@ -1,0 +1,17 @@
+Technology: KeyFTL
+	Name: #R_FTL
+	Description: #R_KEY_FTL_DESC
+	Class: Keystone
+
+	Point Cost: 750
+	Time Cost: 60
+
+	Icon: FtlIcon
+	Color: #799fe0
+
+	AddFTLStorage(-500)
+	ModAttribute(TileDevelopmentFactor, Multiply, 1.5)
+	ModAttribute(PopulationGrowthFactor, Multiply, 1.5)
+	AddGlobalLoyalty(3)
+	AddFTLIncome(-3)
+	ModAttribute(ColonizerSpeed, Multiply, 1.5)

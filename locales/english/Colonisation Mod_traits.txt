@@ -1,0 +1,11 @@
+TRAIT_SUBLIGHT_DESC: We have not discovered any means to break the lightspeed barrier. No FTL drive, FTL generation, or FTL storage. FTL can be still be researched from in game actions but takes considerable resources.
+TRAIT_JUMPDRIVE_DESC: <<
+	Ships are equipped with jump drives that let them cheaply jump to positions within their safe jump range.
+
+	Jumping outside of safe jump range is possible, but can cause damage to the ship and may drop the ship at an location away from the intended destination.
+>>
+TRAIT_WARPDRIVE_DESC: <<
+	[color=#aaa][i]Unlocks the Warpdrive subsystem at game start. This FTL technology can be taken additively with other FTL methods[/i][/color]
+
+	[bbloc=#S_WARPDRIVE_DESC/]
+>>

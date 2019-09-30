@@ -1,0 +1,19 @@
+Technology: SysHyperdrive
+	Name: Hyperdrive
+	Description: <<
+		[color=#aaa][i]Unlocks the Hyperdrive subsystem.[/i][/color]
+
+		[bbloc=#S_HYPERDRIVE_DESC/]
+	>>
+	Class: Unlock
+
+	Point Cost: 1000
+	Time Cost: 120
+
+	Icon: TraitIcons::2
+	Color: #cf5fde
+
+	UnlockSubsystem(Hyperdrive)
+	SkipOnUnlockedSubsystem(Hyperdrive)
+
+	SecondaryFTLCost(1000)

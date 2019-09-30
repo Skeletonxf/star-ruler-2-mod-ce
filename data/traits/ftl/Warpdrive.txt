@@ -1,0 +1,14 @@
+Trait: Warpdrive
+	Name: Warpdrive
+	Description: #TRAIT_WARPDRIVE_DESC
+	Category: FTL
+	Order: 10
+
+	DLC: Heralds
+
+	Icon: Jumpdrive * ccaaff
+	Color: #67ad85
+	Costs Points: 1
+
+
+	UnlockSubsystem(Warpdrive)

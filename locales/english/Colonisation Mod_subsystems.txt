@@ -1,0 +1,7 @@
+S_WARPDRIVE_DESC: <<
+	Allows the station to make [b]small[/b] subspace jumps to other locations within range using jump drive technology. Larger warp drive subsystems allow for larger safe jump distances.
+
+	Jumping outside of safe jump range is possible, but can cause damage to the station and may drop the station at an location away from the intended destination.
+
+	Warpdrives require a large amount of [b]Control[/b] for the jump calculations.
+>>

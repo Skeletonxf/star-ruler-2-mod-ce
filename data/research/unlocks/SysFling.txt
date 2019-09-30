@@ -1,0 +1,19 @@
+Technology: SysFling
+	Name: Fling Beacon
+	Description: <<
+		[color=#aaa][i]Unlocks the Fling Beacon.[/i][/color]
+
+		[bbloc=#ORB_FLING_CORE_DESC/]
+	>>
+	Class: Unlock
+
+	Point Cost: 1000
+	Time Cost: 120
+
+	Icon: GuiOrbitalIcons::2
+	Color: #cf5fde
+
+
+	UnlockTag(Fling)
+	SkipOnUnlockedTag(Fling)
+	SecondaryFTLCost(1000)

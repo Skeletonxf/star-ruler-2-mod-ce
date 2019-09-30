@@ -1,0 +1,19 @@
+Technology: SysJumpdrive
+	Name: Jumpdrive
+	Description: <<
+		[color=#aaa][i]Unlocks the Jumpdrive subsystem.[/i][/color]
+
+		[bbloc=#S_JUMPDRIVE_DESC/]
+	>>
+	Class: Unlock
+
+	Point Cost: 1000
+	Time Cost: 120
+
+	Icon: Jumpdrive
+	Color: #cf5fde
+
+	UnlockSubsystem(Jumpdrive)
+	SkipOnUnlockedSubsystem(Jumpdrive)
+
+	SecondaryFTLCost(1000)

@@ -1,0 +1,19 @@
+Technology: SysGateModule
+	Name: Gate
+	Description: <<
+		[color=#aaa][i]Unlocks the Gate subsystem.[/i][/color]
+
+		[bbloc=#S_GATE_MODULE_DESC/]
+	>>
+	Class: Unlock
+
+	Point Cost: 1000
+	Time Cost: 120
+
+	Icon: GuiOrbitalIcons::1
+	Color: #cf5fde
+
+	UnlockSubsystem(GateModule)
+	SkipOnUnlockedSubsystem(GateModule)
+
+	SecondaryFTLCost(1000)

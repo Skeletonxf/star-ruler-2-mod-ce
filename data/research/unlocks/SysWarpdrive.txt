@@ -1,0 +1,19 @@
+Technology: SysWarpdrive
+	Name: Warpdrive
+	Description: <<
+		[color=#aaa][i]Unlocks the Warpdrive subsystem for stations.[/i][/color]
+
+		[bbloc=#S_WARPDRIVE_DESC/]
+	>>
+	Class: Unlock
+
+	Point Cost: 1000
+	Time Cost: 120
+
+	Icon: Jumpdrive * ccaaff
+	Color: #76d0de
+
+	UnlockSubsystem(Warpdrive)
+	SkipOnUnlockedSubsystem(Warpdrive)
+
+	SecondaryFTLCost(1000)

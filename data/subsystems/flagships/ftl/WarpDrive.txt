@@ -1,0 +1,27 @@
+Subsystem: Warpdrive
+	Name: Warpdrive
+	Description: #S_WARPDRIVE_DESC
+	BaseColor: #76d0de
+	TypeColor: #76d0de
+	Elevation: 0
+
+	Tags: BaseCost, Category:FTL
+	Tags: Engine, Jumpdrive, HasInternals, Hyperengine
+	Hull: Station
+
+	Size := HexSize * Hexes
+	Hex.Mass := HexSize
+
+	Hex.Resistance := 0.2
+	Hex.HP := 18 * HexSize
+
+	JumpRange := 10000 * Size / ShipSize
+
+	Requires:
+		Command = max(floor(Hexes / 3), 1)
+
+	Module: Default
+
+	Module: Core
+		Sprite: Jumpdrive * ccaaff
+		Hex.BuildCost := 2 * Hex.BuildCost
