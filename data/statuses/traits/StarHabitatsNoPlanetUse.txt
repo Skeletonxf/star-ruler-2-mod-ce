@@ -1,0 +1,24 @@
+Status: StarHabitatsNoPlanetUse
+	Collapses: True
+	Visible To: Nobody
+	Name: Planet not being used
+	Icon: ResourceIcon::8
+
+	AbandonOnDisableIfSameOrigin()
+	ForcePopulationToStacks()
+
+
+
+
+	ProduceAllPressure(Influence)
+	ProduceAllPressure(Defense)
+	ProduceAllPressure(Energy)
+	ProduceAllPressure(Research)
+	ProduceAllPressure(Money)
+	ProduceAllPressure(Labor)
+	ForceIntegerPopulation()
+	ReplacesCities(10000)
+	ModBuildingConstructRate(-1)
+	ModPopulationGrowth(-1)
+	ModTileDevelopRate(-1)
+	CannotUseLabor()

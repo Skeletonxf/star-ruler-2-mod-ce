@@ -1,0 +1,13 @@
+Status: StarHabitats
+	Name: #STATUS_STAR_HABITATS
+	Description: #STATUS_STAR_HABITATS_DESC
+	Icon: ResourceIcon::8
+	Collapses: True
+
+
+
+	RepeatStacks(IfNotHaveStatus(Uplift, IfNotHaveStatus(ArtificialPlanetoid, IfNotHaveStatus(Ringworld, AddStatus(StarHabitatsNoPlanetUse)))))
+	ForbidLaborExport()
+
+
+	

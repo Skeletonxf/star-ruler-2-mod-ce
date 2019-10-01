@@ -9,3 +9,4 @@ TRAIT_WARPDRIVE_DESC: <<
 
 	[bbloc=#S_WARPDRIVE_DESC/]
 >>
+TRAIT_STAR_CHILDREN_DESC: [vspace=3/] [img=ResourceIcon::8;22]Population grows only on giant [b]Motherships[/b] that have construction capabilities.[/img] [vspace=3/][img=ActionBarIcons::1;22]Motherships can move population to orbital [b]Habitats[/b] around planets, letting them use the planetary resources.[/img] [vspace=3/][img=BuildingSprites::0;22]Does [b]not[/b] use ordinary planet surfaces in any way. Planets cannot construct anything.[/img] [vspace=3/][img=ResourceIcon::6;22]Resources are produced in orbit, no pressure capacity is needed. Motherships in orbit of a planet automatically gain that planet's labor income. [/img][vspace=3/][img=PlanetType::14;22]Artifical planetoids, ringworlds and planets with native population can construct buildings, develop tiles and grow population, but do not produce all resources from pressure capacity automatically and still cannot export labor.[/img]

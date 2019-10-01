@@ -10,14 +10,14 @@ Trait: StarChildren
 	Color: #1c9bb4
 
 	AddStatusOwnedPlanets(StarChildren)
-	ModAttribute(PopulationGrowthFactor, Multiply, 0)
+	ModAttribute(PopulationGrowthFactor, Multiply, 1)
 	ModAttribute(PopulationDecayFactor, Multiply, 0)
-	ModAttribute(TileDevelopmentFactor, Multiply, 0)
+	ModAttribute(TileDevelopmentFactor, Multiply, 1)
 	ModAttribute(OverpopulationBenefitFactor, Multiply, 0)
 	ModAttribute(ColonizeDevelopTiles, Multiply, 0)
 	ModAttribute(ForbidColonization, Add, 1)
-	ModAttribute(ImperialBldConstructionRate, Multiply, 0)
-	ModAttribute(CivBldConstructionRate, Multiply, 0)
+	ModAttribute(ImperialBldConstructionRate, Multiply, 1)
+	ModAttribute(CivBldConstructionRate, Multiply, 1)
 	ModAttribute(HabitatUpgrade, Add, 1)
 	ModAttribute(HasPressure, Multiply, 0)
 
@@ -49,12 +49,10 @@ Trait: StarChildren
 	ReplaceTechnologyNodes(ImpPlanetDamage2, ImpHabitat)
 
 	ReplaceTechnologyNodes(BldMegacity, ImpHabitat)
-	ReplaceTechnologyNodes(BldPlanetaryEngine, ImpHabitat)
 	ReplaceTechnologyNodes(RingHabitat, ImpHabitat)
 
 	ReplaceTechnologyNodes(FactoryLabor, MothershipLabor)
 	ReplaceTechnologyNodes(FactoryLabor2, MothershipLabor2)
 	ReplaceTechnologyNodes(Construction, HabitatUpgrade)
 	ReplaceTechnologyNodes(Megacity, HabitatUpgrade)
-	ReplaceTechnologyNodes(PlanetaryEngine, HabitatUpgrade)
 	ReplaceTechnologyNodes(Population, HabitatUpgrade)
