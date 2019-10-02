@@ -1,0 +1,50 @@
+Subsystem: SolarSail
+	Name: Solar Sail
+	Description: <<
+		Produces thrust from the momentum of colliding photons emitted by stars.
+
+		[img=Plus]No maintenence cost.[/img]
+		[img=Minus]Provides next to no thrust in deep space.[/img]
+		[img=Minus]Thrust does not increase with ship size.[/img]
+		[img=Minus]Solar Sails must be placed on the exterior of the ship.[/img]
+
+		Recommended for small exploration vessels or ships that do not need to leave their star
+	>>
+	BaseColor: #f9b7f2
+	TypeColor: #f9b7f2
+	Picture: RocketEngine
+	Elevation: 3
+
+	Tags: BaseCost, Category:Propulsion, VectorThrust
+	Tags: DefaultUnlock, Engine, GivesThrust, HasInternals, NonContiguous, NoCore
+	Hull: Flagship
+
+
+	Size := HexSize * Hexes
+	TurnThrust := 0
+	Hex.Mass := 0.1 * HexSize
+
+	Hex.Resistance := 0.01
+	Hex.HP := 3 * HexSize
+
+	PowerUse := 2 * Size
+	Hex.LaborCost := 0.05 * HexSize
+	Hex.BuildCost := 0.2 * HexSize
+	Ship.ExternalHexes := Ship.ExternalHexes + ExteriorHexes
+	SolarThrustDeepSpace := 0.999
+	SolarThrustNormal := 1
+	SolarThrustMax := 1
+	MaxThrust := 3 * Hexes
+	Hex.MaintainCost := 0
+	SolarThrust := 3 * Hexes
+	SolarPower := 3 * Hexes
+	Thrust := 0
+	MaxTurnThrust := TurnThrust
+	Hook: subsystem_extra_effects::SolarThrust(SolarThrustDeepSpace, SolarThrustNormal, SolarThrustMax)
+	Assert: Hexes == ExteriorHexes
+		Message: #ERROR_MUST_BE_EXTERIOR
+	Requires:
+		Power = PowerUse
+
+	Module: Default
+		Sprite: SolarPanel * ff00ffee

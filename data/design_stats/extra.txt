@@ -1,0 +1,27 @@
+GlobalStat: MaxAcceleration
+	 Name: #S_MAX_ACCEL
+	 Description: #STT_MAX_ACCEL
+	 Color: #aaa
+	 Suffix: u/s²
+	 Secondary: Acceleration
+
+	 Variable: MaxThrust
+	 DivBy: Hex.Mass
+
+ GlobalStat: MaxThrust
+	  Name: #S_MAX_THRUST
+	  Description: #STT_MAX_THRUST
+	  Color: #aaa
+	  Secondary: Acceleration
+
+	  Variable: MaxThrust
+
+GlobalStat: MaxTurnRate
+	 Name: #S_MAX_TURN_THRUST
+	 Description: #STT_MAX_TURN_THRUST
+	 Color: #aaa
+	 Secondary: Acceleration
+	 Suffix: rad/s
+
+	 Variable: MaxTurnThrust
+	 DivBy: Hex.Mass

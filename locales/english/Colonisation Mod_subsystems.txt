@@ -5,3 +5,12 @@ S_WARPDRIVE_DESC: <<
 
 	Warpdrives require a large amount of [b]Control[/b] for the jump calculations.
 >>
+SPARSE_SUPPLY_MODULE_DESC: <<
+	Stores the bare minimum of resources to provide supplies and ammunition for use in combat and sieging planets.
+
+	[img=AttributeIcons::4;22]Provides [b][color=#fefc61]Supply Capacity[/color][/b].[/img]
+	[img=Plus]Low maintenence cost.[/img]
+	[img=Minus]No supply regeneration[/img]
+	[img=Minus]Destroyed supply storage hexes leak supplies over time at a very fast rate.[/img]
+	Recommended for use with the Bussard Ramjet or Emergency Supplies subsystems to recover supply.
+>>

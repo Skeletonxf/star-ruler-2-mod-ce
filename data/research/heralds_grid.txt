@@ -5,7 +5,6 @@ Grid: Heralds
 	Damage: 1,0
 	FactoryLabor: -2,-1
 	Energy: -1,1
-	SolarPanel: -1,2
 	ShipComputer: 1,-2
 	OrbitalConstruction: -2,-3
 	Repair: -2,3
