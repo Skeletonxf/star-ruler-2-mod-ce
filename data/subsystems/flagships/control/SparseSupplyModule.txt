@@ -20,6 +20,9 @@ Subsystem: SparseSupplyModule
 	Hex.Resistance := 0.1
 	Hex.HP := 8 * HexSize
 	Hex.Mass := 0.5 * HexSize
+	Assert: TagCount.RegeneratingSupply == 0
+		Message: #CANNOT_MIX_SUPPLIES
+		Unique: True
 
 	Modifier: SupplyCapacityFactor(factor)
 		SupplyCapacity := SupplyCapacity * factor

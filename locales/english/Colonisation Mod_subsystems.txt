@@ -10,7 +10,19 @@ SPARSE_SUPPLY_MODULE_DESC: <<
 
 	[img=AttributeIcons::4;22]Provides [b][color=#fefc61]Supply Capacity[/color][/b].[/img]
 	[img=Plus]Low maintenence cost.[/img]
-	[img=Minus]No supply regeneration[/img]
+	[img=Minus]No supply regeneration even in friendly space[/img]
 	[img=Minus]Destroyed supply storage hexes leak supplies over time at a very fast rate.[/img]
 	Recommended for use with the Bussard Ramjet or Emergency Supplies subsystems to recover supply.
+>>
+CANNOT_MIX_SUPPLIES: $1 is not allowed with Supply Storage
+SHIP_LOW_POWER_COMPUTER_NAME: Low Power Computer
+SHIP_LOW_POWER_COMPUTER_DESC: <<
+	An autonomous low power computer capable of controlling a small number of ship systems.
+
+	[img=ActionBarIcons::0;22;#00ff80]Provides a small amount of [b][color=#00ff80]Control[/color][/b] to operate other subsystems.[/img]
+	[img=Plus]Very low maintenece cost.[/img]
+	[img=Minus]Does not repair the vessel.[/img]
+	[img=Minus]Ship is destroyed if no control remains.[/img]
+	[img=MenuIcons::3;20]Requires more power and maintenence than a standard Control Computer per control given.[/img]
+
 >>

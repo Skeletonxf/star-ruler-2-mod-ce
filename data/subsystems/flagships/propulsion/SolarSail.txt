@@ -31,13 +31,13 @@ Subsystem: SolarSail
 	Hex.LaborCost := 0.05 * HexSize
 	Hex.BuildCost := 0.2 * HexSize
 	Ship.ExternalHexes := Ship.ExternalHexes + ExteriorHexes
-	SolarThrustDeepSpace := 0.999
+	SolarThrustDeepSpace := 0.99
 	SolarThrustNormal := 1
 	SolarThrustMax := 1
-	MaxThrust := 3 * Hexes
+	MaxThrust := 1.5 * Hexes
 	Hex.MaintainCost := 0
-	SolarThrust := 3 * Hexes
-	SolarPower := 3 * Hexes
+	SolarThrust := 1.5 * Hexes
+	SolarPower := 1.5 * Hexes
 	Thrust := 0
 	MaxTurnThrust := TurnThrust
 	Hook: subsystem_extra_effects::SolarThrust(SolarThrustDeepSpace, SolarThrustNormal, SolarThrustMax)
@@ -47,4 +47,4 @@ Subsystem: SolarSail
 		Power = PowerUse
 
 	Module: Default
-		Sprite: SolarPanel * ff00ffee
+		Sprite: SolarSail

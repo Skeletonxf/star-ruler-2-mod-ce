@@ -1,3 +1,13 @@
 Material: Gases
 	Inherit: Image2D
 	Texture: data/images/gases.png
+
+Material: Subsystem1
+	Alpha: True
+	DepthTest: NoDepthTest
+	Mipmap: False
+	Lighting: False
+
+Material: SolarSail
+	Inherit: Subsystem1
+	Texture: data/images/solar_sail.png

@@ -5,7 +5,7 @@ Subsystem: SupplyModule
 	BaseColor: #2fd6b3
 	Elevation: 3
 
-	Tags: DefaultUnlock, NonContiguous, NoCore, HasInternals, Category:Control
+	Tags: DefaultUnlock, NonContiguous, NoCore, HasInternals, Category:Control, RegeneratingSupply
 	Tags: Compressible
 	Hull: Flagship, Station
 

@@ -1,0 +1,42 @@
+Subsystem: LowPowerShipComputer
+	Name: #SHIP_LOW_POWER_COMPUTER_NAME
+	Description: #SHIP_LOW_POWER_COMPUTER_DESC
+	BaseColor: #ddeaff
+	Picture: SubsystemButtonArt::8 * #ffa4a0
+	Elevation: 4
+
+	Tags: BaseCost, Category:Control, BadFiller
+	Tags: Control, ControlCore, HasInternals, Important
+	Hull: Flagship, Station
+
+	EvaluationOrder: -10
+
+	Size := HexSize * Hexes
+	Command := Hexes * 1
+	PowerUse := 10 * Size
+
+	SupplyRate := 30 * HexSize * (Hexes-1)
+
+	Hex.Resistance := 0.02
+	Hex.HP := 3 * HexSize
+	Hex.Mass := HexSize
+
+
+
+	Hex.MaintainCost := 1.5 * HexSize / ShipSize^0.5
+	Effect: ControlCore
+
+	Requires:
+		Power = PowerUse
+
+	Provides:
+		Command = Command
+
+	Module: Default
+		Sprite: HexagonSubsystems::4 * #a0a4ff
+
+	Module: Core
+		Sprite: ComputerCore * a0a4ff
+		Hex.HP := 2 * Hex.HP
+		Hex.Resistance := 0.05
+		Hex.BuildCost := 2 * Hex.BuildCost
