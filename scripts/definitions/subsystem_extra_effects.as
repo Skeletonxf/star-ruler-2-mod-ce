@@ -29,22 +29,22 @@ class SolarThrust : SubsystemEffect {
 				dat.timer += 10.0;
 
 			Ship@ ship = cast<Ship>(obj);
-			double powerFactor = event.workingPercent;
+			double thrustAdjustFactor = event.workingPercent;
 			if(ship !is null) {
 				const Design@ dsg = ship.blueprint.design;
 				if(dsg !is null)
-					powerFactor *= dsg.total(SV_SolarPower); // TODO check this doesn't accidentally count solar panels too
+					thrustAdjustFactor *= dsg.total(SV_SolarThrust) / dsg.total(SV_Thrust);
 			}
 
 			double newBoost = 0.0;
 			if(reg is null) {
 				// deep space boost
-				newBoost = -loss.decimal * powerFactor;
+				newBoost = -loss.decimal * thrustAdjustFactor;
 			}
 			else {
 				double solarFactor = reg.starTemperature * (1.0 - (obj.position.distanceToSQ(reg.position) / sqr(reg.radius)));
 				newBoost = min_boost.decimal + clamp(solarFactor / temperature_max.decimal, 0.0, max_boost.decimal);
-				newBoost *= powerFactor;
+				newBoost *= thrustAdjustFactor;
 			}
 
 			newBoost = round(newBoost / step.decimal) * step.decimal;
