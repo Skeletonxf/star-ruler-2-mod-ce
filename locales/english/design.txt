@@ -140,6 +140,12 @@ STT_MAX_ACCEL: The maximum acceleration the ship can maintain in transit in perf
 S_RAMJET_MAINTAIN_DISCOUNT: Ramjet discount
 STT_RAMJET_MAINTAIN_DISCOUNT: Bussard Ramjet subsystem hexes reduce ship maintenance costs by up to 50%.
 
+S_SHIP_MAX_POP: Maximum population
+STT_SHIP_MAX_POP: Maximum population that can live on this ship. Each billion population also provides 1 labor.
+
+S_SHIP_MAX_POP_INCOME: Maximum pop income
+STT_SHIP_MAX_POP_INCOME: Maximum population income from this ship, 15k per billion.
+
 S_MASS: Mass
 STT_MASS: Total mass of the ship.
 

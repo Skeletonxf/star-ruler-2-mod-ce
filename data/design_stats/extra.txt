@@ -34,3 +34,21 @@ GlobalStat: RamJetDiscount
 	Suffix: %
 
 	Variable: Ship.RamjetDiscount
+
+GlobalStat: ShipMaxPopulation
+	Name: #S_SHIP_MAX_POP
+	Description: #STT_SHIP_MAX_POP
+	Color: #eea
+	Icon: ResourceIcon::8
+	Suffix: B
+
+	Variable: ShipMaxPopulation
+
+GlobalStat: ShipMaxPopulationIncome
+	Name: #S_SHIP_MAX_POP_INCOME
+	Description: #STT_SHIP_MAX_POP_INCOME
+	Color: #dd9
+	Icon: DesignationIcons::0
+	Suffix: k
+
+	Variable: ShipMaxPopulationIncome
