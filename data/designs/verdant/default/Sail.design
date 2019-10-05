@@ -2,7 +2,7 @@
 	"__VERSION__": 1,
 	"name": "Sail",
 	"size": 16,
-	"hull": "MoiraiFlagHuge",
+	"hull": "$1FlagTiny",
 	"type": "Flagship",
 	"gridWidth": 28,
 	"gridHeight": 23,
@@ -778,8 +778,7 @@
 			]
 		}
 	],
-	"settings": {
-		"behavior": "Cannon",
-		"range": "Auto"
-	}
+	"appliedSubsystems": [
+		"ExplorationHull"
+	]
 }

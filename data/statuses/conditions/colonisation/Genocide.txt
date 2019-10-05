@@ -1,10 +1,9 @@
 Status: Genocide
 	Name: Genocide
-	Description: <<
-		An entire civilisation was eradicated here
-
-		-2 [img=ResourceIcon::1;20/] Influence stake
-	>>
+	Description: #GENOCIDE_STATUS_DESC
 	Color: #ff140b
-	Icon: ConditionIcons::10 * ff6622
+	Icon: <<
+
+		ConditionIcons::10 * ff6622
+	>>
 	AddInfluenceStake(-2)

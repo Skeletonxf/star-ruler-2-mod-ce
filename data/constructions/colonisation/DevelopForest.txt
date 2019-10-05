@@ -10,7 +10,7 @@ Construction: DevelopForest
 	>>
 	Category: Terraforming
 	RequirePlanet()
-	ConsumeEnergy(250)
+	ConsumeEnergy(150)
 	RequireNotStatus(DevelopingForest)
 	RemoveStatus(DevelopingForest)
 	OnCancel(RemoveStatus(DevelopingForest))

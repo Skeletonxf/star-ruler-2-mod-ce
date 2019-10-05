@@ -39,7 +39,12 @@ R_FTL: Civillian FTL Grants
 R_KEY_FTL_DESC: <<
 	Makes FTL technology available to civillians
 
-	Increases planet loyalty by 3, tile development, colonisation speed and population growth by 50%
+	Increases planet loyalty by 5, tile development, colonisation speed and population growth by 50%
 
-	Costs 3 FTL/s and 500 FTL storage. If you do not have 3 FTL/s this will go negative and drain your FTL to 0.
+	Costs 2 FTL/s and 500 FTL storage. If you do not have 2 FTL/s this will go negative and drain your FTL to 0.
+>>
+R_SYS_LOW_POWER_SHIP_COMPUTER_DESC: <<
+	[color=#aaa][i]Unlocks the Low Power Control Computer subsystem.[/i][/color]
+
+	[bbloc=#SHIP_LOW_POWER_COMPUTER_DESC/]
 >>

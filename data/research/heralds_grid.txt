@@ -17,7 +17,6 @@ Grid: Heralds
 	PowerGeneration: -3,5
 	ShieldHardener: -2,7
 	ShieldReg: 0,9
-	HyperfieldSequencing: -4,6
 	Health: 0,-1
 	StationMaintenance: -1,-6
 	EnergyStorage: -3,4
@@ -190,13 +189,9 @@ Grid: Heralds
 	ArtificialPlanetoid: -4,-12
 	HighEnergyHurdle: -4,-11
 	Disruptor: -7,6
-	Energy: -7,5
 	EnergyHurdle: -5,3
 	IonCannon: -6,2
 	SupportCap2: -7,-1
-	FTLHurdle: -4,7
-	FTL: -3,6
-	HighEnergyHurdle: -4,8
 	EnergyHurdle: 2,0
 	Defense: 6,-1
 	Damage2: 11,0
@@ -209,31 +204,14 @@ Grid: Heralds
 	EnergyHurdle: 3,-9
 	Population: -6,-3
 	Laboratories: -6,-4
-	FTLJammerCombat: -3,8
-	FTL: -3,9
-	HighEnergyHurdle: -3,10
-	FTLHurdle: -4,11
-	HighEnergyHurdle: -2,10
-	FTLHurdle: -2,11
 	ShieldReg2: 1,11
-	FTLHurdle: -6,8
-	HighEnergyHurdle: -6,7
-	FTL: -5,7
-	FTLHurdle: -5,9
-	HighEnergyHurdle: -7,9
 	FTLHurdle: -7,10
 	FTL: -3,15
 	FTL: -6,12
 	DevFTL: -4,14
-	HighEnergyHurdle: -1,12
 	FTLHurdle: -2,13
-	HighEnergyHurdle: -4,12
-	FTLHurdle: -5,13
-	HighEnergyHurdle: -5,10
 	FTLHurdle: -6,11
-	DevFTL: -2,6
 	SoftFTLHurdle: -6,14
-	SoftFTLHurdle: -7,12
 	SoftFTLHurdle: -5,15
 	SoftFTLHurdle: -2,15
 	HighEnergyHurdle: -6,16
@@ -256,11 +234,9 @@ Grid: Heralds
 	HighEnergyHurdle: -8,5
 	MoneyHurdle: -8,6
 	Energy: -9,7
-	EnergyStorage: -9,6
 	HighEnergyHurdle: -10,7
 	MoneyHurdle: -10,8
 	EnergyStorage: -11,9
-	Energy: -10,9
 	Ringworld: -6,-16
 	InfluenceHurdle: -6,-15
 	SysHyperdrive: -8,11
@@ -270,7 +246,6 @@ Grid: Heralds
 	SysFling: -4,15
 	InfiniteThrust: 5,10
 	GravitonChanneling: 5,9
-	SysWarpdrive: -7,18
 	FTL2: -6,18
 	ImpImpConstructionRate: -2,0
 	ImpImpConstructionRate: -4,1
@@ -301,5 +276,25 @@ Grid: Heralds
 	Obedience: -8,-7
 	Obedience: -10,3
 	ImpCivConstructionRate: -9,3
-	SoftFTLHurdle: -8,16
-	KeyFTL: -9,16
+	EnergyStorage: -7,5
+	Energy: -9,6
+	FTL: -3,9
+	FTLHurdle: -4,13
+	HighEnergyHurdle: -3,12
+	FTLHurdle: -3,11
+	SoftFTLHurdle: -7,12
+	HighEnergyHurdle: -2,12
+	HighEnergyHurdle: -6,10
+	FTLHurdle: -6,9
+	FTL: -4,8
+	DevFTL: -3,8
+	SysWarpdrive: -5,7
+	Energy: -3,6
+	FTL: -4,7
+	HyperfieldSequencing: -9,11
+	EnergyHurdle: -5,8
+	KeyFTL: -4,10
+	EnergyHurdle: -2,10
+	FTLHurdle: -4,9
+	FTLCost: -3,7
+	LowPowerShipComputer: -1,2

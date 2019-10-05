@@ -26,3 +26,15 @@ SHIP_LOW_POWER_COMPUTER_DESC: <<
 	[img=MenuIcons::3;20]Requires more power and maintenence than a standard Control Computer per control given.[/img]
 
 >>
+S_EXPLORATION_HULL: Exploration Hull
+S_EXPLORATION_HULL_DESC: <<
+	A hull specifically designed to field small exploration and scientific vessels.
+
+	[img=Plus]Maintenence costs reduced by 66%.[/img]
+	[img=Plus]More internal space available.[/img]
+	[img=Plus]Reduced mass of ship.[/img]
+	[img=Minus]Cannot have any weapons or support comand on the ship.[/img]
+	[img=Minus]Ship is more fragile.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Exploration Hulls can only be used on ships of size 300 or less.[/color][/i][/img]
+>>
+ERROR_MAX_SIZE: $1 has maximum size $2.

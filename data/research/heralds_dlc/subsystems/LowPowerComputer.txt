@@ -1,0 +1,16 @@
+Technology: LowPowerShipComputer
+	Name: #SHIP_LOW_POWER_COMPUTER_NAME
+	Description: #R_SYS_LOW_POWER_SHIP_COMPUTER_DESC
+	Class: Unlock
+	Category: Subsystems
+
+	Point Cost: 500
+	Time Cost: 90
+
+	Icon: ComputerCore * a0a4ff
+	Color: #ffa4a0
+
+	UnlockSubsystem(LowPowerShipComputer)
+	SkipOnUnlockedSubsystem(LowPowerShipComputer)
+
+	SecondaryEnergyCost(500)

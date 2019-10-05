@@ -1,0 +1,5 @@
+GENOCIDE_STATUS_DESC: <<
+	An entire civilisation was eradicated here
+
+	-2 [img=ResourceIcon::1;20/]  Influence stake
+>>

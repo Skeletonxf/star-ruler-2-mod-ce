@@ -11,5 +11,5 @@ Construction: MeltIce
 	OnCancel(AddStatus(FrozenIce))
 	RequireStatus(FrozenIce)
 	OnStart(RemoveStatus(FrozenIce))
-	ConsumeEnergy(750)
+	ConsumeEnergy(550)
 	RequirePlanet()

@@ -1,0 +1,26 @@
+Subsystem: ExplorationHull
+	Name: #S_EXPLORATION_HULL
+	Description: #S_EXPLORATION_HULL_DESC
+
+	Tags: DefaultUnlock, Applied:Hull, Category:Hulls, NoCore
+	Hull: Flagship
+	EvaluationOrder: -200
+	BaseColor: #4723d6
+
+	HexLimit := 40
+
+	AddShipModifier: HpFactor(0.2)
+	AddShipModifier: MassFactor(0.4)
+	AddShipModifier: MaintCostFactor(0.34)
+	Assert: Sum.SupportCapacity == 0
+		Message: #ERROR_CANNOT_HAVE_SUPPORT
+
+	Assert: ShipSize <= 300
+		Message: #ERROR_MAX_SIZE:$1:300
+
+	Assert: TagCount.Weapon == 0
+		Message: #ERROR_CANNOT_HAVE_WEAPONS
+
+	Module: Default
+		Sprite: AffinityIcons::5
+		DrawMode: 3

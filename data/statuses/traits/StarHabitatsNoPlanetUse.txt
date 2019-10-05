@@ -10,15 +10,4 @@ Status: StarHabitatsNoPlanetUse
 
 
 
-	ProduceAllPressure(Influence)
-	ProduceAllPressure(Defense)
-	ProduceAllPressure(Energy)
-	ProduceAllPressure(Research)
-	ProduceAllPressure(Money)
-	ProduceAllPressure(Labor)
 	ForceIntegerPopulation()
-	ReplacesCities(10000)
-	ModBuildingConstructRate(-1000)
-	ModPopulationGrowth(-1000)
-	ModTileDevelopRate(-1000)
-	CannotUseLabor()

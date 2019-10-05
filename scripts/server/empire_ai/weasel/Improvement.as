@@ -11,6 +11,8 @@ import empire_ai.weasel.Budget;
 
 import biomes;
 
+from traits import getTraitID;
+
 class Improvement : AIComponent {
 	Planets@ planets;
 	Resources@ resources;
@@ -24,6 +26,7 @@ class Improvement : AIComponent {
 	uint atmosphere = 0;
 	int moon_base = -1;
 	const ConstructionType@ build_moon_base;
+	bool no_build_moon_bases = false;
 
 	void create() {
 		@planets = cast<Planets>(ai.planets);
@@ -39,6 +42,7 @@ class Improvement : AIComponent {
 		atmosphere = getBiomeID("Atmosphere");
 		moon_base = getStatusID("MoonBase");
 		@build_moon_base = getConstructionType("MoonBase");
+		no_build_moon_bases = ai.empire.hasTrait(getTraitID("Ancient")) || ai.empire.hasTrait(getTraitID("StarChildren"));
 	}
 
 	void save(SaveFile& file) {
@@ -60,7 +64,14 @@ class Improvement : AIComponent {
 			for(uint i = 0, cnt = planets.planets.length; i < cnt; ++i) {
 				auto@ plAI = planets.planets[i];
 				auto@ planet = plAI.obj;
-				// TODO: don't build moon bases as Star Children
+				if (no_build_moon_bases) {
+					// don't build moon bases as Star Children or Ancient
+					// star children don't need them as they don't build
+					// and Ancient bypasses biome cost/build time mods
+					// so can just build on planet surfaces as normal and
+					// thus doesn't need them
+					continue;
+				}
 				if (planet.moonCount == 0) {
 					continue;
 				}
@@ -68,6 +79,8 @@ class Improvement : AIComponent {
 					continue;
 				}
 				if (planet.getStatusStackCountAny(moon_base) > 0) {
+					// TODO: Check if we need more space to build on this planet
+					// in which case make more moon bases
 					continue;
 				}
 				if (!planets.isConstructing(planet, build_moon_base)) {
