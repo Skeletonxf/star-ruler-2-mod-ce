@@ -137,6 +137,9 @@ STT_MAX_TURN_THRUST: The maximum speed at which the ship can rotate to change di
 S_MAX_ACCEL: Maximum Acceleration
 STT_MAX_ACCEL: The maximum acceleration the ship can maintain in transit in perfect conditions (ie next to a Star with Solar Sails).
 
+S_RAMJET_MAINTAIN_DISCOUNT: Ramjet discount
+STT_RAMJET_MAINTAIN_DISCOUNT: Bussard Ramjet subsystem hexes reduce ship maintenance costs by up to 50%.
+
 S_MASS: Mass
 STT_MASS: Total mass of the ship.
 

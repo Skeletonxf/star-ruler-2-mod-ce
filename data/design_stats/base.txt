@@ -81,23 +81,23 @@ GlobalStat: SupportCap
 	Variable: SupportCapacity
 
 GlobalStat: Acceleration
-	 Name: #S_ACCEL
-	 Description: #STT_ACCEL
-	 Icon: AttributeIcons::0
-	 Color: #a77751
-	 Suffix: u/s²
-	 AlwaysShow: True
+	Name: #S_ACCEL
+	Description: #STT_ACCEL
+	Icon: AttributeIcons::0
+	Color: #a77751
+	Suffix: u/s²
+	AlwaysShow: True
 
-	 Variable: Thrust
-	 DivBy: Hex.Mass
+	Variable: Thrust
+	DivBy: Hex.Mass
 
-	 GlobalStat: Thrust
-		  Name: #S_THRUST
-		  Description: #STT_THRUST
-		  Color: #aaa
-		  Secondary: Acceleration
+	GlobalStat: Thrust
+		Name: #S_THRUST
+		Description: #STT_THRUST
+		Color: #aaa
+		Secondary: Acceleration
 
-		  Variable: Thrust
+		Variable: Thrust
 
 	GlobalStat: Mass
 		Name: #S_MASS
@@ -108,14 +108,14 @@ GlobalStat: Acceleration
 		Variable: Hex.Mass
 
 	GlobalStat: TurnRate
-		 Name: #S_TURN_THRUST
-		 Description: #STT_TURN_THRUST
-		 Color: #aaa
-		 Secondary: Acceleration
-		 Suffix: rad/s
+		Name: #S_TURN_THRUST
+		Description: #STT_TURN_THRUST
+		Color: #aaa
+		Secondary: Acceleration
+		Suffix: rad/s
 
-		 Variable: TurnThrust
-		 DivBy: Hex.Mass
+		Variable: TurnThrust
+		DivBy: Hex.Mass
 
 GlobalStat: Power
 	Name: #S_POWER

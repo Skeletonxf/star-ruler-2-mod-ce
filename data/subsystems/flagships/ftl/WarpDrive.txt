@@ -15,8 +15,8 @@ Subsystem: Warpdrive
 	Hex.Resistance := 0.2
 	Hex.HP := 18 * HexSize
 
-	JumpRange := 10000 * Size / ShipSize
 
+	JumpRange := 1000 * Size / ShipSize
 	Requires:
 		Command = max(floor(Hexes / 3), 1)
 

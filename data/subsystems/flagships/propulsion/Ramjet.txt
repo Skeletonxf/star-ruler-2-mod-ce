@@ -27,6 +27,7 @@ Subsystem: Ramjet
 
 	MaxThrust := Thrust
 	MaxTurnThrust := TurnThrust
+	Ship.RamjetDiscount := min(Ship.RamjetDiscount + Hexes * 2, 50)
 	Modifier: MaintCostFactor(factor)
 		Hex.MaintainCost := Hex.MaintainCost //No change, since this is negative
 
@@ -38,14 +39,14 @@ Subsystem: Ramjet
 		Message: #ERROR_NOT_ALLOWED_ON_MOTHERSHIP
 
 	Module: Default
-		Hex.MaintainCost := Hex.MaintainCost * -2 * min((ShipSize-16)/100, 1)
+		Hex.MaintainCost := 0
 		Hex.BuildCost := 1.0 * Hex.BuildCost
 		Hex.LaborCost := 0.5 * Hex.LaborCost
 
 	Module: Core
 		Sprite: Ramjet
 
-		Hex.MaintainCost := Hex.MaintainCost * -10 * min((ShipSize-16)/100, 1)
+		Hex.MaintainCost := 0
 		Hex.HP := 5 * Hex.HP
 		Hex.BuildCost := 2.0 * Hex.BuildCost
 		Hex.LaborCost := 2.0 * Hex.LaborCost

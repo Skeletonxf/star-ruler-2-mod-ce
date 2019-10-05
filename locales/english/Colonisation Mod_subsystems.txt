@@ -1,5 +1,5 @@
 S_WARPDRIVE_DESC: <<
-	Allows the station to make [b]small[/b] subspace jumps to other locations within range using jump drive technology. Larger warp drive subsystems allow for larger safe jump distances.
+	Allows the station to make [b]small[/b] subspace jumps to other locations within range using enlarged and less sophisticated jumpdrive technology. Larger warp drive subsystems allow for larger safe jump distances.
 
 	Jumping outside of safe jump range is possible, but can cause damage to the station and may drop the station at an location away from the intended destination.
 
@@ -38,3 +38,15 @@ S_EXPLORATION_HULL_DESC: <<
 	[img=MenuIcons::3;20][i][color=#aaa]Exploration Hulls can only be used on ships of size 300 or less.[/color][/i][/img]
 >>
 ERROR_MAX_SIZE: $1 has maximum size $2.
+NEED_ONE_PROCESSOR: $1 must have exactly one Processor on the ship
+S_RAMJET_DESC: <<
+	Collects stray particles from the vacuum while moving by means of an enormous magnetic field leading into a scoop at the front of the ship, then uses those particles to generate thrust.
+
+	[img=Plus]Greatly reduces the maintenance cost of the ship.[/img]
+	[img=Plus]Restores the ship's [b]Supply[/b] when at high velocity. The full indicated Supply Gain rate is reached at speeds of 100 u/s or more.[/img]
+	[img=Minus]Provides lower Thrust than conventional engines.[/img]
+
+	Each Ramjet must contain at least one [color=#da8a9f][b]Ramscoop[/b][/color], pointing outwards at the front of the ship. One Ramjet on the ship must contain one [color=#da8a9f][b]Processor[/b][/color]. You can find these under the [color=#eda1ff][b]Modifiers[/b][/color] category.
+>>
+S_RAMJET_PROCESSOR: Ramjet Processor
+S_RAMJET_PROCESSOR_DESC: Processes stray particles collected by Ramscoops to reduce ship maintence costs.
