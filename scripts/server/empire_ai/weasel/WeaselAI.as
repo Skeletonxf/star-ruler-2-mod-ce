@@ -436,7 +436,7 @@ final class AI : AIController, Savable {
 			@ftl = add(createSlipstream());
 		else if(empire.hasTrait(getTraitID("Jumpdrive")))
 			@ftl = add(createJumpdrive());
-		else if (empire.hasTrait(getTraitID("FlingGate")))
+		else if (empire.hasTrait(getTraitID("HyperFlingGate")))
 			@ftl = add(createFTLGeneric());
 		// [[ MODIFY BASE GAME END ]]
 
