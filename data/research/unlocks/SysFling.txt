@@ -4,6 +4,8 @@ Technology: SysFling
 		[color=#aaa][i]Unlocks the Fling Beacon.[/i][/color]
 
 		[bbloc=#ORB_FLING_CORE_DESC/]
+
+		[color=#aaa][i]A vote will start upon researching this that will unlock Fling Beacons for all empires if it passes.[/i][/color]
 	>>
 	Class: Unlock
 
@@ -14,6 +16,9 @@ Technology: SysFling
 	Color: #cf5fde
 
 
+	StartVote(FlingResearch)
+	NotifyAll(Fling Beacon Discovery, Description = $1 has researched Fling Beacons, Icon = GuiOrbitalIcons::2)
+	NotifyOwner(Fling Beacon Discovery, Description = $1 has researched Fling Beacons, Icon = GuiOrbitalIcons::2)
 	UnlockTag(Fling)
 	SkipOnUnlockedTag(Fling)
 	SecondaryFTLCost(1000)

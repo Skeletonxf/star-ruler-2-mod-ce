@@ -1,0 +1,23 @@
+Vote: JumpdriveResearch
+	Name: #JUMPDRIVE_RESEARCH
+	Description: #HYPERDRIVE_RESEARCH_DESC
+
+	Color: #cf5fde
+	Icon: Jumpdrive
+
+	AddStartWeight(-2)
+
+
+
+
+	Target: empire = Empire
+	AI: BadFor(empire)
+	AI: GoodForNot(empire, 1.5)
+	CreateEffect(pass, JumpdriveResearch)
+Effect: JumpdriveResearch
+	Name: #JUMPDRIVE_RESEARCH
+	Description: #JUMPDRIVE_RESEARCH_OBTAINED_DESC
+	Dismissable: False
+	Icon: Jumpdrive
+	Color: #cf5fde
+	OnAllEmpires(CE_biome_hooks::UnlockSubsystem(Jumpdrive))

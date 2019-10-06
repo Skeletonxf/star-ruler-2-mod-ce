@@ -4,6 +4,8 @@ Technology: SysWarpdrive
 		[color=#aaa][i]Unlocks the Warpdrive subsystem for stations.[/i][/color]
 
 		[bbloc=#S_WARPDRIVE_DESC/]
+
+		[color=#aaa][i]A vote will start upon researching this that will unlock Warpdrives for all empires if it passes.[/i][/color]
 	>>
 	Class: Unlock
 
@@ -16,4 +18,7 @@ Technology: SysWarpdrive
 	UnlockSubsystem(Warpdrive)
 	SkipOnUnlockedSubsystem(Warpdrive)
 
+	StartVote(WarpdriveResearch)
+	NotifyOwner(Warpdrive Discovery, Description = $1 has researched Warpdrives, Icon = Jumpdrive * ccaaff)
+	NotifyAll(Warpdrive Discovery, Description = $1 has researched Warpdrives, Icon = Jumpdrive * ccaaff)
 	SecondaryFTLCost(1000)

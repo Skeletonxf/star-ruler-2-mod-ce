@@ -1,0 +1,23 @@
+Vote: HyperdriveResearch
+	Name: #HYPERDRIVE_RESEARCH
+	Description: #HYPERDRIVE_RESEARCH_DESC
+
+	Color: #cf5fde
+	Icon: TraitIcons::2
+
+	AddStartWeight(-2)
+
+
+
+
+	Target: empire = Empire
+	AI: BadFor(empire)
+	AI: GoodForNot(empire, 1.5)
+	CreateEffect(pass, HyperdriveResearch)
+Effect: HyperdriveResearch
+	Name: #HYPERDRIVE_RESEARCH
+	Description: #HYPERDRIVE_RESEARCH_OBTAINED_DESC
+	Dismissable: False
+	Icon: TraitIcons::2
+	Color: #cf5fde
+	OnAllEmpires(CE_biome_hooks::UnlockSubsystem(Hyperdrive))

@@ -4,6 +4,8 @@ Technology: SysHyperdrive
 		[color=#aaa][i]Unlocks the Hyperdrive subsystem.[/i][/color]
 
 		[bbloc=#S_HYPERDRIVE_DESC/]
+
+		[color=#aaa][i]A vote will start upon researching this that will unlock Hyperdrives for all empires if it passes.[/i][/color]
 	>>
 	Class: Unlock
 
@@ -16,4 +18,7 @@ Technology: SysHyperdrive
 	UnlockSubsystem(Hyperdrive)
 	SkipOnUnlockedSubsystem(Hyperdrive)
 
+	StartVote(HyperdriveResearch)
+	NotifyOwner(Hyperdrive Discovery, Description = $1 has researched Hyperdrives, Icon = TraitIcons::2)
+	NotifyAll(Hyperdrive Discovery, Description = $1 has researched Hyperdrives, Icon = TraitIcons::2)
 	SecondaryFTLCost(1000)

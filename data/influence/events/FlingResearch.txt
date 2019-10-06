@@ -1,0 +1,23 @@
+Vote: FlingResearch
+	Name: #FLING_RESEARCH
+	Description: #FLING_RESEARCH_DESC
+
+	Color: #cf5fde
+	Icon: GuiOrbitalIcons::2
+
+	AddStartWeight(-2)
+
+
+
+
+	Target: empire = Empire
+	AI: BadFor(empire)
+	AI: GoodForNot(empire, 1.5)
+	CreateEffect(pass, FlingResearch)
+Effect: FlingResearch
+	Name: #FLING_RESEARCH
+	Description: #FLING_RESEARCH_OBTAINED_DESC
+	Dismissable: False
+	Icon: GuiOrbitalIcons::2
+	Color: #cf5fde
+	OnAllEmpires(CE_biome_hooks::UnlockTag(HasFling))

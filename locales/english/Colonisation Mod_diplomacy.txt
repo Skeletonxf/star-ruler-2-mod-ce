@@ -1,0 +1,45 @@
+WARPDRIVE_RESEARCH: Warpdrive Research
+WARPDRIVE_RESEARCH_DESC: <<
+	Other empires have discovered our breakthrough in FTL technology and applied very strong diplomatic pressure to encourage us to share this research.
+
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Warpdrives[/img]
+
+>>
+WARPDRIVE_RESEARCH_OBTAINED_DESC: <<
+	All empires have permanently unlocked Warpdrives
+
+>>
+HYPERDRIVE_RESEARCH: Hyperdrive Research
+HYPERDRIVE_RESEARCH_DESC: <<
+	Other empires have discovered our breakthrough in FTL technology and applied very strong diplomatic pressure to encourage us to share this research.
+
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Jumpdrives[/img]
+
+>>
+HYPERDRIVE_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked Hyperdrives
+GATE_RESEARCH: Gate Research
+GATE_RESEARCH_DESC: <<
+	Other empires have discovered our breakthrough in FTL technology and applied very strong diplomatic pressure to encourage us to share this research.
+
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Gates[/img]
+
+>>
+GATE_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked Gates
+JUMPDRIVE_RESEARCH: Jumpdrive Research
+JUMPDRIVE_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked Jumpdrives
+FLING_RESEARCH: Fling Beacon Research
+FLING_RESEARCH_DESC: <<
+	Other empires have discovered our breakthrough in FTL technology and applied very strong diplomatic pressure to encourage us to share this research.
+
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Fling Beacons[/img]
+
+>>
+FLING_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked Fling Beacons
+SLIPSTREAM_RESEARCH: Slipstream Research
+SLIPSTREAM_RESEARCH_DESC: <<
+	Other empires have discovered our breakthrough in FTL technology and applied very strong diplomatic pressure to encourage us to share this research.
+
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Slipstream generators[/img]
+
+>>
+SLIPSTREAM_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked Slipstream generators

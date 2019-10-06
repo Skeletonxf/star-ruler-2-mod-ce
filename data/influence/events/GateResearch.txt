@@ -1,0 +1,23 @@
+Vote: GateResearch
+	Name: #GATE_RESEARCH
+	Description: #GATE_RESEARCH_DESC
+
+	Color: #cf5fde
+	Icon: GuiOrbitalIcons::1
+
+	AddStartWeight(-2)
+
+
+
+
+	Target: empire = Empire
+	AI: BadFor(empire)
+	AI: GoodForNot(empire, 1.5)
+	CreateEffect(pass, GateResearch)
+Effect: GateResearch
+	Name: #GATE_RESEARCH
+	Description: #GATE_RESEARCH_OBTAINED_DESC
+	Dismissable: False
+	Icon: GuiOrbitalIcons::1
+	Color: #cf5fde
+	OnAllEmpires(CE_biome_hooks::UnlockSubsystem(GateModule))

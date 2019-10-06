@@ -181,7 +181,6 @@ Grid: Heralds
 	MoneyHurdle: -3,-10
 	Abundance: -6,-5
 	InfluenceHurdle: -5,-8
-	MoneyHurdle: -2,-7
 	StarForge: -5,-11
 	HighEnergyHurdle: -5,-14
 	MoneyHurdle: -5,-13
@@ -230,7 +229,6 @@ Grid: Heralds
 	MoneyHurdle: 6,-4
 	KeyRailgunKnockback: 6,-5
 	ImpDecaySpeed2: -7,-9
-	ImpDecaySpeed: -5,-9
 	HighEnergyHurdle: -8,5
 	MoneyHurdle: -8,6
 	Energy: -9,7
@@ -293,8 +291,7 @@ Grid: Heralds
 	FTL: -4,7
 	HyperfieldSequencing: -9,11
 	EnergyHurdle: -5,8
-	KeyFTL: -4,10
 	EnergyHurdle: -2,10
-	FTLHurdle: -4,9
 	FTLCost: -3,7
 	LowPowerShipComputer: -1,2
+	ImpDecaySpeed: -4,-9

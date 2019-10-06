@@ -43,3 +43,25 @@ class SetHomeworld : BonusEffect {
 	}
 #section all
 }
+
+class UnlockSubsystem : EmpireEffect {
+	Document doc("Set a particular subsystem as unlocked in the affected empire.");
+	Argument subsystem(AT_Subsystem, doc="Identifier of the subsystem to unlock.");
+
+#section server
+	void enable(Empire& owner, any@ data) const override {
+		owner.setUnlocked(getSubsystemDef(subsystem.integer), true);
+	}
+#section all
+};
+
+class UnlockTag : EmpireEffect {
+	Document doc("Set a particular tag as unlocked in the affected empire.");
+	Argument tag(AT_UnlockTag, doc="The unlock tag to unlock. Unlock tags can be named any arbitrary thing, and will be created as specified. Use the same tag value in any RequireUnlockTag() or similar hooks that check for it.");
+
+#section server
+	void enable(Empire& owner, any@ data) const override {
+		owner.setTagUnlocked(tag.integer, true);
+	}
+#section all
+};

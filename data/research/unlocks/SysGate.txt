@@ -4,6 +4,8 @@ Technology: SysGateModule
 		[color=#aaa][i]Unlocks the Gate subsystem.[/i][/color]
 
 		[bbloc=#S_GATE_MODULE_DESC/]
+
+		[color=#aaa][i]A vote will start upon researching this that will unlock Gates for all empires if it passes.[/i][/color]
 	>>
 	Class: Unlock
 
@@ -16,4 +18,7 @@ Technology: SysGateModule
 	UnlockSubsystem(GateModule)
 	SkipOnUnlockedSubsystem(GateModule)
 
+	StartVote(GateResearch)
+	NotifyAll(Gate Discovery, Description = $1 has researched Gates, Icon = GuiOrbitalIcons::1)
+	NotifyOwner(Gate Discovery, Description = $1 has researched Gates, Icon = GuiOrbitalIcons::1)
 	SecondaryFTLCost(1000)

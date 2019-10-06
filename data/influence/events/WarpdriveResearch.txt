@@ -1,0 +1,23 @@
+Vote: WarpdriveResearch
+	Name: #WARPDRIVE_RESEARCH
+	Description: #WARPDRIVE_RESEARCH_DESC
+
+	Color: #76d0de
+	Icon: Jumpdrive * ccaaff
+
+	AddStartWeight(-2)
+
+
+
+
+	Target: empire = Empire
+	AI: BadFor(empire)
+	AI: GoodForNot(empire, 1.5)
+	CreateEffect(pass, WarpdriveResearch)
+Effect: WarpdriveResearch
+	Name: #WARPDRIVE_RESEARCH
+	Description: #WARPDRIVE_RESEARCH_OBTAINED_DESC
+	Dismissable: False
+	Icon: Jumpdrive * ccaaff
+	Color: #76d0de
+	OnAllEmpires(CE_biome_hooks::UnlockSubsystem(Warpdrive))
