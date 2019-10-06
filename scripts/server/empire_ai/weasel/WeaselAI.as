@@ -32,6 +32,10 @@ import AIComponent@ createGate() from "empire_ai.weasel.ftl.Gate";
 import AIComponent@ createFling() from "empire_ai.weasel.ftl.Fling";
 import AIComponent@ createSlipstream() from "empire_ai.weasel.ftl.Slipstream";
 import AIComponent@ createJumpdrive() from "empire_ai.weasel.ftl.Jumpdrive";
+// [[ MODIFY BASE GAME START ]]
+// TODO: Always use generic FTL AI once full support
+import AIComponent@ createFTLGeneric() from "empire_ai.weasel.ftl.generic";
+// [[ MODIFY BASE GAME END ]]
 
 import AIComponent@ createVerdant() from "empire_ai.weasel.race.Verdant";
 import AIComponent@ createMechanoid() from "empire_ai.weasel.race.Mechanoid";
@@ -420,6 +424,8 @@ final class AI : AIController, Savable {
 		// [[ MODIFY BASE GAME END ]]
 
 		//Make FTL component
+		// [[ MODIFY BASE GAME START ]]
+		// TODO make always FTLGeneric once have complete support
 		if(empire.hasTrait(getTraitID("Hyperdrive")))
 			@ftl = add(createHyperdrive());
 		else if(empire.hasTrait(getTraitID("Gate")))
@@ -430,6 +436,9 @@ final class AI : AIController, Savable {
 			@ftl = add(createSlipstream());
 		else if(empire.hasTrait(getTraitID("Jumpdrive")))
 			@ftl = add(createJumpdrive());
+		else if (empire.hasTrait(getTraitID("FlingGate")))
+			@ftl = add(createFTLGeneric());
+		// [[ MODIFY BASE GAME END ]]
 
 		//Make racial component
 		if(empire.hasTrait(getTraitID("Verdant")))
