@@ -1,6 +1,10 @@
 Resource: PrimitiveLife
 	Name: Primitive Life
-	Description: Primitive life on this planet provides valuable insights into our origins
+	Description: <<
+		Primitive life on this planet provides valuable insights into our origins
+
+		[color=#ff7070][b]Cannot be exported.[/b][/color]
+	>>
 	Native Biome: Oceanic
 
 	Icon: VoteIcons::5
@@ -11,3 +15,4 @@ Resource: PrimitiveLife
 	Exportable: False
 	Pressure: 3 Research
 	Affinity: Research
+	Display Weight: 3

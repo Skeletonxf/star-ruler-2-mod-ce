@@ -8,7 +8,7 @@ Resource: NativeFood
 
 	Icon: ConditionIcons::11 * 1133ff
 	Small Icon: ConditionIcons::11 * 1133ff
-	Display Weight: 10
+	Display Weight: 5
 
 	Level: 1
 	Artificial: True

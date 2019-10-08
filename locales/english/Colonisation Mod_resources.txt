@@ -1,5 +1,4 @@
 WATER: Water
 VOLATILE_GASES: Volatile Gases
-VOLATILE_GASES_DESC: Volatile gases
 EXPLOSIVE_GASES: Explosive Gases
-EXPLOSIVE_GASES_DESC: Explosive gases
+HEAVY_GASES: Heavy Gases

@@ -12,3 +12,4 @@ Resource: ExposedCore
 	Affinity: Energy
 	Pressure: 1 Labor
 	Pressure: 1 Defense
+	Display Weight: -1
