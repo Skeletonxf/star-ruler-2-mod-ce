@@ -25,8 +25,7 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
   - PLANNED AI code to use the new subsystems (Oko AI already uses a new premade design O.o)
 - PLANNED
   - Colonisation ships similar to Motherships for other races
-  - Fixes for several bugs that have been introduced by new features
-    - Star children population growth bugs
+  - Fixes for bugs that have been introduced by new features
     - Conditions mistakenly appearing on post map generated planets
   - Form traits such as Aquatic
   - Stations that can hold population
