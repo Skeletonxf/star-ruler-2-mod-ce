@@ -11,6 +11,11 @@ import ai.consider;
 from ai.buildings import Buildings, BuildingAI, BuildingUse;
 from ai.resources import AIResources, ResourceAI;
 
+// [[ MODIFY BASE GAME START ]]
+from statuses import getStatusID;
+from traits import getTraitID;
+// [[ MODIFY BASE GAME END ]]
+
 interface RaceDevelopment {
 	bool shouldBeFocus(Planet& pl, const ResourceType@ resource);
 };
@@ -100,6 +105,9 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	Resources@ resources;
 	Colonization@ colonization;
 	Systems@ systems;
+	// [[ MODIFY BASE GAME START ]]
+	Budget@ budget;
+	// [[ MODIFY BASE GAME END ]]
 
 	array<DevelopmentFocus@> focuses;
 	array<ExportData@> managedPressure;
@@ -117,12 +125,22 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	bool buildBuildings = true;
 	bool colonizeResources = true;
 
+	// [[ MODIFY BASE GAME START ]]
+	uint nativeLifeStatus = 0;
+	const ConstructionType@ uplift_planet;
+	const ConstructionType@ genocide_planet;
+	bool no_uplift = false;
+	// [[ MODIFY BASE GAME END ]]
+
 	void create() {
 		@planets = cast<Planets>(ai.planets);
 		@resources = cast<Resources>(ai.resources);
 		@colonization = cast<Colonization>(ai.colonization);
 		@systems = cast<Systems>(ai.systems);
 		@race = cast<RaceDevelopment>(ai.race);
+		// [[ MODIFY BASE GAME START ]]
+		@budget = cast<Budget>(ai.budget);
+		// [[ MODIFY BASE GAME END ]]
 
 		//Register specialized building types
 		for(uint i = 0, cnt = getBuildingTypeCount(); i < cnt; ++i) {
@@ -133,6 +151,14 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 					hook.register(this, type);
 			}
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		// cache lookups
+		nativeLifeStatus = getStatusID("NativeLife");
+		@uplift_planet = getConstructionType("SharePlanet");
+		@genocide_planet = getConstructionType("TakePlanet");
+		no_uplift = ai.empire.hasTrait(getTraitID("Ancient"));
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	Empire@ get_empire() {
@@ -718,6 +744,43 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 		if(planets.planets.length != 0) {
 			chkInd = (chkInd+1) % planets.planets.length;
 			auto@ plAI = planets.planets[chkInd];
+
+			// [[ MODIFY BASE GAME START ]]
+			// handle native life status on planets
+			if (plAI.obj.hasStatusEffect(nativeLifeStatus)) {
+				if ((!planets.isConstructing(plAI.obj, uplift_planet))
+						&& (!planets.isConstructing(plAI.obj, genocide_planet))) {
+					// check if we can afford to uplift this planet
+					// Uplift costs 800k, 5 influence, 500 energy
+					// 500 energy is pretty cheap to save up for so isn't
+					// factored in here for evaluating
+					if (!no_uplift && ai.empire.Influence >= 8 && budget.canSpend(BT_Development, 800)) {
+						if (log) {
+							ai.print("found native life planet to uplift");
+						}
+						planets.requestConstruction(
+							plAI, plAI.obj, uplift_planet, priority=1, expire=gameTime + 600, moneyType=BT_Development);
+							auto@ focus = addFocus(plAI);
+							focus.targetLevel = 3;
+						// the existing development code will handle levelling the planet up further
+						// as it will see a tier 2 resource planet (and hopefully see that it
+						// just needs food and water to reach level 3?)
+						// from testing the AI is capable of providing water/food to these planets
+						// and will also sometimes take them to level 4 so they must be recognised
+						// correctly
+					} else {
+						if (log) {
+							ai.print("cant afford uplift, taking over planet");
+						}
+						// this is high priority because until the NativeLife status is removed the
+						// AI may think it can use this planet as an export and get very confused or
+						// cripple its resource chains which would be very bad.
+						planets.requestConstruction(
+							plAI, plAI.obj, genocide_planet, priority=3, expire=gameTime + 600, moneyType=BT_Development);
+					}
+				}
+			}
+			// [[ MODIFY BASE GAME END ]]
 
 			if(plAI.resources.length != 0) {
 				auto@ res = plAI.resources[0];
