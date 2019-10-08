@@ -3,12 +3,12 @@ Resource: HeavyGases
 	Description: Heavy gases
 	Native Biome: Atmosphere
 
-	Icon: Gases
-	Small Icon: Gases
+	Icon: Gases1
+	Small Icon: Gases1
 
 	Level: 1
 	Affinity: Energy
 
 
-	Pressure: 3 Defense
+	Pressure: 3 Energy
 	Frequency: 0

@@ -42,7 +42,7 @@ int unpackedStatus = -1;
 // Hyperdrive data
 from orders import OrderType;
 
-const double HYPERDRIVE_REJUMP_MIN_DIST = 8000.0;
+const double HYPERDRIVE_REJUMP_MIN_DIST = 8000.0; // TODO handle rejumps
 const double HYPERDRIVE_STORAGE_AIM_DISTANCE = 40000;
 
 void init() {
@@ -615,7 +615,7 @@ class FTLGeneric : FTL {
 			// check the fling cost for this combat ship
 			highestCost = max(highestCost, double(flingCost(flAI.obj, vec3d())));
 			// check the Hyperdrive cost for this combat ship
-			vec3d toPosition = flAI.obj.position + vec3d(0, 0, STORAGE_AIM_DISTANCE);
+			vec3d toPosition = flAI.obj.position + vec3d(0, 0, HYPERDRIVE_STORAGE_AIM_DISTANCE);
 			highestCost = max(highestCost, double(hyperdriveCost(flAI.obj, toPosition)));
 		}
 		development.aimFTLStorage = highestCost / (1.0 - ai.behavior.ftlReservePctCritical - ai.behavior.ftlReservePctNormal);

@@ -1,6 +1,14 @@
-Material: Gases
+Material: Gases1
 	Inherit: Image2D
-	Texture: data/images/gases.png
+	Texture: data/images/gases-1.png
+
+Material: Gases2
+	Inherit: Image2D
+	Texture: data/images/gases-2.png
+
+Material: Gases3
+	Inherit: Image2D
+	Texture: data/images/gases-3.png
 
 Material: Subsystem1
 	Alpha: True

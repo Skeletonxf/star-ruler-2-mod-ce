@@ -352,7 +352,14 @@ class MakePlanet : MapHook {
 		// [[ MODIFY BASE GAME START ]]
 		// set resources for gas giants seperately
 		if (gas.boolean) {
-			@resource = getResource("HeavyGases");
+			int select_resource = randomi(0, 8);
+			if (select_resource < 3) {
+				@resource = getResource("HeavyGases");
+			} else if (select_resource < 6) {
+				@resource = getResource("VolatileGases");
+			} else {
+				@resource = getResource("ExplosiveGases");
+			}
 		}
 		// [[ MODIFY BASE GAME END ]]
 		if(resource !is null)

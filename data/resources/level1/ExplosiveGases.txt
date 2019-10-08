@@ -1,0 +1,16 @@
+Resource: ExplosiveGases
+	Name: #EXPLOSIVE_GASES
+	Description: #EXPLOSIVE_GASES_DESC
+	Native Biome: Atmosphere
+
+	Icon: Gases3
+	Small Icon: Gases3
+
+	Level: 1
+	Affinity: Defense
+
+
+	Pressure: 2 Defense
+	Frequency: 0
+	Pressure: 1 Money
+	Pressure: 1 Energy

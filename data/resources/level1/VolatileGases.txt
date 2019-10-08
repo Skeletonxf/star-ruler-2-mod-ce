@@ -1,0 +1,14 @@
+Resource: VolatileGases
+	Name: #VOLATILE_GASES
+	Description: #VOLATILE_GASES_DESC
+	Native Biome: Atmosphere
+
+	Icon: Gases2
+	Small Icon: Gases2
+
+	Level: 1
+	Affinity: Defense
+
+
+	Pressure: 2 Defense
+	Frequency: 0
