@@ -6,6 +6,7 @@ Status: StarHabitats
 
 
 
+	AbandonOnDisableIfSameOrigin()
 	IfNotHaveStatus(Uplift, IfNotHaveStatus(ArtificialPlanetoid, IfNotHaveStatus(Ringworld, AddStatus(StarHabitatsNoPlanetUseSingle))))
 	RepeatStacks(IfNotHaveStatus(Uplift, IfNotHaveStatus(ArtificialPlanetoid, IfNotHaveStatus(Ringworld, AddStatus(StarHabitatsNoPlanetUse)))))
 	ForbidLaborExport()

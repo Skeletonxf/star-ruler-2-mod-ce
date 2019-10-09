@@ -4,7 +4,7 @@ Status: StarHabitatsNoPlanetUse
 	Name: Planet not being used
 	Icon: ResourceIcon::8
 
-	AbandonOnDisableIfSameOrigin()
+	
 	ForcePopulationToStacks()
 
 
