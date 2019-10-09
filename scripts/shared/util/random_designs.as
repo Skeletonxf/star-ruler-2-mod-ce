@@ -81,6 +81,10 @@ tidy class Designer {
 
 	Tag@ primaryArmor;
 
+	// [[ MODIFY BASE GAME START ]]
+	bool favorJumpdriveOverHyperdrive = false;
+	// [[ MODIFY BASE GAME END ]]
+
 	Designer(uint type, int size, Empire@ emp, const string& className = "Combat", bool compose = true) {
 		@this.owner = emp;
 		this.type = DesignType(type);
@@ -90,6 +94,10 @@ tidy class Designer {
 
 		gridSize = vec2u(getDesignGridSize(hulltag, size));
 		center = vec2u(gridSize.x / 2, gridSize.y / 2 - 1);
+
+		// [[ MODIFY BASE GAME START ]]
+		favorJumpdriveOverHyperdrive = emp.hasTrait(getTraitID("Extragalactic"));
+		// [[ MODIFY BASE GAME END ]]
 
 		switch(type) {
 			case DT_Support:
@@ -174,8 +182,11 @@ tidy class Designer {
 		//Secondary modules
 		composition.insertLast(Chance(0.5, Internal(tag("SecondaryDefense"), 0.075, 0.15)));
 
-		if(tryFTL)
-			composition.insertLast(Internal(tag("Hyperengine"), 0.10, 0.18));
+		// [[ MODIFY BASE GAME START ]]
+		if (tryFTL) {
+			composition.insertLast(Internal(hyperengine(), 0.10, 0.18));
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		if(supply)
 			composition.insertLast(Filler(subsystem("SupplyModule"), 0.09, 0.13));
@@ -259,7 +270,9 @@ tidy class Designer {
 
 		composition.insertLast(Exhaust(tag("Engine") & tag("GivesThrust"), 0.80, 0.80));
 		composition.insertLast(Internal(tag("ControlCore"), 0.05, 0.05));
-		composition.insertLast(Internal(tag("Hyperengine"), 0.50, 0.50));
+		// [[ MODIFY BASE GAME START ]]
+		composition.insertLast(Internal(hyperengine(), 0.50, 0.50));
+		// [[ MODIFY BASE GAME END ]]
 
 		//Shrine if needed
 		if(owner.hasTrait(getTraitID("Devout")))
@@ -279,6 +292,15 @@ tidy class Designer {
 	SubsystemFilter@ subsystem(const string& value) {
 		return SubsystemFilter(getSubsystemDef(value));
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	/**
+	 * Filters to the favoured hyperengine if both are unlocked.
+	 */
+	HyperengineFilter@ hyperengine() {
+		return HyperengineFilter(this, favorJumpdriveOverHyperdrive);
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	vec2u flip(const vec2u& p) {
 		if(p.x % 2 == center.x % 2)
@@ -539,6 +561,11 @@ tidy class Designer {
 		return null;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	/**
+	 * It seems like this is where new designs are actually made from.
+	 */
+	// [[ MODIFY BASE GAME END ]]
 	const Design@ _design() {
 		//Clear old stuffs
 		clear();
@@ -1331,6 +1358,54 @@ tidy class SubsystemFilter : Filter {
 		return type;
 	}
 };
+
+// [[ MODIFY BASE GAME START ]]
+const SubsystemDef@ hyperdriveSubsystem = getSubsystemDef("Hyperdrive");
+const SubsystemDef@ jumpdriveSubsystem = getSubsystemDef("Jumpdrive");
+
+/**
+ * A filter for choosing the most suitable Hyperengine.
+ *
+ * Hardcoded to Jumpdrive/Hyperdrive and won't automatically support
+ * new hyperengines :(
+ */
+tidy class HyperengineFilter : Filter {
+	const SubsystemDef@ type;
+	Empire@ owner;
+
+	HyperengineFilter(Designer& dsg, bool favorJumpdriveOverHyperdrive) {
+		@owner = dsg.owner;
+		@this.type = hyperdriveSubsystem;
+
+		if (owner.isUnlocked(hyperdriveSubsystem) && owner.isUnlocked(jumpdriveSubsystem)) {
+			// choose favoured hyperengine if has both unlocked
+			if (favorJumpdriveOverHyperdrive) {
+				@this.type = jumpdriveSubsystem;
+			} else {
+				@this.type = hyperdriveSubsystem;
+			}
+		} else {
+			if (owner.isUnlocked(hyperdriveSubsystem)) {
+				@this.type = hyperdriveSubsystem;
+			}
+			if (owner.isUnlocked(jumpdriveSubsystem)) {
+				@this.type = jumpdriveSubsystem;
+			}
+		}
+	}
+
+	bool filter(const SubsystemDef& def) const {
+		return def is type && owner.isUnlocked(def);
+	}
+
+	const SubsystemDef@ choose() {
+		if (!owner.isUnlocked(type)) {
+			return null;
+		}
+		return type;
+	}
+};
+// [[ MODIFY BASE GAME END ]]
 
 tidy class Distributor {
 	double frequency = 1.0;

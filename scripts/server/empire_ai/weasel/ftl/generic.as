@@ -18,6 +18,11 @@ import empire_ai.weasel.Fleets;
 import ftl;
 from orbitals import getOrbitalModuleID;
 
+// Jumpdrive data
+import system_flags;
+import regions.regions;
+import systems;
+
 const double FLING_MIN_DISTANCE_STAGE = 10000;
 const double FLING_MIN_DISTANCE_DEVELOP = 20000;
 const double FLING_MIN_TIMER = 3.0 * 60.0;
@@ -102,6 +107,7 @@ enum FTLTravelMethod {
 	TRAVEL_SUBLIGHT = 1,
 	TRAVEL_FLING = 2,
 	TRAVEL_HYPERDRIVE = 3,
+	TRAVEL_JUMPDRIVE = 4,
 };
 
 class FTLGeneric : FTL {
@@ -128,6 +134,10 @@ class FTLGeneric : FTL {
 	BuildStation@ buildGate;
 	double nextBuildTryGate = 15.0 * 60.0;
 
+	// Jumpdrive data
+	int safetyFlag = -1;
+	array<Region@> safeRegions;
+
 	void create() override {
 		@military = cast<Military>(ai.military);
 		@designs = cast<Designs>(ai.designs);
@@ -137,6 +147,7 @@ class FTLGeneric : FTL {
 		@budget = cast<Budget>(ai.budget);
 		@fleets = cast<Fleets>(ai.fleets);
 		/* @movement = cast<Movement>(ai.movement); */
+		safetyFlag = getSystemFlag("JumpdriveSafety");
 	}
 
 	void save(SaveFile& file) override {
@@ -171,6 +182,13 @@ class FTLGeneric : FTL {
 			file << cnt;
 			for(uint i = 0; i < cnt; ++i)
 			file << unassignedGate[i];
+		}
+		{
+			// Jumpdrive data
+			uint cnt = safeRegions.length;
+			file << cnt;
+			for(uint i = 0; i < cnt; ++i)
+				file << safeRegions[i];
 		}
 	}
 
@@ -218,6 +236,14 @@ class FTLGeneric : FTL {
 				if(obj !is null)
 				unassignedGate.insertLast(obj);
 			}
+		}
+		{
+			// Jumpdrive data
+			uint cnt = 0;
+			file >> cnt;
+			safeRegions.length = cnt;
+			for(uint i = 0; i < cnt; ++i)
+				file >> safeRegions[i];
 		}
 	}
 
@@ -418,7 +444,7 @@ class FTLGeneric : FTL {
 		}
 	}
 
-	// Hyperdrive methods
+	// Hyperengine methods
 	double getHyperdriveETA(Object& obj, const vec3d& position) {
 		double charge = HYPERDRIVE_CHARGE_TIME;
 		if(obj.owner.HyperdriveNeedCharge == 0)
@@ -459,8 +485,40 @@ class FTLGeneric : FTL {
 		}
 	}
 
+	double getJumpdriveETA(Object& obj, const vec3d& fromPosition, const vec3d& toPosition) {
+		double charge = JUMPDRIVE_CHARGE_TIME;
+		double distance = fromPosition.distanceTo(toPosition);
+
+		// work out if this jump is safe
+		double maxRange = jumpdriveRange(obj);
+		bool isSafe = false;
+		Region@ reg = getRegion(toPosition);
+		if (reg !is null) {
+			isSafe = reg.getSystemFlag(ai.empire, safetyFlag);
+		}
+
+		if (distance > maxRange && !isSafe) {
+			// jumping will damage the ship
+			return INFINITY;
+		}
+
+		return charge;
+	}
+
+	uint sysChk = 0;
+	void start() {
+		for(uint i = 0, cnt = systemCount; i < cnt; ++i) {
+			Region@ reg = getSystem(i).object;
+			if(reg.getSystemFlag(ai.empire, safetyFlag))
+				safeRegions.insertLast(reg);
+		}
+	}
+
 	/*
 	 * Provide logic for when to use FTL instead of sublight
+	 * TODO: Using FTL/sublight to reach fling beacon currently out of range
+	 * TODO: Multi jump hyperdrive commands (check if multiple jumps is
+	 * cheaper than one)
 	 */
 	uint order(MoveOrder& ord) override {
 		// Find the position to travel to
@@ -469,16 +527,19 @@ class FTLGeneric : FTL {
 			return F_Pass;
 
 		bool ableToHyperdrive = canHyperdrive(ord.obj);
+		bool ableToJumpdrive = canJumpdrive(ord.obj);
 		bool ableToFling = canFling(ord.obj);
 
-		if (!ableToFling && !ableToHyperdrive) {
+		if (!ableToFling && !ableToHyperdrive && !ableToJumpdrive) {
 			return F_Pass;
 		}
 
-		double flingETA = INFINITY;
-		double flingFTLCost = INFINITY;
 		double hyperdriveETA = INFINITY;
 		double hyperdriveFTLCost = INFINITY;
+		double jumpdriveETA = INFINITY;
+		double jumpdriveFTLCost = INFINITY;
+		double flingETA = INFINITY;
+		double flingFTLCost = INFINITY;
 		double sublightETA = INFINITY;
 		double sublightFTLCost = 0;
 
@@ -486,10 +547,44 @@ class FTLGeneric : FTL {
 			hyperdriveETA = getHyperdriveETA(ord.obj, toPosition);
 			hyperdriveFTLCost = hyperdriveCost(ord.obj, toPosition);
 		}
+
+		vec3d doubleHopPosition;
+		bool makeDoubleHop = false;
+		if (ableToJumpdrive) {
+			jumpdriveETA = getJumpdriveETA(ord.obj, ord.obj.position, toPosition);
+			jumpdriveFTLCost = jumpdriveCost(ord.obj, toPosition);
+			// consider doing a hop to a safe region first
+			// with the jumpdrive to reach the destination
+			if (jumpdriveETA == INFINITY) {
+				double bestHop = INFINITY;
+				Region@ hopRegion;
+				vec3d doubleHopPosition;
+				for (uint i = 0, cnt = safeRegions.length; i < cnt; ++i) {
+					if (!safeRegions[i].getSystemFlag(ai.empire, safetyFlag)) {
+						continue;
+					}
+					vec3d hopPos = safeRegions[i].position;
+					hopPos = hopPos + (ord.obj.position -  hopPos).normalized(safeRegions[i].radius * 0.85);
+					double d = hopPos.distanceTo(toPosition);
+					if (d < bestHop) {
+						bestHop = d;
+						@hopRegion = safeRegions[i];
+						doubleHopPosition = hopPos;
+					}
+				}
+				jumpdriveETA = JUMPDRIVE_CHARGE_TIME;
+				jumpdriveETA += getJumpdriveETA(ord.obj, doubleHopPosition, toPosition);
+				jumpdriveFTLCost = jumpdriveCost(ord.obj, ord.obj.position, doubleHopPosition);
+				jumpdriveFTLCost += jumpdriveCost(ord.obj, doubleHopPosition, toPosition);
+				makeDoubleHop = true;
+			}
+		}
+
 		if (ableToFling) {
 			flingETA = getFlingETA(ord.obj, toPosition);
 			flingFTLCost = flingCost(ord.obj, toPosition);
 		}
+
 		sublightETA = getSublightETA(ord.obj, toPosition);
 
 		// Reserve some FTL if we're saving our FTL for a new beacon
@@ -504,11 +599,14 @@ class FTLGeneric : FTL {
 		}
 
 		// set eta to infinity if unable to afford cost
-		if (flingFTLCost > availableFTL) {
-			flingETA = INFINITY;
-		}
 		if (hyperdriveFTLCost > availableFTL) {
 			hyperdriveETA = INFINITY;
+		}
+		if (jumpdriveFTLCost > availableFTL) {
+			jumpdriveETA = INFINITY;
+		}
+		if (flingFTLCost > availableFTL) {
+			flingETA = INFINITY;
 		}
 
 		if (flingFTLCost == INFINITY && hyperdriveFTLCost == INFINITY) {
@@ -526,6 +624,11 @@ class FTLGeneric : FTL {
 				travelETA = hyperdriveETA;
 				travelCost = hyperdriveFTLCost;
 			}
+			if (jumpdriveETA < travelETA) {
+				travelMethod = TRAVEL_JUMPDRIVE;
+				travelETA = jumpdriveETA;
+				travelCost = jumpdriveFTLCost;
+			}
 			if (flingETA < travelETA) {
 				travelMethod = TRAVEL_FLING;
 				travelETA = flingETA;
@@ -539,6 +642,19 @@ class FTLGeneric : FTL {
 				travelMethod = TRAVEL_HYPERDRIVE;
 				travelETA = hyperdriveETA;
 				travelCost = hyperdriveFTLCost;
+			}
+			if ((jumpdriveETA * 3) < sublightETA) {
+				if (travelMethod == TRAVEL_SUBLIGHT) {
+					travelMethod = TRAVEL_JUMPDRIVE;
+					travelETA = jumpdriveETA;
+					travelCost = jumpdriveFTLCost;
+				} else {
+					if (jumpdriveFTLCost < travelCost) {
+						travelMethod = TRAVEL_JUMPDRIVE;
+						travelETA = jumpdriveETA;
+						travelCost = jumpdriveFTLCost;
+					}
+				}
 			}
 			if ((flingETA * 3) < sublightETA) {
 				if (travelMethod == TRAVEL_SUBLIGHT) {
@@ -564,12 +680,22 @@ class FTLGeneric : FTL {
 			return F_Continue;
 		}
 
+		if (travelMethod == TRAVEL_JUMPDRIVE) {
+			if (makeDoubleHop) {
+				ai.print("Making double hop");
+				ord.obj.addJumpdriveOrder(doubleHopPosition);
+				ord.obj.addJumpdriveOrder(toPosition, append=true);
+				return F_Continue;
+			} else {
+				ord.obj.addJumpdriveOrder(toPosition);
+				return F_Continue;
+			}
+		}
+
 		if (travelMethod == TRAVEL_FLING) {
 			//Make sure we're in range of a beacon
 			Object@ beacon = getClosestFling(ord.obj.position);
 			if (beacon is null || beacon.position.distanceTo(ord.obj.position) > FLING_BEACON_RANGE) {
-				// TODO: Work out how to handle pathing into fling beacon
-				// range without causing infinite recursion
 				return F_Pass;
 			}
 
@@ -596,6 +722,8 @@ class FTLGeneric : FTL {
 
 		lookToBuildNewOrbitals();
 
+		checkSafeRegions();
+
 		//Scuttle anything unused if we don't need beacons in those regions
 		for(uint i = 0, cnt = unusedFling.length; i < cnt; ++i) {
 			if(getFling(unusedFling[i].region) is null && unusedFling[i].isOrbital) {
@@ -615,8 +743,15 @@ class FTLGeneric : FTL {
 			// check the fling cost for this combat ship
 			highestCost = max(highestCost, double(flingCost(flAI.obj, vec3d())));
 			// check the Hyperdrive cost for this combat ship
-			vec3d toPosition = flAI.obj.position + vec3d(0, 0, HYPERDRIVE_STORAGE_AIM_DISTANCE);
-			highestCost = max(highestCost, double(hyperdriveCost(flAI.obj, toPosition)));
+			if (canHyperdrive(flAI.obj)) {
+				vec3d toPosition = flAI.obj.position + vec3d(0, 0, HYPERDRIVE_STORAGE_AIM_DISTANCE);
+				highestCost = max(highestCost, double(hyperdriveCost(flAI.obj, toPosition)));
+			}
+			if (canJumpdrive(flAI.obj)) {
+				double dist = jumpdriveRange(flAI.obj);
+				vec3d toPosition = flAI.obj.position + vec3d(0, 0, dist);
+				highestCost = max(highestCost, double(jumpdriveCost(flAI.obj, toPosition)));
+			}
 		}
 		development.aimFTLStorage = highestCost / (1.0 - ai.behavior.ftlReservePctCritical - ai.behavior.ftlReservePctNormal);
 
@@ -1043,6 +1178,26 @@ class FTLGeneric : FTL {
 					else
 						@buildGate = construction.buildStation(gateDesign, military.getStationPosition(gt.region));
 				}
+			}
+		}
+	}
+
+	void checkSafeRegions() {
+		//Disable systems that are no longer safe
+		for(uint i = 0, cnt = safeRegions.length; i < cnt; ++i) {
+			if(!safeRegions[i].getSystemFlag(ai.empire, safetyFlag)) {
+				safeRegions.removeAt(i);
+				--i; --cnt;
+			}
+		}
+
+		//Try to find regions that are safe for us
+		{
+			sysChk = (sysChk+1) % systemCount;
+			auto@ reg = getSystem(sysChk).object;
+			if(reg.getSystemFlag(ai.empire, safetyFlag)) {
+				if(safeRegions.find(reg) == -1)
+					safeRegions.insertLast(reg);
 			}
 		}
 	}

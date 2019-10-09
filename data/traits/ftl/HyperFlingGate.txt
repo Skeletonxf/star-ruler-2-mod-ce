@@ -21,6 +21,7 @@ Trait: HyperFlingGate
 	IfHaveTrait(Devout, LoadDesigns(devout/default))
 	IfHaveTrait(Devout, LoadDesigns(devout/hyperdrive))
 
+	UnlockSubsystem(Jumpdrive)
 	IfHaveTrait(Ancient, LoadDesigns(ancient/gate))
 	UnlockTag(Fling)
 	SpawnOrbital(FlingCore, Free = True)
