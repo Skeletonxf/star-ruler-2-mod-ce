@@ -14,11 +14,11 @@ Subsystem: SolarPanel
 	Power := 7 * Size
 	SolarPower := 7 * Size
 
-	SolarEfficiencyLoss := 0.5
-	SolarEfficiencyMinBoost := 0.0
-	SolarEfficiencyMaxBoost := 1.0
+	SolarEfficiencyLoss := 0.9
+	SolarEfficiencyMinBoost := -0.1
+	SolarEfficiencyMaxBoost := 0.0
 
-	Hook: SolarEfficiency(SolarEfficiencyLoss, SolarEfficiencyMinBoost, SolarEfficiencyMaxBoost, True)
+	Hook: SolarEfficiency(SolarEfficiencyLoss, SolarEfficiencyMinBoost, SolarEfficiencyMaxBoost, Power Factor = True, Temperature Max = 15000)
 
 	Hex.Resistance := 0.01
 	Hex.HP := 10 * HexSize

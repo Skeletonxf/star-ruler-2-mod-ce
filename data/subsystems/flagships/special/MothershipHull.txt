@@ -25,7 +25,6 @@ Subsystem: MothershipHull
 	SupportCapacity := 128
 	Hex.MaintainCost := 0
 
-	Hook: AddPermanentStatus(Mothership)
 	Hook: AddCargoStorage(100000)
 	Hook: ModSupplyConsumeFactor(-1.0)
 
@@ -33,6 +32,7 @@ Subsystem: MothershipHull
 	ShipMaxPopulation := 4 + floor(0.008 * max(ShipSize - 500, 0))
 	ShipMaxPopulationIncome := ShipMaxPopulation * 15
 	AddPostModifier: AddMaintainCost(max((1+ShipMaxPopulationIncome)-HexSum.MaintainCost, 0))
+	Hook: AddStatus(Mothership)
 	Hook: LimitStatusStacks(MothershipPopulation, Sum.ShipMaxPopulation)
 	Assert: ShipSize >= 500
 		Message: #ERROR_MIN_SIZE:$1:500
