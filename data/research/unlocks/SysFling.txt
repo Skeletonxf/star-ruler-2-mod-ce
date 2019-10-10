@@ -18,8 +18,6 @@ Technology: SysFling
 
 	UnlockTag(HasFling)
 	ModAttribute(HasFling, Add, 1)
-	StartVote(FlingResearch)
-	NotifyAll(Fling Beacon Discovery, Description = $1 has researched Fling Beacons, Icon = GuiOrbitalIcons::2)
-	NotifyOwner(Fling Beacon Discovery, Description = $1 has researched Fling Beacons, Icon = GuiOrbitalIcons::2)
+	StartVote(FlingResearch, Start Ownerless = True)
 	SkipOnUnlockedTag(HasFling)
 	SecondaryFTLCost(1000)

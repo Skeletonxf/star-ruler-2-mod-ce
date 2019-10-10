@@ -10,9 +10,7 @@ Vote: HyperdriveResearch
 
 
 
-	Target: empire = Empire
-	AI: BadFor(empire)
-	AI: GoodForNot(empire, 1.5)
+	AI: BenefitRace()
 	CreateEffect(pass, HyperdriveResearch)
 Effect: HyperdriveResearch
 	Name: #HYPERDRIVE_RESEARCH

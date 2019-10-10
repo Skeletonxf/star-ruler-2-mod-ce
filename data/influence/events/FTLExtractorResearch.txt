@@ -1,0 +1,20 @@
+Vote: FTLExtractorResearch
+	Name: #FTL_EXTRACTOR_RESEARCH
+	Description: #FTL_EXTRACTOR_RESEARCH_DESC
+
+	Color: #76d0de
+	Icon: FtlIcon
+
+
+
+
+
+	AI: BenefitRace()
+	CreateEffect(pass, FTLExtractorResearch)
+Effect: FTLExtractorResearch
+	Name: #FTL_EXTRACTOR_RESEARCH
+	Description: #FTL_EXTRACTOR_RESEARCH_OBTAINED_DESC
+	Dismissable: False
+	Icon: FtlIcon
+	Color: #76d0de
+	OnAllEmpires(CE_biome_hooks::UnlockTag(HasFTLExtractor))

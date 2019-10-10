@@ -18,7 +18,5 @@ Technology: SysWarpdrive
 	UnlockSubsystem(Warpdrive)
 	SkipOnUnlockedSubsystem(Warpdrive)
 
-	StartVote(WarpdriveResearch)
-	NotifyOwner(Warpdrive Discovery, Description = $1 has researched Warpdrives, Icon = Jumpdrive * ccaaff)
-	NotifyAll(Warpdrive Discovery, Description = $1 has researched Warpdrives, Icon = Jumpdrive * ccaaff)
+	StartVote(WarpdriveResearch, Start Ownerless = True)
 	SecondaryFTLCost(1000)

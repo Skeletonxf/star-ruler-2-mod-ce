@@ -1,0 +1,17 @@
+Module: FTLExtractor
+	Name: #FTL_EXTRACTOR
+	Description: #FTL_EXTRACTOR_DESC
+	Icon: OrbitalIcons::19
+	Strategic Icon: OrbitalIcons::19
+	Combat Repair: False
+	Size: 15
+	Build Cost: 300
+	Labor Cost: 10
+	Health: 700
+	Model: FTLStorage
+	Material: GenericPBR_FTLStorage
+	Maintenance: 50
+	Blurb: #FTL_EXTRACTOR_BLURB
+	RequireUnlockTag(HasFTLExtractor)
+	BreakOrbitOnFTL()
+	AddFTLIncome(0.3)

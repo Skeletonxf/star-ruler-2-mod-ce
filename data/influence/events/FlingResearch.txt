@@ -10,9 +10,7 @@ Vote: FlingResearch
 
 
 
-	Target: empire = Empire
-	AI: BadFor(empire)
-	AI: GoodForNot(empire, 1.5)
+	AI: BenefitRace()
 	CreateEffect(pass, FlingResearch)
 Effect: FlingResearch
 	Name: #FLING_RESEARCH

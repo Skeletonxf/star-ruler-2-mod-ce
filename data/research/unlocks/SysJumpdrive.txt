@@ -18,7 +18,5 @@ Technology: SysJumpdrive
 	UnlockSubsystem(Jumpdrive)
 	SkipOnUnlockedSubsystem(Jumpdrive)
 
-	StartVote(JumpdriveResearch)
-	NotifyOwner(Jumpdrive Discovery, Description = $1 has researched Jumpdrives, Icon = Jumpdrive)
-	NotifyAll(Jumpdrive Discovery, Description = $1 has researched Jumpdrives, Icon = Jumpdrive)
+	StartVote(JumpdriveResearch, Start Ownerless = True)
 	SecondaryFTLCost(1000)

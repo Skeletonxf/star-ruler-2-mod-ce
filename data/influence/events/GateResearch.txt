@@ -10,9 +10,7 @@ Vote: GateResearch
 
 
 
-	Target: empire = Empire
-	AI: BadFor(empire)
-	AI: GoodForNot(empire, 1.5)
+	AI: BenefitRace()
 	CreateEffect(pass, GateResearch)
 Effect: GateResearch
 	Name: #GATE_RESEARCH

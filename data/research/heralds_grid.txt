@@ -5,7 +5,6 @@ Grid: Heralds
 	Damage: 1,0
 	FactoryLabor: -2,-1
 	Energy: -1,1
-	ShipComputer: 1,-2
 	OrbitalConstruction: -2,-3
 	Repair: -2,3
 	ShieldGen: -2,5
@@ -33,7 +32,6 @@ Grid: Heralds
 	AntimatterGen: -3,3
 	FactoryLabor: -3,-4
 	FactoryLabor: -4,-5
-	Thrust: 2,4
 	Prosperity: -5,-1
 	Obedience: -4,-2
 	FlagHealth: 0,-2
@@ -41,10 +39,8 @@ Grid: Heralds
 	FactoryLabor: -1,0
 	Repair: 0,2
 	Health2: 0,-7
-	BoosterEngine: 1,5
 	Repair2: -1,4
 	Repair: -1,3
-	MissileRange: 1,4
 	Thrust: 3,6
 	OrbitalConstruction: -2,-6
 	HydroponicsSatellite: -3,-1
@@ -62,7 +58,6 @@ Grid: Heralds
 	Damage: 7,0
 	Damage: 8,0
 	PlanetSupport: -4,-4
-	Damage: 9,0
 	PlanetSupport: -5,-5
 	Population: -5,-3
 	ColossusHull: 2,-9
@@ -128,7 +123,6 @@ Grid: Heralds
 	FlakBattery: 6,-2
 	PulseBolt: 10,3
 	ParticleLance: 5,3
-	TroopPods: 11,1
 	FlareBomb: -6,5
 	HyperLaser: 7,-1
 	InfiniteHealth: 5,-11
@@ -143,20 +137,15 @@ Grid: Heralds
 	SolarSatellite: -4,2
 	VacuumTelescope: -3,-8
 	ConstructionBay: -3,-5
-	PlanetaryEngine: 3,5
 	FactoryLabor: -6,-10
 	SupplyStorage: -1,-11
 	Health2: 4,-10
 	NanoMesh: 7,-8
 	InfluenceHurdle: -7,0
-	MoneyHurdle: 2,5
 	Thrust2: 4,9
 	Thrust2: 4,8
 	MoneyHurdle: 3,7
 	GravityEngine: 3,9
-	MoneyHurdle: 3,10
-	EnergyHurdle: 3,11
-	GravitonCondenser: 4,12
 	InfiniteShields: 2,15
 	ShieldReg2: 2,14
 	ShieldCap2: 1,13
@@ -171,9 +160,6 @@ Grid: Heralds
 	MoneyHurdle: 5,0
 	TargetSensor: 7,3
 	HighEnergyHurdle: 10,0
-	Warhead: 12,-1
-	SelfDestruct: 12,1
-	InfiniteDamage: 13,0
 	EnergyHurdle: 0,-3
 	EnergyHurdle: 0,-6
 	InfluenceHurdle: 0,-10
@@ -194,7 +180,6 @@ Grid: Heralds
 	EnergyHurdle: 2,0
 	Defense: 6,-1
 	Damage2: 11,0
-	Damage2: 12,0
 	Range2: 7,4
 	BeamCycling: 6,5
 	ProjTracking: 6,6
@@ -293,5 +278,18 @@ Grid: Heralds
 	EnergyHurdle: -5,8
 	EnergyHurdle: -2,10
 	FTLCost: -3,7
-	LowPowerShipComputer: -1,2
 	ImpDecaySpeed: -4,-9
+	LowPowerShipComputer: 1,-2
+	OrbFTLExtractor: -1,2
+	Damage2: 9,0
+	Warhead: 11,-1
+	InfiniteDamage: 12,0
+	TroopPods: 7,-3
+	SelfDestruct: 11,1
+	BoosterEngine: 1,4
+	MissileRange: 5,6
+	Thrust: 2,5
+	MoneyHurdle: 2,4
+	PlanetaryEngine: 2,6
+	EnergyHurdle: 3,10
+	GravitonCondenser: 3,11

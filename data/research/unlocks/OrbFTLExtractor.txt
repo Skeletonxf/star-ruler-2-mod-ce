@@ -1,0 +1,22 @@
+Technology: OrbFTLExtractor
+	Name: #FTL_EXTRACTOR
+	Description: <<
+		[color=#aaa][i]Unlocks the FTL Extractor orbital.[/i][/color]
+
+		[bbloc=#FTL_EXTRACTOR_DESC/]
+
+		[color=#aaa][i]A vote will start upon researching this that will unlock FTL extractors for all empires if it passes.[/i][/color]
+	>>
+	Class: Unlock
+
+	Point Cost: 800
+	Time Cost: 120
+
+	Icon: FtlIcon
+	Color: #76d0de
+
+
+	SkipOnUnlockedTag(HasFTLExtractor)
+	UnlockTag(HasFTLExtractor)
+	StartVote(FTLExtractorResearch, Start Ownerless = True)
+	SecondaryFTLCost(500)
