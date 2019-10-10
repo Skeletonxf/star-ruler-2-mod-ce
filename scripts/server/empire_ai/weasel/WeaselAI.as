@@ -426,18 +426,11 @@ final class AI : AIController, Savable {
 		//Make FTL component
 		// [[ MODIFY BASE GAME START ]]
 		// TODO make always FTLGeneric once have complete support
-		if(empire.hasTrait(getTraitID("Hyperdrive")))
-			@ftl = add(createHyperdrive());
-		else if(empire.hasTrait(getTraitID("Gate")))
-			@ftl = add(createGate());
-		else if(empire.hasTrait(getTraitID("Fling")))
-			@ftl = add(createFling());
-		else if(empire.hasTrait(getTraitID("Slipstream")))
+		if (empire.hasTrait(getTraitID("Slipstream"))) {
 			@ftl = add(createSlipstream());
-		else if(empire.hasTrait(getTraitID("Jumpdrive")))
-			@ftl = add(createJumpdrive());
-		else if (empire.hasTrait(getTraitID("HyperFlingGate")))
+		} else {
 			@ftl = add(createFTLGeneric());
+		}
 		// [[ MODIFY BASE GAME END ]]
 
 		//Make racial component

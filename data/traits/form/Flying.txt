@@ -1,8 +1,9 @@
 Trait: Flying
 	Name: Flying
-	Description: Establish sky bases on all planets every 3 minutes, adding a small area of usable tiles.
-	Icon: ActionBarIcons::8
+	Description: Tile development rate increased by 50%. All colonised Gas Giant biomes are converted to Floating Cities, removing the tile development penalty and massively reducing the build cost and time penalties. Pressure capacity on all planets is reduced by 5.
+	Icon: Flying
 	Color: #c2fffd
-	Costs Points: 1
-	Category: Form
+	Category: Biology
+	Conflict: StarChildren
+	Conflict: Ancient
 	AddStatusOwnedPlanets(Flying)

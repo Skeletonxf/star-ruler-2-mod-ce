@@ -4,5 +4,6 @@ Trait: Celestial
 	Icon: emp_bg_purple
 	Color: #c70fff
 	Costs Points: 1
-	Category: Form
+	Category: Biology
+	Available: False
 	AddStatusOwnedPlanets(Celestial)

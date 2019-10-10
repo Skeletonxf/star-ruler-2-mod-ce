@@ -19,3 +19,7 @@ Material: Subsystem1
 Material: SolarSail
 	Inherit: Subsystem1
 	Texture: data/images/solar_sail.png
+
+Material: Flying
+	Inherit: Image2D
+	Texture: data/images/flying.png

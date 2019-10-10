@@ -1,0 +1,16 @@
+Biome: Floating
+	Name: Floating Cities
+
+	Buildable: True
+
+	Temperature: 0.2
+	Humidity: 0.3
+
+	BuildTime: 2
+	Frequency: 0
+
+	Color: #80e1ff
+	Picks: 0.5, 0.5
+	Lookup Range: 0.95
+	Description: Cities floating above atmosphere
+	BuildCost: 2

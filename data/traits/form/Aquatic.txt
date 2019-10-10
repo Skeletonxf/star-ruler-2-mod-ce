@@ -1,10 +1,10 @@
 Trait: Aquatic
 	Name: Aquatic
-	Description: Native water resources provide food, once per planet.
+	Description: #AQUATIC_TRAIT
 	Icon: ResourceIcons::0
 	Color: #1bc6ff
-	Costs Points: 1
-	Category: Form
+	Category: Biology
 	Conflict: Mechanoid
 	Conflict: Ancient
+	AddModifier(MassFactor(1.2))
 	AddStatusOwnedPlanets(Aquatic)

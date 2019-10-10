@@ -1,0 +1,14 @@
+Resource: Glass
+	Name: #GLASS
+	Description: #GLASS_DESC
+	Native Biome: Desert
+
+	Icon: ResourceIcons::27
+	Small Icon: ResourceIconsSmall::27
+
+	Level: 1
+	Rarity: Rare
+	Affinity: Influence
+
+	Pressure: 3 Energy
+	AddResource(Energy, 1)

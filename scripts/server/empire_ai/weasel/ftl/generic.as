@@ -10,8 +10,9 @@ import empire_ai.weasel.Fleets;
 
 /*
  * Holistic FTL AI that can use/understand all types of FTL rather than just one
- * TODO: Implement other 3 FTL types
- * TODO: Handle FTL types not being unlocked at game start
+ * TODO: Implement slipstreams
+ * WIP: Handle FTL types not being unlocked at game start
+ * TODO: Fling gates to target location instead of manual sublight travel
  */
 
 // Fling data
@@ -49,6 +50,11 @@ from orders import OrderType;
 
 const double HYPERDRIVE_REJUMP_MIN_DIST = 8000.0; // TODO handle rejumps
 const double HYPERDRIVE_STORAGE_AIM_DISTANCE = 40000;
+
+// Cache system defs to check things are unlocked
+const SubsystemDef@ hyperdriveSubsystem = getSubsystemDef("Hyperdrive");
+const SubsystemDef@ jumpdriveSubsystem = getSubsystemDef("Jumpdrive");
+const SubsystemDef@ gateSubsystem = getSubsystemDef("GateModule");
 
 void init() {
 	// Fling data
@@ -138,6 +144,15 @@ class FTLGeneric : FTL {
 	int safetyFlag = -1;
 	array<Region@> safeRegions;
 
+	// Tracking available FTL methods
+	// Note: This is only relevant for building, not for using each of these
+	// If we obtain additional FTL methods through non building means
+	// we can still use them without having them 'unlocked'!
+	bool hasHyperdrives = false;
+	bool hasJumpdrives = false;
+	bool hasGates = false;
+	bool hasFling = false;
+
 	void create() override {
 		@military = cast<Military>(ai.military);
 		@designs = cast<Designs>(ai.designs);
@@ -148,6 +163,8 @@ class FTLGeneric : FTL {
 		@fleets = cast<Fleets>(ai.fleets);
 		/* @movement = cast<Movement>(ai.movement); */
 		safetyFlag = getSystemFlag("JumpdriveSafety");
+
+		checkAvailableFTLMethods();
 	}
 
 	void save(SaveFile& file) override {
@@ -333,7 +350,7 @@ class FTLGeneric : FTL {
 		return false;
 	}
 
-	bool shouldHaveBeacon(Region@ reg, bool always = false) {
+	bool shouldHaveFlingBeacon(Region@ reg, bool always = false) {
 		if(military.getBase(reg) !is null)
 			return true;
 		if(development.isDevelopingIn(reg))
@@ -474,14 +491,7 @@ class FTLGeneric : FTL {
 		if (closestBeacon < FLING_BEACON_RANGE) {
 			return 15;
 		} else {
-			// TODO: Work out how to create move to fling beacon and
-			// then fling from fling beacon orders without causing
-			// infinite recursion
-			//if (closestBeacon == INFINITY) {
 			return INFINITY;
-			//}
-			//FlingRegion@ closest = getClosestFlingRegion(obj.position);
-			//return 15 + getSublightETA(obj, closest.obj.position);
 		}
 	}
 
@@ -521,6 +531,10 @@ class FTLGeneric : FTL {
 	 * cheaper than one)
 	 */
 	uint order(MoveOrder& ord) override {
+		// Note: We don't check if we have each FTL method unlocked here
+		// as if we obtain FTL methods we don't have the ability to build
+		// ourselves that doesn't stop us using them!
+
 		// Find the position to travel to
 		vec3d toPosition;
 		if(!targetPosition(ord, toPosition))
@@ -707,6 +721,8 @@ class FTLGeneric : FTL {
 	}
 
 	void focusTick(double time) override {
+		checkAvailableFTLMethods();
+
 		designGateIfNone();
 
 		manageOrbitalsList();
@@ -760,6 +776,10 @@ class FTLGeneric : FTL {
 	}
 
 	void designGateIfNone() {
+		if (!hasGates) {
+			return;
+		}
+
 		//Design a gate
 		if(gateDesign is null) {
 			@gateDesign = designs.design(DP_Gate, 128);
@@ -823,7 +843,7 @@ class FTLGeneric : FTL {
 					checkAlways = true;
 				}
 			}
-			if(!shouldHaveBeacon(reg.region, checkAlways)) {
+			if(!shouldHaveFlingBeacon(reg.region, checkAlways)) {
 				removeFling(trackedFling[i]);
 				--i; --cnt;
 			}
@@ -1081,15 +1101,20 @@ class FTLGeneric : FTL {
 		if(buildFling !is null) {
 			if(buildFling.completed) {
 				@buildFling = null;
-				// try to make a new gate after a fling beacon
-				nextBuildTryGate = gameTime + 60.0;
-				nextBuildTryFling = gameTime + 120.0;
+				if (hasGates) {
+					// try to make a new gate after a fling beacon
+					nextBuildTryGate = gameTime + 60.0;
+					nextBuildTryFling = gameTime + 120.0;
+				} else {
+					nextBuildTryFling = gameTime + 60.0;
+					nextBuildTryGate = gameTime + 120.0;
+				}
 			}
 		}
 		if(buildGate !is null) {
 			if(buildGate.completed) {
 				@buildGate = null;
-				if (trackedGate.length > 2) {
+				if (trackedGate.length > 2 && hasFling) {
 					// try to make a new fling beacon after a gate
 					nextBuildTryFling = gameTime + 60.0;
 					nextBuildTryGate = gameTime + 120.0;
@@ -1102,81 +1127,85 @@ class FTLGeneric : FTL {
 			}
 		}
 
-		// attempt to mkae fling beacons
-		wantToBuildFling = false;
-		for(uint i = 0, cnt = trackedFling.length; i < cnt; ++i) {
-			auto@ gt = trackedFling[i];
-			if(gt.obj is null && gt.region.ContestedMask & ai.mask == 0 && gt.region.BlockFTLMask & ai.mask == 0) {
-				Object@ found;
-				for(uint n = 0, ncnt = unusedFling.length; n < ncnt; ++n) {
-					Object@ obj = unusedFling[n];
-					if(obj.region is gt.region) {
-						@found = obj;
-						break;
+		if (hasFling) {
+			// attempt to mkae fling beacons
+			wantToBuildFling = false;
+			for(uint i = 0, cnt = trackedFling.length; i < cnt; ++i) {
+				auto@ gt = trackedFling[i];
+				if(gt.obj is null && gt.region.ContestedMask & ai.mask == 0 && gt.region.BlockFTLMask & ai.mask == 0) {
+					Object@ found;
+					for(uint n = 0, ncnt = unusedFling.length; n < ncnt; ++n) {
+						Object@ obj = unusedFling[n];
+						if(obj.region is gt.region) {
+							@found = obj;
+							break;
+						}
 					}
-				}
 
-				if(found !is null) {
-					if(log)
-						ai.print("Assign beacon to => "+gt.region.name, found.region);
-					assignFlingTo(gt, found);
-				} else if(buildFling is null && gameTime > nextBuildTryFling && !ai.empire.isFTLShortage(0.15)) {
-					if(ai.empire.FTLStored >= 250) {
+					if(found !is null) {
 						if(log)
-							ai.print("Build beacon for this system", gt.region);
+							ai.print("Assign beacon to => "+gt.region.name, found.region);
+						assignFlingTo(gt, found);
+					} else if(buildFling is null && gameTime > nextBuildTryFling && !ai.empire.isFTLShortage(0.15)) {
+						if(ai.empire.FTLStored >= 250) {
+							if(log)
+								ai.print("Build beacon for this system", gt.region);
 
-						@buildFling = construction.buildOrbital(getOrbitalModule(flingModule), military.getStationPosition(gt.region));
-					}
-					else {
-						wantToBuildFling = true;
+							@buildFling = construction.buildOrbital(getOrbitalModule(flingModule), military.getStationPosition(gt.region));
+						}
+						else {
+							wantToBuildFling = true;
+						}
 					}
 				}
 			}
 		}
 
-		// attempt to make gates
-		for(uint i = 0, cnt = trackedGate.length; i < cnt; ++i) {
-			auto@ gt = trackedGate[i];
-			if(gt.gate is null && gt.region.ContestedMask & ai.mask == 0 && gt.region.BlockFTLMask & ai.mask == 0) {
-				Object@ closest;
-				double closestDist = INFINITY;
-				for(uint n = 0, ncnt = unassignedGate.length; n < ncnt; ++n) {
-					Object@ obj = unassignedGate[n];
-					if(obj.region is gt.region) {
-						@closest = obj;
-						break;
-					}
-					if(!obj.hasMover)
-						continue;
-					if(buildGate is null && gameTime > nextBuildTryGate) {
-						double d = obj.position.distanceTo(gt.region.position);
-						if(d < closestDist) {
-							closestDist = d;
+		if (hasGates) {
+			// attempt to make gates
+			for(uint i = 0, cnt = trackedGate.length; i < cnt; ++i) {
+				auto@ gt = trackedGate[i];
+				if(gt.gate is null && gt.region.ContestedMask & ai.mask == 0 && gt.region.BlockFTLMask & ai.mask == 0) {
+					Object@ closest;
+					double closestDist = INFINITY;
+					for(uint n = 0, ncnt = unassignedGate.length; n < ncnt; ++n) {
+						Object@ obj = unassignedGate[n];
+						if(obj.region is gt.region) {
 							@closest = obj;
+							break;
+						}
+						if(!obj.hasMover)
+							continue;
+						if(buildGate is null && gameTime > nextBuildTryGate) {
+							double d = obj.position.distanceTo(gt.region.position);
+							if(d < closestDist) {
+								closestDist = d;
+								@closest = obj;
+							}
 						}
 					}
-				}
 
-				if(closest !is null) {
-					if(log)
-						ai.print("Assign gate to => "+gt.region.name, closest.region);
-					assignGateTo(gt, closest);
-				} else if(buildGate is null && gameTime > nextBuildTryGate && !ai.empire.isFTLShortage(0.15)) {
-					if(log)
-						ai.print("Build gate for this system", gt.region);
+					if(closest !is null) {
+						if(log)
+							ai.print("Assign gate to => "+gt.region.name, closest.region);
+						assignGateTo(gt, closest);
+					} else if(buildGate is null && gameTime > nextBuildTryGate && !ai.empire.isFTLShortage(0.15)) {
+						if(log)
+							ai.print("Build gate for this system", gt.region);
 
-					bool buildLocal = true;
-					auto@ factory = construction.primaryFactory;
-					if(factory !is null) {
-						Region@ factRegion = factory.obj.region;
-						if(factRegion !is null && systems.hopDistance(gt.region, factRegion) < GATE_BUILD_MOVE_HOPS)
-							buildLocal = false;
+						bool buildLocal = true;
+						auto@ factory = construction.primaryFactory;
+						if(factory !is null) {
+							Region@ factRegion = factory.obj.region;
+							if(factRegion !is null && systems.hopDistance(gt.region, factRegion) < GATE_BUILD_MOVE_HOPS)
+								buildLocal = false;
+						}
+
+						if(buildLocal)
+							@buildGate = construction.buildLocalStation(gateDesign);
+						else
+							@buildGate = construction.buildStation(gateDesign, military.getStationPosition(gt.region));
 					}
-
-					if(buildLocal)
-						@buildGate = construction.buildLocalStation(gateDesign);
-					else
-						@buildGate = construction.buildStation(gateDesign, military.getStationPosition(gt.region));
 				}
 			}
 		}
@@ -1200,6 +1229,13 @@ class FTLGeneric : FTL {
 					safeRegions.insertLast(reg);
 			}
 		}
+	}
+
+	void checkAvailableFTLMethods() {
+		hasHyperdrives = ai.empire.isUnlocked(hyperdriveSubsystem);
+		hasJumpdrives = ai.empire.isUnlocked(jumpdriveSubsystem);
+		hasGates = ai.empire.isUnlocked(gateSubsystem);
+		hasFling = ai.empire.HasFling >= 1;
 	}
 };
 
