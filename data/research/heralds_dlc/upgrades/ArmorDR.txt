@@ -8,8 +8,8 @@ Technology: ArmorDR
 	Icon: techReinforcement
 	Color: #a9a9a9
 
-	Point Cost: 500
-	Time Cost: 60
+	Point Cost: 250
+	Time Cost: 30
 
 	AddModifier(any::ArmorResistFactor(1.01))
 
@@ -24,7 +24,7 @@ Technology: ArmorDR2
 	Icon: techReinforcement * #a85f5f
 	Color: #a9a9a9
 
-	Point Cost: 700
-	Time Cost: 80
+	Point Cost: 350
+	Time Cost: 40
 
 	AddModifier(any::ArmorResistFactor(1.025))

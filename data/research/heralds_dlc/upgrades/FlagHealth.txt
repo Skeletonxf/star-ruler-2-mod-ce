@@ -9,8 +9,8 @@ Technology: FlagHealth
 	Category: Basic Upgrades
 	Class: Boost
 
-	Point Cost: 500
-	Time Cost: 60
+	Point Cost: 250
+	Time Cost: 30
 
 	AddModifier(HpFactor(1.025))
 	AddModifier(ReactiveArmor::ImpactLevelFactor(1.025))
@@ -27,8 +27,8 @@ Technology: FlagHealth2
 	Category: Basic Upgrades
 	Class: Upgrade
 
-	Point Cost: 600
-	Time Cost: 80
+	Point Cost: 300
+	Time Cost: 40
 
 	AddModifier( HpFactor(1.05) )
 	AddModifier(ReactiveArmor::ImpactLevelFactor(1.05))

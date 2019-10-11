@@ -9,8 +9,8 @@ Technology: ShieldCap
 	Category: Basic Upgrades
 	Class: Boost
 
-	Point Cost: 500
-	Time Cost: 70
+	Point Cost: 250
+	Time Cost: 35
 
 	AddModifier( ShieldCapacityFactor(1.025) )
 	AddModifier( ShieldHarmonizer::BonusShieldFactor(1.025) )
@@ -27,8 +27,8 @@ Technology: ShieldCap2
 	Category: Basic Upgrades
 	Class: Upgrade
 
-	Point Cost: 700
-	Time Cost: 90
+	Point Cost: 350
+	Time Cost: 45
 
 	AddModifier( ShieldCapacityFactor(1.05) )
 	AddModifier( ShieldHarmonizer::BonusShieldFactor(1.05) )

@@ -8,8 +8,8 @@ Technology: Thrust
 
 	Category: Basic Upgrades
 
-	Point Cost: 500
-	Time Cost: 60
+	Point Cost: 300
+	Time Cost: 40
 
 	AddModifier( ThrustFactor(1.05) )
 	AddModifier( TurnThrustFactor(1.05) )
@@ -26,8 +26,8 @@ Technology: Thrust2
 	Category: Basic Upgrades
 	Class: Upgrade
 
-	Point Cost: 700
-	Time Cost: 80
+	Point Cost: 500
+	Time Cost: 60
 
 	AddModifier( ThrustFactor(1.2) )
 	AddModifier( TurnThrustFactor(1.2) )

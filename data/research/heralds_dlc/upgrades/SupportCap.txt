@@ -9,8 +9,8 @@ Technology: SupportCap
 	Category: Basic Upgrades
 	Class: Boost
 
-	Point Cost: 500
-	Time Cost: 60
+	Point Cost: 250
+	Time Cost: 30
 
 	AddModifier( SupportCapacityFactor(1.01) )
 
@@ -25,7 +25,7 @@ Technology: SupportCap2
 	Category: Basic Upgrades
 	Class: Upgrade
 
-	Point Cost: 700
-	Time Cost: 80
+	Point Cost: 350
+	Time Cost: 40
 
 	AddModifier( SupportCapacityFactor(1.02) )

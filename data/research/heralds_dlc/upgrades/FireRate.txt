@@ -9,8 +9,8 @@ Technology: FireRate
 	Category: Basic Upgrades
 	Class: Boost
 
-	Point Cost: 500
-	Time Cost: 70
+	Point Cost: 250
+	Time Cost: 35
 
 	AddModifier( tag/WeaponBase::ReloadFactor(0.99) )
 	AddModifier( tag/BeamBase::CooldownFactor(0.99) )
@@ -28,8 +28,8 @@ Technology: FireRate2
 	Category: Basic Upgrades
 	Class: Upgrade
 
-	Point Cost: 750
-	Time Cost: 80
+	Point Cost: 350
+	Time Cost: 40
 
 	AddModifier( tag/WeaponBase::ReloadFactor(0.98) )
 	AddModifier( tag/SpecialWeapon::ReloadFactor(0.98) )

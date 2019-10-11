@@ -9,8 +9,8 @@ Technology: ArmorHealth
 	Class: Boost
 	Category: Basic Upgrades
 
-	Point Cost: 500
-	Time Cost: 60
+	Point Cost: 250
+	Time Cost: 30
 
 	AddModifier(tag/IsArmor::HpFactor(1.015))
 	AddModifier(ReactiveArmor::ImpactLevelFactor(1.015))
@@ -27,8 +27,8 @@ Technology: ArmorHealth2
 	Category: Basic Upgrades
 	Class: Upgrade
 
-	Point Cost: 700
-	Time Cost: 80
+	Point Cost: 350
+	Time Cost: 40
 
 	AddModifier(tag/IsArmor::HpFactor(1.03))
 	AddModifier(ReactiveArmor::ImpactLevelFactor(1.03))
