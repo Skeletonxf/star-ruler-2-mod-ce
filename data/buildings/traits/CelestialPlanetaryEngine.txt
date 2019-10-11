@@ -1,0 +1,18 @@
+Building: CelestialPlanetaryEngine
+	Name: #BLD_PLANET_ENGINE
+	Description: #BLD_CELESTIAL_PLANET_ENGINE_DESC
+	Sprite: PlanetThruster * 44ffbb
+
+	Category: Military
+
+	Size: 5x5
+
+
+
+	Base Maintenance: 35
+
+
+	CannotBuildManually()
+	CannotRemove()
+	RequireNotStatus(Ringworld)
+	AddAccelerationBonus(1)

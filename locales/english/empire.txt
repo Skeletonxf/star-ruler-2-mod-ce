@@ -411,12 +411,7 @@ TRAIT_VERDANT_DESC: <<|
 	[vspace=6/][img=AttributeIcons::0;22]Must construct [b]Stalks[/b] on planets to be able to use pressure.[/img]
 >>
 TRAIT_STAR_CHILDREN: Star Children
-TRAIT_STAR_CHILDREN_DESC: <<|
-	[vspace=3/] [img=ResourceIcon::8;22]Population grows only on giant [b]Motherships[/b] that have construction capabilities.[/img]
-	[vspace=3/][img=ActionBarIcons::1;22]Motherships can move population to orbital [b]Habitats[/b] around planets, letting them use the planetary resources.[/img]
-	[vspace=3/][img=BuildingSprites::0;22]Does [b]not[/b] use planet surfaces in any way. Planets cannot construct anything.[/img]
-	[vspace=3/][img=ResourceIcon::6;22]Resources are produced in orbit, no pressure capacity is needed. Motherships in orbit of a planet automatically gain that planet's labor income.[/img]
->>
+TRAIT_STAR_CHILDREN_DESC: [vspace=3/] [img=ResourceIcon::8;22]Population grows only on giant [b]Motherships[/b] that have construction capabilities.[/img] [vspace=3/][img=ActionBarIcons::1;22]Motherships can move population to orbital [b]Habitats[/b] around planets, letting them use the planetary resources.[/img] [vspace=3/][img=BuildingSprites::0;22]Does [b]not[/b] use ordinary planet surfaces in any way. Only artificial planets can construct anything.[/img] [vspace=3/][img=ResourceIcon::6;22]Resources are produced in orbit, no pressure capacity is needed. Motherships in orbit of a planet automatically gain that planet's labor income.[/img]
 
 TRAIT_RANDOM_GOVERNMENT: Random (Government)
 TRAIT_RANDOM_GOVERNMENT_DESC: <<
@@ -520,7 +515,7 @@ MECH_BUILD_POPULATION_DESC: <<
 >>
 
 TRAIT_LINKED: Linked
-TRAIT_LINKED_DESC: [vspace=3/] [img=AttributeIcons::3;22][b]Mainframe[/b] orbitals must be constructed in order to maintain fleet effectiveness. Fleets near mainframes are stronger, fleets far away from mainframes are weaker.[/img] [vspace=6/][img=AnomalyIcons::0;22]Mainframes can remotely scan anomalies within trade range.[/img] [vspace=6/][img=ComputerCore;22][b]Control Computer[/b] subsystems are available from the start.[/img] [vspace=6/][img=AntimatterReactor;22;#b8b800][b]Emergency Supplies[/b] subsystem is available from the start.[/img] 
+TRAIT_LINKED_DESC: [vspace=3/] [img=AttributeIcons::3;22][b]Mainframe[/b] orbitals must be constructed in order to maintain fleet effectiveness. Fleets near mainframes are stronger, fleets far away from mainframes are weaker.[/img] [vspace=6/][img=AnomalyIcons::0;22]Mainframes can remotely scan anomalies within trade range.[/img] [vspace=6/][img=ComputerCore;22][b]Control Computer[/b] subsystems are available from the start.[/img] [vspace=6/][img=AntimatterReactor;22;#b8b800][b]Emergency Supplies[/b] subsystem is available from the start.[/img]
 ORB_MAINFRAME: Mainframe
 ORB_MAINFRAME_BLURB: Increases the strength of nearby fleets. Can be moved slowly.
 ORB_MAINFRAME_DESC: <<
@@ -912,6 +907,22 @@ RACE_HERALDS_LORE: <<
 
 	No matter. I shall grow faster. I shall send more smaller mes and more larger mes ahead to prevent your escape. There will be no more delay, this spiral shall be consumed at once and your existence as Heralds shall finally end."
 	[/color][/offset]
+>>
+
+RACE_WANDI: Wandi
+RACE_WANDI_TAGLINE: The wanderers.
+RACE_WANDI_LORE: <<|
+	Fellow wanderers, I am giving this speech in my capacity as leader of what remains of our government:
+
+	Ever since we started our space program the allure of the infinite cosmos was clear. Yet did we expand our borders and venture onto new land? No!
+
+	We thought it better to take our familiar world to the unknown than to leave this cradle.
+
+	Yesterday there was a sighting of a powerful ship from an empire far more sophisticated than us. It is essential that we expand in order to survive, lest our only world be destroyed and us with it. Now is the time to settle on new land, see new wonders, and with new vigour.
+
+	I have always wondered why every star system is so much empty space, perhaps we can use our wandering technology to build the greatest and richest system to ever exist? Never have we even seen [i]signs[/i] of fallen empires that learnt to move the planets themselves. I suggest we accept our nature and make all of our new land wander, no matter the cost.
+
+	The system we are arriving in as I finish this speech shall be our new home. Here we will finally become a multi planetary species and avoid the ever increasing risk of extinction!
 >>
 
 HELP_ANCIENT: <<

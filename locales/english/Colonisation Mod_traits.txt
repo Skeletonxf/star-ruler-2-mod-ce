@@ -14,3 +14,11 @@ WALKING: Walking
 TRAIT_TERRESTIAL_DESC: No particular effects on gameplay
 WALKING_DESC: No particular bonuses.
 AQUATIC_TRAIT: Native water resources provide food, once per planet. Ships and stations have 20% increased mass, making them slower.
+CELESTIAL_DESC: <<
+	We have always reached for the stars. First we modified our biology to survive the hostilities of space and then we learned to bend celestial objects to our very will. Perhaps we got a little obsessed along the way.
+	[vspace=6/][img=techConstruction * #30a67a;22][b]Station Sustenance[/b] is unlocked from the start and can be unlocked again (multiplying orbital maintenance decreases), replacing Megacities.[/img]
+	[vspace=6/][img=PlanetThruster;22][b]Planetary Engine[/b] building is available from the start.[/img]
+	[vspace=6/][img=OrbitalIcons::3;22]Start with a free shipyard at the homeworld[/img]
+	[vspace=6/][img=PlanetThruster * 44ffbb;22]Special Planetary Engines are constructed on all colonised planets, with 1 u/s² of acceleration and half the maintenance cost (35). These cannot be removed except by losing the planet.[/img]
+>>
+CELESTIAL: Celestial

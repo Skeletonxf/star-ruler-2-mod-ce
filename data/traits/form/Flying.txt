@@ -6,4 +6,5 @@ Trait: Flying
 	Category: Biology
 	Conflict: StarChildren
 	Conflict: Ancient
+	Order: 2
 	AddStatusOwnedPlanets(Flying)

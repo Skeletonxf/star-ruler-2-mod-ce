@@ -1,9 +1,20 @@
 Trait: Celestial
-	Name: Celestial
-	Description: something
-	Icon: emp_bg_purple
+	Name: #CELESTIAL
+	Description: #CELESTIAL_DESC
+	Icon: PlanetThruster
 	Color: #c70fff
-	Costs Points: 1
 	Category: Biology
-	Available: False
+	AI Support: False
+	Conflict: StarChildren
+	Conflict: Ancient
+	Order: 10
+	Conflict: Devout
+
+	TriggerHomeworld(DestroyBuildingAt((4, 3), Undevelop = True))
+	TriggerHomeworld(SpawnOrbital(Shipyard, Free = True, In Orbit = True))
+	ReplaceTechnologyNodes(BldMegacity, StationMaintenance)
+	ReplaceTechnologyNodes(StationMaintenance, CelestialStationMaintenance)
+	ReplaceTechnologyNodes(BldPlanetaryEngine, CelestialBldPlanetaryEngine)
+	AddModifier(StationHull::MaintenanceModFactor(0.6))
+	UnlockTag(PlanetaryEngineUnlock)
 	AddStatusOwnedPlanets(Celestial)

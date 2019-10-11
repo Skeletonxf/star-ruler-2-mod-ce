@@ -1,3 +1,5 @@
 Status: Celestial
 	Name: Celestial
 	Visible To: Nobody
+	OnDisable(DestroyBuildingAt((2,2), Undevelop = True))
+	OnEnable(SpawnBuilding(CelestialPlanetaryEngine, (2,2), Develop = True))

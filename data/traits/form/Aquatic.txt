@@ -6,5 +6,6 @@ Trait: Aquatic
 	Category: Biology
 	Conflict: Mechanoid
 	Conflict: Ancient
+	Order: 1
 	AddModifier(MassFactor(1.2))
 	AddStatusOwnedPlanets(Aquatic)

@@ -115,3 +115,19 @@ Preset: First
 	Trait: Empire
 	Trait: Sublight
 	Trait: Ancient
+
+Preset: Wandi
+	Name: #RACE_WANDI
+	Tagline: #RACE_WANDI_TAGLINE
+	Lore: #RACE_WANDI_LORE
+	Portrait: emp_portrait_harrian
+	Shipset: Moirai
+	Hard: True
+
+	Trait: Celestial
+	Trait: Terrestial
+	Trait: Slipstream
+	Trait: Frugal
+	Trait: Paranoid
+	Trait: RandomGovernment
+	Trait: Innovative
