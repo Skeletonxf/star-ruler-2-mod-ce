@@ -15,7 +15,7 @@ Status: StarHabitatsNoPlanetUseSingle
 	ProduceAllPressure(Money)
 	ProduceAllPressure(Labor)
 	ReplacesCities(10000)
-	ModBuildingConstructRate(-1)
-	ModPopulationGrowth(-1)
-	ModTileDevelopRate(-1)
+	
+
+
 	CannotUseLabor()
