@@ -1,0 +1,21 @@
+Technology: LinkedLowPowerShipComputer
+	Name: #SHIP_LOW_POWER_COMPUTER_NAME
+	Description: #R_SYS_LOW_POWER_SHIP_COMPUTER_DESC
+	Class: Unlock
+	Category: Subsystems
+
+	Point Cost:
+	Time Cost:
+
+	Icon: ComputerCore * a0a4ff
+	Color: #ffa4a0
+	Default Unlock: True
+
+Technology: LinkedEmergencySupplies
+	Name: #R_SYS_EMERGENCY_SUPPLIES
+	Description: #R_SYS_EMERGENCY_SUPPLIES_DESC
+	Category: Subsystems
+
+	Icon: AntimatterReactor * #b8b800
+	Color: #b88b00
+	Default Unlock: True
