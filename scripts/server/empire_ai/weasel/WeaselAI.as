@@ -27,13 +27,13 @@ import AIComponent@ createOrbitals() from "empire_ai.weasel.Orbitals";
 import AIComponent@ createImprovement() from "empire_ai.weasel.Improvement";
 // [[ MODIFY BASE GAME END ]]
 
-import AIComponent@ createHyperdrive() from "empire_ai.weasel.ftl.Hyperdrive";
-import AIComponent@ createGate() from "empire_ai.weasel.ftl.Gate";
-import AIComponent@ createFling() from "empire_ai.weasel.ftl.Fling";
-import AIComponent@ createSlipstream() from "empire_ai.weasel.ftl.Slipstream";
-import AIComponent@ createJumpdrive() from "empire_ai.weasel.ftl.Jumpdrive";
 // [[ MODIFY BASE GAME START ]]
-// TODO: Always use generic FTL AI once full support
+// Always use generic FTL AI that can handle all FTL types
+//import AIComponent@ createHyperdrive() from "empire_ai.weasel.ftl.Hyperdrive";
+//import AIComponent@ createGate() from "empire_ai.weasel.ftl.Gate";
+//import AIComponent@ createFling() from "empire_ai.weasel.ftl.Fling";
+//import AIComponent@ createSlipstream() from "empire_ai.weasel.ftl.Slipstream";
+//import AIComponent@ createJumpdrive() from "empire_ai.weasel.ftl.Jumpdrive";
 import AIComponent@ createFTLGeneric() from "empire_ai.weasel.ftl.generic";
 // [[ MODIFY BASE GAME END ]]
 
@@ -425,12 +425,7 @@ final class AI : AIController, Savable {
 
 		//Make FTL component
 		// [[ MODIFY BASE GAME START ]]
-		// TODO make always FTLGeneric once have complete support
-		if (empire.hasTrait(getTraitID("Slipstream"))) {
-			@ftl = add(createSlipstream());
-		} else {
-			@ftl = add(createFTLGeneric());
-		}
+		@ftl = add(createFTLGeneric());
 		// [[ MODIFY BASE GAME END ]]
 
 		//Make racial component

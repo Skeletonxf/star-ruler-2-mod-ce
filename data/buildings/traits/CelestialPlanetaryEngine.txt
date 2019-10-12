@@ -9,7 +9,7 @@ Building: CelestialPlanetaryEngine
 
 
 
-	Base Maintenance: 35
+	Base Maintenance: 50
 
 
 	CannotBuildManually()

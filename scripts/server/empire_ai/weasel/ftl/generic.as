@@ -10,9 +10,10 @@ import empire_ai.weasel.Fleets;
 
 /*
  * Holistic FTL AI that can use/understand all types of FTL rather than just one
- * TODO: Implement slipstreams
- * WIP: Handle FTL types not being unlocked at game start
  * TODO: Fling gates to target location instead of manual sublight travel
+ * TODO: Aim for FTL income in same way as FTL storage
+ * TODO: Avoid placing slipstreams/gates and fling beacons in the same systems
+ * TODO: Use slipstreams to improve colonisation speed
  */
 
 // Fling data
@@ -51,10 +52,20 @@ from orders import OrderType;
 const double HYPERDRIVE_REJUMP_MIN_DIST = 8000.0; // TODO handle rejumps
 const double HYPERDRIVE_STORAGE_AIM_DISTANCE = 40000;
 
+// Slipstream data
+from oddity_navigation import hasOddityLink;
+const double SS_MIN_DISTANCE_STAGE = 0;
+const double SS_MIN_DISTANCE_DEVELOP = 10000;
+const double SS_MIN_TIMER = 3.0 * 60.0;
+// max distance an existing slipstream can be to target, reduced from 3000
+// from the Slipstream.as code
+const double SS_MAX_DISTANCE = 1000.0;
+
 // Cache system defs to check things are unlocked
 const SubsystemDef@ hyperdriveSubsystem = getSubsystemDef("Hyperdrive");
 const SubsystemDef@ jumpdriveSubsystem = getSubsystemDef("Jumpdrive");
 const SubsystemDef@ gateSubsystem = getSubsystemDef("GateModule");
+const SubsystemDef@ slipstreamSubsystem = getSubsystemDef("Slipstream");
 
 void init() {
 	// Fling data
@@ -108,12 +119,34 @@ class GateRegion : Savable {
 	}
 };
 
+class SSRegion : Savable {
+	Region@ region;
+	Object@ obj;
+	bool arrived = false;
+	vec3d destination;
+
+	void save(SaveFile& file) {
+		file << region;
+		file << obj;
+		file << arrived;
+		file << destination;
+	}
+
+	void load(SaveFile& file) {
+		file >> region;
+		file >> obj;
+		file >> arrived;
+		file >> destination;
+	}
+};
+
 // Travel types to consider in move orders
 enum FTLTravelMethod {
 	TRAVEL_SUBLIGHT = 1,
 	TRAVEL_FLING = 2,
 	TRAVEL_HYPERDRIVE = 3,
 	TRAVEL_JUMPDRIVE = 4,
+	TRAVEL_SLIPSTREAM = 5,
 };
 
 class FTLGeneric : FTL {
@@ -144,6 +177,13 @@ class FTLGeneric : FTL {
 	int safetyFlag = -1;
 	array<Region@> safeRegions;
 
+	// Slipstream data
+	DesignTarget@ ssDesign;
+	array<SSRegion@> trackedSS;
+	array<Object@> unassignedSS;
+	BuildFlagship@ buildSS;
+	double nextBuildTrySS = 15.0 * 60.0;
+
 	// Tracking available FTL methods
 	// Note: This is only relevant for building, not for using each of these
 	// If we obtain additional FTL methods through non building means
@@ -152,6 +192,7 @@ class FTLGeneric : FTL {
 	bool hasJumpdrives = false;
 	bool hasGates = false;
 	bool hasFling = false;
+	bool hasSlipstreams = false;
 
 	void create() override {
 		@military = cast<Military>(ai.military);
@@ -207,6 +248,22 @@ class FTLGeneric : FTL {
 			for(uint i = 0; i < cnt; ++i)
 				file << safeRegions[i];
 		}
+		{
+			// Slipstream data
+			designs.saveDesign(file, ssDesign);
+			construction.saveConstruction(file, buildSS);
+			file << nextBuildTrySS;
+
+			uint cnt = trackedSS.length;
+			file << cnt;
+			for(uint i = 0; i < cnt; ++i)
+				file << trackedSS[i];
+
+			cnt = unassignedSS.length;
+			file << cnt;
+			for(uint i = 0; i < cnt; ++i)
+				file << unassignedSS[i];
+		}
 	}
 
 	void load(SaveFile& file) override {
@@ -261,6 +318,28 @@ class FTLGeneric : FTL {
 			safeRegions.length = cnt;
 			for(uint i = 0; i < cnt; ++i)
 				file >> safeRegions[i];
+		}
+		{
+			// Slipstream data
+			@ssDesign = designs.loadDesign(file);
+			@buildSS = cast<BuildFlagship>(construction.loadConstruction(file));
+			file >> nextBuildTrySS;
+
+			uint cnt = 0;
+			file >> cnt;
+			for(uint i = 0; i < cnt; ++i) {
+				SSRegion gt;
+				file >> gt;
+				trackedSS.insertLast(gt);
+			}
+
+			file >> cnt;
+			for(uint i = 0; i < cnt; ++i) {
+				Object@ obj;
+				file >> obj;
+				if(obj !is null)
+					unassignedSS.insertLast(obj);
+			}
 		}
 	}
 
@@ -450,6 +529,7 @@ class FTLGeneric : FTL {
 	}
 
 	void turn() override {
+		// gate logic
 		if(gateDesign !is null && gateDesign.active !is null) {
 			int newSize = round(double(budget.spendable(BT_Military)) * 0.5 * ai.behavior.shipSizePerMoney / 64.0) * 64;
 			if(newSize < 128)
@@ -459,6 +539,105 @@ class FTLGeneric : FTL {
 				gateDesign.customName = "Gate";
 			}
 		}
+		// slipstream logic
+		if(ssDesign !is null && ssDesign.active !is null) {
+			int newSize = round(double(budget.spendable(BT_Military)) * 0.2 * ai.behavior.shipSizePerMoney / 64.0) * 64;
+			if(newSize < 128)
+				newSize = 128;
+			if(newSize != ssDesign.targetSize) {
+				@ssDesign = designs.design(DP_Slipstream, newSize);
+				ssDesign.customName = "Slipstream";
+			}
+		}
+	}
+
+	// Slipstream methods
+	SSRegion@ getSS(Region@ reg) {
+		for(uint i = 0, cnt = trackedSS.length; i < cnt; ++i) {
+			if(trackedSS[i].region is reg)
+				return trackedSS[i];
+		}
+		return null;
+	}
+
+	void removeSS(SSRegion@ gt) {
+		if(gt.obj !is null && gt.obj.valid && gt.obj.owner is ai.empire)
+			unassignedSS.insertLast(gt.obj);
+		trackedSS.remove(gt);
+	}
+
+	Object@ getClosestSS(const vec3d& position) {
+		Object@ closest;
+		double minDist = INFINITY;
+		for(uint i = 0, cnt = trackedSS.length; i < cnt; ++i) {
+			Object@ obj = trackedSS[i].obj;
+			if(obj is null)
+				continue;
+			if(!trackedSS[i].arrived)
+				continue;
+			double d = obj.position.distanceTo(position);
+			if(d < minDist) {
+				minDist = d;
+				@closest = obj;
+			}
+		}
+		return closest;
+	}
+
+	SSRegion@ getClosestSSRegion(const vec3d& position) {
+		SSRegion@ closest;
+		double minDist = INFINITY;
+		for(uint i = 0, cnt = trackedSS.length; i < cnt; ++i) {
+			double d = trackedSS[i].region.position.distanceTo(position);
+			if(d < minDist) {
+				minDist = d;
+				@closest = trackedSS[i];
+			}
+		}
+		return closest;
+	}
+
+	void assignSSTo(SSRegion@ gt, Object@ closest) {
+		unassignedSS.remove(closest);
+		@gt.obj = closest;
+		gt.arrived = false;
+		military.stationFleet(fleets.getAI(closest), gt.region);
+
+		if(closest.region is gt.region)
+			gt.arrived = true;
+
+		if(!gt.arrived) {
+			gt.destination = military.getStationPosition(gt.region);
+			closest.addMoveOrder(gt.destination);
+		}
+	}
+
+	bool trackingSSGen(Object@ obj) {
+		for(uint i = 0, cnt = unassignedSS.length; i < cnt; ++i) {
+			if(unassignedSS[i] is obj)
+				return true;
+		}
+		for(uint i = 0, cnt = trackedSS.length; i < cnt; ++i) {
+			if(trackedSS[i].obj is obj)
+				return true;
+		}
+		return false;
+	}
+
+	bool shouldHaveSSGen(Region@ reg, bool always = false) {
+		if(military.getBase(reg) !is null)
+			return true;
+		if(development.isDevelopingIn(reg))
+			return true;
+		return false;
+	}
+
+	double getSSCost(Object@ ssGen, const vec3d& position) {
+		return slipstreamCost(ssGen, 0, position.distanceTo(ssGen.position));
+	}
+
+	double getSSETA(Object@ ssGen, Object& obj, const vec3d& position) {
+		return max(SLIPSTREAM_CHARGE_TIME, getSublightETA(obj, ssGen.position));
 	}
 
 	// Hyperengine methods
@@ -543,8 +722,18 @@ class FTLGeneric : FTL {
 		bool ableToHyperdrive = canHyperdrive(ord.obj);
 		bool ableToJumpdrive = canJumpdrive(ord.obj);
 		bool ableToFling = canFling(ord.obj);
+		bool ableToSS = true;
+		//Check if we have a slipstream generator in this region
+		auto@ ss = getSS(ord.obj.region);
+		if (ss is null || ss.obj is null || !ss.arrived) {
+			ableToSS = false;
+		}
+		Object@ ssGen = ableToSS ? ss.obj : null;
+		if (ableToSS) {
+			ableToSS = canSlipstream(ssGen);
+		}
 
-		if (!ableToFling && !ableToHyperdrive && !ableToJumpdrive) {
+		if (!ableToFling && !ableToHyperdrive && !ableToJumpdrive && !ableToSS) {
 			return F_Pass;
 		}
 
@@ -554,6 +743,8 @@ class FTLGeneric : FTL {
 		double jumpdriveFTLCost = INFINITY;
 		double flingETA = INFINITY;
 		double flingFTLCost = INFINITY;
+		double ssETA = INFINITY;
+		double ssFTLCost = INFINITY;
 		double sublightETA = INFINITY;
 		double sublightFTLCost = 0;
 
@@ -599,6 +790,19 @@ class FTLGeneric : FTL {
 			flingFTLCost = flingCost(ord.obj, toPosition);
 		}
 
+		if (ableToSS) {
+			//Check if we already have a link
+			if (hasOddityLink(ss.region, toPosition, SS_MAX_DISTANCE, minDuration=60.0)) {
+				// we've already paid for this so set slipstream estimates
+				// to infinity and let sublight 'win'
+				ssETA = INFINITY;
+				ssFTLCost = INFINITY;
+			} else {
+				ssETA = getSSETA(ssGen, ord.obj, toPosition);
+				ssFTLCost = getSSCost(ssGen, toPosition);
+			}
+		}
+
 		sublightETA = getSublightETA(ord.obj, toPosition);
 
 		// Reserve some FTL if we're saving our FTL for a new beacon
@@ -622,8 +826,12 @@ class FTLGeneric : FTL {
 		if (flingFTLCost > availableFTL) {
 			flingETA = INFINITY;
 		}
+		if (ssFTLCost > availableFTL) {
+			ssETA = INFINITY;
+		}
 
-		if (flingFTLCost == INFINITY && hyperdriveFTLCost == INFINITY) {
+		if (hyperdriveFTLCost == INFINITY && jumpdriveFTLCost == INFINITY
+				&& flingFTLCost == INFINITY && ssFTLCost == INFINITY) {
 			return F_Pass;
 		}
 
@@ -647,6 +855,12 @@ class FTLGeneric : FTL {
 				travelMethod = TRAVEL_FLING;
 				travelETA = flingETA;
 				travelCost = flingFTLCost;
+			}
+			// err on the side of caution due to slipstream inaccuracy
+			if ((ssETA * 1.2) < travelETA) {
+				travelMethod = TRAVEL_SLIPSTREAM;
+				travelETA = ssETA;
+				travelCost = ssFTLCost;
 			}
 		} else {
 			// choose cheapest travel method, being
@@ -680,6 +894,19 @@ class FTLGeneric : FTL {
 						travelMethod = TRAVEL_FLING;
 						travelETA = flingETA;
 						travelCost = flingFTLCost;
+					}
+				}
+			}
+			if ((ssETA * 3) < sublightETA) {
+				if (travelMethod == TRAVEL_SUBLIGHT) {
+					travelMethod = TRAVEL_SLIPSTREAM;
+					travelETA = ssETA;
+					travelCost = ssFTLCost;
+				} else {
+					if (ssFTLCost < travelCost) {
+						travelMethod = TRAVEL_SLIPSTREAM;
+						travelETA = ssETA;
+						travelCost = ssFTLCost;
 					}
 				}
 			}
@@ -717,6 +944,18 @@ class FTLGeneric : FTL {
 			return F_Continue;
 		}
 
+		if (travelMethod == TRAVEL_SLIPSTREAM) {
+			ssGen.addSlipstreamOrder(toPosition, append=true);
+			if (ssGen !is ord.obj) {
+				ord.obj.addWaitOrder(ssGen, moveTo=true);
+				ssGen.addSecondaryToSlipstream(ord.obj);
+			}
+			else {
+				ord.obj.addMoveOrder(toPosition, append=true);
+			}
+			return F_Continue;
+		}
+
 		return F_Pass;
 	}
 
@@ -724,11 +963,16 @@ class FTLGeneric : FTL {
 		checkAvailableFTLMethods();
 
 		designGateIfNone();
+		designSSIfNone();
 
 		manageOrbitalsList();
 		detectNewOrbitals();
 
+		manageSSGensList();
+		detectNewSS();
+
 		updateOrbitalsForStagingBases();
+		updateSSForStagingBases();
 
 		detectNewStagingBases();
 		detectImportantPlanetBuildLocations();
@@ -736,7 +980,7 @@ class FTLGeneric : FTL {
 
 		destroyOrbitalsOnFTLTrouble();
 
-		lookToBuildNewOrbitals();
+		lookToBuildNew();
 
 		checkSafeRegions();
 
@@ -749,15 +993,18 @@ class FTLGeneric : FTL {
 			}
 		}
 
-		// Try to get enough ftl storage that we can FTL our largest fleet by any method and have some remaining
+		// Try to get enough ftl storage that we can FTL our largest fleet by any method
+		// or open a slipstream with every generator and have some remaining
 		double highestCost = 0.0;
 		for(uint i = 0, cnt = fleets.fleets.length; i < cnt; ++i) {
 			auto@ flAI = fleets.fleets[i];
 			if (flAI.fleetClass != FC_Combat) {
 				continue;
 			}
-			// check the fling cost for this combat ship
-			highestCost = max(highestCost, double(flingCost(flAI.obj, vec3d())));
+			if (hasFling) {
+				// check the fling cost for this combat ship
+				highestCost = max(highestCost, double(flingCost(flAI.obj, vec3d())));
+			}
 			// check the Hyperdrive cost for this combat ship
 			if (canHyperdrive(flAI.obj)) {
 				vec3d toPosition = flAI.obj.position + vec3d(0, 0, HYPERDRIVE_STORAGE_AIM_DISTANCE);
@@ -769,10 +1016,21 @@ class FTLGeneric : FTL {
 				highestCost = max(highestCost, double(jumpdriveCost(flAI.obj, toPosition)));
 			}
 		}
-		development.aimFTLStorage = highestCost / (1.0 - ai.behavior.ftlReservePctCritical - ai.behavior.ftlReservePctNormal);
+		double mostSSCost = 0.0;
+		for(uint i = 0, cnt = trackedSS.length; i < cnt; ++i) {
+			Ship@ obj = cast<Ship>(trackedSS[i].obj);
+			if(obj is null)
+				continue;
 
-		// TODO: Add FTL income orbital and then make AI aim for
-		// FTL income at some level
+			double baseCost = obj.blueprint.design.average(SV_SlipstreamCost);
+			double duration = obj.blueprint.design.average(SV_SlipstreamDuration);
+			mostSSCost += baseCost / duration;
+		}
+		development.aimFTLStorage = max(
+			highestCost / (1.0 - ai.behavior.ftlReservePctCritical - ai.behavior.ftlReservePctNormal),
+			mostSSCost);
+
+		// TODO: Make AI aim for FTL income at some level
 	}
 
 	void designGateIfNone() {
@@ -784,6 +1042,18 @@ class FTLGeneric : FTL {
 		if(gateDesign is null) {
 			@gateDesign = designs.design(DP_Gate, 128);
 			gateDesign.customName = "Gate";
+		}
+	}
+
+	void designSSIfNone() {
+		if (!hasSlipstreams) {
+			return;
+		}
+
+		//Design a generator
+		if(ssDesign is null) {
+			@ssDesign = designs.design(DP_Slipstream, 128);
+			ssDesign.customName = "Slipstream";
 		}
 	}
 
@@ -802,6 +1072,17 @@ class FTLGeneric : FTL {
 			Object@ obj = unassignedGate[i];
 			if(obj is null || !obj.valid || obj.owner !is ai.empire) {
 				unassignedGate.removeAt(i);
+				--i; --cnt;
+			}
+		}
+	}
+
+	void manageSSGensList() {
+		//Manage unassigned gens list
+		for(uint i = 0, cnt = unassignedSS.length; i < cnt; ++i) {
+			Object@ obj = unassignedSS[i];
+			if(obj is null || !obj.valid || obj.owner !is ai.empire) {
+				unassignedSS.removeAt(i);
 				--i; --cnt;
 			}
 		}
@@ -829,6 +1110,17 @@ class FTLGeneric : FTL {
 				if(!trackingGate(obj))
 				unassignedGate.insertLast(obj);
 			}
+		}
+	}
+
+	void detectNewSS() {
+		//Detect new gens
+		for(uint i = 0, cnt = fleets.fleets.length; i < cnt; ++i) {
+			auto@ flAI = fleets.fleets[i];
+			if(flAI.fleetClass != FC_Slipstream)
+				continue;
+			if(!trackingSSGen(flAI.obj))
+				unassignedSS.insertLast(flAI.obj);
 		}
 	}
 
@@ -877,6 +1169,31 @@ class FTLGeneric : FTL {
 		}
 	}
 
+	void updateSSForStagingBases() {
+		//Update existing gens for staging bases
+		for(uint i = 0, cnt = trackedSS.length; i < cnt; ++i) {
+			auto@ gt = trackedSS[i];
+			bool checkAlways = false;
+			if(gt.obj !is null) {
+				if(!gt.obj.valid || gt.obj.owner !is ai.empire || (gt.arrived && gt.obj.region !is gt.region)) {
+					@gt.obj = null;
+					gt.arrived = false;
+					checkAlways = true;
+				}
+				else if(!gt.arrived && !gt.obj.hasOrders) {
+					if(gt.destination.distanceTo(gt.obj.position) < 10.0)
+						gt.arrived = true;
+					else
+						assignSSTo(gt, gt.obj);
+				}
+			}
+			if(!shouldHaveSSGen(gt.region, checkAlways)) {
+				removeSS(trackedSS[i]);
+				--i; --cnt;
+			}
+		}
+	}
+
 	void detectNewStagingBases() {
 		//Detect new staging bases to build beacons at
 		for(uint i = 0, cnt = military.stagingBases.length; i < cnt; ++i) {
@@ -910,6 +1227,23 @@ class FTLGeneric : FTL {
 				GateRegion gt;
 				@gt.region = base.region;
 				trackedGate.insertLast(gt);
+				break;
+			}
+		}
+		//Detect new staging bases to build SS gens at
+		for(uint i = 0, cnt = military.stagingBases.length; i < cnt; ++i) {
+			auto@ base = military.stagingBases[i];
+			if(base.occupiedTime < SS_MIN_TIMER)
+				continue;
+
+			if(getSS(base.region) is null) {
+				SSRegion@ closest = getClosestSSRegion(base.region.position);
+				if(closest !is null && closest.region.position.distanceTo(base.region.position) < SS_MIN_DISTANCE_STAGE)
+					continue;
+
+				SSRegion gt;
+				@gt.region = base.region;
+				trackedSS.insertLast(gt);
 				break;
 			}
 		}
@@ -953,13 +1287,32 @@ class FTLGeneric : FTL {
 				break;
 			}
 		}
+
+		//Detect new important planets to build SS generator at
+		for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
+			auto@ focus = development.focuses[i];
+			Region@ reg = focus.obj.region;
+			if(reg is null)
+				continue;
+
+			if(getSS(reg) is null) {
+				SSRegion@ closest = getClosestSSRegion(reg.position);
+				if(closest !is null && closest.region.position.distanceTo(reg.position) < SS_MIN_DISTANCE_DEVELOP)
+					continue;
+
+				SSRegion gt;
+				@gt.region = reg;
+				trackedSS.insertLast(gt);
+				break;
+			}
+		}
 	}
 
 	void detectNewBorderSystemBuildLocations() {
-		// we don't build fling beacons at border systems
-		// so this is just for gates
-		//Detect new border systems to build gates at
+		// we don't build fling beacons or slipstream generators
+		// at border systems so this is just for gates
 
+		//Detect new border systems to build gates at
 		uint offset = randomi(0, systems.border.length-1);
 		for(uint i = 0, cnt = systems.border.length; i < cnt; ++i) {
 			auto@ sys = systems.border[(i+offset)%cnt];
@@ -1096,7 +1449,7 @@ class FTLGeneric : FTL {
 		}
 	}
 
-	void lookToBuildNewOrbitals() {
+	void lookToBuildNew() {
 		//See if we should build a new orbital
 		if(buildFling !is null) {
 			if(buildFling.completed) {
@@ -1124,6 +1477,15 @@ class FTLGeneric : FTL {
 					nextBuildTryGate = gameTime + 60.0;
 					nextBuildTryFling = gameTime + 120.0;
 				}
+			}
+		}
+		//See if we should build a new SS generator
+		// As slipstreams don't use FTL when not in use this
+		// is seperate to building gates/fling beacons
+		if(buildSS !is null) {
+			if(buildSS.completed) {
+				@buildSS = null;
+				nextBuildTrySS = gameTime + 60.0;
 			}
 		}
 
@@ -1209,6 +1571,43 @@ class FTLGeneric : FTL {
 				}
 			}
 		}
+
+		if (hasSlipstreams) {
+			for(uint i = 0, cnt = trackedSS.length; i < cnt; ++i) {
+				auto@ gt = trackedSS[i];
+				if(gt.obj is null && gt.region.ContestedMask & ai.mask == 0 && gt.region.BlockFTLMask & ai.mask == 0) {
+					Object@ closest;
+					double closestDist = INFINITY;
+					for(uint n = 0, ncnt = unassignedSS.length; n < ncnt; ++n) {
+						Object@ obj = unassignedSS[n];
+						if(obj.region is gt.region) {
+							@closest = obj;
+							break;
+						}
+						if(!obj.hasMover)
+							continue;
+						if(buildSS is null && gameTime > nextBuildTrySS) {
+							double d = obj.position.distanceTo(gt.region.position);
+							if(d < closestDist) {
+								closestDist = d;
+								@closest = obj;
+							}
+						}
+					}
+
+					if(closest !is null) {
+						if(log)
+							ai.print("Assign slipstream gen to => "+gt.region.name, closest.region);
+						assignSSTo(gt, closest);
+					} else if(buildSS is null && gameTime > nextBuildTrySS) {
+						if(log)
+							ai.print("Build slipstream gen for this system", gt.region);
+
+						@buildSS = construction.buildFlagship(ssDesign);
+					}
+				}
+			}
+		}
 	}
 
 	void checkSafeRegions() {
@@ -1236,6 +1635,7 @@ class FTLGeneric : FTL {
 		hasJumpdrives = ai.empire.isUnlocked(jumpdriveSubsystem);
 		hasGates = ai.empire.isUnlocked(gateSubsystem);
 		hasFling = ai.empire.HasFling >= 1;
+		hasSlipstreams = ai.empire.isUnlocked(slipstreamSubsystem);
 	}
 };
 

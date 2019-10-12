@@ -914,15 +914,15 @@ RACE_WANDI_TAGLINE: The wanderers.
 RACE_WANDI_LORE: <<|
 	Fellow wanderers, I am giving this speech in my capacity as leader of what remains of our government:
 
-	Ever since we started our space program the allure of the infinite cosmos was clear. Yet did we expand our borders and venture onto new land? No!
+	When we broke away from the Terran empire so long ago the allure of the infinite cosmos was clear. Yet did we expand our borders and venture onto new land? No!
 
-	We thought it better to take our familiar world to the unknown than to leave this cradle.
+	We thought it better to take our familiar world to the unknown.
 
-	Yesterday there was a sighting of a powerful ship from an empire far more sophisticated than us. It is essential that we expand in order to survive, lest our only world be destroyed and us with it. Now is the time to settle on new land, see new wonders, and with new vigour.
+	But yesterday there was a sighting of a powerful ship from an empire far more sophisticated than us. It is essential that we expand in order to survive, lest our only world be destroyed and us with it. Now is the time to settle on new land and leave this cradle.
 
-	I have always wondered why every star system is so much empty space, perhaps we can use our wandering technology to build the greatest and richest system to ever exist? Never have we even seen [i]signs[/i] of fallen empires that learnt to move the planets themselves. I suggest we accept our nature and make all of our new land wander, no matter the cost.
+	I have always wondered why every star system is so much empty space, perhaps we can use our wandering technology to build the greatest and richest system to ever exist? Never have we even seen [b]signs[/b] of fallen empires that could move the planets themselves. I suggest we accept our nature and make all of our new land wander, no matter the cost.
 
-	The system we are arriving in as I finish this speech shall be our new home. Here we will finally become a multi planetary species and avoid the ever increasing risk of extinction!
+	The system we are arriving in as I finish this speech shall be our new beginning. Here we will finally become a multi planetary species and avoid the ever increasing risk of extinction!
 >>
 
 HELP_ANCIENT: <<
