@@ -78,13 +78,26 @@ class Improvement : AIComponent {
 				if (planet.get_Biome0() != atmosphere) {
 					continue;
 				}
-				if (planet.getStatusStackCountAny(moon_base) > 0) {
-					// TODO: Check if we need more space to build on this planet
-					// in which case make more moon bases
+				if (planet.getStatusStackCountAny(moon_base) > 0 && !plAI.failedGasGiantBuild) {
+					// If we already have a moon base and haven't attempted
+					// and failed to build anything on this planet we don't need
+					// more
+					continue;
+				}
+				if (planet.moonCount >= planet.getStatusStackCountAny(moon_base)) {
+					// can't build more moon bases
 					continue;
 				}
 				if (!planets.isConstructing(planet, build_moon_base)) {
-					// just build first moon base on gas giants for v1
+					// This is always high priority because we either have no
+					// moon base in which case we can't build anything
+					// or we already tried to build something and don't have
+					// enough moon bases
+					if (log && planet.getStatusStackCountAny(moon_base) > 1) {
+						ai.print("Building additional moon base at " + planet.name);
+					}
+					// Set the flag back
+					plAI.failedGasGiantBuild = false;
 					planets.requestConstruction(
 						plAI, planet, build_moon_base, priority=3, expire=gameTime + 600, moneyType=BT_Development);
 						// only build one thing each tick so the empire

@@ -176,11 +176,23 @@ final class ConstructionRequest {
 };
 // [[ MODIFY BASE GAME END ]]
 
+// [[ MODIFY BASE GAME START ]]
+// only set to stop the AI doing silly things like building Megafarms and
+// Hydrogenerators on Gas Giants on atmosphere biomes
+// Most penalties from a quick playthough are 0-10, the first atmosphere
+// biome build I observed had a penalty of 906 so this should be
+// very linearly seperable
+int MAX_ACCEPTABLE_PENALTY = 200;
+// [[ MODIFY BASE GAME END ]]
+
 final class PlanetAI {
 	Planet@ obj;
 	int targetLevel = 0;
 	int requestedLevel = 0;
 	double prevTick = 0;
+	// [[ MODIFY BASE GAME START ]]
+	bool failedGasGiantBuild = false;
+	// [[ MODIFY BASE GAME END ]]
 	array<ExportData@>@ resources;
 	ImportData@ claimedChain;
 
@@ -193,6 +205,7 @@ final class PlanetAI {
 		file << targetLevel;
 		file << requestedLevel;
 		file << prevTick;
+		file << failedGasGiantBuild;
 
 		uint cnt = 0;
 		if(resources !is null)
@@ -208,6 +221,7 @@ final class PlanetAI {
 		file >> targetLevel;
 		file >> requestedLevel;
 		file >> prevTick;
+		file >> failedGasGiantBuild;
 		uint cnt = 0;
 		file >> cnt;
 		@resources = array<ExportData@>();
@@ -386,7 +400,9 @@ final class PlanetAI {
 			}
 		}
 
-		if(bestPenalty != INT_MAX) {
+		// [[ MODIFY BASE GAME START ]]
+		if (bestPenalty < MAX_ACCEPTABLE_PENALTY) {
+			// [[ MODIFY BASE GAME END ]]
 			if(planets.log)
 				ai.print("Construct "+type.name+" at "+best+" with penalty "+bestPenalty, obj);
 			obj.buildBuilding(type.id, best);

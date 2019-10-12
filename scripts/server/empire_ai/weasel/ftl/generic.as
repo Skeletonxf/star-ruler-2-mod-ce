@@ -923,7 +923,9 @@ class FTLGeneric : FTL {
 
 		if (travelMethod == TRAVEL_JUMPDRIVE) {
 			if (makeDoubleHop) {
-				ai.print("Making double hop");
+				if (log) {
+					ai.print("Making double hop");
+				}
 				ord.obj.addJumpdriveOrder(doubleHopPosition);
 				ord.obj.addJumpdriveOrder(toPosition, append=true);
 				return F_Continue;

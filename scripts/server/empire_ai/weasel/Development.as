@@ -130,6 +130,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	const ConstructionType@ uplift_planet;
 	const ConstructionType@ genocide_planet;
 	bool no_uplift = false;
+	uint atmosphere = 0;
 	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
@@ -158,6 +159,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 		@uplift_planet = getConstructionType("SharePlanet");
 		@genocide_planet = getConstructionType("TakePlanet");
 		no_uplift = ai.empire.hasTrait(getTraitID("Ancient"));
+		atmosphere = getBiomeID("Atmosphere");
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -673,6 +675,18 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 			if(build.canceled) {
 				genericBuilds.removeAt(i);
 				--i; --cnt;
+				// [[ MODIFY BASE GAME START ]]
+				if (build.plAI.obj.get_Biome0() == atmosphere) {
+					// our build failed on this gas giant,
+					// probably because we ran out of space
+					// and there are probably moons we can still start
+					// a moon base with here
+					// Set a flag so we can consider building another
+					// moon base on this planet from the Improvement.as
+					// focus phase
+					build.plAI.failedGasGiantBuild = true;
+				}
+				// [[ MODIFY BASE GAME END ]]
 			}
 			else if(build.built) {
 				if(build.getProgress() >= 1.f) {
