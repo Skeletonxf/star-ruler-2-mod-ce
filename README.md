@@ -29,7 +29,6 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
 - WIP Fixes for bugs that have been introduced by new features (blocking alpha release)
   - Conditions mistakenly appearing on post map generated planets
   - Prevent dillemas occuring in homesystems or multiple times
-  - Stop incorrect biome based constructions being available on Gas Giants
   - FTL research votes occuring multiple times after previously passing
 - Not planned for alpha release
   - Stations that can hold population
