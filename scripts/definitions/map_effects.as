@@ -526,30 +526,31 @@ class MakePlanet : MapHook {
 		// Give frozen ice status to all planets with ice biomes
 		// `hasBiome(getBiomeID("Ice"))`` checks don't seem to ever return true?
 		// check each of the three biomes instead to determine suitability
-		uint ice = getBiomeID("Ice");
-		uint ocean = getBiomeID("Oceanic");
-		if (biome1.id == ice || biome2.id == ice || biome3.id == ice) {
-			planet.addStatus(getStatusID("FrozenIce"));
-		}
-		if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean ||
-				biome1.id == ice || biome2.id == ice || biome3.id == ice) {
-			if (randomd() < 0.4) {
-				// `resource` is often null here even for planets that generate
-				// with a resource?
-				// instead add a status which will check for scalable or high
-				// level resource on this planet and then add nativelife
-				// if so. This ensures native life is always a dillema
-				// as it never generates on a planet where the resource is
-				// worth giving up.
-				planet.addStatus(getStatusID("PossibleNativeLife"));
-			} else {
-				if (randomd() < 0.1) {
-					planet.addStatus(getStatusID("PrimitiveLife"));
-				}
-			}
-		}
 		if (gas.boolean) {
 			planet.addStatus(getStatusID("GasGiant"));
+		} else {
+			uint ice = getBiomeID("Ice");
+			uint ocean = getBiomeID("Oceanic");
+			if (biome1.id == ice || biome2.id == ice || biome3.id == ice) {
+				planet.addStatus(getStatusID("FrozenIce"));
+			}
+			if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean ||
+					biome1.id == ice || biome2.id == ice || biome3.id == ice) {
+				if (randomd() < 0.4) {
+					// `resource` is often null here even for planets that generate
+					// with a resource?
+					// instead add a status which will check for scalable or high
+					// level resource on this planet and then add nativelife
+					// if so. This ensures native life is always a dillema
+					// as it never generates on a planet where the resource is
+					// worth giving up.
+					planet.addStatus(getStatusID("PossibleNativeLife"));
+				} else {
+					if (randomd() < 0.1) {
+						planet.addStatus(getStatusID("PrimitiveLife"));
+					}
+				}
+			}
 		}
 		// [[ MODIFY BASE GAME END ]]
 
