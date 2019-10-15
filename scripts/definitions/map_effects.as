@@ -534,20 +534,24 @@ class MakePlanet : MapHook {
 			if (biome1.id == ice || biome2.id == ice || biome3.id == ice) {
 				planet.addStatus(getStatusID("FrozenIce"));
 			}
-			if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean ||
-					biome1.id == ice || biome2.id == ice || biome3.id == ice) {
-				if (randomd() < 0.4) {
-					// `resource` is often null here even for planets that generate
-					// with a resource?
-					// instead add a status which will check for scalable or high
-					// level resource on this planet and then add nativelife
-					// if so. This ensures native life is always a dillema
-					// as it never generates on a planet where the resource is
-					// worth giving up.
-					planet.addStatus(getStatusID("PossibleNativeLife"));
-				} else {
-					if (randomd() < 0.1) {
-						planet.addStatus(getStatusID("PrimitiveLife"));
+			if (gameTime < 60) {
+				// only apply native and primitive life to planets generated
+				// at game start, not later through artifacts or expeditions
+				if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean ||
+						biome1.id == ice || biome2.id == ice || biome3.id == ice) {
+					if (randomd() < 0.4) {
+						// `resource` is often null here even for planets that generate
+						// with a resource?
+						// instead add a status which will check for scalable or high
+						// level resource on this planet and then add nativelife
+						// if so. This ensures native life is always a dillema
+						// as it never generates on a planet where the resource is
+						// worth giving up.
+						planet.addStatus(getStatusID("PossibleNativeLife"));
+					} else {
+						if (randomd() < 0.1) {
+							planet.addStatus(getStatusID("PrimitiveLife"));
+						}
 					}
 				}
 			}

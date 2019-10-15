@@ -27,7 +27,6 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
   - AI can handle having multiple FTL abilities unlocked at once
     - Many more improvements on AI FTL usage planned
 - WIP Fixes for bugs that have been introduced by new features (blocking alpha release)
-  - Conditions mistakenly appearing on post map generated planets
   - Prevent dillemas occuring multiple times
   - FTL research votes occuring multiple times after previously passing
 - Not planned for alpha release
