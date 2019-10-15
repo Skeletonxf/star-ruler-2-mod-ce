@@ -1,0 +1,5 @@
+Trait: AllPlayers
+	Description: Hidden trait applied to all players to tweak things for every empire
+	Available: False
+	TriggerHomeworld(RemoveStatus(PossibleNativeLife))
+	TriggerHomeworld(RemoveStatus(NativeLife))

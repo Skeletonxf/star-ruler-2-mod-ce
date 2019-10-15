@@ -28,7 +28,7 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
     - Many more improvements on AI FTL usage planned
 - WIP Fixes for bugs that have been introduced by new features (blocking alpha release)
   - Conditions mistakenly appearing on post map generated planets
-  - Prevent dillemas occuring in homesystems or multiple times
+  - Prevent dillemas occuring multiple times
   - FTL research votes occuring multiple times after previously passing
 - Not planned for alpha release
   - Stations that can hold population
@@ -36,5 +36,5 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
   - Mechanoid support for main dillema
   - AI code to understand biome constructions
   - AI code to build orbitals like Outposts and Stations
-  
+
   Version alpha is still weeks away and then I will have to playtest to get any idea of balancing. I do not recommend playing any serious games with this mod yet as it is far from ready.
