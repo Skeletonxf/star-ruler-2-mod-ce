@@ -26,9 +26,9 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
   - AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to
   - AI can handle having multiple FTL abilities unlocked at once
     - Many more improvements on AI FTL usage planned
-- WIP Fixes for bugs that have been introduced by new features (blocking alpha release)
+- WIP (blocking alpha release)
   - Prevent dillemas occuring multiple times
-  - FTL research votes occuring multiple times after previously passing
+  - Teach AI to build/unlock FLT Extractors when it needs more FTL income
 - Not planned for alpha release
   - Stations that can hold population
   - Colonisation ships similar to Motherships for other races
