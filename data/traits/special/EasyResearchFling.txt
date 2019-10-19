@@ -1,0 +1,7 @@
+Trait: EasyResearchFling
+	Description: Makes this empire able to obtain fling beacons through an alternative research unlock path
+	Available: False
+	Category: RandomFTLEasyResearch
+	Conflict: Fling
+	Unique: RandomFTLEasyResearch
+	ReplaceTechnologyNodes(AlternativeFTLUnlock, SysFling)

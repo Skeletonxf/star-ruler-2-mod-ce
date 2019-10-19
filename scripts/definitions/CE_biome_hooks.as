@@ -95,7 +95,6 @@ class CancelIfAnyAttributeGT : InfluenceVoteEffect {
 		for (uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
 			Empire@ emp = getEmpire(i);
 			if (emp.getAttribute(attribute.integer) > value.decimal) {
-				print('cancelled vote');
 				vote.end(false, true);
 				return false;
 			}

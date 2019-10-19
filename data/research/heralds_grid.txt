@@ -10,11 +10,9 @@ Grid: Heralds
 	ShieldGen: -2,5
 	ShieldReg: -1,6
 	ShieldCap: -1,7
-	ShieldCap2: -2,8
 	ShieldReg2: -1,8
 	ShieldCap: 0,10
 	PowerGeneration: -3,5
-	ShieldHardener: -2,7
 	ShieldReg: 0,9
 	Health: 0,-1
 	StationMaintenance: -1,-6
@@ -285,3 +283,6 @@ Grid: Heralds
 	HighEnergyHurdle: -6,14
 	FTL2: -6,15
 	FTLCost: -7,15
+	ShieldCap2: -2,8
+	ShieldHardener: -2,7
+	AlternativeFTLUnlock: -2,9

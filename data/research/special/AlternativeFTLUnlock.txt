@@ -1,0 +1,6 @@
+Technology: AlternativeFTLUnlock
+	Class: Unlock
+	Icon: FtlIcon
+	Color: #76d0de
+	Blurb: This will be replaced at game start with a random FTL technology unlock the empire does not have.
+	Name: Alt FTL Unlock

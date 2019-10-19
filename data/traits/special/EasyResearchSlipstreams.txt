@@ -1,0 +1,7 @@
+Trait: EasyResearchSlipstreams
+	Description: Makes this empire able to obtain slipstreams through an alternative research unlock path
+	Conflict: Slipstream
+	Available: False
+	Category: RandomFTLEasyResearch
+	Unique: RandomFTLEasyResearch
+	ReplaceTechnologyNodes(AlternativeFTLUnlock, SysSlipstream)

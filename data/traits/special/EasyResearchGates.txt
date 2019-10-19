@@ -1,0 +1,7 @@
+Trait: EasyResearchGates
+	Description: Makes this empire able to obtain gates through an alternative research unlock path
+	Conflict: Gate
+	Available: False
+	Category: RandomFTLEasyResearch
+	Unique: RandomFTLEasyResearch
+	ReplaceTechnologyNodes(AlternativeFTLUnlock, SysGateModule)

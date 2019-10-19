@@ -1,0 +1,8 @@
+Trait: EasyResearchJumpdrives
+	Description: Makes this empire able to obtain jumpdrives through an alternative research unlock path
+	Conflict: Hyperdrive
+	Conflict: Jumpdrive
+	Available: False
+	Category: RandomFTLEasyResearch
+	Unique: RandomFTLEasyResearch
+	ReplaceTechnologyNodes(AlternativeFTLUnlock, SysJumpdrive)
