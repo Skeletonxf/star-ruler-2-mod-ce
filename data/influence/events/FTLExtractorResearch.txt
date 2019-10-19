@@ -10,6 +10,8 @@ Vote: FTLExtractorResearch
 
 
 	AI: BenefitRace()
+	AddStartWeight(3)
+	CE_biome_hooks::CancelIfAnyAttributeGT(ResearchUnlockedExtractor, Value = 0)
 	CreateEffect(pass, FTLExtractorResearch)
 Effect: FTLExtractorResearch
 	Name: #FTL_EXTRACTOR_RESEARCH
@@ -17,4 +19,6 @@ Effect: FTLExtractorResearch
 	Dismissable: False
 	Icon: FtlIcon
 	Color: #76d0de
+
+	ModAttributeAll(ResearchUnlockedExtractor, Add, 1)
 	OnAllEmpires(CE_biome_hooks::UnlockTag(HasFTLExtractor))

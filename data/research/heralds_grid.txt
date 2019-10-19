@@ -189,18 +189,6 @@ Grid: Heralds
 	Population: -6,-3
 	Laboratories: -6,-4
 	ShieldReg2: 1,11
-	FTLHurdle: -7,10
-	FTL: -3,15
-	FTL: -6,12
-	DevFTL: -4,14
-	FTLHurdle: -2,13
-	FTLHurdle: -6,11
-	SoftFTLHurdle: -6,14
-	SoftFTLHurdle: -5,15
-	SoftFTLHurdle: -2,15
-	HighEnergyHurdle: -6,16
-	FTLHurdle: -7,17
-	FTLCost: -8,17
 	MoneyHurdle: 3,-11
 	FTLHurdle: 3,-12
 	KeyBuildCost: 3,-13
@@ -222,14 +210,8 @@ Grid: Heralds
 	EnergyStorage: -11,9
 	Ringworld: -6,-16
 	InfluenceHurdle: -6,-15
-	SysHyperdrive: -8,11
-	SysJumpdrive: -7,13
-	SysGateModule: -6,15
-	SysSlipstream: -1,14
-	SysFling: -4,15
 	InfiniteThrust: 5,10
 	GravitonChanneling: 5,9
-	FTL2: -6,18
 	ImpImpConstructionRate: -2,0
 	ImpImpConstructionRate: -4,1
 	ImpImpConstructionRate: -7,-2
@@ -262,21 +244,11 @@ Grid: Heralds
 	EnergyStorage: -7,5
 	Energy: -9,6
 	FTL: -3,9
-	FTLHurdle: -4,13
-	HighEnergyHurdle: -3,12
-	FTLHurdle: -3,11
-	SoftFTLHurdle: -7,12
-	HighEnergyHurdle: -2,12
-	HighEnergyHurdle: -6,10
-	FTLHurdle: -6,9
 	FTL: -4,8
 	DevFTL: -3,8
 	SysWarpdrive: -5,7
 	Energy: -3,6
 	FTL: -4,7
-	HyperfieldSequencing: -9,11
-	EnergyHurdle: -5,8
-	EnergyHurdle: -2,10
 	FTLCost: -3,7
 	ImpDecaySpeed: -4,-9
 	LowPowerShipComputer: 1,-2
@@ -293,3 +265,23 @@ Grid: Heralds
 	PlanetaryEngine: 2,6
 	EnergyHurdle: 3,10
 	GravitonCondenser: 3,11
+	EnergyHurdle: -4,9
+	DevFTL: -4,10
+	FTLHurdle: -5,10
+	FTLHurdle: -4,11
+	SysSlipstream: -1,12
+	FTL: -2,12
+	SysFling: -3,14
+	DevFTL: -4,13
+	EnergyHurdle: -6,11
+	EnergyHurdle: -3,12
+	FTL: -7,11
+	SysHyperdrive: -7,12
+	HyperfieldSequencing: -8,12
+	SysJumpdrive: -7,10
+	SoftFTLHurdle: -5,12
+	FTLHurdle: -5,13
+	SysGateModule: -6,13
+	HighEnergyHurdle: -6,14
+	FTL2: -6,15
+	FTLCost: -7,15

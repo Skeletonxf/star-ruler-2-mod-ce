@@ -5,12 +5,13 @@ Vote: WarpdriveResearch
 	Color: #76d0de
 	Icon: Jumpdrive * ccaaff
 
-	AddStartWeight(-2)
+	AddStartWeight(-1)
 
 
 
 
 	AI: BenefitRace()
+	CE_biome_hooks::CancelIfAnyAttributeGT(ResearchUnlockedWarpdrive, Value = 0)
 	CreateEffect(pass, WarpdriveResearch)
 Effect: WarpdriveResearch
 	Name: #WARPDRIVE_RESEARCH
@@ -18,4 +19,5 @@ Effect: WarpdriveResearch
 	Dismissable: False
 	Icon: Jumpdrive * ccaaff
 	Color: #76d0de
+	ModAttributeAll(ResearchUnlockedWarpdrive, Add, 1)
 	OnAllEmpires(CE_biome_hooks::UnlockSubsystem(Warpdrive))

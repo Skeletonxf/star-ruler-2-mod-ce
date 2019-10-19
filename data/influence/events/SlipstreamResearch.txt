@@ -11,6 +11,7 @@ Vote: SlipstreamResearch
 
 
 	AI: BenefitRace()
+	CE_biome_hooks::CancelIfAnyAttributeGT(ResearchUnlockedSlipstream, Value = 0)
 	CreateEffect(pass, GateResearch)
 Effect: SlipstreamResearch
 	Name: #SLIPSTREAM_RESEARCH
@@ -18,4 +19,5 @@ Effect: SlipstreamResearch
 	Dismissable: False
 	Icon: GuiOrbitalIcons::4
 	Color: #cf5fde
+	ModAttributeAll(ResearchUnlockedSlipstream, Add, 1)
 	OnAllEmpires(CE_biome_hooks::UnlockSubsystem(Slipstream))

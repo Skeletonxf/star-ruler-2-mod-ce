@@ -11,6 +11,7 @@ Vote: FlingResearch
 
 
 	AI: BenefitRace()
+	CE_biome_hooks::CancelIfAnyAttributeGT(ResearchUnlockedFling, Value = 0)
 	CreateEffect(pass, FlingResearch)
 Effect: FlingResearch
 	Name: #FLING_RESEARCH
@@ -18,5 +19,6 @@ Effect: FlingResearch
 	Dismissable: False
 	Icon: GuiOrbitalIcons::2
 	Color: #cf5fde
+	ModAttributeAll(ResearchUnlockedFling, Add, 1)
 	OnAllEmpires(ModEmpireAttribute(HasFling, Add, 1))
 	OnAllEmpires(CE_biome_hooks::UnlockTag(HasFling))

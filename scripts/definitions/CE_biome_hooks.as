@@ -5,6 +5,8 @@ import repeat_hooks;
 from generic_effects import GenericEffect;
 import biomes;
 
+// TODO: Rename as no longer just biomes
+
 class SwapBiome : GenericEffect, TriggerableGeneric {
 		Document doc("Changes a biome on a planet to a new one");
 		Argument old_biome(AT_PlanetBiome, doc="old biome");
@@ -62,6 +64,43 @@ class UnlockTag : EmpireEffect {
 #section server
 	void enable(Empire& owner, any@ data) const override {
 		owner.setTagUnlocked(tag.integer, true);
+	}
+#section all
+};
+
+class CancelIfAttributeGT : InfluenceVoteEffect {
+	Document doc("Cancel the vote if the owner's attribute is too high.");
+	Argument attribute(AT_EmpAttribute, doc="Attribute to check.");
+	Argument value(AT_Decimal, "1", doc="Value to test against.");
+
+#section server
+	bool onTick(InfluenceVote@ vote, double time) const override {
+		Empire@ owner = vote.startedBy;
+		if(owner is null || !owner.valid)
+			return false;
+		if(owner.getAttribute(attribute.integer) > value.decimal)
+			vote.end(false, true);
+		return false;
+	}
+#section all
+};
+
+class CancelIfAnyAttributeGT : InfluenceVoteEffect {
+	Document doc("Cancel the vote if any empires's attribute is too high. Works with ownerless votes");
+	Argument attribute(AT_EmpAttribute, doc="Attribute to check.");
+	Argument value(AT_Decimal, "1", doc="Value to test against.");
+
+#section server
+	bool onTick(InfluenceVote@ vote, double time) const override {
+		for (uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
+			Empire@ emp = getEmpire(i);
+			if (emp.getAttribute(attribute.integer) > value.decimal) {
+				print('cancelled vote');
+				vote.end(false, true);
+				return false;
+			}
+		}
+		return false;
 	}
 #section all
 };

@@ -9,8 +9,8 @@ Technology: CelestialStationMaintenance
 	Category: Special Upgrades
 	Class: BigUpgrade
 
-	Point Cost: 1000
-	Time Cost: 160
+	Point Cost:
+	Time Cost:
 	Default Unlock: True
 
 
@@ -18,10 +18,9 @@ Technology: CelestialBldPlanetaryEngine
 	Name: #R_BLD_PLANET_ENGINE
 	Description: #R_BLD_PLANET_ENGINE_DESC
 
-	Point Cost: 2000
-	Time Cost: 180
+	Point Cost:
+	Time Cost:
 
 	Icon: HexagonSubsystems::10
 	Color: #00f3ff
 	Default Unlock: True
-

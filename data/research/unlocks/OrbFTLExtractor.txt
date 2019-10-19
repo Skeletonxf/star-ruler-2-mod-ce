@@ -9,8 +9,8 @@ Technology: OrbFTLExtractor
 	>>
 	Class: Unlock
 
-	Point Cost: 800
-	Time Cost: 120
+	Point Cost: 250
+	Time Cost: 40
 
 	Icon: FtlIcon
 	Color: #76d0de
@@ -19,4 +19,4 @@ Technology: OrbFTLExtractor
 	SkipOnUnlockedTag(HasFTLExtractor)
 	UnlockTag(HasFTLExtractor)
 	StartVote(FTLExtractorResearch, Start Ownerless = True)
-	SecondaryFTLCost(500)
+	SecondaryFTLCost(250)
