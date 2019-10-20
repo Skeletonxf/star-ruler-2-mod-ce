@@ -119,6 +119,9 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	array<ExportData@> aiResources;
 
 	double aimFTLStorage = 0.0;
+	// [[ MODIFY BASE GAME START ]]
+	double aimFTLIncome = 1.0;
+	// [[ MODIFY BASE GAME END ]]
 
 	bool managePlanetPressure = true;
 	bool manageAsteroidPressure = true;
@@ -184,6 +187,9 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 
 	void save(SaveFile& file) {
 		file << aimFTLStorage;
+		// [[ MODIFY BASE GAME START ]]
+		file << aimFTLIncome;
+		// [[ MODIFY BASE GAME END ]]
 
 		uint cnt = focuses.length;
 		file << cnt;
@@ -220,6 +226,9 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 
 	void load(SaveFile& file) {
 		file >> aimFTLStorage;
+		// [[ MODIFY BASE GAME START ]]
+		file >> aimFTLIncome;
+		// [[ MODIFY BASE GAME END ]]
 
 		uint cnt = 0;
 		file >> cnt;
@@ -275,6 +284,24 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 			return false;
 		return true;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	/*
+	 * Mirror the requestsFTLStorage method except this will primarily
+	 * be acted on by Improvement.as rather than buildings.as as only Mechanoid
+	 * has an FTL income building
+	 * TODO: Make Mechanoid AI act on this with Breeder Reactors instead of
+	 * orbitals
+	 */
+	bool requestsFTLIncome() {
+		double income = ai.empire.FTLIncome;
+		double unused = income - ai.empire.FTLUse;
+		if (unused < aimFTLIncome) {
+			return true;
+		}
+		return false;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	bool isBuilding(const BuildingType& type) {
 		for(uint i = 0, cnt = genericBuilds.length; i < cnt; ++i) {

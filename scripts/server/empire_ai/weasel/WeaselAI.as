@@ -345,7 +345,7 @@ final class AIDefs {
 	const BuildingType@ LaborStorage;
 	const OrbitalModule@ Shipyard;
 	// [[ MODIFY BASE GAME START ]]
-	// need to add ability to make outposts and moon bases
+	// need to add ability to make outposts
 	// [[ MODIFY BASE GAME END ]]
 };
 

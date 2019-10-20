@@ -14,6 +14,8 @@ import empire_ai.weasel.Fleets;
  * TODO: Aim for FTL income in same way as FTL storage
  * TODO: Avoid placing slipstreams/gates and fling beacons in the same systems
  * TODO: Use slipstreams to improve colonisation speed
+ * TODO: Fling/tug stations to offensively attack other empires's eco
+ * TODO: Use slipstreams to move asteroids/orbitals/stations
  */
 
 // Fling data
@@ -1031,8 +1033,8 @@ class FTLGeneric : FTL {
 		development.aimFTLStorage = max(
 			highestCost / (1.0 - ai.behavior.ftlReservePctCritical - ai.behavior.ftlReservePctNormal),
 			mostSSCost);
-
-		// TODO: Make AI aim for FTL income at some level
+		// Try to have more income as FTL storage is increased
+		development.aimFTLIncome = 1 + (max(development.aimFTLStorage - 250, 0.0) / 500);
 	}
 
 	void designGateIfNone() {
@@ -1476,7 +1478,7 @@ class FTLGeneric : FTL {
 				} else {
 					// if we have less than 2 gates try to make another
 					// gate as a single gate is useless
-					nextBuildTryGate = gameTime + 60.0;
+					nextBuildTryGate = gameTime + 1.0;
 					nextBuildTryFling = gameTime + 120.0;
 				}
 			}

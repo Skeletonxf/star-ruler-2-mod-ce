@@ -8,10 +8,14 @@ import empire_ai.weasel.Orbitals;
 import empire_ai.weasel.Construction;
 import empire_ai.weasel.Systems;
 import empire_ai.weasel.Budget;
+import empire_ai.weasel.Military;
 
 import biomes;
 
 from traits import getTraitID;
+from orbitals import getOrbitalModuleID;
+
+const double FTL_EXTRACTOR_MIN_HELD_BASE_TIMER = 3 * 60.0;
 
 class Improvement : AIComponent {
 	Planets@ planets;
@@ -22,11 +26,17 @@ class Improvement : AIComponent {
 	Construction@ construction;
 	Systems@ systems;
 	Budget@ budget;
+	Military@ military;
 
 	uint atmosphere = 0;
 	int moon_base = -1;
 	const ConstructionType@ build_moon_base;
 	bool no_build_moon_bases = false;
+
+	int ftlExtractorModuleID = -1;
+	bool ftlExtractorsUnlocked = false;
+
+	AllocateConstruction@ extractorBuild = null;
 
 	void create() {
 		@planets = cast<Planets>(ai.planets);
@@ -37,20 +47,23 @@ class Improvement : AIComponent {
 	    @construction = cast<Construction>(ai.construction);
 		@systems = cast<Systems>(ai.systems);
 	    @budget = cast<Budget>(ai.budget);
+		@military = cast<Military>(ai.military);
 
 		// cache lookups
 		atmosphere = getBiomeID("Atmosphere");
 		moon_base = getStatusID("MoonBase");
 		@build_moon_base = getConstructionType("MoonBase");
 		no_build_moon_bases = ai.empire.hasTrait(getTraitID("Ancient")) || ai.empire.hasTrait(getTraitID("StarChildren"));
+		ftlExtractorModuleID = getOrbitalModuleID("FTLExtractor");
+		ftlExtractorsUnlocked = ai.empire.FTLExtractorsUnlocked >= 1;
 	}
 
 	void save(SaveFile& file) {
-		// TODO
+		construction.saveConstruction(file, extractorBuild);
 	}
 
 	void load(SaveFile& file) {
-		// TODO
+		@extractorBuild = construction.loadConstruction(file);
 	}
 
 	void start() {
@@ -59,6 +72,14 @@ class Improvement : AIComponent {
 
 	void focusTick(double time) override {
 		// looks like this is where we should perform actions?
+		lookToBuildGasGiants();
+
+		// check again to see if we unlocked FTL Extractors
+		ftlExtractorsUnlocked = ai.empire.FTLExtractorsUnlocked >= 1;
+		lookToBuildFTLExtractors();
+	}
+
+	void lookToBuildGasGiants() {
 		// check for any gas giants we have no moon bases on
 		if (budget.canSpend(BT_Development, 500)) {
 			for(uint i = 0, cnt = planets.planets.length; i < cnt; ++i) {
@@ -108,8 +129,76 @@ class Improvement : AIComponent {
 		}
 	}
 
+	void lookToBuildFTLExtractors() {
+		if (!development.requestsFTLIncome()) {
+			return;
+		}
+
+		if (!ftlExtractorsUnlocked) {
+			// TODO: Queue up the research for Extractors
+			return;
+		}
+
+		if (extractorBuild !is null) {
+			// Don't try to build a second extractor while first is in progress
+			return;
+		}
+
+		if (!budget.canSpend(BT_Military, 300, 50)) {
+			// TODO: Pull these values from the orbital module rather than
+			// hardcoding
+			return;
+		}
+
+		// Try to find a staging base to build this orbital at as they are
+		// easily shot down if not protected
+		for (uint i = 0, cnt = military.stagingBases.length; i < cnt; ++i) {
+			auto@ base = military.stagingBases[i];
+			if (base.occupiedTime < FTL_EXTRACTOR_MIN_HELD_BASE_TIMER) {
+				continue;
+			}
+
+			auto@ factory = construction.getFactory(base.region);
+			if (factory is null) {
+				continue;
+			}
+
+			if (factory.busy) {
+				continue;
+			}
+
+			if (!factory.obj.canBuildOrbitals) {
+				continue;
+			}
+
+			// TODO: Should this be military money?
+			BuildOrbital@ buildPlan = construction.buildLocalOrbital(getOrbitalModule(ftlExtractorModuleID));
+
+			@extractorBuild = construction.buildNow(buildPlan, factory);
+			if (log) {
+				ai.print("Creating FTL Extractor", base.region);
+			}
+			return;
+		}
+	}
+
 	void tick(double time) override {
 		// TODO
+	}
+
+	void turn() override {
+		// Check the progress of building FTL Extractors once per budget cycle
+		if (extractorBuild !is null) {
+			if (extractorBuild.completed) {
+				@extractorBuild = null;
+			} else {
+				if (!extractorBuild.started) {
+					// assume it failed
+					construction.cancel(extractorBuild);
+					@extractorBuild = null;
+				}
+			}
+		}
 	}
 }
 

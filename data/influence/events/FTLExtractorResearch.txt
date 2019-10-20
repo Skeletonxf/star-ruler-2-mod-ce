@@ -20,5 +20,6 @@ Effect: FTLExtractorResearch
 	Icon: FtlIcon
 	Color: #76d0de
 
+	ModAttributeAll(FTLExtractorsUnlocked, Add, 1)
 	ModAttributeAll(ResearchUnlockedExtractor, Add, 1)
 	OnAllEmpires(CE_biome_hooks::UnlockTag(HasFTLExtractor))

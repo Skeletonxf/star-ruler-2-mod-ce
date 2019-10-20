@@ -26,14 +26,16 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
   - AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to
   - AI can handle having multiple FTL abilities unlocked at once
     - Many more improvements on AI FTL usage planned
-- WIP (blocking alpha release)
-  - Prevent dillemas occuring multiple times
-  - Teach AI to build/unlock FLT Extractors when it needs more FTL income
+  - AI will build FTL income orbitals if it needs more FTL income
 - Not planned for alpha release
   - Stations that can hold population
   - Colonisation ships similar to Motherships for other races
   - Mechanoid support for main dillema
   - AI code to understand biome constructions
   - AI code to build orbitals like Outposts and Stations
+  - Teach AI to scuttle unneeded FTL income orbitals
+  - Prevent dillemas occuring multiple times
+  - Teach AI to research FTL income orbitals if it wants to build them
+  - Teach Mechanoid AI to use FTL Breeder Reactors
 
   Version alpha is still weeks away and then I will have to playtest to get any idea of balancing. I do not recommend playing any serious games with this mod yet as it is far from ready.

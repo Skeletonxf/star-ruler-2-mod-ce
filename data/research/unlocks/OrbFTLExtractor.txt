@@ -16,6 +16,7 @@ Technology: OrbFTLExtractor
 	Color: #76d0de
 
 
+	ModAttribute(FTLExtractorsUnlocked, Add, 1)
 	SkipOnUnlockedTag(HasFTLExtractor)
 	UnlockTag(HasFTLExtractor)
 	StartVote(FTLExtractorResearch, Start Ownerless = True)
