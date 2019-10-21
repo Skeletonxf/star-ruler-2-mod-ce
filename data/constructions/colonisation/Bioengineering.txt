@@ -1,5 +1,5 @@
 Construction: Bioengineering
-	Name: Crop bioengineering
+	Name: #DEVELOP_FOREST_FOOD
 	Description: <<
 		Develops an unexportable food resource using the planet's forest to bioengineer food suited to the environment.
 		If the planet has any rock biomes they will be developed into forest.

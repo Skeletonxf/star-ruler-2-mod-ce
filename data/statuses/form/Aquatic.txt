@@ -1,4 +1,4 @@
 Status: Aquatic
 	Name: Aquatic
 	Visible To: Nobody
-	IfNativeClass(WaterType, AddDummyResource(Soylent1, Base Chain Only = True))
+	IfHaveStatus(WaterBiome, AddStatus(Happy))

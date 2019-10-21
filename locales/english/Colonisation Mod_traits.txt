@@ -5,15 +5,15 @@ TRAIT_JUMPDRIVE_DESC: <<
 	Jumping outside of safe jump range is possible, but can cause damage to the ship and may drop the ship at an location away from the intended destination.
 >>
 TRAIT_WARPDRIVE_DESC: <<
-	[color=#aaa][i]Unlocks the Warpdrive subsystem at game start. This FTL technology can be taken additively with other FTL methods[/i][/color]
+	Unlocks the Warpdrive subsystem (for stations) at game start. This FTL technology can be taken additively with other FTL methods
 
-	[bbloc=#S_WARPDRIVE_DESC/]
+
 >>
 TRAIT_STAR_CHILDREN_DESC: [vspace=3/] [img=ResourceIcon::8;22]Population grows only on giant [b]Motherships[/b] that have construction capabilities.[/img] [vspace=3/][img=ActionBarIcons::1;22]Motherships can move population to orbital [b]Habitats[/b] around planets, letting them use the planetary resources.[/img] [vspace=3/][img=BuildingSprites::0;22]Does [b]not[/b] use ordinary planet surfaces in any way. Planets cannot construct anything.[/img] [vspace=3/][img=ResourceIcon::6;22]Resources are produced in orbit, no pressure capacity is needed. Motherships in orbit of a planet automatically gain that planet's labor income. [/img][vspace=3/][img=PlanetType::14;22]Artifical planetoids, ringworlds and planets with native population can construct buildings, develop tiles and grow population, but do not produce all resources from pressure automatically and still cannot export labor.[/img]
 WALKING: Walking
 TRAIT_TERRESTIAL_DESC: No particular effects on gameplay
 WALKING_DESC: No particular bonuses.
-AQUATIC_TRAIT: Native water resources provide food, once per planet. Ships and stations have 20% increased mass, making them slower.
+AQUATIC_TRAIT: All colonised planets with water biomes become happy. Development and building construction rates reduced 20%. Fire damage taken on ships is doubled.
 CELESTIAL_DESC: <<
 	We have always reached for the stars. First we modified our biology to survive the hostilities of space and then we learned to bend celestial objects to our very will. Perhaps we got a little obsessed along the way.
 	[vspace=6/][img=techConstruction * #30a67a;22][b]Station Sustenance[/b] is unlocked from the start and can be unlocked again (multiplying orbital maintenance decreases), replacing Megacities.[/img]

@@ -1,0 +1,13 @@
+Resource: BuildingWater
+	Name: #WATER
+	Description: #BUILDING_WATER
+	Native Biome: Oceanic
+	Class: WaterType
+
+	Icon: ResourceIconsSmall::103
+	Small Icon: ResourceIconsSmall::103
+	Display Weight: -15
+
+	Level: 0
+	Exportable: False
+	Artificial: True

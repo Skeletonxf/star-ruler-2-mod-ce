@@ -7,5 +7,9 @@ Trait: Aquatic
 	Conflict: Mechanoid
 	Conflict: Ancient
 	Order: 1
-	AddModifier(MassFactor(1.2))
+	Conflict: StarChildren
+	ModEmpireAttribute(ImperialBldConstructionRate, Multiply, 0.8)
+	ModEmpireAttribute(BuildingConstructRate, Multiply, 0.8)
+	ModEmpireAttribute(TileDevelopmentFactor, Multiply, 0.8)
+	ModEmpireAttribute(FireDamageTakenFactor, Multiply, 2)
 	AddStatusOwnedPlanets(Aquatic)

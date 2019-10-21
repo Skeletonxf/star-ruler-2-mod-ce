@@ -531,6 +531,9 @@ class MakePlanet : MapHook {
 		} else {
 			uint ice = getBiomeID("Ice");
 			uint ocean = getBiomeID("Oceanic");
+			if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean) {
+				planet.addStatus(getStatusID("WaterBiome"));
+			}
 			if (biome1.id == ice || biome2.id == ice || biome3.id == ice) {
 				planet.addStatus(getStatusID("FrozenIce"));
 			}

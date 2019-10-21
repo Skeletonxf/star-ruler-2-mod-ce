@@ -1,0 +1,13 @@
+Resource: StellarWater
+	Name: #WATER
+	Description: #STELLAR_WATER
+	Native Biome: Oceanic
+	Class: WaterType
+
+	Icon: ResourceIconsSmall::103 * 55aaff
+	Small Icon: ResourceIconsSmall::103 * 55aaff
+	Display Weight: -10
+
+	Level: 0
+	Exportable: False
+	Artificial: True

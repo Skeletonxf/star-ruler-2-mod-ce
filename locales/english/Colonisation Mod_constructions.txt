@@ -3,3 +3,4 @@ CONS_MOON_BASE_DESC: <<
 
 	Moon bases can be built infintely on fractured planets but do not increase maximum population.
 >>
+DEVELOP_FOREST_FOOD: Develop forest

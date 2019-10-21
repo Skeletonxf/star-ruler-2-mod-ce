@@ -10,3 +10,4 @@ Resource: MeltWater
 
 	Level: 0
 	Artificial: True
+	Exportable: False

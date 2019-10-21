@@ -2,3 +2,10 @@ WATER: Water
 VOLATILE_GASES: Volatile Gases
 EXPLOSIVE_GASES: Explosive Gases
 HEAVY_GASES: Heavy Gases
+STELLAR_WATER: Water obtained from a comet
+BUILDING_WATER: Water obtained from a [bbloc=#BLD_HYDROGENATOR/].
+SOYLENT1_DESC: Food obtained from a [bbloc=#BLD_FARM/].
+SOYLENT2_DESC: Food cultivated by a beacon.
+SOYLENT4_DESC: This food is definitely not people.
+FOOD: Food
+SOYLENT3_DESC: Food obtained from a [bbloc=#ORB_HYDROPONICS_SATELLITE/].

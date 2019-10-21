@@ -1,0 +1,3 @@
+Status: WaterBiome
+	Description: Added when a planet contains a water biome
+	Visible To: Nobody

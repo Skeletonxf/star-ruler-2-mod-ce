@@ -4,6 +4,6 @@ Trait: AllPlayers
 
 
 
-	AddRandomTrait(RandomFTLEasyResearch, Only Available = False)
+	ReplaceTechnologyGrid(ColonisationExpansionGrid)
 	TriggerHomeworld(RemoveStatus(PossibleNativeLife))
 	TriggerHomeworld(RemoveStatus(NativeLife))
