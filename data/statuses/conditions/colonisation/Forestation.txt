@@ -1,0 +1,17 @@
+Status: Forestation
+
+	Color: #17c757
+	Name: Forestation
+	Icon: Stalk
+	Description: <<
+		This planet is undergoing automatic forestation efforts and will gain up to 3 forested food resources in total.
+
+		[i][color=#aaa]Subsequent forestations increase planet income by 2k each time. Forestation also removes the Noxious Atmosphere debuff.[/color][/i]
+	>>
+	Collapses: True
+	RemoveAllStatus(NoxiousAtmosphere)
+	IfNative(ForestedCrop3, OnDisable(AddPlanetIncome(2)))
+	IfNative(ForestedCrop2, IfNotNative(ForestedCrop3, OnDisable(GainPlanetResource(ForestedCrop3))))
+	IfNative(ForestedCrop, IfNotNative(ForestedCrop2, OnDisable(GainPlanetResource(ForestedCrop2))))
+	IfNotNative(ForestedCrop, OnDisable(GainPlanetResource(ForestedCrop)))
+	OnEnable(TriggerGeneric(CE_biome_hooks::SwapBiome(Rock, Forest)))

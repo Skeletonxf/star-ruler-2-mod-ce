@@ -1,0 +1,3 @@
+Status: ForestablePlanet
+	Visible To: Nobody
+	WhileConsumingCargo(Forestation, 100, 60, TriggerPeriodic(AddStatus(Forestation, Duration = 29, Set Origin Empire = True, Set Origin Object = True), Trigger Immediate = True))

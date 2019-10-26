@@ -1,0 +1,16 @@
+Resource: Syrup
+	Name: #R_SYRUP
+	Description: #R_SYRUP_DESC
+	Class: Food
+	Native Biome: Forest
+	DLC: Heralds
+
+	Small Icon: ResourceIconsSmall::79
+
+	Level: 0
+	Rarity: Unique
+	Display Requirement: False
+	Blurb: #R_SYRUP_BLURB
+
+	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)
+	ModPressurePct(Influence, +0.3, +1)

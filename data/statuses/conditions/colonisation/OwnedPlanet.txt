@@ -1,0 +1,3 @@
+Status: OwnedPlanet
+	Visible To: Nobody
+	IfNotHaveTrait(Mechanoid, IfNotHaveTrait(Ancient, AddStatus(ForestablePlanet)))

@@ -1,0 +1,13 @@
+Resource: ForestedCrop2
+	Name: #FORESTED_CROP_2
+	Native Biome: Forest
+	Class: Food
+
+	Icon: ResourceIcons::4
+	Small Icon: ResourceIconsSmall::14
+	Display Weight: -10
+
+	Artificial: True
+	Description: #FORESTED_CROP_DESC
+	Blurb: #FORESTED_CROP_BLURB
+	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 60)

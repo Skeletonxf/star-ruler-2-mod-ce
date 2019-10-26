@@ -8,6 +8,10 @@ Trait: Aquatic
 	Conflict: Ancient
 	Order: 1
 	Conflict: StarChildren
+	TriggerHomeworld(TriggerGeneric(CE_biome_hooks::SwapBiome(Volcanic, Oceanic)))
+	TriggerHomeworld(TriggerGeneric(CE_biome_hooks::SwapBiome(Rock, Oceanic)))
+	TriggerHomeworld(TriggerGeneric(CE_biome_hooks::SwapBiome(Desert, Oceanic)))
+	TriggerHomeworld(TriggerGeneric(CE_biome_hooks::SwapBiome(Mountains, Oceanic)))
 	ModEmpireAttribute(ImperialBldConstructionRate, Multiply, 0.8)
 	ModEmpireAttribute(BuildingConstructRate, Multiply, 0.8)
 	ModEmpireAttribute(TileDevelopmentFactor, Multiply, 0.8)

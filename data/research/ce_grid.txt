@@ -285,4 +285,3 @@ Grid: ColonisationExpansionGrid
 	FTLCost: -7,15
 	ShieldCap2: -2,8
 	ShieldHardener: -2,7
-	AlternativeFTLUnlock: -2,9

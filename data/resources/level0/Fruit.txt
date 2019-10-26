@@ -1,0 +1,13 @@
+Resource: Fruit
+	Name: #FRUIT
+	Blurb: #FOOD_BLURB
+	Native Biome: Forest
+	Class: Food
+
+	Icon: ResourceIcons::4
+	Small Icon: ResourceIconsSmall::14
+
+	Level: 0
+	Description: #FOOD_DESC_FORESTRY
+	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)
+	ModResourceEfficiencyBonus(+0.2) #version<105

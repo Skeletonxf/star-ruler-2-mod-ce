@@ -1,0 +1,15 @@
+Resource: HyperOats
+	Name: #HYPER_OATS
+	Description: #HYPER_OATS_DESC
+	Native Biome: Forest
+	Class: Food
+
+	Icon: ResourceIconsSmall::52
+	Small Icon: ResourceIconsSmall::52
+
+	Level: 0
+	Rarity: Epic
+	Blurb: #HYPER_OATS_BLURB
+
+	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)
+	AddDummyResource(HyperOats)
