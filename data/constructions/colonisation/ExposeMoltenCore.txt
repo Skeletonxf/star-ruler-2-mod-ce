@@ -6,7 +6,7 @@ Construction: ExposeMoltenCore
 	>>
 	Icon: ConditionIcons::1 * ffaa00
 	Category: Development
-	Build Cost: 500
+	Build Cost: 1000
 	Labor Cost: 150
 
 	RequirePlanetNotBiome(Atmosphere)
@@ -19,4 +19,3 @@ Construction: ExposeMoltenCore
 	RequireNotStatus(ExposedCore)
 	AddSurfaceArea(Volcanic, (9, 1), Developed = False, Vertical = True)
 	GainPlanetResource(ExposedCore)
-	ConsumeEnergy(2000)

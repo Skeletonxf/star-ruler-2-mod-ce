@@ -9,5 +9,6 @@ Resource: Fruit
 
 	Level: 0
 	Description: #FOOD_DESC_FORESTRY
+	Rarity: Rare
 	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)
 	ModResourceEfficiencyBonus(+0.2) #version<105

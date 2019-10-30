@@ -3,7 +3,7 @@ System: HomeSystem
 		BonusHealth(20000000000)
 
 	RepeatHomeworlds()
-		MakePlanet(RandomType:Food:Common, Radius = 10, Grid Size = (18, 11), Conditions = False, Moons = False)
+		MakePlanet(RandomType:Food:Rare, Radius = 10, Grid Size = (18, 11), Conditions = False, Moons = False)
 			BonusHealth(5000000000)
 			AddPlanetResource(Water)
 			AddResource(Labor, +1)
@@ -14,7 +14,7 @@ System: HomeSystem
 			NoNeedPopulationForLevel()
 			ForceUsefulSurface(0.8, Forest)
 
-	MakePlanet(RandomType:Food:Common, Conditions = False, Moons = False)
+	MakePlanet(RandomType:Food:Rare, Conditions = False, Moons = False)
 	MakePlanet(Water, Conditions = False, Moons = False)
 	MakePlanet(RandomLevel:1:Common, Conditions = False, Moons = False)
 		MakeMoon()
@@ -25,14 +25,15 @@ System: HomeSystem
 
 	MakeAsteroid(Cargo = Ore, Cargo Amount = 6000)
 	MakeAsteroid(Resource = Distributed)
+	MakeAsteroidBelt(Count = 80, Cargo = Ore, Cargo Amount = 50:10000, Distribution Chance = 0.0, Count Modifier = -75:75)
 
 	AddAdjacentArtifacts(2)
 	MakeAdjacentCreepCamp(SmallCamp, Place Far = True)
 
 	GuaranteeAdjacentResource(Water)
-	GuaranteeAdjacentResource(RandomType:Food:Common)
+	GuaranteeAdjacentResource(RandomType:Food:Rare)
 	GuaranteeAdjacentResource(RandomLevel:1:Common)
 	GuaranteeAdjacentResource(RandomLevel:2:Common)
-	GuaranteeAdjacentResource(RandomType:Food:Common, Distance = 2)
-	GuaranteeAdjacentResource(RandomType:Food:Common, Distance = 2)
+	GuaranteeAdjacentResource(RandomType:Food:Rare, Distance = 2)
+	GuaranteeAdjacentResource(RandomType:Food:Rare, Distance = 2)
 	GuaranteeAdjacentResource(Water, Distance = 2)

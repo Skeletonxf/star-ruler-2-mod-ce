@@ -7,3 +7,12 @@ FTL_EXTRACTOR_DESC: <<
 	[b][color=#ff8080]Extremely low health.[/color][/b]
 >>
 FTL_EXTRACTOR_BLURB: [img=$FTL;20/] +0.3 FTL/s
+ORB_HYDROPONICS_SATELLITE_DESC: <<
+	A satellite equipped with high-yield zero-G hydroponics bays growing genetically modified crops in exposure to direct sunlight.
+
+	Must be constructed in orbit of a planet.
+
+	The planet this is in orbit of gains 1 Food resource.
+
+	Costs 150 Energy to construct in addition to its build cost.
+>>

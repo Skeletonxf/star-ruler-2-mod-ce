@@ -10,4 +10,5 @@ Resource: ForestedCrop2
 	Artificial: True
 	Description: #FORESTED_CROP_DESC
 	Blurb: #FORESTED_CROP_BLURB
-	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 60)
+	Exportable: False
+	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 12)

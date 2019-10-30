@@ -1,0 +1,13 @@
+Status: Forested
+
+	Color: #17c757
+	Name: Fully Forested
+	Icon: Stalk
+	Description: <<
+		This planet has undergone several forestation efforts and gained 3 forested food resources. It cannot make further use of Forestation cargo.
+
+		[i][color=#aaa]Forestation also removes the Noxious Atmosphere debuff. Fully Forested planets gain 1 influence stake[/color][/i]
+	>>
+	Collapses: True
+	Visible To: Owner
+	AddInfluenceStake(1)

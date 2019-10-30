@@ -61,6 +61,12 @@ void init() {
 			@playerEmpire = emp;
 
 		//Add all the traits
+		// [[ MODIFY BASE GAME START ]]
+		// apply the all players trait to all empires
+		// do this first so other traits modify the changed research grid
+		emp.addTrait(getTraitID("AllPlayers"));
+		// [[ MODIFY BASE GAME END ]]
+
 		int points = settings.getTraitPoints();
 		for(uint n = 0, ncnt = settings.traits.length; n < ncnt; ++n) {
 			auto@ trait = settings.traits[n];
@@ -79,11 +85,6 @@ void init() {
 
 			emp.addTrait(trait.id);
 		}
-
-		// [[ MODIFY BASE GAME START ]]
-		// apply the all players trait to all empires
-		emp.addTrait(getTraitID("AllPlayers"));
-		// [[ MODIFY BASE GAME END ]]
 
 		//Apply generic AI cheats
 		if(settings.type != ET_Player) {

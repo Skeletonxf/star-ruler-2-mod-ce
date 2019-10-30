@@ -9,6 +9,7 @@ Resource: Grain
 
 	Level: 0
 	Description: #FOOD_DESC_FORESTRY
+	Rarity: Uncommon
 	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)
 	AddOverpopulation(1) #version<105
 	AddToNativeResource(AddOverpopulation(1)) #version<71

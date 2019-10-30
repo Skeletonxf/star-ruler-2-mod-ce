@@ -215,7 +215,7 @@ HYPER_OATS_DESC: <<
 
 	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
 
-	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and new food resources.[/color][/i]
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
 >>
 
 ALUMINUM: Aluminum
@@ -241,7 +241,7 @@ SALTS_DESC: <<
 
 	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
 
-	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and new food resources.[/color][/i]
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
 >>
 
 PHASITE: Phasite
@@ -716,7 +716,7 @@ R_SYRUP: Syrup
 R_SYRUP_DESC: <<
 	Can be used as food. Increases Influence pressure by 30%.
 
-	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and new food resources.[/color][/i]
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
 >>
 
 R_LATTICES: Crystal Lattices

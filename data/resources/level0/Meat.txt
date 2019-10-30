@@ -9,6 +9,7 @@ Resource: Meat
 
 	Level: 0
 	Description: #FOOD_DESC_FORESTRY
+	Rarity: Epic
 	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)
 	AddBuildingMaintenanceRefund(100) #version<105
 	AddToNativeResource(AddBuildingMaintenanceRefund(100)) #version<71

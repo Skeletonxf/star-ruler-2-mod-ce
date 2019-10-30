@@ -9,6 +9,7 @@ Resource: Fish
 
 	Level: 0
 	Description: #FOOD_DESC_FORESTRY
+	Rarity: Rare
 	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)
 	AddResourceVanishBonus(+0.3) #version<105
 	AddToNativeResource(AddResourceVanishBonus(+0.3)) #version<71

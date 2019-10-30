@@ -8,7 +8,6 @@ Resource: Salts
 	Small Icon: ResourceIconsSmall::23
 
 	Level: 0
-	Rarity: Uncommon
 	Frequency: 0.8
 	Display Requirement: False
 

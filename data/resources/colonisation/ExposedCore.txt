@@ -13,3 +13,4 @@ Resource: ExposedCore
 	Pressure: 1 Labor
 	Pressure: 1 Defense
 	Display Weight: -1
+	Exportable: False

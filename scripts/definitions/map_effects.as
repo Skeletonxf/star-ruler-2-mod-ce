@@ -994,6 +994,10 @@ class MakeAsteroidBelt : MapHook {
 	Argument cargo(AT_Cargo, "Ore", doc="Type of cargo to create on the asteroid belt.");
 	Argument cargo_amount(AT_Range, "500:10000", doc="Amount of cargo for the asteroids to have.");
 	Argument distribution_chance(AT_Decimal, "0.4", doc="For distributed resources, chance to add additional resource. Repeats until failure.");
+	// [[ MODIFY BASE GAME START ]]
+	// Allow randomising the count in a backwards compatible way with a range modifier to the count integer
+	Argument count_modifier(AT_Range, "0:0", doc="Random modifier to number of asteroids in belt.");
+	// [[ MODIFY BASE GAME END ]]
 
 	bool instantiate() {
 		if(arguments[0].integer <= 0)
@@ -1005,26 +1009,39 @@ class MakeAsteroidBelt : MapHook {
 	void trigger(SystemData@ data, SystemDesc@ system, Object@& current) const override {
 		if(config::ASTEROID_OCCURANCE == 0 && config::RESOURCE_ASTEROID_OCCURANCE == 0)
 			return;
-		double radius = randomd(0.5,1.5) * system.radius;
+		// [[ MODIFY BASE GAME START ]]
+		// Reduce maximum range
+		double radius = randomd(0.5,1.1) * system.radius;
+		// [[ MODIFY BASE GAME END ]]
 		double angle = randomd(0, twopi);
 		double totChance = config::ASTEROID_OCCURANCE + config::RESOURCE_ASTEROID_OCCURANCE;
 		double resChance = config::RESOURCE_ASTEROID_OCCURANCE;
 
-		for(uint i = 0, cnt = arguments[0].integer; i < cnt; ++i) {
+		// [[ MODIFY BASE GAME START ]]
+		// Apply random modifier range to count of asteroids
+		double count = arguments[0].integer + count_modifier.fromRange();
+
+		for(uint i = 0, cnt = count; i < cnt; ++i) {
+			// [[ MODIFY BASE GAME END ]]
 			angle += twopi / double(cnt);
 			double ang = angle + randomd(-0.25,0.25) * twopi / double(cnt);
 
-			vec3d pos = system.position + vec3d(cos(ang) * radius, randomd(-50.0, 50.0), sin(ang) * radius);
+			// [[ MODIFY BASE GAME START ]]
+			// Increase the randomness around the radius
+			vec3d pos = system.position + vec3d(cos(ang) * radius, randomd(-250.0, 250.0), sin(ang) * radius);
+			// [[ MODIFY BASE GAME END ]]
 
 			Asteroid@ roid = createAsteroid(pos, system.object, delay=true);
 			roid.orbitAround(system.position);
 			roid.orbitSpin(randomd(20.0, 60.0));
 			@current = roid;
 
-			if(randomd(0, totChance) >= resChance && cargo.integer != -1) {
+			// [[ MODIFY BASE GAME START ]]
+			if (randomd(0, totChance) >= resChance && cargo.integer != -1) {
 				roid.addCargo(cargo.integer, cargo_amount.fromRange());
-			}
-			else {
+			} else if (distribution_chance.decimal > 0.0) {
+				// Don't try distributed asteroid resources unless
+				// the chance is > 0
 				do {
 					const ResourceType@ type = getDistributedAsteroidResource();
 					if(roid.getAvailableCostFor(type.id) < 0.0)
@@ -1032,6 +1049,7 @@ class MakeAsteroidBelt : MapHook {
 				}
 				while(randomd() < distribution_chance.decimal);
 			}
+			// [[ MODIFY BASE GAME END ]]
 
 			roid.initMesh();
 		}

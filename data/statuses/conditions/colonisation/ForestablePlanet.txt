@@ -1,3 +1,4 @@
 Status: ForestablePlanet
 	Visible To: Nobody
-	WhileConsumingCargo(Forestation, 100, 60, TriggerPeriodic(AddStatus(Forestation, Duration = 29, Set Origin Empire = True, Set Origin Object = True), Trigger Immediate = True))
+	IfNative(ForestedCrop3, AddStatus(Forested))
+	IfNotNative(ForestedCrop3, WhileConsumingCargo(Forestation, 100, 60, TriggerPeriodic(AddStatus(Forestation, Duration = 29, Set Origin Empire = True, Set Origin Object = True, Max Stacks = 1), Trigger Immediate = True)))

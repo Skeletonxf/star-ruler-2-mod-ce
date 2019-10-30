@@ -9,5 +9,5 @@ Resource: StellarWater
 	Display Weight: -10
 
 	Level: 0
-	Exportable: False
 	Artificial: True
+	Exportable: False
