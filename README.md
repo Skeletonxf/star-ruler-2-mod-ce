@@ -5,6 +5,13 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
 ## Features
 
 - Several biome based planet constructions
+- Food system reworked
+  - This is probably the main/biggest/only divergence from vanilla
+  - Food planets are much rarer
+  - Food planets gradually 'forest' the planets they export to, giving each of those planets 3 unexportable food resources over time. Food planets therefore aren't needed to upport level 1, 2, and 3 planets long term.
+  - In practise in the early game you start out limited by food much like in vanilla but as the game progresses whenever you need food you can cancel an earlier food export to any planet that has since forested its own food and redirect the food resources to your new planet that needs it. In this way you quite reliably reach a point at which you can always provide food to higher level planets, and if you combine with water comets you can make tier 1 planets self sustaining without imports or maintenance costs.
+  - The AI already understands how to change exports as it gains food and hence works with this rework quite well. It won't pickup excess Forestation cargo and divert to a new planet, but in practise I don't think this is something players will/need to do.
+  - I think this system feels much better and also more realistic. As your empire expands being limited by 'food planets' feels a little silly and food planets being as common as they are clashs with a lot of expectations about how rare life is.
 - Gas giants
 - Additional subsystems/hulls for low maintence exploration ships
 - Tweaks to motherships to make their max pop scale with size
@@ -29,10 +36,8 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
     - Many more improvements on AI FTL usage planned
   - AI will build FTL income orbitals if it needs more FTL income
 - Needs fixing for alpha (alpha release should be playable if avoiding Mono/First races, these will need more testing to tweak to added features)
-  - Tweaks to aquatic so it does something more useful
   - Fix the random research pooling
   - Teach AI to research FTL income orbitals if it wants to build them
-  - Might either remove the biome constructions temporarily, tweak them, or teach the AI to use them so everything is on a more event footing with PvAI
 - Not planned for alpha release
   - Colonisation ships similar to Motherships for other races
   - Mechanoid support for main dillema
@@ -42,6 +47,7 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
   - Teach Mechanoid AI to use FTL Breeder Reactors
   - Motherstation hull for StarChildren (granting positive income but requiring sacrifice of a planet for balance?)
   - StarChildren transfering of pop from Mothership -> Mothership
+  - Make autoexplore continue to work after all systems have been visited once
 - Long term plans
   - A campaign that doubles as an extended tutorial
     - I will rename all the existing races and tweak them rather than trying to build on established lore I don't know
@@ -49,6 +55,7 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
   - Rather than adding lots of new complexity to the game I would like to focus on improving the AI to utilise existing tech
     - Things players can do but AI just doesn't right now
       - Create stations at all??
+      - Attempt to achieve the influence victory themselves??
       - Fling battle stations
       - Create battleworlds
       - Use/design Motherships well
@@ -60,5 +67,5 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
       - Carpet bomb enemy planets (especially vs Mechanoid)
       - Use the tractor beam on Motherships to drag around an Outpost - hey presto my mothership can always fire its weapons and if the outpost gets shot down the labor cost to build a new one is low enough to queue up immediately
       - Use gates to coordinate suprise attacks on an enemy (the AI is already good at doing rapid attacks with Hyperdrives/Jumpdrives/Fling but gates and slipstreams aren't used as well here)
+      - Immediately seek to destroy a player's Senatorial Palace if they start one of the Galatic votes that can achieve the influence victory
 
-Mod is not quite at alpha version yet and hence has no playtesting to get any idea of balancing. I do not recommend playing any serious games with this mod yet.
