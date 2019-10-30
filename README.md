@@ -11,7 +11,7 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
   - Food planets gradually 'forest' the planets they export to, giving each of those planets 3 unexportable food resources over time. Food planets therefore aren't needed to upport level 1, 2, and 3 planets long term.
   - In practise in the early game you start out limited by food much like in vanilla but as the game progresses whenever you need food you can cancel an earlier food export to any planet that has since forested its own food and redirect the food resources to your new planet that needs it. In this way you quite reliably reach a point at which you can always provide food to higher level planets, and if you combine with water comets you can make tier 1 planets self sustaining without imports or maintenance costs.
   - The AI already understands how to change exports as it gains food and hence works with this rework quite well. It won't pickup excess Forestation cargo and divert to a new planet, but in practise I don't think this is something players will/need to do.
-  - I think this system feels much better and also more realistic. As your empire expands being limited by 'food planets' feels a little silly and food planets being as common as they are clashs with a lot of expectations about how rare life is.
+  - I think this system feels much better and also more realistic. As your empire expands being limited by 'food planets' feels a little silly and food planets being as common as they are in vanilla clashes with a lot of expectations about how rare life is.
 - Gas giants
 - Additional subsystems/hulls for low maintence exploration ships
 - Tweaks to motherships to make their max pop scale with size
