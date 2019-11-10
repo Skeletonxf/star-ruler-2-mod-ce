@@ -35,8 +35,7 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
   - AI can handle having multiple FTL abilities unlocked at once
     - Many more improvements on AI FTL usage planned
   - AI will build FTL income orbitals if it needs more FTL income
-- Needs fixing for alpha (alpha release should be playable if avoiding Mono/First races, these will need more testing to tweak to added features)
-  - Fix the random research pooling
+- Needs fixing for alpha (alpha release should be playable if avoiding Mechanoid as it can't take advantage of the main dillema like Star Children can yet)
   - Teach AI to research FTL income orbitals if it wants to build them
 - Not planned for alpha release
   - Colonisation ships similar to Motherships for other races
