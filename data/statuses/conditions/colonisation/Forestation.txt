@@ -10,6 +10,9 @@ Status: Forestation
 	>>
 	Collapses: True
 	Visible To: Owner
+	IfNative(ForestedCrop2, IfNotNative(ForestedCrop3, OnDisable(NotifyOwner($3 has gained a third food resource, Description = $3 has gained its third food resource through local forestation efforts, Icon = Forestry3))))
+	IfNative(ForestedCrop, IfNotNative(ForestedCrop2, OnDisable(NotifyOwner($3 has gained a second food resource, Description = $3 has gained its second food resource through local forestation efforts, Icon = Forestry2))))
+	IfNotNative(ForestedCrop, OnDisable(NotifyOwner($3 has gained a food resource, Description = $3 has gained its first food resource through local forestation efforts, Icon = Forestry1)))
 	RemoveAllStatus(NoxiousAtmosphere)
 	IfNative(ForestedCrop2, IfNotNative(ForestedCrop3, OnDisable(GainPlanetResource(ForestedCrop3))))
 	IfNative(ForestedCrop, IfNotNative(ForestedCrop2, OnDisable(GainPlanetResource(ForestedCrop2))))

@@ -2,7 +2,7 @@ Status: Forested
 
 	Color: #17c757
 	Name: Fully Forested
-	Icon: Stalk
+	Icon: Forestry
 	Description: <<
 		This planet has undergone several forestation efforts and gained 3 forested food resources. It cannot make further use of Forestation cargo.
 

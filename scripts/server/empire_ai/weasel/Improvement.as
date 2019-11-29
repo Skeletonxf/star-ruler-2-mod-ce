@@ -42,7 +42,7 @@ class Improvement : AIComponent {
 		@planets = cast<Planets>(ai.planets);
 		@resources = cast<Resources>(ai.resources);
 		@colonization = cast<Colonization>(ai.colonization);
-	    @development = cast<Development>(ai.development);
+		@development = cast<Development>(ai.development);
 		@orbitals = cast<Orbitals>(ai.orbitals);
 	    @construction = cast<Construction>(ai.construction);
 		@systems = cast<Systems>(ai.systems);

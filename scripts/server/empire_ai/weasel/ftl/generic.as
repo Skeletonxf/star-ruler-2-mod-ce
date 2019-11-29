@@ -11,7 +11,6 @@ import empire_ai.weasel.Fleets;
 /*
  * Holistic FTL AI that can use/understand all types of FTL rather than just one
  * TODO: Fling gates to target location instead of manual sublight travel
- * TODO: Aim for FTL income in same way as FTL storage
  * TODO: Avoid placing slipstreams/gates and fling beacons in the same systems
  * TODO: Use slipstreams to improve colonisation speed
  * TODO: Fling/tug stations to offensively attack other empires's eco

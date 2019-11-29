@@ -2,16 +2,22 @@
 
 This is a mod for Star Ruler 2. I started this aiming to make planets feel more unique by providing several dillemas and surface modifying options based on their biomes. It is now growing into a mod that provides many features to make the game feel more rich without drastically changing the gameplay.
 
+## Status
+
+I consider this mod at alpha status now. There's still many rough edges but it should be stable and balanced enough to play with. Mechanoid still needs some love for handling the main dillema this mod adds.
+
 ## Features
 
 - Several biome based planet constructions
 - Food system reworked
   - This is probably the main/biggest/only divergence from vanilla
   - Food planets are much rarer
-  - Food planets gradually 'forest' the planets they export to, giving each of those planets 3 unexportable food resources over time. Food planets therefore aren't needed to upport level 1, 2, and 3 planets long term.
+  - Food planets gradually 'forest' the planets they export to, giving each of those planets 3 unexportable food resources over time. Food planets therefore aren't needed to support level 1, 2, and 3 planets long term.
   - In practise in the early game you start out limited by food much like in vanilla but as the game progresses whenever you need food you can cancel an earlier food export to any planet that has since forested its own food and redirect the food resources to your new planet that needs it. In this way you quite reliably reach a point at which you can always provide food to higher level planets, and if you combine with water comets you can make tier 1 planets self sustaining without imports or maintenance costs.
   - The AI already understands how to change exports as it gains food and hence works with this rework quite well. It won't pickup excess Forestation cargo and divert to a new planet, but in practise I don't think this is something players will/need to do.
   - I think this system feels much better and also more realistic. As your empire expands being limited by 'food planets' feels a little silly and food planets being as common as they are in vanilla clashes with a lot of expectations about how rare life is.
+  - Forestry notifications: <img src="screenshots/forestry-notification-levels.png?raw=true" alt="Forestry notifications" height="45px">
+
 - Gas giants
 - Additional subsystems/hulls for low maintence exploration ships
 - Tweaks to motherships to make their max pop scale with size
@@ -35,8 +41,6 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
   - AI can handle having multiple FTL abilities unlocked at once
     - Many more improvements on AI FTL usage planned
   - AI will build FTL income orbitals if it needs more FTL income
-- Needs fixing for alpha (alpha release should be playable if avoiding Mechanoid as it can't take advantage of the main dillema like Star Children can yet)
-  - Teach AI to research FTL income orbitals if it wants to build them
 - Not planned for alpha release
   - Colonisation ships similar to Motherships for other races
   - Mechanoid support for main dillema
@@ -67,4 +71,3 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
       - Use the tractor beam on Motherships to drag around an Outpost - hey presto my mothership can always fire its weapons and if the outpost gets shot down the labor cost to build a new one is low enough to queue up immediately
       - Use gates to coordinate suprise attacks on an enemy (the AI is already good at doing rapid attacks with Hyperdrives/Jumpdrives/Fling but gates and slipstreams aren't used as well here)
       - Immediately seek to destroy a player's Senatorial Palace if they start one of the Galatic votes that can achieve the influence victory
-

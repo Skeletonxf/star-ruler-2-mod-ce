@@ -23,3 +23,15 @@ Material: SolarSail
 Material: Flying
 	Inherit: Image2D
 	Texture: data/images/flying.png
+
+Material: Forestry1
+	Inherit: Image2D
+	Texture: data/images/forestation1.png
+
+Material: Forestry2
+	Inherit: Image2D
+	Texture: data/images/forestation2.png
+
+Material: Forestry3
+	Inherit: Image2D
+	Texture: data/images/forestation.png
