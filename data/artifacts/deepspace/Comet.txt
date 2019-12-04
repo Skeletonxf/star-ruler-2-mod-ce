@@ -1,0 +1,21 @@
+Artifact: DeepspaceComet
+	Name: #ART_COMET
+	Description: #ART_DEEPSPACE_COMET_DESC
+	Natural: True
+
+	Model: Moon_Sphere_max
+	Material: ProceduralMoon
+	Size: 2
+
+	Icon: CometIcon::0 * ffffaa
+	Strategic Icon: CometIcon::0 * ffffaa
+	Icon Size: 0.013
+
+	Frequency: 0
+
+
+	Ability: GenerateWater
+
+	AI: AsCreatedResource(Water, 5.0)
+	Mass: 100
+	Ignored By Gravitars: True

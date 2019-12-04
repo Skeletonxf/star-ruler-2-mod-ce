@@ -1,0 +1,10 @@
+Ability: AbandonedSatellite
+	Name: #ABL_ABANDONED_SATELLITE
+	Description: #ABL_BUSTER_MACHINE_DESC
+	Icon: SolarPanel
+	Activate Sound: generic_activate_2
+
+	Energy Cost: 15
+	ReduceEnergyCostSystemFlag(0.75, CheapArtifacts)
+
+	SpawnShip(Ancient Satellite, Design From = Creeps)

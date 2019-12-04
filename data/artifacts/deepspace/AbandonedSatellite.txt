@@ -1,0 +1,9 @@
+Artifact: AbandonedSatellite
+	Name: #ART_ABANDONED_SATELLITE
+	Description: #ART_ABANDONED_SATELLITE_DESC
+	Frequency: 0
+
+	Model: ArtifactAdvanced
+
+	Ability: AbandonedSatellite
+	Ignored By Gravitars: True

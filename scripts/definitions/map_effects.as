@@ -1349,6 +1349,21 @@ Artifact@ makeArtifact(SystemDesc@ system, uint type = uint(-1)) {
 	system.object.enterRegion(obj);
 	return obj;
 }
+
+Artifact@ makeRougeArtifact(vec3d pos, uint type = uint(-1)) {
+	const ArtifactType@ gen;
+	if (randomd(0, 5) > 1) {
+		@gen = getArtifactType("DeepspaceComet");
+	} else {
+		@gen = getArtifactType("AbandonedSatellite");
+	}
+	//if(type == uint(-1))
+	//	@gen = getDistributedArtifactType();
+	//else
+	//	@gen = getArtifactType(type);
+	Artifact@ obj = createArtifact(pos, gen, null);
+	return obj;
+}
 #section all
 
 //RepeatHomeworlds()
