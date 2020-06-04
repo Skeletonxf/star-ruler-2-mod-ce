@@ -1,0 +1,16 @@
+Construction: DysonSphereUpgrade
+	Name: #CONS_DYSON_SPHERE_UPGRADE
+	Description: #CONS_DYSON_SPHERE_UPGRADE_DESC
+
+	Category: Infrastructure
+	Build Cost: 1000
+	Time Cost: 180
+
+	OnStart(AddStatus(DysonSphereUpgrade))
+	OnCancel(RemoveStatusInstance(DysonSphereUpgrade))
+
+	AddBuildCostStatusCount(DysonSphereUpgrade, 500)
+
+	ConsumeCargoStatusCount(Ore, StarForgeUpgrade, 1000, Allow Cancel = True)
+	GainPlanetResource(Photovoltics)
+	RequireStatus(DysonSphere)

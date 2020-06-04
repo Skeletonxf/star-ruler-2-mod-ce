@@ -1111,6 +1111,7 @@ class MapGeneration {
 	}
 
 	void generateRougeObjects() {
+		return;
 		// TODO expose all these settings to configuration parameters
 		// TODO create data files similar to Systems but as RougeGenerations
 		// then in those can use modified map hooks like MakePlanet

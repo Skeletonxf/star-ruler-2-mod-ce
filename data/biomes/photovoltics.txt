@@ -1,0 +1,12 @@
+Biome: Photovoltics
+	Name: #PHOTOVOLTICS
+
+	Buildable: False
+
+	Temperature: 0.9
+	Humidity: 0
+
+	Frequency: 0
+
+	Color: #223c54
+	Description: Photovoltic cells

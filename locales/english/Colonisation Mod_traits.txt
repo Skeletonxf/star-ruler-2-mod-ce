@@ -22,3 +22,5 @@ CELESTIAL_DESC: <<
 	[vspace=6/][img=PlanetThruster * 44ffbb;22]Special Planetary Engines are constructed on all colonised planets, with 1 u/s² of acceleration and reduced maintenance cost (50). These cannot be removed except by losing the planet.[/img]
 >>
 CELESTIAL: Celestial
+TRAIT_SCIENTIFIC: Scientific
+TRAIT_SCIENTIFIC_DESC: Start the game with 1 additional research income per second.

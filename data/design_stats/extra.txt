@@ -52,3 +52,28 @@ GlobalStat: ShipMaxPopulationIncome
 	Suffix: k
 
 	Variable: ShipMaxPopulationIncome
+
+GlobalStat: DevastationStacks
+	Name: #S_CARPET_BOMB_MAX_STACKS
+	Color: #ff8931
+	Description: #STT_CARPET_BOMB_MAX_STACKS
+	Icon: ResourceIconsSmall::45
+
+	Variable: BombardStacks
+
+GlobalStat: DevastationDuration
+	Name: #S_CARPET_BOMB_DURATION
+	Color: #ff8931
+	Description: #STT_CARPET_BOMB_DURATION
+	Icon: ResourceIconsSmall::45
+	Suffix: s
+
+	Variable: BombardStacks
+
+GlobalStat: BombardmentCost
+	 Name: #S_CARPET_BOMB_COST
+	 Description: #STT_CARPET_BOMB_COST
+	 Color: #aaa
+	 Secondary: SupplyCap
+
+	 Variable: BombardCost

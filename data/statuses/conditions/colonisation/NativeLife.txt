@@ -6,7 +6,7 @@ Status: NativeLife
 		Pressure capacity, building rate and development rate are reduced to 0. Population is reduced to 1. Labor cannot be used.
 	>>
 	Color: #73ff8d
-	Icon: ResourceIcon::8
+	Icon: Campfire * ffaaff
 	Visible To: Owner
 	IfNotHaveTrait(StarChildren, ModBuildingConstructRate(-1))
 	IfNotHaveTrait(StarChildren, ModPopulationGrowth(-1))

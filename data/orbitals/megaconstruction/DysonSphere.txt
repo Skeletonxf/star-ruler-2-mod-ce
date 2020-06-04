@@ -1,0 +1,28 @@
+Module: DysonSphere
+	Name: #DYSON_SPHERE
+	Blurb: #DYSON_SPHERE_BLURB
+	Description: #DYSON_SPHERE_DESC
+	Icon: PlanetType::14
+
+	Core: True
+	Standalone: True
+	Spin: 900
+
+	Build Cost: 800
+	Labor Cost: 50
+
+	Health: 20000
+	Armor: 10000
+
+	Model: SolarEngine
+	Material: Shipyard
+	Size: 30
+
+	Strategic Icon: PlanetType::14
+	Combat Repair: False
+	Can Fling: False
+
+	ConsumeCargo(Ore, 5000)
+	OnEnable(Destroy())
+	OnEnable(SpawnPlanet(DysonSphere, Owned = True, Add Status = DysonSphere, Radius = 350, Physics = False))
+	RequireCloseToStar()

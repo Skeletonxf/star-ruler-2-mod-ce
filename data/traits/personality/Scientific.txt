@@ -1,0 +1,13 @@
+Trait: Scientific
+	Name: #TRAIT_SCIENTIFIC
+	Description: #TRAIT_SCIENTIFIC_DESC
+	Category: Personality
+	Order: 10
+
+
+	Color: #aaffaa
+	Icon: ResearchComplex
+
+	Costs Points: 1
+
+	empire_effects::AddResearchIncome(1)

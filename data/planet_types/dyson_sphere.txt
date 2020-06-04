@@ -1,0 +1,7 @@
+PlanetType: Photovoltics
+	Icon: PlanetType::14
+	DistantIcon: PlanetType::14
+	Artificial: True
+
+	BiomeWeights:
+		Photovoltics: 10000

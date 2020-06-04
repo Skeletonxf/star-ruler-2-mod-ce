@@ -1,0 +1,15 @@
+Status: DysonSphere
+	Name: #DYSON_SPHERE
+	Description: #DYSON_SPHERE_DESC
+	Icon: PlanetType::14
+	Collapses: True
+	Color: #518fc9
+
+	DelayFTL()
+	SetOrbitSpin(900)
+	InterdictMovement()
+	GloballyVisible()
+	AddPlanetGfxFlag(Ringworld)
+Status: DysonSphereUpgrade
+	Visible To: Nobody
+	Collapses: True

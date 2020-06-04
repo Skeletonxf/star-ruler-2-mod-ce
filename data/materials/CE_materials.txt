@@ -24,6 +24,10 @@ Material: Flying
 	Inherit: Image2D
 	Texture: data/images/flying.png
 
+Material: Campfire
+	Inherit: Image2D
+	Texture: data/images/campfire.png
+
 Material: Forestry1
 	Inherit: Image2D
 	Texture: data/images/forestation1.png

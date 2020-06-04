@@ -5,6 +5,12 @@ Trait: AllPlayers
 
 
 
+	TriggerHomeworld(RemoveStatus(PrimitiveLife))
+	AddEmpireResourceIncome(Research, 1)
+	AddEmpireResourceIncome(Defense, 5)
+	AddEmpireResourceIncome(Energy, 3)
+	AddEmpireResourceIncome(Influence, 1)
+	AddEmpireResourceIncome(Money, 400)
 	AddStatusOwnedPlanets(OwnedPlanet)
 	ReplaceTechnologyGrid(ColonisationExpansionGrid)
 	TriggerHomeworld(RemoveStatus(PossibleNativeLife))

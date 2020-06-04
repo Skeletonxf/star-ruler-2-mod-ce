@@ -1,0 +1,15 @@
+Resource: Photovoltics
+	Name: #PHOTOVOLTICS
+	Description: #PHOTOVOLTICS_DESC
+	Artificial: True
+
+	Level: 0
+	Limitless Level: True
+	Can Be Terraformed: False
+	Exportable: False
+
+	Small Icon: DesignationIcons::16
+	Native Biome: Photovoltics
+	Class: Photovoltics
+
+	Pressure: 50 Energy

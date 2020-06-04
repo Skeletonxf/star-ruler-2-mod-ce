@@ -1,0 +1,27 @@
+Subsystem: MiningHull
+	Name: #S_MINING_HULL
+	Description: #S_MINING_HULL_DESC
+
+	Tags: DefaultUnlock, Applied:Hull, Category:Hulls, NoCore
+	Hull: Flagship
+	EvaluationOrder: -200
+	BaseColor: #a1692c
+
+
+	AddShipModifier: HpFactor(0.2)
+	AddShipModifier: MaintCostFactor(0.34)
+	AddShipModifier: ArmorResistFactor(0.5)
+	AddShipModifier: BuildCostFactor(0.34)
+	AddShipModifier: LaborCostFactor(0.34)
+	AddShipModifier: MiningRateFactor(2.0)
+	Assert: Sum.MiningLasers == 1
+		Message: #ERROR_MUST_HAVE_MINING_LASER
+	Assert: Sum.SupportCapacity == 0
+		Message: #ERROR_CANNOT_HAVE_SUPPORT
+
+	Assert: TagCount.Weapon == 0
+		Message: #ERROR_CANNOT_HAVE_WEAPONS
+
+	Module: Default
+		Sprite: Laser::0 * #91692c
+		DrawMode: 1
