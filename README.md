@@ -4,11 +4,11 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
 
 ## Status
 
-I consider this mod at alpha status now. There's still many rough edges but it should be stable and balanced enough to play with. Mechanoid still needs some love for handling the main dillema this mod adds.
+I consider this mod at alpha status now. There's still many rough edges but it should be stable and balanced enough to play with.
 
 ## Features
 
-- Several biome based planet constructions
+- Several biome based planet constructions and 'terraforming'* options
 - Food system reworked
   - This is probably the main/biggest/only divergence from vanilla
   - Food planets are much rarer
@@ -17,16 +17,17 @@ I consider this mod at alpha status now. There's still many rough edges but it s
   - The AI already understands how to change exports as it gains food and hence works with this rework quite well. It won't pickup excess Forestation cargo and divert to a new planet, but in practise I don't think this is something players will/need to do.
   - I think this system feels much better and also more realistic. As your empire expands being limited by 'food planets' feels a little silly and food planets being as common as they are in vanilla clashes with a lot of expectations about how rare life is.
   - Forestry notifications: <img src="screenshots/forestry-notification-levels.png?raw=true" alt="Forestry notifications" height="45px">
-
 - Gas giants
-- Additional subsystems/hulls for low maintence exploration ships
+  - Still in need of more variety, and making the construction of moon bases more essential
+- Additional subsystems/hulls for low maintence exploration and mining ships
 - Tweaks to motherships to make their max pop scale with size
 - Dilemma conditions that appear on planets and force you to make hard decisions
 - Completely reworked research grid with similar research grouped together
   - From games with my empire set to the AI I think the AI explores this tree pretty well even though the algorithm is aimless
-  - Some (1 right now but planning more) duplicates of research unlocks appear in easier to get positions which are randomised from a pool (eg a random FTL unlock before all the hurdles and all of them after) to make exploring the research tree each game both predictable (can always get each thing the normal way) and also with some randomness to keep things interesting.
+- Exponential scaling of distance build penalties
+  - Just because you have a 300 labor planet shouldn't mean you can build an outpost halfway across the galaxy in less than a second. Now the penalty scales exponentially with the number of hops rather than linearly, so will always outscale the labor production you can produce as the game goes on. This is also much more realistic and encourages researching Gates or having multiple labor centres.
 - Massively nerfed ship stat bonuses from research
-  - I found in many games of unmodded Star Ruler my ships were either orders of magnitude stronger than my opponent's or orders of magnitude weaker. Nerfing stat bonuses makes ships much closer in strength even if one empire is ahead in terms of eco/research. To get more powerful ships you actually have to have the economy to field larger ships rather than just stacking multipliers that turn ks of combat strength into Ms of combat strength for free. I haven't done many full playthroughs yet so balance is very far from final.
+  - I found in many games of unmodded Star Ruler my ships were either orders of magnitude stronger than my opponent's or orders of magnitude weaker. Nerfing stat bonuses makes ships much closer in strength even if one empire is ahead in terms of eco/research. To get more powerful ships you actually have to have the economy to field larger ships rather than just stacking multipliers that turn ks of combat strength into Ms of combat strength for free. I have only done a few full playthroughs yet so balance is very far from final.
 - Ability to unlock all types of FTL and FTL income orbital from the research grid
   - For balancing this is a costly research path to go down and provides few other benefits. Each unlock also starts a vote to give the technology to all empires. This makes getting extra FTL technology a tradeoff as you might not keep it exclusive to just you, and then your research points have been wasted on something your opponents got for free.
 - Supplementary new FTL
@@ -43,10 +44,9 @@ I consider this mod at alpha status now. There's still many rough edges but it s
   - AI will build FTL income orbitals if it needs more FTL income
 - Not planned for alpha release
   - Colonisation ships similar to Motherships for other races
-  - Mechanoid support for main dillema
   - AI code to build orbitals like Outposts and Stations
   - Teach AI to scuttle unneeded FTL income orbitals
-  - Prevent dillemas occuring multiple times
+  - Prevent dillemas occuring multiple times (not sure what's causing this bug, it's quite rare)
   - Teach Mechanoid AI to use FTL Breeder Reactors
   - Motherstation hull for StarChildren (granting positive income but requiring sacrifice of a planet for balance?)
   - StarChildren transfering of pop from Mothership -> Mothership
@@ -54,20 +54,24 @@ I consider this mod at alpha status now. There's still many rough edges but it s
 - Long term plans
   - A campaign that doubles as an extended tutorial
     - I will rename all the existing races and tweak them rather than trying to build on established lore I don't know
-    - If you can't tell from reading this README I like playing as StarChildren a lot. I believe Rising Stars already started working on a campaign with the Mono? I think the best way for this is to start the player with a Terrestrial empire, introduce 1 AI and then once they get the hang of some basics have the AI suicide by destroying the system's black hole, prompting campaign episode #2 where your race evacuates on a hastily created mothership and drops down in a larger galaxy to discover more threats
+    - If you can't tell from reading this README I like playing as StarChildren a lot. I think the best way for this is to start the player with a Terrestrial empire, introduce 1 AI and then once they get the hang of some basics have the AI suicide by destroying the system's black hole, prompting campaign episode #2 where your race evacuates on a hastily created mothership and drops down in a larger galaxy to discover more threats
   - Rather than adding lots of new complexity to the game I would like to focus on improving the AI to utilise existing tech
     - Things players can do but AI just doesn't right now
       - Create stations at all??
       - Attempt to achieve the influence victory themselves??
       - Fling battle stations
-      - Create battleworlds
       - Use/design Motherships well
-      - Move asteroids and other resources around with tractor beams
       - Mine asteroids for ore
+      - Move asteroids and other resources around with tractor beams
+      - Create battleworlds
       - Use slipstreams to speed up colony ships
       - Attack enemy territory that doesn't border AI's owned systems
-      - Recognise that it can't win a fair 1v1 flagship fight with another empire and instead spam loads of cheap siege ships to atack every system possible at once
-      - Carpet bomb enemy planets (especially vs Mechanoid)
+      - Recognise that it can't win a fair 1v1 flagship fight with another empire and instead spam loads of cheap siege ships to attack every system possible at once
+      - Carpet bomb enemy planets (especially useful vs Mechanoid)
       - Use the tractor beam on Motherships to drag around an Outpost - hey presto my mothership can always fire its weapons and if the outpost gets shot down the labor cost to build a new one is low enough to queue up immediately
-      - Use gates to coordinate suprise attacks on an enemy (the AI is already good at doing rapid attacks with Hyperdrives/Jumpdrives/Fling but gates and slipstreams aren't used as well here)
+      - Use gates to coordinate surprise attacks on an enemy (the AI is already good at doing rapid attacks with Hyperdrives/Jumpdrives/Fling but gates and slipstreams aren't used as well here)
       - Immediately seek to destroy a player's Senatorial Palace if they start one of the Galatic votes that can achieve the influence victory
+
+*****
+
+- * I'm aiming for a creating a comprehensive set of constructions to terraform planets based on what is already there as a replacement to the default game's Terraforming mechanic.
