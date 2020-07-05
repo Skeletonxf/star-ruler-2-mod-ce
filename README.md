@@ -6,6 +6,10 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
 
 I consider this mod at alpha status now. There's still many rough edges but it should be stable and balanced enough to play with.
 
+## Installation
+
+Although you can use GitHub's Download Zip button to download the latest version of this mod I suggest you go to the [releases page](https://github.com/Skeletonxf/star-ruler-2-mod-ce/releases) to download the latest released version. Then unzip it into the mods folder of a [Star Ruler 2](https://github.com/BlindMindStudios/StarRuler2-Source) installation.
+
 ## Features
 
 - Several biome based planet constructions and 'terraforming'<sup>1</sup> options
