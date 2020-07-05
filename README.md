@@ -8,7 +8,7 @@ I consider this mod at alpha status now. There's still many rough edges but it s
 
 ## Features
 
-- Several biome based planet constructions and 'terraforming'* options
+- Several biome based planet constructions and 'terraforming'<sup>1</sup> options
 - Food system reworked
   - This is probably the main/biggest/only divergence from vanilla
   - Food planets are much rarer
@@ -74,4 +74,4 @@ I consider this mod at alpha status now. There's still many rough edges but it s
 
 *****
 
-- * I'm aiming for a creating a comprehensive set of constructions to terraform planets based on what is already there as a replacement to the default game's Terraforming mechanic.
+- 1 I'm aiming for a creating a comprehensive set of constructions to terraform planets based on what is already there as a replacement to the default game's Terraforming mechanic.
