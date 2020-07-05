@@ -1,0 +1,3 @@
+Status: FracturedPlanetSpawn
+	Visible To: Nobody
+	AddPlanetResource(LocalAsteroidField)

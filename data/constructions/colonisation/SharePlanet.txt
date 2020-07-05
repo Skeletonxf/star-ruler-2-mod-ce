@@ -6,6 +6,8 @@ Construction: SharePlanet
 	Icon: VoteIcons::1
 	Category: Dillema
 
+	RequireNotTrait(Ancient)
+	RequireNotTrait(Mechanoid)
 	TerraformTo(NativeNetwork)
 	GainPlanetResource(NativeFood)
 	ConsumeInfluence(5)

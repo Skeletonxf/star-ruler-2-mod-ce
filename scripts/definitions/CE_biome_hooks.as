@@ -4,6 +4,9 @@ import generic_effects;
 import repeat_hooks;
 from generic_effects import GenericEffect;
 import biomes;
+#section server
+import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
+#section all
 
 // TODO: Rename as no longer just biomes
 
@@ -100,6 +103,65 @@ class CancelIfAnyAttributeGT : InfluenceVoteEffect {
 			}
 		}
 		return false;
+	}
+#section all
+};
+
+class SpawnDamagedPlanet : BonusEffect {
+	Document doc("Spawn a new planet at the current position with half health.");
+	Argument resource(AT_Custom, "distributed");
+	Argument owned(AT_Boolean, "False", doc="Whether the planet starts colonized.");
+	Argument add_status(AT_Status, EMPTY_DEFAULT, doc="A status to add to the planet after it is spawned.");
+	Argument in_system(AT_Boolean, "False", doc="Whether to spawn the planet somewhere in the system, instead of on top of the object.");
+	Argument radius(AT_Range, "0", doc="Radius of the resulting planet.");
+	Argument physics(AT_Boolean, "True", doc="Whether the planet should be a physical object.");
+	Argument set_homeworld(AT_Boolean, "False", doc="Whether to set this planet as the homeworld.");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if(obj is null)
+			return;
+		vec3d point = obj.position;
+		if(in_system.boolean) {
+			Region@ reg = obj.region;
+			if(reg !is null) {
+				point = reg.position;
+				vec2d off = random2d(200.0, reg.radius);
+				point.x += off.x;
+				point.y += randomd(-20.0, 20.0);
+				point.z += off.y;
+			}
+		}
+		auto@ planet = spawnPlanetSpec(point, resource.str, true, radius.fromRange(), physics.boolean);
+		if(owned.boolean && emp !is null)
+			planet.colonyShipArrival(emp, 1.0);
+		if(add_status.integer != -1)
+			planet.addStatus(add_status.integer);
+		if(set_homeworld.boolean) {
+			@emp.Homeworld = planet;
+			@emp.HomeObj = planet;
+		}
+		planet.Health *= 0.5;
+	}
+#section all
+};
+
+class DealStellarPercentageDamage : BonusEffect {
+	Document doc("Deal percentage damage to a stellar object such as a planet or star.");
+	Argument amount(AT_Decimal, doc="Amount of % damage to deal (% of current HP).");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if(obj is null)
+			return;
+
+		if (obj.isPlanet) {
+			Planet@ planet = cast<Planet>(obj);
+			planet.dealPlanetDamage(planet.Health * amount.decimal);
+		} else if (obj.isStar) {
+			Star@ star = cast<Star>(obj);
+			star.dealStarDamage(star.Health * amount.decimal);
+		}
 	}
 #section all
 };

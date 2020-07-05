@@ -1,0 +1,2 @@
+Status: PlanetHasAsteroidField
+	Visible To: Nobody

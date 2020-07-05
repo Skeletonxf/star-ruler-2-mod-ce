@@ -1,0 +1,17 @@
+Construction: TakePlanetAncient
+	Time Cost: 120
+	Build Cost: 300
+	Name: Take over planet
+	Description: <<
+		Eradicate the natives from this planet. This will give us full control over the planet's resource but leave a lasting influence loss.
+
+		[i][color=#aaa]Ancient empires cannot befriend natives[/color][/i]
+	>>
+	Icon: ConditionIcons::10
+	Category: Dillema
+	RequireTrait(Ancient)
+	AddStatus(Genocide)
+	OnCancel(AddStatus(NativeLife))
+	RequireStatus(NativeLife)
+	OnStart(RemoveStatus(NativeLife))
+	RequirePlanet()

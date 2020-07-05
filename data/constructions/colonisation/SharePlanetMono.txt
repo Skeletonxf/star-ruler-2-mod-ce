@@ -1,0 +1,22 @@
+Construction: SharePlanetMono
+	Time Cost: 120
+	Build Cost: 500
+	Name: Uplift the natives
+	Description: <<
+		Elevate the natives to a mechanical form and befriend them, granting us access to their resources. Unfortunately we will have to give up on using the planet resource we found here.
+
+		[i][color=#aaa]Mechanoid cannot utilise the population growth bonus of  Uplifited Native Life, but the effect will still be granted and will apply if taken over by another empire.[/color][/i]
+	>>
+	Icon: VoteIcons::1
+	Category: Dillema
+
+	RequireTrait(Mechanoid)
+	TerraformTo(NativeNetwork)
+	GainPlanetResource(NativeFood)
+	ConsumeInfluence(5)
+	ConsumeEnergy(500)
+	AddStatus(Uplift)
+	OnCancel(AddStatus(NativeLife))
+	RequireStatus(NativeLife)
+	OnStart(RemoveStatus(NativeLife))
+	GainPlanetResource(NativeWater)

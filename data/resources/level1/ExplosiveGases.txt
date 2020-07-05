@@ -1,6 +1,5 @@
 Resource: ExplosiveGases
 	Name: #EXPLOSIVE_GASES
-	Description: #EXPLOSIVE_GASES_DESC
 	Native Biome: Atmosphere
 
 	Icon: Gases3

@@ -3,11 +3,15 @@ Construction: Fracture
 	Icon: ConditionIcons::2 * ffff00
 	Build Cost: 1500
 	Labor Cost: 300
-	Time Cost: 1
-	Description: Fractures the planet into many tiny pieces, losing all buildings, surface area, resources and population. The resulting fractured planet is comprised of many bits and pieces between atmosphere and provides an unexportable ore resource.
+	Time Cost:
+	Description: <<
+		Fractures the planet into many tiny pieces, losing all buildings, surface area, resources and population. The planet becomes comprised of many bits and pieces between atmosphere and a local asteroid field.
+
+		Fractured Planets can build an infinite number of moons and generate ore over time.
+	>>
 	Category: Development
+	CE_biome_hooks::SpawnDamagedPlanet(Resource = FracturedPlanet, Owned = True, Add Status = FracturedPlanetSpawn)
 	ConsumeEnergy(750)
 	RequirePlanetNotBiome(Atmosphere)
-	SpawnPlanet(Resource = FracturedPlanet, Owned = True)
 	Destroy(Quiet = True)
 	RequirePlanet()

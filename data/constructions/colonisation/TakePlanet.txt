@@ -1,10 +1,11 @@
 Construction: TakePlanet
 	Time Cost: 120
 	Build Cost: 500
-	Name: Take over planet 
+	Name: Take over planet
 	Description: Eradicate the natives from this planet. This will give us full control over the planet's resource but leave a lasting influence loss.
 	Icon: ConditionIcons::10
 	Category: Dillema
+	RequireNotTrait(Ancient)
 	AddStatus(Genocide)
 	OnCancel(AddStatus(NativeLife))
 	RequireStatus(NativeLife)
