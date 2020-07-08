@@ -21,12 +21,12 @@ Resource: DysonSphere
 
 	NativeLevelChain(Photovoltics)
 
-
 	DisableResourceExport()
 	DisableResourceImport()
 	ModTileDevelopRate(-1)
 	ModBuildingConstructRate(-1)
 	IfSystemHasStar(ProduceAllPressure(Energy))
+
 Level Chain: Photovoltics
 	Level: 0
 		Population: 1

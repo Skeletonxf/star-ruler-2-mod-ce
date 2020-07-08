@@ -538,6 +538,7 @@ class MakePlanet : MapHook {
 		if (gas.boolean) {
 			if (ice_giant) {
 				planet.addStatus(getStatusID("FrozenIce"));
+				planet.addStatus(getStatusID("IceGiant"));
 			} else {
 				planet.addStatus(getStatusID("GasGiant"));
 			}
@@ -579,6 +580,11 @@ class MakePlanet : MapHook {
 		if (gas.boolean && ice_giant && randomi(0, 3) > 1) {
 			planet.addResource(getResource("Ammonia").id);
 		}
+
+		if (!ice_giant) {
+			planet.addStatus(getStatusID("Starlit"));
+		}
+
 		// [[ MODIFY BASE GAME END ]]
 
 		//Place in region

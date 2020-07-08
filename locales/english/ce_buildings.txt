@@ -1,0 +1,6 @@
+LIGHT_SYSTEM: Lighting System
+LIGHT_SYSTEM_DESC: <<
+	A planet wide lighting system control hub. Provides artificial light for ice giants and rouge planets when needed.
+
+	[img=ResourceIcon::2;22]Drains 0.5 [b][color=#42b4bd]Energy[/color][/b] per second while active.[/img]
+>>

@@ -1,0 +1,6 @@
+ICE_GIANT_STATUS_DESC: <<
+	This planet is made of frozen ice and supercritial water.
+
+	It recieves very little starlight and is too cold to develop without generating artificial light and heat.
+>>
+ICE_GIANT_STATUS: Ice Giant

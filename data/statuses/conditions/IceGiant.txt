@@ -1,0 +1,5 @@
+Status: IceGiant
+	Name: #ICE_GIANT_STATUS
+	Description: #ICE_GIANT_STATUS_DESC
+	Icon: Ice
+	Color: #ffffff

@@ -1,0 +1,10 @@
+Building: LightSystem
+	Name: #LIGHT_SYSTEM
+	Description: #LIGHT_SYSTEM_DESC
+	Sprite: FusionReactor
+	Category: Terraforming
+	Size: 2x2
+	Base Cost: 700
+	Build Time: 60
+	ConflictBuilding(LightSystem)
+	AddStatus(ArtificiallyLit)

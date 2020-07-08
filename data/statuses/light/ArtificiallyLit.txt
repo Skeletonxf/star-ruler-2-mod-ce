@@ -1,0 +1,8 @@
+Status: ArtificiallyLit
+	Name: Artificial Lighting
+	Visible To: Nobody
+	IfNotHaveStatus(CurrentlyStarlit, AddStatus(LightingApplied))
+Status: LightingApplied
+	Visible To: Nobody
+	CE_biome_hooks::IfHaveEnergyIncome(0.5, AddPlanetResource(ArtificialLight))
+	AddEnergyIncome(-0.5)

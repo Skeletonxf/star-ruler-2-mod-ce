@@ -51,3 +51,7 @@ Material: Ice
 Material: Ammonia
 	Inherit: Image2D
 	Texture: data/images/ammonia.png
+
+Material: LightResourceClass
+	Inherit: Image2D
+	Texture: data/images/light.png

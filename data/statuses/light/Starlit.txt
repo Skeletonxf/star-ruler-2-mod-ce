@@ -1,0 +1,6 @@
+Status: Starlit
+	Name: Starlit
+	Visible To: Nobody
+	Description: Indicates this planet may be lit by a star, ie if it is not an ice giant
+	IfSystemHasStar(AddStatus(CurrentlyStarlit))
+	IfSystemHasStar(AddDummyResource(Starlight))

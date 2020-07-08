@@ -3,10 +3,16 @@ EXPLOSIVE_GASES_DESC: Explosive gases that help with weaponry.
 VOLATILE_GASES_DESC: Unstable gases.
 HELIUM_3: He-3
 HELIUM_3_DESC: A stable isotope of Helium that is very useful both as an energy source and fuel.
-ICE_GIANT_WATER: Supercritical Water
+ICE_GIANT_WATER: Water
 ICE: Ice
 AMMONIA: Ammonia
 ICE_GIANT_ICE: Ices
 ICE_GIANT_ICE_DESC: The ice found in Ice Giants is difficult to extract but contains many useful heavier elements.
-ICE_GIANT_WATER_DESC: The water found in Ice Giants is difficult to extract but contains many useful heavier elements.
+ICE_GIANT_WATER_DESC: The supercritical water found in Ice Giants is difficult to extract but contains many useful heavier elements.
 LIGHT_GASES: Light Gases
+ARTIFICIAL_LIGHT_DESC: <<
+	Heat and light generated locally without depending on a star
+
+	[img=ResourceIcon::2;22]Drains 0.5 [b][color=#42b4bd]Energy[/color][/b] per second.[/img]
+>>
+ARTIFICIAL_LIGHT: Artificial Light

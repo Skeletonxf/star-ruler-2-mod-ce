@@ -1,0 +1,13 @@
+Resource: Starlight
+	Name: Starlight
+	Description: Heat and light obtained from a nearby star
+	Class: Light
+
+	Display Weight: -100
+
+	Exportable: False
+	Can Be Terraformed: False
+	Artificial: True
+	Frequency: 0
+	Icon: SystemUnderAttack
+	Small Icon: SystemUnderAttack

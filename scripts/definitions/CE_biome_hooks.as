@@ -165,3 +165,21 @@ class DealStellarPercentageDamage : BonusEffect {
 	}
 #section all
 };
+
+tidy final class IfHaveEnergyIncome : IfHook {
+	Document doc("Only applies the inner hook if the empire has at least a certain amount of energy income per second.");
+	Argument amount(AT_Decimal, doc="Minimum amount of energy income per second required.");
+	Argument hookID(AT_Hook, "planet_effects::GenericEffect");
+
+	bool instantiate() override {
+		if(!withHook(hookID.str))
+			return false;
+		return GenericEffect::instantiate();
+	}
+
+#section server
+	bool condition(Object& obj) const override {
+		return (obj.owner.EnergyIncome / obj.owner.EnergyGenerationFactor) >= amount.decimal;
+	}
+#section all
+};

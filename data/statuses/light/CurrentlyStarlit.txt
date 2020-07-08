@@ -1,0 +1,3 @@
+Status: CurrentlyStarlit
+	Visible To: Nobody
+	Description: Indicates this planet is receiving star light at present
