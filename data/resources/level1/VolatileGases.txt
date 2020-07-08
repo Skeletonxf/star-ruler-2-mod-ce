@@ -1,6 +1,5 @@
 Resource: VolatileGases
 	Name: #VOLATILE_GASES
-	Description: #VOLATILE_GASES_DESC
 	Native Biome: Atmosphere
 
 	Icon: Gases2

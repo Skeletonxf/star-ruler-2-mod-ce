@@ -10,6 +10,11 @@ Construction: Fracture
 		Fractured Planets can build an infinite number of moons and generate ore over time.
 	>>
 	Category: Development
+	RequireNotStatus(Fracturing)
+	OnCancel(RemoveStatus(Fracturing))
+	OnStart(AddStatus(Fracturing))
+	RequirePlanetNotBiome(Floating)
+	RequirePlanetNotBiome(Photovoltics)
 	CE_biome_hooks::SpawnDamagedPlanet(Resource = FracturedPlanet, Owned = True, Add Status = FracturedPlanetSpawn)
 	ConsumeEnergy(750)
 	RequirePlanetNotBiome(Atmosphere)

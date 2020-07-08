@@ -39,3 +39,15 @@ Material: Forestry2
 Material: Forestry3
 	Inherit: Image2D
 	Texture: data/images/forestation.png
+
+Material: He3
+	Inherit: Image2D
+	Texture: data/images/he3.png
+
+Material: Ice
+	Inherit: Image2D
+	Texture: data/images/ice-darker.png
+
+Material: Ammonia
+	Inherit: Image2D
+	Texture: data/images/ammonia.png

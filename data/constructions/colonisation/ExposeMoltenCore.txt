@@ -10,6 +10,7 @@ Construction: ExposeMoltenCore
 	Labor Cost:
 	Time Cost: 120
 
+	RequirePlanetNotBiome(Floating)
 	RequirePlanetNotBiome(Photovoltics)
 	RequirePlanetNotBiome(Atmosphere)
 	RequirePlanetNotBiome(Oceanic)

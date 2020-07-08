@@ -13,3 +13,4 @@ Resource: NativeNetwork
 	Pressure: 2 Research
 	Pressure: 1 Money
 	Pressure: 1 Defense
+	Can Be Terraformed: False

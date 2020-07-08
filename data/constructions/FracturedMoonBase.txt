@@ -1,6 +1,6 @@
 Construction: FractureMoonBase
-	Name: Moon Base
-	Description: #CONS_MOON_BASE_DESC
+	Name: #FRACTURED_MOON_BASE
+	Description: #CONS_FRACTURED_MOON_BASE_DESC
 
 	Category: Infrastructure
 
@@ -11,5 +11,6 @@ Construction: FractureMoonBase
 	RequireNotTrait(StarChildren)
 
 
-	RequirePlanetBiome(Atmosphere)
+	CE_biome_hooks::DealStellarPercentageDamage(0.1)
+	RequireStatus(FracturedPlanetSpawn)
 	AddSurfaceArea(Moon, (5, 5), Developed = False)

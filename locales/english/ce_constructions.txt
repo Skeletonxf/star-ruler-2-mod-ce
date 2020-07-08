@@ -1,0 +1,2 @@
+FRACTURED_MOON_BASE: Moon Base
+CONS_FRACTURED_MOON_BASE_DESC: Moon bases can be built infintely on fractured planets but do not increase maximum population and further damage the planet.

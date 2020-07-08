@@ -1,0 +1,10 @@
+Resource: Ammonia
+	Name: #AMMONIA
+	Native Biome: Ice
+	Level: 1
+	Affinity: Labor
+	Pressure: 2 Labor
+	Small Icon: Ammonia
+	Icon: Ammonia
+	Rarity: Rare
+	Pressure: 1 Money

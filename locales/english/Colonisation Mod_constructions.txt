@@ -1,8 +1,4 @@
-CONS_MOON_BASE_DESC: <<
-	Construct a large amount of infrastructure making more area available for placing buildings.
-
-	Moon bases can be built infintely on fractured planets but do not increase maximum population.
->>
+CONS_MOON_BASE_DESC: Construct a large amount of infrastructure making more area available for placing buildings.
 DEVELOP_FOREST_FOOD: Develop forest
 CONS_DYSON_SPHERE_UPGRADE: Upgrade Dyson Sphere
 CONS_DYSON_SPHERE_UPGRADE_DESC: <<

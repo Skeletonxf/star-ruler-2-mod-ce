@@ -11,6 +11,6 @@ Construction: DysonSphereUpgrade
 
 	AddBuildCostStatusCount(DysonSphereUpgrade, 500)
 
-	ConsumeCargoStatusCount(Ore, StarForgeUpgrade, 1000, Allow Cancel = True)
+	ConsumeCargoStatusCount(Ore, DysonSphereUpgrade, 1000, Allow Cancel = True)
 	GainPlanetResource(Photovoltics)
 	RequireStatus(DysonSphere)

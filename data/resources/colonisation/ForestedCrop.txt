@@ -11,4 +11,5 @@ Resource: ForestedCrop
 	Description: #FORESTED_CROP_DESC
 	Blurb: #FORESTED_CROP_BLURB
 	Exportable: False
+	Can Be Terraformed: False
 	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 12)

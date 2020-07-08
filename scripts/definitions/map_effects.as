@@ -351,14 +351,23 @@ class MakePlanet : MapHook {
 			@resource = getDistributedResource();
 		// [[ MODIFY BASE GAME START ]]
 		// set resources for gas giants seperately
+		bool ice_giant = false;
 		if (gas.boolean) {
-			int select_resource = randomi(0, 8);
-			if (select_resource < 3) {
+			int select_resource = randomi(0, 20);
+			if (select_resource < 4) {
 				@resource = getResource("HeavyGases");
-			} else if (select_resource < 6) {
+			} else if (select_resource < 7) {
 				@resource = getResource("VolatileGases");
-			} else {
+			} else if (select_resource < 9) {
 				@resource = getResource("ExplosiveGases");
+			} else if (select_resource < 10) {
+				@resource = getResource("Helium3");
+			} else if (select_resource < 16) {
+				@resource = getResource("IceGiantIce");
+				ice_giant = true;
+			} else {
+				@resource = getResource("IceGiantWater");
+				ice_giant = true;
 			}
 		}
 		// [[ MODIFY BASE GAME END ]]
@@ -527,8 +536,14 @@ class MakePlanet : MapHook {
 		// `hasBiome(getBiomeID("Ice"))`` checks don't seem to ever return true?
 		// check each of the three biomes instead to determine suitability
 		if (gas.boolean) {
-			planet.addStatus(getStatusID("GasGiant"));
+			if (ice_giant) {
+				planet.addStatus(getStatusID("FrozenIce"));
+			} else {
+				planet.addStatus(getStatusID("GasGiant"));
+			}
 		} else {
+			// FIXME: these checks should not be ran on artificial planet
+			// spawns like dyson spheres
 			uint ice = getBiomeID("Ice");
 			uint ocean = getBiomeID("Oceanic");
 			if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean) {
@@ -558,6 +573,11 @@ class MakePlanet : MapHook {
 					}
 				}
 			}
+		}
+
+		// give some ice giants ammonia as a second resource
+		if (gas.boolean && ice_giant && randomi(0, 3) > 1) {
+			planet.addResource(getResource("Ammonia").id);
 		}
 		// [[ MODIFY BASE GAME END ]]
 

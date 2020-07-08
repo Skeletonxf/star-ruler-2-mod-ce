@@ -1,5 +1,5 @@
 Resource: HeavyGases
-	Name: #HEAVY_GASES
+	Name: #LIGHT_GASES
 	Native Biome: Atmosphere
 
 	Icon: Gases1
@@ -11,4 +11,3 @@ Resource: HeavyGases
 
 	Pressure: 3 Energy
 	Frequency: 0
-	Description: #HEAVY_GASES_DESC

@@ -1,0 +1,11 @@
+Resource: IceGiantWater
+	Class: WaterType
+	Name: #ICE_GIANT_WATER
+	Description: #ICE_GIANT_WATER_DESC
+	Frequency: 0
+	Small Icon: ResourceIconsSmall::99 * ffffbb
+	Icon: ResourceIconsSmall::99 * ffffbb
+	Affinity: Energy
+	Pressure: 2 Energy
+	Pressure: 1 Money
+	Native Biome: Ice

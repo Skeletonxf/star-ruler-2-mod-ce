@@ -134,6 +134,10 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	const ConstructionType@ genocide_planet;
 	bool no_uplift = false;
 	uint atmosphere = 0;
+	// uplift costs 800 except for Mono where it is cheaper because
+	// it is less beneficial, FIXME, ideally this would be pulled out
+	// of the data files rather than duplicated here
+	double uplift_cost = 800;
 	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
@@ -162,6 +166,15 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 		@uplift_planet = getConstructionType("SharePlanet");
 		@genocide_planet = getConstructionType("TakePlanet");
 		no_uplift = ai.empire.hasTrait(getTraitID("Ancient"));
+		// ancient empire has a cheaper genocide construction
+		if (ai.empire.hasTrait(getTraitID("Ancient"))) {
+			@genocide_planet = getConstructionType("TakePlanetAncient");
+		}
+		// mono empire has a cheaper uplift option
+		if (ai.empire.hasTrait(getTraitID("Mechanoid"))) {
+			@uplift_planet = getConstructionType("SharePlanetMono");
+			uplift_cost = 500;
+		}
 		atmosphere = getBiomeID("Atmosphere");
 		// [[ MODIFY BASE GAME END ]]
 	}
@@ -795,7 +808,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 					// Uplift costs 800k, 5 influence, 500 energy
 					// 500 energy is pretty cheap to save up for so isn't
 					// factored in here for evaluating
-					if (!no_uplift && ai.empire.Influence >= 8 && budget.canSpend(BT_Development, 800)) {
+					if (!no_uplift && ai.empire.Influence >= 8 && budget.canSpend(BT_Development, uplift_cost)) {
 						if (log) {
 							ai.print("found native life planet to uplift");
 						}
@@ -804,8 +817,8 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 							auto@ focus = addFocus(plAI);
 							focus.targetLevel = 3;
 						// the existing development code will handle levelling the planet up further
-						// as it will see a tier 2 resource planet (and hopefully see that it
-						// just needs food and water to reach level 3?)
+						// as it will see a tier 2 resource planet (and see that it
+						// just needs food and water to reach level 3)
 						// from testing the AI is capable of providing water/food to these planets
 						// and will also sometimes take them to level 4 so they must be recognised
 						// correctly

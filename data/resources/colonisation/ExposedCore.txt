@@ -14,3 +14,4 @@ Resource: ExposedCore
 	Pressure: 1 Defense
 	Display Weight: -1
 	Exportable: False
+	Can Be Terraformed: False

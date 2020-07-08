@@ -1,0 +1,11 @@
+Resource: IceGiantIce
+	Name: #ICE_GIANT_ICE
+	Description: #ICE_GIANT_ICE_DESC
+	Frequency: 0
+	Small Icon: Ice
+	Icon: Ice
+	Affinity: Energy
+	Pressure: 1 Energy
+	Pressure: 1 Money
+	Native Biome: Ice
+	Level: 1

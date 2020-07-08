@@ -17,11 +17,11 @@ Resource: DysonSphere
 
 	SetOrbitSpin(900)
 
-	Pressure: 100 Influence
+	Pressure: 100 Energy
 
 	NativeLevelChain(Photovoltics)
 
-	
+
 	DisableResourceExport()
 	DisableResourceImport()
 	ModTileDevelopRate(-1)

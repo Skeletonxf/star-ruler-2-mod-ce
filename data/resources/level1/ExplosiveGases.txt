@@ -6,10 +6,9 @@ Resource: ExplosiveGases
 	Small Icon: Gases3
 
 	Level: 1
-	Affinity: Defense
+	Affinity: Energy + Defense
 
 
 	Pressure: 2 Defense
 	Frequency: 0
-	Pressure: 1 Money
-	Pressure: 1 Energy
+	Pressure: 2 Energy

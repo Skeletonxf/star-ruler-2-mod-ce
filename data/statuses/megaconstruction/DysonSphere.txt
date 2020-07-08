@@ -5,6 +5,7 @@ Status: DysonSphere
 	Collapses: True
 	Color: #518fc9
 
+	AddStatus(DysonSphereUpgrade)
 	DelayFTL()
 	SetOrbitSpin(900)
 	InterdictMovement()

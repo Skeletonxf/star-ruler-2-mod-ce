@@ -1,7 +1,7 @@
 WATER: Water
 VOLATILE_GASES: Volatile Gases
 EXPLOSIVE_GASES: Explosive Gases
-HEAVY_GASES: Heavy Gases
+HEAVY_GASES: Common Gases
 STELLAR_WATER: Water obtained from a comet
 BUILDING_WATER: Water obtained from a [bbloc=#BLD_HYDROGENATOR/].
 SOYLENT1_DESC: Food obtained from a [bbloc=#BLD_FARM/].
