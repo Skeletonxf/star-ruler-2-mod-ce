@@ -22,7 +22,7 @@ Module: DysonSphere
 	Combat Repair: False
 	Can Fling: False
 
-	ConsumeCargo(Ore, 5000)
+	LimitOncePerSystem(DysonSphere, Any Empire = True)
 	OnEnable(Destroy())
 	OnEnable(SpawnPlanet(DysonSphere, Owned = True, Add Status = DysonSphere, Radius = 350, Physics = False))
 	RequireCloseToStar()

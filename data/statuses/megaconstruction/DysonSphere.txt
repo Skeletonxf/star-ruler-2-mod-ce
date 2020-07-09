@@ -10,7 +10,9 @@ Status: DysonSphere
 	SetOrbitSpin(900)
 	InterdictMovement()
 	GloballyVisible()
-	AddPlanetGfxFlag(Ringworld)
+	AddPlanetGfxFlag(DysonSphere)
+
+	SetSystemFlag(DysonSphere)
 Status: DysonSphereUpgrade
 	Visible To: Nobody
 	Collapses: True
