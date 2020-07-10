@@ -22,7 +22,7 @@ Module: DysonSphere
 	Combat Repair: False
 	Can Fling: False
 
-	LimitOncePerSystem(DysonSphere, Any Empire = True)
+	LimitOncePerSystem(Ringworld, Any Empire = True)
 	OnEnable(Destroy())
-	OnEnable(SpawnPlanet(DysonSphere, Owned = True, Add Status = DysonSphere, Radius = 350, Physics = False))
+	OnEnable(SpawnPlanet(DysonSphere, Owned = True, Add Status = DysonSphere, Radius = 300, Physics = False))
 	RequireCloseToStar()

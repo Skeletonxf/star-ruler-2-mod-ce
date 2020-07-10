@@ -145,17 +145,18 @@ class DrawDysonSphere : Draw3D {
 	}
 
 	void draw(const recti &in pos, quaterniond rotation) {
-		quaterniond outerRot;
-		outerRot *= quaterniond_fromAxisAngle(vec3d_front(), -0.25 * pi);
-		outerRot *= rotation;
-		drawLitModel(model::RingworldOuter, material::GenericPBR_RingworldOuter, pos, outerRot);
-
 		quaterniond innerRot;
 		innerRot *= quaterniond_fromAxisAngle(vec3d_front(), -0.25 * pi);
-		innerRot *= rotation.inverted();
-		drawLitModel(model::RingworldInner, material::GenericPBR_RingworldInner, pos, innerRot);
-
-		drawLitModel(model::RingworldLiving, material::RingworldSurface, pos, outerRot);
+		innerRot *= rotation;
+		drawLitModel(model::RingworldInner, material::GenericPBR_RingworldInner, pos, innerRot, 2);
+		quaterniond innerRot2;
+		innerRot2 *= quaterniond_fromAxisAngle(vec3d_right(), -0.25 * pi);
+		innerRot2 *= rotation;
+		drawLitModel(model::RingworldInner, material::GenericPBR_RingworldInner, pos, innerRot2, 2);
+		quaterniond innerRot3;
+		innerRot3 *= quaterniond_fromAxisAngle(vec3d_up(), -0.25 * pi);
+		innerRot3 *= rotation;
+		drawLitModel(model::RingworldInner, material::GenericPBR_RingworldInner, pos, innerRot3, 2);
 	}
 };
 // [[ MODIFY BASE GAME END ]]

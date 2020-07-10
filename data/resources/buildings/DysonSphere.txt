@@ -16,8 +16,10 @@ Resource: DysonSphere
 	ForcePlanetType(Photovoltics)
 
 	SetOrbitSpin(900)
+	OnEnable(MoveToSystemCenter())
 
-	Pressure: 100 Energy
+	Pressure: 50 Energy
+	Frequency: 0
 
 	NativeLevelChain(Photovoltics)
 
@@ -27,6 +29,7 @@ Resource: DysonSphere
 	ModBuildingConstructRate(-1)
 	IfSystemHasStar(ProduceAllPressure(Energy))
 
+	ReplacesCities(Amount = 1000)
 Level Chain: Photovoltics
 	Level: 0
 		Population: 1

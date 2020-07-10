@@ -8,5 +8,5 @@ Biome: Photovoltics
 
 	Frequency: 0
 
-	Color: #223c54
+	Color: #24415c
 	Description: Photovoltic cells

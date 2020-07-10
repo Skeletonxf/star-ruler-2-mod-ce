@@ -12,4 +12,5 @@ Resource: Photovoltics
 	Native Biome: Photovoltics
 	Class: Photovoltics
 
-	Pressure: 50 Energy
+	Pressure: 25 Energy
+	Frequency: 0

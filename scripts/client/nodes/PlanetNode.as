@@ -154,23 +154,56 @@ final class PlanetNodeScript {
 		if(gfxFlags & PGA_DysonSphere != 0) {
 			double lodDist = node.sortDistance / (node.abs_scale * pixelSizeRatio);
 			node.applyTransform();
+			// upscale the rings to x2 size so they fill the planet region, as these
+			// were reused from the ringworld inner ring graphic
+			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(2.0), node.rotation);
+			// apply additional game time based rotation
+			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_up(), fraction(gameTime / 240.0) * twopi));
 
-			material::GenericPBR_RingworldOuter.switchTo();
-			model::RingworldOuter.draw(lodDist);
+			material::GenericPBR_RingworldInner.switchTo();
+			model::RingworldInner.draw(lodDist);
 
-			//Poor man's opposite direction rotation
-			applyAbsTransform(vec3d(), vec3d(1.0), node.rotation.inverted());
-			applyAbsTransform(vec3d(), vec3d(1.0), node.rotation.inverted());
+			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_front(), 1));
 			material::GenericPBR_RingworldInner.switchTo();
 			model::RingworldInner.draw(lodDist);
 			undoTransform();
+
+			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_right(), 1));
+			material::GenericPBR_RingworldInner.switchTo();
+			model::RingworldInner.draw(lodDist);
 			undoTransform();
 
-			preparePlanetShader(obj);
-			getPlanetMaterial(obj, material::RingworldSurface).switchTo();
+			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_front(), -1));
+			material::GenericPBR_RingworldInner.switchTo();
+			model::RingworldInner.draw(lodDist);
+			undoTransform();
 
-			model::RingworldLiving.draw(lodDist);
+			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_right(), -1));
+			material::GenericPBR_RingworldInner.switchTo();
+			model::RingworldInner.draw(lodDist);
 
+			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_front(), 0.5));
+			material::GenericPBR_RingworldInner.switchTo();
+			model::RingworldInner.draw(lodDist);
+			undoTransform();
+
+			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_right(), 0.5));
+			material::GenericPBR_RingworldInner.switchTo();
+			model::RingworldInner.draw(lodDist);
+			undoTransform();
+
+			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_front(), -0.5));
+			material::GenericPBR_RingworldInner.switchTo();
+			model::RingworldInner.draw(lodDist);
+			undoTransform();
+
+			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_right(), -0.5));
+			material::GenericPBR_RingworldInner.switchTo();
+			model::RingworldInner.draw(lodDist);
+			undoTransform();
+
+			undoTransform();
+			undoTransform();
 			undoTransform();
 			return;
 		}
