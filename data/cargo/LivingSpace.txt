@@ -1,0 +1,4 @@
+Cargo: LivingSpace
+	Name: #C_LIVING_SPACE
+	Description: #C_LIVING_SPACE_DESC
+	Icon: ResourceIcons::1

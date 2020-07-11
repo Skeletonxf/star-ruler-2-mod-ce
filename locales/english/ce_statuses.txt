@@ -4,3 +4,5 @@ ICE_GIANT_STATUS_DESC: <<
 	It recieves very little starlight and is too cold to develop without generating artificial light and heat.
 >>
 ICE_GIANT_STATUS: Ice Giant
+BONUS_MOTHERSHIP_POPULATION: Living Space
+BONUS_MOTHERSHIP_POPULATION_DESC: This mothership gains additional max population due to acquired living space resources from consuming planets.

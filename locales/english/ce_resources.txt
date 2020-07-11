@@ -13,6 +13,8 @@ LIGHT_GASES: Light Gases
 ARTIFICIAL_LIGHT_DESC: <<
 	Heat and light generated locally without depending on a star
 
-	[img=ResourceIcon::2;22]Drains 0.5 [b][color=#42b4bd]Energy[/color][/b] per second.[/img]
+	[img=ResourceIcon::2;22]Drains 2.5 [b][color=#42b4bd]Energy[/color][/b] per second.[/img]
 >>
 ARTIFICIAL_LIGHT: Artificial Light
+C_LIVING_SPACE: Living Space
+C_LIVING_SPACE_DESC: Materials for increasing the max population on Motherships

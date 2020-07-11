@@ -1,0 +1,6 @@
+Status: BonusMothershipPopulation
+	Name: #BONUS_MOTHERSHIP_POPULATION
+	Description: #BONUS_MOTHERSHIP_POPULATION_DESC
+	Icon: ResourceIcons::1
+	Collapses: True
+	RepeatStacks(OnEnable(AddModifier(LivingSpacePopIncrease())))

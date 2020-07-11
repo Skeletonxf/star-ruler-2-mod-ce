@@ -1,0 +1,2 @@
+ABL_CONSUME: Consume Planet
+ABL_CONSUME_DESC: Consumes a planet, converting the planet into max population for the mothership.

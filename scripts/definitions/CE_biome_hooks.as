@@ -4,6 +4,8 @@ import generic_effects;
 import repeat_hooks;
 from generic_effects import GenericEffect;
 import biomes;
+import abilities;
+from abilities import AbilityHook;
 #section server
 import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
 #section all
@@ -180,6 +182,50 @@ tidy final class IfHaveEnergyIncome : IfHook {
 #section server
 	bool condition(Object& obj) const override {
 		return (obj.owner.EnergyIncome / obj.owner.EnergyGenerationFactor) >= amount.decimal;
+	}
+#section all
+};
+
+class GenerateCargoWhile : AbilityHook {
+	Document doc("Generate cargo on the object casting the ability while is has a target.");
+	Argument type(AT_Cargo, doc="Type of cargo to add.");
+	Argument objTarg(TT_Object);
+	Argument rate(AT_SysVar, "1", doc="Rate to create cargo at.");
+
+#section server
+	void tick(Ability@ abl, any@ data, double time) const {
+		if(abl.obj is null || !abl.obj.hasCargo)
+			return;
+		Target@ storeTarg = objTarg.fromTarget(abl.targets);
+		if(storeTarg is null)
+			return;
+
+		Object@ target = storeTarg.obj;
+		if(target is null || !target.hasCargo)
+			return;
+		abl.obj.addCargo(type.integer, time * rate.fromSys(abl.subsystem));
+	}
+#section all
+};
+
+class IfFewerStatusStacks : IfHook {
+	Document doc("Only applies the inner hook if the object has fewer status stacks than an amount.");
+	Argument status(AT_Status, doc="Type of status effect to limit.");
+	Argument amount(AT_Integer, doc="Minimum number of stacks to stop triggering inner hook at.");
+	Argument hookID(AT_Hook, "planet_effects::GenericEffect");
+
+	bool instantiate() override {
+		if(!withHook(hookID.str))
+			return false;
+		return GenericEffect::instantiate();
+	}
+
+#section server
+	bool condition(Object& obj) const override {
+		if(!obj.hasStatuses)
+			return false;
+		int count = obj.getStatusStackCount(status.integer);
+		return count < amount.integer;
 	}
 #section all
 };
