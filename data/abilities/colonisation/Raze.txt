@@ -1,0 +1,8 @@
+Ability: RazeAbility
+	Description: #PARASITE_RAZE_DESC
+	Name: #RAZE_PLANET
+	Icon: Revolutionaries
+	Target: targ = Object
+	AddStatus(TriggerParasiteRaze)
+	TargetFilterOwned(targ)
+	TargetFilterType(targ, Type = Planet)

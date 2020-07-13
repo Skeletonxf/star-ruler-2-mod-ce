@@ -3,7 +3,7 @@ Subsystem: MothershipHull
 	Description: #S_MOTHERSHIP_HULL_DESC
 
 	Tags: Applied:Hull, Category:Hulls, NoCore, Mothership
-	Tags: Ability:MothershipColonize, CannotDonate, Ability:MothershipConsume
+	Tags: CannotDonate, Ability:MothershipConsume, Ability:MothershipColonize
 	Hull: Flagship
 	EvaluationOrder: -200
 	BaseColor: #cc6a3a

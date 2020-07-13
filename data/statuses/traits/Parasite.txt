@@ -1,0 +1,12 @@
+Status: Parasite
+	Visible To: Nobody
+	Collapses: True
+
+
+	GrantAbility(RazeAbility)
+	ModPressurePct(Research, -0.50)
+	ModPressurePct(Labor, -0.50)
+	ModPressurePct(Defense, -0.50)
+	ModPressurePct(Energy, -0.50)
+	ModPressurePct(Influence, -0.50)
+	ModPressurePct(Money, -0.50)

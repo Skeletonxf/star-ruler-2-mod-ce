@@ -229,3 +229,24 @@ class IfFewerStatusStacks : IfHook {
 	}
 #section all
 };
+
+class DealPlanetTrueDamage : BonusEffect {
+	Document doc("Deal true damage to a planet (bypassing pop based modifiers).");
+	Argument amount(AT_Decimal, doc="Amount of damage to deal.");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if(obj is null)
+			return;
+
+		if (obj.isPlanet) {
+			Planet@ planet = cast<Planet>(obj);
+			planet.Health -= amount.decimal;
+			if (planet.Health <= 0) {
+				planet.Health = 0;
+				planet.destroy();
+			}
+		}
+	}
+#section all
+};

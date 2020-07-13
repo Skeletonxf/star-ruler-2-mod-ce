@@ -1,2 +1,4 @@
 ABL_CONSUME: Consume Planet
 ABL_CONSUME_DESC: Consumes a planet, converting the planet into max population for the mothership.
+RAZE: Raze Planet
+RAZE_DESC: Raze the planet, gaining massively increased resource production from it for three minutes then destroying its native resource.

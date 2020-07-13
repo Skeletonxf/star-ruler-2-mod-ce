@@ -1,0 +1,17 @@
+Trait: Parasite
+	Name: #TRAIT_PARASITE
+	Description: #TRAIT_PARASITE_DESC
+	Order: 10
+
+	Icon: Revolutionaries
+	Color: #d04ebe
+
+	Category: Lifestyle
+	Unique: Lifestyle
+	AI Support: False
+
+	AddStatusOwnedPlanets(Parasite)
+
+	ModAttribute(ColonizerSpeed, Multiply, 0.25)
+	TriggerHomeworld(AddStatus(TriggerParasiteRaze))
+	TriggerHomeworld(TerraformTo(Supercarbons))

@@ -18,3 +18,5 @@ ARTIFICIAL_LIGHT_DESC: <<
 ARTIFICIAL_LIGHT: Artificial Light
 C_LIVING_SPACE: Living Space
 C_LIVING_SPACE_DESC: Materials for increasing the max population on Motherships
+RAZED: Razed
+RAZED_DESC: Nothing left

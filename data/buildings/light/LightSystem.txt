@@ -6,5 +6,6 @@ Building: LightSystem
 	Size: 2x2
 	Base Cost: 700
 	Build Time: 60
+	AI:AsCreatedResource(ArtificialLight)
 	ConflictBuilding(LightSystem)
 	AddStatus(ArtificiallyLit)

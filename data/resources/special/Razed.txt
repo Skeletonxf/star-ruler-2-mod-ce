@@ -1,0 +1,10 @@
+Resource: Razed
+	Name: #RAZED
+	Native Biome: Rock
+	Artificial: True
+	Icon: ConditionIcons::7
+	Small Icon: ConditionIcons::7
+	Can Be Terraformed: False
+	Description: #RAZED_DESC
+	Frequency: 0
+	Exportable: False

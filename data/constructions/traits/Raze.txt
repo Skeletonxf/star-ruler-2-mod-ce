@@ -1,0 +1,9 @@
+Construction: RazePlanet
+	Name: #RAZE_PLANET
+	Description: #PARASITE_RAZE_DESC
+	Icon: Revolutionaries
+	Category: Destruction
+	Time Cost: 1
+	RequireNotStatus(ParasiteRaze)
+	RequirePlanet()
+	AddStatus(TriggerParasiteRaze)

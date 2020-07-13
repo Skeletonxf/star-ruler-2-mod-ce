@@ -1,0 +1,38 @@
+Status: ParasiteRaze
+	Name: #PARASITE_RAZE
+	Description: #PARASITE_RAZE_DESC
+	Icon: Revolutionaries
+	Color: #d04ebe
+	Visible To: Nobody
+	OnDisable(LosePopulation(1000))
+	OnEnable(RemoveStatus(TriggerParasiteRaze))
+	AddMaxPopulation(5)
+	//TriggerPeriodic(AddStatus(Razing), Interval = 1, Trigger Immediate = True)
+	TriggerPeriodic(AddStatus(Razing, Max Stacks = 120), Interval = 1, Max Triggers = 120, Trigger Immediate = True)
+	AddIncome(-1200)
+	OnDisable(TerraformTo(Razed))
+	OnDisable(ReplaceAllBiomesWith(Rock))
+	OnDisable(CE_biome_hooks::DealStellarPercentageDamage(0.95), Repeats = 2)
+	ProduceAllPressure(Research, Factor = 2.5)
+	ProduceAllPressure(Labor, Factor = 25)
+	ProduceAllPressure(Defense, Factor = 2.5)
+	ProduceAllPressure(Energy, Factor = 2.5)
+	ProduceAllPressure(Influence, Factor = 2.5)
+	ProduceAllPressure(Money, Factor = 2.5)
+	AddDummyResource(Starlight, 20)
+	AddDummyResource(Supercarbons, 20)
+	AddDummyResource(Titanium, 20)
+	AddDummyResource(Meat, 20)
+	AddDummyResource(Water, 20)
+	AlwaysAtMaxPopulation()
+	NoNeedPopulationForLevel()
+	DisableResourceImport()
+	DisableResourceExport()
+	ForbidLaborExport()
+Status: Razing
+	Name: #PARASITE_RAZE
+	Icon: Revolutionaries
+	Color: #d04ebe
+	Visible To: Owner
+	Collapses: True
+	Description: #PARASITE_RAZE_DESC

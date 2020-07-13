@@ -4,5 +4,5 @@ Status: ArtificiallyLit
 	IfNotHaveStatus(CurrentlyStarlit, AddStatus(LightingApplied))
 Status: LightingApplied
 	Visible To: Nobody
-	CE_biome_hooks::IfHaveEnergyIncome(2.5, AddPlanetResource(ArtificialLight))
-	AddEnergyIncome(-2.5)
+	EnergyMaintenance(Amount = 2.5)
+	AddPlanetResource(ArtificialLight)

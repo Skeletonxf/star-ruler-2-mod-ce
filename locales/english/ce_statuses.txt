@@ -6,3 +6,6 @@ ICE_GIANT_STATUS_DESC: <<
 ICE_GIANT_STATUS: Ice Giant
 BONUS_MOTHERSHIP_POPULATION: Living Space
 BONUS_MOTHERSHIP_POPULATION_DESC: This mothership gains additional max population due to acquired living space resources from consuming planets.
+PARASITE_RAZE: Razing Planet
+PARASITE_RAZE_DESC: Planet will temporarily produce massive amounts of resources.
+PARASITE_RAZE_IN_PROGRESS: Razing

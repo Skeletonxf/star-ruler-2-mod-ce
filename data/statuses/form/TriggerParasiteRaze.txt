@@ -1,0 +1,7 @@
+Status: TriggerParasiteRaze
+	Name: Razing Planet
+	Description: Planet will temporarily produce massive amounts of resources
+	Icon: Revolutionaries
+	Color: #d04ebe
+	Visible To: Nobody
+	IfNotNative(Razed, IfNotHaveStatus(ParasiteRaze, OnEnable(AddStatus(ParasiteRaze, Duration = 121))))
