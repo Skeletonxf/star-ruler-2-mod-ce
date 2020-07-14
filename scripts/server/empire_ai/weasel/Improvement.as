@@ -109,6 +109,11 @@ class Improvement : AIComponent {
 					// can't build more moon bases
 					continue;
 				}
+				if (!plAI.failedGasGiantBuild) {
+					// don't need a moon base if this planet has all its
+					// food and water imported
+					continue;
+				}
 				if (!planets.isConstructing(planet, build_moon_base)) {
 					// This is always high priority because we either have no
 					// moon base in which case we can't build anything

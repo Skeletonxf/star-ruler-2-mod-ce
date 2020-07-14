@@ -20,3 +20,8 @@ C_LIVING_SPACE: Living Space
 C_LIVING_SPACE_DESC: Materials for increasing the max population on Motherships
 RAZED: Razed
 RAZED_DESC: Nothing left
+STAR_CHILDREN_ARTIFICIAL_LIGHT_DESC: <<
+	Heat and light generated from Habitats.
+
+	Only requires a star.
+>>

@@ -776,8 +776,9 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 
 								// [[ MODIFY BASE GAME START ]]
 								double priority = 1;
-								// priorize megafarms and hydrogenerators
-								if (type.ident == "Farm" || type.ident == "Hydrogenator") {
+								// priorize megafarms, hydrogenerators and lighting systems
+								// because these almost always level up planets
+								if (type.ident == "Farm" || type.ident == "Hydrogenator" || type.ident == "LightSystem") {
 									priority = 2;
 								}
 								// [[ MODIFY BASE GAME END ]]

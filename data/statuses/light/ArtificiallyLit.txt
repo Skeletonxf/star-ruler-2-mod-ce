@@ -6,3 +6,11 @@ Status: LightingApplied
 	Visible To: Nobody
 	EnergyMaintenance(Amount = 2.5)
 	AddPlanetResource(ArtificialLight)
+
+Status: StarChildrenArtificiallyLit
+	Name: Artificial Lighting
+	Visible To: Nobody
+	IfNotHaveStatus(CurrentlyStarlit, AddStatus(StarChildrenLightingApplied))
+Status: StarChildrenLightingApplied
+	Visible To: Nobody
+	IfSystemHasStar(AddPlanetResource(StarChildrenArtificialLight))

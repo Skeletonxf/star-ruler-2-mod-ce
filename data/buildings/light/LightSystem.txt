@@ -4,8 +4,9 @@ Building: LightSystem
 	Sprite: FusionReactor
 	Category: Terraforming
 	Size: 2x2
-	Base Cost: 700
+	Base Cost: 300
 	Build Time: 60
+	Tile Cost: 25
 	AI:AsCreatedResource(ArtificialLight)
 	ConflictBuilding(LightSystem)
 	AddStatus(ArtificiallyLit)

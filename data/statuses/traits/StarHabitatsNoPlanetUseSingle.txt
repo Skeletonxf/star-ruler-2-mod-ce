@@ -15,7 +15,8 @@ Status: StarHabitatsNoPlanetUseSingle
 	ProduceAllPressure(Money)
 	ProduceAllPressure(Labor)
 	ReplacesCities(10000)
-	
 
 
+
+	IfSystemHasStar(AddStatus(StarChildrenArtificiallyLit))
 	CannotUseLabor()
