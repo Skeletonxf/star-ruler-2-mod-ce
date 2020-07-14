@@ -1,6 +1,6 @@
 TRAIT_PARASITE: Parasite
 TRAIT_PARASITE_DESC: <<
-	[vspace=3/] [img=ResourceIcon::8;22]Planet colony ships move 75% slower.[/img]
-	[vspace=3/][img=Revolutionaries;22]All owned planets produce only 50% of the pressure of their resources. Planets can be razed down to nothing to massively increase their resource production and colonise nearby planets before destroying their resources.[/img]
+	[vspace=3/][img=Revolutionaries;22]All owned planets produce only 50% of the pressure of their resources. Planets can be razed down to nothing to massively increase their resource production before destroying their resources.[/img]
+	[vspace=3/] [img=ResourceIcon::8;22]Planet colony ships from planets not being razed move 75% slower.[/img]
 
 >>

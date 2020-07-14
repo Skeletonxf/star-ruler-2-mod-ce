@@ -131,3 +131,17 @@ Preset: Wandi
 	Trait: Paranoid
 	Trait: RandomGovernment
 	Trait: Innovative
+
+Preset: Locusto
+	Name: #RACE_LOCUSTO
+	Tagline: #RACE_LOCUSTO_TAGLINE
+	Lore: #RACE_LOCUSTO_LORE
+	Portrait: emp_portrait_oko
+	Shipset: Volkur
+	Hard: True
+
+	Trait: Parasite
+	Trait: Verdant
+	Trait: Empire
+	Trait: Gate
+	Trait: Euphoric

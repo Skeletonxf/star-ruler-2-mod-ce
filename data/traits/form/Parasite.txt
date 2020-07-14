@@ -1,0 +1,20 @@
+Trait: Parasite
+	Name: #TRAIT_PARASITE
+	Description: #TRAIT_PARASITE_DESC
+	Order: 11
+
+	Icon: Revolutionaries
+	Color: #d04ebe
+
+	Category: Biology
+	AI Support: False
+	Conflict: Ancient
+	Conflict: StarChildren
+	Conflict: Mechanoid
+	Conflict: Extragalactic
+
+	AddStatusOwnedPlanets(Parasite)
+
+	TriggerHomeworld(AddStatus(ParasiteRaze))
+	ModAttribute(ColonizerSpeed, Multiply, 0.25)
+	TriggerHomeworld(TerraformTo(Supercarbons))

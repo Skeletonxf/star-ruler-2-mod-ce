@@ -925,6 +925,24 @@ RACE_WANDI_LORE: <<|
 	The system we are arriving in as I finish this speech shall be our new beginning. Here we will finally become a multi planetary species and avoid the ever increasing risk of extinction!
 >>
 
+RACE_LOCUSTO: Locusto
+RACE_LOCUSTO_TAGLINE: Growth, decay, growth, decay...
+RACE_LOCUSTO_LORE: <<|
+	Can we be held responsible for not defying our nature?
+
+	Are we doomed just for existing?
+
+	Great expansion and greater contraction is all we know. All we can know.
+
+	Is it our fault we raze everything down to rock? We cannot live any other way.
+
+	Our great tree has drawn its last breath. We must expand to new worlds, for this one no longer has food.
+
+	Is that so wrong?
+
+	We just want to live.
+>>
+
 HELP_ANCIENT: <<
 	[font=Big]Ancient[/font][vspace=4/]
 	You've chosen to play as a race with the [color=#aaffaa]Ancient[/color] trait. Here's a few quick tips to get you started!

@@ -3,6 +3,9 @@ Ability: RazeAbility
 	Name: #RAZE_PLANET
 	Icon: Revolutionaries
 	Target: targ = Object
-	AddStatus(TriggerParasiteRaze)
+	TargetFilterSelf(targ)
+	TargetFilterNotStatus(targ, ParasiteRaze)
+	TargetFilterNotStatus(targ, ParasiteRazeDone)
+	AddStatus(ParasiteRaze)
 	TargetFilterOwned(targ)
 	TargetFilterType(targ, Type = Planet)

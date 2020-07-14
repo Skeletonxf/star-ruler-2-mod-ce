@@ -250,3 +250,50 @@ class DealPlanetTrueDamage : BonusEffect {
 	}
 #section all
 };
+
+class IfPlanetPercentageHealthLessThan : IfHook {
+	Document doc("Only applies the inner hook if the planet has the specified % hp or less remaining.");
+	Argument amount(AT_Decimal, doc="% of hp threshold.");
+	Argument hookID(AT_Hook, "planet_effects::GenericEffect");
+
+	bool instantiate() override {
+		if(!withHook(hookID.str))
+			return false;
+		return GenericEffect::instantiate();
+	}
+
+#section server
+	bool condition(Object& obj) const override {
+		if (obj is null) {
+			return false;
+		}
+		if (obj.isPlanet) {
+			Planet@ planet = cast<Planet>(obj);
+			return (planet.Health / planet.MaxHealth) <= amount.decimal;
+		}
+		return false;
+	}
+#section all
+};
+
+class DealPlanetPercentageTrueDamageOverTime : GenericEffect, TriggerableGeneric {
+	Document doc("Deal percentage max hp true damage to the targeted planet over time. Stops when hits threshold");
+	Argument amount(AT_Decimal, doc="Amount of % damage to deal (% of max HP) per second.");
+
+#section server
+	void tick(Object& obj, any@ data, double time) const override {
+		if (obj is null) {
+			return;
+		}
+
+		if (obj.isPlanet) {
+			Planet@ planet = cast<Planet>(obj);
+			planet.Health -= planet.MaxHealth * amount.decimal * time;
+			if (planet.Health <= 0) {
+				planet.Health = 0;
+				planet.destroy();
+			}
+		}
+	}
+#section all
+};

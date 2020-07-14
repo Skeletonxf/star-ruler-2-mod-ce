@@ -3,12 +3,13 @@ Status: ParasiteRaze
 	Description: #PARASITE_RAZE_DESC
 	Icon: Revolutionaries
 	Color: #d04ebe
-	Visible To: Nobody
-	OnDisable(LosePopulation(1000))
-	OnEnable(RemoveStatus(TriggerParasiteRaze))
+	Visible To: Owner
 	AddMaxPopulation(5)
 	//TriggerPeriodic(AddStatus(Razing), Interval = 1, Trigger Immediate = True)
-	TriggerPeriodic(AddStatus(Razing, Max Stacks = 120), Interval = 1, Max Triggers = 120, Trigger Immediate = True)
+	OnDisable(AddStatus(ParasiteRazeDone))
+	CE_biome_hooks::DealPlanetPercentageTrueDamageOverTime(0.009)
+	ModColonyShipAccel(Multiplier = 4.0)
+	CE_biome_hooks::IfPlanetPercentageHealthLessThan(0.1, RemoveAllStatus(ParasiteRaze))
 	AddIncome(-1200)
 	OnDisable(TerraformTo(Razed))
 	OnDisable(ReplaceAllBiomesWith(Rock))
@@ -29,10 +30,5 @@ Status: ParasiteRaze
 	DisableResourceImport()
 	DisableResourceExport()
 	ForbidLaborExport()
-Status: Razing
-	Name: #PARASITE_RAZE
-	Icon: Revolutionaries
-	Color: #d04ebe
-	Visible To: Owner
-	Collapses: True
-	Description: #PARASITE_RAZE_DESC
+Status: ParasiteRazeDone
+	Visible To: Nobody

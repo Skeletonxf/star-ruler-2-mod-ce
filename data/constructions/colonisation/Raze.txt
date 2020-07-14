@@ -1,0 +1,11 @@
+Construction: RazeConstuction
+	Name: #RAZE_PLANET
+	Description: #PARASITE_RAZE_DESC
+	Icon: Revolutionaries
+	Category: Destruction
+	Target: targ = 
+	RequireNotStatus(ParasiteRazeDone)
+	AddStatus(ParasiteRaze)
+	RequireNotStatus(ParasiteRaze)
+	RequireTrait(Parasite)
+	RequirePlanet()
