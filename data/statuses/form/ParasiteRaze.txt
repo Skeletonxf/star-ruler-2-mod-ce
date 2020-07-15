@@ -5,7 +5,6 @@ Status: ParasiteRaze
 	Color: #d04ebe
 	Visible To: Owner
 	AddMaxPopulation(5)
-	//TriggerPeriodic(AddStatus(Razing), Interval = 1, Trigger Immediate = True)
 	OnDisable(AddStatus(ParasiteRazeDone))
 	CE_biome_hooks::DealPlanetPercentageTrueDamageOverTime(0.009)
 	ModColonyShipAccel(Multiplier = 4.0)

@@ -25,6 +25,8 @@ import AIComponent@ createOrbitals() from "empire_ai.weasel.Orbitals";
 // [[ MODIFY BASE GAME START ]]
 // create new component to add moon bases, orbitals, melt water
 import AIComponent@ createImprovement() from "empire_ai.weasel.Improvement";
+// also create a component for handling the parasite trait
+import AIComponent@ createParasite() from "empire_ai.weasel.biology.Parasite";
 // [[ MODIFY BASE GAME END ]]
 
 // [[ MODIFY BASE GAME START ]]
@@ -388,6 +390,7 @@ final class AI : AIController, Savable {
 	IAIComponent@ orbitals;
 	// [[ MODIFY BASE GAME START ]]
 	IAIComponent@ improvement;
+	IAIComponent@ parasite;
 	// [[ MODIFY BASE GAME END ]]
 
 	IAIComponent@ ftl;
@@ -443,6 +446,15 @@ final class AI : AIController, Savable {
 			@race = add(createDevout());
 		else if(empire.hasTrait(getTraitID("Ancient")))
 			@race = add(createAncient());
+
+		// [[ MODIFY BASE GAME START ]]
+		if (empire.hasTrait(getTraitID("Parasite"))) {
+			@parasite = add(createParasite());
+			// parasite trait means we need to colonise more than just
+			// what is useful for levelling planets
+			behavior.guaranteeColonizations += 2;
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		//Misc components
 		if(hasInvasionMap() || addedComponents & AC_Invasion != 0) {
