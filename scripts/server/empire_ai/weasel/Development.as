@@ -138,6 +138,8 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	// it is less beneficial, FIXME, ideally this would be pulled out
 	// of the data files rather than duplicated here
 	double uplift_cost = 800;
+	uint currentlyStarlitStatusID = 0;
+	uint razingStatusID = 0;
 	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
@@ -176,6 +178,8 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 			uplift_cost = 500;
 		}
 		atmosphere = getBiomeID("Atmosphere");
+		currentlyStarlitStatusID = getStatusID("CurrentlyStarlit");
+		razingStatusID = getStatusID("ParasiteRaze");
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -770,7 +774,10 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 						Object@ buildOn = hook.considerBuild(this, type);
 						if(buildOn !is null && buildOn.isPlanet) {
 							auto@ plAI = planets.getAI(cast<Planet>(buildOn));
-							if(plAI !is null) {
+							// [[ MODIFY BASE GAME START ]]
+							// Don't build on planets that are being razed down
+							if(plAI !is null && !plAI.obj.hasStatusEffect(razingStatusID)) {
+								// [[ MODIFY BASE GAME END ]]
 								if(log)
 									ai.print("AI hook generically requested building of type "+type.name, buildOn);
 
@@ -781,11 +788,19 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 								if (type.ident == "Farm" || type.ident == "Hydrogenator" || type.ident == "LightSystem") {
 									priority = 2;
 								}
-								// [[ MODIFY BASE GAME END ]]
+								bool skipBuild = false;
+								if (type.ident == "LightSystem" && plAI.obj.hasStatusEffect(currentlyStarlitStatusID)) {
+									// don't build artificial lighting on a planet with starlight
+									skipBuild = true;
+								}
 
-								auto@ req = planets.requestBuilding(plAI, type, priority=priority, expire=ai.behavior.genericBuildExpire);
-								if(req !is null)
-									genericBuilds.insertLast(req);
+								if (!skipBuild) {
+									auto@ req = planets.requestBuilding(plAI, type, priority=priority, expire=ai.behavior.genericBuildExpire);
+									if (req !is null) {
+										genericBuilds.insertLast(req);
+									}
+								}
+								// [[ MODIFY BASE GAME END ]]
 								break;
 							}
 						}

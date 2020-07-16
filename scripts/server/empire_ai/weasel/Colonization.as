@@ -20,6 +20,13 @@ interface RaceColonization {
 	double getGenericUsefulness(const ResourceType@ type);
 };
 
+// [[ MODIFY BASE GAME START ]]
+// Same colonisation modifier interface as for race
+interface ParasiteColonization {
+	double getGenericUsefulness(const ResourceType@ type);
+}
+// [[ MODIFY BASE GAME END ]]
+
 final class ColonizeData {
 	int id = -1;
 	Planet@ target;
@@ -128,6 +135,9 @@ tidy final class ColonizeQueue {
 
 final class Colonization : AIComponent {
 	const ResourceClass@ foodClass, waterClass, scalableClass;
+	// [[ MODIFY BASE GAME START ]]
+	const ResourceType@ razed;
+	// [[ MODIFY BASE GAME END ]]
 
 	Resources@ resources;
 	Planets@ planets;
@@ -135,6 +145,9 @@ final class Colonization : AIComponent {
 	Budget@ budget;
 	Creeping@ creeping;
 	RaceColonization@ race;
+	// [[ MODIFY BASE GAME START ]]
+	ParasiteColonization@ parasite;
+	// [[ MODIFY BASE GAME END ]]
 
 	array<ColonizeQueue@> queue;
 	array<ColonizeData@> colonizing;
@@ -168,11 +181,19 @@ final class Colonization : AIComponent {
 		@budget = cast<Budget>(ai.budget);
 		@creeping = cast<Creeping>(ai.creeping);
 		@race = cast<RaceColonization>(ai.race);
+		// [[ MODIFY BASE GAME START ]]
+		if (ai.parasite !is null) {
+			@parasite = cast<ParasiteColonization>(ai.parasite);
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		//Get some hueristic resource classes
 		@foodClass = getResourceClass("Food");
 		@waterClass = getResourceClass("WaterType");
 		@scalableClass = getResourceClass("Scalable");
+		// [[ MODIFY BASE GAME START ]]
+		@razed = getResource("Razed");
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void save(SaveFile& file) {
@@ -563,6 +584,14 @@ final class Colonization : AIComponent {
 			weight *= double(type.totalPressure);
 		if(race !is null)
 			weight *= race.getGenericUsefulness(type);
+		// [[ MODIFY BASE GAME START ]]
+		if (parasite !is null) {
+			weight *= parasite.getGenericUsefulness(type);
+		}
+		if (type is razed) {
+			weight *= 0.000001;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		return weight;
 	}
 
@@ -824,6 +853,19 @@ final class Colonization : AIComponent {
 			queue.insertLast(q);
 		return q;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	ColonizeQueue@ queueColonizeHighPriority(ResourceSpec& spec, bool place = true) {
+		ColonizeQueue q;
+		@q.spec = spec;
+
+		if (place) {
+			// insertAt pushes other elements down the array
+			queue.insertAt(0, q);
+		}
+		return q;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	bool unresolvedInQueue() {
 		for(uint i = 0, cnt = queue.length; i < cnt; ++i) {

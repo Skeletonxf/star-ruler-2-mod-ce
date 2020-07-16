@@ -15,6 +15,7 @@ Trait: Parasite
 
 	AddStatusOwnedPlanets(Parasite)
 
+	TriggerHomeworld(AddStatus(RazeWithoutAbandon))
 	TriggerHomeworld(AddStatus(ParasiteRaze))
 	ModAttribute(ColonizerSpeed, Multiply, 0.25)
 	TriggerHomeworld(TerraformTo(Supercarbons))

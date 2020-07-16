@@ -4,6 +4,8 @@ Status: ParasiteRaze
 	Icon: Revolutionaries
 	Color: #d04ebe
 	Visible To: Owner
+	IfHaveStatus(RazeWithoutAbandon, OnDisable(AddStatus(ParasiteHomeworldRazed)))
+	IfNotHaveStatus(RazeWithoutAbandon, OnDisable(LosePopulation(1000)))
 	AddMaxPopulation(5)
 	OnDisable(AddStatus(ParasiteRazeDone))
 	CE_biome_hooks::DealPlanetPercentageTrueDamageOverTime(0.009)
@@ -31,3 +33,8 @@ Status: ParasiteRaze
 	ForbidLaborExport()
 Status: ParasiteRazeDone
 	Visible To: Nobody
+Status: RazeWithoutAbandon
+	Visible To: Nobody
+Status: ParasiteHomeworldRazed
+	Visible To: Nobody
+	EnableAfter(AddPlanetResource(Unobtanium), Start Timer = 10)
