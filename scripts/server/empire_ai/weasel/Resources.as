@@ -189,12 +189,6 @@ final class Resources : AIComponent {
 						valid = false;
 				}
 				if (!valid) {
-					print("breaking invalid import for");
-					print(res.obj.name);
-					if (res.request.obj !is null) {
-						print(res.request.obj.owner);
-					}
-					print(".");
 					breakImport(res);
 				}
 			}

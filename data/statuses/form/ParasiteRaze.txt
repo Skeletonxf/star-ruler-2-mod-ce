@@ -4,6 +4,7 @@ Status: ParasiteRaze
 	Icon: Revolutionaries
 	Color: #d04ebe
 	Visible To: Owner
+	OnEnable(RemoveStatus(NativeLife))
 	IfHaveStatus(RazeWithoutAbandon, OnDisable(AddStatus(ParasiteHomeworldRazed)))
 	IfNotHaveStatus(RazeWithoutAbandon, OnDisable(LosePopulation(1000)))
 	AddMaxPopulation(5)
@@ -11,7 +12,7 @@ Status: ParasiteRaze
 	CE_biome_hooks::DealPlanetPercentageTrueDamageOverTime(0.009)
 	ModColonyShipAccel(Multiplier = 4.0)
 	CE_biome_hooks::IfPlanetPercentageHealthLessThan(0.1, RemoveAllStatus(ParasiteRaze))
-	AddIncome(-1200)
+	AddIncome(-1300)
 	OnDisable(TerraformTo(Razed))
 	OnDisable(ReplaceAllBiomesWith(Rock))
 	OnDisable(CE_biome_hooks::DealStellarPercentageDamage(0.95), Repeats = 2)
@@ -37,4 +38,3 @@ Status: RazeWithoutAbandon
 	Visible To: Nobody
 Status: ParasiteHomeworldRazed
 	Visible To: Nobody
-	EnableAfter(AddPlanetResource(Unobtanium), Start Timer = 10)
