@@ -7,7 +7,6 @@ Trait: Parasite
 	Color: #d04ebe
 
 	Category: Biology
-	AI Support: False
 	Conflict: Ancient
 	Conflict: StarChildren
 	Conflict: Mechanoid

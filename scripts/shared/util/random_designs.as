@@ -261,6 +261,10 @@ tidy class Designer {
 		composition.insertLast(Internal(tag("ControlCore"), 0.2, 0.5));
 		composition.insertLast(Internal(tag("ControlCore"), 0.2, 0.5));
 		composition.insertLast(Applied(tag("Mothership")));
+		// [[ MODIFY BASE GAME START ]]
+		// Add another set of engine components to make motherships fast
+		composition.insertLast(Exhaust(tag("Engine") & tag("GivesThrust"), 0.25, 0.35));
+		// [[ MODIFY BASE GAME END ]]
 		composeFlagship(supply=false, power=false, clear=false);
 		hexLimit = 225;
 	}
