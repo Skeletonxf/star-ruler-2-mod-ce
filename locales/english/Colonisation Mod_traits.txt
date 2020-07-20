@@ -15,6 +15,8 @@ TRAIT_TERRESTIAL_DESC: No particular effects on gameplay
 WALKING_DESC: No particular bonuses.
 AQUATIC_TRAIT: All colonised planets with water biomes become happy. Development and building construction rates reduced 20%. Fire damage taken on ships is doubled.
 CELESTIAL_DESC: <<
+	[color=#f00]NO AI SUPPORT[/color]
+
 	We have always reached for the stars. First we modified our biology to survive the hostilities of space and then we learned to bend celestial objects to our very will. Perhaps we got a little obsessed along the way.
 	[vspace=6/][img=techConstruction * #30a67a;22][b]Station Sustenance[/b] is unlocked from the start and can be unlocked again (multiplying orbital maintenance decreases), replacing Megacities.[/img]
 	[vspace=6/][img=PlanetThruster;22][b]Planetary Engine[/b] building is available from the start.[/img]

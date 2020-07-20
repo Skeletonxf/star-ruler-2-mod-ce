@@ -38,7 +38,7 @@ TRAIT_CAT_Foundation: [img=$Labor;30][vspace=6/]Foundation[/img]
 TRAIT_CAT_FTL: [img=$FTL;30][vspace=6/]FTL[/img]
 TRAIT_CAT_Personality: [img=$Population;30][vspace=6/]Personality[/img]
 TRAIT_CAT_Biology: [img=$Research;30][vspace=6/]Biology[/img]
-TRAIT_CAT_Military: Military
+TRAIT_CAT_Military: [img=$Labor;30][vspace=6/]Military[/img]
 TRAIT_CAT_Tendency: Tendency
 TRAIT_CAT_Lifestyle: [img=$Planet;30][vspace=6/]Life[/img]
 
