@@ -4,6 +4,7 @@ Status: ParasiteRaze
 	Icon: Revolutionaries
 	Color: #d04ebe
 	Visible To: Owner
+	AddPressureCap(1000)
 	OnEnable(RemoveStatus(NativeLife))
 	IfHaveStatus(RazeWithoutAbandon, OnDisable(AddStatus(ParasiteHomeworldRazed)))
 	IfNotHaveStatus(RazeWithoutAbandon, OnDisable(LosePopulation(1000)))
