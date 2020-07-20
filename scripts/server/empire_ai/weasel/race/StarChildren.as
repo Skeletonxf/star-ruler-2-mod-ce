@@ -223,15 +223,29 @@ class StarChildren : Race {
 			colonization.queueColonize(spec);
 		}
 
-		//Design a mothership
-		@mothershipDesign = designs.design(DP_Mothership, 500);
-		mothershipDesign.targetMaintenance = 300;
-		mothershipDesign.targetLaborCost = 110;
-		mothershipDesign.customName = "Mothership";
-
 		// [[ MODIFY BASE GAME START ]]
+		// Design a mothership
+		// Code borrowed from Verdant to look through our default designs
+		// to find the predesigned small mothership
+		ReadLock lock(ai.empire.designMutex);
+		for(uint i = 0, cnt = ai.empire.designCount; i < cnt; ++i) {
+			const Design@ dsg = ai.empire.getDesign(i);
+			if(dsg.newer !is null)
+				continue;
+			if(dsg.updated !is null)
+				continue;
+
+			uint goal = designs.classify(dsg, DP_Unknown);
+			if(goal == DP_Unknown)
+				continue;
+
+			if (goal == DP_Mothership && dsg.size == 500) {
+				@mothershipDesign = DesignTarget();
+				mothershipDesign.set(dsg);
+			}
+		}
+
 		// a second mothership doubles early expansion rates
-		// TODO: Rather than designing one, load the predesigned one and use that
 		construction.buildFlagship(mothershipDesign, force=true);
 		// [[ MODIFY BASE GAME END ]]
 	}
