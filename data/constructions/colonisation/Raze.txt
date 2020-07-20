@@ -3,9 +3,9 @@ Construction: RazeConstuction
 	Description: #PARASITE_RAZE_DESC
 	Icon: Revolutionaries
 	Category: Destruction
-	Target: targ = 
+	Time Cost: 1
 	RequireNotStatus(ParasiteRazeDone)
 	AddStatus(ParasiteRaze)
 	RequireNotStatus(ParasiteRaze)
-	RequireTrait(Parasite)
+	RequireTrait(ParasiteTrait)
 	RequirePlanet()

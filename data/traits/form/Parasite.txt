@@ -1,4 +1,4 @@
-Trait: Parasite
+Trait: ParasiteTrait
 	Name: #TRAIT_PARASITE
 	Description: #TRAIT_PARASITE_DESC
 	Order: 11

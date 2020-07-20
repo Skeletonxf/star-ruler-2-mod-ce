@@ -448,7 +448,7 @@ final class AI : AIController, Savable {
 			@race = add(createAncient());
 
 		// [[ MODIFY BASE GAME START ]]
-		if (empire.hasTrait(getTraitID("Parasite"))) {
+		if (empire.hasTrait(getTraitID("ParasiteTrait"))) {
 			@parasite = add(createParasite());
 			// parasite trait means we need to colonise more than just
 			// what is useful for levelling planets

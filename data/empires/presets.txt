@@ -141,7 +141,7 @@ Preset: Locusto
 	Shipset: Volkur
 	Hard: True
 
-	Trait: Parasite
+	Trait: ParasiteTrait
 	Trait: Verdant
 	Trait: Empire
 	Trait: Gate

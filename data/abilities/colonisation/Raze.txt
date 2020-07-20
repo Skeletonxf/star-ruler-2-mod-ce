@@ -8,4 +8,4 @@ Ability: RazeAbility
 	TargetFilterNotStatus(targ, ParasiteRazeDone)
 	AddStatus(ParasiteRaze)
 	TargetFilterOwned(targ)
-	TargetFilterType(targ, Type = Planet)
+	TargetFilterType(targ, Planet)

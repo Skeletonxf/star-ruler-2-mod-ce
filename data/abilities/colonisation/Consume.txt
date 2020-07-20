@@ -8,7 +8,7 @@ Ability: MothershipConsume
 	Target: targ = Object
 	TargetFilterAttackable(targ)
 
-	IsToggleTarget(targ, Range Margin = 1.5)
+	IsToggleTarget(targ)
 	CooldownOnDeactivate(targ, 30)
 	PersistentBeamEffect(targ, Color = #e45500, Material = Tractor, Width = 8.0)
 
