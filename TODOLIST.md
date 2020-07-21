@@ -6,6 +6,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Making parasite AI do razing at end of a budget cycle not start
   - Prevent Dyson Sphere generating with Ice
   - Remove duplicated light png files from repo
+  - Fix the AI seeming to prioritise gates over flagships for military constructions
   - Teach AI to not put comets on worlds being razed
   - Teach AI to melt ice
   - Teach AI to make most of the constructions by extending the building hint code
