@@ -46,7 +46,7 @@ This trait makes you get only half of the pressure from planetary resources, but
 The Celestial biology trait makes every planet able to be a battleworld (at great cost to your budget). I recommend playing Celestial with the Terrestrial or Extragalactic lifestyles and with Slipstreams or Gates as your FTL. This trait has no AI support and is still very unpolished and subject to change.
 ### Improved AI
 AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to. AI can handle having multiple FTL abilities unlocked at once. AI will build FTL income orbitals if it needs more FTL income
- 
+
 *****
 
 - 1 I'm aiming for a creating a comprehensive set of constructions to terraform planets based on what is already there as a replacement to the default game's Terraforming mechanic.
