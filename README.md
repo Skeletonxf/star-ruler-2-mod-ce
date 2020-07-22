@@ -8,7 +8,7 @@ I consider this mod at alpha status now. There's still many rough edges but it s
 
 ## Installation
 
-Although you can use GitHub's Download Zip button to download the latest version of this mod I suggest you go to the [releases page](https://github.com/Skeletonxf/star-ruler-2-mod-ce/releases) to download the latest released version. Then unzip it into the mods folder of a [Star Ruler 2](https://github.com/BlindMindStudios/StarRuler2-Source) installation.
+Although you can use GitHub's Download Zip button to download the latest version of this mod I suggest you go to the [releases page](https://github.com/Skeletonxf/star-ruler-2-mod-ce/releases) to download the latest released version. Extract the mod out of the colonisation-expansion folder and place it into the mods folder of a [Star Ruler 2](https://github.com/BlindMindStudios/StarRuler2-Source) installation.
 
 ## Features
 
