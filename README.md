@@ -4,7 +4,7 @@ This is a mod for Star Ruler 2. I started this aiming to make planets feel more 
 
 ## Status
 
-I consider this mod at alpha status now. There's still many rough edges but it should be stable and balanced enough to play with.
+I consider this mod at playable status now. There's still many rough edges but it should be stable and balanced enough to play with.
 
 ## Installation
 
