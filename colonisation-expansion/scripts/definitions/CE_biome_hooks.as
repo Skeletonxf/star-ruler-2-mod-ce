@@ -297,3 +297,33 @@ class DealPlanetPercentageTrueDamageOverTime : GenericEffect, TriggerableGeneric
 	}
 #section all
 };
+
+class IfPlanetHasBiome : IfHook {
+	Document doc("Only applies the inner hook if the planet has the specified biome.");
+	Argument biome(AT_PlanetBiome, doc="biome");
+	Argument hookID(AT_Hook, "planet_effects::GenericEffect");
+
+	bool instantiate() override {
+		if(!withHook(hookID.str))
+			return false;
+		return GenericEffect::instantiate();
+	}
+
+#section server
+	bool condition(Object& obj) const override {
+		if (obj is null) {
+			return false;
+		}
+		if (obj.isPlanet) {
+			int biome_id = getBiomeID(biome.str);
+			if (biome_id == -1) {
+				return false;
+			}
+			uint id = int(biome_id);
+			Planet@ planet = cast<Planet>(obj);
+			return planet.Biome0 == id || planet.Biome1 == id || planet.Biome2 == id;
+		}
+		return false;
+	}
+#section all
+};

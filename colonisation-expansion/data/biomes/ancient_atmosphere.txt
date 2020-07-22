@@ -1,0 +1,16 @@
+Biome: AncientAtmosphere
+	Name: Atmosphere
+
+	Buildable: True
+
+	Temperature: 0.1
+	Humidity: 0.3
+
+	UseWeight: 0.01
+	BuildTime: 12
+	Frequency: 0
+
+	Color: #80e1ff
+	Picks: 0.5, 0.5
+	Lookup Range: 0.99
+	Description: Not quite space, not quite land, just gases
