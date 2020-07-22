@@ -3,7 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Fix most First buildings not ignoring atmosphere build cost increases
   - Making parasite AI do razing at end of a budget cycle not start
   - Prevent Dyson Sphere generating with Ice
   - Remove duplicated light png files from repo
