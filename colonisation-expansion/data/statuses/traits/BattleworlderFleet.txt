@@ -1,0 +1,3 @@
+Status: BattleworlderFleet
+	Visible To: Nobody
+	ModEfficiencyDistanceToOrbital(BattleworldOrbital, -0.4, -0.9, 1000, 5000)

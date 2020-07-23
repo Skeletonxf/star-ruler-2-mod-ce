@@ -8,9 +8,9 @@ Trait: Battleworlders
 	Order: 12
 	Unique: Lifestyle
 
+	AddStatusOwnedFleets(BattleworlderFleet, Give To Stations = False)
 	ModAttribute(ForbidColonization, Add, 1)
 	TriggerHomeworld(DestroyBuildingAt((4, 3), Undevelop = True))
-	TriggerHomeworld(SpawnOrbital(Shipyard, Free = True, In Orbit = True))
 	ReplaceTechnologyNodes(BldMegacity, StationMaintenance)
 	ReplaceTechnologyNodes(StationMaintenance, CelestialStationMaintenance)
 	ReplaceTechnologyNodes(BldPlanetaryEngine, CelestialBldPlanetaryEngine)
