@@ -1,7 +1,7 @@
 Status: Celestial
 	Name: Celestial
 	Visible To: Nobody
-	TriggerPeriodic(AddStatus(TrySpawnOrbital, Duration = 1, Set Origin Empire = True, Set Origin Object = True), Trigger Immediate = True)
+	AllowFreeRaiding()
 	IfLevel(0, AddMaxPopulation(1), Exact = True)
 	IfNative(Meat, GrantAbility(BWMeatTransfer))
 	IfNative(Fruit, GrantAbility(BWFruitTransfer))
@@ -13,6 +13,3 @@ Status: Celestial
 	GrantAbility(BattleworlderColonize)
 	OnDisable(DestroyBuildingAt((2,2), Undevelop = True))
 	OnEnable(SpawnBuilding(CelestialPlanetaryEngine, (2,2), Develop = True))
-Status: TrySpawnOrbital
-	Visible To: Nobody
-	IfNotHaveStatus(Coordinated, OnEnable(SpawnOrbital(BattleworldOrbital, In Orbit = True)))

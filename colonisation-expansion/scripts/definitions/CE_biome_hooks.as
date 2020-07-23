@@ -375,3 +375,87 @@ class ConsumePlanetResource : AbilityHook {
 	}
 #section all
 };
+
+tidy final class UpdatedValue {
+	double value = 0;
+	double timer = 0;
+}
+
+class ModEfficiencyDistanceToOwnedPlanets : GenericEffect {
+	Document doc("Modify the efficiency of the fleet based on the distance to the nearest owned planet.");
+	Argument minrange_efficiency(AT_Decimal, doc="Efficiency at minimum range.");
+	Argument maxrange_efficiency(AT_Decimal, doc="Efficiency at maximum range.");
+	Argument minrange(AT_Decimal, doc="Minimum range for min efficiency.");
+	Argument maxrange(AT_Decimal, doc="Maximum range for max efficiency.");
+
+#section server
+	void enable(Object& obj, any@ data) const override {
+		UpdatedValue value;
+		data.store(@value);
+	}
+
+	void tick(Object& obj, any@ data, double time) const override {
+		UpdatedValue@ value;
+		data.retrieve(@value);
+
+		value.timer -= time;
+		if(value.timer <= 0) {
+			value.timer = randomd(0.5, 5.0);
+
+			double prevValue = value.value;
+			double dist = maxrange.decimal;
+
+			// determine closest planet distance
+			Object@ planet;
+			DataList@ objs = obj.owner.getPlanets();
+			while (receive(objs, planet)) {
+				if (planet.isPlanet) {
+					double planet_dist = planet.position.distanceTo(obj.position);
+					if (planet_dist < dist) {
+						dist = planet_dist;
+						// no need to store the planet
+					}
+				}
+			}
+
+			if(dist <= minrange.decimal) {
+				value.value = minrange_efficiency.decimal;
+			}
+			else if(dist >= maxrange.decimal) {
+				value.value = maxrange_efficiency.decimal;
+			}
+			else {
+				double pct = (dist - minrange.decimal) / (maxrange.decimal - minrange.decimal);
+				value.value = minrange_efficiency.decimal + pct * (maxrange_efficiency.decimal - minrange_efficiency.decimal);
+			}
+
+			if(prevValue != value.value)
+				obj.modFleetEffectiveness(value.value - prevValue);
+		}
+	}
+
+	void disable(Object& obj, any@ data) const override {
+		UpdatedValue@ value;
+		data.retrieve(@value);
+
+		if(value.value > 0) {
+			obj.modFleetEffectiveness(-value.value);
+			value.value = 0;
+		}
+	}
+
+	void save(any@ data, SaveFile& file) const override {
+		UpdatedValue@ value;
+		data.retrieve(@value);
+		file << value.value;
+		file << value.timer;
+	}
+
+	void load(any@ data, SaveFile& file) const override {
+		UpdatedValue value;
+		file >> value.value;
+		file >> value.timer;
+		data.store(value);
+	}
+#section all
+};

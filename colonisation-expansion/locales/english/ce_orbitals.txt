@@ -1,5 +1,2 @@
 BATTLEWORLD_ORBITAL: Coordinate Satellite
-BATTLEWORLD_ORBITAL_DESC: <<
-	Fleets fight at greater effectiveness when nearby owned planets with coordination satellites.
-	[color=#00ff00]Green[/color] radius is maximum effectiveness, [color=#990000]Dark red[/color] radius is minimum.
->>
+BATTLEWORLD_ORBITAL_DESC: Fleets fight at 60% effectiveness when nearby owned planets, and down to 10% when far away.

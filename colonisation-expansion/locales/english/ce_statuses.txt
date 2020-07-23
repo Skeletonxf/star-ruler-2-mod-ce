@@ -9,3 +9,4 @@ BONUS_MOTHERSHIP_POPULATION_DESC: This mothership gains additional max populatio
 PARASITE_RAZE: Razing Planet
 PARASITE_RAZE_DESC: Planet will temporarily produce massive amounts of resources.
 PARASITE_RAZE_IN_PROGRESS: Razing
+BATTLEWORLD_PLANET: Battleworlder Planet

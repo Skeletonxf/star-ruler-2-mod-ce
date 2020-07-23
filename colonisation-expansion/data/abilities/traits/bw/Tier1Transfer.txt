@@ -1,0 +1,38 @@
+Ability: BWAmmoniaTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: Ammonia
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Ammonia))
+	CE_biome_hooks::ConsumePlanetResource(Ammonia, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWAtiumTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::78
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Atium))
+	CE_biome_hooks::ConsumePlanetResource(Atium, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWChemicalsTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::11
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Chemicals))
+	CE_biome_hooks::ConsumePlanetResource(Chemicals, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)

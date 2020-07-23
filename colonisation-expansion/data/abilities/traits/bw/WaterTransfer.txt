@@ -10,3 +10,16 @@ Ability: BWWaterTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+
+Ability: BWIceGiantWaterTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::99 * ffffbb
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(IceGiantWater))
+	CE_biome_hooks::ConsumePlanetResource(IceGiantWater, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)

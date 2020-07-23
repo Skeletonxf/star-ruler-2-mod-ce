@@ -10,7 +10,7 @@ Ability: BattleworlderColonize
 	TargetFilterNotQuarantined(targ)
 	TargetFilterNotSelf(targ)
 	RequireNotUnderSiege()
-	RequirePopulation(2)
+	RequirePopulation(1.1)
 	ForClient(Either(TargetFilterSpace(targ), TargetFilterOwned(targ)))
 
 	TriggerIfOwnedOrSpace(targ, TakeControl())
