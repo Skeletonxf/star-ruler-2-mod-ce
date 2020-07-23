@@ -2,3 +2,5 @@ ABL_CONSUME: Consume Planet
 ABL_CONSUME_DESC: Consumes a planet, converting the planet into max population for the mothership.
 RAZE: Raze Planet
 RAZE_DESC: Raze the planet, gaining massively increased resource production from it for three minutes then destroying its native resource.
+ABL_BATTLEWORLDER_COLONIZE_DESC: Transfer 1B Population from this planet to another. Transfering population can only be done in close proximity to the target.
+TRANSFER_RESOURCE: Transfer Resource

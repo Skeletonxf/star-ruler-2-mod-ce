@@ -17,12 +17,13 @@ AQUATIC_TRAIT: All colonised planets with water biomes become happy. Development
 CELESTIAL_DESC: <<
 	[color=#f00]NO AI SUPPORT[/color]
 
-	We have always reached for the stars. First we modified our biology to survive the hostilities of space and then we learned to bend celestial objects to our very will. Perhaps we got a little obsessed along the way.
+	Why venture into outer space when you can bring your home with you?
 	[vspace=6/][img=techConstruction * #30a67a;22][b]Station Sustenance[/b] is unlocked from the start and can be unlocked again (multiplying orbital maintenance decreases), replacing Megacities.[/img]
 	[vspace=6/][img=PlanetThruster;22][b]Planetary Engine[/b] building is available from the start.[/img]
 	[vspace=6/][img=OrbitalIcons::3;22]Start with a free shipyard at the homeworld[/img]
-	[vspace=6/][img=PlanetThruster * 44ffbb;22]Special Planetary Engines are constructed on all colonised planets, with 1 u/s² of acceleration and reduced maintenance cost (50). These cannot be removed except by losing the planet.[/img]
+	[vspace=6/][img=PlanetThruster * 44ffbb;22]Special Planetary Engines are constructed on all colonised planets, with 1.5 u/s² of acceleration and no maintenance cost. These cannot be removed except by losing the planet.[/img]
+	[vspace=6/][img=ResourceIcon::8;22]Colonise planets by bringing other planets to them[/img]
 >>
-CELESTIAL: Celestial
+CELESTIAL: Battleworlders
 TRAIT_SCIENTIFIC: Scientific
 TRAIT_SCIENTIFIC_DESC: Start the game with 1 additional research income per second.

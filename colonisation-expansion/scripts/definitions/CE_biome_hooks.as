@@ -327,3 +327,51 @@ class IfPlanetHasBiome : IfHook {
 	}
 #section all
 };
+
+
+class ConsumePlanetResource : AbilityHook {
+	Document doc("Removes a planet resource from the object casting the ability.");
+	Argument resource(AT_PlanetResource, doc="Type of resource to consume.");
+	Argument objTarg(TT_Object);
+
+	bool canActivate(const Ability@ abl, const Targets@ targs, bool ignoreCost) const override {
+		if(abl.obj is null)
+			return false;
+
+		if (abl.obj.isPlanet) {
+			Planet@ planet = cast<Planet>(abl.obj);
+			array<Resource> planetResources;
+			planetResources.syncFrom(planet.getNativeResources());
+			for (uint i = 0, cnt = planetResources.length; i < cnt; i++) {
+				auto planetResourceType = planetResources[i].type;
+				if (planetResourceType.id == uint(resource.integer)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+#section server
+	void activate(Ability@ abl, any@ data, const Targets@ targs) const override {
+		if(abl.obj is null)
+			return;
+
+		// remove planet resource from abl.obj
+		if (abl.obj.isPlanet) {
+			Planet@ planet = cast<Planet>(abl.obj);
+			array<Resource> planetResources;
+			planetResources.syncFrom(planet.getNativeResources());
+			for (uint i = 0, cnt = planetResources.length; i < cnt; i++) {
+				auto planetResourceType = planetResources[i].type;
+				if (planetResourceType.id == uint(resource.integer)) {
+					// native resources are identified differently to their
+					// type identifier
+					planet.removeResource(planetResources[i].id);
+					return;
+				}
+			}
+		}
+	}
+#section all
+};

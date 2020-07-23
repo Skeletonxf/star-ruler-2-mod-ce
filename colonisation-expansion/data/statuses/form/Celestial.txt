@@ -1,5 +1,13 @@
 Status: Celestial
 	Name: Celestial
 	Visible To: Nobody
+	IfNative(Meat, GrantAbility(BWMeatTransfer))
+	IfNative(Fruit, GrantAbility(BWFruitTransfer))
+	IfNative(Fish, GrantAbility(BWFishTransfer))
+	IfNative(Grain, GrantAbility(BWGrainTransfer))
+	IfNative(Water, GrantAbility(BWWaterTransfer))
+	DisableResourceImport()
+	DisableResourceExport()
+	GrantAbility(BattleworlderColonize)
 	OnDisable(DestroyBuildingAt((2,2), Undevelop = True))
 	OnEnable(SpawnBuilding(CelestialPlanetaryEngine, (2,2), Develop = True))

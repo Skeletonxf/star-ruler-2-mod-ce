@@ -1,0 +1,51 @@
+Ability: BWGrainTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::3
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Grain))
+	CE_biome_hooks::ConsumePlanetResource(Grain, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWFishTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::2
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Fish))
+	CE_biome_hooks::ConsumePlanetResource(Fish, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWMeatTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::5
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Meat))
+	CE_biome_hooks::ConsumePlanetResource(Meat, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWFruitTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::4
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Fruit))
+	CE_biome_hooks::ConsumePlanetResource(Fruit, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)

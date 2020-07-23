@@ -9,10 +9,9 @@ Building: CelestialPlanetaryEngine
 
 
 
-	Base Maintenance: 50
 
 
 	CannotBuildManually()
 	CannotRemove()
 	RequireNotStatus(Ringworld)
-	AddAccelerationBonus(1)
+	AddAccelerationBonus(1.5)

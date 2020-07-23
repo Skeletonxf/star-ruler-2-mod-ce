@@ -1,0 +1,12 @@
+Ability: BWWaterTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::139
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Water))
+	CE_biome_hooks::ConsumePlanetResource(Water, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
