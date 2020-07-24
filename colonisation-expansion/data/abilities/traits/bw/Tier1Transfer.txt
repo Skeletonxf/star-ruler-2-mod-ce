@@ -36,3 +36,250 @@ Ability: BWChemicalsTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+
+Ability: BWDeuteriumTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::31
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Deuterium))
+	CE_biome_hooks::ConsumePlanetResource(Deuterium, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWElectronicsTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::14
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Electronics))
+	CE_biome_hooks::ConsumePlanetResource(Electronics, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWExplosiveGasesTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: Gases3
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(ExplosiveGases))
+	CE_biome_hooks::ConsumePlanetResource(ExplosiveGases, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWExplosivesTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::6
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Explosives))
+	CE_biome_hooks::ConsumePlanetResource(Explosives, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWGlassTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::27
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Glass))
+	CE_biome_hooks::ConsumePlanetResource(Glass, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWHadociteTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::29
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Hadocite))
+	CE_biome_hooks::ConsumePlanetResource(Hadocite, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWHeavyGasesTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: Gases1
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(HeavyGases))
+	CE_biome_hooks::ConsumePlanetResource(HeavyGases, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWIceGiantIceTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: Ice
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(IceGiantIce))
+	CE_biome_hooks::ConsumePlanetResource(IceGiantIce, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWLuxuryMaterialsTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::16
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(LuxuryMaterials))
+	CE_biome_hooks::ConsumePlanetResource(LuxuryMaterials, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWMarbleTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::77
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Marble))
+	CE_biome_hooks::ConsumePlanetResource(Marble, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWNativeGoldTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::30
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(NativeGold))
+	CE_biome_hooks::ConsumePlanetResource(NativeGold, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWNaturalGasTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::41
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(NaturalGas))
+	CE_biome_hooks::ConsumePlanetResource(NaturalGas, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWOilTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::8
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Oil))
+	CE_biome_hooks::ConsumePlanetResource(Oil, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWPlasticsTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::10
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Plastics))
+	CE_biome_hooks::ConsumePlanetResource(Plastics, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWRareMetalsTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::12
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(RareMetals))
+	CE_biome_hooks::ConsumePlanetResource(RareMetals, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWSiliconTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::76
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Silicon))
+	CE_biome_hooks::ConsumePlanetResource(Silicon, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWTextilesTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::9
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Textiles))
+	CE_biome_hooks::ConsumePlanetResource(Textiles, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWTitaniumTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::33
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Titanium))
+	CE_biome_hooks::ConsumePlanetResource(Titanium, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWVolatileGasesTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: Gases2
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(VolatileGases))
+	CE_biome_hooks::ConsumePlanetResource(VolatileGases, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)

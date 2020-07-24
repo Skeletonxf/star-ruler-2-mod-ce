@@ -912,17 +912,15 @@ RACE_HERALDS_LORE: <<
 RACE_WANDI: Wandi
 RACE_WANDI_TAGLINE: The wanderers.
 RACE_WANDI_LORE: <<|
-	Fellow wanderers, I am giving this speech in my capacity as leader of what remains of our government:
+	Exiled on some no name planet. Forbidden from making ships or even satellites. Did we give up?
 
-	When we broke away from the Terran empire so long ago the allure of the infinite cosmos was clear. Yet did we expand our borders and venture onto new land? No!
+	No!
 
-	We thought it better to take our familiar world to the unknown.
+	We made our prison a home. We fled the empire without ever setting food off our planet. We made our home move.
 
-	But yesterday there was a sighting of a powerful ship from an empire far more sophisticated than us. It is essential that we expand in order to survive, lest our only world be destroyed and us with it. Now is the time to settle on new land and leave this cradle.
+	Why crowd into ships now that we are free? We have wandered the universe for generations.
 
-	I have always wondered why every star system is so much empty space, perhaps we can use our wandering technology to build the greatest and richest system to ever exist? Never have we even seen [b]signs[/b] of fallen empires that could move the planets themselves. I suggest we accept our nature and make all of our new land wander, no matter the cost.
-
-	The system we are arriving in as I finish this speech shall be our new beginning. Here we will finally become a multi planetary species and avoid the ever increasing risk of extinction!
+	Yet we see movement beyond the skies. We have wandered into an occupied galaxy. To protect our way of life we will have to venture into space once more.
 >>
 
 RACE_LOCUSTO: Locusto
