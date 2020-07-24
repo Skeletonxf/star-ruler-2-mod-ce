@@ -9,5 +9,5 @@ Resource: Starlight
 	Can Be Terraformed: False
 	Artificial: True
 	Frequency: 0
-	Icon: SystemUnderAttack
-	Small Icon: SystemUnderAttack
+	Icon: LightResourceClass
+	Small Icon: LightResourceClass
