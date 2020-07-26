@@ -4,7 +4,6 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Update tooltips on forestation mechanics to make the purpose of developing a forest more clear
-  - Add a benefit for being the most supportive empire to all the FTL votes
   - Fix resources added to planets not being recognised by First Control Core buildings
   - Making parasite AI do razing at end of a budget cycle not start
   - Prevent Dyson Sphere generating with Ice
@@ -16,6 +15,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to make most of the constructions by extending the building hint code
   - Teach AI to deprioritise water/food colonisation if have built a stockpile of unused ones
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
+  - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
 
