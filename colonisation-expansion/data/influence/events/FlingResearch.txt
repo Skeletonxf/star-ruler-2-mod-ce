@@ -11,6 +11,7 @@ Vote: FlingResearch
 
 
 	AI: BenefitRace()
+	TriggerHighestContributor(CE_biome_hooks::UnlockRandomFTL())
 	CE_biome_hooks::CancelIfAnyAttributeGT(ResearchUnlockedFling, Value = 0)
 	CreateEffect(pass, FlingResearch)
 Effect: FlingResearch

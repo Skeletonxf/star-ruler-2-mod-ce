@@ -10,6 +10,7 @@ Vote: FTLExtractorResearch
 
 
 	AI: BenefitRace()
+	TriggerHighestContributor(CE_biome_hooks::UnlockRandomFTL())
 	AddStartWeight(3)
 	CE_biome_hooks::CancelIfAnyAttributeGT(ResearchUnlockedExtractor, Value = 0)
 	CreateEffect(pass, FTLExtractorResearch)

@@ -1,0 +1,6 @@
+JUMPDRIVE_RESEARCH_DESC: <<
+	News has spread all over the galaxy of a disturbance in the hyperfield, indicating a breakthrough in FTL technology. The galactic senate proposes further research into this phenomena.
+
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Jumpdrives, and the most supportive empire will unlock a random FTL they don't have.[/img]
+
+>>

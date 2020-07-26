@@ -1,6 +1,6 @@
 Vote: JumpdriveResearch
 	Name: #JUMPDRIVE_RESEARCH
-	Description: #HYPERDRIVE_RESEARCH_DESC
+	Description: #JUMPDRIVE_RESEARCH_DESC
 
 	Color: #cf5fde
 	Icon: Jumpdrive
@@ -11,6 +11,7 @@ Vote: JumpdriveResearch
 
 
 	AI: BenefitRace()
+	TriggerHighestContributor(CE_biome_hooks::UnlockRandomFTL())
 	CE_biome_hooks::CancelIfAnyAttributeGT(ResearchUnlockedJumpdrive, Value = 0)
 	CreateEffect(pass, JumpdriveResearch)
 Effect: JumpdriveResearch

@@ -11,6 +11,7 @@ Vote: HyperdriveResearch
 
 
 	AI: BenefitRace()
+	TriggerHighestContributor(CE_biome_hooks::UnlockRandomFTL())
 	CE_biome_hooks::CancelIfAnyAttributeGT(ResearchUnlockedHyperdrive, Value = 0)
 	CreateEffect(pass, HyperdriveResearch)
 Effect: HyperdriveResearch

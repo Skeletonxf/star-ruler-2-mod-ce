@@ -6,6 +6,7 @@ from generic_effects import GenericEffect;
 import biomes;
 import abilities;
 from abilities import AbilityHook;
+import int getUnlockTag(const string& ident, bool create = true) from "unlock_tags";
 #section server
 import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
 #section all
@@ -456,6 +457,114 @@ class ModEfficiencyDistanceToOwnedPlanets : GenericEffect {
 		file >> value.value;
 		file >> value.timer;
 		data.store(value);
+	}
+#section all
+};
+
+// Cache system defs to check things are unlocked
+const SubsystemDef@ hyperdriveSubsystem = getSubsystemDef("Hyperdrive");
+const SubsystemDef@ jumpdriveSubsystem = getSubsystemDef("Jumpdrive");
+const SubsystemDef@ gateSubsystem = getSubsystemDef("GateModule");
+const SubsystemDef@ slipstreamSubsystem = getSubsystemDef("Slipstream");
+const SubsystemDef@ warpdriveSubsystem = getSubsystemDef("Warpdrive");
+
+enum FTLUnlock {
+	FTLU_Hyperdrive,
+	FTLU_Jumpdrive,
+	FTLU_Gate,
+	FTLU_Slipstream,
+	FTLU_Fling,
+	FTLU_Warpdrive,
+};
+
+// TODO: Add way to exclude the FTL about to be unlocked for all from the pool
+class UnlockRandomFTL : EmpireTrigger {
+	Document doc("Make the empire this is triggered on gain a random FTL it doesn't yet have.");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if (emp is null) {
+			return;
+		}
+		bool hasHyperdrives = emp.isUnlocked(hyperdriveSubsystem);
+		bool hasJumpdrives = emp.isUnlocked(jumpdriveSubsystem);
+		bool hasGates = emp.isUnlocked(gateSubsystem);
+		bool hasFling = emp.HasFling >= 1;
+		bool hasSlipstreams = emp.isUnlocked(slipstreamSubsystem);
+		bool hasWarpdrive = emp.isUnlocked(slipstreamSubsystem);
+
+		array<FTLUnlock> unlockPool = array<FTLUnlock>();
+		if (!hasHyperdrives)
+			unlockPool.insertLast(FTLU_Hyperdrive);
+		if (!hasJumpdrives)
+			unlockPool.insertLast(FTLU_Jumpdrive);
+		if (!hasGates)
+			unlockPool.insertLast(FTLU_Gate);
+		if (!hasSlipstreams)
+			unlockPool.insertLast(FTLU_Slipstream);
+		if (!hasFling)
+			unlockPool.insertLast(FTLU_Fling);
+
+		if (unlockPool.length == 0) {
+			if (!hasWarpdrive) {
+				unlockPool.insertLast(FTLU_Warpdrive);
+			} else {
+				// How did this user unlock all the FTL types and still try to
+				// win this vote?
+				// TODO: Some consolation prize
+				return;
+			}
+		}
+
+		// randomi generates a number in the inclusive range
+		int randomSelection = randomi(0, unlockPool.length - 1);
+		uint unlock = unlockPool[randomSelection];
+
+		// mark the empire attribute as unlocked, and unlock the subsystem
+		if (unlock == FTLU_Hyperdrive) {
+			emp.setUnlocked(hyperdriveSubsystem, true);
+			emp.modAttribute(EA_ResearchUnlockedHyperdrive, AC_Add, 1);
+			if(emp.player is null)
+				return;
+			sendClientMessage(emp.player, "Hyperdrives unlocked", "You have unlocked Hyperdrives through a galactic senate vote");
+		}
+		if (unlock == FTLU_Jumpdrive) {
+			emp.setUnlocked(jumpdriveSubsystem, true);
+			emp.modAttribute(EA_ResearchUnlockedJumpdrive, AC_Add, 1);
+			if(emp.player is null)
+				return;
+			sendClientMessage(emp.player, "Jumpdrives unlocked", "You have unlocked Jumpdrives through a galactic senate vote");
+		}
+		if (unlock == FTLU_Gate) {
+			emp.setUnlocked(gateSubsystem, true);
+			emp.modAttribute(EA_ResearchUnlockedGate, AC_Add, 1);
+			if(emp.player is null)
+				return;
+			sendClientMessage(emp.player, "Gates unlocked", "You have unlocked Gates through a galactic senate vote");
+		}
+		if (unlock == FTLU_Slipstream) {
+			emp.setUnlocked(slipstreamSubsystem, true);
+			emp.modAttribute(EA_ResearchUnlockedSlipstream, AC_Add, 1);
+			if(emp.player is null)
+				return;
+			sendClientMessage(emp.player, "Slipstreams unlocked", "You have unlocked Slipstreams through a galactic senate vote");
+		}
+		if (unlock == FTLU_Fling) {
+			int hasFlingUnlockTagID = getUnlockTag("HasFling", false);
+			emp.setTagUnlocked(hasFlingUnlockTagID, true);
+			emp.modAttribute(EA_HasFling, AC_Add, 1);
+			emp.modAttribute(EA_ResearchUnlockedFling, AC_Add, 1);
+			if(emp.player is null)
+				return;
+			sendClientMessage(emp.player, "Fling Beacons unlocked", "You have unlocked Fling Beacons through a galactic senate vote");
+		}
+		if (unlock == FTLU_Warpdrive) {
+			emp.setUnlocked(warpdriveSubsystem, true);
+			emp.modAttribute(EA_ResearchUnlockedWarpdrive, AC_Add, 1);
+			if(emp.player is null)
+				return;
+			sendClientMessage(emp.player, "Warpdrives unlocked", "You have unlocked Warpdrives through a galactic senate vote");
+		}
 	}
 #section all
 };

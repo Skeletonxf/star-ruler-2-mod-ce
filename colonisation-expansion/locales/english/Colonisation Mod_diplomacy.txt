@@ -2,7 +2,7 @@ WARPDRIVE_RESEARCH: Warpdrive Research
 WARPDRIVE_RESEARCH_DESC: <<
 	News has spread all over the galaxy of a disturbance in the hyperfield, indicating a breakthrough in FTL technology. The galactic senate proposes further research into this phenomena.
 
-	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Warpdrives[/img]
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Warpdrives, and the most supportive empire will unlock a random FTL they don't have.[/img]
 
 >>
 WARPDRIVE_RESEARCH_OBTAINED_DESC: <<
@@ -13,7 +13,7 @@ HYPERDRIVE_RESEARCH: Hyperdrive Research
 HYPERDRIVE_RESEARCH_DESC: <<
 	News has spread all over the galaxy of a disturbance in the hyperfield, indicating a breakthrough in FTL technology. The galactic senate proposes further research into this phenomena.
 
-	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Jumpdrives[/img]
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Hyperdrives, and the most supportive empire will unlock a random FTL they don't have.[/img]
 
 >>
 HYPERDRIVE_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked Hyperdrives through a galactic senate investigation.
@@ -21,7 +21,7 @@ GATE_RESEARCH: Gate Research
 GATE_RESEARCH_DESC: <<
 	News has spread all over the galaxy of a disturbance in the hyperfield, indicating a breakthrough in FTL technology. The galactic senate proposes further research into this phenomena.
 
-	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Gates[/img]
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Gates, and the most supportive empire will unlock a random FTL they don't have.[/img]
 
 >>
 GATE_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked Gates through a galactic senate investigation.
@@ -31,7 +31,7 @@ FLING_RESEARCH: Fling Beacon Research
 FLING_RESEARCH_DESC: <<
 	News has spread all over the galaxy of a disturbance in the hyperfield, indicating a breakthrough in FTL technology. The galactic senate proposes further research into this phenomena.
 
-	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Fling Beacons[/img]
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Fling Beacons, and the most supportive empire will unlock a random FTL they don't have.[/img]
 
 >>
 FLING_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked Fling Beacons through a galactic senate investigation.
@@ -39,7 +39,7 @@ SLIPSTREAM_RESEARCH: Slipstream Research
 SLIPSTREAM_RESEARCH_DESC: <<
 	News has spread all over the galaxy of a disturbance in the hyperfield, indicating a breakthrough in FTL technology. The galactic senate proposes further research into this phenomena.
 
-	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Slipstream generators[/img]
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Slipstream generators, and the most supportive empire will unlock a random FTL they don't have.[/img]
 
 >>
 SLIPSTREAM_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked Slipstream generators through a galactic senate investigation.
@@ -47,7 +47,7 @@ FTL_EXTRACTOR_RESEARCH: FTL Extractor Research
 FTL_EXTRACTOR_RESEARCH_DESC: <<
 	News has spread all over the galaxy of a disturbance in the hyperfield, indicating a breakthrough in FTL technology. The galactic senate proposes further research into this phenomena.
 
-	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock FTL Extractors[/img]
+	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock FTL Extractors, and the most supportive empire will unlock a random FTL they don't have.[/img]
 
 >>
 FTL_EXTRACTOR_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked FTL Extractors through a galactic senate investigation.
