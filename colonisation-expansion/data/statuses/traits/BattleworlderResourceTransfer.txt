@@ -6,6 +6,7 @@ Status: BattleworlderResourceTransfer
 	IfNative(Fish, GrantAbility(BWFishTransfer))
 	IfNative(Grain, GrantAbility(BWGrainTransfer))
 	IfNative(Water, GrantAbility(BWWaterTransfer))
+	IfNative(IceGiantWater, GrantAbility(BWIceGiantWaterTransfer))
 
 	IfNative(Ammonia, GrantAbility(BWAmmoniaTransfer))
 	IfNative(Atium, GrantAbility(BWAtiumTransfer))

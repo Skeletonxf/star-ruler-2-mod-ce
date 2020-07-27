@@ -11,6 +11,7 @@ Building: CelestialPlanetaryEngine
 
 
 
+	AddPlanetResource(Battleworld)
 	CannotBuildManually()
 	CannotRemove()
 	RequireNotStatus(Ringworld)

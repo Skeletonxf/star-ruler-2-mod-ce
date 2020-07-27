@@ -1,0 +1,11 @@
+Resource: Battleworld
+	Name: #BATTLEWORLD
+	Description: #BATTLEWORLD_DESC
+	Icon: PlanetThruster * 44ffbb
+	Frequency: 0
+	Artificial: True
+	Exportable: False
+	Display Weight: -1000
+	Can Be Terraformed: False
+	AddFleetCommand(+1000)
+	AllowFreeRaiding()

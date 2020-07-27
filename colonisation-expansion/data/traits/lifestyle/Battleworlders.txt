@@ -2,7 +2,7 @@ Trait: Battleworlders
 	Name: #CELESTIAL
 	Description: #CELESTIAL_DESC
 	Icon: PlanetThruster
-	Color: #c70fff
+	Color: 44ffbb
 	Category: Lifestyle
 	AI Support: False
 	Order: 12

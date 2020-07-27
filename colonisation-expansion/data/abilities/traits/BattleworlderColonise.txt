@@ -1,24 +1,22 @@
 Ability: BattleworlderColonize
-	Name: #ABL_MECHANOID_COLONIZE
-	Description: #ABL_BATTLEWORLDER_COLONIZE_DESC
+	Name: #ABL_BATTLEWORLDER_COLONISE
 	Icon: ActionBarIcons::1
 	Hotkey: C
 
 	Target: targ = Object
 	Range: 100
+	Description: #ABL_BATTLEWORLDER_COLONISE_DESC
 	TargetFilterType(targ, Planet)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterNotSelf(targ)
 	RequireNotUnderSiege()
-	RequirePopulation(2)
 	ForClient(Either(TargetFilterSpace(targ), TargetFilterOwned(targ)))
 
 	TriggerIfOwnedOrSpace(targ, TakeControl())
 	TriggerIfOwnedOrSpace(targ, GivePopulation(1))
 
-	IfTargetOwnedOrSpace(targ, LosePopulation(1))
 	Trigger(targ, GiveMemory())
 
 
+	TargetFilterNotStatus(targ, Celestial)
 	AutoOrderOnAutoColonizeTarget()
-	AutoCastAsColonizePopTransfer()

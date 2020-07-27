@@ -18,11 +18,10 @@ CELESTIAL_DESC: <<
 	[color=#f00]NO AI SUPPORT[/color]
 
 	Why venture into outer space when you can bring your home with you?
-	[vspace=6/][img=PlanetThruster * 44ffbb;22]Special Planetary Engines are constructed on all colonised planets, with 1.5 u/s² of acceleration and no maintenance cost. These cannot be removed except by losing the planet.[/img]
+	[vspace=6/][img=PlanetThruster * 44ffbb;22]Special Planetary Engines are constructed on all colonised planets, with 1.5 u/s² of acceleration and no cost. These cannot be removed except by losing the planet.[/img]
 	[vspace=6/][img=ResourceIcon::8;22]Colonise planets by bringing other planets to them[/img]
-	[vspace=6/][img=ResourceIcon::6;22]Resources cannot be imported or exported. Instead, resources are transfered between nearby planets[/img]
+	[vspace=6/][img=ResourceIcon::6;22]Resources cannot be traded. Instead, resources are transfered between nearby planets[/img]
 	[vspace=3/] [img=AttributeIcons::3;22]Fleets operate at 60% efficiency while nearby owned planets, but only 10% efficiency far away. This debuff does not apply to stations.[/img]
-	[vspace=3/] [img=AttributeIcons::4;22]Support ships for all planets can freely raid.[/img]
 	[vspace=6/][img=techConstruction * #30a67a;22][b]Station Sustenance[/b] is unlocked from the start and can be unlocked again (multiplying orbital maintenance decreases), replacing Megacities.[/img]
 	[vspace=6/][img=PlanetThruster;22][b]Planetary Engine[/b] building is available from the start.[/img]
 

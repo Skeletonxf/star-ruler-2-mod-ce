@@ -2,8 +2,6 @@ Status: Celestial
 	Name: Celestial
 	Visible To: Nobody
 	IfNotHaveStatus(NativeLife, IfNotHaveStatus(RemovingNativeLife, AddStatus(BattleworlderResourceTransfer)))
-	AllowFreeRaiding()
-	IfLevel(0, AddMaxPopulation(1), Exact = True)
 	DisableResourceImport()
 	DisableResourceExport()
 	GrantAbility(BattleworlderColonize)
