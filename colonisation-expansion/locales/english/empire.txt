@@ -983,4 +983,29 @@ HELP_EXTRAGALACTIC: <<
 	[color=#ccc]If you're using Jumpdrives, jumping to a system with a beacon is always safe![/color]
 	[color=#ccc]You can import resources with Labor Pressure to any of your beacons to increase their labor generation.[/color]
 >>
+HELP_BATTLEWORLDERS: <<
+	[font=Big]Battleworlders[/font][vspace=4/]
+	You've chosen to play as a race with the [color=#aaffaa]Battleworlder[/color] trait. Here's a few quick tips to get you started!
+	[color=#aaa][i]Access this window at any time by pressing the [img=MenuIcons::3;22/] button on the right side of the screen.[/i][/color]
+
+	[font=Medium]Planets[/font][vspace=4/]
+	[color=#ccc]All your planets are outfitted with special planetary engines and can move. Planetary Thrusters are already unlocked and can be used to further increase the speed of your planets.[/color]
+
+	[font=Medium]Colonisation[/font][vspace=4/]
+	[color=#ccc]You cannot send colony ships, to colonise planets you must send other planets to them. This also means colonising does not cost you money.[/color]
+
+	[font=Medium]Resources[/font][vspace=4/]
+	[color=#ccc]You cannot trade resources, but you can transfer resources between your planets if they are close together. You cannot transfer scalable or non exportable resources off a planet.[/color]
+
+	[font=Medium]Battle[/font][vspace=4/]
+	[color=#ccc]Your ships are weak compared to other races, but they become extra weak if far away from your planets. Orbitals are not weakened.[/color]
+	[color=#ccc]Keep in mind that you can build orbitals within a planet's gravitational field to move them with the planet.[/color]
+	[color=#ccc]Support ships assigned to planets can always raid, this can help support your fleets in combat.[/color]
+
+	[font=Medium]Deep Space[/font][vspace=4/]
+	[color=#ccc]Sending planets into deep space will drop them to level 0 if they do not have Lighting Systems.[/color]
+
+	[font=Medium]FTL[/font][vspace=4/]
+	[color=#ccc]If you're using Slipstreams or Gates, remember you can send planets through them![/color]
+>>
 GOT_IT: Got it!

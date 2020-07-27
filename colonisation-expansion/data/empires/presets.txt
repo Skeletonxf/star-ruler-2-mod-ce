@@ -127,7 +127,7 @@ Preset: Wandi
 
 	Trait: Battleworlders
 	Trait: Slipstream
-	Trait: Communism
+	Trait: Theocracy
 	Trait: SpaceProgram
 
 Preset: Locusto
