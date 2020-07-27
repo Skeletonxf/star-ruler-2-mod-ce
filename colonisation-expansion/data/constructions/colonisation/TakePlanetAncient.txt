@@ -9,6 +9,10 @@ Construction: TakePlanetAncient
 	>>
 	Icon: ConditionIcons::10
 	Category: Dillema
+
+	RemoveStatus(RemovingNativeLife)
+	OnCancel(RemoveStatus(RemovingNativeLife))
+	OnStart(AddStatus(RemovingNativeLife))
 	RequireTrait(Ancient)
 	AddStatus(Genocide)
 	OnCancel(AddStatus(NativeLife))

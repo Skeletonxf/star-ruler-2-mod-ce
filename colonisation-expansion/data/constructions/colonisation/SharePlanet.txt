@@ -6,6 +6,9 @@ Construction: SharePlanet
 	Icon: VoteIcons::1
 	Category: Dillema
 
+	RemoveStatus(RemovingNativeLife)
+	OnCancel(RemoveStatus(RemovingNativeLife))
+	OnStart(AddStatus(RemovingNativeLife))
 	RequireNotTrait(Ancient)
 	RequireNotTrait(Mechanoid)
 	TerraformTo(NativeNetwork)

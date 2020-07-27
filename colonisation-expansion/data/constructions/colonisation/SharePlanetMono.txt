@@ -10,6 +10,9 @@ Construction: SharePlanetMono
 	Icon: VoteIcons::1
 	Category: Dillema
 
+	RemoveStatus(RemovingNativeLife)
+	OnCancel(RemoveStatus(RemovingNativeLife))
+	OnStart(AddStatus(RemovingNativeLife))
 	RequireTrait(Mechanoid)
 	TerraformTo(NativeNetwork)
 	GainPlanetResource(NativeFood)

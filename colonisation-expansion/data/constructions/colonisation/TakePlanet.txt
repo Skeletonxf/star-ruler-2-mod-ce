@@ -5,6 +5,10 @@ Construction: TakePlanet
 	Description: Eradicate the natives from this planet. This will give us full control over the planet's resource but leave a lasting influence loss.
 	Icon: ConditionIcons::10
 	Category: Dillema
+
+	RemoveStatus(RemovingNativeLife)
+	OnCancel(RemoveStatus(RemovingNativeLife))
+	OnStart(AddStatus(RemovingNativeLife))
 	RequireNotTrait(Ancient)
 	AddStatus(Genocide)
 	OnCancel(AddStatus(NativeLife))
