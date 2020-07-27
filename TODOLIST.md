@@ -4,20 +4,21 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Update tooltips on forestation mechanics to make the purpose of developing a forest more clear
+  - Update tooltip on native life status to make it clearer that if you uplift you'll be exchanging the native resource for something else
   - Fix resources added to planets not being recognised by First Control Core buildings
   - Making parasite AI do razing at end of a budget cycle not start
-  - Prevent Dyson Sphere generating with Ice
-  - Remove duplicated light png files from repo
+  - Prevent Dyson Spheres generating with Ice
   - Fix the AI seeming to prioritise gates over flagships for military constructions
-  - Hide the Designate Homeworld contsruction on the homeworld planet
+  - Hide the Designate Homeworld construction on the homeworld planet
   - Teach AI to not put comets on worlds being razed
   - Teach AI to melt ice
   - Teach AI to make most of the constructions by extending the building hint code
-  - Teach AI to deprioritise water/food colonisation if have built a stockpile of unused ones
+  - Teach AI to deprioritise water/food colonisation if they have built a stockpile of unused ones
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
+  - Increase the resolution of the Helium 3 icon to make it clearer
 
 - Not planned for any time soon
   - Work out how should implement deep space trading
@@ -29,10 +30,9 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to scuttle unneeded FTL income orbitals
   - Prevent dillemas occuring multiple times (not sure what's causing this bug, it's quite rare)
   - Teach Mechanoid AI to use FTL Breeder Reactors
-  - Motherstation hull for StarChildren (granting positive income but requiring sacrifice of a planet for balance?)
   - StarChildren transfering of pop from Mothership -> Mothership
   - Make autoexplore continue to work after all systems have been visited once (will also split off into own mod or community patch)
-  - Add user interface improvements to make it easier to select multiple planets at once, as when every planet can be given move orders it is a bit of a pain to do them individually or after holding CTRL and selecting everything first.
+  - Add user interface improvements to make it easier to select multiple planets at once, as when every planet can be given move orders it is a bit of a pain to do them individually or after holding CTRL and selecting everything first (this seems to be partially in the game already, you can click drag to select planets only if there are no ships/orbitals in the region).
 - Long term plans
   - A campaign that doubles as an extended tutorial
     - I will rename all the existing races and tweak them rather than trying to build on established lore I don't know

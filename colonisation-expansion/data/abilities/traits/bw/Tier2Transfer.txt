@@ -1,0 +1,155 @@
+Ability: BWDegenerateMatterTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::42
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(DegenerateMatter))
+	CE_biome_hooks::ConsumePlanetResource(DegenerateMatter, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWHelium3Transfer
+	Name: #TRANSFER_RESOURCE
+	Icon: He3
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Helium3))
+	CE_biome_hooks::ConsumePlanetResource(Helium3, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWHypervolatilesTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::45
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Hypervolatiles))
+	CE_biome_hooks::ConsumePlanetResource(Hypervolatiles, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWJewelryTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::18
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Jewelry))
+	CE_biome_hooks::ConsumePlanetResource(Jewelry, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWLatticesTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::80
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Lattices))
+	CE_biome_hooks::ConsumePlanetResource(Lattices, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWMedicinesTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::15
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Medicines))
+	CE_biome_hooks::ConsumePlanetResource(Medicines, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWNeutroniumTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::36
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Neutronium))
+	CE_biome_hooks::ConsumePlanetResource(Neutronium, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWPlutoniumTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::34
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Plutonium))
+	CE_biome_hooks::ConsumePlanetResource(Plutonium, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWPsionicReagentsTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::37
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(PsionicReagents))
+	CE_biome_hooks::ConsumePlanetResource(PsionicReagents, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWSupercarbonsTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::39
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Supercarbons))
+	CE_biome_hooks::ConsumePlanetResource(Supercarbons, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWThoriumTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::35
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Thorium))
+	CE_biome_hooks::ConsumePlanetResource(Thorium, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWUraniumTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIcons::13
+	Range: 100
+	Target: targ = Object
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Uranium))
+	CE_biome_hooks::ConsumePlanetResource(Uranium, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
