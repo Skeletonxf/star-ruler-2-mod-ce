@@ -42,8 +42,8 @@ Jumpdrives can be unlocked for Stations
 These traits have positive and negative factors together. New races featuring these traits.
 #### Parasite
 This trait makes you get only half of the pressure from planetary resources, but allows you to raze planets down to nothing, gaining massively increased resource production while doing so. I've added special AI support for this trait, and while the AI code still needs improvements it's playable.
-#### Celestial
-The Celestial biology trait makes every planet able to be a battleworld (at great cost to your budget). I recommend playing Celestial with the Terrestrial or Extragalactic lifestyles and with Slipstreams or Gates as your FTL. This trait has no AI support and is still very unpolished and subject to change.
+### Battleworlders
+The battleworlders lifestyle makes every planet a battleworld, and lets your empire conquer the galaxy from the comfort of its own planets.
 ### Improved AI
 AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to. AI can handle having multiple FTL abilities unlocked at once. AI will build FTL income orbitals if it needs more FTL income
 
