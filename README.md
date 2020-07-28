@@ -43,7 +43,7 @@ These traits have positive and negative factors together. New races featuring th
 #### Parasite
 This trait makes you get only half of the pressure from planetary resources, but allows you to raze planets down to nothing, gaining massively increased resource production while doing so. I've added special AI support for this trait, and while the AI code still needs improvements it's playable.
 ### Battleworlders
-The battleworlders lifestyle makes every planet a battleworld, and lets your empire conquer the galaxy from the comfort of its own planets. No AI support at this time.
+The battleworlders lifestyle makes every planet a battleworld, and lets your empire conquer the galaxy from the comfort of its own planets. No AI support at this time. Inspired by Philip Reeve's Mortal Engines series and Dalo Lorn's Ringworlders.
 ### Improved AI
 AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to. AI can handle having multiple FTL abilities unlocked at once. AI will build FTL income orbitals if it needs more FTL income
 
