@@ -83,6 +83,9 @@ class Quickbar : BaseGuiElement, Savable {
 		auto@ scTrait = getTrait("StarChildren");
 		auto@ anTrait = getTrait("Ancient");
 		auto@ exTrait = getTrait("Extragalactic");
+		// [[ MODIFY BASE GAME START ]]
+		auto@ bwTrait = getTrait("Battleworlders");
+		// [[ MODIFY BASE GAME END ]]
 
 		add(CardMode(this), closed=true);
 		if(exTrait !is null && playerEmpire.hasTrait(exTrait.id))
@@ -97,6 +100,10 @@ class Quickbar : BaseGuiElement, Savable {
 			add(OverPressurePlanets(this));
 		add(NoPopResources(this), closed=true);
 		add(DecayingPlanets(this));
+		// [[ MODIFY BASE GAME START ]]
+		if(playerEmpire.hasTrait(bwTrait.id))
+			add(IdlePlanets(this));
+		// [[ MODIFY BASE GAME END ]]
 		add(ColonizingPlanets(this));
 		add(ColonizeSafePlanets(this), closed=true);
 		add(SiegePlanets(this));
@@ -876,6 +883,38 @@ class DecayingPlanets : ObjectMode {
 		return locale::DECAYING_PLANETS;
 	}
 };
+
+// [[ MODIFY BASE GAME START ]]
+class IdlePlanets : ObjectMode {
+	IdlePlanets(IGuiElement@ parent) {
+		super(parent);
+		color = Color(0x44ffbbff);
+	}
+
+	bool filter(ObjectData@ dat) {
+		if(!dat.obj.isPlanet)
+			return false;
+		// planets that can't move don't count
+		if(dat.obj.maxAcceleration == 0.0)
+			return false;
+		// planets that have been levelled up don't count
+		if(dat.obj.level > 0)
+			return false;
+		// moving planets aren't idle
+		if(dat.obj.isMoving)
+			return false;
+		return true;
+	}
+
+	Sprite get_icon() override {
+		return Sprite(material::PlanetThruster);
+	}
+
+	string get_name() override {
+		return locale::IDLE_PLANETS;
+	}
+};
+// [[ MODIFY BASE GAME END ]]
 
 bool shownColonizeWarning = false;
 uint colonizeWarningDelay = 100;
@@ -1964,8 +2003,10 @@ void checkHelp() {
 		addHelpText(locale::HELP_ANCIENT);
 	else if(playerEmpire.hasTrait(getTraitID("Extragalactic")))
 		addHelpText(locale::HELP_EXTRAGALACTIC);
+	// [[ MODIFY BASE GAME START ]]
 	else if(playerEmpire.hasTrait(getTraitID("Battleworlders")))
 		addHelpText(locale::HELP_BATTLEWORLDERS);
+	// [[ MODIFY BASE GAME END ]]
 }
 
 void postReload(Message& msg) {
