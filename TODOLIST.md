@@ -5,8 +5,6 @@ This is primarily intended as a developer focused project planning list, rather 
 - Bug list / issues to fix
   - Update tooltips on forestation mechanics to make the purpose of developing a forest more clear
   - Update tooltip on native life status to make it clearer that if you uplift you'll be exchanging the native resource for something else
-  - Fix the client thinking planets still have their old resources in the disabled resource menu when playing as Wandi
-  - Give Wandi something to do with useless planets (convert to a moon base effect maybe?)
   - Fix resources added to planets not being recognised by First Control Core buildings
   - Making parasite AI do razing at end of a budget cycle not start
   - Prevent Dyson Spheres generating with Ice
