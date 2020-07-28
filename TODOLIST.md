@@ -3,13 +3,12 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Update tooltips on forestation mechanics to make the purpose of developing a forest more clear
-  - Update tooltip on native life status to make it clearer that if you uplift you'll be exchanging the native resource for something else
-  - Fix resources added to planets not being recognised by First Control Core buildings
-  - Making parasite AI do razing at end of a budget cycle not start
-  - Prevent Dyson Spheres generating with Ice
-  - Fix the AI seeming to prioritise gates over flagships for military constructions
+  - Swap ability icons for tier 1 and 2 resources transfers to use the small icon varianets actually seen on planet resources
   - Hide the Designate Homeworld construction on the homeworld planet
+  - Fix resources added to planets not being recognised by First Control Core buildings
+  - Replace the default miner ship with one using the mining hull
+  - Make parasite AI do razing at end of a budget cycle not start
+  - Fix the AI seeming to prioritise gates over flagships for military constructions
   - Teach AI to not put comets on worlds being razed
   - Teach AI to melt ice
   - Teach AI to make most of the constructions by extending the building hint code
@@ -19,6 +18,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
+  - Fix homeworlds and other planets with forced useful surface seems to have updated tiles but not updated biomes, causing flood rocks / develop forest to appear despite the UI insisting the tiles are forest already, but the visuals looking more like rocks.
 
 - Not planned for any time soon
   - Work out how should implement deep space trading

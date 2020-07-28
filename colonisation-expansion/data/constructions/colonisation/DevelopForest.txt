@@ -7,6 +7,8 @@ Construction: DevelopForest
 		Develop a forest on this planet's rocky landscape.
 
 		Many important buildings have reduced build or maintenence costs on Forest biomes.
+
+		[i][color=#aaa]Forests on all rocky planets are developed automatically over time by food resources. Developing a forest manually will not yield forestation progress or food.[/color][/i]
 	>>
 	Category: Terraforming
 	RequirePlanet()
