@@ -15,6 +15,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to deprioritise water/food colonisation if they have built a stockpile of unused ones
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
+  - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
