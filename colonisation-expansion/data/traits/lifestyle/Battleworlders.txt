@@ -8,6 +8,9 @@ Trait: Battleworlders
 	Order: 12
 	Unique: Lifestyle
 
+
+	TriggerHomeworld(SpawnBuilding(Factory, (6, 5)), Run Post = True)
+	TriggerHomeworld(SpawnBuilding(LightSystem, (6, 1)), Run Post = True)
 	AddStatusOwnedFleets(BattleworlderFleet, Give To Stations = False)
 	ModAttribute(ForbidColonization, Add, 1)
 	TriggerHomeworld(DestroyBuildingAt((4, 3), Undevelop = True))

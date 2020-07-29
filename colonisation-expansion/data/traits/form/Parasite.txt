@@ -11,6 +11,7 @@ Trait: ParasiteTrait
 	Conflict: StarChildren
 	Conflict: Mechanoid
 	Conflict: Extragalactic
+	Conflict: Battleworlders
 
 	AddStatusOwnedPlanets(Parasite)
 
