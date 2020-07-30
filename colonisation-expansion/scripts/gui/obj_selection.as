@@ -340,7 +340,7 @@ void filter(array<Object@>& objs, SelectionType type) {
 		case ST_Fleets:
 		for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 			Object@ obj = objs[i];
-			if(!obj.owner.controlled || !isSortOfShip(obj) || !obj.hasLeaderAI)
+			if(!obj.owner.controlled || !isSortOfShip(obj) || !obj.hasLeaderAI) // [[ MODIFY BASE GAME ]]
 				continue;
 			output.insertLast(obj);
 		}
@@ -349,7 +349,7 @@ void filter(array<Object@>& objs, SelectionType type) {
 		case ST_Military:
 		for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 			Object@ obj = objs[i];
-			if(!obj.owner.controlled || !isSortOfShip(obj) || !obj.hasLeaderAI)
+			if(!obj.owner.controlled || !isSortOfShip(obj) || !obj.hasLeaderAI) // [[ MODIFY BASE GAME ]]
 				continue;
 			if((obj.getFleetStrength() < 1000.0) != (type == ST_Civilian))
 				continue;

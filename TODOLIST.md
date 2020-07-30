@@ -3,7 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Add planets in combat indicator
   - Add steal resources ability which colonises target, moves resources off target back to source, then abandons target
   - Swap ability icons for tier 1 and 2 resources transfers to use the small icon varianets actually seen on planet resources
   - Hide the Designate Homeworld construction on the homeworld planet
