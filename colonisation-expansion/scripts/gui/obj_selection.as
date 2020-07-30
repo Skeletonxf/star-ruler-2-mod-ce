@@ -321,6 +321,15 @@ SelectionType classifyRelaxed(array<Object@>& objs) {
 	return type;
 }
 
+// [[ MODIFY BASE GAME START ]]
+// Allow selecting ships together with planets that are able to move,
+// even if the selection type would otherwise exclude planets, this is
+// primarily a QoL change for playing as a battleworlder race.
+bool isSortOfShip(Object@ obj) {
+	return obj.isShip || (obj.isPlanet && obj.hasMover);
+}
+// [[ MODIFY BASE GAME END ]]
+
 void filter(array<Object@>& objs, SelectionType type) {
 	if(type == ST_Other)
 		return;
@@ -331,7 +340,7 @@ void filter(array<Object@>& objs, SelectionType type) {
 		case ST_Fleets:
 		for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 			Object@ obj = objs[i];
-			if(!obj.owner.controlled || !obj.isShip || !obj.hasLeaderAI)
+			if(!obj.owner.controlled || !isSortOfShip(obj) || !obj.hasLeaderAI)
 				continue;
 			output.insertLast(obj);
 		}
@@ -340,7 +349,7 @@ void filter(array<Object@>& objs, SelectionType type) {
 		case ST_Military:
 		for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 			Object@ obj = objs[i];
-			if(!obj.owner.controlled || !obj.isShip || !obj.hasLeaderAI)
+			if(!obj.owner.controlled || !isSortOfShip(obj) || !obj.hasLeaderAI)
 				continue;
 			if((obj.getFleetStrength() < 1000.0) != (type == ST_Civilian))
 				continue;
