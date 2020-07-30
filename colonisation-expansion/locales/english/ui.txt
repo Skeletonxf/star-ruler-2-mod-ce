@@ -145,7 +145,12 @@ ALL_FLEETS: Military Flagships
 CIVILIAN_FLEETS: Civilian Flagships
 MOTHERSHIPS: Motherships
 DEFENSE_STATIONS: Defense Stations
-COMBAT_FLEETS: Fleets in Combat
+// [[ MODIFY BASE GAME START ]]
+// It was just easier to extend this to planets too
+// Maybe now the Star Children will be able to tell if a planet is being
+// attacked
+COMBAT_FLEETS: Things in Combat
+// [[ MODIFY BASE GAME END ]]
 FLEETS_LOW_SUPPLY: Fleets on Low Supply
 AVAIL_ARTIFACTS: Available Artifacts
 COLONIZE_SAFE_PLANETS: Sufficient Population to Colonize

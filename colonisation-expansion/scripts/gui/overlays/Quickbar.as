@@ -1313,8 +1313,15 @@ class LowSupplyFleets : ObjectMode {
 };
 
 class CombatFleets : ObjectMode {
+	// [[ MODIFY BASE GAME START ]]
+	uint outpostId = uint(-1);
+
 	CombatFleets(IGuiElement@ parent) {
 		super(parent);
+
+		// cache the outpost identifier
+		outpostId = getOrbitalModuleID("TradeOutpost");
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	Sprite get_icon() override {
@@ -1330,16 +1337,48 @@ class CombatFleets : ObjectMode {
 	}
 
 	void longUpdate() override {
-		DataList@ objs = playerEmpire.getFlagships();
-		Object@ obj;
+		// [[ MODIFY BASE GAME START ]]
+		// Extend to planets and outposts
+		// Get all flagships in combat
 		uint index = 0;
-		while(receive(objs, obj)) {
-			Ship@ ship = cast<Ship>(obj);
-			if(ship !is null && ship.inCombat) {
-				grid.set(index, ship);
-				++index;
+		{
+			DataList@ objs = playerEmpire.getFlagships();
+			Object@ obj;
+			while(receive(objs, obj)) {
+				Ship@ ship = cast<Ship>(obj);
+				if(ship !is null && ship.inCombat) {
+					grid.set(index, ship);
+					++index;
+				}
 			}
 		}
+
+		// Get all planets in combat
+		{
+			for (uint i = 0, cnt = empirePlanets.length; i < cnt; ++i) {
+				if (empirePlanets[i].obj.isPlanet && empirePlanets[i].obj.inCombat) {
+					grid.set(index, empirePlanets[i]);
+					++index;
+				}
+			}
+		}
+
+		{
+			// Get all the outposts in combat
+			auto@ outpost = getOrbitalModule("TradeOutpost");
+			DataList@ objs = playerEmpire.getOrbitals();
+			Object@ obj;
+			while(receive(objs, obj)) {
+				Orbital@ orb = cast<Orbital>(obj);
+				if(orb !is null && orb.inCombat && orb.coreModule == outpostId) {
+					auto@ dat = cache(orb);
+					grid.set(index, dat);
+					++index;
+				}
+			}
+		}
+
+		// [[ MODIFY BASE GAME END ]]
 		grid.truncate(index);
 	}
 };
