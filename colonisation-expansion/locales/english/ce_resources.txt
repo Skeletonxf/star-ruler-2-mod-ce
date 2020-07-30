@@ -26,4 +26,4 @@ STAR_CHILDREN_ARTIFICIAL_LIGHT_DESC: <<
 	Only requires a star.
 >>
 BATTLEWORLD: Battleworld
-BATTLEWORLD_DESC: Adds 1000 support capacity. Support ships in orbit can freely raid.
+BATTLEWORLD_DESC: Support ships in orbit can freely raid.

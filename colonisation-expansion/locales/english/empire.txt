@@ -503,7 +503,7 @@ BLD_MOTHER_STALK_DESC: <<
 	The source of all verdant life. The mother stalk sustains us.
 >>
 
-ABL_MECHANOID_COLONIZE: Colonise 
+ABL_MECHANOID_COLONIZE: Colonise
 ABL_MECHANOID_COLONIZE_DESC: <<
 	Transfer 1B Population from this planet to another. Transfering population costs FTL energy, but can be done freely to colonize new planets or supply existing colonies with more population.
 >>
@@ -995,17 +995,17 @@ HELP_BATTLEWORLDERS: <<
 	[color=#ccc]You cannot send colony ships, to colonise planets you must send other planets to them. This also means colonising does not cost you money.[/color]
 
 	[font=Medium]Resources[/font][vspace=4/]
-	[color=#ccc]You cannot trade resources, but you can transfer resources between your planets if they are close together. You cannot transfer scalable or non exportable resources off a planet.[/color]
+	[color=#ccc]You cannot trade resources, but you can transfer resources between your planets if they are close together. You cannot transfer scalable, non exportable or tier 3 resources off planets. You can still transfer other resources onto such planets.[/color]
 
 	[font=Medium]Battle[/font][vspace=4/]
 	[color=#ccc]Your ships are weak compared to other races, but they become extra weak if far away from your planets. Orbitals are not weakened.[/color]
 	[color=#ccc]Keep in mind that you can build orbitals within a planet's gravitational field to move them with the planet.[/color]
-	[color=#ccc]Support ships assigned to planets can always raid, this can help support your fleets in combat.[/color]
+	[color=#ccc]You can take out early remnants with battleworlds if you build up a support fleet and enable defense for the planet.[/color]
 
 	[font=Medium]Deep Space[/font][vspace=4/]
 	[color=#ccc]Sending planets into deep space will drop them to level 0 if they do not have Lighting Systems.[/color]
 
 	[font=Medium]FTL[/font][vspace=4/]
-	[color=#ccc]If you're using Slipstreams or Gates, remember you can send planets through them![/color]
+	[color=#ccc]If you're using Slipstreams or Gates, remember you can send planets through them! A planet cannot enter a gate orbiting it, but it can enter slipstreams created in orbit.[/color]
 >>
 GOT_IT: Got it!

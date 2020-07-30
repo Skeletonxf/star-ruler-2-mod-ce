@@ -8,9 +8,6 @@ Building: CelestialPlanetaryEngine
 	Size: 5x5
 
 
-
-
-
 	AddPlanetResource(Battleworld)
 	CannotBuildManually()
 	CannotRemove()

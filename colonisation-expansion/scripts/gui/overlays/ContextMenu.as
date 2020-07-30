@@ -1090,6 +1090,15 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 						addOption(menu, selected, clicked, locale::ATTACK, Attack(), icons::Strength);
 				}
 			}
+			// [[ MODIFY BASE GAME START ]]
+			// Add attack option for all planets with acceleration and support capacity
+			if (selected.isPlanet) {
+				Planet@ planet = cast<Planet>(selected);
+				if (planet !is null && planet.supportCount > 0 && planet.maxAcceleration > 0) {
+					addOption(menu, selected, clicked, locale::ATTACK, Attack(), icons::Strength);
+				}
+			}
+			// [[ MODIFY BASD GAME END ]]
 		}
 
 		if(selected.isShip && selected.hasLeaderAI && clicked.isPlanet
