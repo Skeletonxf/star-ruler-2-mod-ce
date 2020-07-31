@@ -6,9 +6,11 @@ from generic_effects import GenericEffect;
 import biomes;
 import abilities;
 from abilities import AbilityHook;
+import int getAbilityID(const string&) from "abilities";
 import int getUnlockTag(const string& ident, bool create = true) from "unlock_tags";
 #section server
 import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
+import void filterToResourceTransferAbilities(array<Ability>&) from "CE_resource_transfer";
 #section all
 
 // TODO: Rename as no longer just biomes
@@ -565,6 +567,40 @@ class UnlockRandomFTL : EmpireTrigger {
 				return;
 			sendClientMessage(emp.player, "Warpdrives unlocked", "You have unlocked Warpdrives through a galactic senate vote");
 		}
+	}
+#section all
+};
+
+class TransferAllResourcesAndAbandon : AbilityHook {
+	Document doc("Queue up all available resource transfer abilities onto the target then abandon this object.");
+	Argument objTarget(TT_Object, doc="Target to cast ability on.");
+
+#section server
+	void activate(Ability@ abl, any@ data, const Targets@ targs) const override {
+		if(abl.obj is null)
+			return;
+
+		auto@ targ = objTarget.fromConstTarget(targs);
+		if(targ is null || targ.obj is null)
+			return;
+
+		array<Ability> abilities;
+		abilities.syncFrom(abl.obj.getAbilities());
+
+		int abandonAbility = -1;
+		for (uint i = 0, cnt = abilities.length; i < cnt; ++i) {
+			if (abilities[i].type.ident == "AbilityAbandon") {
+				abandonAbility = abilities[i].id;
+			}
+		}
+
+		// Queue up orders for each resource transfer and then abandon
+		filterToResourceTransferAbilities(abilities);
+		for (uint i = 0, cnt = abilities.length; i < cnt; ++i) {
+			Ability@ transferAbility = abilities[i];
+			abl.obj.addAbilityOrder(transferAbility.id, targ.obj, true);
+		}
+		abl.obj.addAbilityOrder(abandonAbility, abl.obj, true);
 	}
 #section all
 };

@@ -1,0 +1,24 @@
+Ability: TransferAll
+	Name: #TRANSFER_ALL
+	Description: #TRANSFER_ALL_DESC
+	Icon: ConditionIcons::7
+	Range: 100
+	Target: targ = Object
+	Hotkey: Y
+	CE_biome_hooks::TransferAllResourcesAndAbandon(targ)
+	TargetFilterType(targ, Planet)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterNotSelf(targ)
+	RequireNotUnderSiege()
+	TargetFilterOwned(targ)
+
+Ability: AbilityAbandon
+	Target: targ = Object
+	Hide Global: True
+	Description: This ability is hidden from the UI via a special case in the GUI code, as it is only used in scripting and the player can use the normal context menu for abandoning things.
+	Name: Abandon
+	Icon: ConditionIcons::7
+	AbandonPlanet()
+	TargetFilterSelf(targ)
+	TargetFilterOwned(targ)
+	TargetFilterType(targ, Planet)

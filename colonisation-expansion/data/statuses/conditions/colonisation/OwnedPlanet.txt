@@ -1,3 +1,4 @@
 Status: OwnedPlanet
 	Visible To: Nobody
+	GrantAbility(AbilityAbandon)
 	IfNotHaveTrait(Mechanoid, IfNotHaveTrait(Ancient, AddStatus(ForestablePlanet)))

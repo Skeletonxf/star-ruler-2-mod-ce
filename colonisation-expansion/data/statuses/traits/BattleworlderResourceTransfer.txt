@@ -1,6 +1,8 @@
 Status: BattleworlderResourceTransfer
 	Visible To: Nobody
 
+	GrantAbility(TransferAll)
+
 	IfNative(Meat, GrantAbility(BWMeatTransfer))
 	IfNative(Fruit, GrantAbility(BWFruitTransfer))
 	IfNative(Fish, GrantAbility(BWFishTransfer))

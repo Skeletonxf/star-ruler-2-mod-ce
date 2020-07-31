@@ -1334,6 +1334,13 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 			Ability@ abl = abilities[i];
 			if(abl.disabled)
 				continue;
+			// [[ MODIFY BASE GAME START ]]
+			// this ability gets filtered out of the context menu later
+			// but is still filtered here to avoid potentially seeing it
+			// if making further changes
+			if(abl.type.ident == "AbilityAbandon")
+				continue;
+			// [[ MODIFY BASE GAME END ]]
 			if(selected.isArtifact)
 				@abl.emp = playerEmpire;
 			else
