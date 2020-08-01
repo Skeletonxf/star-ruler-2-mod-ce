@@ -132,3 +132,18 @@ Ability: BWUnobtaniumTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+
+Ability: BWDrugsTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::22
+	Range: 100
+	Target: targ = Object
+	Resource Transfer: True
+	Resource: Drugs
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(Drugs))
+	CE_biome_hooks::ConsumePlanetResource(Drugs, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)

@@ -20,6 +20,7 @@ Resource: DysonSphere
 
 	Pressure: 50 Energy
 	Frequency: 0
+	Mode: Non Requirement
 
 	NativeLevelChain(Photovoltics)
 

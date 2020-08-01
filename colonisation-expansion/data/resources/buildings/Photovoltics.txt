@@ -14,3 +14,4 @@ Resource: Photovoltics
 
 	Pressure: 25 Energy
 	Frequency: 0
+	Mode: Non Requirement

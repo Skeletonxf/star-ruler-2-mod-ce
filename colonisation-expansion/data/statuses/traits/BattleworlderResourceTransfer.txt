@@ -23,6 +23,7 @@ Status: BattleworlderResourceTransfer
 	IfNative(Phasite, GrantAbility(BWPhasiteTransfer))
 	IfNative(Spice, GrantAbility(BWSpiceTransfer))
 	IfNative(Unobtanium, GrantAbility(BWUnobtaniumTransfer))
+	IfNative(Drugs, GrantAbility(BWDrugsTransfer))
 
 	IfNative(Ammonia, GrantAbility(BWAmmoniaTransfer))
 	IfNative(Atium, GrantAbility(BWAtiumTransfer))

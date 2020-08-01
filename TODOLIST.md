@@ -3,8 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Fix planets spawning with ancient ruins breaking battleworlder use of the planet
-  - Fix drugs resource not being transferable
   - Fix resources added to planets not being recognised by First Control Core buildings
   - Replace the default miner ship with one using the mining hull
   - Make parasite AI do razing at end of a budget cycle not start
@@ -20,6 +18,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
   - Fix homeworlds and other planets with forced useful surface seems to have updated tiles but not updated biomes, causing flood rocks / develop forest to appear despite the UI insisting the tiles are forest already, but the visuals looking more like rocks.
+  - Fix visual bug causing Drugs to appear to be filling the Light class requirement for planet levelling when they are not, probably related to dummy resources
 
 - Not planned for any time soon
   - Work out how should implement deep space trading
