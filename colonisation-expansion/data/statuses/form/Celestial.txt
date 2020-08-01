@@ -1,6 +1,7 @@
 Status: Celestial
 	Name: Celestial
 	Visible To: Nobody
+	OnEnable(DestroyBuildingAt((2,2), Undevelop = True))
 	IfNotHaveStatus(NativeLife, IfNotHaveStatus(RemovingNativeLife, AddStatus(BattleworlderResourceTransfer)))
 	DisableResourceImport()
 	DisableResourceExport()
