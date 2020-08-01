@@ -3,6 +3,8 @@ Ability: BWWaterTransfer
 	Icon: ResourceIconsSmall::18
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Water
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Water))
 	CE_biome_hooks::ConsumePlanetResource(Water, targ)
@@ -16,6 +18,8 @@ Ability: BWIceGiantWaterTransfer
 	Icon: ResourceIconsSmall::99 * ffffbb
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: IceGiantWater
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(IceGiantWater))
 	CE_biome_hooks::ConsumePlanetResource(IceGiantWater, targ)

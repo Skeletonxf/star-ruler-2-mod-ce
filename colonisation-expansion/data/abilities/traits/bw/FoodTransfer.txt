@@ -3,6 +3,8 @@ Ability: BWGrainTransfer
 	Icon: ResourceIconsSmall::20
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Grain
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Grain))
 	CE_biome_hooks::ConsumePlanetResource(Grain, targ)
@@ -16,6 +18,8 @@ Ability: BWFishTransfer
 	Icon: ResourceIconsSmall::19
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Fish
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Fish))
 	CE_biome_hooks::ConsumePlanetResource(Fish, targ)
@@ -29,6 +33,8 @@ Ability: BWMeatTransfer
 	Icon: ResourceIconsSmall::17
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Meat
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Meat))
 	CE_biome_hooks::ConsumePlanetResource(Meat, targ)
@@ -42,6 +48,8 @@ Ability: BWFruitTransfer
 	Icon: ResourceIconsSmall::14
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Fruit
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Fruit))
 	CE_biome_hooks::ConsumePlanetResource(Fruit, targ)
@@ -55,6 +63,8 @@ Ability: BWNativeFishTransfer
 	Icon: ResourceIconsSmall::19 * #ff00e6
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: NativeFish
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(NativeFish))
 	CE_biome_hooks::ConsumePlanetResource(NativeFish, targ)
@@ -68,6 +78,8 @@ Ability: BWHyperOatsTransfer
 	Icon: ResourceIconsSmall::52
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: HyperOats
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(HyperOats))
 	CE_biome_hooks::ConsumePlanetResource(HyperOats, targ)
@@ -81,6 +93,8 @@ Ability: BWSaltsTransfer
 	Icon: ResourceIconsSmall::23
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Salts
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Salts))
 	CE_biome_hooks::ConsumePlanetResource(Salts, targ)
@@ -94,6 +108,8 @@ Ability: BWSyrupTransfer
 	Icon: ResourceIconsSmall::79
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Syrup
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Syrup))
 	CE_biome_hooks::ConsumePlanetResource(Syrup, targ)

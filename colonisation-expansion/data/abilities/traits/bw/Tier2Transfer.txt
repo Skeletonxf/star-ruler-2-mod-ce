@@ -1,8 +1,10 @@
 Ability: BWDegenerateMatterTransfer
 	Name: #TRANSFER_RESOURCE
-	Icon: ResourceIcons::42
+	Icon: ResourceIconsSmall::42
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: DegenerateMatter
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(DegenerateMatter))
 	CE_biome_hooks::ConsumePlanetResource(DegenerateMatter, targ)
@@ -16,6 +18,8 @@ Ability: BWHelium3Transfer
 	Icon: He3
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Helium3
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Helium3))
 	CE_biome_hooks::ConsumePlanetResource(Helium3, targ)
@@ -29,6 +33,8 @@ Ability: BWHypervolatilesTransfer
 	Icon: ResourceIconsSmall::45
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Hypervolatiles
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Hypervolatiles))
 	CE_biome_hooks::ConsumePlanetResource(Hypervolatiles, targ)
@@ -39,9 +45,11 @@ Ability: BWHypervolatilesTransfer
 
 Ability: BWJewelryTransfer
 	Name: #TRANSFER_RESOURCE
-	Icon: ResourceIcons::18
+	Icon: ResourceIconsSmall::1
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Jewelry
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Jewelry))
 	CE_biome_hooks::ConsumePlanetResource(Jewelry, targ)
@@ -55,6 +63,8 @@ Ability: BWLatticesTransfer
 	Icon: ResourceIconsSmall::80
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Lattices
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Lattices))
 	CE_biome_hooks::ConsumePlanetResource(Lattices, targ)
@@ -65,9 +75,11 @@ Ability: BWLatticesTransfer
 
 Ability: BWMedicinesTransfer
 	Name: #TRANSFER_RESOURCE
-	Icon: ResourceIcons::15
+	Icon: ResourceIconsSmall::6
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Medicines
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Medicines))
 	CE_biome_hooks::ConsumePlanetResource(Medicines, targ)
@@ -78,9 +90,11 @@ Ability: BWMedicinesTransfer
 
 Ability: BWNeutroniumTransfer
 	Name: #TRANSFER_RESOURCE
-	Icon: ResourceIcons::36
+	Icon: ResourceIconsSmall::36
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Neutronium
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Neutronium))
 	CE_biome_hooks::ConsumePlanetResource(Neutronium, targ)
@@ -91,9 +105,11 @@ Ability: BWNeutroniumTransfer
 
 Ability: BWPlutoniumTransfer
 	Name: #TRANSFER_RESOURCE
-	Icon: ResourceIcons::34
+	Icon: ResourceIconsSmall::34
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Plutonium
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Plutonium))
 	CE_biome_hooks::ConsumePlanetResource(Plutonium, targ)
@@ -104,9 +120,11 @@ Ability: BWPlutoniumTransfer
 
 Ability: BWPsionicReagentsTransfer
 	Name: #TRANSFER_RESOURCE
-	Icon: ResourceIcons::37
+	Icon: ResourceIconsSmall::37
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: PsionicReagents
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(PsionicReagents))
 	CE_biome_hooks::ConsumePlanetResource(PsionicReagents, targ)
@@ -117,9 +135,11 @@ Ability: BWPsionicReagentsTransfer
 
 Ability: BWSupercarbonsTransfer
 	Name: #TRANSFER_RESOURCE
-	Icon: ResourceIcons::39
+	Icon: ResourceIconsSmall::39
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Supercarbons
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Supercarbons))
 	CE_biome_hooks::ConsumePlanetResource(Supercarbons, targ)
@@ -130,9 +150,11 @@ Ability: BWSupercarbonsTransfer
 
 Ability: BWThoriumTransfer
 	Name: #TRANSFER_RESOURCE
-	Icon: ResourceIcons::35
+	Icon: ResourceIconsSmall::35
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Thorium
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Thorium))
 	CE_biome_hooks::ConsumePlanetResource(Thorium, targ)
@@ -143,9 +165,11 @@ Ability: BWThoriumTransfer
 
 Ability: BWUraniumTransfer
 	Name: #TRANSFER_RESOURCE
-	Icon: ResourceIcons::13
+	Icon: ResourceIconsSmall::4
 	Range: 100
 	Target: targ = Object
+	Resource: Uranium
+	Resource Transfer: True
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Uranium))
 	CE_biome_hooks::ConsumePlanetResource(Uranium, targ)

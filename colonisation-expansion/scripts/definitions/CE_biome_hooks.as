@@ -11,6 +11,7 @@ import int getUnlockTag(const string& ident, bool create = true) from "unlock_ta
 #section server
 import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
 import void filterToResourceTransferAbilities(array<Ability>&) from "CE_resource_transfer";
+import CE_array_map;
 #section all
 
 // TODO: Rename as no longer just biomes
@@ -584,6 +585,11 @@ class TransferAllResourcesAndAbandon : AbilityHook {
 		if(targ is null || targ.obj is null)
 			return;
 
+		if (!abl.obj.isPlanet)
+		 	return;
+
+		Planet@ planet = cast<Planet>(abl.obj);
+
 		array<Ability> abilities;
 		abilities.syncFrom(abl.obj.getAbilities());
 
@@ -596,9 +602,34 @@ class TransferAllResourcesAndAbandon : AbilityHook {
 
 		// Queue up orders for each resource transfer and then abandon
 		filterToResourceTransferAbilities(abilities);
+
+		// Build up a map of planet resource type ids to occurrences,
+		// to find out if a particular resource is present multiple times
+		// on this planet already
+		array<Resource> planetResources;
+		ArrayMap resourceOccurances = ArrayMap();
+		planetResources.syncFrom(planet.getNativeResources());
+		for (uint i = 0, cnt = planetResources.length; i < cnt; i++) {
+			auto planetResourceType = planetResources[i].type;
+			resourceOccurances.increment(planetResourceType.id);
+		}
+
 		for (uint i = 0, cnt = abilities.length; i < cnt; ++i) {
 			Ability@ transferAbility = abilities[i];
-			abl.obj.addAbilityOrder(transferAbility.id, targ.obj, true);
+			if (transferAbility.type.resource is null) {
+				// Error in ability definition?
+				continue;
+			}
+			uint resourceTypeID = transferAbility.type.resource.id;
+			uint resourceCount = 1;
+			if (resourceOccurances.has(resourceTypeID)) {
+				resourceCount = resourceOccurances.get(resourceTypeID);
+			}
+			// Queue up as many copies of this ability as we have occurances
+			// of the resource the ability transfers
+			for (uint j = 0; j < resourceCount; j++) {
+				abl.obj.addAbilityOrder(transferAbility.id, targ.obj, true);
+			}
 		}
 		abl.obj.addAbilityOrder(abandonAbility, abl.obj, true);
 	}

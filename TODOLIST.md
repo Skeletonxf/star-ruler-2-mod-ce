@@ -4,9 +4,7 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Fix planets spawning with ancient ruins breaking battleworlder use of the planet
-  - Fix transfer all resources ability only transfering 1 instance of each resource even if multiple are present
   - Fix drugs resource not being transferable
-  - Swap ability icons for tier 1 and 2 resources transfers to use the small icon varianets actually seen on planet resources
   - Hide the Designate Homeworld construction on the homeworld planet
   - Fix resources added to planets not being recognised by First Control Core buildings
   - Replace the default miner ship with one using the mining hull

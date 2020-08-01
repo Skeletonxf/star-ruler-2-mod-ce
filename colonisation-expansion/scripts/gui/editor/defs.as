@@ -215,6 +215,11 @@ class AbilityFile : FileDef {
 			field("Hide Global", AT_Boolean, "False", doc="Hide this from the global action bar if added as an empire ability.");
 			field("Target", AT_TargetSpec, "", /*repeatable=true,*/ doc="A type of target this ability needs to be triggered on.");
 			field("Activate Sound", AT_Custom, "", doc="Name of the sound effect to be played in the UI for the person that triggers this ability.");
+			// [[ MODIFY BASE GAME START ]]
+			// Include the fields added to AbilityType
+			field("Resource Transfer", AT_Boolean, "False", doc="Indicate that this ability is used to transfer resources.");
+			field("Resource", AT_PlanetResource, "", doc="Associate a resource with this ability for scripting uses.");
+			// [[ MODIFY BASE GAME END ]]
 	}
 
 	void onChange() {

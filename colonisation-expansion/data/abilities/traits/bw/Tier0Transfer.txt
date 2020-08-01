@@ -3,6 +3,8 @@ Ability: BWAluminumTransfer
 	Icon: ResourceIconsSmall::16
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Aluminum
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Aluminum))
 	CE_biome_hooks::ConsumePlanetResource(Aluminum, targ)
@@ -16,6 +18,8 @@ Ability: BWCoalTransfer
 	Icon: ResourceIconsSmall::12
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Coal
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Coal))
 	CE_biome_hooks::ConsumePlanetResource(Coal, targ)
@@ -29,6 +33,8 @@ Ability: BWFulrateTransfer
 	Icon: ResourceIconsSmall::43
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Fulrate
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Fulrate))
 	CE_biome_hooks::ConsumePlanetResource(Fulrate, targ)
@@ -42,6 +48,8 @@ Ability: BWGemsTransfer
 	Icon: ResourceIconsSmall::51
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Gems
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Gems))
 	CE_biome_hooks::ConsumePlanetResource(Gems, targ)
@@ -55,6 +63,8 @@ Ability: BWIronTransfer
 	Icon: ResourceIconsSmall::15
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Iron
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Iron))
 	CE_biome_hooks::ConsumePlanetResource(Iron, targ)
@@ -68,6 +78,8 @@ Ability: BWPekelmTransfer
 	Icon: ResourceIconsSmall::25
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Pekelm
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Pekelm))
 	CE_biome_hooks::ConsumePlanetResource(Pekelm, targ)
@@ -81,6 +93,8 @@ Ability: BWPhasiteTransfer
 	Icon: ResourceIconsSmall::24
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Phasite
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Phasite))
 	CE_biome_hooks::ConsumePlanetResource(Phasite, targ)
@@ -94,6 +108,8 @@ Ability: BWSpiceTransfer
 	Icon: ResourceIconsSmall::2
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Spice
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Spice))
 	CE_biome_hooks::ConsumePlanetResource(Spice, targ)
@@ -107,6 +123,8 @@ Ability: BWUnobtaniumTransfer
 	Icon: ResourceIconsSmall::26
 	Range: 100
 	Target: targ = Object
+	Resource Transfer: True
+	Resource: Unobtanium
 	TargetFilterOwned(targ)
 	Trigger(targ, GainPlanetResource(Unobtanium))
 	CE_biome_hooks::ConsumePlanetResource(Unobtanium, targ)
