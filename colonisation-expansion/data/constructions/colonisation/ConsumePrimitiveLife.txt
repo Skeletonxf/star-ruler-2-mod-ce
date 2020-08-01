@@ -4,7 +4,7 @@ Construction: ConsumePrimitiveLife
 	Name: Consume Primitive Life
 	Description: Declare the primitive life on this planet a food to be eaten
 	Icon: ConditionIcons::10
-	Category: Development
+	Category: Dillema
 	GainPlanetResource(Soylent4)
 	OnCancel(AddStatus(PrimitiveLife))
 	RequireStatus(PrimitiveLife)

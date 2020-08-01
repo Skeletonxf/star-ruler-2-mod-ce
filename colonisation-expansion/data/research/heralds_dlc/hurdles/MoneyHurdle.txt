@@ -1,6 +1,6 @@
 Technology: MoneyHurdle
 	Name: #R_MONEY_HURDLE
-	Description: #R_INFLUENCE_HURDLE_DESC
+	Description: #R_MONEY_HURDLE_DESC
 
 	Icon: ResourceIcon::0
 	Symbol: QuickbarIcons::3

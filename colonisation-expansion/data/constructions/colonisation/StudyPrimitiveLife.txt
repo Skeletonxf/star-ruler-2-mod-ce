@@ -4,7 +4,7 @@ Construction: StudyPrimitiveLife
 	Name: Study Primitive Life
 	Description: Declare the primitive life on this planet a resource to be studied
 	Icon: ResourceIcon::4
-	Category: Development
+	Category: Dillema
 	GainPlanetResource(PrimitiveLife)
 	OnCancel(AddStatus(PrimitiveLife))
 	RequireStatus(PrimitiveLife)

@@ -1,0 +1,5 @@
+R_MONEY_HURDLE_DESC: <<
+	To progress further, we must make considerable financial investments.
+
+	[i]This technology gives no benefit, and must be researched by spending Money to study it.[/i]
+>>

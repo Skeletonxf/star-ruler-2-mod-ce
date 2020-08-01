@@ -8,6 +8,7 @@ import abilities;
 from abilities import AbilityHook;
 import int getAbilityID(const string&) from "abilities";
 import int getUnlockTag(const string& ident, bool create = true) from "unlock_tags";
+from requirement_effects import Requirement;
 #section server
 import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
 import void filterToResourceTransferAbilities(array<Ability>&) from "CE_resource_transfer";
@@ -634,4 +635,28 @@ class TransferAllResourcesAndAbandon : AbilityHook {
 		abl.obj.addAbilityOrder(abandonAbility, abl.obj, true);
 	}
 #section all
+};
+
+class RequireNotHomeworld : Requirement {
+	Document doc("Can only be built on planets that are not the homeworld.");
+
+	bool meets(Object& obj, bool ignoreState = false) const override {
+		if (obj is null || !obj.isPlanet || obj.owner is null || obj.owner.Homeworld is null) {
+			return false;
+		}
+		Planet@ planet = cast<Planet>(obj);
+		return obj.owner.Homeworld.id != planet.id;
+	}
+};
+
+class RequireHomeworld : Requirement {
+	Document doc("Can only be built on planets that are the homeworld.");
+
+	bool meets(Object& obj, bool ignoreState = false) const override {
+		if (obj is null || !obj.isPlanet || obj.owner is null || obj.owner.Homeworld is null) {
+			return false;
+		}
+		Planet@ planet = cast<Planet>(obj);
+		return obj.owner.Homeworld.id == planet.id;
+	}
 };

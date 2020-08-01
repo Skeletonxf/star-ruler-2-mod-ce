@@ -4,6 +4,8 @@ Construction: SetHomeworld
 	Icon: ResourceIcon::8 * ffaa00
 	Category: Political
 	Time Cost: 1
+
+	CE_biome_hooks::RequireNotHomeworld()
 	RequirePlanetNotBiome(Photovoltics)
 	ConsumeInfluence(1)
 	CE_biome_hooks::SetHomeworld()

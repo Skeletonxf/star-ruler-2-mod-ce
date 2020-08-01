@@ -5,7 +5,6 @@ This is primarily intended as a developer focused project planning list, rather 
 - Bug list / issues to fix
   - Fix planets spawning with ancient ruins breaking battleworlder use of the planet
   - Fix drugs resource not being transferable
-  - Hide the Designate Homeworld construction on the homeworld planet
   - Fix resources added to planets not being recognised by First Control Core buildings
   - Replace the default miner ship with one using the mining hull
   - Make parasite AI do razing at end of a budget cycle not start
