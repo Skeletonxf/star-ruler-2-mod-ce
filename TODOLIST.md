@@ -3,6 +3,9 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Port battleworld QoL changes to CP
+  - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
+  - Would also be helpful to show strength of a planet when hovering over it rather than just its supports
   - Fix resources added to planets not being recognised by First Control Core buildings
   - Replace the default miner ship with one using the mining hull
   - Make parasite AI do razing at end of a budget cycle not start

@@ -1089,6 +1089,12 @@ class SiegePlanets : ObjectMode {
 	}
 
 	bool filter(ObjectData@ dat) {
+		// [[ MODIFY BASE GAME START ]]
+		// Also consider planets in combat to be under siege
+		if (dat.obj.inCombat) {
+			return true;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		Empire@ captEmp = dat.obj.captureEmpire;
 		if(captEmp is null || captEmp is playerEmpire)
 			return false;
@@ -1338,9 +1344,12 @@ class CombatFleets : ObjectMode {
 
 	void longUpdate() override {
 		// [[ MODIFY BASE GAME START ]]
-		// Extend to planets and outposts
-		// Get all flagships in combat
+		// Extend to stations and outposts
+		// Including planets in the same list triggers very weird bugs
+		// that seem to originate from lingering data, so planets in combat
+		// are shown in planets under siege instead
 		uint index = 0;
+		// Get all flagships in combat
 		{
 			DataList@ objs = playerEmpire.getFlagships();
 			Object@ obj;
@@ -1353,19 +1362,8 @@ class CombatFleets : ObjectMode {
 			}
 		}
 
-		// Get all planets in combat
-		{
-			for (uint i = 0, cnt = empirePlanets.length; i < cnt; ++i) {
-				if (empirePlanets[i].obj.isPlanet && empirePlanets[i].obj.inCombat) {
-					grid.set(index, empirePlanets[i]);
-					++index;
-				}
-			}
-		}
-
 		{
 			// Get all the outposts in combat
-			auto@ outpost = getOrbitalModule("TradeOutpost");
 			DataList@ objs = playerEmpire.getOrbitals();
 			Object@ obj;
 			while(receive(objs, obj)) {
@@ -1378,8 +1376,21 @@ class CombatFleets : ObjectMode {
 			}
 		}
 
+		{
+			// Get all stations in combat
+			DataList@ objs = playerEmpire.getStations();
+			Object@ obj;
+			while(receive(objs, obj)) {
+				Ship@ ship = cast<Ship>(obj);
+				if(ship !is null && ship.inCombat) {
+					grid.set(index, ship);
+					++index;
+				}
+			}
+		}
+
 		// [[ MODIFY BASE GAME END ]]
-		grid.truncate(index);
+		grid.truncate(index, sort=false);
 	}
 };
 
