@@ -1,0 +1,4 @@
+Status: NoResourceUse
+	Visible To: Nobody
+	ForbidLaborExport()
+	CannotUseLabor()

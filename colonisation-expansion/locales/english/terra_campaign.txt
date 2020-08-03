@@ -1,0 +1,68 @@
+SCENARIO_COMPLETED: Complete
+SCENARIO_INCOMPLETED: Available
+
+DOGFIGHT_TRAINING_NAME: Dogfight Training
+DOGFIGHT_TRAINING_DESC: <<|
+	[b]2463 CE:[/b]
+	Congratulations recruit, you've almost made your way to becoming a commander
+	of the Terra expedition force. Over the last few centuries we've had a number
+	of mutinies and minor squabbles, so we introduced some mandatory dogfight
+	training for all commanders.
+
+	Your task is very simple. Win an outmatched dogfight in our simulator
+	to prove your skills.
+>>
+
+DOGFIGHT_TRAINING_PLAYER_EMP: Terra Expedition
+DOGFIGHT_TRAINING_ENEMY_EMP: Simulator
+
+DOGFIGHT_TRAINING_INTRO_TITLE: 3v2
+DOGFIGHT_TRAINING_INTRO_TEXT: <<|
+	[i]General Nova:[/i]
+
+	As you can see, it's 3 versus 2 and your ships are identical to the enemy.
+	You're going to need to get behind their ships or focus down the ship on
+	its own with both of yours.
+>>
+
+DOGFIGHT_TRAINING_INTRO2_TITLE: Goal
+DOGFIGHT_TRAINING_INTRO2_TEXT: <<|
+	You complete the simulation when all enemy ships are destroyed. You lose
+	if you run out of ships first.
+>>
+
+DOGFIGHT_TRAINING_PROGRESS_TITLE: 2v2
+DOGFIGHT_TRAINING_PROGRESS_TEXT: <<|
+	[i]General Nova:[/i]
+
+	Nicely done! One more enemy ship to go and your ships will level up making
+	them stronger. In the mean time, you should regroup and let your ships
+	recover. Hyperdrives are very useful for quick getaways! Shame we can't
+	work out how to build them ourselves.
+>>
+
+DOGFIGHT_TRAINING_PROGRESS2_TITLE: Defense
+DOGFIGHT_TRAINING_PROGRESS2_TEXT: <<|
+	Now you're out of harm's way you should take advantage of the support fleet
+    building up on your planets. Transfer them to your ships to get an edge for
+    the last battle.
+>>
+
+DOGFIGHT_TRAINING_COMPLETE_TITLE: Victory!
+DOGFIGHT_TRAINING_COMPLETE_TEXT: <<|
+	[i]General Nova:[/i]
+
+	That's how you do it! I wish you good luck commanding the fifth Terra
+	expedition force.
+
+	[center][b]"Dogfight Training" Complete![/b][/center]
+>>
+
+// A mining colony from a previous Terra expedition have been
+// pleading for help to defend themselves again an onslaught of robots
+// No one else wanted to try out our new Terra manufactured prototype
+// hyperdrives so you're up. The colony say the robots are very vulnerable to
+// planetary bombardment, so we've hooked your fleets up with loads of the stuff.
+// You'll have to carve out your own trade network from the systems you siege
+// Keep in mind that until you get a factory up and running you won't be able
+// to replace any lost fleets so you'll have to engage carefully.

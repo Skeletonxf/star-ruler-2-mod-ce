@@ -1,0 +1,10 @@
+System: Simulator
+	Position: (0, 0, 0)
+	Effect: MakeStar(Temperature = 5778, Radius = 75)
+	Effect: MakePlanet(Water)
+	ExpandSystem(500)
+	Effect: MakePlanet(Grain)
+	ExpandSystem(1000)
+	Effect: MakePlanet(Grain)
+	ExpandSystem(500)
+	Effect: MakePlanet(Water)

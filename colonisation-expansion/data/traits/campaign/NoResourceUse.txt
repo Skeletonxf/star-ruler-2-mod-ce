@@ -1,0 +1,7 @@
+Trait: NoResourceUse
+	Description: Prohibits using planet resources, for campaign matches which are purely combat.
+	Name: No resource use
+	Available: False
+	ModAttribute(CivBldConstructionRate, Multiply, 0)
+	ModAttribute(ImperialBldConstructionRate, Multiply, 0)
+	AddStatusOwnedPlanets(NoResourceUse)
