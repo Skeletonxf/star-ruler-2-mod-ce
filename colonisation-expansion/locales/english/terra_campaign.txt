@@ -1,3 +1,5 @@
+PROMPT_START_CAMPAIGN: Starting the campaign now will end your current game. All unsaved progress will be lost. Proceed?
+
 SCENARIO_COMPLETED: Complete
 SCENARIO_INCOMPLETED: Available
 
@@ -37,7 +39,9 @@ DOGFIGHT_TRAINING_PROGRESS_TEXT: <<|
 
 	Nicely done! One more enemy ship to go and your ships will level up making
 	them stronger. In the mean time, you should regroup and let your ships
-	recover. Hyperdrives are very useful for quick getaways! Shame we can't
+	recover.
+
+	Hyperdrives are very useful for quick getaways! Shame we can't
 	work out how to build them ourselves.
 >>
 
@@ -52,7 +56,7 @@ DOGFIGHT_TRAINING_COMPLETE_TITLE: Victory!
 DOGFIGHT_TRAINING_COMPLETE_TEXT: <<|
 	[i]General Nova:[/i]
 
-	That's how you do it! I wish you good luck commanding the fifth Terra
+	That's how you do it! Good luck commanding the fifth Terra
 	expedition force.
 
 	[center][b]"Dogfight Training" Complete![/b][/center]

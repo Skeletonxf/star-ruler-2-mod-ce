@@ -250,7 +250,9 @@ class Scenario : Map {
 	}
 
 	void initDialogue() {
-		Dialogue("DOGFIGHT_TRAINING_INTRO");
+		// FIXME doesn't display
+		Dialogue("DOGFIGHT_TRAINING_INTRO")
+			.setSpeaker(Sprite(material::emp_portrait_harrian), "General Nova");
 		Dialogue("DOGFIGHT_TRAINING_INTRO2")
 			.newObjective.checker(1, CheckDestroyFleet());
 		Dialogue("DOGFIGHT_TRAINING_PROGRESS");

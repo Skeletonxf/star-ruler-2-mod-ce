@@ -59,6 +59,9 @@ class CampaignMenu : MenuBox {
 		selectable = true;
 		items.required = true;
 
+		// Refresh data on completed campaigns
+		reloadCampaignCompletion();
+
 		if(inOpenPage)
 			items.addItem(MenuAction(Sprite(spritesheet::MenuIcons, 10), locale::MENU_CONTINUE_MAIN, 0));
 		else
@@ -137,21 +140,22 @@ class CampaignMenu : MenuBox {
 };
 
 void startScenario(string mapName) {
-	// TODO: start the scenario
 	GameSettings settings;
 	settings.defaults();
+	// the game map code will find the scenario from looking
+	// at the map name for us
 	settings.galaxies[0].map_id = mapName;
 
 	Message msg;
 	settings.write(msg);
 	startNewGame(msg);
+	switchToMenu(main_menu);
 }
 
 class ConfirmStart : QuestionDialogCallback {
 	string mapName;
 
 	ConfirmStart(string mapName) {
-		// TODO: pass the scenario into here
 		this.mapName = mapName;
 	}
 
@@ -182,7 +186,6 @@ class ScenarioBox : DescBox {
 		playButton.visible = false;
 
 		updateAbsolutePosition();
-		updateAbsolutePosition();
 	}
 
 	void update(const CampaignScenario@ scenario) {
@@ -205,7 +208,7 @@ class ScenarioBox : DescBox {
 	bool onGuiEvent(const GuiEvent& evt) override {
 		if(evt.type == GUI_Clicked && evt.caller is playButton) {
 			if(game_running)
-				question(locale::PROMPT_SANDBOX, ConfirmStart(scenario.mapName));
+				question(locale::PROMPT_START_CAMPAIGN, ConfirmStart(scenario.mapName));
 			else
 				startScenario(scenario.mapName);
 			return true;
