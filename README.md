@@ -53,3 +53,5 @@ AI will build moon bases on Gas Giants unless it's playing as Star Children or A
 
 ## Copying and license info
 Most of the AngelScript code in this repository comes from the source code of Star Ruler 2 by [Blind Mind Studios](https://github.com/BlindMindStudios/StarRuler2-Source) and is also MIT licensed. The assets in Star Ruler 2 were placed under the Creative Commons CC-BY-NC license, which permits free non commercial use. The art assets I've added in this mod are licensed under the Creative Commons [CC-BY license](https://creativecommons.org/licenses/by/4.0/) instead, which permits commercial use just as the MIT license does. I try not to accidently commit any of the SR2 assets or derivations of them into this repository. The modding engine has a useful system where assets can be 'modified' via recolorisation without actually saving new modified files, and I've used this to avoid commiting an SR2 CC-BY-NC assets.
+
+Some parts of this mod are derived from the MIT licensed code in [Rising Stars](https://github.com/DaloLorn/Rising-Stars) by Dalo Lorn.
