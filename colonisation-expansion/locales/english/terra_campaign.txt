@@ -62,6 +62,9 @@ DOGFIGHT_TRAINING_COMPLETE_TEXT: <<|
 	[center][b]"Dogfight Training" Complete![/b][/center]
 >>
 
+MINING_COLONY_PLAYER_EMP: 5th Terra Expedition
+MINING_COLONY_ALLY_EMP: Terra Mining Colony
+MINING_COLONY_ENEMY_EMP: Vultri
 // A mining colony from a previous Terra expedition have been
 // pleading for help to defend themselves again an onslaught of robots
 // No one else wanted to try out our new Terra manufactured prototype

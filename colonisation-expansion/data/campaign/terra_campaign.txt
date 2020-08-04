@@ -5,3 +5,11 @@ Scenario: DogfightTraining
 	Picture: PointsIcon
 
 	Map: TerraCampaign.dogfight
+
+Scenario: MiningColony
+	Name: #DOGFIGHT_TRAINING_NAME
+	Description: #DOGFIGHT_TRAINING_DESC
+	Icon: MenuIcons::3
+	Picture: PointsIcon
+
+	Map: TerraCampaign.mining_colony

@@ -1,0 +1,47 @@
+// Names converted to latin to sound cool
+System: Avarita
+	Position: (0, 0, 0)
+	Effect: MakeStar(Temperature = 6890, Radius = 95)
+	Effect: MakePlanet(Water)
+	Effect: MakeAsteroidBelt(Count = 23, Cargo = Ore, Cargo Amount = 50:10000, Distribution Chance = 0.0, Count Modifier = -75:75)
+	Effect: MakePlanet(Grain)
+	Effect: MakeAsteroidBelt(Count = 45, Cargo = Ore, Cargo Amount = 50:10000, Distribution Chance = 0.0, Count Modifier = -75:75)
+	Effect: MakePlanet(Oil)
+	Effect: MakeAsteroidBelt(Count = 180, Cargo = Ore, Cargo Amount = 50:10000, Distribution Chance = 0.0, Count Modifier = -75:75)
+	Effect: MakePlanet(Coal)
+	Effect: MakeAsteroidBelt(Count = 22, Cargo = Ore, Cargo Amount = 50:10000, Distribution Chance = 0.0, Count Modifier = -75:75)
+
+System: Lubidinis
+	Position: (-400, 0, -9000)
+	Effect: MakeStar(Temperature = 3454, Radius = 65)
+	Effect: MakePlanet(Iron)
+	Effect: MakePlanet(Oil)
+	Effect: MakePlanet(Aluminum)
+
+System: Venae
+	Position: (-3500, 0, 12000)
+	Effect: MakeStar(Temperature = 9345, Radius = 123)
+	Effect: MakePlanet(Coal)
+	Effect: MakePlanet(Gems)
+	Effect: MakePlanet(Iron)
+
+System: Auri
+	Position: (8095, 0, 560)
+	Effect: MakeStar(Temperature = 4564, Radius = 127)
+	Effect: MakePlanet(Titanium)
+	Effect: MakePlanet(LocalAsteroidField)
+	Effect: MakePlanet(Coal)
+
+System: Aeris
+	Position: (3567, 0, 4534)
+	Effect: MakeStar(Temperature = 5467, Radius = 89)
+	Effect: MakePlanet(NaturalGas)
+	Effect: MakePlanet(RareMetals)
+	Effect: MakePlanet(Syrup)
+
+System: Vis
+	Position: (-3456, 0, -4545)
+	Effect: MakeStar(Temperature = 2345, Radius = 45)
+	Effect: MakePlanet(Salts)
+	Effect: MakePlanet(Coal)
+	Effect: MakePlanet(Iron)
