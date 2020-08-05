@@ -3,6 +3,7 @@ Trait: NoResourceUse
 	Name: Rushed
 	Available: False
 	Icon: ConditionIcons::0
+	ReplaceTechnologyGrid(EmptyGrid)
 	ModAttribute(CivBldConstructionRate, Multiply, 0)
 	ModAttribute(ImperialBldConstructionRate, Multiply, 0)
 	AddStatusOwnedPlanets(NoResourceUse)

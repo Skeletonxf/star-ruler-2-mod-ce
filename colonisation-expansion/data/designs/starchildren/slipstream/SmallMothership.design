@@ -2,7 +2,7 @@
 	"__VERSION__": 1,
 	"name": "SmallMothership",
 	"size": 500,
-	"hull": "$1FlagTiny",
+	"hull": "$1FlagLarge",
 	"type": "Flagship",
 	"gridWidth": 34,
 	"gridHeight": 28,

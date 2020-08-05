@@ -104,12 +104,20 @@ class MiningColonyScenario : CampaignScenarioState {
 		removeStartingIncomes();
 		for (uint i = 0; i < empires.length; i++) {
 			empires[i].modFTLStored(+250);
-			empires[i].modTotalBudget(-500);
+			empires[i].modTotalBudget(-100);
 		}
 
 		// TODO: Build factories on each empire's main planet
 		// TODO: Make a custom design for the player to give them prototype
 		// hyperdrives and spawn in custom fleets
+		spawnFleet(player, planet(0,3).position + vec3d(80.0,0.0,0.0), "Heavy Carrier Bomber", 50);
+		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,40.0), "Heavy Carrier Bomber", 50);
+		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,40.0), "Heavy Carrier Bomber", 50);
+		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,-40.0), "Heavy Carrier Bomber", 50);
+		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,-40.0), "Heavy Carrier Bomber", 50);
+
+		// TODO: Spawn stuff for Vultri as well
+		// TODO: Spawn mining ships for mining colony and set to auto mine
 	}
 
 	void triggerDefeat() {
@@ -186,6 +194,7 @@ class Scenario : Map {
 		terraTraits.insertLast(getTrait("Terrestial"));
 		terraTraits.insertLast(getTrait("Hyperdrive")); // TODO: Create prototype hyperdrive trait
 		terraTraits.insertLast(getTrait("NoResearch"));
+		terraTraits.insertLast(getTrait("MiningColony"));
 		settings.empires[0].traits = terraTraits;
 		settings.empires[1].traits = terraTraits;
 

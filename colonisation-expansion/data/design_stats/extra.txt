@@ -61,14 +61,14 @@ GlobalStat: DevastationStacks
 
 	Variable: BombardStacks
 
-GlobalStat: DevastationDuration
+SubsystemStat: DevastationDuration
 	Name: #S_CARPET_BOMB_DURATION
 	Color: #ff8931
 	Description: #STT_CARPET_BOMB_DURATION
 	Icon: ResourceIconsSmall::45
 	Suffix: s
 
-	Variable: BombardStacks
+	Variable: BombardDuration
 
 GlobalStat: BombardmentCost
 	 Name: #S_CARPET_BOMB_COST

@@ -1,0 +1,5 @@
+Trait: MiningColony
+	Name: Mining colony
+	Description: We entered this region of space with a number of fleets already available.
+	Available: False
+	LoadDesigns(campaign/miningcolony)
