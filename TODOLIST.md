@@ -8,6 +8,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - port to CP
     - Update in combat to apply to all orbitals that have dps
     - update attack context menu to apply to all orbitals that have dps and movement
+  - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (easily reproduced in the mining colony scenario)
   - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
   - Would also be helpful to show strength of a planet when hovering over it rather than just its supports
   - Fix resources added to planets not being recognised by First Control Core buildings

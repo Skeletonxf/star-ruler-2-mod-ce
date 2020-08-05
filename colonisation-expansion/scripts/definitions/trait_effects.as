@@ -43,13 +43,13 @@ tidy final class OnHomeworld : TraitEffect {
 
 	void init(Empire& emp, any@ data) const override {
 		if(hook !is null) {
+			HWData dat;
+			data.store(@dat);
 			// [[ MODIFY BASE GAME START ]]
 			if(emp.Homeworld is null) {
 				return;
 			}
 			// [[ MODIFY BASE GAME END ]]
-			HWData dat;
-			data.store(@dat);
 
 			hook.enable(emp.Homeworld, dat.data);
 			@dat.prevOwner = emp.Homeworld.owner;

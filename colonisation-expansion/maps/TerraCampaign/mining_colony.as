@@ -21,6 +21,7 @@ import empire_ai.EmpireAI;
 import empire_ai.weasel.War;
 import victory;
 import settings.game_settings;
+import CE_campaign_helpers;
 #section all
 
 // TODO: Disable artifact spawning
@@ -33,73 +34,26 @@ import settings.game_settings;
 
 #section server
 
-enum ScenarioSystem {
-	SCS_Main,
-	SCS_Other1,
-	SCS_Other2,
-	SCS_Other3,
-	SCS_Other4,
-	SCS_Other5
-};
-
 /**
  * Scenario state for running post map generation. Of particular note is that
  * SystemData persists only for map generation, so cannot be used if the game
  * is saved and reloaded, which is what this class is for.
  */
-class MiningColonyScenario {
+class MiningColonyScenario : CampaignScenarioState {
 	Empire@ player;
 	Empire@ ally;
 	Empire@ enemy;
-	const SystemDesc@ mainSystem;
-	const SystemDesc@ otherSystem1;
-	const SystemDesc@ otherSystem2;
-	const SystemDesc@ otherSystem3;
-	const SystemDesc@ otherSystem4;
-	const SystemDesc@ otherSystem5;
 
 	MiningColonyScenario() {
 		@player = getEmpire(0);
 		@ally = getEmpire(1);
 		@enemy = getEmpire(2);
-		@mainSystem = getSystem(0);
-		@otherSystem1 = getSystem(1);
-		@otherSystem2 = getSystem(2);
-		@otherSystem3 = getSystem(3);
-		@otherSystem4 = getSystem(4);
-		@otherSystem5 = getSystem(5);
-	}
-
-	/**
-	 * Gets the i'th planet of a system in this scenario.
-	 */
-	Planet@ planet(ScenarioSystem systemID, uint id) {
-		Region@ region;
-		if (systemID == SCS_Main) {
-			@region = mainSystem.object;
-		}
-		if (systemID == SCS_Other1) {
-			@region = otherSystem1.object;
-		}
-		if (systemID == SCS_Other2) {
-			@region = otherSystem2.object;
-		}
-		if (systemID == SCS_Other3) {
-			@region = otherSystem3.object;
-		}
-		if (systemID == SCS_Other4) {
-			@region = otherSystem4.object;
-		}
-		if (systemID == SCS_Other5) {
-			@region = otherSystem5.object;
-		}
-		if (region is null) {
-			return null;
-		}
-		if (id < region.planetCount)  {
-			return region.planets[id];
-		}
-		return null;
+		array<Empire@> empires = {player, ally, enemy};
+		array<SystemDesc@> systems = {
+			getSystem(0), getSystem(1), getSystem(2),
+			getSystem(3), getSystem(4), getSystem(5)
+		};
+		super(systems, empires);
 	}
 
 	void tick() {
@@ -120,83 +74,43 @@ class MiningColonyScenario {
 		// TODO: Player wins if they take out the mono entirely
 	}
 
-	void populate(Planet@ pl, Empire@ owner, double pop = 1.0, Object@ exportTo = null, double defense = 0.0) {
-		@pl.owner = owner;
-		pl.addPopulation(pop);
-		if(exportTo !is null)
-			pl.exportResource(owner, 0, exportTo);
-		if(defense > 0)
-			pl.spawnDefenseShips(defense);
-	}
-
-	/**
-	 * Spawns a flagship at a given position, with supports.
-	 */
-	Ship@ spawnFleet(Empire@ emp, const vec3d& pos, const string& design = "Titan", uint support = 25) {
-		auto@ flagshipDesign = emp.getDesign(design);
-		auto@ sup3Dsg = emp.getDesign("Missile Boat");
-		auto@ sup1Dsg = emp.getDesign("Beamship");
-		auto@ sup2Dsg = emp.getDesign("Heavy Gunship");
-
-		Ship@ flagship = createShip(pos, flagshipDesign, emp, free=true);
-		for(uint i = 0; i < support / 2; ++i)
-			createShip(pos, sup1Dsg, emp, flagship);
-		for(uint i = 0; i < support / 4; ++i)
-			createShip(pos, sup2Dsg, emp, flagship);
-		for(uint i = 0; i < support / 8; ++i)
-			createShip(pos, sup3Dsg, emp, flagship);
-		flagship.setHoldPosition(true);
-		return flagship;
-	}
-
 	/**
 	 * Post map generation initialisation, only to run once per scenario
 	 * (ie not again after reloading).
 	 */
 	void postInit() {
-		populate(planet(SCS_Main, 0), ally, 1.0, exportTo=planet(SCS_Main, 2));
-		populate(planet(SCS_Main, 1), ally, 1.0, exportTo=planet(SCS_Main, 2));
-		populate(planet(SCS_Main, 2), ally, 3.0);
-		populate(planet(SCS_Main, 3), player, 1.0);
-		populate(planet(SCS_Main, 4), enemy, 10.0);
-		array<ScenarioSystem> others = {
-			SCS_Other1, SCS_Other2, SCS_Other3, SCS_Other4, SCS_Other5
-		};
-		for (uint i = 0; i < others.length; i++) {
+		populate(planet(0, 0), ally, 1.0, exportTo=planet(0, 2));
+		populate(planet(0, 1), ally, 1.0, exportTo=planet(0, 2));
+		populate(planet(0, 2), ally, 3.0);
+		populate(planet(0, 3), player, 1.0);
+		populate(planet(0, 4), enemy, 10.0);
+		for (uint i = 1; i < systems.length; i++) {
 			uint j = 0;
-			Planet@ pl = planet(others[i], j);
+			Planet@ pl = planet(i, j);
 			while (pl !is null) {
 				populate(pl, enemy, 8.0);
 				j += 1;
-				@pl = planet(others[i], j);
+				@pl = planet(i, j);
 			}
 		}
 
 		// setup some exports for vultri to get them going
 		// oil and titanium to uranium
-		planet(SCS_Other3, 0).exportResource(enemy, 0, planet(SCS_Other3, 1));
-		planet(SCS_Other1, 1).exportResource(enemy, 0, planet(SCS_Other3, 1));
+		planet(3, 0).exportResource(enemy, 0, planet(3, 1));
+		planet(1, 1).exportResource(enemy, 0, planet(3, 1));
 		// natural gas and rate metals to supercarbons
-		planet(SCS_Other4, 0).exportResource(enemy, 0, planet(SCS_Other4, 1));
-		planet(SCS_Other4, 2).exportResource(enemy, 0, planet(SCS_Other4, 1));
+		planet(4, 0).exportResource(enemy, 0, planet(4, 1));
+		planet(4, 2).exportResource(enemy, 0, planet(4, 1));
 
-		array<Empire@> empires = {player, ally, enemy};
+		removeStartingIncomes();
 		for (uint i = 0; i < empires.length; i++) {
 			empires[i].modFTLStored(+250);
-			empires[i].modInfluenceIncome(-100);
-			empires[i].modInfluence(-5);
-			empires[i].modEnergyIncome(-3);
-			empires[i].modResearchRate(-1);
 			empires[i].modTotalBudget(-500);
 		}
 
 		// TODO: Build factories on each empire's main planet
 		// TODO: Make a custom design for the player to give them prototype
 		// hyperdrives and spawn in custom fleets
-	}
-
-	void triggerVictory() {
-		declareVictor(player);
 	}
 
 	void triggerDefeat() {

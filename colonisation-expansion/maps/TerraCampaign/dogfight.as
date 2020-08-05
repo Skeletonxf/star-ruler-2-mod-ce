@@ -21,6 +21,7 @@ import empire_ai.EmpireAI;
 import empire_ai.weasel.War;
 import victory;
 import settings.game_settings;
+import CE_campaign_helpers;
 #section all
 
 #section server
@@ -29,42 +30,24 @@ import settings.game_settings;
  * SystemData persists only for map generation, so cannot be used if the game
  * is saved and reloaded, which is what this class is for.
  */
-class DogfightScenario {
+class DogfightScenario : CampaignScenarioState {
 	Empire@ player;
 	Empire@ enemy;
 	const SystemDesc@ simulationSystem;
 
 	DogfightScenario(Empire@ player, Empire@ enemy, SystemDesc@ simulationSystem) {
+		array<SystemDesc@> systems = {simulationSystem};
+		array<Empire@> empires = {player, enemy};
+		super(systems, empires);
 		@this.player = player;
 		@this.enemy = enemy;
 		@this.simulationSystem = simulationSystem;
 	}
 
-	/**
-	 * Gets the AI object for the enemy empire.
-	 */
-	AI@ getEnemyAIObject() {
-		return cast<AI>(cast<EmpireAI>(enemy.EmpireAI).ctrl);
-	}
-
-	/**
-	 * Gets the i'th planet of this scenario's only system.
-	 */
-	Planet@ planet(uint id) {
-		Region@ region = simulationSystem.object;
-		if (region is null) {
-			return null;
-		}
-		if (id < region.planetCount)  {
-			return region.planets[id];
-		}
-		return null;
-	}
-
 	void tick() {
 		// Prevent the AI from generating support ships
-		enemy.setDefending(planet(0), false);
-		enemy.setDefending(planet(2), false);
+		enemy.setDefending(planet(0,0), false);
+		enemy.setDefending(planet(0,2), false);
 
 		if (gameTime > 5) {
 			if (getEnemyFleetCount() == 0) {
@@ -78,75 +61,30 @@ class DogfightScenario {
 		}
 	}
 
-	void populate(Planet@ pl, Empire@ owner, double pop = 1.0, Object@ exportTo = null, double defense = 0.0) {
-		@pl.owner = owner;
-		pl.addPopulation(pop);
-		if(exportTo !is null)
-			pl.exportResource(owner, 0, exportTo);
-		if(defense > 0)
-			pl.spawnDefenseShips(defense);
-	}
-
-	/**
-	 * Spawns a flagship at a given position, with supports.
-	 */
-	Ship@ spawnFleet(Empire@ emp, const vec3d& pos, const string& design = "Titan", uint support = 25) {
-		auto@ flagshipDesign = emp.getDesign(design);
-		auto@ sup3Dsg = emp.getDesign("Missile Boat");
-		auto@ sup1Dsg = emp.getDesign("Beamship");
-		auto@ sup2Dsg = emp.getDesign("Heavy Gunship");
-
-		Ship@ flagship = createShip(pos, flagshipDesign, emp, free=true);
-		for(uint i = 0; i < support / 2; ++i)
-			createShip(pos, sup1Dsg, emp, flagship);
-		for(uint i = 0; i < support / 4; ++i)
-			createShip(pos, sup2Dsg, emp, flagship);
-		for(uint i = 0; i < support / 8; ++i)
-			createShip(pos, sup3Dsg, emp, flagship);
-		flagship.setHoldPosition(true);
-		return flagship;
-	}
-
 	/**
 	 * Post map generation initialisation, only to run once per scenario
 	 * (ie not again after reloading).
 	 */
 	void postInit() {
-		populate(planet(0), enemy, 1.0);
-		populate(planet(2), enemy, 1.0);
-		populate(planet(1), player, 1.0);
-		populate(planet(3), player, 1.0);
+		populate(planet(0,0), enemy, 1.0);
+		populate(planet(0,2), enemy, 1.0);
+		populate(planet(0,1), player, 1.0);
+		populate(planet(0,3), player, 1.0);
 
-		spawnFleet(enemy, planet(0).position + vec3d(50.0,0.0,0.0), "Dreadnaught", 10);
-		spawnFleet(enemy, planet(2).position + vec3d(40.0,0.0,0.0), "Dreadnaught", 10);
-		spawnFleet(enemy, planet(2).position + vec3d(-40.0,0.0,0.0), "Dreadnaught", 10);
-		spawnFleet(player, planet(1).position + vec3d(40.0,0.0,0.0), "Dreadnaught", 10);
-		spawnFleet(player, planet(3).position + vec3d(50.0,0.0,0.0), "Dreadnaught", 10);
+		spawnFleet(enemy, planet(0,0).position + vec3d(50.0,0.0,0.0), "Dreadnaught", 10);
+		spawnFleet(enemy, planet(0,2).position + vec3d(40.0,0.0,0.0), "Dreadnaught", 10);
+		spawnFleet(enemy, planet(0,2).position + vec3d(-40.0,0.0,0.0), "Dreadnaught", 10);
+		spawnFleet(player, planet(0,1).position + vec3d(40.0,0.0,0.0), "Dreadnaught", 10);
+		spawnFleet(player, planet(0,3).position + vec3d(50.0,0.0,0.0), "Dreadnaught", 10);
 
+		removeStartingIncomes();
 		player.modFTLStored(+250);
 		enemy.modFTLStored(+250);
-		player.modInfluenceIncome(-100);
-		enemy.modInfluenceIncome(-100);
-		player.modInfluence(-5);
-		enemy.modInfluence(-5);
-		player.modEnergyIncome(-3);
-		enemy.modEnergyIncome(-3);
-		player.modResearchRate(-1);
-		enemy.modResearchRate(-1);
 		player.modTotalBudget(-700);
 		enemy.modTotalBudget(-700);
 
-		player.setDefending(planet(1), true);
-		player.setDefending(planet(3), true);
-
-		// TODO: Hijack the war / relation code to make the enemy AI have such
-		// a high hate level that it will refuse all surrenders
-		AI@ enemyAI = getEnemyAIObject();
-		War@ enermyAIWarComponent = cast<War>(enemyAI.war);
-	}
-
-	void triggerVictory() {
-		declareVictor(player);
+		player.setDefending(planet(0,1), true);
+		player.setDefending(planet(0,3), true);
 	}
 
 	void triggerDefeat() {
