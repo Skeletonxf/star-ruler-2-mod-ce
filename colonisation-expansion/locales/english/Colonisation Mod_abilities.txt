@@ -1,2 +1,0 @@
-ABL_ABANDONED_SATELLITE: Activate Abandoned Satellite
-ABL_BUSTER_MACHINE_DESC: Reactivate the ancient exploratory vessel.

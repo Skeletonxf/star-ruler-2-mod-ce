@@ -8,3 +8,5 @@ ABL_BATTLEWORLDER_COLONISE: Colonise
 ABL_BATTLEWORLDER_COLONISE_DESC: Colonise a planet within 100 units.
 TRANSFER_ALL: Transfer All & Abandon
 TRANSFER_ALL_DESC: Transfer all resources that can be transfered onto the target, then abandon the planet casting this ability.
+ABL_ABANDONED_SATELLITE: Activate Abandoned Satellite
+ABL_BUSTER_MACHINE_DESC: Reactivate the ancient exploratory vessel.

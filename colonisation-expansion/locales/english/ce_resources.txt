@@ -27,3 +27,38 @@ STAR_CHILDREN_ARTIFICIAL_LIGHT_DESC: <<
 >>
 BATTLEWORLD: Battleworld
 BATTLEWORLD_DESC: Support ships in orbit can freely raid.
+WATER: Water
+VOLATILE_GASES: Volatile Gases
+EXPLOSIVE_GASES: Explosive Gases
+HEAVY_GASES: Common Gases
+STELLAR_WATER: Water obtained from a comet
+BUILDING_WATER: Water obtained from a [bbloc=#BLD_HYDROGENATOR/].
+SOYLENT1_DESC: Food obtained from a [bbloc=#BLD_FARM/].
+SOYLENT2_DESC: Food cultivated by a beacon.
+SOYLENT4_DESC: This food is definitely not people.
+FOOD: Food
+SOYLENT3_DESC: Food obtained from a [bbloc=#ORB_HYDROPONICS_SATELLITE/].
+FOOD_BLURB_FORESTRY: <<
+	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and new food resources.[/color][/i]
+>>
+FORESTED_CROP_DESC: <<
+	Food obtained by foresting planets.
+
+	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
+
+	[i][color=#aaa]This resource gradually forests planets at a greatly reduced rate, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>
+FORESTED_CROP_BLURB: Food obtained by foresting planets.
+FOOD_DESC_FORESTRY: <<
+	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
+
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>
+HYPER_OATS_BLURB: Counts as two food resources for planet level requirements.
+SALTS_BLURB: Can be used as food. Adds pressure to the production of all resources.
+R_SYRUP_BLURB: Can be used as food. Increases Influence pressure by 30%.
+FORESTED_CROP: Forested Crop (Food)
+FORESTED_CROP_2: Forested Fruit (Food)
+FORESTED_CROP_3: Forested Meat (Food)
+PHOTOVOLTICS_DESC: Layers of photovoltic cells

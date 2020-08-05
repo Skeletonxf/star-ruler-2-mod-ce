@@ -1,0 +1,4 @@
+AI_HOSTILE: Hostile
+AI_HOSTILE_DESC: <<
+	AIs set to hostile will declare war on everything they see, and never surrender or accept subjugation.
+>>

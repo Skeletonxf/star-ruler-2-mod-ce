@@ -1,2 +1,28 @@
 BATTLEWORLD_ORBITAL: Coordinate Satellite
 BATTLEWORLD_ORBITAL_DESC: Fleets fight at 60% effectiveness when nearby owned planets, and down to 10% when far away.
+FTL_EXTRACTOR: FTL Hyperfield Extractor
+FTL_EXTRACTOR_DESC: <<
+	A massive orbital that extracts FTL energy from the hyperfield. The process is stable, but difficult to keep under control during conflict.
+
+	[img=$FTL;20/] +0.3 FTL/s
+
+	[b][color=#ff8080]Extremely low health.[/color][/b]
+>>
+FTL_EXTRACTOR_BLURB: [img=$FTL;20/] +0.3 FTL/s
+ORB_HYDROPONICS_SATELLITE_DESC: <<
+	A satellite equipped with high-yield zero-G hydroponics bays growing genetically modified crops in exposure to direct sunlight.
+
+	Must be constructed in orbit of a planet.
+
+	The planet this is in orbit of gains 1 Food resource.
+
+	Costs 150 Energy to construct in addition to its build cost.
+>>
+DYSON_SPHERE: Dyson Sphere
+DYSON_SPHERE_BLURB: Extracts vast amounts of energy from a star's light
+DYSON_SPHERE_DESC: <<
+	Encases a star in photovoltic materials to absorb almost all of its light and convert it to vast quantities of energy
+
+	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Building a dyson sphere requires large amounts of Ore mined from asteroids.[/color][/b][/img]
+>>
+RESOURCE_CLASS_Photovoltics: Photovoltic cells

@@ -1,5 +1,0 @@
-BLD_CELESTIAL_PLANET_ENGINE_DESC: <<
-	A ludicrously large thruster constructed on the planet's surface allows the planet to accelerate itself slightly.
-
-	Gives the planet 1.5 u/s² of acceleration to move with.
->>

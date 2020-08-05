@@ -3,3 +3,34 @@ TRAIT_PARASITE_DESC: <<
 	[vspace=3/][img=Revolutionaries;22]All owned planets produce only 50% of the pressure of their resources. Planets can be razed down to nothing to massively increase their resource production before destroying their resources.[/img]
 	[vspace=3/] [img=ResourceIcon::8;22]Planet colony ships from planets not being razed move 75% slower.[/img]
 >>
+TRAIT_SUBLIGHT_DESC: We have not discovered any means to break the lightspeed barrier. No FTL drive, FTL generation, or FTL storage. FTL can be still be researched from in game actions but takes considerable resources.
+TRAIT_JUMPDRIVE_DESC: <<
+	Ships are equipped with jump drives that let them cheaply jump to positions within their safe jump range.
+
+	Jumping outside of safe jump range is possible, but can cause damage to the ship and may drop the ship at an location away from the intended destination.
+>>
+TRAIT_WARPDRIVE_DESC: <<
+	Unlocks the Warpdrive subsystem (for stations) at game start. This FTL technology can be taken additively with other FTL methods
+
+
+>>
+TRAIT_STAR_CHILDREN_DESC: [vspace=3/] [img=ResourceIcon::8;22]Population grows only on giant [b]Motherships[/b] that have construction capabilities.[/img] [vspace=3/][img=ActionBarIcons::1;22]Motherships can move population to orbital [b]Habitats[/b] around planets, letting them use the planetary resources.[/img] [vspace=3/][img=BuildingSprites::0;22]Does [b]not[/b] use ordinary planet surfaces in any way. Planets cannot construct anything.[/img] [vspace=3/][img=ResourceIcon::6;22]Resources are produced in orbit, no pressure capacity is needed. Motherships in orbit of a planet automatically gain that planet's labor income. [/img][vspace=3/][img=PlanetType::14;22]Artifical planetoids, ringworlds and planets with native population can construct buildings, develop tiles and grow population, but do not produce all resources from pressure automatically and still cannot export labor.[/img]
+WALKING: Walking
+TRAIT_TERRESTIAL_DESC: No particular effects on gameplay
+WALKING_DESC: No particular bonuses.
+AQUATIC_TRAIT: All colonised planets with water biomes become happy. Development and building construction rates reduced 20%. Fire damage taken on ships is doubled.
+CELESTIAL_DESC: <<
+	[color=#f00]NO AI SUPPORT[/color]
+
+	Why venture into outer space when you can bring your home with you?
+	[vspace=6/][img=PlanetThruster * 44ffbb;22]Special Planetary Engines are constructed on all colonised planets, with 1.5 u/s² of acceleration and no cost. These cannot be removed except by losing the planet.[/img]
+	[vspace=6/][img=ResourceIcon::8;22]Colonise planets by bringing other planets to them[/img]
+	[vspace=6/][img=ResourceIcon::6;22]Resources cannot be traded. Instead, resources are transfered between nearby planets[/img]
+	[vspace=3/] [img=AttributeIcons::3;22]Fleets operate at 70% efficiency while nearby owned planets, but only 20% efficiency far away. This debuff does not apply to stations.[/img]
+	[vspace=6/][img=techConstruction * #30a67a;22][b]Station Sustenance[/b] is unlocked from the start and can be unlocked again (multiplying orbital maintenance decreases), replacing Megacities.[/img]
+	[vspace=6/][img=PlanetThruster;22][b]Planetary Engine[/b] building is available from the start.[/img]
+
+>>
+CELESTIAL: Battleworlders
+TRAIT_SCIENTIFIC: Scientific
+TRAIT_SCIENTIFIC_DESC: Start the game with 1 additional research income per second.
