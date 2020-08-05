@@ -30,7 +30,6 @@ import CE_campaign_helpers;
 // with bonus efficiency but game over if it gets destroyed
 // TODO: Disable all conditions on spawned planets, ie native life, vanilla ones
 // TODO: Move common scenario code into a parent class
-// TODO: Remove instant 'discover' influence effect
 
 #section server
 
@@ -173,6 +172,7 @@ class Scenario : Map {
 		config::ENABLE_DREAD_PIRATE = 0.0;
 		config::ENABLE_INFLUENCE_EVENTS = 0.0;
 		config::START_EXPLORED_MAP = 1.0;
+		config::INFLUENCE_CONTACT_BONUS = 0.0;
 
 		array<const Trait@> vultriTraits;
 		vultriTraits.insertLast(getTrait("Theocracy"));

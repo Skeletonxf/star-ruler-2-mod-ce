@@ -135,6 +135,7 @@ class Scenario : Map {
 		config::ENABLE_DREAD_PIRATE = 0.0;
 		config::ENABLE_INFLUENCE_EVENTS = 0.0;
 		config::START_EXPLORED_MAP = 1.0;
+		config::INFLUENCE_CONTACT_BONUS = 0.0;
 		auto@ noResourceUse = getTrait("NoResourceUse");
 		settings.empires[0].addTrait(noResourceUse);
 		settings.empires[1].addTrait(noResourceUse);
