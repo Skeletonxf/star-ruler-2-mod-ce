@@ -241,6 +241,10 @@ final class AIBehavior {
 	bool passive = false;
 	//Whether to hate human players the most
 	bool biased = false;
+	// [[ MODIFY BASE GAME START ]]
+	//Whether to declare war on sight and never accept peace
+	bool hostile = false;
+	// [[ MODIFY BASE GAME END ]]
 	//How much stronger we need to be than someone to declare war out of hatred
 	double hatredWarOverkill = 0.5;
 	//How much stronger we need to be than someone to try to take them out in an aggressive war
@@ -287,6 +291,10 @@ final class AIBehavior {
 			passive = true;
 		if(flags & AIF_Biased != 0)
 			biased = true;
+		// [[ MODIFY BASE GAME START ]]
+		if(flags & AIF_Hostile != 0)
+			hostile = true;
+		// [[ MODIFY BASE GAME END ]]
 
 		//Low difficulties can't colonize as many things at once
 		if(diff <= 0) {
