@@ -2461,7 +2461,7 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			calculatePopVars(obj);
 			deltaPop = true;
 		}
-		else if(bombardDecay > 0 && Population > 1.0) {
+		if(bombardDecay > 0 && Population > 1.0) {
 			double decay = (Population * 0.25 * double(bombardDecay) / 60.0) * time;
 			Population = max(1.0, Population - decay);
 			calculatePopVars(obj);
