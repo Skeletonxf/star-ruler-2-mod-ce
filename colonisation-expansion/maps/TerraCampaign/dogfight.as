@@ -20,9 +20,8 @@ import empire_ai.weasel.WeaselAI;
 import empire_ai.EmpireAI;
 import empire_ai.weasel.War;
 import victory;
+import settings.game_settings;
 #section all
-
-// TODO: Prevent the AI from offering to surrender
 
 #section server
 /**
@@ -201,6 +200,9 @@ class Scenario : Map {
 		auto@ noResourceUse = getTrait("NoResourceUse");
 		settings.empires[0].addTrait(noResourceUse);
 		settings.empires[1].addTrait(noResourceUse);
+		uint flags = 0;
+		flags |= AIF_Hostile;
+		settings.empires[1].aiFlags = flags;
 	}
 
 	DogfightScenario@ state;

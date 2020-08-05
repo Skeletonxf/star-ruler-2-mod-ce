@@ -20,18 +20,16 @@ import empire_ai.weasel.WeaselAI;
 import empire_ai.EmpireAI;
 import empire_ai.weasel.War;
 import victory;
+import settings.game_settings;
 #section all
 
-// TODO: Prevent the AI from offering to surrender, create another setting
-// Hostile: AI will declare war on everything it sees and never surrender, even
-// if doing so would be advantageous.
 // TODO: Disable artifact spawning
 // TODO: Prohibit building research complexes as part of NoResearch trait
 // TODO: Give the human player a flagship which is considered to have them on it
 // with bonus efficiency but game over if it gets destroyed
 // TODO: Disable all conditions on spawned planets, ie native life, vanilla ones
 // TODO: Move common scenario code into a parent class
-// TODO: Remove instant 'discover' effect
+// TODO: Remove instant 'discover' influence effect
 
 #section server
 
@@ -276,6 +274,13 @@ class Scenario : Map {
 		terraTraits.insertLast(getTrait("NoResearch"));
 		settings.empires[0].traits = terraTraits;
 		settings.empires[1].traits = terraTraits;
+
+		// hostile stops the mining colony from being subjugated by the vultri
+		uint flags = 0;
+		flags |= AIF_Hostile;
+		settings.empires[1].aiFlags = flags;
+		// hostile stops the vultri from trying to surrender
+		settings.empires[2].aiFlags = flags;
 	}
 
 	MiningColonyScenario@ state;
