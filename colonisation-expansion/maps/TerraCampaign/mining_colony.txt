@@ -10,6 +10,7 @@ System: Avarita
 	Effect: MakeAsteroidBelt(Count = 180, Cargo = Ore, Cargo Amount = 50:10000, Distribution Chance = 0.0, Count Modifier = -75:75)
 	Effect: MakePlanet(Coal)
 	Effect: MakeAsteroidBelt(Count = 22, Cargo = Ore, Cargo Amount = 50:10000, Distribution Chance = 0.0, Count Modifier = -75:75)
+	Effect: MakePlanet(UniqueDefense)
 
 System: Lubidinis
 	Position: (-400, 0, -9000)
@@ -17,6 +18,8 @@ System: Lubidinis
 	Effect: MakePlanet(Iron)
 	Effect: MakePlanet(Oil)
 	Effect: MakePlanet(Aluminum)
+	Effect: MakePlanet(Hydroconductors)
+	Effect: MakePlanet(NaturalGas)
 
 System: Venae
 	Position: (-3500, 0, 12000)
@@ -24,11 +27,15 @@ System: Venae
 	Effect: MakePlanet(Coal)
 	Effect: MakePlanet(Gems)
 	Effect: MakePlanet(Iron)
+	Effect: MakePlanet(Neutronium)
+	Effect: MakePlanet(RareMetals)
+	Effect: MakePlanet(NaturalGas)
 
 System: Auri
 	Position: (8095, 0, 560)
 	Effect: MakeStar(Temperature = 4564, Radius = 127)
 	Effect: MakePlanet(Titanium)
+	Effect: MakePlanet(Uranium)
 	Effect: MakePlanet(LocalAsteroidField)
 	Effect: MakePlanet(Coal)
 
@@ -36,6 +43,7 @@ System: Aeris
 	Position: (3567, 0, 4534)
 	Effect: MakeStar(Temperature = 5467, Radius = 89)
 	Effect: MakePlanet(NaturalGas)
+	Effect: MakePlanet(Supercarbons)
 	Effect: MakePlanet(RareMetals)
 	Effect: MakePlanet(Syrup)
 
@@ -44,4 +52,6 @@ System: Vis
 	Effect: MakeStar(Temperature = 2345, Radius = 45)
 	Effect: MakePlanet(Salts)
 	Effect: MakePlanet(Coal)
+	Effect: MakePlanet(Supercarbons)
 	Effect: MakePlanet(Iron)
+	Effect: MakePlanet(RareMetals)

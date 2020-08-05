@@ -1,0 +1,7 @@
+Trait: NoResearch
+	Name: No research
+	Description: No time for studying, we have a battle to fight!
+	Icon: AffinityIcons::3
+	Available: False
+	ReplaceTechnologyGrid(EmptyGrid)
+	AddStatusOwnedPlanets(NoResearchGen)

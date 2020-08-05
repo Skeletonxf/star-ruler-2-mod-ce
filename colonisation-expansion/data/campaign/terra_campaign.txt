@@ -7,9 +7,9 @@ Scenario: DogfightTraining
 	Map: TerraCampaign.dogfight
 
 Scenario: MiningColony
-	Name: #DOGFIGHT_TRAINING_NAME
-	Description: #DOGFIGHT_TRAINING_DESC
+	Name: #MINING_COLONY_NAME
+	Description: #MINING_COLONY_DESC
 	Icon: MenuIcons::3
-	Picture: PointsIcon
+	Picture: ResourceIcon::6
 
 	Map: TerraCampaign.mining_colony

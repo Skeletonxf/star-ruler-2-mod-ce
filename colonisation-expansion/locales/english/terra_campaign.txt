@@ -73,3 +73,56 @@ MINING_COLONY_ENEMY_EMP: Vultri
 // You'll have to carve out your own trade network from the systems you siege
 // Keep in mind that until you get a factory up and running you won't be able
 // to replace any lost fleets so you'll have to engage carefully.
+
+MINING_COLONY_NAME: Mining Colony Attack
+MINING_COLONY_DESC: <<|
+	[b]2463 CE:[/b]
+
+	[i]The following message was received from the Terra mining colony directed
+	to the commander of the 5th Terra Expedition.[/i]
+
+	[offset=20][color=#ddd]
+	It's crazy out here! One shift we were directing some mining ships remotely
+	and the next half our fleet was gone and we've lost some of our mining
+	bases. Please get rid of these invaders.
+
+	They won't even communicate with us. We sent a message over radio waves
+	to ask what they wanted and all they replied with was "Vultri". We could
+	have saved ourselves a small fortune if we didn't bother taking a universal
+	translator.
+
+	If you don't come soon we'll have to evacuate and that will [b]not[/b]
+	go down well with your superiors. I don't care if you're supposed to be
+	leading some kind of expedition. You're the only commander willing to
+	travel through hyperspace and we don't have the time for a sublight
+	response.
+	[/color][/offset]
+>>
+
+MINING_COLONY_INTRO_TITLE: Mining Colony Rescue
+MINING_COLONY_INTRO_TEXT: <<|
+	[i]General Nova:[/i]
+
+	You've been assigned 5 state of the art hyperdrive fleets to take back
+	control of the mining base. Losing a few more mining colonies in the
+	conflict is fine but if you lose all of them we'll be in serious trouble.
+>>
+
+MINING_COLONY_INTRO2_TITLE: Tips and tricks
+MINING_COLONY_INTRO2_TEXT: <<|
+	[i]General Nova:[/i]
+
+	The colonists have informed us that the invaders are particularly
+	vulnerable to planetary bombardment, so each of your fleets are loaded
+	with the stuff. I recommend bombarding their tier 1 and 2 planets
+	immediately to delevel them and weaken the invaders' economy.
+>>
+
+MINING_COLONY_LOST_TITLE: Fired
+MINING_COLONY_LOST_TEXT: <<|
+	[i]General Nova:[/i]
+
+	Aaargh! I said we'd be in trouble if we lost all the mining colonies.
+	The politicians back home decided to cut our funding way back. I'm going
+	to have to take a huge pay cut for this. Oh, how about you? You're fired.
+>>

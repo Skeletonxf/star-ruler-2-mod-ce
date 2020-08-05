@@ -22,13 +22,16 @@ import empire_ai.weasel.War;
 import victory;
 #section all
 
-// TODO: Prevent the AI from offering to surrender
+// TODO: Prevent the AI from offering to surrender, create another setting
+// Hostile: AI will declare war on everything it sees and never surrender, even
+// if doing so would be advantageous.
 // TODO: Disable artifact spawning
-// TODO: Modify all empires research income into defense, and prohibit building
-// research complexes
+// TODO: Prohibit building research complexes as part of NoResearch trait
 // TODO: Give the human player a flagship which is considered to have them on it
 // with bonus efficiency but game over if it gets destroyed
 // TODO: Disable all conditions on spawned planets, ie native life, vanilla ones
+// TODO: Move common scenario code into a parent class
+// TODO: Remove instant 'discover' effect
 
 #section server
 
@@ -108,6 +111,15 @@ class MiningColonyScenario {
 				triggerVictory();
 			}
 		}
+
+		// TODO: Create mining ships over time for mining colony empire
+		// and set all to automine and dropoff at whichever planets the
+		// empire still controls
+
+		// TODO: Player loses if the mining colony runs out of planets
+		// or if their commander fleet gets destroyed
+
+		// TODO: Player wins if they take out the mono entirely
 	}
 
 	void populate(Planet@ pl, Empire@ owner, double pop = 1.0, Object@ exportTo = null, double defense = 0.0) {
@@ -148,20 +160,41 @@ class MiningColonyScenario {
 		populate(planet(SCS_Main, 1), ally, 1.0, exportTo=planet(SCS_Main, 2));
 		populate(planet(SCS_Main, 2), ally, 3.0);
 		populate(planet(SCS_Main, 3), player, 1.0);
-		populate(planet(SCS_Other1, 0), enemy, 10.0);
+		populate(planet(SCS_Main, 4), enemy, 10.0);
+		array<ScenarioSystem> others = {
+			SCS_Other1, SCS_Other2, SCS_Other3, SCS_Other4, SCS_Other5
+		};
+		for (uint i = 0; i < others.length; i++) {
+			uint j = 0;
+			Planet@ pl = planet(others[i], j);
+			while (pl !is null) {
+				populate(pl, enemy, 8.0);
+				j += 1;
+				@pl = planet(others[i], j);
+			}
+		}
 
-		player.modFTLStored(+250);
-		enemy.modFTLStored(+250);
-		player.modInfluenceIncome(-100);
-		enemy.modInfluenceIncome(-100);
-		player.modInfluence(-5);
-		enemy.modInfluence(-5);
-		player.modEnergyIncome(-3);
-		enemy.modEnergyIncome(-3);
-		player.modResearchRate(-1);
-		enemy.modResearchRate(-1);
-		player.modTotalBudget(-700);
-		enemy.modTotalBudget(-700);
+		// setup some exports for vultri to get them going
+		// oil and titanium to uranium
+		planet(SCS_Other3, 0).exportResource(enemy, 0, planet(SCS_Other3, 1));
+		planet(SCS_Other1, 1).exportResource(enemy, 0, planet(SCS_Other3, 1));
+		// natural gas and rate metals to supercarbons
+		planet(SCS_Other4, 0).exportResource(enemy, 0, planet(SCS_Other4, 1));
+		planet(SCS_Other4, 2).exportResource(enemy, 0, planet(SCS_Other4, 1));
+
+		array<Empire@> empires = {player, ally, enemy};
+		for (uint i = 0; i < empires.length; i++) {
+			empires[i].modFTLStored(+250);
+			empires[i].modInfluenceIncome(-100);
+			empires[i].modInfluence(-5);
+			empires[i].modEnergyIncome(-3);
+			empires[i].modResearchRate(-1);
+			empires[i].modTotalBudget(-500);
+		}
+
+		// TODO: Build factories on each empire's main planet
+		// TODO: Make a custom design for the player to give them prototype
+		// hyperdrives and spawn in custom fleets
 	}
 
 	void triggerVictory() {
@@ -228,6 +261,21 @@ class Scenario : Map {
 		config::ENABLE_DREAD_PIRATE = 0.0;
 		config::ENABLE_INFLUENCE_EVENTS = 0.0;
 		config::START_EXPLORED_MAP = 1.0;
+
+		array<const Trait@> vultriTraits;
+		vultriTraits.insertLast(getTrait("Theocracy"));
+		vultriTraits.insertLast(getTrait("Mechanoid"));
+		vultriTraits.insertLast(getTrait("Sublight"));
+		vultriTraits.insertLast(getTrait("NoResearch"));
+		settings.empires[2].traits = vultriTraits;
+
+		array<const Trait@> terraTraits;
+		terraTraits.insertLast(getTrait("Empire"));
+		terraTraits.insertLast(getTrait("Terrestial"));
+		terraTraits.insertLast(getTrait("Hyperdrive")); // TODO: Create prototype hyperdrive trait
+		terraTraits.insertLast(getTrait("NoResearch"));
+		settings.empires[0].traits = terraTraits;
+		settings.empires[1].traits = terraTraits;
 	}
 
 	MiningColonyScenario@ state;
@@ -275,80 +323,19 @@ class Scenario : Map {
 	}
 
 	void initDialogue() {
-		// FIXME doesn't display
-		Dialogue("DOGFIGHT_TRAINING_INTRO")
-			.setSpeaker(Sprite(material::emp_portrait_harrian), "General Nova");
-		Dialogue("DOGFIGHT_TRAINING_INTRO2")
-			.newObjective.checker(1, CheckDestroyFleet());
+		Dialogue("MINING_COLONY_INTRO");
+		Dialogue("MINING_COLONY_INTRO2");
+			/* .newObjective.checker(1, CheckDestroyFleet());
 		Dialogue("DOGFIGHT_TRAINING_PROGRESS");
 		Dialogue("DOGFIGHT_TRAINING_PROGRESS2")
 			.newObjective.checker(1, CheckDestroyAllFleets());
 		Dialogue("DOGFIGHT_TRAINING_COMPLETE")
-			.onStart(EndCinematic(this)); // doesn't work?????
+			.onStart(EndCinematic(this)); // doesn't work????? */
 	}
 
 #section all
 };
 
 #section server
-uint getEnemyFleetCount() {
-	DataList@ objs = getEmpire(1).getFlagships();
-	Object@ obj;
-	uint index = 0;
-	while(receive(objs, obj)) {
-		Ship@ ship = cast<Ship>(obj);
-		if(ship !is null) {
-			++index;
-		}
-	}
-	return index;
-}
-
-uint getPlayerFleetCount() {
-	DataList@ objs = getEmpire(0).getFlagships();
-	Object@ obj;
-	uint index = 0;
-	while(receive(objs, obj)) {
-		Ship@ ship = cast<Ship>(obj);
-		if(ship !is null) {
-			++index;
-		}
-	}
-	return index;
-}
-
-class CheckDestroyFleet : ObjectiveCheck {
-	bool check() {
-		return getEnemyFleetCount() < 3;
-	}
-};
-
-class CheckDestroySecondFleet : ObjectiveCheck {
-	bool check() {
-		return getEnemyFleetCount() < 2;
-	}
-};
-
-class CheckDestroyAllFleets : ObjectiveCheck {
-	bool check() {
-		return getEnemyFleetCount() == 0;
-	}
-};
-
-class CheckLostAllFleets : ObjectiveCheck {
-	bool check() {
-		return getPlayerFleetCount() == 0;
-	}
-};
-
-class EndCinematic : DialogueAction {
-	Scenario@ scen;
-	EndCinematic(Scenario@ _scen) { @scen = _scen; }
-	bool start() {
-		// this code never gets called despite the API for dialogue.as
-		// claiming otherwise, the text still shows though?????
-		completeCampaignScenario("MiningColonyScenario");
-		return true;
-	}
-};
+// TODO: hooks for game end detection and dialogue
 #section all
