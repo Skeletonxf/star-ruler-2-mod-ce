@@ -115,9 +115,10 @@ tidy class AttackOrder : Order {
 		Ship@ ship = cast<Ship>(obj);
 		// [[ MODIFY BASE GAME START ]]
 		Planet@ planet = cast<Planet>(obj);
-		if (ship is null && planet is null) {
-			// break only if attacking with neither a ship or planet, not
-			// just if attacking with a non ship
+		Orbital@ orbital = cast<Orbital>(obj);
+		if (ship is null && planet is null && orbital is null) {
+			// break only if attacking with neither a ship, orbital or planet,
+			//  not just if attacking with a non ship
 			return OS_COMPLETED;
 		}
 		// [[ MODIFY BASE GAME END ]]
@@ -134,7 +135,7 @@ tidy class AttackOrder : Order {
 
 		// [[ MODIFY BASE GAME START ]]
 		// Not sure what this does with ships, but just do nothing if
-		// attacking with a planet
+		// attacking with something else
 		if (ship !is null) {
 			//Set effector targets
 			ship.blueprint.target(obj, target, flags);

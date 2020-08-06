@@ -1098,6 +1098,14 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 					addOption(menu, selected, clicked, locale::ATTACK, Attack(), icons::Strength);
 				}
 			}
+			// Add attack option for all orbitals with acceleration and dps, ie
+			// Linked Mainframes.
+			if (selected.isOrbital) {
+				Orbital@ orbital = cast<Orbital>(selected);
+				if (orbital !is null && orbital.maxAcceleration > 0 && orbital.getFleetDPS() > 0) {
+					addOption(menu, selected, clicked, locale::ATTACK, Attack(), icons::Strength);
+				}
+			}
 			// [[ MODIFY BASD GAME END ]]
 		}
 

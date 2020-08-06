@@ -110,8 +110,11 @@ final class FleetIntel {
 				Ship@ ship = cast<Ship>(obj);
 				if (ship !is null) {
 					const Design@ dsg = ship.blueprint.design;
-					if (dsg.total(SV_BombardStacks) > 0) {
-						print("Identified carpet bombs on enemy ship");
+					if (dsg !is null && dsg.total(SV_BombardStacks) > 0) {
+						string name = "";
+						if(obj.owner !is null)
+							name = obj.owner.name;
+						ai.print("Spotted carpet bombs on "+name+" ship");
 						return true;
 					}
 				}

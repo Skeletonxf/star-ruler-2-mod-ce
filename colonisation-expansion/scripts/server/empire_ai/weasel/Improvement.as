@@ -221,7 +221,7 @@ class Improvement : AIComponent {
 		}
 		for (uint i = 0, cnt = intelligence.intel.length; i < cnt; ++i) {
 			Intel@ intel = intelligence.intel[i];
-			if (intel.hasMadeCarpetBombs && relations.isAtWar(intel.empire)) {
+			if (intel !is null && intel.hasMadeCarpetBombs && relations.isAtWar(intel.empire)) {
 				// no need to counter carpet bombs made by teammates, perhaps
 				// this is a little naive because a player could take advantage
 				// of the at war requirement, but the AI doesn't have a concept
@@ -279,7 +279,7 @@ class Improvement : AIComponent {
 						if (!planetUnderSiege) {
 							nonCombatDefensesOrdered += 1;
 						}
-						print("building defense grid at"+planet.name);
+						ai.print("building defense grid at "+planet.name);
 					}
 				}
 			} else {
@@ -289,7 +289,7 @@ class Improvement : AIComponent {
 						if (!planetUnderSiege) {
 							nonCombatDefensesOrdered += 1;
 						}
-						print("building defense grid at"+planet.name);
+						ai.print("building defense grid at "+planet.name);
 					}
 				}
 			}
