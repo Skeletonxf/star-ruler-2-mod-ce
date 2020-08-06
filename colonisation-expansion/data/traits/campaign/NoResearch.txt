@@ -1,5 +1,5 @@
 Trait: NoResearch
-	Name: No research
+	Name: Rushed
 	Description: No time for studying, we have a battle to fight!
 	Icon: AffinityIcons::3
 	Available: False

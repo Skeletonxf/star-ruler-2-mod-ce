@@ -1,6 +1,7 @@
 Construction: HomeworldDecree
 	Description: There has to be something this can be used for
 	Category: Political
+	RequireNotTrait(NoResourceUse)
 	RequireNever()
 	CE_biome_hooks::RequireHomeworld()
 	RequirePlanet()

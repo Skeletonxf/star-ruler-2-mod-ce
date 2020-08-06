@@ -10,6 +10,8 @@ Construction: ExposeMoltenCore
 	Labor Cost:
 	Time Cost: 120
 
+	RequirePlanetNotBiome(Ice)
+	RequireNotTrait(NoResourceUse)
 	RequirePlanetNotBiome(AncientAtmosphere)
 	RequirePlanetNotBiome(Floating)
 	RequirePlanetNotBiome(Photovoltics)

@@ -1,6 +1,6 @@
 Trait: NoResourceUse
 	Description: Prohibits using planet resources, for campaign matches which are purely combat.
-	Name: Rushed
+	Name: Simulated
 	Available: False
 	Icon: ConditionIcons::0
 	ReplaceTechnologyGrid(EmptyGrid)

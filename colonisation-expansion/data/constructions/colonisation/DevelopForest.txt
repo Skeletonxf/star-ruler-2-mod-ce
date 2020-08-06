@@ -11,6 +11,7 @@ Construction: DevelopForest
 		[i][color=#aaa]Forests on all rocky planets are developed automatically over time by food resources. Developing a forest manually will not yield forestation progress or food.[/color][/i]
 	>>
 	Category: Terraforming
+	RequireNotTrait(NoResourceUse)
 	RequirePlanet()
 	ConsumeEnergy(150)
 	RequireNotStatus(DevelopingForest)

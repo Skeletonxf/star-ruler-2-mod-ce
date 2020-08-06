@@ -10,6 +10,7 @@ Construction: Fracture
 		Fractured Planets can build an infinite number of moons and generate ore over time.
 	>>
 	Category: Development
+	RequireNotTrait(NoResourceUse)
 	RequirePlanetNotBiome(AncientAtmosphere)
 	RequireNotStatus(Fracturing)
 	OnCancel(RemoveStatus(Fracturing))

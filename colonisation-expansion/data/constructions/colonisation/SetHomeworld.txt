@@ -5,6 +5,7 @@ Construction: SetHomeworld
 	Category: Political
 	Time Cost: 1
 
+	RequireNotTrait(NoResourceUse)
 	CE_biome_hooks::RequireNotHomeworld()
 	RequirePlanetNotBiome(Photovoltics)
 	ConsumeInfluence(1)
