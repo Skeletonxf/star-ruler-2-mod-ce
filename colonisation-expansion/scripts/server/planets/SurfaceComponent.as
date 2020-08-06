@@ -14,6 +14,9 @@ import attributes;
 from influence import DiplomacyEdictType;
 from influence_global import giveRandomReward;
 from components.ObjectManager import getDefenseDesign;
+// [[ MODIFY BASE GAME START ]]
+from statuses import getStatusID;
+// [[ MODIFY BASE GAME END ]]
 import bool getCheatsEverOn() from "cheats";
 const string TAG_SUPPORT("Support");
 
@@ -2470,6 +2473,14 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		// to the carpet bombs!
 		if(bombardDecay > 0 && Population > 1.0) { // [[ MODIFY BASE GAME ]] fix immunity to bombard effects if over max pop
 			double decay = (Population * 0.25 * double(bombardDecay) / 60.0) * time;
+			// [[ MODIFY BASE GAME START ]]
+			// Create a counter to carpet bombs, allow attacked empire to use
+			// any defense building or a Tactical Satellite to substantially
+			// reduce the population loss.
+			if (obj.hasStatusEffect(getStatusID("HasDefenses")) || obj.hasStatusEffect(getStatusID("DefenseSatellite"))) {
+				decay *= 0.2;
+			}
+			// [[ MODIFY BASE GAME END ]]
 			Population = max(1.0, Population - decay);
 			calculatePopVars(obj);
 			deltaPop = true;

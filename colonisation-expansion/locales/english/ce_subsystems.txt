@@ -71,3 +71,4 @@ S_MINING_HULL_DESC: <<
 	[img=MenuIcons::3;20][i][color=#aaa]Mining Hulls can only be used on ships with Mining Lasers.[/color][/i][/img]
 >>
 ERROR_MUST_HAVE_MINING_LASER: $1 must have a Mining Laser
+ERROR_MUST_HAVE_AT_LEAST_ONE_STACK_FOR_BOMBARDMENT: Carpet Bomb too small
