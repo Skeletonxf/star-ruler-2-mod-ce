@@ -47,6 +47,12 @@ class PlanetPopup : Popup {
 	GuiSkinElement@ statusBox;
 
 	GuiProgressbar@ health;
+	// [[ MODIFY BASE GAME START ]]
+	GuiSprite@ healthIcon;
+	GuiProgressbar@ strength;
+	GuiSkinElement@ strband;
+	GuiSprite@ strIcon;
+	// [[ MODIFY BASE GAME END ]]
 
 	GuiCargoDisplay@ cargo;
 
@@ -67,10 +73,10 @@ class PlanetPopup : Popup {
 
 		@cargo = GuiCargoDisplay(objView, Alignment(Left, Top, Right, Top+25));
 
-		@defIcon = GuiSprite(this, Alignment(Left+4, Top+50, Width=40, Height=40));
-		defIcon.desc = icons::Defense;
-		setMarkupTooltip(defIcon, locale::TT_IS_DEFENDING);
-		defIcon.visible = false;
+		// [[ MODIFY BASE GAME START ]]
+		// Move the Defense icon to later in the declaration order so it
+		// is not obscured by the HP bar.
+		// [[ MODIFY BASE GAME END ]]
 
 		GuiSkinElement band(this, Alignment(Left+3, Bottom-35, Right-4, Bottom-2), SS_SubTitle);
 		band.color = Color(0xaaaaaaff);
@@ -101,8 +107,31 @@ class PlanetPopup : Popup {
 		health.visible = true;
 		// [[ MODIFY BASE GAME END ]]
 
-		auto@ healthIcon = GuiSprite(health, Alignment(Left-8, Top-9, Left+24, Bottom-8), icons::Health);
+		// [[ MODIFY BASE GAME START ]]
+		// Position defense icon above health bar and health icon
+		@defIcon = GuiSprite(this, Alignment(Left+4, Top+50, Width=40, Height=40));
+		defIcon.desc = icons::Defense;
+		setMarkupTooltip(defIcon, locale::TT_IS_DEFENDING);
+		defIcon.visible = false;
+		// [[ MODIFY BASE GAME END ]]
+
+		@healthIcon = GuiSprite(health, Alignment(Left-12, Top-9, Left+24, Bottom-8), icons::Health);
 		healthIcon.noClip = true;
+
+		// [[ MODIFY BASE GAME START ]]
+		// noClip allows rendering the strength meter outside the window area, just like the status box
+		// this avoids obscuring the existing UI
+		@strband = GuiSkinElement(this, Alignment(Left + 59, Bottom-7, Right + 10, Bottom+13), SS_NULL);
+		strband.noClip = true;
+		strband.visible = false;
+		@strength = GuiProgressbar(strband, Alignment(Left+0, Top, Right-0.5f, Bottom));
+		strength.noClip = true;
+		strength.visible = false;
+		@strIcon = GuiSprite(strband, Alignment(Left, Top, Left+24, Bottom), icons::Strength);
+		strIcon.noClip = true;
+		strIcon.visible = false;
+		strength.tooltip = locale::FLEET_STRENGTH;
+		// [[ MODIFY BASE GAME END ]]
 
 		updateAbsolutePosition();
 	}
@@ -226,6 +255,11 @@ class PlanetPopup : Popup {
 		const Font@ ft = skin.getFont(FT_Normal);
 
 		defIcon.visible = playerEmpire.isDefending(pl);
+		// [[ MODIFY BASE START ]]
+		// Defense icon and health icon overlap, so hide the health icon
+		// if the defense icon is visible
+		healthIcon.visible = !defIcon.visible;
+		// [[ MODIFY BASE END ]]
 
 		//Update planet name
 		name.text = pl.name;
@@ -325,6 +359,10 @@ class PlanetPopup : Popup {
 			loyIcon.visible = false;
 		}
 
+		// [[ MODIFY BASE GAME START ]]
+		updateStrengthBar();
+		// [[ MODIFY BASE GAME END ]]
+
 		//Update construction
 		uint consIndex = 0;
 		if(owned) {
@@ -343,4 +381,34 @@ class PlanetPopup : Popup {
 		Popup::update();
 		Popup::updatePosition(pl);
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void updateStrengthBar() {
+        // TODO: This should include the strength from buildings like defense grids
+		double currentStrength = pl.getFleetStrength() * 0.001;
+		double totalStrength = pl.getFleetMaxStrength() * 0.001;
+		if (totalStrength == 0) {
+			strength.visible = false;
+			strength.progress = 0.f;
+			strength.frontColor = Color(0xff6a00ff);
+			strength.text = "--";
+		} else {
+			strength.visible = true;
+			strength.progress = currentStrength / totalStrength;
+			if (strength.progress > 1.001f) {
+				strength.progress = 1.f;
+				strength.font = FT_Bold;
+			}
+			else {
+				strength.font = FT_Normal;
+			}
+
+			strength.frontColor = Color(0xff6a00ff).interpolate(Color(0xffc600ff), strength.progress);
+			strength.text = standardize(currentStrength);
+			strength.tooltip = locale::FLEET_STRENGTH+": "+standardize(currentStrength)+"/"+standardize(totalStrength);
+		}
+		strIcon.visible = strength.visible;
+		strband.visible = strength.visible;
+	}
+	// [[ MODIFY BASE GAME END ]]
 };
