@@ -12,6 +12,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
     - The code looks like it does consider planet support strength, need to investigate further
   - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
+  - Make the AI increase hate level substantially when being carpet bombed by an enemy.
   - Fix the AI military component being designed around a single `mainWait` and primary factory for building flagships
     - This is probably why the AI seemed to prioritise gates over flagships in an AI game I observed. Fleet building is only done at the main factory, and the Gate FTL code would have been more aggressive in queueing up another build, so it would have effectively blocked the AI from ever getting around to building a flagship, despite having the funds and labor income to do so. Should make it queue up a flagship and put to top priority if it is under attack and vulnerable regardless of what is already building.
   - Would also be helpful to show strength of a planet when hovering over it rather than just its supports
@@ -50,6 +51,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - If you can't tell from reading this README I like playing as StarChildren a lot. I think the best way for this is to start the player with a Terrestrial empire, introduce 1 AI and then once they get the hang of some basics have the AI suicide by destroying the system's black hole, prompting campaign episode #2 where your race evacuates on a hastily created mothership and drops down in a larger galaxy to discover more threats
   - Improving the AI
     - Things players can do but AI just doesn't right now
+      - Carpet bomb raiding
       - Create stations at all??
       - Attempt to achieve the influence victory themselves??
       - Fling battle stations
