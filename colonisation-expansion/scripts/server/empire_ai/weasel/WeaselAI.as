@@ -79,6 +79,9 @@ interface IAIComponent : Savable {
 	void tick(double time);
 	void focusTick(double time);
 	void turn();
+	// [[ MODIFY BASE GAME START ]]
+	//void endOfTurn();
+	// [[ MODIFY BASE GAME END ]]
 
 	void save(SaveFile& file);
 	void load(SaveFile& file);
@@ -102,11 +105,19 @@ class AIComponent : IAIComponent, Savable {
 
 	void set(AI& ai) { @this.ai = ai; }
 	void create() {}
+	// [[ MODIFY BASE GAME START ]]
+	// Start is called once on a component at game start
 	void start() {}
 
+	// Ticks happen very frequently
 	void tick(double time) {}
+	// Focus ticks happen less frequently, and are for slower code to run
 	void focusTick(double time) {}
+	// Turn happens at the start of each budget cycle
 	void turn() {}
+	// End of turn happens just before the end of each budget cycle
+	//void endOfTurn() {}
+	// [[ MODIFY BASE GAME END ]]
 
 	void save(SaveFile& file) {}
 	void load(SaveFile& file) {}
@@ -365,6 +376,9 @@ final class AI : AIController, Savable {
 	AIDefs defs;
 
 	int cycleId = -1;
+	// [[ MODIFY BASE GAME START ]]
+	bool endOfTurnTickReady = true;
+	// [[ MODIFY BASE GAME END ]]
 	uint componentCycle = 0;
 	uint addedComponents = 0;
 
@@ -464,6 +478,17 @@ final class AI : AIController, Savable {
 		}
 		// [[ MODIFY BASE GAME END ]]
 
+		// [[ MODIFY BASE GAME START ]]
+		// Star Children and Ancient empires have no intrinsic colonisation
+		// costs and shouldn't avoid clonising just beacuse they don't have
+		// 80 credits or two thirds of the budget cycle are gone.
+		if(empire.hasTrait(getTraitID("Ancient")) || empire.hasTrait(getTraitID("StarChildren"))) {
+			behavior.guaranteeColonizations += 1;
+			behavior.colonizeBudgetCost = 0;
+			behavior.colonizeMaxBudgetProgress = 1.01;
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		//Misc components
 		if(hasInvasionMap() || addedComponents & AC_Invasion != 0) {
 			@invasion = add(createInvasion());
@@ -506,6 +531,7 @@ final class AI : AIController, Savable {
 		file >> cycleId;
 		file >> majorMask;
 		file >> difficulty;
+		file >> endOfTurnTickReady; // [[ MODIFY BASE GAME ]]
 		file >> flags;
 		if(file >= SV_0153)
 			file >> addedComponents;
@@ -537,6 +563,7 @@ final class AI : AIController, Savable {
 		file << cycleId;
 		file << majorMask;
 		file << difficulty;
+		file << endOfTurnTickReady; // [[ MODIFY BASE GAME ]]
 		file << flags;
 		file << addedComponents;
 		uint saveCnt = components.length;
@@ -613,6 +640,9 @@ final class AI : AIController, Savable {
 			for(uint i = 0, cnt = components.length; i < cnt; ++i)
 				components[i].turn();
 			cycleId = curCycle;
+			// [[ MODIFY BASE GAME START ]]
+			endOfTurnTickReady = true;
+			// [[ MODIFY BASE GAME END ]]
 		}
 
 		//Generic ticks
@@ -654,6 +684,21 @@ final class AI : AIController, Savable {
 			//dat.focusAvg += ms;
 			//dat.focusCount += 1.0;
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		// Initial setup for ticking all components at the end of a budget
+		// cycle, so all excess money can be spent irrespective of its
+		// categorisation to avoid wasting funds. No components do anything
+		// on this method yet.
+		// TODO: Let components have an end of turn weighting, so can
+		// create a system where all excess money can be spend in
+		// decreasing priority
+		if ((empire.BudgetTimer / empire.BudgetCycle) > 0.95 && endOfTurnTickReady) {
+			//for(uint i = 0, cnt = components.length; i < cnt; ++i)
+				//components[i].endOfTurn();
+			endOfTurnTickReady = false;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void dumpProfile() {

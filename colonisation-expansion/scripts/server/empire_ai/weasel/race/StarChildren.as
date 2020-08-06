@@ -334,6 +334,11 @@ class StarChildren : Race {
 		uint totalCount = popRequests.length + colonization.awaitingSource.length;
 		uint motherCount = idleMothershipCount();
 
+		// [[ MODIFY BASE GAME START ]]
+		// Star Children can colonise with all available motherships at once
+		ai.behavior.maxConcurrentColonizations = motherships.length;
+		// [[ MODIFY BASE GAME END ]]
+
 		/*if(motherCount > totalCount) {*/
 			for(uint i = 0, cnt = popRequests.length; i < cnt; ++i) {
 				Planet@ dest = popRequests[i];
