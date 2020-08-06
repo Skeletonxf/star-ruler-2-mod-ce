@@ -553,9 +553,11 @@ class MakePlanet : MapHook {
 			if (biome1.id == ice || biome2.id == ice || biome3.id == ice) {
 				planet.addStatus(getStatusID("FrozenIce"));
 			}
-			if (gameTime < 60) {
+			if (gameTime < 60 && conditions.boolean) {
 				// only apply native and primitive life to planets generated
 				// at game start, not later through artifacts or expeditions
+				// also don't put native or primitive life on a planet that
+				// is generated with conditions set to false
 				if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean ||
 						biome1.id == ice || biome2.id == ice || biome3.id == ice) {
 					if (randomd() < 0.4) {
