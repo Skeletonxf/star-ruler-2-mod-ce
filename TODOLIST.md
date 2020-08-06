@@ -10,12 +10,14 @@ This is primarily intended as a developer focused project planning list, rather 
     - update attack context menu to apply to all orbitals that have dps and movement
   - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (easily reproduced in the mining colony scenario)
   - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
+    - The code looks like it does consider planet support strength, need to investigate further
   - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
+  - Fix the AI military component being designed around a single `mainWait` and primary factory for building flagships
+    - This is probably why the AI seemed to prioritise gates over flagships in an AI game I observed. Fleet building is only done at the main factory, and the Gate FTL code would have been more aggressive in queueing up another build, so it would have effectively blocked the AI from ever getting around to building a flagship, despite having the funds and labor income to do so. Should make it queue up a flagship and put to top priority if it is under attack and vulnerable regardless of what is already building.
   - Would also be helpful to show strength of a planet when hovering over it rather than just its supports
   - Fix resources added to planets not being recognised by First Control Core buildings
   - Replace the default miner ship with one using the mining hull
   - Make parasite AI do razing at end of a budget cycle not start
-  - Fix the AI seeming to prioritise gates over flagships for military constructions
   - Teach AI to not put comets on worlds being razed
   - Teach AI to melt ice
   - Teach AI to make most of the constructions by extending the building hint code
