@@ -106,6 +106,10 @@ class MiningColonyScenario : CampaignScenarioState {
 			empires[i].modFTLStored(+250);
 			empires[i].modTotalBudget(-100);
 		}
+		// equipping the player with eco busting carpet bombs means the vultri's
+		// eco will take a big hit, so give the AI some leeway to stay able to
+		// buy countermeasures over time
+		empires[2].modTotalBudget(+1100);
 
 		// TODO: Build factories on each empire's main planet
 		// TODO: Make a custom design for the player to give them prototype

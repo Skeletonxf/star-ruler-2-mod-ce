@@ -865,6 +865,14 @@ class Relations : AIComponent {
 			}
 		}
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	// Helper method for determining if we're at war with another empire.
+	bool isAtWar(Empire@ empire) {
+		Relation@ relation = get(empire);
+		return (relation !is null && relation.atWar);
+	}
+	// [[ MODIFY BASE GAME END ]]
 };
 
 AIComponent@ createRelations() {

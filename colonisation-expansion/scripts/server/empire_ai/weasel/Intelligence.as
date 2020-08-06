@@ -580,6 +580,7 @@ class Intelligence : AIComponent {
 			}
 		}
 	}
+
 };
 
 AIComponent@ createIntelligence() {

@@ -9,11 +9,15 @@ import empire_ai.weasel.Construction;
 import empire_ai.weasel.Systems;
 import empire_ai.weasel.Budget;
 import empire_ai.weasel.Military;
+import empire_ai.weasel.Intelligence;
+import empire_ai.weasel.Relations;
 
 import biomes;
 
 from traits import getTraitID;
 from orbitals import getOrbitalModuleID;
+from statuses import getStatusID;
+from buildings import getBuildingType, BuildingType;
 
 const double FTL_EXTRACTOR_MIN_HELD_BASE_TIMER = 3 * 60.0;
 
@@ -27,6 +31,8 @@ class Improvement : AIComponent {
 	Systems@ systems;
 	Budget@ budget;
 	Military@ military;
+	Intelligence@ intelligence;
+	Relations@ relations;
 
 	uint atmosphere = 0;
 	int moon_base = -1;
@@ -35,8 +41,17 @@ class Improvement : AIComponent {
 
 	int ftlExtractorModuleID = -1;
 	bool ftlExtractorsUnlocked = false;
+	bool immuneToCarpetBombs = false;
+	// an index for checking planets in need of carpet bomb protection
+	uint carpetBombCheck = 0;
 
 	AllocateConstruction@ extractorBuild = null;
+
+	const BuildingType@ defenseGrid;
+	const BuildingType@ largeDefenseGrid;
+	int ringworldStatusID = -1;
+	int artificialPlanetoidStatusID = -1;
+	int nonCombatDefensesOrdered = 0;
 
 	void create() {
 		@planets = cast<Planets>(ai.planets);
@@ -48,6 +63,8 @@ class Improvement : AIComponent {
 		@systems = cast<Systems>(ai.systems);
 	    @budget = cast<Budget>(ai.budget);
 		@military = cast<Military>(ai.military);
+		@intelligence = cast<Intelligence>(ai.intelligence);
+		@relations = cast<Relations>(ai.relations);
 
 		// cache lookups
 		atmosphere = getBiomeID("Atmosphere");
@@ -56,14 +73,24 @@ class Improvement : AIComponent {
 		no_build_moon_bases = ai.empire.hasTrait(getTraitID("Ancient")) || ai.empire.hasTrait(getTraitID("StarChildren"));
 		ftlExtractorModuleID = getOrbitalModuleID("FTLExtractor");
 		ftlExtractorsUnlocked = ai.empire.FTLExtractorsUnlocked >= 1;
+
+		immuneToCarpetBombs = ai.empire.hasTrait(getTraitID("Ancient")) || ai.empire.hasTrait(getTraitID("StarChildren"));
+		@defenseGrid = getBuildingType("DefenseGrid");
+		@largeDefenseGrid = getBuildingType("LargeDefenseGrid");
+		ringworldStatusID = getStatusID("Ringworld");
+		artificialPlanetoidStatusID = getStatusID("ArtificialPlanetoid");
 	}
 
 	void save(SaveFile& file) {
 		construction.saveConstruction(file, extractorBuild);
+		file << carpetBombCheck;
+		file << nonCombatDefensesOrdered;
 	}
 
 	void load(SaveFile& file) {
 		@extractorBuild = construction.loadConstruction(file);
+		file >> carpetBombCheck;
+		file >> nonCombatDefensesOrdered;
 	}
 
 	void start() {
@@ -71,12 +98,13 @@ class Improvement : AIComponent {
 	}
 
 	void focusTick(double time) override {
-		// looks like this is where we should perform actions?
 		lookToBuildGasGiants();
 
 		// check again to see if we unlocked FTL Extractors
 		ftlExtractorsUnlocked = ai.empire.FTLExtractorsUnlocked >= 1;
 		lookToBuildFTLExtractors();
+
+		lookToBuildDefenses();
 	}
 
 	void lookToBuildGasGiants() {
@@ -187,6 +215,89 @@ class Improvement : AIComponent {
 		}
 	}
 
+	bool needCarpetBombCounterMeasures() {
+		if (immuneToCarpetBombs) {
+			return false;
+		}
+		for (uint i = 0, cnt = intelligence.intel.length; i < cnt; ++i) {
+			Intel@ intel = intelligence.intel[i];
+			if (intel.hasMadeCarpetBombs && relations.isAtWar(intel.empire)) {
+				// no need to counter carpet bombs made by teammates, perhaps
+				// this is a little naive because a player could take advantage
+				// of the at war requirement, but the AI doesn't have a concept
+				// of how much another empire wants to attack it
+				return true;
+			}
+		}
+		return false;
+	}
+
+	void lookToBuildDefenses() {
+		if (!needCarpetBombCounterMeasures()) {
+			return;
+		}
+
+		// identify the high level planets we have that
+		// are not well defended, and build defenses on them to
+		// counter carpet bomb raids
+		if (carpetBombCheck < planets.planets.length) {
+			PlanetAI@ plAI = planets.planets[carpetBombCheck];
+			carpetBombCheck += 1;
+			if (plAI is null) {
+				return;
+			}
+			Planet@ planet = plAI.obj;
+			if (planet.level < 2 || planet.population <= 5) {
+				// nothing to protect from carpet bombs
+				return;
+			}
+
+			Empire@ captEmp = planet.captureEmpire;
+			bool planetUnderSiege = !(captEmp is null || captEmp is playerEmpire);
+
+			if (budget.Progress < 0.4 && !planetUnderSiege) {
+				// don't build defenses early into the budget cycle as
+				// we need to be able to do military spending first
+				return;
+			}
+
+			if (nonCombatDefensesOrdered >= 2 && !planetUnderSiege) {
+				// avoid spending too much money on defense grids in a
+				// short period of time
+				return;
+			}
+
+			double buildPriority = 0.5;
+			if (planetUnderSiege) {
+				buildPriority = 2;
+			}
+
+			if (planet.hasStatusEffect(ringworldStatusID) || planet.hasStatusEffect(artificialPlanetoidStatusID)) {
+				if (!planets.isBuilding(planet, largeDefenseGrid)) {
+					if (budget.canSpend(BT_Development, 300, 50)) {
+						planets.requestBuilding(plAI, largeDefenseGrid, priority=buildPriority);
+						if (!planetUnderSiege) {
+							nonCombatDefensesOrdered += 1;
+						}
+						print("building defense grid at"+planet.name);
+					}
+				}
+			} else {
+				if (!planets.isBuilding(planet, defenseGrid)) {
+					if (budget.canSpend(BT_Development, 300, 50)) {
+						planets.requestBuilding(plAI, defenseGrid, priority=buildPriority);
+						if (!planetUnderSiege) {
+							nonCombatDefensesOrdered += 1;
+						}
+						print("building defense grid at"+planet.name);
+					}
+				}
+			}
+		} else {
+			carpetBombCheck = 0;
+		}
+	}
+
 	void tick(double time) override {
 		// TODO
 	}
@@ -204,6 +315,8 @@ class Improvement : AIComponent {
 				}
 			}
 		}
+		// reset counter for how many defenses we've ordered each cycle
+		nonCombatDefensesOrdered = 0;
 	}
 }
 

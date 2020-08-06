@@ -74,8 +74,8 @@ void init() {
 	// Gate data
 	packAbility = getAbilityID("GatePack");
 	unpackAbility = getAbilityID("GateUnpack");
-	packedStatus = getAbilityID("GatePacked");
-	unpackedStatus = getAbilityID("GateUnpacked");
+	packedStatus = getStatusID("GatePacked");
+	unpackedStatus = getStatusID("GateUnpacked");
 }
 
 class FlingRegion : Savable {
