@@ -2,3 +2,14 @@ AI_HOSTILE: Hostile
 AI_HOSTILE_DESC: <<
 	AIs set to hostile will declare war on everything they see, and never surrender or accept subjugation.
 >>
+
+GTT_ENERGY: <<
+	[font=Medium]Energy[/font]
+	[i]Energy is used to activate abilities on artifacts found across the galaxy. The more Energy you are currently storing above your free storage cap, the more your generation rate is reduced.[/i]
+
+	Available Energy: [right]$1[/right]
+	Generation Rate: [right]$2[/right]
+	Free Storage: [right]$3[/right]
+	Storage Penalty: [right]$4[/right]
+	Base Generation Rate: [right]$5[/right]
+>>

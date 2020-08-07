@@ -1,15 +1,15 @@
 Status: ArtificiallyLit
 	Name: Artificial Lighting
 	Visible To: Nobody
-	IfNotHaveStatus(CurrentlyStarlit, AddStatus(LightingApplied))
+	TriggerPeriodic(AddStatus(LightingApplied, Max Stacks = 1), Interval = 20)
 Status: LightingApplied
 	Visible To: Nobody
+	Description: EnergyMaintenance removes this status when it fails
 	EnergyMaintenance(Amount = 2.5)
 	AddPlanetResource(ArtificialLight)
 
 Status: StarChildrenArtificiallyLit
 	Name: Artificial Lighting
-	Visible To: Nobody
 	IfNotHaveStatus(CurrentlyStarlit, AddStatus(StarChildrenLightingApplied))
 Status: StarChildrenLightingApplied
 	Visible To: Nobody

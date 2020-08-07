@@ -809,7 +809,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 									bool needFoodOrWater = false;
 									for (uint i = 0, cnt = activeRequests.length; i < cnt && !needFoodOrWater; ++i) {
 										ResourceSpec@ spec = activeRequests[i].spec;
-										if (spec !is null && spec.cls.id == cls.id) {
+										if (spec !is null && spec.cls !is null && spec.cls.id == cls.id) {
 											needFoodOrWater = true;
 										}
 									}
@@ -828,7 +828,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 										needFoodOrWater = false;
 										for (uint i = 0, cnt = activeRequests.length; i < cnt && !needFoodOrWater; ++i) {
 											ResourceSpec@ spec = activeRequests[i].spec;
-											if (spec !is null && spec.cls.id == cls.id) {
+											if (spec !is null && spec.cls !is null && spec.cls.id == cls.id) {
 												needFoodOrWater = true;
 											}
 										}

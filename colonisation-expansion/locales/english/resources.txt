@@ -96,16 +96,6 @@ GTT_INFLUENCE: <<
 	[i]Influence Stake is provided by influence buildings. The percentage of the total influence stake from all empires that you currently control determines your influence generation rate.[/i]
 >>
 
-GTT_ENERGY: <<
-	[font=Medium]Energy[/font]
-	[i]Energy is used to activate abilities on artifacts found across the galaxy. The more Energy you are currently storing above your free storage cap, the more your generation rate is reduced.[/i]
-
-	Available Energy: [right]$1[/right]
-	Generation Rate: [right]$2[/right]
-	Free Storage: [right]$3[/right]
-	Storage Penalty: [right]$4[/right]
->>
-
 GTT_FTL: <<
 	[font=Medium]FTL Energy[/font]
 	[i]FTL Energy is paid to engage the faster-than-light drives on your ships.[/i]
