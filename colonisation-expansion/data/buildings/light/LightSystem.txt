@@ -7,6 +7,6 @@ Building: LightSystem
 	Base Cost: 300
 	Build Time: 60
 	Tile Cost: 25
-	AI:AsCreatedResource(ArtificialLight)
+	AI:AsCreatedResource(ArtificialLight, 30, 0, 0)
 	ConflictBuilding(LightSystem)
 	AddStatus(ArtificiallyLit)
