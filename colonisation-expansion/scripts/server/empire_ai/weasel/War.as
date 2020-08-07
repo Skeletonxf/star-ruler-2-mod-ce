@@ -933,31 +933,31 @@ class War : AIComponent {
 				return;
 			}
 			if ((planet.bombardment > 0) != plAI.underBombardment) {
+				if (planet.bombardment > 0) {
+					array<Object@>@ enemies = findEnemies(planet.region, ai.empire, ai.enemyMask);
+					Empire@ closestEnemyToPlanet = null;
+					double closestDistance = -1;
+					for (uint i = 0, cnt = enemies.length; i < cnt; ++i) {
+						double distance = enemies[i].position.distanceTo(planet.position);
+						if (enemies[i].owner is null) {
+							continue;
+						}
+						if (distance < closestDistance || closestDistance == -1) {
+							closestDistance = distance;
+							@closestEnemyToPlanet = enemies[i].owner;
+						}
+					}
+					// bombardment doesn't change ownership of a planet, but it can
+					// delevel it a lot, so add hate but don't record lost war
+					// points
+					Relation@ relation = relations.get(closestEnemyToPlanet);
+					if (relation !is null) {
+						double hateIncrease = relations.getPointValue(planet) * 0.5;
+						relation.hate += hateIncrease;
+						ai.print("Increasing hate of "+closestEnemyToPlanet.name+" due to carpet bomb attack by "+hateIncrease+".");
+					}
+				}
 				plAI.underBombardment = planet.bombardment > 0;
-			}
-			if (planet.bombardment > 0) {
-				array<Object@>@ enemies = findEnemies(planet.region, ai.empire, ai.enemyMask);
-				Empire@ closestEnemyToPlanet = null;
-				double closestDistance = -1;
-				for (uint i = 0, cnt = enemies.length; i < cnt; ++i) {
-					double distance = enemies[i].position.distanceTo(planet.position);
-					if (enemies[i].owner is null) {
-						continue;
-					}
-					if (distance < closestDistance || closestDistance == -1) {
-						closestDistance = distance;
-						@closestEnemyToPlanet = enemies[i].owner;
-					}
-				}
-				// bombardment doesn't change ownership of a planet, but it can
-				// delevel it a lot, so add hate but don't record lost war
-				// points
-				Relation@ relation = relations.get(closestEnemyToPlanet);
-				if (relation !is null) {
-					double hateIncrease = relations.getPointValue(planet) * 0.5;
-					relation.hate += hateIncrease;
-					ai.print("Increasing hate of "+closestEnemyToPlanet.name+" due to carpet bomb attack by "+hateIncrease+".");
-				}
 			}
 		} else {
 			bombardPlanetCheck = 0;

@@ -120,7 +120,13 @@ class MiningColonyScenario : CampaignScenarioState {
 		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,-40.0), "Heavy Carrier Bomber", 50);
 		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,-40.0), "Heavy Carrier Bomber", 50);
 
-		// TODO: Spawn stuff for Vultri as well
+		spawnFleet(enemy, planet(1,1).position + vec3d(-40.0,0.0,40.0), "Dreadnaught", 150);
+		spawnFleet(enemy, planet(2,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 150);
+		spawnFleet(enemy, planet(3,0).position + vec3d(80.0,0.0,0.0), "Dreadnaught", 150);
+		spawnFleet(enemy, planet(4,0).position + vec3d(40.0,0.0,40.0), "Heavy Carrier", 150);
+		spawnFleet(enemy, planet(4,2).position + vec3d(40.0,0.0,-40.0), "Heavy Carrier", 150);
+		spawnFleet(enemy, planet(5,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 150);
+
 		// TODO: Spawn mining ships for mining colony and set to auto mine
 	}
 
