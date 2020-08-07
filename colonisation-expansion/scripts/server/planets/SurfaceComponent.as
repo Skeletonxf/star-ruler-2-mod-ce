@@ -935,6 +935,12 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		bombardDecay += amount;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	int get_bombardment() {
+		return bombardDecay;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void modPressureCapFactor(Object& obj, float amt) {
 		pressureCapFactor += amt;
 		calculatePopVars(obj);

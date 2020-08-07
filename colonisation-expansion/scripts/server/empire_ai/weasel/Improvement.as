@@ -42,6 +42,7 @@ class Improvement : AIComponent {
 	int ftlExtractorModuleID = -1;
 	bool ftlExtractorsUnlocked = false;
 	bool immuneToCarpetBombs = false;
+	bool isMechanoid = false;
 	// an index for checking planets in need of carpet bomb protection
 	uint carpetBombCheck = 0;
 
@@ -79,6 +80,7 @@ class Improvement : AIComponent {
 		@largeDefenseGrid = getBuildingType("LargeDefenseGrid");
 		ringworldStatusID = getStatusID("Ringworld");
 		artificialPlanetoidStatusID = getStatusID("ArtificialPlanetoid");
+		isMechanoid = ai.empire.hasTrait(getTraitID("Mechanoid"));
 	}
 
 	void save(SaveFile& file) {
@@ -247,8 +249,21 @@ class Improvement : AIComponent {
 				return;
 			}
 			Planet@ planet = plAI.obj;
+			if (planet is null) {
+				return;
+			}
 			if (planet.level < 2 || planet.population <= 5) {
 				// nothing to protect from carpet bombs
+				return;
+			}
+			// Mechanoid are particularly vulnurable to carpet bomb
+			// attacks, but most of their planets are level 2 because a tier
+			// 1 resource gets level 2 by default. Mechanoid also really need
+			// to avoid spending money they need for pop.
+			// A comprimise here is to avoid spending money on defending
+			// level 2 planets if the net budget isn't 4M or higher, to
+			// avoid crushing the Mono AI's eco even more in the early game.
+			if (isMechanoid && planet.level == 2 && ai.empire.EstNextBudget < 4000) {
 				return;
 			}
 
@@ -274,22 +289,26 @@ class Improvement : AIComponent {
 
 			if (planet.hasStatusEffect(ringworldStatusID) || planet.hasStatusEffect(artificialPlanetoidStatusID)) {
 				if (!planets.isBuilding(planet, largeDefenseGrid)) {
-					if (budget.canSpend(BT_Development, 300, 50)) {
+					if (budget.canSpend(BT_Development, 300, 100)) {
 						planets.requestBuilding(plAI, largeDefenseGrid, priority=buildPriority);
 						if (!planetUnderSiege) {
 							nonCombatDefensesOrdered += 1;
 						}
-						ai.print("building defense grid at "+planet.name);
+						if (log) {
+							ai.print("Building defense grid at "+planet.name);
+						}
 					}
 				}
 			} else {
 				if (!planets.isBuilding(planet, defenseGrid)) {
-					if (budget.canSpend(BT_Development, 300, 50)) {
+					if (budget.canSpend(BT_Development, 300, 100)) {
 						planets.requestBuilding(plAI, defenseGrid, priority=buildPriority);
 						if (!planetUnderSiege) {
 							nonCombatDefensesOrdered += 1;
 						}
-						ai.print("building defense grid at "+planet.name);
+						if (log) {
+							ai.print("Building defense grid at "+planet.name);
+						}
 					}
 				}
 			}

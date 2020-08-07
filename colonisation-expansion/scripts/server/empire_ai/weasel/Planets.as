@@ -196,6 +196,10 @@ final class PlanetAI {
 	array<ExportData@>@ resources;
 	ImportData@ claimedChain;
 
+	// [[ MODIFY BASE GAME START ]]
+	bool underBombardment = false;
+	// [[[ MODIFY BASE GAME END ]]]
+
 	void init(AI& ai, Planets& planets) {
 		@resources = planets.resources.availableResource(obj);
 	}
@@ -205,7 +209,10 @@ final class PlanetAI {
 		file << targetLevel;
 		file << requestedLevel;
 		file << prevTick;
+		// [[ MODIFY BASE GAME START ]]
 		file << failedGasGiantBuild;
+		file << underBombardment;
+		// [[ MODIFY BASE GAME END ]]
 
 		uint cnt = 0;
 		if(resources !is null)
@@ -221,7 +228,10 @@ final class PlanetAI {
 		file >> targetLevel;
 		file >> requestedLevel;
 		file >> prevTick;
+		// [[ MODIFY BASE GAME START ]]
 		file >> failedGasGiantBuild;
+		file >> underBombardment;
+		// [[ MODIFY BASE GAME END ]]
 		uint cnt = 0;
 		file >> cnt;
 		@resources = array<ExportData@>();

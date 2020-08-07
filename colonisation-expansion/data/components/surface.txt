@@ -153,6 +153,9 @@ server:
 
 	void destroyRandomTile(bool civilOnly);
 	void modBombardment(int amount);
+	// [[ MODIFY BASE GAME START ]]
+	int get_bombardment();
+	// [[ MODIFY BASE GAME END ]]
 	void absoluteSiege(Empire@ fromEmpire, double loyAmount);
 	void enterIntoOrbit(Object@ ship);
 	void leaveFromOrbit(Object@ ship);
