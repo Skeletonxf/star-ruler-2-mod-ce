@@ -121,7 +121,7 @@ class PlanetPopup : Popup {
 		// [[ MODIFY BASE GAME START ]]
 		// noClip allows rendering the strength meter outside the window area, just like the status box
 		// this avoids obscuring the existing UI
-		@strband = GuiSkinElement(this, Alignment(Left + 59, Bottom-7, Right + 10, Bottom+13), SS_NULL);
+		@strband = GuiSkinElement(this, Alignment(Left + 49, Bottom-8, Right + 49, Bottom+12), SS_NULL);
 		strband.noClip = true;
 		strband.visible = false;
 		@strength = GuiProgressbar(strband, Alignment(Left+0, Top, Right-0.5f, Bottom));
@@ -384,7 +384,9 @@ class PlanetPopup : Popup {
 
 	// [[ MODIFY BASE GAME START ]]
 	void updateStrengthBar() {
-        // TODO: This should include the strength from buildings like defense grids
+		// TODO: This should include the strength from buildings like defense grids
+		// This flickers a bit due to ships getting added just before they
+		// get counted, so meter is always set to 100%
 		double currentStrength = pl.getFleetStrength() * 0.001;
 		double totalStrength = pl.getFleetMaxStrength() * 0.001;
 		if (totalStrength == 0) {
@@ -402,6 +404,9 @@ class PlanetPopup : Popup {
 			else {
 				strength.font = FT_Normal;
 			}
+			// fixes flickering, fleet max strength doesn't consider unfilled
+			// support capacity anyway
+			strength.progress = 1.f;
 
 			strength.frontColor = Color(0xff6a00ff).interpolate(Color(0xffc600ff), strength.progress);
 			strength.text = standardize(currentStrength);
