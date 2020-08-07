@@ -13,4 +13,4 @@ Construction: FractureMoonBase
 
 	CE_biome_hooks::DealStellarPercentageDamage(0.1)
 	RequireStatus(FracturedPlanetSpawn)
-	AddSurfaceArea(Moon, (5, 5), Developed = False)
+	AddSurfaceArea(Moon, (5, 5))
