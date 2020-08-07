@@ -454,11 +454,11 @@ final class Resources : AIComponent {
 	void cancelRequest(ImportData@ data) {
 		if(data.beingMet) {
 			breakImport(data);
-            // [[ MODIFY BASE GAME START ]]
-            // Actually remove the request rather than removing it from active
-            // Fixes vanilla bug making AI leave stray exports to lost planets
+			// [[ MODIFY BASE GAME START ]]
+			// Actually remove the request rather than removing it from active
+			// Fixes vanilla bug making AI leave stray exports to lost planets
 			requested.remove(data);
-            // [[ MODIFY BASE GAME END ]]
+			// [[ MODIFY BASE GAME END ]]
 		}
 		else {
 			requested.remove(data);
@@ -584,6 +584,25 @@ final class Resources : AIComponent {
 			}
 		}
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	/**
+	 * Gets all the non active requests on an object.
+	 */
+	array<ImportData@> getRequestedResources(Object& obj) {
+		array<ImportData@> activeRequests;
+		for(uint i = 0, cnt = requested.length; i < cnt; ++i) {
+			auto@ req = requested[i];
+			if(req.obj !is obj)
+				continue;
+			if(!req.forLevel)
+				continue;
+
+			activeRequests.insertLast(req);
+		}
+		return activeRequests;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void killImportsTo(Object& obj) {
 		for(uint i = 0, cnt = requested.length; i < cnt; ++i) {

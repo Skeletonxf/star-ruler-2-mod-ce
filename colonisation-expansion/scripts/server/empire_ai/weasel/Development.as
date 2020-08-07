@@ -140,6 +140,8 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	double uplift_cost = 800;
 	uint currentlyStarlitStatusID = 0;
 	uint razingStatusID = 0;
+	const ResourceClass@ foodClass;
+	const ResourceClass@ waterClass;
 	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
@@ -180,6 +182,8 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 		atmosphere = getBiomeID("Atmosphere");
 		currentlyStarlitStatusID = getStatusID("CurrentlyStarlit");
 		razingStatusID = getStatusID("ParasiteRaze");
+		@foodClass = getResourceClass("Food");
+		@waterClass = getResourceClass("WaterType");
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -789,6 +793,51 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 									priority = 2;
 								}
 								bool skipBuild = false;
+								if (type.ident == "Farm" || type.ident == "Hydrogenator") {
+									// sanity check to avoid building unneeded Megafarms
+									// and Hydrogenators, this shouldn't need to trigger, as
+									// the building hook code has a number of checks
+									// that should ensure we didn't have any available food/water
+									// planets, but none of them are actually explicit.
+									const ResourceClass@ cls;
+									if (type.ident == "Farm")
+										@cls = foodClass;
+									if (type.ident == "Hydrogenator")
+										@cls = waterClass;
+									ai.print("Checking if need building "+type.name+" on "+plAI.obj.name+".");
+									array<ImportData@> activeRequests = resources.getRequestedResources(plAI.obj);
+									bool needFoodOrWater = false;
+									for (uint i = 0, cnt = activeRequests.length; i < cnt && !needFoodOrWater; ++i) {
+										ResourceSpec@ spec = activeRequests[i].spec;
+										if (spec !is null && spec.cls.id == cls.id) {
+											needFoodOrWater = true;
+										}
+									}
+									if (!needFoodOrWater) {
+										ai.print("Skipped building "+type.name+" on "+plAI.obj.name+" after checking requests.");
+										skipBuild = true;
+									} else {
+										resources.organizeImports(plAI.obj, plAI.targetLevel);
+										// This is especially a bit of an ugly hack ticking a
+										// component from another, but it will ensure all
+										// requested resources are matched with available
+										resources.focusTick(time);
+										// check after organising and importing resources on this planet if we
+										// really still need the building
+										activeRequests = resources.getRequestedResources(plAI.obj);
+										needFoodOrWater = false;
+										for (uint i = 0, cnt = activeRequests.length; i < cnt && !needFoodOrWater; ++i) {
+											ResourceSpec@ spec = activeRequests[i].spec;
+											if (spec !is null && spec.cls.id == cls.id) {
+												needFoodOrWater = true;
+											}
+										}
+										if (!needFoodOrWater) {
+											ai.print("Skipped building "+type.name+" on "+plAI.obj.name+" after organising imports.");
+											skipBuild = true;
+										}
+									}
+								}
 								if (type.ident == "LightSystem" && plAI.obj.hasStatusEffect(currentlyStarlitStatusID)) {
 									// don't build artificial lighting on a planet with starlight
 									skipBuild = true;
