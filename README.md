@@ -10,11 +10,15 @@ I consider this mod at playable status now. There's still many rough edges but i
 
 Although you can use GitHub's Download Zip button to download the latest version of this mod I suggest you go to the [releases page](https://github.com/Skeletonxf/star-ruler-2-mod-ce/releases) to download the latest released version. Extract the mod out of the colonisation-expansion folder and place it into the mods folder of a [Star Ruler 2](https://github.com/BlindMindStudios/StarRuler2-Source) installation.
 
+Alternatively you can use [Star Ruler 2 Mod Manager](https://github.com/DaloLorn/SR2ModManager) to install and update this mod.
+
 ## Features
 
+### A singleplayer campaign!
+Still a work in progress, but there is one puzzle available and more scenarios are in the works.
 ### Several biome based planet constructions and 'terraforming'<sup>1</sup> options
 ### Food system reworked
-This is probably the main/biggest/only divergence from vanilla. Food planets are much rarer. Food planets gradually 'forest' the planets they export to, giving each of those planets 3 unexportable food resources over time. Food planets therefore aren't needed to support level 1, 2, and 3 planets long term.
+This is probably the biggest divergence from vanilla. Food planets are much rarer. Food planets gradually 'forest' the planets they export to, giving each of those planets 3 unexportable food resources over time. Food planets therefore aren't needed to support level 1, 2, and 3 planets long term.
 In practise in the early game you start out limited by food much like in vanilla but as the game progresses whenever you need food you can cancel an earlier food export to any planet that has since forested its own food and redirect the food resources to your new planet that needs it. In this way you quite reliably reach a point at which you can always provide food to higher level planets, and if you combine with water comets you can make tier 1 planets self sustaining without imports or maintenance costs.
 
 The AI already understands how to change exports as it gains food and hence works with this rework quite well. It won't pickup excess Forestation cargo and divert to a new planet, but in practise I don't think this is something players will/need to do.
@@ -34,6 +38,8 @@ From games with my empire set to the AI I think the AI explores this tree pretty
 Just because you have a 300 labor planet shouldn't mean you can build an outpost halfway across the galaxy in less than a second. Now the penalty scales exponentially with the number of hops rather than linearly, so will always outscale the labor production you can produce as the game goes on. This is also much more realistic and encourages researching Gates or having multiple labor centres.
 ### Massively nerfed ship stat bonuses from research
 I found in many games of unmodded Star Ruler my ships were either orders of magnitude stronger than my opponent's or orders of magnitude weaker. Nerfing stat bonuses makes ships much closer in strength even if one empire is ahead in terms of eco/research. To get more powerful ships you actually have to have the economy to field larger ships rather than just stacking multipliers that turn ks of combat strength into Ms of combat strength for free. I have only done a few full playthroughs yet so balance is very far from final.
+### Rebalanced Carpet Bombs
+Carpet Bombs can now be directly countered by making certain buildings or orbitals which reduce the effectiveness, but more importantly it is not possible to abuse edge cases in the subsystem variable code to make extremely cheap ships that can delevel tier 2+ planets in seconds.
 ### Ability to unlock all types of FTL and FTL income orbital from the research grid
 For balancing this is a costly research path to go down and provides few other benefits. Each unlock also starts a vote to give the technology to all empires. This makes getting extra FTL technology a tradeoff as you might not keep it exclusive to just you, and then your research points have been wasted on something your opponents got for free.
 #### Supplementary new FTL
@@ -45,7 +51,7 @@ This trait makes you get only half of the pressure from planetary resources, but
 ### Battleworlders
 The battleworlders lifestyle makes every planet a battleworld, and lets your empire conquer the galaxy from the comfort of its own planets. No AI support at this time. Inspired by Philip Reeve's Mortal Engines series and Darloth's / Dalo Lorn's Ringworlders.
 ### Improved AI
-AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to. AI can handle having multiple FTL abilities unlocked at once. AI will build FTL income orbitals if it needs more FTL income
+AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to. AI can handle having multiple FTL abilities unlocked at once. AI will build FTL income orbitals if it needs more FTL income. AI will seek to counter carpet bombing if it sees an opponent with them (AIs cannot do carpet bombing raids themselves yet).
 
 *****
 
