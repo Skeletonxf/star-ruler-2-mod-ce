@@ -130,9 +130,9 @@ class LaborMission : Mission {
 };
 
 class StarChildren : Race {
-	IColonization@ colonization; // [[ MODIFY BASE GAME START ]]
+	Colonization@ colonization; // [[ MODIFY BASE GAME START ]]
 	Construction@ construction;
-	IDevelopment@ development;  // [[ MODIFY BASE GAME START ]]
+	Development@ development;  // [[ MODIFY BASE GAME START ]]
 	Movement@ movement;
 	Planets@ planets;
 	Fleets@ fleets;
@@ -180,10 +180,10 @@ class StarChildren : Race {
 	}
 
 	void create() override {
-		@colonization = cast<IColonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
+		@colonization = cast<Colonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
 		colonization.performColonization = false;
 
-		@development = cast<IDevelopment>(ai.development); // [[ MODIFY BASE GAME START ]]
+		@development = cast<Development>(ai.development); // [[ MODIFY BASE GAME START ]]
 		development.managePlanetPressure = false;
 		development.buildBuildings = false;
 

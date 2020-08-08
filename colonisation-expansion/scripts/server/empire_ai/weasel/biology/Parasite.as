@@ -23,9 +23,9 @@ from abilities import getAbilityID;
  */
 class Parasite : AIComponent {
 	Planets@ planets;
-	IDevelopment@ development;
+	Development@ development;
 	Resources@ resources;
-	IColonization@ colonization;
+	Colonization@ colonization;
 	/*
 	Orbitals@ orbitals;
 	Construction@ construction;
@@ -51,9 +51,9 @@ class Parasite : AIComponent {
 
 	void create() {
 		@planets = cast<Planets>(ai.planets);
-		@development = cast<IDevelopment>(ai.development);
+		@development = cast<Development>(ai.development);
 		@resources = cast<Resources>(ai.resources);
-		@colonization = cast<IColonization>(ai.colonization);
+		@colonization = cast<Colonization>(ai.colonization);
 		/*
 		@orbitals = cast<Orbitals>(ai.orbitals);
 	    @construction = cast<Construction>(ai.construction);

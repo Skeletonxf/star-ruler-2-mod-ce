@@ -41,7 +41,7 @@ class Linked : Race {
 	Military@ military;
 	Designs@ designs;
 	Construction@ construction;
-	IDevelopment@ development; // [[ MODIFY BASE GAME ]]
+	Development@ development; // [[ MODIFY BASE GAME ]]
 	Systems@ systems;
 	Budget@ budget;
 
@@ -57,7 +57,7 @@ class Linked : Race {
 		@military = cast<Military>(ai.military);
 		@designs = cast<Designs>(ai.designs);
 		@construction = cast<Construction>(ai.construction);
-		@development = cast<IDevelopment>(ai.development); // [[ MODIFY BASE GAME ]]
+		@development = cast<Development>(ai.development); // [[ MODIFY BASE GAME ]]
 		@systems = cast<Systems>(ai.systems);
 		@budget = cast<Budget>(ai.budget);
 

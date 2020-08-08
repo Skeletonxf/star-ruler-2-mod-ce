@@ -151,7 +151,7 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 
 	array<ColonizeQueue@> queue;
 	array<ColonizeData@> colonizing;
-	array<ColonizeData@> awaitingSource; // [[ MODIFY BASE GAME ]]
+	array<ColonizeData@> awaitingSource;
 	array<WaitUsed@> waiting;
 	array<ColonizePenalty@> penalties;
 	set_int penaltySet;
@@ -169,12 +169,10 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 	uint prevColonizations = 0;
 
 	//Whether to automatically find sources and order colonizations
-	// [[ MODIFY BASE GAME START ]]
 	bool performColonization = true;
 	bool queueColonization = true;
 
 	Object@ colonizeWeightObj;
-	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
 		@resources = cast<Resources>(ai.resources);
@@ -352,7 +350,6 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 
 	void focusTick(double time) {
 		if(sourceUpdate < gameTime && performColonization) {
-			ai.print("updating colonise sources");
 			updateSources();
 			if(sources.length == 0 && gameTime < 60.0)
 				sourceUpdate = gameTime + 1.0;
@@ -368,10 +365,8 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 				&& (budget.Progress < ai.behavior.colonizeMaxBudgetProgress || gameTime < 3.0 * 60.0)
 				&& (sources.length > 0 || !performColonization) && canColonize()
 				&& queueColonization) {
-			ai.print("ordering colonisations");
 			//Actually go order some colonizations from the queue
 			if(orderFromQueue()) {
-				ai.print("doing colonize");
 				doColonize();
 			}
 			else if(awaitingSource.length == 0) {
@@ -382,7 +377,6 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 
 		//Find colonization sources for everything that needs them
 		if(awaitingSource.length != 0 && performColonization) {
-			print("finding colonization sources");
 			for(uint i = 0, cnt = awaitingSource.length; i < cnt; ++i) {
 				auto@ target = awaitingSource[i];
 
@@ -430,7 +424,7 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 	}
 
 	void orderColonization(ColonizeData& data, Planet& sourcePlanet) {
-		if(true)
+		if(log)
 			ai.print("start colonizing "+data.target.name, sourcePlanet);
 
 		if(race !is null) {
@@ -649,7 +643,7 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 			return null;
 	}
 
-	array<PotentialColonize@> potentials;  // [[ MODIFY BASE GAME ]]
+	array<PotentialColonize@> potentials;
 	void checkSystem(SystemAI@ sys) {
 		uint presentMask = sys.seenPresent;
 		if(presentMask & ai.mask == 0) {
@@ -797,7 +791,7 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 			}
 		}
 
-		// TODO
+		// TODO: Try to understand the tree structure of the colonize queue
 		ai.print("Colonize queue");
 		for (uint i = 0; i < queue.length; i++) {
 			dumpQueue(queue[i]);
@@ -1138,7 +1132,6 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 	}
 
 	void fillQueueFromRequests() {
-		ai.print("have "+resources.requested.length+" resources requested.");
 		for(uint i = 0, cnt = resources.requested.length; i < cnt && remainColonizations > 0; ++i) {
 			auto@ req = resources.requested[i];
 			if(!req.isOpen)
@@ -1160,17 +1153,11 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 
 	// [[ MODIFY BASE GAME START ]]
 	// Trivial implementations for the getters and setters of the interface
-	/* array<ColonizeData@> get_awaitingSource() { return _awaitingSource; }
-	array<PotentialColonize@> get_potentials() { return _potentials; }
-	void set_performColonization(bool value) { _performColonization = value; }
-	void set_queueColonization(bool value) { _queueColonization = value; }
-	void set_colonizeWeightObj(Object@ obj) { @_colonizeWeightObj = obj; }
-
-
-	// Additional getters/setters needed to compile this component
-	bool get_performColonization() { return _performColonization; }
-	bool get_queueColonization() { return _queueColonization; }
-	Object@ get_colonizeWeightObj() { return _colonizeWeightObj; } */
+	array<ColonizeData@> get_AwaitingSource() { return awaitingSource; }
+	array<PotentialColonize@> get_Potentials() { return potentials; }
+	void set_PerformColonization(bool value) { performColonization = value; }
+	void set_QueueColonization(bool value) { queueColonization = value; }
+	void set_ColonizeWeightObj(Object@ obj) { @colonizeWeightObj = obj; }
 	// [[ MODIFY BASE GAME END ]]
 };
 
@@ -1206,16 +1193,16 @@ interface IColonization {
 	double timeSinceMatchingColonize(ResourceSpec& spec);
 	// awaitingSource seems to be where planets we want to colonize go before
 	// we find a source to colonize them from
-	array<ColonizeData@> get_awaitingSource();
+	array<ColonizeData@> get_AwaitingSource();
 	// Potentials is the same as getPotentialColonize()
-	array<PotentialColonize@> get_potentials();
+	array<PotentialColonize@> get_Potentials();
 	// This flag is set to false when a race component is responsible for picking
 	// a source to colonize with
-	void set_performColonization(bool value);
+	void set_PerformColonization(bool value);
 	// This flag is set to false when the heralds race component is present
-	void set_queueColonization(bool value);
+	void set_QueueColonization(bool value);
 	// This is used to modify the weight of potential colonisations based on distance,
 	// except it quickly becomes useless once Star Children have more than one mothership
-	void set_colonizeWeightObj(Object@ colonizeWeightObj);
+	void set_ColonizeWeightObj(Object@ colonizeWeightObj);
 }
 // [[ MODIFY BASE GAME END ]]

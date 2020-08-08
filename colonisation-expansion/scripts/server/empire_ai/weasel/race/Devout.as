@@ -10,7 +10,7 @@ import buildings;
 import attributes;
 
 class Devout : Race, RaceDevelopment {
-	IDevelopment@ development; // [[ MODIFY BASE GAME ]]
+	Development@ development; // [[ MODIFY BASE GAME ]]
 	Planets@ planets;
 	Budget@ budget;
 
@@ -38,7 +38,7 @@ class Devout : Race, RaceDevelopment {
 
 	void create() {
 		@planets = cast<Planets>(ai.planets);
-		@development = cast<IDevelopment>(ai.development); // [[ MODIFY BASE GAME ]]
+		@development = cast<Development>(ai.development); // [[ MODIFY BASE GAME ]]
 		@budget = cast<Budget>(ai.budget);
 
 		@altarResource = getResource("Altar");

@@ -18,7 +18,7 @@ import oddity_navigation;
 const double MAX_POP_BUILDTIME = 3.0 * 60.0;
 
 class Mechanoid : Race, RaceResources, RaceColonization {
-	IColonization@ colonization;  // [[ MODIFY BASE GAME START ]]
+	Colonization@ colonization;  // [[ MODIFY BASE GAME START ]]
 	Construction@ construction;
 	Movement@ movement;
 	Budget@ budget;
@@ -40,7 +40,7 @@ class Mechanoid : Race, RaceResources, RaceColonization {
 	array<Planet@> popFactories;
 
 	void create() {
-		@colonization = cast<IColonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
+		@colonization = cast<Colonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
 		@construction = cast<Construction>(ai.construction);
 		@movement = cast<Movement>(ai.movement);
 		@planets = cast<Planets>(ai.planets);

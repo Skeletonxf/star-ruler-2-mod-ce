@@ -404,7 +404,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// Getters and setters for the Development and Colonization interfaces
 	// we need to implement for other components to interact with us
 
-	array<ColonizeData@> get_awaitingSource() {
+	array<ColonizeData@> get_AwaitingSource() {
 		return awaitingSource;
 	}
 
@@ -414,39 +414,39 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	}
 
 	// Potentials is the same as getPotentialColonize()
-	array<PotentialColonize@> get_potentials() {
+	array<PotentialColonize@> get_Potentials() {
 		return getPotentialColonize();
 	}
 
 	// This flag is set to false when the heralds race component is present
-	void set_queueColonization(bool value) { actions.queueColonization = value; }
+	void set_QueueColonization(bool value) { actions.queueColonization = value; }
 	// This is used to modify the weight of potential colonisations based on
 	// distance, except it quickly becomes useless once Star Children have
 	// more than one mothership, so we will manage this a different way
-	void set_colonizeWeightObj(Object@ colonizeWeightObj) { }
+	void set_ColonizeWeightObj(Object@ colonizeWeightObj) { }
 
-	array<DevelopmentFocus@> get_focuses() { return focuses; }
+	array<DevelopmentFocus@> get_Focuses() { return focuses; }
 
-	double get_aimFTLStorage() { return incomes.FTLStorage; }
-	void set_aimFTLStorage(double value) { incomes.FTLStorage = value; }
-	double get_aimFTLIncome() { return incomes.FTLIncome; }
-	void set_aimFTLIncome(double value) { incomes.FTLIncome = value; }
-	bool get_managePlanetPressure() { return actions.managePressure; }
-	void set_managePlanetPressure(bool value) { actions.managePressure = value; }
-	bool get_buildBuildings() { return actions.buildBuildings; }
-	void set_buildBuildings(bool value) { actions.buildBuildings = value; }
+	double get_AimFTLStorage() { return incomes.FTLStorage; }
+	void set_AimFTLStorage(double value) { incomes.FTLStorage = value; }
+	double get_AimFTLIncome() { return incomes.FTLIncome; }
+	void set_AimFTLIncome(double value) { incomes.FTLIncome = value; }
+	bool get_ManagePlanetPressure() { return actions.managePressure; }
+	void set_ManagePlanetPressure(bool value) { actions.managePressure = value; }
+	bool get_BuildBuildings() { return actions.buildBuildings; }
+	void set_BuildBuildings(bool value) { actions.buildBuildings = value; }
 
 	// This flag is set to false when the race is Ancient, which stops the
 	// Development component from colonizing to develop resources. This is just
 	// ignored here because performColonization will be set to false anyway.
-	bool get_colonizeResources() { return actions.performColonization; }
-	void set_colonizeResources(bool value) { }
+	bool get_ColonizeResources() { return actions.performColonization; }
+	void set_ColonizeResources(bool value) { }
 
 	// This flag is set to false when a race component is responsible for picking
 	// a source to colonize with
 	// The Ancient component doesn't pickup awaitingSource's like Star Children
 	// do?
-	void set_performColonization(bool value) { actions.performColonization = value; }
+	void set_PerformColonization(bool value) { actions.performColonization = value; }
 }
 
 AIComponent@ createExpansion() {
