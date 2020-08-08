@@ -59,6 +59,37 @@ class Limits {
 	}
 }
 
+void saveColonizeQueue(ColonizeQueue queue, Expansion& expansion, SaveFile& file) {
+	file << queue.spec;
+	file << queue.target;
+
+	expansion.saveColonize(file, queue.step);
+	expansion.resources.saveImport(file, queue.forData);
+
+	uint cnt = queue.children.length;
+	file << cnt;
+	for(uint i = 0; i < cnt; ++i)
+		saveColonizeQueue(queue.children[i], expansion, file);
+}
+
+void loadColonizeQueue(ColonizeQueue queue, Expansion& expansion, SaveFile& file) {
+	@queue.spec = ResourceSpec();
+	file >> queue.spec;
+	file >> queue.target;
+
+	@queue.step = expansion.loadColonize(file);
+	@queue.forData = expansion.resources.loadImport(file);
+
+	uint cnt = 0;
+	file >> cnt;
+	queue.children.length = cnt;
+	for(uint i = 0; i < cnt; ++i) {
+		@queue.children[i] = ColonizeQueue();
+		@queue.children[i].parent = queue;
+		loadColonizeQueue(queue.children[i], expansion, file);
+	}
+}
+
 /**
  * A combined and rewritten AIComponent which is responsible for colonization
  * and development, and as such will hopefully do the two together in a way
@@ -120,7 +151,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		cnt = queue.length;
 		file << cnt;
 		for(uint i = 0; i < cnt; ++i)
-			queue[i].save(dummy, file); // FIXME: will cause null pointer
+			saveColonizeQueue(queue[i], this, file);
 	}
 
 	void load(SaveFile& file) {
@@ -153,7 +184,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		queue.length = cnt;
 		for(uint i = 0; i < cnt; ++i) {
 			@queue[i] = ColonizeQueue();
-			queue[i].load(dummy, file); // FIXME: will cause null pointer
+			loadColonizeQueue(queue[i], this, file);
 		}
 	}
 
