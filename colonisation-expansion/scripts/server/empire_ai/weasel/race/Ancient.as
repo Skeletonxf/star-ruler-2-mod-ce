@@ -58,11 +58,11 @@ class TrackReplicator {
 };
 
 class Ancient : Race, RaceResources, RaceColonization {
-	Colonization@ colonization; // [[ MODIFY BASE GAME START ]]
+	IColonization@ colonization; // [[ MODIFY BASE GAME START ]]
 	Construction@ construction;
 	Resources@ resources;
 	Planets@ planets;
-	Development@ development; // [[ MODIFY BASE GAME START ]]
+	IDevelopment@ development; // [[ MODIFY BASE GAME START ]]
 	Movement@ movement;
 	Orbitals@ orbitals;
 
@@ -93,8 +93,10 @@ class Ancient : Race, RaceResources, RaceColonization {
 	bool foundFirstT2 = false;
 
 	void create() {
-		@colonization = cast<Colonization>(ai.colonization); // [[ MODIFY BASE GAME START ]]
-		colonization.performColonization = false;
+		// [[ MODIFY BASE GAME START ]]
+		@colonization = cast<IColonization>(ai.colonization);
+		colonization.PerformColonization = false;
+		// [[ MODIFY BASE GAME END ]]
 
 		@resources = cast<Resources>(ai.resources);
 		@construction = cast<Construction>(ai.construction);
@@ -103,10 +105,12 @@ class Ancient : Race, RaceResources, RaceColonization {
 		@orbitals = cast<Orbitals>(ai.orbitals);
 		@planets = cast<Planets>(ai.planets);
 
-		@development = cast<Development>(ai.development); // [[ MODIFY BASE GAME START ]]
-		development.managePlanetPressure = false;
-		development.buildBuildings = false;
-		development.colonizeResources = false;
+		// [[ MODIFY BASE GAME START ]]
+		@development = cast<IDevelopment>(ai.development);
+		development.ManagePlanetPressure = false;
+		development.BuildBuildings = false;
+		development.ColonizeResources = false;
+		// [[ MODIFY BASE GAME END ]]
 
 		@replicatorMod = getOrbitalModule("AncientReplicator");
 

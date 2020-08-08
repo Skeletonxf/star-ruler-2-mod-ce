@@ -41,7 +41,7 @@ class Linked : Race {
 	Military@ military;
 	Designs@ designs;
 	Construction@ construction;
-	Development@ development; // [[ MODIFY BASE GAME ]]
+	IDevelopment@ development; // [[ MODIFY BASE GAME ]]
 	Systems@ systems;
 	Budget@ budget;
 
@@ -57,7 +57,7 @@ class Linked : Race {
 		@military = cast<Military>(ai.military);
 		@designs = cast<Designs>(ai.designs);
 		@construction = cast<Construction>(ai.construction);
-		@development = cast<Development>(ai.development); // [[ MODIFY BASE GAME ]]
+		@development = cast<IDevelopment>(ai.development); // [[ MODIFY BASE GAME ]]
 		@systems = cast<Systems>(ai.systems);
 		@budget = cast<Budget>(ai.budget);
 
@@ -243,8 +243,10 @@ class Linked : Race {
 		}
 
 		//Detect new important planets to build mainframes at
-		for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
-			auto@ focus = development.focuses[i];
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = development.Focuses.length; i < cnt; ++i) {
+			auto@ focus = development.Focuses[i];
+			// [[ MODIFY BASE GAME END ]]
 			Region@ reg = focus.obj.region;
 			if(reg is null)
 				continue;

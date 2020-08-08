@@ -4,12 +4,6 @@ import empire_ai.weasel.Planets;
 import empire_ai.weasel.Development;
 import empire_ai.weasel.Resources;
 import empire_ai.weasel.Colonization;
-/*
-import empire_ai.weasel.Orbitals;
-import empire_ai.weasel.Construction;
-import empire_ai.weasel.Systems;
-import empire_ai.weasel.Budget;
-import empire_ai.weasel.Military; */
 
 import biomes;
 
@@ -23,15 +17,9 @@ from abilities import getAbilityID;
  */
 class Parasite : AIComponent {
 	Planets@ planets;
-	Development@ development;
+	IDevelopment@ development;
 	Resources@ resources;
-	Colonization@ colonization;
-	/*
-	Orbitals@ orbitals;
-	Construction@ construction;
-	Systems@ systems;
-	Budget@ budget;
-	Military@ military; */
+	IColonization@ colonization;
 
 	int foodClass = -1;
 	int waterClass = -1;
@@ -51,9 +39,9 @@ class Parasite : AIComponent {
 
 	void create() {
 		@planets = cast<Planets>(ai.planets);
-		@development = cast<Development>(ai.development);
+		@development = cast<IDevelopment>(ai.development);
 		@resources = cast<Resources>(ai.resources);
-		@colonization = cast<Colonization>(ai.colonization);
+		@colonization = cast<IColonization>(ai.colonization);
 		/*
 		@orbitals = cast<Orbitals>(ai.orbitals);
 	    @construction = cast<Construction>(ai.construction);
@@ -263,9 +251,9 @@ class Parasite : AIComponent {
 			// mark the planet as no longer worth leveling
 			bestRazeTarget.targetLevel = 0;
 			bestRazeTarget.requestedLevel = 0;
-			for (int i = development.focuses.length - 1; i >= 0; --i) {
-				if (development.focuses[i].plAI is bestRazeTarget) {
-					development.focuses.remove(development.focuses[i]);
+			for (int i = development.Focuses.length - 1; i >= 0; --i) {
+				if (development.Focuses[i].plAI is bestRazeTarget) {
+					development.Focuses.remove(development.Focuses[i]);
 				}
 			}
 			uint razeTargetLevel = getHighestPlanetResourceLevel(bestRazeTarget);

@@ -99,11 +99,11 @@ class DevelopmentFocus {
 	}
 };
 
-class Development : AIComponent, Buildings, ConsiderFilter, AIResources {  // [[ MODIFY BASE GAME ]]
+class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment {  // [[ MODIFY BASE GAME ]]
 	RaceDevelopment@ race;
 	Planets@ planets;
 	Resources@ resources;
-	Colonization@ colonization;
+	IColonization@ colonization; // [[ MODIFY BASE GAME ]]
 	Systems@ systems;
 	// [[ MODIFY BASE GAME START ]]
 	Budget@ budget;
@@ -148,7 +148,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {  // [[
 	void create() {
 		@planets = cast<Planets>(ai.planets);
 		@resources = cast<Resources>(ai.resources);
-		@colonization = cast<Colonization>(ai.colonization);
+		@colonization = cast<IColonization>(ai.colonization); // [[ MODIFY BASE GAME ]]
 		@systems = cast<Systems>(ai.systems);
 		@race = cast<RaceDevelopment>(ai.race);
 		// [[ MODIFY BASE GAME START ]]
@@ -477,8 +477,10 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {  // [[
 			Planet@ newFocus;
 			double totalWeight = 0.0;
 
-			for(uint i = 0, cnt = colonization.potentials.length; i < cnt; ++i) {
-				auto@ p = colonization.potentials[i];
+			// [[ MODIFY BASE GAME START ]]
+			for(uint i = 0, cnt = colonization.Potentials.length; i < cnt; ++i) {
+				auto@ p = colonization.Potentials[i];
+				// [[ MODIFY BASE GAME END ]]
 
 				if(p.resource.level < 3 && p.resource.cls !is scalableClass)
 					continue;

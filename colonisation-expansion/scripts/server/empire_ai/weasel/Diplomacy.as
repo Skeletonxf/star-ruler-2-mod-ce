@@ -23,7 +23,7 @@ class Diplomacy : DiplomacyAI, IAIComponent {
 	Fleets@ fleets;
 	Planets@ planets;
 	Construction@ construction;
-	Development@ development; // [[ MODIFY BASE GAME ]]
+	IDevelopment@ development; // [[ MODIFY BASE GAME ]]
 	Resources@ resources;
 	War@ war;
 	Intelligence@ intelligence;
@@ -55,7 +55,7 @@ class Diplomacy : DiplomacyAI, IAIComponent {
 		@systems = cast<Systems>(ai.systems);
 		@fleets = cast<Fleets>(ai.fleets);
 		@planets = cast<Planets>(ai.planets);
-		@development = cast<Development>(ai.development);  // [[ MODIFY BASE GAME ]]
+		@development = cast<IDevelopment>(ai.development);  // [[ MODIFY BASE GAME ]]
 		@construction = cast<Construction>(ai.construction);
 		@resources = cast<Resources>(ai.resources);
 		@war = cast<War>(ai.war);
@@ -109,8 +109,10 @@ class Diplomacy : DiplomacyAI, IAIComponent {
 		double bestWeight = 0.0;
 		Object@ best;
 
-		for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
-			Object@ obj = development.focuses[i].obj;
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = development.Focuses.length; i < cnt; ++i) {
+			Object@ obj = development.Focuses[i].obj;
+			// [[ MODIFY BASE GAME END ]]
 			double w = hook.consider(this, targets, vote, card, obj);
 			if(w > bestWeight) {
 				@best = obj;
@@ -126,8 +128,10 @@ class Diplomacy : DiplomacyAI, IAIComponent {
 		double bestWeight = 0.0;
 		Object@ best;
 
-		for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
-			Object@ obj = development.focuses[i].obj;
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = development.Focuses.length; i < cnt; ++i) {
+			Object@ obj = development.Focuses[i].obj;
+			// [[ MODIFY BASE GAME END ]]
 			double w = hook.consider(this, targets, vote, card, obj);
 			if(w > bestWeight) {
 				@best = obj;
@@ -156,8 +160,10 @@ class Diplomacy : DiplomacyAI, IAIComponent {
 		double bestWeight = 0.0;
 		Object@ best;
 
-		for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
-			Object@ obj = development.focuses[i].obj.region;
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = development.Focuses.length; i < cnt; ++i) {
+			Object@ obj = development.Focuses[i].obj.region;
+			// [[ MODIFY BASE GAME END ]]
 			if(obj is null)
 				continue;
 			double w = hook.consider(this, targets, vote, card, obj);
@@ -175,8 +181,10 @@ class Diplomacy : DiplomacyAI, IAIComponent {
 		double bestWeight = 0.0;
 		Object@ best;
 
-		for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
-			Object@ obj = development.focuses[i].obj.region;
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = development.Focuses.length; i < cnt; ++i) {
+			Object@ obj = development.Focuses[i].obj.region;
+			// [[ MODIFY BASE GAME END ]]
 			if(obj is null)
 				continue;
 			double w = hook.consider(this, targets, vote, card, obj);

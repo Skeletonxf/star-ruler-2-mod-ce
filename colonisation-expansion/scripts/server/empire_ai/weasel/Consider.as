@@ -23,20 +23,20 @@ class Consider : AIComponent, Considerer {
 	Fleets@ fleets;
 	Planets@ planets;
 	Construction@ construction;
-	Development@ development; // [[ MODIFY BASE GAME START ]]
+	IDevelopment@ development; // [[ MODIFY BASE GAME START ]]
 	Resources@ resources;
 	Intelligence@ intelligence;
-	Colonization@ colonization;  // [[ MODIFY BASE GAME START ]]
+	IColonization@ colonization;  // [[ MODIFY BASE GAME START ]]
 
 	void create() {
 		@systems = cast<Systems>(ai.systems);
 		@fleets = cast<Fleets>(ai.fleets);
 		@planets = cast<Planets>(ai.planets);
-		@development = cast<Development>(ai.development); // [[ MODIFY BASE GAME START ]]
+		@development = cast<IDevelopment>(ai.development); // [[ MODIFY BASE GAME START ]]
 		@construction = cast<Construction>(ai.construction);
 		@resources = cast<Resources>(ai.resources);
 		@intelligence = cast<Intelligence>(ai.intelligence);
-		@colonization = cast<Colonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
+		@colonization = cast<IColonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
 	}
 
 	Empire@ get_empire() {
@@ -219,8 +219,10 @@ class Consider : AIComponent, Considerer {
 	Object@ ImportantPlanets(const ConsiderHook& hook) {
 		Object@ best;
 		bestWeight = 0.0;
-		for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
-			Object@ obj = development.focuses[i].obj;
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = development.Focuses.length; i < cnt; ++i) {
+			Object@ obj = development.Focuses[i].obj;
+			// [[ MODIFY BASE GAME END ]]
 			if(obj !is null) {
 				if(cfilter !is null && !cfilter.filter(obj))
 					continue;
@@ -260,8 +262,10 @@ class Consider : AIComponent, Considerer {
 		Object@ best;
 		bestWeight = 0.0;
 		if(alwaysImportant) {
-			for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
-				Object@ obj = development.focuses[i].obj;
+			// [[ MODIFY BASE GAME START ]]
+			for(uint i = 0, cnt = development.Focuses.length; i < cnt; ++i) {
+				Object@ obj = development.Focuses[i].obj;
+				// [[ MODIFY BASE GAME END ]]
 				if(obj !is null) {
 					if(cfilter !is null && !cfilter.filter(obj))
 						continue;

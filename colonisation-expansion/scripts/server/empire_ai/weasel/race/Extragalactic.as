@@ -12,7 +12,7 @@ from orbitals import getOrbitalModuleID;
 from constructions import ConstructionType, getConstructionType;
 
 class Extragalactic : Race {
-	Colonization@ colonization;  // [[ MODIFY BASE GAME START ]]
+	IColonization@ colonization;  // [[ MODIFY BASE GAME START ]]
 	Construction@ construction;
 	Scouting@ scouting;
 	Orbitals@ orbitals;
@@ -28,9 +28,9 @@ class Extragalactic : Race {
 	array<const ConstructionType@> beaconBuilds;
 
 	void create() {
-		@colonization = cast<Colonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
-		colonization.performColonization = false;
-		colonization.queueColonization = false;
+		@colonization = cast<IColonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
+		colonization.PerformColonization = false;
+		colonization.QueueColonization = false;
 
 		@scouting = cast<Scouting>(ai.scouting);
 		scouting.buildScouts = false;

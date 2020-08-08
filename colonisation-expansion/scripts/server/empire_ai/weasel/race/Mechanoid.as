@@ -18,7 +18,7 @@ import oddity_navigation;
 const double MAX_POP_BUILDTIME = 3.0 * 60.0;
 
 class Mechanoid : Race, RaceResources, RaceColonization {
-	Colonization@ colonization;  // [[ MODIFY BASE GAME START ]]
+	IColonization@ colonization;  // [[ MODIFY BASE GAME START ]]
 	Construction@ construction;
 	Movement@ movement;
 	Budget@ budget;
@@ -40,7 +40,7 @@ class Mechanoid : Race, RaceResources, RaceColonization {
 	array<Planet@> popFactories;
 
 	void create() {
-		@colonization = cast<Colonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
+		@colonization = cast<IColonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
 		@construction = cast<Construction>(ai.construction);
 		@movement = cast<Movement>(ai.movement);
 		@planets = cast<Planets>(ai.planets);
@@ -57,7 +57,7 @@ class Mechanoid : Race, RaceResources, RaceColonization {
 		@scalableClass = getResourceClass("Scalable");
 
 		colonizeAbl = getAbilityID("MechanoidColonize");
-		colonization.performColonization = false;
+		colonization.PerformColonization = false; // [[ MODIFY BASE GAME ]]
 
 		@buildPop = getConstructionType("MechanoidPopulation");
 	}
@@ -284,15 +284,17 @@ class Mechanoid : Race, RaceResources, RaceColonization {
 
 		if(availSources.length != 0) {
 			//If we have any population left, do stuff from our colonization queue
-			for(uint i = 0, cnt = colonization.awaitingSource.length; i < cnt && availSources.length != 0; ++i) {
-				Planet@ dest = colonization.awaitingSource[i].target;
+			 // [[ MODIFY BASE GAME START ]]
+			for(uint i = 0, cnt = colonization.AwaitingSource.length; i < cnt && availSources.length != 0; ++i) {
+				Planet@ dest = colonization.AwaitingSource[i].target;
 				Planet@ source = transferBest(dest, availSources);
 				if(source !is null) {
-					@colonization.awaitingSource[i].colonizeFrom = source;
-					colonization.awaitingSource.removeAt(i);
+					@colonization.AwaitingSource[i].colonizeFrom = source;
+					colonization.AwaitingSource.removeAt(i);
 					--i; --cnt;
 				}
 			}
+			 // [[ MODIFY BASE END ]]
 		}
 
 		//Build population on idle planets

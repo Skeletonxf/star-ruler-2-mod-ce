@@ -133,7 +133,7 @@ tidy final class ColonizeQueue {
 	}
 };
 
-final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
+final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]]
 	const ResourceClass@ foodClass, waterClass, scalableClass;
 	// [[ MODIFY BASE GAME START ]]
 	const ResourceType@ razed;
@@ -796,7 +796,6 @@ final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 		for (uint i = 0; i < queue.length; i++) {
 			dumpQueue(queue[i]);
 		}
-		print("Colonizations: "+nextColonizeId);
 	}
 
 	bool shouldQueueFor(const ResourceSpec@ spec, ColonizeQueue@ inside = null) {

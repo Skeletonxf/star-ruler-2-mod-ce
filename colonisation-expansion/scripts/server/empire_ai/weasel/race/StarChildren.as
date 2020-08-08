@@ -130,9 +130,9 @@ class LaborMission : Mission {
 };
 
 class StarChildren : Race {
-	Colonization@ colonization; // [[ MODIFY BASE GAME START ]]
+	IColonization@ colonization; // [[ MODIFY BASE GAME START ]]
 	Construction@ construction;
-	Development@ development;  // [[ MODIFY BASE GAME START ]]
+	IDevelopment@ development;  // [[ MODIFY BASE GAME START ]]
 	Movement@ movement;
 	Planets@ planets;
 	Fleets@ fleets;
@@ -180,12 +180,14 @@ class StarChildren : Race {
 	}
 
 	void create() override {
-		@colonization = cast<Colonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
-		colonization.performColonization = false;
+		// [[ MODIFY BASE GAME START ]]
+		@colonization = cast<IColonization>(ai.colonization);
+		colonization.PerformColonization = false;
 
-		@development = cast<Development>(ai.development); // [[ MODIFY BASE GAME START ]]
-		development.managePlanetPressure = false;
-		development.buildBuildings = false;
+		@development = cast<IDevelopment>(ai.development);
+		development.ManagePlanetPressure = false;
+		development.BuildBuildings = false;
+		// [[ MODIFY BASE GAME END ]]
 
 		@fleets = cast<Fleets>(ai.fleets);
 		@construction = cast<Construction>(ai.construction);
@@ -331,7 +333,7 @@ class StarChildren : Race {
 		}
 
 		//Send motherships to do colonization
-		uint totalCount = popRequests.length + colonization.awaitingSource.length;
+		uint totalCount = popRequests.length + colonization.AwaitingSource.length; // [[ MODIFY BASE GAME ]]
 		uint motherCount = idleMothershipCount();
 
 		// [[ MODIFY BASE GAME START ]]
@@ -350,8 +352,10 @@ class StarChildren : Race {
 				colonizeBest(dest);
 			}
 
-			for(uint i = 0, cnt = colonization.awaitingSource.length; i < cnt; ++i) {
-				Planet@ dest = colonization.awaitingSource[i].target;
+			// [[ MODIFY BASE GAME START ]]
+			for(uint i = 0, cnt = colonization.AwaitingSource.length; i < cnt; ++i) {
+				Planet@ dest = colonization.AwaitingSource[i].target;
+				// [[ MODIFY BASE GAME END ]]
 				if(isColonizing(dest))
 					continue;
 
@@ -402,9 +406,9 @@ class StarChildren : Race {
 		}
 
 		if(motherships.length == 1)
-			@colonization.colonizeWeightObj = motherships[0].obj;
+			@colonization.ColonizeWeightObj = motherships[0].obj; // [[ MODIFY BASE GAME ]]
 		else
-			@colonization.colonizeWeightObj = null;
+			@colonization.ColonizeWeightObj = null; // [[ MODIFY BASE GAME ]]
 
 		//Idle motherships should be sent to go collect labor from labor planets
 		if(laborPlanets.length != 0) {
@@ -513,8 +517,10 @@ class StarChildren : Race {
 		}
 
 		if(best is null) {
-			for(uint i = 0, cnt = colonization.awaitingSource.length; i < cnt; ++i) {
-				Planet@ dest = colonization.awaitingSource[i].target;
+			// [[ MODIFY BASE GAME START ]]
+			for(uint i = 0, cnt = colonization.AwaitingSource.length; i < cnt; ++i) {
+				Planet@ dest = colonization.AwaitingSource[i].target;
+				// [[ MODIFY BASE GAME END ]]
 				if(isColonizing(dest))
 					continue;
 

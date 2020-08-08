@@ -51,6 +51,7 @@ import AIComponent@ createInvasion() from "empire_ai.weasel.misc.Invasion";
 import bool hasInvasionMap() from "Invasion.InvasionMap";
 
 // [[ MODIFY BASE GAME START ]]
+import AIComponent@ createExpansion() from "empire_ai.dragon.Expansion";
 // [[ MODIFY BASE GAME END ]]
 
 from buildings import BuildingType;
