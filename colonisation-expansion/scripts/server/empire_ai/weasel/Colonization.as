@@ -790,12 +790,6 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 					ai.print("  "+ai.pad(other.name, 20)+" - "+ai.pad(other.TotalPlanets.value+" planets", 15)+" - "+other.points.value+" points");
 			}
 		}
-
-		// TODO: Try to understand the tree structure of the colonize queue
-		ai.print("Colonize queue");
-		for (uint i = 0; i < queue.length; i++) {
-			dumpQueue(queue[i]);
-		}
 	}
 
 	bool shouldQueueFor(const ResourceSpec@ spec, ColonizeQueue@ inside = null) {

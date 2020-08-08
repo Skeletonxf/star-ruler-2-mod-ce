@@ -344,6 +344,14 @@ class Consider : AIComponent, Considerer {
 			for(uint i = 0, cnt = resources.used.length; i < cnt; ++i) {
 				ExportData@ res = resources.used[i];
 				ImportData@ req = res.request;
+				// [[ MODIFY BASE GAME START ]]
+				// Replacing an existing resource with the one from the
+				// hook must only be done if the resource to replace is
+				// exportable.
+				if (res.resource is null || !res.resource.exportable) {
+					continue;
+				}
+				// [[ MODIFY BASE GAME END ]]
 				if(req !is null && req.spec.meets(type, req.obj, req.obj)) {
 					@secondary = res.obj;
 					@request = req;
