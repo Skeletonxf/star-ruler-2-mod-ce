@@ -133,7 +133,7 @@ tidy final class ColonizeQueue {
 	}
 };
 
-final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]]
+final class Colonization : AIComponent { // [[ MODIFY BASE GAME ]]
 	const ResourceClass@ foodClass, waterClass, scalableClass;
 	// [[ MODIFY BASE GAME START ]]
 	const ResourceType@ razed;
@@ -151,7 +151,7 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 
 	array<ColonizeQueue@> queue;
 	array<ColonizeData@> colonizing;
-	array<ColonizeData@> awaitingSource;
+	array<ColonizeData@> awaitingSource; // [[ MODIFY BASE GAME ]]
 	array<WaitUsed@> waiting;
 	array<ColonizePenalty@> penalties;
 	set_int penaltySet;
@@ -170,10 +170,10 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 
 	//Whether to automatically find sources and order colonizations
 	// [[ MODIFY BASE GAME START ]]
-	bool _performColonization = true;
-	bool _queueColonization = true;
+	bool performColonization = true;
+	bool queueColonization = true;
 
-	Object@ _colonizeWeightObj;
+	Object@ colonizeWeightObj;
 	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
@@ -352,6 +352,7 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 
 	void focusTick(double time) {
 		if(sourceUpdate < gameTime && performColonization) {
+			ai.print("updating colonise sources");
 			updateSources();
 			if(sources.length == 0 && gameTime < 60.0)
 				sourceUpdate = gameTime + 1.0;
@@ -367,8 +368,10 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 				&& (budget.Progress < ai.behavior.colonizeMaxBudgetProgress || gameTime < 3.0 * 60.0)
 				&& (sources.length > 0 || !performColonization) && canColonize()
 				&& queueColonization) {
+			ai.print("ordering colonisations");
 			//Actually go order some colonizations from the queue
 			if(orderFromQueue()) {
+				ai.print("doing colonize");
 				doColonize();
 			}
 			else if(awaitingSource.length == 0) {
@@ -379,6 +382,7 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 
 		//Find colonization sources for everything that needs them
 		if(awaitingSource.length != 0 && performColonization) {
+			print("finding colonization sources");
 			for(uint i = 0, cnt = awaitingSource.length; i < cnt; ++i) {
 				auto@ target = awaitingSource[i];
 
@@ -426,7 +430,7 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 	}
 
 	void orderColonization(ColonizeData& data, Planet& sourcePlanet) {
-		if(log)
+		if(true)
 			ai.print("start colonizing "+data.target.name, sourcePlanet);
 
 		if(race !is null) {
@@ -645,7 +649,7 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 			return null;
 	}
 
-	array<PotentialColonize@> potentials;
+	array<PotentialColonize@> potentials;  // [[ MODIFY BASE GAME ]]
 	void checkSystem(SystemAI@ sys) {
 		uint presentMask = sys.seenPresent;
 		if(presentMask & ai.mask == 0) {
@@ -1134,6 +1138,7 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 	}
 
 	void fillQueueFromRequests() {
+		ai.print("have "+resources.requested.length+" resources requested.");
 		for(uint i = 0, cnt = resources.requested.length; i < cnt && remainColonizations > 0; ++i) {
 			auto@ req = resources.requested[i];
 			if(!req.isOpen)
@@ -1155,8 +1160,8 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 
 	// [[ MODIFY BASE GAME START ]]
 	// Trivial implementations for the getters and setters of the interface
-	array<ColonizeData@> get_awaitingSource() { return awaitingSource; }
-	array<PotentialColonize@> get_potentials() { return potentials; }
+	/* array<ColonizeData@> get_awaitingSource() { return _awaitingSource; }
+	array<PotentialColonize@> get_potentials() { return _potentials; }
 	void set_performColonization(bool value) { _performColonization = value; }
 	void set_queueColonization(bool value) { _queueColonization = value; }
 	void set_colonizeWeightObj(Object@ obj) { @_colonizeWeightObj = obj; }
@@ -1165,7 +1170,7 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 	// Additional getters/setters needed to compile this component
 	bool get_performColonization() { return _performColonization; }
 	bool get_queueColonization() { return _queueColonization; }
-	Object@ get_colonizeWeightObj() { return _colonizeWeightObj; }
+	Object@ get_colonizeWeightObj() { return _colonizeWeightObj; } */
 	// [[ MODIFY BASE GAME END ]]
 };
 

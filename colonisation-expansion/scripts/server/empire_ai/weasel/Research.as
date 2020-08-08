@@ -15,7 +15,7 @@ class Research : AIComponent {
 	TechnologyGrid grid;
 	array<TechnologyNode@> immediateQueue;
 	// [[ MODIFY BASE GAME START ]]
-	IDevelopment@ development;
+	Development@ development;
 	// [[ MODIFY BASE GAME END ]]
 
 	void save(SaveFile& file) {
@@ -46,7 +46,7 @@ class Research : AIComponent {
 
 	// [[ MODIFY BASE GAME START ]]
 	void create() {
-		@development = cast<IDevelopment>(ai.development);
+		@development = cast<Development>(ai.development);
 	}
 	// [[ MODIFY BASE GAME END ]]
 

@@ -23,20 +23,20 @@ class Consider : AIComponent, Considerer {
 	Fleets@ fleets;
 	Planets@ planets;
 	Construction@ construction;
-	IDevelopment@ development; // [[ MODIFY BASE GAME START ]]
+	Development@ development; // [[ MODIFY BASE GAME START ]]
 	Resources@ resources;
 	Intelligence@ intelligence;
-	IColonization@ colonization;  // [[ MODIFY BASE GAME START ]]
+	Colonization@ colonization;  // [[ MODIFY BASE GAME START ]]
 
 	void create() {
 		@systems = cast<Systems>(ai.systems);
 		@fleets = cast<Fleets>(ai.fleets);
 		@planets = cast<Planets>(ai.planets);
-		@development = cast<IDevelopment>(ai.development); // [[ MODIFY BASE GAME START ]]
+		@development = cast<Development>(ai.development); // [[ MODIFY BASE GAME START ]]
 		@construction = cast<Construction>(ai.construction);
 		@resources = cast<Resources>(ai.resources);
 		@intelligence = cast<Intelligence>(ai.intelligence);
-		@colonization = cast<IColonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
+		@colonization = cast<Colonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
 	}
 
 	Empire@ get_empire() {

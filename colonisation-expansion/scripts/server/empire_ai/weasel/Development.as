@@ -99,17 +99,17 @@ class DevelopmentFocus {
 	}
 };
 
-class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment {  // [[ MODIFY BASE GAME ]]
+class Development : AIComponent, Buildings, ConsiderFilter, AIResources {  // [[ MODIFY BASE GAME ]]
 	RaceDevelopment@ race;
 	Planets@ planets;
 	Resources@ resources;
-	IColonization@ colonization;
+	Colonization@ colonization;
 	Systems@ systems;
 	// [[ MODIFY BASE GAME START ]]
 	Budget@ budget;
 	// [[ MODIFY BASE GAME END ]]
 
-	array<DevelopmentFocus@> focuses;
+	array<DevelopmentFocus@> focuses; // [[ MODIFY BASE GAME ]]
 	array<ExportData@> managedPressure;
 
 	array<ColonizeData@> pendingFocuses;
@@ -118,15 +118,15 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 	array<BuildingRequest@> genericBuilds;
 	array<ExportData@> aiResources;
 
-	double _aimFTLStorage = 0.0;
+	double aimFTLStorage = 0.0;
 	// [[ MODIFY BASE GAME START ]]
-	double _aimFTLIncome = 1.0;
+	double aimFTLIncome = 1.0;
 	// [[ MODIFY BASE GAME END ]]
 
-	bool _managePlanetPressure = true;
+	bool managePlanetPressure = true;
 	bool manageAsteroidPressure = true;
-	bool _buildBuildings = true;
-	bool _colonizeResources = true;
+	bool buildBuildings = true;
+	bool colonizeResources = true;
 
 	// [[ MODIFY BASE GAME START ]]
 	uint nativeLifeStatus = 0;
@@ -148,7 +148,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 	void create() {
 		@planets = cast<Planets>(ai.planets);
 		@resources = cast<Resources>(ai.resources);
-		@colonization = cast<IColonization>(ai.colonization);
+		@colonization = cast<Colonization>(ai.colonization);
 		@systems = cast<Systems>(ai.systems);
 		@race = cast<RaceDevelopment>(ai.race);
 		// [[ MODIFY BASE GAME START ]]
@@ -436,7 +436,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 
 		double totalChance =
 			  ai.behavior.focusDevelopWeight
-			+ ai.behavior.focusColonizeNewWeight * sqr(1.0 / double(focuses.length + 0.0000001)) // [[ MODIFY BASE GAME START ]]
+			+ ai.behavior.focusColonizeNewWeight * sqr(1.0 / double(focuses.length)) // [[ MODIFY BASE GAME START ]]
 			+ ai.behavior.focusColonizeHighTierWeight;
 		double roll = randomd(0.0, totalChance);
 
@@ -472,7 +472,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 			return;
 
 		//Find a scalable or high tier resource to colonize and turn into a focus
-		roll -= ai.behavior.focusColonizeNewWeight * sqr(1.0 / double(focuses.length + 0.0000001));
+		roll -= ai.behavior.focusColonizeNewWeight * sqr(1.0 / double(focuses.length));
 		if(roll <= 0) {
 			Planet@ newFocus;
 			double totalWeight = 0.0;
@@ -525,8 +525,8 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 		}
 
 		// [[ MODIFY BASE GAME START ]]
-		//if(focuses.length == 0)
-		//	return;
+		if(focuses.length == 0)
+			return;
 		// [[ MODIFY BASE GAME END ]]
 
 		//Find a high tier resource to import to one of our focuses
@@ -966,9 +966,9 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 		return true;
 	}
 
-	// [[ MODIFY BASE GAME START ]]
+	/* // [[ MODIFY BASE GAME START ]]
 	array<DevelopmentFocus@> get_focuses() {
-		return focuses;
+		return _focuses;
 	}
 
 	double get_aimFTLStorage() { return _aimFTLStorage; }
@@ -981,7 +981,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 	void set_buildBuildings(bool value) { _buildBuildings = value; }
 	bool get_colonizeResources() { return _colonizeResources; }
 	void set_colonizeResources(bool value) { _colonizeResources = value; }
-	// [[ MODIFY BASE GAME END ]]
+	// [[ MODIFY BASE GAME END ]] */
 };
 
 AIComponent@ createDevelopment() {

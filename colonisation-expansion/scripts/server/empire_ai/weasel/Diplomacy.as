@@ -23,7 +23,7 @@ class Diplomacy : DiplomacyAI, IAIComponent {
 	Fleets@ fleets;
 	Planets@ planets;
 	Construction@ construction;
-	IDevelopment@ development; // [[ MODIFY BASE GAME ]]
+	Development@ development; // [[ MODIFY BASE GAME ]]
 	Resources@ resources;
 	War@ war;
 	Intelligence@ intelligence;
@@ -55,7 +55,7 @@ class Diplomacy : DiplomacyAI, IAIComponent {
 		@systems = cast<Systems>(ai.systems);
 		@fleets = cast<Fleets>(ai.fleets);
 		@planets = cast<Planets>(ai.planets);
-		@development = cast<IDevelopment>(ai.development);  // [[ MODIFY BASE GAME ]]
+		@development = cast<Development>(ai.development);  // [[ MODIFY BASE GAME ]]
 		@construction = cast<Construction>(ai.construction);
 		@resources = cast<Resources>(ai.resources);
 		@war = cast<War>(ai.war);
