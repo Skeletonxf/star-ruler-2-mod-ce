@@ -11,7 +11,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
     - The code looks like it does consider planet support strength, need to investigate further
   - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
-  - Make the AI increase hate level substantially when being carpet bombed by an enemy.
   - Fix the AI military component being designed around a single `mainWait` and primary factory for building flagships
     - This is probably why the AI seemed to prioritise gates over flagships in an AI game I observed. Fleet building is only done at the main factory, and the Gate FTL code would have been more aggressive in queueing up another build, so it would have effectively blocked the AI from ever getting around to building a flagship, despite having the funds and labor income to do so. Should make it queue up a flagship and put to top priority if it is under attack and vulnerable regardless of what is already building.
   - Fix resources added to planets not being recognised by First Control Core buildings
