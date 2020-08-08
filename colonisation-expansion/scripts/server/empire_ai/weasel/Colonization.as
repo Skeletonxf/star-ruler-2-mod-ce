@@ -133,7 +133,7 @@ tidy final class ColonizeQueue {
 	}
 };
 
-final class Colonization : AIComponent {
+final class Colonization : AIComponent, IColonization {
 	const ResourceClass@ foodClass, waterClass, scalableClass;
 	// [[ MODIFY BASE GAME START ]]
 	const ResourceType@ razed;
@@ -169,10 +169,12 @@ final class Colonization : AIComponent {
 	uint prevColonizations = 0;
 
 	//Whether to automatically find sources and order colonizations
-	bool performColonization = true;
-	bool queueColonization = true;
+	// [[ MODIFY BASE GAME START ]]
+	bool _performColonization = true;
+	bool _queueColonization = true;
 
-	Object@ colonizeWeightObj;
+	Object@ _colonizeWeightObj;
+	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
 		@resources = cast<Resources>(ai.resources);
@@ -1144,8 +1146,64 @@ final class Colonization : AIComponent {
 		}
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	// Trivial implementations for the getters and setters of the interface
+	array<ColonizeData@> get_awaitingSource() { return awaitingSource; }
+	array<PotentialColonize@> get_potentials() { return potentials; }
+	void set_performColonization(bool value) { _performColonization = value; }
+	void set_queueColonization(bool value) { _queueColonization = value; }
+	void set_colonizeWeightObj(Object@ obj) { @_colonizeWeightObj = obj; }
+
+
+	// Additional getters/setters needed to compile this component
+	bool get_performColonization() { return _performColonization; }
+	bool get_queueColonization() { return _queueColonization; }
+	Object@ get_colonizeWeightObj() { return _colonizeWeightObj; }
+	// [[ MODIFY BASE GAME END ]]
 };
 
 AIComponent@ createColonization() {
 	return Colonization();
 }
+
+// [[ MODIFY BASE GAME START ]]
+// Define the interface that other AI components use to interact with this one,
+// so this component can be swapped out.
+interface IColonization {
+	// Places a resource spec into the colonize queue, returning the queue item
+	ColonizeQueue@ queueColonize(ResourceSpec& spec, bool place = true);
+	// Places a resource spec into the colonize queue, returning the queue item
+	ColonizeQueue@ queueColonizeHighPriority(ResourceSpec& spec, bool place = true);
+	// Saves colonize data to a file
+	void saveColonize(SaveFile& file, ColonizeData@ data);
+	// Loads colonize data from a file
+	ColonizeData@ loadColonize(SaveFile& file);
+	// TODO: Find out what this does
+	bool isResolved(ImportData@ req, ColonizeQueue@ inside = null);
+	// Returns the PotentialColonize list
+	array<PotentialColonize@>@ getPotentialColonize();
+	// Colonizes a planet, marking the ColonizeData as colonizing and awaitingSource
+	ColonizeData@ colonize(Planet& pl);
+	// Colonizes the best planet in the potentials matching the resource spec
+	ColonizeData@ colonize(ResourceSpec@ spec);
+	// TODO: Find out what this does
+	bool shouldQueueFor(const ResourceSpec@ spec, ColonizeQueue@ inside = null);
+	// Checks if a planet is being colonized or is in the queue
+	bool isColonizing(Planet& pl);
+	// Checks how recently we colonized something matching the spec
+	double timeSinceMatchingColonize(ResourceSpec& spec);
+	// awaitingSource seems to be where planets we want to colonize go before
+	// we find a source to colonize them from
+	array<ColonizeData@> get_awaitingSource();
+	// Potentials is the same as getPotentialColonize()
+	array<PotentialColonize@> get_potentials();
+	// This flag is set to false when a race component is responsible for picking
+	// a source to colonize with
+	void set_performColonization(bool value);
+	// This flag is set to false when the heralds race component is present
+	void set_queueColonization(bool value);
+	// This is used to modify the weight of potential colonisations based on distance,
+	// except it quickly becomes useless once Star Children have more than one mothership
+	void set_colonizeWeightObj(Object@ colonizeWeightObj);
+}
+// [[ MODIFY BASE GAME END ]]

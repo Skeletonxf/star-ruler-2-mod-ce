@@ -130,7 +130,7 @@ class LaborMission : Mission {
 };
 
 class StarChildren : Race {
-	Colonization@ colonization;
+	IColonization@ colonization; // [[ MODIFY BASE GAME START ]]
 	Construction@ construction;
 	Development@ development;
 	Movement@ movement;
@@ -180,7 +180,7 @@ class StarChildren : Race {
 	}
 
 	void create() override {
-		@colonization = cast<Colonization>(ai.colonization);
+		@colonization = cast<IColonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
 		colonization.performColonization = false;
 
 		@development = cast<Development>(ai.development);

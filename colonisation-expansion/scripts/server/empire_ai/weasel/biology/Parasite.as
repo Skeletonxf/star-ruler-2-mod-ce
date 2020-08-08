@@ -25,7 +25,7 @@ class Parasite : AIComponent {
 	Planets@ planets;
 	Development@ development;
 	Resources@ resources;
-	Colonization@ colonization;
+	IColonization@ colonization;
 	/*
 	Orbitals@ orbitals;
 	Construction@ construction;
@@ -53,7 +53,7 @@ class Parasite : AIComponent {
 		@planets = cast<Planets>(ai.planets);
 		@development = cast<Development>(ai.development);
 		@resources = cast<Resources>(ai.resources);
-		@colonization = cast<Colonization>(ai.colonization);
+		@colonization = cast<IColonization>(ai.colonization);
 		/*
 		@orbitals = cast<Orbitals>(ai.orbitals);
 	    @construction = cast<Construction>(ai.construction);

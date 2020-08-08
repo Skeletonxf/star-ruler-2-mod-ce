@@ -192,7 +192,6 @@ final class Resources : AIComponent {
 					breakImport(res);
 				}
 			}
-
 		}
 
 		//TODO: Make sure universal unique only applies once per planet

@@ -103,7 +103,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	RaceDevelopment@ race;
 	Planets@ planets;
 	Resources@ resources;
-	Colonization@ colonization;
+	IColonization@ colonization;
 	Systems@ systems;
 	// [[ MODIFY BASE GAME START ]]
 	Budget@ budget;
@@ -142,12 +142,13 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	uint razingStatusID = 0;
 	const ResourceClass@ foodClass;
 	const ResourceClass@ waterClass;
+	const ResourceClass@ scalableClass;
 	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
 		@planets = cast<Planets>(ai.planets);
 		@resources = cast<Resources>(ai.resources);
-		@colonization = cast<Colonization>(ai.colonization);
+		@colonization = cast<IColonization>(ai.colonization);
 		@systems = cast<Systems>(ai.systems);
 		@race = cast<RaceDevelopment>(ai.race);
 		// [[ MODIFY BASE GAME START ]]
@@ -184,6 +185,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 		razingStatusID = getStatusID("ParasiteRaze");
 		@foodClass = getResourceClass("Food");
 		@waterClass = getResourceClass("WaterType");
+		@scalableClass = getResourceClass("Scalable");
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -432,7 +434,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 
 		double totalChance =
 			  ai.behavior.focusDevelopWeight
-			+ ai.behavior.focusColonizeNewWeight * sqr(1.0 / double(focuses.length))
+			+ ai.behavior.focusColonizeNewWeight * sqr(1.0 / double(focuses.length + 0.0000001)) // [[ MODIFY BASE GAME START ]]
 			+ ai.behavior.focusColonizeHighTierWeight;
 		double roll = randomd(0.0, totalChance);
 
@@ -468,7 +470,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 			return;
 
 		//Find a scalable or high tier resource to colonize and turn into a focus
-		roll -= ai.behavior.focusColonizeNewWeight * sqr(1.0 / double(focuses.length));
+		roll -= ai.behavior.focusColonizeNewWeight * sqr(1.0 / double(focuses.length + 0.0000001));
 		if(roll <= 0) {
 			Planet@ newFocus;
 			double totalWeight = 0.0;
@@ -476,7 +478,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 			for(uint i = 0, cnt = colonization.potentials.length; i < cnt; ++i) {
 				auto@ p = colonization.potentials[i];
 
-				if(p.resource.level < 3 && p.resource.cls !is colonization.scalableClass)
+				if(p.resource.level < 3 && p.resource.cls !is scalableClass)
 					continue;
 
 				Region@ reg = p.pl.region;
@@ -498,7 +500,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 					w *= 0.25;
 				if(sys.obj.PlanetsMask & ~ai.mask != 0)
 					w *= 0.25;
-				if(p.resource.cls is colonization.scalableClass)
+				if(p.resource.cls is scalableClass)
 					w *= 10.0;
 
 				totalWeight += w;
@@ -520,8 +522,10 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 			}
 		}
 
-		if(focuses.length == 0)
-			return;
+		// [[ MODIFY BASE GAME START ]]
+		//if(focuses.length == 0)
+		//	return;
+		// [[ MODIFY BASE GAME END ]]
 
 		//Find a high tier resource to import to one of our focuses
 		roll -= ai.behavior.focusColonizeHighTierWeight;
@@ -765,8 +769,13 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 					}
 				}
 
-				if(existing)
+				// [[ MODIFY BASE GAME START ]]
+				// Lighting Systems cannot be built by the AI wrongly because
+				// of the later checks in this method, and they have no
+				// money maintenance so allow multiple builds at once for them.
+				if(existing && type.ident != "LightSystem")
 					break;
+				// [[ MODIFY BASE GAME END ]]
 
 				@filterType = type;
 				@consider.filter = this;
@@ -793,12 +802,16 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 									priority = 2;
 								}
 								bool skipBuild = false;
-								if (type.ident == "Farm" || type.ident == "Hydrogenator") {
-									// sanity check to avoid building unneeded Megafarms
+								/* if (type.ident == "Farm" || type.ident == "Hydrogenator") {
+									// Sanity check to avoid building unneeded Megafarms
 									// and Hydrogenators, this shouldn't need to trigger, as
 									// the building hook code has a number of checks
 									// that should ensure we didn't have any available food/water
 									// planets, but none of them are actually explicit.
+									// The building hook actually does sometimes try to build food/water
+									// when the resource can be imported instead, which costs
+									// less maintenance, so it is preferable to tell the AI
+									// explicitly not to build them and import the resource instead.
 									const ResourceClass@ cls;
 									if (type.ident == "Farm")
 										@cls = foodClass;
@@ -837,7 +850,10 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 											skipBuild = true;
 										}
 									}
-								}
+									if (!skipBuild) {
+										ai.print("Building "+type.name+" on "+plAI.obj.name+".");
+									}
+								} */
 								if (type.ident == "LightSystem" && plAI.obj.hasStatusEffect(currentlyStarlitStatusID)) {
 									// don't build artificial lighting on a planet with starlight
 									skipBuild = true;
@@ -903,7 +919,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 
 			if(plAI.resources.length != 0) {
 				auto@ res = plAI.resources[0];
-				if(res.resource.cls is colonization.scalableClass
+				if(res.resource.cls is scalableClass
 					|| focuses.length == 0 && res.resource.level >= 2
 					|| (race !is null && race.shouldBeFocus(plAI.obj, res.resource))) {
 					if(!isFocus(plAI.obj)) {

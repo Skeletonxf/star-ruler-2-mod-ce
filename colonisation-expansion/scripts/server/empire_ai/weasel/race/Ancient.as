@@ -58,7 +58,7 @@ class TrackReplicator {
 };
 
 class Ancient : Race, RaceResources, RaceColonization {
-	Colonization@ colonization;
+	IColonization@ colonization; // [[ MODIFY BASE GAME START ]]
 	Construction@ construction;
 	Resources@ resources;
 	Planets@ planets;
@@ -93,7 +93,7 @@ class Ancient : Race, RaceResources, RaceColonization {
 	bool foundFirstT2 = false;
 
 	void create() {
-		@colonization = cast<Colonization>(ai.colonization);
+		@colonization = cast<IColonization>(ai.colonization); // [[ MODIFY BASE GAME START ]]
 		colonization.performColonization = false;
 
 		@resources = cast<Resources>(ai.resources);

@@ -50,6 +50,9 @@ import AIComponent@ createAncient() from "empire_ai.weasel.race.Ancient";
 import AIComponent@ createInvasion() from "empire_ai.weasel.misc.Invasion";
 import bool hasInvasionMap() from "Invasion.InvasionMap";
 
+// [[ MODIFY BASE GAME START ]]
+// [[ MODIFY BASE GAME END ]]
+
 from buildings import BuildingType;
 from orbitals import OrbitalModule;
 import util.formatting;
