@@ -48,10 +48,7 @@ class PlanetPopup : Popup {
 
 	GuiProgressbar@ health;
 	// [[ MODIFY BASE GAME START ]]
-	GuiSprite@ healthIcon;
 	GuiProgressbar@ strength;
-	GuiSkinElement@ strband;
-	GuiSprite@ strIcon;
 	// [[ MODIFY BASE GAME END ]]
 
 	GuiCargoDisplay@ cargo;
@@ -63,7 +60,9 @@ class PlanetPopup : Popup {
 
 	PlanetPopup(BaseGuiElement@ parent) {
 		super(parent);
-		size = vec2i(190, 160);
+		// [[ MODIFY BASE GAME START ]]
+		size = vec2i(190, 186);
+		// [[ MODIFY BASE GAME END ]]
 
 		@name = GuiText(this, Alignment(Left+50, Top+6, Right-4, Top+28));
 		@ownerName = GuiText(this, Alignment(Left+48, Top+28, Right-6, Top+46));
@@ -73,22 +72,32 @@ class PlanetPopup : Popup {
 
 		@cargo = GuiCargoDisplay(objView, Alignment(Left, Top, Right, Top+25));
 
+		@defIcon = GuiSprite(this, Alignment(Left+4, Top+50, Width=40, Height=40));
+		defIcon.desc = icons::Defense;
+		setMarkupTooltip(defIcon, locale::TT_IS_DEFENDING);
+		defIcon.visible = false;
+
 		// [[ MODIFY BASE GAME START ]]
-		// Move the Defense icon to later in the declaration order so it
-		// is not obscured by the HP bar.
+		@strength = GuiProgressbar(this, Alignment(Left+8, Top+53, Right-8, Top+75));
+		strength.visible = false;
+		strength.tooltip = locale::FLEET_STRENGTH;
+
+		GuiSprite strIcon(strength, Alignment(Left-8, Top-9, Left+24, Bottom-8), icons::Strength);
+		strIcon.noClip = true;
 		// [[ MODIFY BASE GAME END ]]
 
 		GuiSkinElement band(this, Alignment(Left+3, Bottom-35, Right-4, Bottom-2), SS_SubTitle);
 		band.color = Color(0xaaaaaaff);
 
-		@popBox = BaseGuiElement(this, Alignment(Left+3, Bottom-67, Left+50, Bottom-35));
+		@popBox = BaseGuiElement(this, Alignment(Left+3, Bottom-93, Left+50, Bottom-61)); // [[ MODIFY BASE GAME ]]
+
 		@popIcon = GuiSprite(popBox, Alignment(Left-12, Top+2, Left+24, Bottom+6));
 		popIcon.desc = icons::Population;
 		@popValue = GuiText(popBox, Alignment(Left+26, Top+12, Right, Height=20));
 		popIcon.tooltip = locale::POPULATION;
 		popValue.tooltip = locale::POPULATION;
 
-		@loyBox = BaseGuiElement(this, Alignment(Right-50, Bottom-67, Right-5, Bottom-35));
+		@loyBox = BaseGuiElement(this, Alignment(Right-50, Bottom-93, Right-5, Bottom-61));  // [[ MODIFY BASE GAME ]]
 		@loyIcon = GuiSprite(loyBox, Alignment(Right-24, Top+8, Right, Bottom-1));
 		loyIcon.desc = icons::Loyalty;
 		@loyValue = GuiText(loyBox, Alignment(Right-50, Top+12, Right-26, Height=20));
@@ -102,35 +111,11 @@ class PlanetPopup : Popup {
 		statusBox.noClip = true;
 		statusBox.visible = false;
 
-		@health = GuiProgressbar(this, Alignment(Left+8, Top+53, Right-8, Top+75));
 		// [[ MODIFY BASE GAME START ]]
-		health.visible = true;
-		// [[ MODIFY BASE GAME END ]]
+		@health = GuiProgressbar(this, Alignment(Left+3, Bottom-61, Right-4, Bottom-35));
 
-		// [[ MODIFY BASE GAME START ]]
-		// Position defense icon above health bar and health icon
-		@defIcon = GuiSprite(this, Alignment(Left+4, Top+50, Width=40, Height=40));
-		defIcon.desc = icons::Defense;
-		setMarkupTooltip(defIcon, locale::TT_IS_DEFENDING);
-		defIcon.visible = false;
-		// [[ MODIFY BASE GAME END ]]
-
-		@healthIcon = GuiSprite(health, Alignment(Left-12, Top-9, Left+24, Bottom-8), icons::Health);
+		auto@ healthIcon = GuiSprite(health, Alignment(Left+2, Top+1, Width=24, Height=24), icons::Health);
 		healthIcon.noClip = true;
-
-		// [[ MODIFY BASE GAME START ]]
-		// noClip allows rendering the strength meter outside the window area, just like the status box
-		// this avoids obscuring the existing UI
-		@strband = GuiSkinElement(this, Alignment(Left + 49, Bottom-8, Right + 49, Bottom+12), SS_NULL);
-		strband.noClip = true;
-		strband.visible = false;
-		@strength = GuiProgressbar(strband, Alignment(Left+0, Top, Right-0.5f, Bottom));
-		strength.noClip = true;
-		strength.visible = false;
-		@strIcon = GuiSprite(strband, Alignment(Left, Top, Left+24, Bottom), icons::Strength);
-		strIcon.noClip = true;
-		strIcon.visible = false;
-		strength.tooltip = locale::FLEET_STRENGTH;
 		// [[ MODIFY BASE GAME END ]]
 
 		updateAbsolutePosition();
@@ -255,11 +240,6 @@ class PlanetPopup : Popup {
 		const Font@ ft = skin.getFont(FT_Normal);
 
 		defIcon.visible = playerEmpire.isDefending(pl);
-		// [[ MODIFY BASE START ]]
-		// Defense icon and health icon overlap, so hide the health icon
-		// if the defense icon is visible
-		healthIcon.visible = !defIcon.visible;
-		// [[ MODIFY BASE END ]]
 
 		//Update planet name
 		name.text = pl.name;
@@ -317,7 +297,6 @@ class PlanetPopup : Popup {
 		health.progress = pl.Health / pl.MaxHealth;
 		health.frontColor = colors::Red.interpolate(colors::Green, health.progress);
 		health.text = standardize(pl.Health)+" / "+standardize(pl.MaxHealth);
-		health.visible = true;
 		// [[ MODIFY BASE GAME END ]]
 
 		//Update resources
@@ -384,9 +363,6 @@ class PlanetPopup : Popup {
 
 	// [[ MODIFY BASE GAME START ]]
 	void updateStrengthBar() {
-		// TODO: This should include the strength from buildings like defense grids
-		// This flickers a bit due to ships getting added just before they
-		// get counted, so meter is always set to 100%
 		double currentStrength = pl.getFleetStrength() * 0.001;
 		double totalStrength = pl.getFleetMaxStrength() * 0.001;
 		if (totalStrength == 0) {
@@ -404,16 +380,11 @@ class PlanetPopup : Popup {
 			else {
 				strength.font = FT_Normal;
 			}
-			// fixes flickering, fleet max strength doesn't consider unfilled
-			// support capacity anyway
-			strength.progress = 1.f;
 
 			strength.frontColor = Color(0xff6a00ff).interpolate(Color(0xffc600ff), strength.progress);
 			strength.text = standardize(currentStrength);
 			strength.tooltip = locale::FLEET_STRENGTH+": "+standardize(currentStrength)+"/"+standardize(totalStrength);
 		}
-		strIcon.visible = strength.visible;
-		strband.visible = strength.visible;
 	}
 	// [[ MODIFY BASE GAME END ]]
 };
