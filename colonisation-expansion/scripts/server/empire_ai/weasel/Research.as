@@ -15,7 +15,7 @@ class Research : AIComponent {
 	TechnologyGrid grid;
 	array<TechnologyNode@> immediateQueue;
 	// [[ MODIFY BASE GAME START ]]
-	Development@ development;
+	IDevelopment@ development;
 	// [[ MODIFY BASE GAME END ]]
 
 	void save(SaveFile& file) {
@@ -46,7 +46,7 @@ class Research : AIComponent {
 
 	// [[ MODIFY BASE GAME START ]]
 	void create() {
-		@development = cast<Development>(ai.development);
+		@development = cast<IDevelopment>(ai.development);
 	}
 	// [[ MODIFY BASE GAME END ]]
 
@@ -194,7 +194,7 @@ class Research : AIComponent {
 					return;
 				}
 			}
-			ai.print("researching FTL income orbital explicitly");
+			ai.print("researching FTL income orbital because need FTL income");
 			// insert into the front of the list due to the priority
 			immediateQueue.insertAt(0, ftlOrbital);
 		}

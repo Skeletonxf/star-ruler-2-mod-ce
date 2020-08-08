@@ -154,7 +154,7 @@ class FTLGeneric : FTL {
 	Military@ military;
 	Designs@ designs;
 	Construction@ construction;
-	Development@ development;
+	IDevelopment@ development;
 	Systems@ systems;
 	Budget@ budget;
 	Fleets@ fleets;
@@ -199,7 +199,7 @@ class FTLGeneric : FTL {
 		@military = cast<Military>(ai.military);
 		@designs = cast<Designs>(ai.designs);
 		@construction = cast<Construction>(ai.construction);
-		@development = cast<Development>(ai.development);
+		@development = cast<IDevelopment>(ai.development);
 		@systems = cast<Systems>(ai.systems);
 		@budget = cast<Budget>(ai.budget);
 		@fleets = cast<Fleets>(ai.fleets);

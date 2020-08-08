@@ -23,7 +23,7 @@ class Consider : AIComponent, Considerer {
 	Fleets@ fleets;
 	Planets@ planets;
 	Construction@ construction;
-	Development@ development;
+	IDevelopment@ development; // [[ MODIFY BASE GAME START ]]
 	Resources@ resources;
 	Intelligence@ intelligence;
 	IColonization@ colonization;  // [[ MODIFY BASE GAME START ]]
@@ -32,7 +32,7 @@ class Consider : AIComponent, Considerer {
 		@systems = cast<Systems>(ai.systems);
 		@fleets = cast<Fleets>(ai.fleets);
 		@planets = cast<Planets>(ai.planets);
-		@development = cast<Development>(ai.development);
+		@development = cast<IDevelopment>(ai.development); // [[ MODIFY BASE GAME START ]]
 		@construction = cast<Construction>(ai.construction);
 		@resources = cast<Resources>(ai.resources);
 		@intelligence = cast<Intelligence>(ai.intelligence);

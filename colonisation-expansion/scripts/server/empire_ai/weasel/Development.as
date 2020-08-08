@@ -99,7 +99,7 @@ class DevelopmentFocus {
 	}
 };
 
-class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
+class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment {  // [[ MODIFY BASE GAME ]]
 	RaceDevelopment@ race;
 	Planets@ planets;
 	Resources@ resources;
@@ -118,15 +118,15 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	array<BuildingRequest@> genericBuilds;
 	array<ExportData@> aiResources;
 
-	double aimFTLStorage = 0.0;
+	double _aimFTLStorage = 0.0;
 	// [[ MODIFY BASE GAME START ]]
-	double aimFTLIncome = 1.0;
+	double _aimFTLIncome = 1.0;
 	// [[ MODIFY BASE GAME END ]]
 
-	bool managePlanetPressure = true;
+	bool _managePlanetPressure = true;
 	bool manageAsteroidPressure = true;
-	bool buildBuildings = true;
-	bool colonizeResources = true;
+	bool _buildBuildings = true;
+	bool _colonizeResources = true;
 
 	// [[ MODIFY BASE GAME START ]]
 	uint nativeLifeStatus = 0;
@@ -300,6 +300,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	}
 
 	bool requestsFTLStorage() {
+		// TODO: Check we actually have an FTL method
 		double capacity = ai.empire.FTLCapacity;
 		if(aimFTLStorage <= capacity)
 			return false;
@@ -317,6 +318,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 	 * orbitals
 	 */
 	bool requestsFTLIncome() {
+		// TODO: Check we actually have an FTL method
 		double income = ai.empire.FTLIncome;
 		double unused = income - ai.empire.FTLUse;
 		if (unused < aimFTLIncome) {
@@ -963,8 +965,50 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources {
 		}
 		return true;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	array<DevelopmentFocus@> get_focuses() {
+		return focuses;
+	}
+
+	double get_aimFTLStorage() { return _aimFTLStorage; }
+	void set_aimFTLStorage(double value) { _aimFTLStorage = value; }
+	double get_aimFTLIncome() { return _aimFTLIncome; }
+	void set_aimFTLIncome(double value) { _aimFTLIncome = value; }
+	bool get_managePlanetPressure() { return _managePlanetPressure; }
+	void set_managePlanetPressure(bool value) { _managePlanetPressure = value; }
+	bool get_buildBuildings() { return _buildBuildings; }
+	void set_buildBuildings(bool value) { _buildBuildings = value; }
+	bool get_colonizeResources() { return _colonizeResources; }
+	void set_colonizeResources(bool value) { _colonizeResources = value; }
+	// [[ MODIFY BASE GAME END ]]
 };
 
 AIComponent@ createDevelopment() {
 	return Development();
 }
+
+// [[ MODIFY BASE GAME START ]]
+// Define the interface that other AI components use to interact with this one,
+// so this component can be swapped out.
+interface IDevelopment {
+	// Gets the development focus list, other components use this to decide
+	// where to build other things like FTL
+	array<DevelopmentFocus@> get_focuses();
+	// Checks if we have any development focuses in this region
+	bool isDevelopingIn(Region@ reg);
+	// gets the development focus for a planet if it exists
+	DevelopmentFocus@ getFocus(Planet& pl);
+	// Checks if we need more FTL storage
+	bool requestsFTLStorage();
+	// Checks if we need more FTL income
+	bool requestsFTLIncome();
+	double get_aimFTLStorage();
+	void set_aimFTLStorage(double value);
+	double get_aimFTLIncome();
+	void set_aimFTLIncome(double value);
+	void set_managePlanetPressure(bool value);
+	void set_colonizeResources(bool value);
+	void set_buildBuildings(bool value);
+}
+// [[ MODIFY BASE GAME END ]]

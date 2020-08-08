@@ -133,7 +133,7 @@ tidy final class ColonizeQueue {
 	}
 };
 
-final class Colonization : AIComponent, IColonization {
+final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]]
 	const ResourceClass@ foodClass, waterClass, scalableClass;
 	// [[ MODIFY BASE GAME START ]]
 	const ResourceType@ razed;

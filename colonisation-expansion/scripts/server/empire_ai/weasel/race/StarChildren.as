@@ -132,7 +132,7 @@ class LaborMission : Mission {
 class StarChildren : Race {
 	IColonization@ colonization; // [[ MODIFY BASE GAME START ]]
 	Construction@ construction;
-	Development@ development;
+	IDevelopment@ development;  // [[ MODIFY BASE GAME START ]]
 	Movement@ movement;
 	Planets@ planets;
 	Fleets@ fleets;
@@ -183,7 +183,7 @@ class StarChildren : Race {
 		@colonization = cast<IColonization>(ai.colonization);  // [[ MODIFY BASE GAME START ]]
 		colonization.performColonization = false;
 
-		@development = cast<Development>(ai.development);
+		@development = cast<IDevelopment>(ai.development); // [[ MODIFY BASE GAME START ]]
 		development.managePlanetPressure = false;
 		development.buildBuildings = false;
 

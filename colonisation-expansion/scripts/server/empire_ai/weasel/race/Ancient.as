@@ -62,7 +62,7 @@ class Ancient : Race, RaceResources, RaceColonization {
 	Construction@ construction;
 	Resources@ resources;
 	Planets@ planets;
-	Development@ development;
+	IDevelopment@ development; // [[ MODIFY BASE GAME START ]]
 	Movement@ movement;
 	Orbitals@ orbitals;
 
@@ -103,7 +103,7 @@ class Ancient : Race, RaceResources, RaceColonization {
 		@orbitals = cast<Orbitals>(ai.orbitals);
 		@planets = cast<Planets>(ai.planets);
 
-		@development = cast<Development>(ai.development);
+		@development = cast<IDevelopment>(ai.development); // [[ MODIFY BASE GAME START ]]
 		development.managePlanetPressure = false;
 		development.buildBuildings = false;
 		development.colonizeResources = false;
