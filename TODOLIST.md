@@ -7,10 +7,12 @@ This is primarily intended as a developer focused project planning list, rather 
   - battleworld QoL changes
     - port to CP
     - Update in combat to apply to all orbitals that have dps
-  - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (easily reproduced in the mining colony scenario)
+  - To fix in refactor of colonization and development code
+    - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (easily reproduced in the mining colony scenario)
+    - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
+    - Teach AI to deprioritise water/food colonisation if they have built a stockpile of unused ones
   - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
     - The code looks like it does consider planet support strength, need to investigate further
-  - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
   - Fix the AI military component being designed around a single `mainWait` and primary factory for building flagships
     - This is probably why the AI seemed to prioritise gates over flagships in an AI game I observed. Fleet building is only done at the main factory, and the Gate FTL code would have been more aggressive in queueing up another build, so it would have effectively blocked the AI from ever getting around to building a flagship, despite having the funds and labor income to do so. Should make it queue up a flagship and put to top priority if it is under attack and vulnerable regardless of what is already building.
   - Fix resources added to planets not being recognised by First Control Core buildings
@@ -20,7 +22,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to not put comets on worlds being razed
   - Teach AI to melt ice
   - Teach AI to make most of the constructions by extending the building hint code
-  - Teach AI to deprioritise water/food colonisation if they have built a stockpile of unused ones
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
@@ -44,9 +45,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make autoexplore continue to work after all systems have been visited once (will also split off into own mod or community patch)
   - Add user interface improvements to make it easier to select multiple planets at once, as when every planet can be given move orders it is a bit of a pain to do them individually or after holding CTRL and selecting everything first (this seems to be partially in the game already, you can click drag to select planets only if there are no ships/orbitals in the region).
 - Long term plans
-  - A campaign that doubles as an extended tutorial
-    - I will rename all the existing races and tweak them rather than trying to build on established lore I don't know
-    - If you can't tell from reading this README I like playing as StarChildren a lot. I think the best way for this is to start the player with a Terrestrial empire, introduce 1 AI and then once they get the hang of some basics have the AI suicide by destroying the system's black hole, prompting campaign episode #2 where your race evacuates on a hastily created mothership and drops down in a larger galaxy to discover more threats
   - Improving the AI
     - Things players can do but AI just doesn't right now
       - Carpet bomb raiding
