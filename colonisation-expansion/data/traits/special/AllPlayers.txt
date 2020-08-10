@@ -5,6 +5,7 @@ Trait: AllPlayers
 
 
 
+	IfHaveTrait(Poor, ClearFirstBudget())
 	TriggerHomeworld(RemoveStatus(PrimitiveLife))
 	AddEmpireResourceIncome(Research, 1)
 	AddEmpireResourceIncome(Defense, 5)
