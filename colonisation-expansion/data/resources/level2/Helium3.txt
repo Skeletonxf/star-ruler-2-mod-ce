@@ -3,7 +3,7 @@ Resource: Helium3
 	Description: #HELIUM_3_DESC
 	Native Biome: Atmosphere
 	Frequency: 0
-	Affinity: Research
+	Affinity: Labor
 	Pressure: 4 Labor
 	Pressure: 4 Energy
 	Small Icon: He3
