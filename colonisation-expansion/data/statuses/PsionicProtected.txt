@@ -1,0 +1,13 @@
+Status: PsionicProtected
+	Name: #STATUS_PSIONIC_PROTECTED
+	Description: #STATUS_PSIONIC_PROTECTED_DESC
+	Icon: ResourceIconsSmall::37
+
+	Unique: True
+	Visible To: Global
+	EnableAfter(AddStatus(PsionicShielded), Start Timer = 180)
+	ApplyToPlanets()
+Status: PsionicShielded
+	Name: #STATUS_PSIONIC_PROTECTED
+	Description: #STATUS_PSIONIC_PROTECTED_DESC
+	ModLoyalty(10)
