@@ -1,7 +1,7 @@
 Status: ArtificiallyLit
 	Name: Artificial Lighting
 	Visible To: Nobody
-	TriggerPeriodic(AddStatus(LightingApplied, Max Stacks = 1), Interval = 20)
+	IfNotHaveStatus(CurrentlyStarlit, TriggerPeriodic(AddStatus(LightingApplied, Max Stacks = 1), Interval = 20, Trigger Immediate = True))
 Status: LightingApplied
 	Visible To: Nobody
 	Description: EnergyMaintenance removes this status when it fails
