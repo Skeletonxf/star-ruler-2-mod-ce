@@ -1231,7 +1231,7 @@ tidy class ShipScript {
 				// not be hurt by this change.
 				bool ownedSpace = false;
 				Region@ region = ship.region;
-				if (region !is null && region.PlanetsMask & ship.owner.mask == 0) {
+				if (region !is null && region.TradeMask & ship.owner.mask != 0) {
 					ownedSpace = true;
 				}
 				if(inCombat || !ownedSpace) {

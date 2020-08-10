@@ -3,6 +3,8 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Prevent First transmuter buildings duplicating the fractured planet resource
+  - Create a mini building for the First that acts as a 1x1 tile Core but 100% pressure so the First can use Dyson Spheres
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
     - port to CP
@@ -25,6 +27,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
+  - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
+  - Avoid starting the FTL unlock events after the first passes, rather than auto cancelling them which is distracting.
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer

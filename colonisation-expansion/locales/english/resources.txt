@@ -366,14 +366,12 @@ DEGENERATE_MATTER_DESC: <<
 PSIONIC_REAGENTS: Psionic Reagents
 PSIONIC_REAGENTS_EFFECT: Protects Loyalty
 PSIONIC_REAGENTS_DESC: <<
-	Planets in the consuming system are protected from losing loyalty.
+	Planets in the consuming system gain 10 loyalty.
 
 	Takes 3 minutes to enable in a new system.
 >>
 STATUS_PSIONIC_PROTECTED: Psionically Protected
-STATUS_PSIONIC_PROTECTED_DESC: <<
-	This planet is protected from capture by psionic reagents imported to one of the planets in this system.
->>
+STATUS_PSIONIC_PROTECTED_DESC: This planet is less vulnurable to capture or annexation due to psionic reagents imported to one of the planets in this system.
 
 ANCIENT_CITY: Ancient City
 ANCIENT_CITY_DESC: [color=#ff7070][b]Cannot be exported.[/b][/color]
