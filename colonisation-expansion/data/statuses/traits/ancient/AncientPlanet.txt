@@ -23,7 +23,7 @@ Status: AncientPlanet
 
 	OnDisable(AddStatus(AncientGasGiantLoss, Duration = 1))
 	OnEnable(AddStatus(AncientGasGiantOwned, Duration = 1))
-	IfLevel(0, AddFleetCommand(-50), Exact = True, Limit = False)
+	IfNotHaveStatus(DysonSphere, IfLevel(0, AddFleetCommand(-50), Exact = True, Limit = False))
 	IfLevel(1, AddFleetCommand(-50), Exact = True, Limit = False)
 	IfLevel(2, AddFleetCommand(-200), Exact = True, Limit = False)
 	IfLevel(3, AddFleetCommand(-350), Exact = True, Limit = False)

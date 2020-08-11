@@ -27,3 +27,11 @@ BLD_PLANET_CANNON_DESC: <<
 
 	[i]Devastation from carpet bombing is reduced to 20% effectiveness[/i]
 >>
+BLD_MINI_ANCIENT_CORE: Mini Core
+BLD_MINI_ANCIENT_CORE_DESC: <<
+	Keeps the Dyson Sphere claimed.
+
+	[i]Monitoring a Dyson Sphere is a lot less difficult than monitoring a planet.[/i]
+
+	[bbloc=#TIP_CONTROL_HUB/]
+>>

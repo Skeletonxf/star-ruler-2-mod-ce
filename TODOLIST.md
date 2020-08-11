@@ -3,8 +3,11 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Fix homeworlds and other planets with forced useful surface seems to have updated tiles but not updated biomes, causing flood rocks / develop forest to appear despite the UI insisting the tiles are forest already, but the visuals looking more like rocks.
+     - This bug appears to be due to forceUsefulSurface not updating biome0, biome1 and biome2
+  - Fix resources added to planets not being recognised by First Control Core buildings
+    - This is caused by the produce native pressure pct only checking the primary resource of a planet, and only each time the pressure to produce changes.
   - Prevent First transmuter buildings duplicating the fractured planet resource
-  - Create a mini building for the First that acts as a 1x1 tile Core but 100% pressure so the First can use Dyson Spheres
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
     - port to CP
@@ -17,7 +20,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - The code looks like it does consider planet support strength, need to investigate further
   - Fix the AI military component being designed around a single `mainWait` and primary factory for building flagships
     - This is probably why the AI seemed to prioritise gates over flagships in an AI game I observed. Fleet building is only done at the main factory, and the Gate FTL code would have been more aggressive in queueing up another build, so it would have effectively blocked the AI from ever getting around to building a flagship, despite having the funds and labor income to do so. Should make it queue up a flagship and put to top priority if it is under attack and vulnerable regardless of what is already building.
-  - Fix resources added to planets not being recognised by First Control Core buildings
   - Give the First a way to manually develop tiles, and make stockpiling and tile development techs on the research tree scale this
   - Replace the default miner ship with one using the mining hull
   - Make parasite AI do razing at end of a budget cycle not start
@@ -32,7 +34,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
-  - Fix homeworlds and other planets with forced useful surface seems to have updated tiles but not updated biomes, causing flood rocks / develop forest to appear despite the UI insisting the tiles are forest already, but the visuals looking more like rocks.
   - Fix visual bug causing Drugs to appear to be filling the Light class requirement for planet levelling when they are not, probably related to dummy resources
 
 - Not planned for any time soon

@@ -426,6 +426,9 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		return biome2;
 	}
 
+	// [[ MODIFY BASE GAME ]]
+	// FIXME: This method really needs to update biome0, biome1 and biome2 to
+	// stop a mismatch between the biomes array and the biome fields
 	void forceUsefulSurface(double pct, uint biomeId) {
 		double useful = 1.0;
 		double perTile = 1.0 / (double(grid.size.width) * double(grid.size.height));
@@ -563,7 +566,9 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			return;
 		}
 
-		if (old_id == new_id) {
+		if (old_id == new_id || index_change == 99) {
+			// Nothing to do here, either nothing needs swapping or we don't
+			// have the old biome
 			return;
 		}
 
@@ -572,11 +577,19 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			return;
 		}
 
+		if (index_change >= biomes.length) {
+			// Avoid index out of bounds when the planet surface is already
+			// bugged and we have fewer biomes in the array than biome0,
+			// biome1, and biome2
+			return;
+		}
+
 		// Replace the base biome with the new one if the biome to change is
 		// the base one
 		if (index_change == 0) {
 			@grid.baseBiome = new_biome;
 		}
+
 		// Swap the biome
 		@biomes[index_change] = new_biome;
 

@@ -18,7 +18,7 @@ Resource: DysonSphere
 	SetOrbitSpin(900)
 	OnEnable(MoveToSystemCenter())
 
-	Pressure: 50 Energy
+	Pressure: 40 Energy
 	Frequency: 0
 	Mode: Non Requirement
 
@@ -39,3 +39,4 @@ Level Chain: Photovoltics
 		RequiredPop: 1
 		BaseLoyalty: 1
 		Points: 500
+		BaseSupport: 0

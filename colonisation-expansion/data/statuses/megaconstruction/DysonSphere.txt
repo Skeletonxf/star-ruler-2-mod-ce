@@ -1,6 +1,6 @@
 Status: DysonSphere
 	Name: #DYSON_SPHERE
-	Description: #DYSON_SPHERE_DESC
+	Description: #DYSON_SPHERE_FULL_DESC
 	Icon: PlanetType::14
 	Collapses: True
 	Color: #518fc9
@@ -12,6 +12,7 @@ Status: DysonSphere
 	GloballyVisible()
 	AddPlanetGfxFlag(DysonSphere)
 
+	IfHaveTrait(Ancient, AddStatus(AncientClaim))
 	SetSystemFlag(Ringworld)
 Status: DysonSphereUpgrade
 	Visible To: Nobody
