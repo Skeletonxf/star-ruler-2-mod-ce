@@ -7,7 +7,6 @@ This is primarily intended as a developer focused project planning list, rather 
      - This bug appears to be due to forceUsefulSurface not updating biome0, biome1 and biome2
   - Fix resources added to planets not being recognised by First Control Core buildings
     - This is caused by the produce native pressure pct only checking the primary resource of a planet, and only each time the pressure to produce changes.
-  - Prevent First transmuter buildings duplicating the fractured planet resource
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
     - port to CP
