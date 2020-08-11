@@ -32,6 +32,4 @@ BLD_MINI_ANCIENT_CORE_DESC: <<
 	Keeps the Dyson Sphere claimed.
 
 	[i]Monitoring a Dyson Sphere is a lot less difficult than monitoring a planet.[/i]
-
-	[bbloc=#TIP_CONTROL_HUB/]
 >>

@@ -12,7 +12,6 @@ Status: DysonSphere
 	GloballyVisible()
 	AddPlanetGfxFlag(DysonSphere)
 
-	IfHaveTrait(Ancient, AddStatus(AncientClaim))
 	SetSystemFlag(Ringworld)
 Status: DysonSphereUpgrade
 	Visible To: Nobody

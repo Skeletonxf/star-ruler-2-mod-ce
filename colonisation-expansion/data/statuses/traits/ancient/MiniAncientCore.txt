@@ -1,0 +1,8 @@
+Status: MiniAncientCore
+	Name: #BLD_MINI_ANCIENT_CORE
+	Description: #BLD_MINI_ANCIENT_CORE_DESC
+	Icon: CoreBuilding
+	Color: #ffd2f5
+	Visible To: Owner
+	AddStatus(AncientClaim)
+	PlanetLevelIncomeMod(-80, 0, 0)
