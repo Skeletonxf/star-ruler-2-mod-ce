@@ -14,10 +14,15 @@ import ai.consider;
 from ai.buildings import Buildings, BuildingAI, BuildingUse;
 from ai.resources import AIResources, ResourceAI;
 
-// [[ MODIFY BASE GAME START ]]
+// It is very important we don't just import the entire resources definition
+// because it defines a Resource class which conflicts with the Resources
+// class for the AI Resources component
+from resources import ResourceType;
+import empire_ai.dragon.bookkeeping.resource_flows;
+from empire_ai.dragon.bookkeeping.resource_value import RaceResourceValuation, ResourceValuator;
+
 from statuses import getStatusID;
 from traits import getTraitID;
-// [[ MODIFY BASE GAME END ]]
 
 // Data class for incomes that we are aiming for.
 class ResourceIncomes {
