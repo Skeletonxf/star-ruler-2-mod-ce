@@ -3,6 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Make separate abilities for picking up and dropping off each cargo type
   - Fix homeworlds and other planets with forced useful surface seems to have updated tiles but not updated biomes, causing flood rocks / develop forest to appear despite the UI insisting the tiles are forest already, but the visuals looking more like rocks.
      - This bug appears to be due to forceUsefulSurface not updating biome0, biome1 and biome2
   - Disallow resource transfering from planets under an annex vote
@@ -25,6 +26,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to make most of the constructions by extending the building hint code
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
+  - Tweak the Star Children consume planet ability so that you can't almost destroy all your planets and still gain nearly all of the benefits.
+    - Perhaps all the max pop should come once the planet gets destroyed?
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
   - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
   - Avoid starting the FTL unlock events after the first passes, rather than auto cancelling them which is distracting.
