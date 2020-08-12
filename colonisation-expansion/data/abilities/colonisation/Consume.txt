@@ -1,7 +1,7 @@
 Ability: MothershipConsume
 	Name: #ABL_CONSUME
 	Description: #ABL_CONSUME_DESC
-	Icon: TractorGun::0 * #e45500
+	Icon: ConditionIcons::7
 
 	Range: 100
 
