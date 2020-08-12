@@ -9,3 +9,16 @@ CONS_DYSON_SPHERE_UPGRADE_DESC: <<
 
 	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Requires large amounts of Ore mined from asteroids.[/color][/b][/img]
 >>
+DEVELOP_TILES: Manually Develop Tiles
+DEVELOP_TILES_DESC: <<
+	20 undeveloped tiles will randomly be developed on the planet's surface.
+
+	Or less, if fewer than 20 undeveloped tiles remain.
+
+	[i][color=#aaa]Planets not yet fully forested will not build up enough Forestation cargo automatically to do this.[/color][/i]
+>>
+ANCIENT_DEVELOP_TILES_DESC: <<
+	20 undeveloped tiles will randomly be developed on the planet's surface.
+
+	Or less, if fewer than 20 undeveloped tiles remain.
+>>

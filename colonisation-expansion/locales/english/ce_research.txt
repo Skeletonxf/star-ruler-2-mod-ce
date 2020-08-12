@@ -53,3 +53,4 @@ R_SYS_LOW_POWER_SHIP_COMPUTER_DESC: <<
 
 	[bbloc=#SHIP_LOW_POWER_COMPUTER_DESC/]
 >>
+R_IMP_ANCIENT_TILE_DEVELOPMENT_DESC: Reduces the cost of manually developing tiles by a factor of $1.

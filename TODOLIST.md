@@ -18,7 +18,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix the AI military component being designed around a single `mainWait` and primary factory for building flagships
     - This is probably why the AI seemed to prioritise gates over flagships in an AI game I observed. Fleet building is only done at the main factory, and the Gate FTL code would have been more aggressive in queueing up another build, so it would have effectively blocked the AI from ever getting around to building a flagship, despite having the funds and labor income to do so. Should make it queue up a flagship and put to top priority if it is under attack and vulnerable regardless of what is already building.
     - The AI also has some questionable parameters set for this, making it trying to rebuild fleets larger than it has labor for.
-  - Give the First a way to manually develop tiles, and make stockpiling and tile development techs on the research tree scale this
   - Replace the default miner ship with one using the mining hull
   - Make parasite AI do razing at end of a budget cycle not start
   - Teach AI to not put comets on worlds being razed
@@ -53,6 +52,7 @@ This is primarily intended as a developer focused project planning list, rather 
      - Ideas for new orbitals for Star Children
        - TODO
   - Make autoexplore continue to work after all systems have been visited once (will also split off into own mod or community patch)
+  - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
 
 - Long term plans
   - Improving the AI

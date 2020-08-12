@@ -1,0 +1,24 @@
+Construction: NonAncientDevelopTiles
+	Name: #DEVELOP_TILES
+	Description: #DEVELOP_TILES_DESC
+	Icon: DevelopedTile
+	Time Cost: 20
+	Category: Development
+	Build Cost: 1000
+	RequireNotTrait(Verdant)
+	ConsumeCargo(Forestation, 300)
+	RequireNotTrait(Ancient)
+	CE_biome_hooks::RequireUndevelopedTiles()
+	DevelopTiles(20)
+Construction: VerdantDevelopTiles
+	Name: #DEVELOP_TILES
+	Description: #DEVELOP_TILES_DESC
+	Icon: GrownTile
+	Time Cost: 20
+	Category: Development
+	Build Cost: 1000
+	RequireTrait(Verdant)
+	DevelopTiles(20)
+	ConsumeCargo(Forestation, 300)
+	CE_biome_hooks::RequireUndevelopedTiles()
+	RequireNotTrait(Ancient)

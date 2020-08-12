@@ -1,0 +1,11 @@
+Construction: AncientDevelopTiles
+	Name: #DEVELOP_TILES
+	Description: #ANCIENT_DEVELOP_TILES_DESC
+	Icon: DevelopedTile
+	Time Cost: 20
+	Category: Development
+	RequireTrait(Ancient)
+	CE_biome_hooks::RequireUndevelopedTiles()
+	ConsumeCargo(Ore, 500)
+	DevelopTiles(20)
+	AddBuildCostAttribute(ManualTileDevelopmentFactor, Multiply = 1500, Power = -1)

@@ -38,6 +38,9 @@ local safe:
 
 	uint get_totalSurfaceTiles() const;
 	uint get_usedSurfaceTiles() const;
+	// [[ MODIFY BASE GAME START ]]
+	bool get_hasUndevelopedSurfaceTiles() const;
+	// [[ MODIFY BASE GAME END ]]
 
 	uint get_planetGraphicsFlags() const;
 	uint getBuildingCount() const;

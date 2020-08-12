@@ -62,6 +62,9 @@ visible:
 	attribute double CaptureSupplyFactor = 1
 	attribute double PopulationGrowthFactor = 1
 	attribute double TileDevelopmentFactor = 1
+	// [[ MODIFY BASE GAME START ]]
+	attribute double ManualTileDevelopmentFactor = 1
+	// [[ MODIFY BASE GAME END ]]
 	attribute double BuildingConstructRate = 1
 	attribute double FleetEfficiencyFactor = 1
 	attribute double VoteStartSupport = 0

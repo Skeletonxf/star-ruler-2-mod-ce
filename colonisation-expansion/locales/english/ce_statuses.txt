@@ -35,3 +35,9 @@ DYSON_SPHERE_FULL_DESC: <<
 	[offset=30]Sorry my leader, our enginners thought it best not to block out so much light that our planets became inhospitable. If you desire more energy you could always extend the Dyson Swarm to have more layers?[/offset]
 	[/color]
 >>
+FULLY_FORESTED_DESC: <<
+	This planet has undergone several forestation efforts and gained 3 forested food resources. It cannot make further use of Forestation cargo automatically.
+
+	[i][color=#aaa]Forestation also removes the Noxious Atmosphere debuff. Fully Forested planets gain 1 influence.[/color][/i]
+>>
+FULLY_FORESTED: Fully Forested 

@@ -1207,6 +1207,12 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		return used;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	bool get_hasUndevelopedSurfaceTiles() const {
+		return grid.usableTiles < grid.size.width * grid.size.height;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	vec2i get_surfaceGridSize() {
 		return vec2i(grid.size);
 	}

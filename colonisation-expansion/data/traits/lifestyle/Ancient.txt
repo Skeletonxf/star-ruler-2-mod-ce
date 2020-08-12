@@ -60,9 +60,17 @@ Trait: Ancient
 	ReplaceTechnologyNodes(FactoryLabor, FoundryLabor)
 	ReplaceTechnologyNodes(FactoryLabor2, FoundryLabor2)
 
+	ReplaceTechnologyNodes(ImpDecaySpeed2, AncientImpTileDevelopment2)
+	ReplaceTechnologyNodes(ImpDecaySpeed, AncientImpTileDevelopment)
+	ReplaceTechnologyNodes(ImpCivConstructionRate2, AncientImpTileDevelopment2)
+	ReplaceTechnologyNodes(ImpCivConstructionRate, AncientImpTileDevelopment)
+	ReplaceTechnologyNodes(ImpTileDevelopment2, AncientImpTileDevelopment2)
+	ReplaceTechnologyNodes(ImpTileDevelopment, AncientImpTileDevelopment)
 	ReplaceTechnologyNodes(Megacity, Thrust2)
 	ReplaceTechnologyNodes(RingHabitat, Thrust)
 	ReplaceTechnologyNodes(HydroponicsSatellite, FoundryLabor2)
 	ReplaceTechnologyNodes(KeyFTL, Thrust2)
 	ReplaceTechnologyNodes(Population, FoundryLabor)
 	ReplaceTechnologyNodes(Laboratories, FoundryLabor2)
+
+	ModAttribute(ColonizeDevelopTiles, Multiply, 0)

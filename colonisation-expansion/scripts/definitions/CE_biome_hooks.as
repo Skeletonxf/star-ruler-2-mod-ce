@@ -660,3 +660,15 @@ class RequireHomeworld : Requirement {
 		return obj.owner.Homeworld.id == planet.id;
 	}
 };
+
+class RequireUndevelopedTiles : Requirement {
+	Document doc("Can only be built on planets with undeveloped tiles remaining.");
+
+	bool meets(Object& obj, bool ignoreState = false) const override {
+		if (obj is null || !obj.isPlanet) {
+			return false;
+		}
+		Planet@ planet = cast<Planet>(obj);
+		return planet.hasUndevelopedSurfaceTiles;
+	}
+};
