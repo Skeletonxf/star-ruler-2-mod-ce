@@ -1079,9 +1079,7 @@ tidy final class NativeData {
 	double pressurePct = 0.0;
 	uint nativeResourceCount = 1;
 	double lastCheckedForUpdates = 0;
-	// FIXME: Store pressure per resource type here so when a new resource
-	// is added but the pressure percentage is the same we can identify
-	// that more native pressure should be added
+	array<double> pressures(TR_COUNT, 0.0);
 };
 
 class ProduceNativePressurePct : StatusHook {
@@ -1112,7 +1110,6 @@ class ProduceNativePressurePct : StatusHook {
 			|| (gameTime > nativeData.lastCheckedForUpdates + 30);
 
 		if (update) {
-			print("Updating pressure gen for "+obj.name);
 			array<Resource> planetResources;
 			planetResources.syncFrom(obj.getNativeResources());
 
@@ -1126,15 +1123,15 @@ class ProduceNativePressurePct : StatusHook {
 				// check each type of pressure
 				for (uint i = 0; i < TR_COUNT; ++i) {
 					// then sum up over all native resources with this pressure
-					double prev = 0;
+					double prev = nativeData.pressures[i];
 					double cur = 0;
 					for (uint j = 0, cnt = planetResources.length; j < cnt; ++j) {
-						prev += double(planetResources[j].type.tilePressure[i]) * prevPct;
 						cur += double(planetResources[j].type.tilePressure[i]) * newPct;
 					}
 					// adjust pressure for this type to be correct
 					if (prev != cur) {
 						obj.modResource(i, cur - prev);
+						nativeData.pressures[i] = cur;
 					}
 				}
 			}
@@ -1149,16 +1146,10 @@ class ProduceNativePressurePct : StatusHook {
 		NativeData@ nativeData;
 		data.retrieve(@nativeData);
 
-		array<Resource> planetResources;
-		planetResources.syncFrom(obj.getNativeResources());
 		// check each type of pressure
 		for (uint i = 0; i < TR_COUNT; ++i) {
 			// then sum up over all native resources with this pressure
-			double prev = 0;
-			double cur = 0;
-			for (uint j = 0, cnt = planetResources.length; j < cnt; ++j) {
-				prev += double(planetResources[j].type.tilePressure[i]) * nativeData.pressurePct;
-			}
+			double prev = nativeData.pressures[i];
 			// adjust pressure back to 0
 			obj.modResource(i, -prev);
 		}
@@ -1170,6 +1161,9 @@ class ProduceNativePressurePct : StatusHook {
 		file << nativeData.pressurePct;
 		file << nativeData.nativeResourceCount;
 		file << nativeData.lastCheckedForUpdates;
+		for (uint i = 0; i < TR_COUNT; ++i) {
+			file << nativeData.pressures[i];
+		}
 	}
 
 	void load(Status@ status, any@ data, SaveFile& file) override {
@@ -1178,6 +1172,9 @@ class ProduceNativePressurePct : StatusHook {
 		file >> nativeData.pressurePct;
 		file >> nativeData.nativeResourceCount;
 		file >> nativeData.lastCheckedForUpdates;
+		for (uint i = 0; i < TR_COUNT; ++i) {
+			file >> nativeData.pressures[i];
+		}
 	}
 #section all
 };

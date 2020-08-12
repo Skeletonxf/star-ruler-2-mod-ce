@@ -5,8 +5,6 @@ This is primarily intended as a developer focused project planning list, rather 
 - Bug list / issues to fix
   - Fix homeworlds and other planets with forced useful surface seems to have updated tiles but not updated biomes, causing flood rocks / develop forest to appear despite the UI insisting the tiles are forest already, but the visuals looking more like rocks.
      - This bug appears to be due to forceUsefulSurface not updating biome0, biome1 and biome2
-  - Fix resources added to planets not being recognised by First Control Core buildings
-    - This is caused by the produce native pressure pct only checking the primary resource of a planet, and only each time the pressure to produce changes.
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
     - port to CP
@@ -19,6 +17,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - The code looks like it does consider planet support strength, need to investigate further
   - Fix the AI military component being designed around a single `mainWait` and primary factory for building flagships
     - This is probably why the AI seemed to prioritise gates over flagships in an AI game I observed. Fleet building is only done at the main factory, and the Gate FTL code would have been more aggressive in queueing up another build, so it would have effectively blocked the AI from ever getting around to building a flagship, despite having the funds and labor income to do so. Should make it queue up a flagship and put to top priority if it is under attack and vulnerable regardless of what is already building.
+    - The AI also has some questionable parameters set for this, making it trying to rebuild fleets larger than it has labor for.
   - Give the First a way to manually develop tiles, and make stockpiling and tile development techs on the research tree scale this
   - Replace the default miner ship with one using the mining hull
   - Make parasite AI do razing at end of a budget cycle not start
@@ -46,8 +45,15 @@ This is primarily intended as a developer focused project planning list, rather 
   - Prevent dillemas occuring multiple times (not sure what's causing this bug, it's quite rare)
   - Teach Mechanoid AI to use FTL Breeder Reactors
   - StarChildren transfering of pop from Mothership -> Mothership
+  - Make Star Children habitats add some kind of control count to their systems, from which orbitals can be made to utilise the control in a way that means the Star Children can't build an infinite number of the things, but allows them to have some unique identity and strengths.
+    - Vanilla buildings that Star Children have no equivalents of
+      - Megafarms, Hydrogenators, Research Complexes, Mueseums, Labor Storage, Space Elevator
+    - Buildings that Star Children already don't need or have alternatives to
+      - FTL Storage, Megacities
+     - Ideas for new orbitals for Star Children
+       - TODO
   - Make autoexplore continue to work after all systems have been visited once (will also split off into own mod or community patch)
-  - Add user interface improvements to make it easier to select multiple planets at once, as when every planet can be given move orders it is a bit of a pain to do them individually or after holding CTRL and selecting everything first (this seems to be partially in the game already, you can click drag to select planets only if there are no ships/orbitals in the region).
+
 - Long term plans
   - Improving the AI
     - Things players can do but AI just doesn't right now
