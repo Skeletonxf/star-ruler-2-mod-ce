@@ -3,7 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Make separate abilities for picking up and dropping off each cargo type
   - Fix homeworlds and other planets with forced useful surface seems to have updated tiles but not updated biomes, causing flood rocks / develop forest to appear despite the UI insisting the tiles are forest already, but the visuals looking more like rocks.
      - This bug appears to be due to forceUsefulSurface not updating biome0, biome1 and biome2
   - Disallow resource transfering from planets under an annex vote
@@ -14,6 +13,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (easily reproduced in the mining colony scenario)
     - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
     - Teach AI to deprioritise water/food colonisation if they have built a stockpile of unused ones
+    - Teach AI to build outposts to bridge otherwise empty/useless systems
   - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
     - The code looks like it does consider planet support strength, need to investigate further
   - Fix the AI military component being designed around a single `mainWait` and primary factory for building flagships
