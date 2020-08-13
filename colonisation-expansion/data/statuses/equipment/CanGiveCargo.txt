@@ -1,0 +1,7 @@
+Status: CanGiveCargo
+	Visible To: Nobody
+	Unique: True
+	GrantAbility(TransferForestation)
+	GrantAbility(TransferBaseMaterial)
+	GrantAbility(TransferOre)
+	GrantAbility(TransferCargo)

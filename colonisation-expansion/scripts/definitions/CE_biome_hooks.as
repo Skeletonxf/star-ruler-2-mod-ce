@@ -5,6 +5,7 @@ import repeat_hooks;
 from generic_effects import GenericEffect;
 import biomes;
 import abilities;
+import target_filters;
 from abilities import AbilityHook;
 import int getAbilityID(const string&) from "abilities";
 import int getUnlockTag(const string& ident, bool create = true) from "unlock_tags";
@@ -670,5 +671,74 @@ class RequireUndevelopedTiles : Requirement {
 		}
 		Planet@ planet = cast<Planet>(obj);
 		return planet.hasUndevelopedSurfaceTiles;
+	}
+};
+
+class PickupSpecificCargoFrom : AbilityHook {
+	Document doc("Pick up all cargo of a type from the target object, as much as possible.");
+	Argument cargo_type(AT_Cargo, doc="Type of cargo to pickup.");
+	Argument targ(TT_Object);
+
+#section server
+	void activate(Ability@ abl, any@ data, const Targets@ targs) const override {
+		auto@ objTarg = targ.fromConstTarget(targs);
+		if(objTarg is null || objTarg.obj is null)
+			return;
+		Object@ other = objTarg.obj;
+		if(!other.hasCargo || abl.obj is null || !abl.obj.hasCargo)
+			return;
+		other.transferCargoTo(cargo_type.integer, abl.obj);
+	}
+#section all
+};
+
+class TransferSpecificCargoTo : AbilityHook {
+	Document doc("Transfer all cargo of a type to the target object, as much as possible.");
+	Argument cargo_type(AT_Cargo, doc="Type of cargo to transfer.");
+	Argument targ(TT_Object);
+
+#section server
+	void activate(Ability@ abl, any@ data, const Targets@ targs) const override {
+		auto@ objTarg = targ.fromConstTarget(targs);
+		if(objTarg is null || objTarg.obj is null)
+			return;
+		Object@ other = objTarg.obj;
+		if(!other.hasCargo || abl.obj is null || !abl.obj.hasCargo)
+			return;
+		abl.obj.transferCargoTo(cargo_type.integer, other);
+	}
+#section all
+};
+
+class TargetFilterHasSpecificCargoStored : TargetFilter {
+	Document doc("Only allow targets that have some type of cargo stored.");
+	Argument cargo_type(AT_Cargo, doc="Type of cargo to have.");
+	Argument objTarg(TT_Object);
+
+	string getFailReason(Empire@ emp, uint index, const Target@ targ) const override {
+		return locale::NTRG_CARGO;
+	}
+
+	bool isValidTarget(Empire@ emp, uint index, const Target@ targ) const override {
+		if(index != uint(objTarg.integer))
+			return true;
+		if(targ.obj is null)
+			return false;
+		if(!targ.obj.hasCargo)
+			return false;
+		if(targ.obj.cargoStored < 0.001)
+			return false;
+		return targ.obj.getCargoStored(cargo_type.integer) > 0;
+	}
+};
+
+class RequireHeldSpecificCargo : AbilityHook {
+	Document doc("Ability can only be used if cargo space contains a type of cargo.");
+	Argument cargo_type(AT_Cargo, doc="Type of cargo to have.");
+
+	bool canActivate(const Ability@ abl, const Targets@ targs, bool ignoreCost) const override {
+		if(abl.obj is null || !abl.obj.hasCargo)
+			return false;
+		return abl.obj.getCargoStored(cargo_type.integer) >= 0.001;
 	}
 };

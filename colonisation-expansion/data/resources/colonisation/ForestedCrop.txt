@@ -3,8 +3,8 @@ Resource: ForestedCrop
 	Native Biome: Forest
 	Class: Food
 
-	Icon: ConditionIcons::11 * 11ff00
-	Small Icon: ConditionIcons::11 * 11ff00
+	Icon: Forestry1
+	Small Icon: Forestry1
 	Display Weight: -10
 
 	Artificial: True

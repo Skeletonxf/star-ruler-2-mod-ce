@@ -24,6 +24,9 @@ tidy final class AbilityType {
 	int hotkey = 0;
 	bool empireDefault = false;
 	bool hideGlobal = false;
+	// [[ MODIFY BASE GAME START ]]
+	bool hideLocal = false;
+	// [[ MODIFY BASE GAME END ]]
 	const SoundSource@ activateSound;
 	// [[ MODIFY BASE GAME START ]]
 	// Allow abilities to be associated with a resource type and include
@@ -501,6 +504,11 @@ void loadAbilities(const string& filename) {
 		else if(key.equals_nocase("Hide Global")) {
 			type.hideGlobal = toBool(value);
 		}
+		// [[ MODIFY BASE GAME START ]]
+		else if(key.equals_nocase("Hide Local")) {
+			type.hideLocal = toBool(value);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		else if(key.equals_nocase("Empire Default")) {
 			type.empireDefault = toBool(value);
 		}

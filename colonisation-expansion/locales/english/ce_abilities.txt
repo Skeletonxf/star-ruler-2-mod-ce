@@ -10,3 +10,9 @@ TRANSFER_ALL: Transfer All & Abandon
 TRANSFER_ALL_DESC: Transfer all resources that can be transfered onto the target, then abandon the planet casting this ability.
 ABL_ABANDONED_SATELLITE: Activate Abandoned Satellite
 ABL_BUSTER_MACHINE_DESC: Reactivate the ancient exploratory vessel.
+ABL_PICKUP_SPECIFIC_CARGO: Pickup $1
+ABL_PICKUP_SPECIFIC_CARGO_DESC: Order the ship to pick up as much $1 from the target as possible.
+ABL_PICKUP_CARGO: Pickup All Cargo
+ABL_TRANSFER_CARGO: Transfer All Cargo
+ABL_TRANSGER_SPECIFIC_CARGO_DESC: Order the ship to transfer all $1 in its stores.
+ABL_TRANSFER_SPECIFIC_CARGO: Transfer All $1

@@ -3,8 +3,8 @@ Resource: ForestedCrop3
 	Native Biome: Forest
 	Class: Food
 
-	Icon: ResourceIcons::5
-	Small Icon: ResourceIconsSmall::17
+	Icon: Forestry3
+	Small Icon: Forestry3
 	Display Weight: -10
 
 	Artificial: True

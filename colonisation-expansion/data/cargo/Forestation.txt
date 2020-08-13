@@ -2,4 +2,4 @@ Cargo: Forestation
 	Name: #C_FORESTATION
 	Description: #C_FORESTATION_DESC
 	Icon: Forestry3
-	Storage Size: 0.0001
+	Storage Size: 10

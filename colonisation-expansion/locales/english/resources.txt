@@ -683,6 +683,8 @@ C_ORE_DESC: <<
 C_FORESTATION: Forestation
 C_FORESTATION_DESC: <<
 	Materials for greening planets, creating new food resources on their own automatically.
+
+	[i][color=#aaa]Biomass is really ill suited to space transport. Plants have no concern for weight limits! Forestation cargo takes up 10x as much storage space as other cargo[/color][/i]
 >>
 
 R_SILICON: Silicon

@@ -213,6 +213,9 @@ class AbilityFile : FileDef {
 			field("Range", AT_Decimal, "", doc="The base maximum distance that the ability can be casted from. Can be modified further by hooks.");
 			field("Hotkey", AT_Custom, "", doc="If set, create a hotkey for activating this ability when the object is selected to the specified key combination.");
 			field("Hide Global", AT_Boolean, "False", doc="Hide this from the global action bar if added as an empire ability.");
+			// [[ MODIFY BASE GAME START ]]
+			field("Hide Local", AT_Boolean, "False", doc="Hide this from the object action bar if added as a normal ability.");
+			// [[ MODIFY BASE GAME END ]]
 			field("Target", AT_TargetSpec, "", /*repeatable=true,*/ doc="A type of target this ability needs to be triggered on.");
 			field("Activate Sound", AT_Custom, "", doc="Name of the sound effect to be played in the UI for the person that triggers this ability.");
 			// [[ MODIFY BASE GAME START ]]
