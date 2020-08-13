@@ -14,6 +14,7 @@ from orders.OddityGateOrder import OddityGateOrder;
 from orders.SlipstreamOrder import SlipstreamOrder;
 from orders.AutoExploreOrder import AutoExploreOrder;
 from orders.WaitOrder import WaitOrder;
+from orders.CargoOrder import CargoOrder;
 from resources import getBuildCost, getMaintenanceCost, MoneyType, getLaborCost;
 import abilities;
 import orbitals;
@@ -241,6 +242,8 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 				case OT_AutoExplore:
 					@ord = AutoExploreOrder(msg);
 				break;
+				case OT_Cargo:
+					@ord = CargoOrder(msg);
 				case OT_Wait:
 					@ord = WaitOrder(msg);
 				break;
@@ -1321,6 +1324,13 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	
 	void addAutoExploreOrder(Object& obj, bool useFTL, bool append) {
 		addOrder(obj, AutoExploreOrder(useFTL), append);
+		obj.wake();
+	}
+
+	void addCargoOrder(Object& obj, Object& targ, int cargoId, bool pickup, bool append) {
+		if(obj.owner !is targ.owner || getCargoType(cargoId) is null)
+			return;
+		addOrder(obj, CargoOrder(targ, cargoId, pickup), append);
 		obj.wake();
 	}
 

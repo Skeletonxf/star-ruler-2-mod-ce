@@ -64,6 +64,7 @@ restricted remote:
 	void addOddityGateOrder(Oddity& target, bool append = false);
 	void addSlipstreamOrder(vec3d target, bool append = false);
 	void addAutoExploreOrder(bool useFTL, bool append = false);
+	void addCargoOrder(Object& target, int cargoId, bool pickup, bool append = false);
 
 	void addSecondaryToSlipstream(Object& other);
 	void addWaitOrder(Object@ waitingFor = null, bool append = false, bool moveTo = false);

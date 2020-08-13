@@ -1,3 +1,4 @@
+import cargo;
 import elements.GuiContextMenu;
 import tabs.Tab;
 from tabs.tabbar import ActiveTab;
@@ -761,6 +762,26 @@ class TargetAbility : MultiOption {
 	}
 };
 
+class TransferCargo : MultiOption {
+	Object@ target;
+	const CargoType@ type;
+	bool pickup;
+
+	TransferCargo(Object@ targ, const CargoType@ type, bool pickup) {
+		@target = targ;
+		@this.type = type;
+		this.pickup = pickup;
+	}
+
+	void call(Object& obj) {
+		if(obj is null || !obj.hasCargo || !obj.hasLeaderAI || !obj.owner.controlled)
+			return;
+		if(obj.getCargoStored(type.id) > 0) {
+			obj.addCargoOrder(target, type.id, pickup);
+		}
+	}
+}
+
 class ConstructionOption : Option {
 	const ConstructionType@ type;
 	Object@ from;
@@ -1154,7 +1175,8 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 			}
 		}
 
-		//Asteroid base construction
+		//Asteroid base construction
+
 		if(clicked !is null && constructObj !is null && constructObj.hasConstruction
 			&& constructObj.canBuildAsteroids && clicked.isAsteroid &&
 			cast<Asteroid>(clicked).canDevelop(playerEmpire)
@@ -1418,6 +1440,33 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 				optText = format("$1: $2", constructObj.name, cons.name);
 
 			addOption(menu, selected, clicked, optText, opt);
+		}
+	}
+
+	//Cargo
+	if(selected !is null && clicked !is null) {
+		if(selected.hasMover && selected.hasCargo && clicked.hasCargo && selected.owner is clicked.owner) {
+			for(int i = 0; i < getCargoTypeCount(); i++) {
+				const CargoType@ type = getCargoType(i);
+				if(selected.getCargoStored(i) >= 0.001 && clicked.cargoCapacity - clicked.cargoFilled >= type.storageSize)
+					addOption(
+						menu,
+						selected,
+						clicked,
+						format(locale::ABL_TRANSFER_SPECIFIC_CARGO, type.name),
+						TransferCargo(clicked, type, false)
+						type.icon
+					);
+				if(clicked.getCargoStored(i) >= 0.001 && selected.cargoCapacity - selected.cargoFilled >= type.storageSize)
+					addOption(
+						menu,
+						selected,
+						clicked,
+						format(locale::ABL_PICKUP_SPECIFIC_CARGO, type.name),
+						TransferCargo(clicked, type, true)
+						type.icon
+					);
+			}
 		}
 	}
 
