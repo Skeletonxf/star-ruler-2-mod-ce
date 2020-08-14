@@ -14,6 +14,7 @@ from requirement_effects import Requirement;
 import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
 import void filterToResourceTransferAbilities(array<Ability>&) from "CE_resource_transfer";
 import CE_array_map;
+import influence_global;
 #section all
 
 // TODO: Rename as no longer just biomes
@@ -741,4 +742,36 @@ class RequireHeldSpecificCargo : AbilityHook {
 			return false;
 		return abl.obj.getCargoStored(cargo_type.integer) >= 0.001;
 	}
+};
+
+class StartVoteIfAllAttributeLT : EmpireTrigger {
+	Document doc("Start a new influence vote if all empires with this attribute are less than a value. If the vote takes an object target, fill it with the triggered object. Other targets will not be filled.");
+	Argument type(AT_InfluenceVote, doc="Type of vote to start.");
+	Argument start_ownerless(AT_Boolean, "False", doc="Whether to start the vote without an owner, like zeitgeists, or whether to have the triggering empire as its owner.");
+	Argument attribute(AT_EmpAttribute, doc="Attribute to check.");
+	Argument value(AT_Decimal, "1", doc="Value to test against.");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if(emp is null || start_ownerless.boolean)
+			@emp = defaultEmpire;
+
+		auto@ type = getInfluenceVoteType(type.integer);
+		Targets targs(type.targets);
+		if(targs.length != 0 && targs[0].type == TT_Object) {
+			@targs[0].obj = obj;
+			targs[0].filled = true;
+		}
+
+		if(type !is null) {
+			for (uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
+				Empire@ emp = getEmpire(i);
+				if (emp.getAttribute(attribute.integer) >= value.decimal) {
+					return;
+				}
+			}
+			startInfluenceVote(emp, type, targs);
+		}
+	}
+#section all
 };

@@ -18,5 +18,5 @@ Technology: SysWarpdrive
 	UnlockSubsystem(Warpdrive)
 	SkipOnUnlockedSubsystem(Warpdrive)
 
-	StartVote(WarpdriveResearch, Start Ownerless = True)
+	CE_biome_hooks::StartVoteIfAllAttributeLT(WarpdriveResearch, True, ResearchUnlockedWarpdrive)
 	SecondaryFTLCost(1000)

@@ -18,5 +18,5 @@ Technology: SysHyperdrive
 	UnlockSubsystem(Hyperdrive)
 	SkipOnUnlockedSubsystem(Hyperdrive)
 
-	StartVote(HyperdriveResearch, Start Ownerless = True)
+	CE_biome_hooks::StartVoteIfAllAttributeLT(HyperdriveResearch, True, ResearchUnlockedHyperdrive)
 	SecondaryFTLCost(1000)

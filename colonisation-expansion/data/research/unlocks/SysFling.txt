@@ -18,6 +18,6 @@ Technology: SysFling
 
 	UnlockTag(HasFling)
 	ModAttribute(HasFling, Add, 1)
-	StartVote(FlingResearch, Start Ownerless = True)
+	CE_biome_hooks::StartVoteIfAllAttributeLT(FlingResearch, True, ResearchUnlockedFling)
 	SkipOnUnlockedTag(HasFling)
 	SecondaryFTLCost(1000)

@@ -18,5 +18,5 @@ Technology: SysGateModule
 	UnlockSubsystem(GateModule)
 	SkipOnUnlockedSubsystem(GateModule)
 
-	StartVote(GateResearch, Start Ownerless = True)
+	CE_biome_hooks::StartVoteIfAllAttributeLT(GateResearch, True, ResearchUnlockedGate)
 	SecondaryFTLCost(1000)

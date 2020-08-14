@@ -16,8 +16,8 @@ Technology: OrbFTLExtractor
 	Color: #76d0de
 
 
+	CE_biome_hooks::StartVoteIfAllAttributeLT(FTLExtractorResearch, True, ResearchUnlockedExtractor)
 	ModAttribute(FTLExtractorsUnlocked, Add, 1)
 	SkipOnUnlockedTag(HasFTLExtractor)
 	UnlockTag(HasFTLExtractor)
-	StartVote(FTLExtractorResearch, Start Ownerless = True)
 	SecondaryFTLCost(250)

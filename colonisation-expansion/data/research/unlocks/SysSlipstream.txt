@@ -18,5 +18,5 @@ Technology: SysSlipstream
 	UnlockSubsystem(Slipstream)
 	SkipOnUnlockedSubsystem(Slipstream)
 
-	StartVote(SlipstreamResearch, Start Ownerless = True)
+	CE_biome_hooks::StartVoteIfAllAttributeLT(SlipstreamResearch, True, ResearchUnlockedSlipstream)
 	SecondaryFTLCost(1000)

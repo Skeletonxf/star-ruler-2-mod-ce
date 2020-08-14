@@ -18,5 +18,5 @@ Technology: SysJumpdrive
 	UnlockSubsystem(Jumpdrive)
 	SkipOnUnlockedSubsystem(Jumpdrive)
 
-	StartVote(JumpdriveResearch, Start Ownerless = True)
+	CE_biome_hooks::StartVoteIfAllAttributeLT(JumpdriveResearch, True, ResearchUnlockedJumpdrive)
 	SecondaryFTLCost(1000)

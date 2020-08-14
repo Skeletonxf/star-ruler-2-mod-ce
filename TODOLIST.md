@@ -39,7 +39,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Perhaps all the max pop should come once the planet gets destroyed?
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
   - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
-  - Avoid starting the FTL unlock events after the first passes, rather than auto cancelling them which is distracting.
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
