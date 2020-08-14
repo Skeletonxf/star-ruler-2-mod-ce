@@ -4,11 +4,7 @@ Construction: Fracture
 	Build Cost: 1500
 	Labor Cost: 300
 	Time Cost:
-	Description: <<
-		Fractures the planet into many tiny pieces, losing all buildings, surface area, resources and population. The planet becomes comprised of many bits and pieces between atmosphere and a local asteroid field.
-
-		Fractured Planets can build an infinite number of moons and generate ore over time, but are easily destroyed by further planetary damage.
-	>>
+	Description: #FRACTURE_PLANET_DESC
 	Category: Development
 	RequireNotStatus(ArtificialPlanetoid)
 	RequireNotStatus(Ringworld)

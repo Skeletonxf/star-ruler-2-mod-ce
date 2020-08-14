@@ -9,7 +9,7 @@ Resource: LocalAsteroidField
 	Level: 1
 	Exportable: False
 	Rarity: Uncommon
-	Affinity: Money + Influence
+	Affinity: Labor
 
 	Pressure: 10 Labor
 	AddStatus(PlanetHasAsteroidField)

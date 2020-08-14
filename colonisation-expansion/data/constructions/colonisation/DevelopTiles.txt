@@ -5,6 +5,7 @@ Construction: NonAncientDevelopTiles
 	Time Cost: 20
 	Category: Development
 	Build Cost: 1000
+	RequirePlanetNotBiome(Photovoltics)
 	RequireNotStatus(StarHabitatsNoPlanetUseSingle)
 	RequireNotTrait(Verdant)
 	ConsumeCargo(Forestation, 300)
@@ -18,6 +19,7 @@ Construction: VerdantDevelopTiles
 	Time Cost: 20
 	Category: Development
 	Build Cost: 1000
+	RequirePlanetNotBiome(Photovoltics)
 	RequireTrait(Verdant)
 	DevelopTiles(20)
 	ConsumeCargo(Forestation, 300)

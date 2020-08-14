@@ -10,7 +10,7 @@ Module: FTLExtractor
 	Health: 700
 	Model: FTLStorage
 	Material: GenericPBR_FTLStorage
-	Maintenance: 50
+	Maintenance: 75
 	Blurb: #FTL_EXTRACTOR_BLURB
 	RequireUnlockTag(HasFTLExtractor)
 	BreakOrbitOnFTL()

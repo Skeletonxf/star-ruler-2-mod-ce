@@ -1,7 +1,15 @@
 FRACTURED_MOON_BASE: Moon Base
-CONS_FRACTURED_MOON_BASE_DESC: Moon bases can be built infintely on fractured planets but do not increase maximum population and further damage the planet.
+CONS_FRACTURED_MOON_BASE_DESC: <<
+	Moon bases can be built infinitely on fractured planets but do not increase maximum population and further damage the planet.
+
+	Keeping a moon base running on an unstable planet is not straightforward, and costs 25k in maintenance.
+>>
 RAZE_PLANET: Raze Planet
-CONS_MOON_BASE_DESC: Construct a large amount of infrastructure making more area available for placing buildings.
+CONS_MOON_BASE_DESC: <<
+	Construct a large amount of infrastructure making more area available for placing buildings.
+
+	Also adds 2 maximum population.
+>>
 DEVELOP_FOREST_FOOD: Develop forest
 CONS_DYSON_SPHERE_UPGRADE: Upgrade Dyson Sphere
 CONS_DYSON_SPHERE_UPGRADE_DESC: <<
@@ -21,4 +29,9 @@ ANCIENT_DEVELOP_TILES_DESC: <<
 	20 undeveloped tiles will randomly be developed on the planet's surface.
 
 	Or less, if fewer than 20 undeveloped tiles remain.
+>>
+FRACTURE_PLANET_DESC: <<
+	Fractures the planet into many tiny pieces, losing all buildings, surface area, resources and population. The planet becomes comprised of many bits and pieces between atmosphere and a local asteroid field.
+
+	Fractured Planets can build an infinite number of moons and generate ore over time, but are easily destroyed by further planetary damage.
 >>

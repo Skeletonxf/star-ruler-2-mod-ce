@@ -6,13 +6,9 @@ Resource: FracturedPlanet
 	Small Icon: ConditionIcons::7 * ffaaff
 	Can Be Terraformed: False
 	Level: 1
-	Description: <<
-		A planet broken into pieces. Has no native pressure but generates 1 ore per second.
-
-		[color=#ff7070][b]Cannot be exported.[/b][/color]
-	>>
+	Description: #FRACTURED_PLANET_DESC
 	Exportable: False
 	IfHaveTrait(Ancient, CE_biome_hooks::SwapBiome(Atmosphere, AncientAtmosphere))
 	AddCargoStorage(10000000000)
 	TriggerPeriodic(AddCargo(Ore, 1), Interval = 1)
-	RegenSurface(25, 13, Force Biome = Atmosphere)
+	RegenSurface(13, 9, Force Biome = Atmosphere)

@@ -14,6 +14,8 @@ Subsystem: MiningHull
 	AddShipModifier: BuildCostFactor(0.34)
 	AddShipModifier: LaborCostFactor(0.34)
 	AddShipModifier: MiningRateFactor(2.0)
+	Assert: Sum.StellarDamage == 0
+		Message: #ERROR_CANNOT_HAVE_WEAPONS
 	Assert: Sum.MiningLasers == 1
 		Message: #ERROR_MUST_HAVE_MINING_LASER
 	Assert: Sum.SupportCapacity == 0

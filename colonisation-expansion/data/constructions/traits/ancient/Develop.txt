@@ -4,6 +4,7 @@ Construction: AncientDevelopTiles
 	Icon: DevelopedTile
 	Time Cost: 20
 	Category: Development
+	RequirePlanetNotBiome(Photovoltics)
 	RequireTrait(Ancient)
 	CE_biome_hooks::RequireUndevelopedTiles()
 	ConsumeCargo(Ore, 500)
