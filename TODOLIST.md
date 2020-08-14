@@ -9,6 +9,16 @@ This is primarily intended as a developer focused project planning list, rather 
   - battleworld QoL changes
     - port to CP
     - Update in combat to apply to all orbitals that have dps
+  - Fix OpenGL error with Dysons
+    - Error code seems to be stack overflow?
+  - Make automated mining orders able to have a dropoff point in a different system to the asteroids
+  - Make it possible to transfer fixed amounts of cargo in lump sums and as recurring per second between cargo sources without using flagships, some kind of automated civillian transporters?
+    - Consider adding ore maintenace costs for Dysons once this system is working
+  - Look into integrating Dalo's suggested order code for transfering cargo types
+  - Fix First planet levels not having any relation to pressure production
+    - Ancient empires 'have' to build Lighting Systems like everyone else, except they get the pressure from the disabled resource anyway
+    - When Ancient empires expose the molten core of a tier 1 planet, the tier 2 resource added appears disabled, but pressure is produced for it anyway
+    - Ancient empires can't level scalable planets beyond level 2
   - To fix in refactor of colonization and development code
     - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (easily reproduced in the mining colony scenario)
     - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
@@ -24,7 +34,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to not put comets on worlds being razed
   - Teach AI to melt ice
   - Teach AI to make most of the constructions by extending the building hint code
-  - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Tweak the Star Children consume planet ability so that you can't almost destroy all your planets and still gain nearly all of the benefits.
     - Perhaps all the max pop should come once the planet gets destroyed?
@@ -56,6 +65,7 @@ This is primarily intended as a developer focused project planning list, rather 
        - TODO
   - Make autoexplore continue to work after all systems have been visited once (will also split off into own mod or community patch)
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
+  - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
 
 - Long term plans
   - Improving the AI
