@@ -16,6 +16,7 @@ from influence_global import giveRandomReward;
 from components.ObjectManager import getDefenseDesign;
 // [[ MODIFY BASE GAME START ]]
 from statuses import getStatusID;
+import CE_array_map;
 // [[ MODIFY BASE GAME END ]]
 import bool getCheatsEverOn() from "cheats";
 const string TAG_SUPPORT("Support");
@@ -426,13 +427,11 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		return biome2;
 	}
 
-	// [[ MODIFY BASE GAME ]]
-	// FIXME: This method really needs to update biome0, biome1 and biome2 to
-	// stop a mismatch between the biomes array and the biome fields
+	// [[ MODIFY BASE GAME START ]]
 	void forceUsefulSurface(double pct, uint biomeId) {
 		double useful = 1.0;
 		double perTile = 1.0 / (double(grid.size.width) * double(grid.size.height));
-		auto@ fillBiome = getBiome(biomeId);
+		auto@ fillBiome = getBiome(biomeId); // the biome to force apply
 		if(fillBiome is null)
 			return;
 		do {
@@ -447,7 +446,56 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		} while(useful < pct);
 
 		++SurfaceModId;
+
+		// Now scan through our grid of tiles to determine what biomes
+		// we actually have in our tiles
+		ArrayMap biomeTiles = ArrayMap();
+		for (uint i = 0, cnt = grid.biomes.length; i < cnt; ++i) {
+			biomeTiles.increment(grid.biomes[i]);
+		}
+		// create and sort an array of indexes into the biome tiles map
+		array<int> tilesSortedByFrequencyIndex;
+		tilesSortedByFrequencyIndex.length = biomeTiles.keys.length;
+		for (uint i = 0, cnt = biomeTiles.keys.length; i < cnt; ++i) {
+			tilesSortedByFrequencyIndex[i] = i;
+		}
+		// insertion sort because this array is probably 3 elements
+		// and I would rather this ran slower than I mess up the logic
+		uint i = 1;
+		while (i < tilesSortedByFrequencyIndex.length) {
+			uint j = i;
+			// while the index on the right is for a tile occurance in the map
+			// that is higher than the index on the left, swap it down
+			while (j > 0 && biomeTiles.values[tilesSortedByFrequencyIndex[j - 1]] < biomeTiles.values[tilesSortedByFrequencyIndex[j]]) {
+				uint tmp = tilesSortedByFrequencyIndex[j - 1];
+				tilesSortedByFrequencyIndex[j - 1] = tilesSortedByFrequencyIndex[j];
+				tilesSortedByFrequencyIndex[j] = tmp;
+				j -= 1;
+			}
+			i += 1;
+		}
+		// now tilesSortedByFrequencyIndex contains in sorted order the
+		// indexes for the biome tiles used in most occuring first
+		uint biomesNewLength =  biomeTiles.keys.length;
+		if (biomesNewLength > 3)
+			biomesNewLength = 3;
+		biomes.length = biomesNewLength;
+		if (biomes.length >= 1) {
+			biome0 = biomeTiles.keys[tilesSortedByFrequencyIndex[0]];
+			@biomes[0] = getBiome(biome0);
+			@grid.baseBiome = biomes[0];
+		}
+		if (biomes.length >= 2) {
+			biome1 = biomeTiles.keys[tilesSortedByFrequencyIndex[1]];
+			@biomes[1] = getBiome(biome1);
+		}
+		if (biomes.length >= 3) {
+			biome2 = biomeTiles.keys[tilesSortedByFrequencyIndex[2]];
+			@biomes[2] = getBiome(biome2);
+		}
+		grid.delta = true;
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	bool hasBiome(uint id) const {
 		for(uint i = 0, cnt = biomes.length; i < cnt; ++i) {

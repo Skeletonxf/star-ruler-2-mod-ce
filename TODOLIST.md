@@ -3,8 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Fix homeworlds and other planets with forced useful surface seems to have updated tiles but not updated biomes, causing flood rocks / develop forest to appear despite the UI insisting the tiles are forest already, but the visuals looking more like rocks.
-     - This bug appears to be due to forceUsefulSurface not updating biome0, biome1 and biome2
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
     - port to CP
