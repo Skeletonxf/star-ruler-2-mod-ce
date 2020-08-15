@@ -170,11 +170,9 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 		nativeLifeStatus = getStatusID("NativeLife");
 		@uplift_planet = getConstructionType("SharePlanet");
 		@genocide_planet = getConstructionType("TakePlanet");
+		// ancient empire has automatic, free, genocide effect, and cannot
+		// uplift
 		no_uplift = ai.empire.hasTrait(getTraitID("Ancient"));
-		// ancient empire has a cheaper genocide construction
-		if (ai.empire.hasTrait(getTraitID("Ancient"))) {
-			@genocide_planet = getConstructionType("TakePlanetAncient");
-		}
 		// mono empire has a cheaper uplift option
 		if (ai.empire.hasTrait(getTraitID("Mechanoid"))) {
 			@uplift_planet = getConstructionType("SharePlanetMono");
@@ -888,12 +886,13 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 			// handle native life status on planets
 			if (plAI.obj.hasStatusEffect(nativeLifeStatus)) {
 				if ((!planets.isConstructing(plAI.obj, uplift_planet))
-						&& (!planets.isConstructing(plAI.obj, genocide_planet))) {
+						&& (!planets.isConstructing(plAI.obj, genocide_planet))
+						&& !no_uplift) {
 					// check if we can afford to uplift this planet
 					// Uplift costs 800k, 5 influence, 500 energy
 					// 500 energy is pretty cheap to save up for so isn't
 					// factored in here for evaluating
-					if (!no_uplift && ai.empire.Influence >= 8 && budget.canSpend(BT_Development, uplift_cost)) {
+					if (ai.empire.Influence >= 8 && budget.canSpend(BT_Development, uplift_cost)) {
 						if (log) {
 							ai.print("found native life planet to uplift");
 						}

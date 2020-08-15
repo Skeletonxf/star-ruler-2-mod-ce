@@ -1,7 +1,7 @@
 Construction: ExposeMoltenCore
 	Name: Expose Molten Core
 	Description: <<
-		Through extensive drilling and explosives we can open up this planet's molten core, providing valuable Tier 2 resources.
+		Through extensive drilling and explosives we can open up this planet's molten core, providing a valuable Tier 2 resource.
 		Unfortunately the process makes the planet inhospitable in the interim.
 	>>
 	Icon: ConditionIcons::1 * ffaa00
