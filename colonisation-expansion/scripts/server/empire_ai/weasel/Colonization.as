@@ -27,7 +27,7 @@ interface ParasiteColonization {
 }
 // [[ MODIFY BASE GAME END ]]
 
-final class ColonizeData {
+class ColonizeData {  // [[ MODIFY BASE GAME ]]
 	int id = -1;
 	Planet@ target;
 	Planet@ colonizeFrom;
@@ -82,7 +82,7 @@ final class ColonizePenalty : Savable {
 	}
 };
 
-final class PotentialColonize {
+class PotentialColonize { // [[ MODIFY BASE GAME ]]
 	Planet@ pl;
 	const ResourceType@ resource;
 	double weight = 0;

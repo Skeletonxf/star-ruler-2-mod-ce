@@ -95,8 +95,33 @@ void loadColonizeQueue(ColonizeQueue queue, Expansion& expansion, SaveFile& file
 	}
 } */
 
+class PotentialColonizeSource : PotentialColonize {
+	// Existing parent class fields, these are needed because
+	// other AI components use them
+	//Planet@ pl;
+	//const ResourceType@ resource;
+	//double weight = 0;
+	PlanetValuables@ valuables;
+
+	PotentialColonizeSource(Planet@ planet, ResourceValuator& valuation) {
+		@valuables = PlanetValuables(planet);
+		weight = 0; // TODO: PlanetValuables should produce a colonize weight
+		@resource = getResource(planet.primaryResourceType);
+		@pl = planet;
+	}
+}
+
+class ColonizeTree {
+	// TODO, want to track what planet we are colonizing resources for here
+	// so that if we lose the planet then we can stop colonizing all its
+	// children, or at the very least reconsider if we need them and
+	// move them to a different tree in the forest
+}
+
 class ColonizeForest {
 	// TODO
+	array<ColonizeTree@> urgent;
+	array<ColonizeTree@> queue;
 }
 
 /**
