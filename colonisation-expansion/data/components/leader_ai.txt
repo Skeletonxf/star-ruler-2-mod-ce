@@ -5,7 +5,7 @@ local:
 	GroupData@[] getSupportGroups() const;
 	safe uint get_supportCount();
 	Object@ get_supportShip(uint index);
-	
+
 	safe double getFleetHP() const;
 	safe double getFleetDPS() const;
 	safe double getFleetStrength() const;
@@ -64,15 +64,17 @@ restricted remote:
 	void addOddityGateOrder(Oddity& target, bool append = false);
 	void addSlipstreamOrder(vec3d target, bool append = false);
 	void addAutoExploreOrder(bool useFTL, bool append = false);
+	// [[ MODIFY BASE GAME START ]]
 	void addCargoOrder(Object& target, int cargoId, bool pickup, bool append = false);
+	// [[ MODIFY BASE GAME END ]]
 
 	void addSecondaryToSlipstream(Object& other);
 	void addWaitOrder(Object@ waitingFor = null, bool append = false, bool moveTo = false);
 	void moveAfterWait(vec3d position, Object@ waitingFor = null);
-	
+
 	void clearOrders();
 	void clearTopOrder();
-	
+
 	void insertMoveOrder(vec3d target, uint index);
 	void insertHyperdriveOrder(vec3d target, uint index);
 	void insertJumpdriveOrder(vec3d target, uint index);
@@ -105,7 +107,7 @@ server:
 	safe uint get_SupplyGhost() const;
 	safe uint get_SupplyOrdered() const;
 	safe uint get_SupplySatellite() const;
-	
+
 	safe bool get_hasOrderedSupports() const;
 	safe uint get_firstOrderType() const;
 
@@ -136,7 +138,7 @@ server:
 	safe double getEngagementRange();
 	Object@ getAttackTarget();
 	double getAttackDistance();
-	
+
 	void idleAllSupports();
 
 	void teleportTo(vec3d position, bool movementPart = false);
@@ -151,9 +153,9 @@ server:
 
 	void setFleetEffectiveness(float value);
 	void modFleetEffectiveness(float value);
-	
+
 	double get_slowestSupportAccel() const;
-	
+
 	void set_engageRange(double radius);
 
 	safe bool get_freeRaiding();

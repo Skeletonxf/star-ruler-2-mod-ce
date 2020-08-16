@@ -1,4 +1,6 @@
+// [[ MODIFY BASE GAME START ]]
 import cargo;
+// [[ MODIFY BASE GAME END ]]
 import elements.GuiContextMenu;
 import tabs.Tab;
 from tabs.tabbar import ActiveTab;
@@ -762,25 +764,36 @@ class TargetAbility : MultiOption {
 	}
 };
 
+// [[ MODIFY BASE GAME START ]]
+enum CargoTransfer {
+	CT_Pickup,
+	CT_Dropoff
+};
+
 class TransferCargo : MultiOption {
 	Object@ target;
 	const CargoType@ type;
-	bool pickup;
+	CargoTransfer transfer;
 
-	TransferCargo(Object@ targ, const CargoType@ type, bool pickup) {
+	TransferCargo(Object@ targ, const CargoType@ type, CargoTransfer transfer) {
 		@target = targ;
 		@this.type = type;
-		this.pickup = pickup;
+		this.transfer = transfer;
 	}
 
 	void call(Object& obj) {
 		if(obj is null || !obj.hasCargo || !obj.hasLeaderAI || !obj.owner.controlled)
 			return;
 		if(obj.getCargoStored(type.id) > 0) {
-			obj.addCargoOrder(target, type.id, pickup);
+			if (transfer == CT_Pickup) {
+				obj.addCargoOrder(target, type.id, true);
+			} else if (transfer == CT_Dropoff) {
+				obj.addCargoOrder(target, type.id, false);
+			}
 		}
 	}
 }
+// [[ MODIFY BASE GAME END ]]
 
 class ConstructionOption : Option {
 	const ConstructionType@ type;
@@ -1443,32 +1456,41 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 		}
 	}
 
+	// [[ MODIFY BASE GAME START ]]
 	//Cargo
 	if(selected !is null && clicked !is null) {
 		if(selected.hasMover && selected.hasCargo && clicked.hasCargo && selected.owner is clicked.owner) {
 			for(int i = 0; i < getCargoTypeCount(); i++) {
 				const CargoType@ type = getCargoType(i);
-				if(selected.getCargoStored(i) >= 0.001 && clicked.cargoCapacity - clicked.cargoFilled >= type.storageSize)
+				// check if can drop off this type of cargo
+				bool goingToPickupCargo = false; // TODO, check if we have pickup orders queued somehow
+				if ((goingToPickupCargo || selected.getCargoStored(i) >= 0.001)
+					&& (clicked.cargoCapacity - clicked.cargoFilled) >= type.storageSize) {
 					addOption(
 						menu,
 						selected,
 						clicked,
 						format(locale::ABL_TRANSFER_SPECIFIC_CARGO, type.name),
-						TransferCargo(clicked, type, false)
+						TransferCargo(clicked, type, CT_Dropoff)
 						type.icon
 					);
-				if(clicked.getCargoStored(i) >= 0.001 && selected.cargoCapacity - selected.cargoFilled >= type.storageSize)
+				}
+				// check if can pickup this type of cargo
+				if (clicked.getCargoStored(i) >= 0.001
+					&& (selected.cargoCapacity - selected.cargoFilled) >= type.storageSize) {
 					addOption(
 						menu,
 						selected,
 						clicked,
 						format(locale::ABL_PICKUP_SPECIFIC_CARGO, type.name),
-						TransferCargo(clicked, type, true)
+						TransferCargo(clicked, type, CT_Pickup)
 						type.icon
 					);
+				}
 			}
 		}
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	//Only show the menu if there are options
 	if(menu.list.itemCount == 0) {
