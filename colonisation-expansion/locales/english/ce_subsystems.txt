@@ -65,7 +65,7 @@ S_MINING_HULL_DESC: <<
 
 	[img=Plus]Maintenence costs reduced by 66%.[/img]
 	[img=Plus]Build and labor costs reduced by 66%.[/img]
-	[img=Plus]Mining rate increased by 100%.[/img]
+	[img=Plus]Mining rate increased by 20%.[/img]
 	[img=Minus]Cannot have any weapons or support comand on the ship.[/img]
 	[img=Minus]Ship is extremely fragile.[/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Mining Hulls can only be used on ships with Mining Lasers.[/color][/i][/img]

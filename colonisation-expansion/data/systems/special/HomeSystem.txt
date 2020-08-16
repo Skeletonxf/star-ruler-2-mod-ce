@@ -25,7 +25,7 @@ System: HomeSystem
 
 	MakeAsteroid(Cargo = Ore, Cargo Amount = 6000)
 	MakeAsteroid(Resource = Distributed)
-	MakeAsteroidBelt(Count = 80, Cargo = Ore, Cargo Amount = 50:10000, Distribution Chance = 0.0, Count Modifier = -75:75)
+	MakeAsteroidBelt(Count = 80, Cargo = Ore, Cargo Amount = 5:1000, Distribution Chance = 0.0, Count Modifier = -75:75)
 
 	AddAdjacentArtifacts(2)
 	MakeAdjacentCreepCamp(SmallCamp, Place Far = True)
