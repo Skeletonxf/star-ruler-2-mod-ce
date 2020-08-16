@@ -14,5 +14,5 @@ ABL_PICKUP_SPECIFIC_CARGO: Pickup $1
 ABL_PICKUP_SPECIFIC_CARGO_DESC: Order the ship to pick up as much $1 from the target as possible.
 ABL_PICKUP_CARGO: Pickup All Cargo
 ABL_TRANSFER_CARGO: Transfer All Cargo
-ABL_TRANSGER_SPECIFIC_CARGO_DESC: Order the ship to transfer all $1 in its stores.
+ABL_TRANSFER_SPECIFIC_CARGO_DESC: Order the ship to transfer all $1 in its stores.
 ABL_TRANSFER_SPECIFIC_CARGO: Transfer All $1

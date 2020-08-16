@@ -574,8 +574,6 @@ class ActionBar : BaseGuiElement {
 			if(abl.disabled)
 				continue;
 			// [[ MODIFY BASE GAME START ]]
-			if(abl.type.hideLocal)
-				continue;
 			if(abl.type.ident == "AbilityAbandon")
 				continue;
 			// [[ MODIFY BASE GAME END ]]
