@@ -203,7 +203,7 @@ class Parasite : AIComponent {
 			spec.level = 1;
 			spec.isForImport = false;
 			spec.isLevelRequirement = false;
-			colonization.queueColonize(spec);
+			colonization.queueColonizeLowPriority(spec);
 		}
 		{
 			ResourceSpec spec;
@@ -211,7 +211,7 @@ class Parasite : AIComponent {
 			spec.level = 1;
 			spec.isForImport = false;
 			spec.isLevelRequirement = false;
-			colonization.queueColonize(spec);
+			colonization.queueColonizeLowPriority(spec);
 		}
 	}
 
@@ -278,7 +278,7 @@ class Parasite : AIComponent {
 			spec.level = 1;
 			spec.isForImport = false;
 			spec.isLevelRequirement = false;
-			colonization.queueColonize(spec);
+			colonization.queueColonizeLowPriority(spec);
 		}
 	}
 

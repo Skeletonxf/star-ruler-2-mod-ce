@@ -71,7 +71,7 @@ class Mechanoid : Race, RaceResources, RaceColonization {
 			spec.isLevelRequirement = false;
 			spec.isForImport = false;
 
-			colonization.queueColonize(spec);
+			colonization.queueColonizeLowPriority(spec);
 		}
 	}
 

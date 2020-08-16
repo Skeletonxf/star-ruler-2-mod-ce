@@ -855,7 +855,7 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 	}
 
 	// [[ MODIFY BASE GAME START ]]
-	ColonizeQueue@ queueColonizeHighPriority(ResourceSpec& spec, bool place = true) {
+	void queueColonizeHighPriority(ResourceSpec& spec, bool place = true) {
 		ColonizeQueue q;
 		@q.spec = spec;
 
@@ -863,7 +863,10 @@ final class Colonization : AIComponent, IColonization { // [[ MODIFY BASE GAME ]
 			// insertAt pushes other elements down the array
 			queue.insertAt(0, q);
 		}
-		return q;
+	}
+
+	void queueColonizeLowPriority(ResourceSpec& spec, bool place = true) {
+		queueColonize(spec, place);
 	}
 	// [[ MODIFY BASE GAME END ]]
 
@@ -1162,10 +1165,10 @@ AIComponent@ createColonization() {
 // Define the interface that other AI components use to interact with this one,
 // so this component can be swapped out.
 interface IColonization {
-	// Places a resource spec into the colonize queue, returning the queue item
-	ColonizeQueue@ queueColonize(ResourceSpec& spec, bool place = true);
-	// Places a resource spec into the colonize queue, returning the queue item
-	ColonizeQueue@ queueColonizeHighPriority(ResourceSpec& spec, bool place = true);
+	// Places a resource spec into the colonize queue
+	void queueColonizeLowPriority(ResourceSpec& spec, bool place = true);
+	// Places a resource spec into the colonize queue
+	void queueColonizeHighPriority(ResourceSpec& spec, bool place = true);
 	// Saves colonize data to a file
 	void saveColonize(SaveFile& file, ColonizeData@ data);
 	// Loads colonize data from a file

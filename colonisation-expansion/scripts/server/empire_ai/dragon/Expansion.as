@@ -64,7 +64,7 @@ class Limits {
 	}
 }
 
-void saveColonizeQueue(ColonizeQueue queue, Expansion& expansion, SaveFile& file) {
+/* void saveColonizeQueue(ColonizeQueue queue, Expansion& expansion, SaveFile& file) {
 	file << queue.spec;
 	file << queue.target;
 
@@ -93,6 +93,10 @@ void loadColonizeQueue(ColonizeQueue queue, Expansion& expansion, SaveFile& file
 		@queue.children[i].parent = queue;
 		loadColonizeQueue(queue.children[i], expansion, file);
 	}
+} */
+
+class ColonizeForest {
+	// TODO
 }
 
 /**
@@ -124,7 +128,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// Things we might want to colonize
 	array<PotentialColonize@> potentialColonizations;
 	// Things in the queue for colonizing
-	array<ColonizeQueue@> queue;
+	ColonizeForest@ queue;
 	// Things we need a colonize source to colonize with
 	array<ColonizeData@> awaitingSource;
 	// Things we are colonizing
@@ -153,10 +157,10 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			colonizing[i].save(dummy, file);
 		}
 
-		cnt = queue.length;
-		file << cnt;
-		for(uint i = 0; i < cnt; ++i)
-			saveColonizeQueue(queue[i], this, file);
+		//cnt = queue.length;
+		//file << cnt;
+		//for(uint i = 0; i < cnt; ++i)
+		//	saveColonizeQueue(queue[i], this, file);
 	}
 
 	void load(SaveFile& file) {
@@ -185,12 +189,12 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			}
 		}
 
-		file >> cnt;
-		queue.length = cnt;
-		for(uint i = 0; i < cnt; ++i) {
-			@queue[i] = ColonizeQueue();
-			loadColonizeQueue(queue[i], this, file);
-		}
+		//file >> cnt;
+		//queue.length = cnt;
+		//for(uint i = 0; i < cnt; ++i) {
+		//	@queue[i] = ColonizeQueue();
+		//	loadColonizeQueue(queue[i], this, file);
+		//}
 	}
 
 	void tick(double time) override {
@@ -280,24 +284,25 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		return true;
 	}
 
-	ColonizeQueue@ queueColonize(ResourceSpec& spec, bool place = true) {
-		ColonizeQueue q;
-		@q.spec = spec;
+	void queueColonizeLowPriority(ResourceSpec& spec, bool place = true) {
+		//ColonizeQueue q;
+		//@q.spec = spec;
 
-		if(place)
-			queue.insertLast(q);
-		return q;
+		//if(place)
+		//	queue.insertLast(q);
+		//return q;
 	}
-	// Places a resource spec into the colonize queue, returning the queue item
-	ColonizeQueue@ queueColonizeHighPriority(ResourceSpec& spec, bool place = true) {
-		ColonizeQueue q;
-		@q.spec = spec;
 
-		if (place) {
-			// insertAt pushes other elements down the array
-			queue.insertAt(0, q);
-		}
-		return q;
+	// Places a resource spec into the colonize queue, returning the queue item
+	void queueColonizeHighPriority(ResourceSpec& spec, bool place = true) {
+		//ColonizeQueue q;
+		//@q.spec = spec;
+
+		//if (place) {
+		//	// insertAt pushes other elements down the array
+		//	queue.insertAt(0, q);
+		//}
+		//return q;
 	}
 
 	// Loads colonize data from a file
@@ -327,11 +332,6 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		if(data !is null)
 			id = data.id;
 		file << id;
-	}
-
-	// TODO: Find out what this does
-	bool isResolved(ImportData@ req, ColonizeQueue@ inside = null) {
-		return false;
 	}
 
 	// Colonizes a planet, marking the ColonizeData as colonizing and awaitingSource
@@ -378,14 +378,14 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			if(colonizing[i].target is pl)
 				return true;
 		}
-		for(uint i = 0, cnt = queue.length; i < cnt; ++i) {
-			if(isColonizing(pl, queue[i]))
-				return true;
-		}
+		//for(uint i = 0, cnt = queue.length; i < cnt; ++i) {
+		//	if(isColonizing(pl, queue[i]))
+		//		return true;
+		//}
 		return false;
 	}
 
-	bool isColonizing(Planet& pl, ColonizeQueue@ q) {
+	/* bool isColonizing(Planet& pl, ColonizeQueue@ q) {
 		if(q.target is pl)
 			return true;
 		for(uint i = 0, cnt = q.children.length; i < cnt; ++i) {
@@ -393,7 +393,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				return true;
 		}
 		return false;
-	}
+	} */
 
 	// Check how recently we colonized something matching the spec
 	double timeSinceMatchingColonize(ResourceSpec& spec) {
@@ -403,6 +403,12 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// This method is only used in the Colonization and Development components,
 	// which means we don't need it as Expansion replaces both components.
 	bool shouldQueueFor(const ResourceSpec@ spec, ColonizeQueue@ inside = null) {
+		return false;
+	}
+
+	// This method is only used in the Colonization and Development components,
+	// which means we don't need it as Expansion replaces both components.
+	bool isResolved(ImportData@ req, ColonizeQueue@ inside = null) {
 		return false;
 	}
 

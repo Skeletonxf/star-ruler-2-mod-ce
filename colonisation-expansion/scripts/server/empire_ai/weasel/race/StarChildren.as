@@ -211,7 +211,7 @@ class StarChildren : Race {
 			spec.isForImport = false;
 			spec.isLevelRequirement = false;
 
-			colonization.queueColonize(spec);
+			colonization.queueColonizeLowPriority(spec);
 		}
 
 		//Then find a Tier 2 to get
@@ -222,7 +222,7 @@ class StarChildren : Race {
 			spec.isForImport = false;
 			spec.isLevelRequirement = false;
 
-			colonization.queueColonize(spec);
+			colonization.queueColonizeLowPriority(spec);
 		}
 
 		// [[ MODIFY BASE GAME START ]]
