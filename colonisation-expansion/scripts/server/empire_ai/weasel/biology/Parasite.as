@@ -226,12 +226,15 @@ class Parasite : AIComponent {
 		// If we're in debt should probably raze something
 	}
 
-	void turn() override {
+	void endOfTurn() override {
 		// Update book keeping for which owned planets are best to raze
-		// TODO: Any sort of bookkeeping
-		// TODO: do more than one target per turn?
-		// TODO: This should be done just before the end of a budget cycle, not
 		// at the start of one
+		// This AI component doesn't really have state, raze targets
+		// will change often enough between budget cycles that there is
+		// little reason to cache any data captured here. Relatedly,
+		// razing shouldn't be done too often as it can interfere with
+		// colonisation goals, so razing 0 or 1 planets at the end
+		// of each budget cycle works quite well.
 		PlanetAI@ bestRazeTarget;
 		int bestRazeValue = 0.0;
 		int goodRazeTargets = 0;
@@ -270,6 +273,10 @@ class Parasite : AIComponent {
 				}
 			}
 			// TODO: Remove imports/exports from this planet
+			// The Resources code seems to dumb to notice that the razing
+			// planet can't accept imports
+			// This might be fixed generically in the Expansion component
+			// refactor
 		}
 		if (goodRazeTargets < 3) {
 			// queue up a level 1 resource each turn we lack good raze targets

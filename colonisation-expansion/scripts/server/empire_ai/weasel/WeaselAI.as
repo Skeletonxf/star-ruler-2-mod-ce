@@ -84,7 +84,7 @@ interface IAIComponent : Savable {
 	void focusTick(double time);
 	void turn();
 	// [[ MODIFY BASE GAME START ]]
-	//void endOfTurn();
+	void endOfTurn();
 	// [[ MODIFY BASE GAME END ]]
 
 	void save(SaveFile& file);
@@ -120,7 +120,7 @@ class AIComponent : IAIComponent, Savable {
 	// Turn happens at the start of each budget cycle
 	void turn() {}
 	// End of turn happens just before the end of each budget cycle
-	//void endOfTurn() {}
+	void endOfTurn() {}
 	// [[ MODIFY BASE GAME END ]]
 
 	void save(SaveFile& file) {}
@@ -692,14 +692,15 @@ final class AI : AIController, Savable {
 		// [[ MODIFY BASE GAME START ]]
 		// Initial setup for ticking all components at the end of a budget
 		// cycle, so all excess money can be spent irrespective of its
-		// categorisation to avoid wasting funds. No components do anything
-		// on this method yet.
+		// categorisation to avoid wasting funds.
+		// TODO: Consider expedite for Heralds AI
+		// TODO: Consider buying pop with leftover money for Mono AI
 		// TODO: Let components have an end of turn weighting, so can
 		// create a system where all excess money can be spend in
 		// decreasing priority
 		if ((empire.BudgetTimer / empire.BudgetCycle) > 0.95 && endOfTurnTickReady) {
-			//for(uint i = 0, cnt = components.length; i < cnt; ++i)
-				//components[i].endOfTurn();
+			for(uint i = 0, cnt = components.length; i < cnt; ++i)
+				components[i].endOfTurn();
 			endOfTurnTickReady = false;
 		}
 		// [[ MODIFY BASE GAME END ]]

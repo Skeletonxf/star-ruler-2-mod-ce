@@ -45,6 +45,11 @@ class Diplomacy : DiplomacyAI, IAIComponent {
 
 	void tick(double time) {}
 	void turn() {}
+	// [[ MODIFY BASE GAME START ]]
+	// Remove this dummy impl if there's a way to create default method
+	// definitions
+	void endOfTurn() {}
+	// [[ MODIFY BASE GAME END ]]
 
 	void postLoad(AI& ai) {}
 	void postSave(AI& ai) {}
