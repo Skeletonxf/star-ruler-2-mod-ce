@@ -177,7 +177,7 @@ class Improvement : AIComponent {
 			return;
 		}
 
-		if (!budget.canSpend(BT_Military, 300, 50)) {
+		if (!budget.canSpend(BT_Military, 300, 75)) {
 			// TODO: Pull these values from the orbital module rather than
 			// hardcoding
 			return;
