@@ -23,13 +23,14 @@ This is primarily intended as a developer focused project planning list, rather 
     - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
     - Teach AI to deprioritise water/food colonisation if they have built a stockpile of unused ones
     - Teach AI to build outposts to bridge otherwise empty/useless systems
+    - Make new component directly consider the AsCreatedResource hooks on buildings rather than going through the consider code, which is quite useless at responding to levelling needs due to how generic it is.
+      - Extend the hooks to Constructions and do the same
   - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
     - The code looks like it does consider planet support strength, need to investigate further
   - Fix the AI military component being designed around a single `mainWait` and primary factory for building flagships
     - This is probably why the AI seemed to prioritise gates over flagships in an AI game I observed. Fleet building is only done at the main factory, and the Gate FTL code would have been more aggressive in queueing up another build, so it would have effectively blocked the AI from ever getting around to building a flagship, despite having the funds and labor income to do so. Should make it queue up a flagship and put to top priority if it is under attack and vulnerable regardless of what is already building.
     - The AI also has some questionable parameters set for this, making it trying to rebuild fleets larger than it has labor for.
   - Replace the default miner ship with one using the mining hull
-  - Make parasite AI do razing at end of a budget cycle not start
   - Teach AI to not put comets on worlds being razed
   - Teach AI to melt ice
   - Teach AI to make most of the constructions by extending the building hint code
