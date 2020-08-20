@@ -93,5 +93,30 @@ class CampaignScenarioState {
 	void triggerVictory() {
 		declareVictor(empires[0]);
 	}
+
+	bool getEmpireFleetHasShip(Empire@ empire, Ship@ test) {
+		DataList@ objs = empire.getFlagships();
+		Object@ obj;
+		while (receive(objs, obj)) {
+			Ship@ ship = cast<Ship>(obj);
+			if (ship !is null && ship is test) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	uint getEmpirePlanetCount(Empire@ empire) {
+		DataList@ objs = empire.getPlanets();
+		Object@ obj;
+		uint count = 0;
+		while (receive(objs, obj)) {
+			Planet@ planet = cast<Planet>(obj);
+			if (planet !is null) {
+				count += 1;
+			}
+		}
+		return count;
+	}
 }
 #section all

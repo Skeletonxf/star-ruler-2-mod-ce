@@ -26,8 +26,6 @@ from statuses import getStatusID;
 #section all
 
 // TODO: Disable artifact spawning
-// TODO: Give the human player a flagship which is considered to have them on it
-// with bonus efficiency but game over if it gets destroyed
 // TODO: Move common scenario code into a parent class
 
 #section server
@@ -41,6 +39,7 @@ class MiningColonyScenario : CampaignScenarioState {
 	Empire@ player;
 	Empire@ ally;
 	Empire@ enemy;
+	Ship@ playerShip;
 
 	MiningColonyScenario() {
 		@player = getEmpire(0);
@@ -59,6 +58,14 @@ class MiningColonyScenario : CampaignScenarioState {
 			if (false) {
 				completeCampaignScenario("MiningColony");
 				triggerVictory();
+			}
+
+			if (!getEmpireFleetHasShip(player, playerShip)) {
+				triggerDefeat();
+			}
+
+			if (getEmpirePlanetCount(ally) == 0) {
+				triggerDefeat();
 			}
 		}
 
@@ -113,7 +120,7 @@ class MiningColonyScenario : CampaignScenarioState {
 		// TODO: Build factories on each empire's main planet
 		// TODO: Make a custom design for the player to give them prototype
 		// hyperdrives and spawn in custom fleets
-		Ship@ playerShip = spawnFleet(player, planet(0,3).position + vec3d(180.0,0.0,0.0), "Heavy Carrier Bomber", 100);
+		@playerShip = spawnFleet(player, planet(0,3).position + vec3d(180.0,0.0,0.0), "Heavy Carrier Bomber", 100);
 		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,40.0), "Heavy Carrier Bomber", 50);
 		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,40.0), "Heavy Carrier Bomber", 50);
 		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,-40.0), "Heavy Carrier Bomber", 50);
