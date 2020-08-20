@@ -41,3 +41,11 @@ FULLY_FORESTED_DESC: <<
 	[i][color=#aaa]Forestation also removes the Noxious Atmosphere debuff. Fully Forested planets gain 1 influence.[/color][/i]
 >>
 FULLY_FORESTED: Fully Forested 
+EXPEDITION_LEADER: Leader
+EXPEDITION_LEADER_DESC: <<
+	You are leading the expedition from this ship.
+
+	If the ship dies, you die.
+
+	Your presence also improves ship effectiveness by 20%
+>>

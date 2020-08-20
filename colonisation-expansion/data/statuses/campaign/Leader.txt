@@ -1,0 +1,7 @@
+Status: Leader
+	Name: #EXPEDITION_LEADER
+	Description: #EXPEDITION_LEADER_DESC
+	Icon: LeaderIcon
+	Color: #bbf7ff
+	AddFleetEffectiveness(0.2)
+	CountAsPlanet()

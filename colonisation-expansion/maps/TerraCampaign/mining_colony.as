@@ -22,13 +22,12 @@ import empire_ai.weasel.War;
 import victory;
 import settings.game_settings;
 import CE_campaign_helpers;
+from statuses import getStatusID;
 #section all
 
 // TODO: Disable artifact spawning
-// TODO: Prohibit building research complexes as part of NoResearch trait
 // TODO: Give the human player a flagship which is considered to have them on it
 // with bonus efficiency but game over if it gets destroyed
-// TODO: Disable all conditions on spawned planets, ie native life, vanilla ones
 // TODO: Move common scenario code into a parent class
 
 #section server
@@ -81,7 +80,7 @@ class MiningColonyScenario : CampaignScenarioState {
 		populate(planet(0, 0), ally, 1.0, exportTo=planet(0, 2));
 		populate(planet(0, 1), ally, 1.0, exportTo=planet(0, 2));
 		populate(planet(0, 2), ally, 3.0);
-		populate(planet(0, 3), player, 1.0);
+		populate(planet(0, 3), ally, 1.0);
 		populate(planet(0, 4), enemy, 10.0);
 		for (uint i = 1; i < systems.length; i++) {
 			uint j = 0;
@@ -114,11 +113,12 @@ class MiningColonyScenario : CampaignScenarioState {
 		// TODO: Build factories on each empire's main planet
 		// TODO: Make a custom design for the player to give them prototype
 		// hyperdrives and spawn in custom fleets
-		spawnFleet(player, planet(0,3).position + vec3d(80.0,0.0,0.0), "Heavy Carrier Bomber", 50);
+		Ship@ playerShip = spawnFleet(player, planet(0,3).position + vec3d(180.0,0.0,0.0), "Heavy Carrier Bomber", 100);
 		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,40.0), "Heavy Carrier Bomber", 50);
 		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,40.0), "Heavy Carrier Bomber", 50);
 		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,-40.0), "Heavy Carrier Bomber", 50);
 		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,-40.0), "Heavy Carrier Bomber", 50);
+		playerShip.addStatus(getStatusID("Leader"));
 
 		spawnFleet(enemy, planet(1,1).position + vec3d(-40.0,0.0,40.0), "Dreadnaught", 150);
 		spawnFleet(enemy, planet(2,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 150);
