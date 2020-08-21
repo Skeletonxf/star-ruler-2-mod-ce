@@ -77,6 +77,14 @@ class CampaignScenarioState {
 		return flagship;
 	}
 
+	Orbital@ spawnOrbital(Empire@ emp, const vec3d& pos, const string& type = "") {
+		const OrbitalModule@ definition = getOrbitalModule(type);
+		if (definition is null) {
+			return null;
+		}
+		return createOrbital(pos, definition, emp);
+	}
+
 	/**
 	 * Removes the influence, energy and research incomes added by
 	 * various sources to drop them back to 0.

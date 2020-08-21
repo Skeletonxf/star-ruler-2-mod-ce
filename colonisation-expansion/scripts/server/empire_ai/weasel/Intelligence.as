@@ -114,7 +114,8 @@ final class FleetIntel {
 						string name = "";
 						if(obj.owner !is null)
 							name = obj.owner.name;
-						ai.print("Spotted carpet bombs on "+name+" ship");
+						if(false)
+							ai.print("Spotted carpet bombs on "+name+" ship");
 						return true;
 					}
 				}

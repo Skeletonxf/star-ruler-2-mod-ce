@@ -3,3 +3,8 @@ Trait: MiningColony
 	Description: We entered this region of space with a number of fleets already available.
 	Available: False
 	LoadDesigns(campaign/miningcolony)
+
+Trait: Invaders
+	Name: Invaders
+	Available: False
+	LoadDesigns(campaign/miningcolony)

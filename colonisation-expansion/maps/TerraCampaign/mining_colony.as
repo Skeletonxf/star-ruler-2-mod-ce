@@ -27,6 +27,7 @@ from statuses import getStatusID;
 
 // TODO: Disable artifact spawning
 // TODO: Move common scenario code into a parent class
+// TODO: Adjust terra mining colony color
 
 #section server
 
@@ -42,6 +43,7 @@ class MiningColonyScenario : CampaignScenarioState {
 	Ship@ playerShip;
 	bool playerDead = false;
 	bool lostColonies = false;
+	bool won = false;
 
 	MiningColonyScenario() {
 		@player = getEmpire(0);
@@ -57,8 +59,9 @@ class MiningColonyScenario : CampaignScenarioState {
 
 	void tick() {
 		if (gameTime > 5) {
-			if (false) {
+			if (getEmpirePlanetCount(enemy) == 0) {
 				completeCampaignScenario("MiningColony");
+				won = true;
 				triggerVictory();
 			}
 
@@ -76,8 +79,6 @@ class MiningColonyScenario : CampaignScenarioState {
 		// TODO: Create mining ships over time for mining colony empire
 		// and set all to automine and dropoff at whichever planets the
 		// empire still controls
-
-		// TODO: Player wins if they take out the mono entirely
 	}
 
 	/**
@@ -88,8 +89,12 @@ class MiningColonyScenario : CampaignScenarioState {
 		populate(planet(0, 0), ally, 1.0, exportTo=planet(0, 2));
 		populate(planet(0, 1), ally, 1.0, exportTo=planet(0, 2));
 		populate(planet(0, 2), ally, 3.0);
-		populate(planet(0, 3), ally, 1.0);
+		populate(planet(0, 3), player, 1.0);
 		populate(planet(0, 4), enemy, 10.0);
+		populate(planet(0, 5), player, 1.0);
+		// TODO: Spawn factories and a Hydrogenator on 0, 3 for the player
+		// TODO: Spawn factories for the visual look on some of the ally
+		// planets
 		for (uint i = 1; i < systems.length; i++) {
 			uint j = 0;
 			Planet@ pl = planet(i, j);
@@ -107,6 +112,20 @@ class MiningColonyScenario : CampaignScenarioState {
 		// natural gas and rate metals to supercarbons
 		planet(4, 0).exportResource(enemy, 0, planet(4, 1));
 		planet(4, 2).exportResource(enemy, 0, planet(4, 1));
+		// get their hydroconductors to level 3
+		planet(1, 4).exportResource(enemy, 0, planet(1, 3));
+		planet(2, 4).exportResource(enemy, 0, planet(2, 3));
+		planet(2, 3).exportResource(enemy, 0, planet(1, 3));
+		planet(3, 0).exportResource(enemy, 0, planet(1, 3));
+
+		// setup defense for some planets because the AI is
+		// quite slow to do this automatically
+		enemy.setDefending(planet(0, 4), true);
+		enemy.setDefending(planet(1, 3), true);
+		enemy.setDefending(planet(2, 3), true);
+		enemy.setDefending(planet(3, 1), true);
+		enemy.setDefending(planet(4, 0), true);
+		enemy.setDefending(planet(5, 4), true);
 
 		removeStartingIncomes();
 		for (uint i = 0; i < empires.length; i++) {
@@ -116,26 +135,26 @@ class MiningColonyScenario : CampaignScenarioState {
 		// equipping the player with eco busting carpet bombs means the vultri's
 		// eco will take a big hit, so give the AI some leeway to stay able to
 		// buy countermeasures over time
-		empires[2].modTotalBudget(+1100);
+		empires[2].modTotalBudget(+900);
 
-		// TODO: Build factories on each empire's main planet
 		// TODO: Make a custom design for the player to give them prototype
-		// hyperdrives and spawn in custom fleets
+		// hyperdrives
 		@playerShip = spawnFleet(player, planet(0,3).position + vec3d(180.0,0.0,0.0), "Heavy Carrier Bomber", 100);
 		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,40.0), "Heavy Carrier Bomber", 50);
 		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,40.0), "Heavy Carrier Bomber", 50);
 		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,-40.0), "Heavy Carrier Bomber", 50);
 		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,-40.0), "Heavy Carrier Bomber", 50);
 		playerShip.addStatus(getStatusID("Leader"));
+		spawnOrbital(player, vec3d(440.0,0.0,440.0), "TradeOutpost");
 
-		spawnFleet(enemy, planet(1,1).position + vec3d(-40.0,0.0,40.0), "Dreadnaught", 150);
-		spawnFleet(enemy, planet(2,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 150);
-		spawnFleet(enemy, planet(3,0).position + vec3d(80.0,0.0,0.0), "Dreadnaught", 150);
-		spawnFleet(enemy, planet(4,0).position + vec3d(40.0,0.0,40.0), "Heavy Carrier", 150);
-		spawnFleet(enemy, planet(4,2).position + vec3d(40.0,0.0,-40.0), "Heavy Carrier", 150);
-		spawnFleet(enemy, planet(5,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 150);
+		spawnFleet(enemy, planet(1,1).position + vec3d(-40.0,0.0,40.0), "Dreadnaught", 50);
+		spawnFleet(enemy, planet(2,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 50);
+		spawnFleet(enemy, planet(3,0).position + vec3d(80.0,0.0,0.0), "Dreadnaught", 50);
+		spawnFleet(enemy, planet(4,0).position + vec3d(120.0,0.0,120.0), "Armored Heavy Carrier", 50);
+		spawnFleet(enemy, planet(5,1).position + vec3d(-120.0,0.0,-120.0), "Armored Heavy Carrier", 50);
 
 		// TODO: Spawn mining ships for mining colony and set to auto mine
+		spawnOrbital(ally, vec3d(-440.0,0.0,-440.0), "TradeOutpost");
 	}
 
 	void triggerDefeat() {
@@ -205,6 +224,7 @@ class Scenario : Map {
 		vultriTraits.insertLast(getTrait("Mechanoid"));
 		vultriTraits.insertLast(getTrait("Sublight"));
 		vultriTraits.insertLast(getTrait("NoResearch"));
+		vultriTraits.insertLast(getTrait("Invaders"));
 		settings.empires[2].traits = vultriTraits;
 
 		array<const Trait@> terraTraits;
@@ -269,10 +289,24 @@ class Scenario : Map {
 	}
 
 	void initDialogue() {
+		// MINING_COLONY_INTRO -> MINING_COLONY_INTRO2
+		// |
+		// |--> MINING_COLONY_VICTORY if win game
+		// |
+		// |--> MINING_COLONY_LOST if ally dies
+		// |
+		// |--> MINING_COLONY_PLAYER_DEAD if player dies
 		Dialogue("MINING_COLONY_INTRO")
 			.newObjective
-			.checker(1, CheckPlayerDead(this)._or_(CheckLostColonies(this)), skippable = true);
+			// skippable means the player can click through this dialogue
+			// onto the next one before passing any of the checks which,
+			// combined with the objective passing skipping this dialogue
+			// automatically, creates divergent dialogue pathing
+			.checker(1, CheckVictory(this)._or_(CheckPlayerDead(this)._or_(CheckLostColonies(this))), skippable = true);
 		Dialogue("MINING_COLONY_INTRO2")
+			.newObjective
+			.checker(1, CheckVictory(this)._or_(CheckPlayerDead(this)._or_(CheckLostColonies(this))));
+		Dialogue("MINING_COLONY_VICTORY")
 			.newObjective
 			.checker(1, CheckPlayerDead(this)._or_(CheckLostColonies(this)));
 		Dialogue("MINING_COLONY_LOST")
@@ -306,6 +340,18 @@ class CheckPlayerDead : CEObjectiveCheck {
 			return false;
 		}
 		return scenario.state.playerDead;
+	}
+};
+
+class CheckVictory : CEObjectiveCheck {
+	Scenario@ scenario;
+	CheckVictory(Scenario@ scenario) { @this.scenario = scenario; }
+
+	bool check() {
+		if (scenario.state is null) {
+			return false;
+		}
+		return scenario.state.won;
 	}
 };
 #section all

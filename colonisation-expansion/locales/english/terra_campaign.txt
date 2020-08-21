@@ -133,3 +133,10 @@ MINING_COLONY_PLAYER_DEAD_TEXT: <<|
 
 	Hello? Anyone there?
 >>
+
+MINING_COLONY_VICTORY_TITLE: Success!
+MINING_COLONY_VICTORY_TEXT: <<|
+	[i]General Nova:[/i]
+
+	That'll show them!
+>>

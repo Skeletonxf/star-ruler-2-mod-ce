@@ -954,7 +954,8 @@ class War : AIComponent {
 					if (relation !is null) {
 						double hateIncrease = relations.getPointValue(planet) * 0.5;
 						relation.hate += hateIncrease;
-						ai.print("Increasing hate of "+closestEnemyToPlanet.name+" due to carpet bomb attack by "+hateIncrease+".");
+						if (log)
+							ai.print("Increasing hate of "+closestEnemyToPlanet.name+" due to carpet bomb attack by "+hateIncrease+".");
 					}
 				}
 				plAI.underBombardment = planet.bombardment > 0;
