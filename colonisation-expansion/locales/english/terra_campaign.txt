@@ -118,11 +118,18 @@ MINING_COLONY_INTRO2_TEXT: <<|
 	immediately to delevel them and weaken the invaders' economy.
 >>
 
-MINING_COLONY_LOST_TITLE: Fired
+MINING_COLONY_LOST_TITLE: In retreat
 MINING_COLONY_LOST_TEXT: <<|
 	[i]General Nova:[/i]
 
 	Aaargh! I said we'd be in trouble if we lost all the mining colonies.
 	The politicians back home decided to cut our funding way back. I'm going
 	to have to take a huge pay cut for this. Oh, how about you? You're fired.
+>>
+
+MINING_COLONY_PLAYER_DEAD_TITLE: Hello
+MINING_COLONY_PLAYER_DEAD_TEXT: <<|
+	[i]General Nova:[/i]
+
+	Hello? Anyone there?
 >>

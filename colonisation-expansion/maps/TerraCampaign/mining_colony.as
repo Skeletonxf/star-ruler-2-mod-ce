@@ -40,6 +40,8 @@ class MiningColonyScenario : CampaignScenarioState {
 	Empire@ ally;
 	Empire@ enemy;
 	Ship@ playerShip;
+	bool playerDead = false;
+	bool lostColonies = false;
 
 	MiningColonyScenario() {
 		@player = getEmpire(0);
@@ -61,10 +63,12 @@ class MiningColonyScenario : CampaignScenarioState {
 			}
 
 			if (!getEmpireFleetHasShip(player, playerShip)) {
+				playerDead = true;
 				triggerDefeat();
 			}
 
 			if (getEmpirePlanetCount(ally) == 0) {
+				lostColonies = true;
 				triggerDefeat();
 			}
 		}
@@ -72,9 +76,6 @@ class MiningColonyScenario : CampaignScenarioState {
 		// TODO: Create mining ships over time for mining colony empire
 		// and set all to automine and dropoff at whichever planets the
 		// empire still controls
-
-		// TODO: Player loses if the mining colony runs out of planets
-		// or if their commander fleet gets destroyed
 
 		// TODO: Player wins if they take out the mono entirely
 	}
@@ -268,19 +269,43 @@ class Scenario : Map {
 	}
 
 	void initDialogue() {
-		Dialogue("MINING_COLONY_INTRO");
-		Dialogue("MINING_COLONY_INTRO2");
-			/* .newObjective.checker(1, CheckDestroyFleet());
-		Dialogue("DOGFIGHT_TRAINING_PROGRESS");
-		Dialogue("DOGFIGHT_TRAINING_PROGRESS2")
-			.newObjective.checker(1, CheckDestroyAllFleets());
-		Dialogue("DOGFIGHT_TRAINING_COMPLETE")
-			.onStart(EndCinematic(this)); // doesn't work????? */
+		Dialogue("MINING_COLONY_INTRO")
+			.newObjective
+			.checker(1, CheckPlayerDead(this)._or_(CheckLostColonies(this)), skippable = true);
+		Dialogue("MINING_COLONY_INTRO2")
+			.newObjective
+			.checker(1, CheckPlayerDead(this)._or_(CheckLostColonies(this)));
+		Dialogue("MINING_COLONY_LOST")
+			.newObjective
+			.checker(1, CheckPlayerDead(this));
+		Dialogue("MINING_COLONY_PLAYER_DEAD");
 	}
 
 #section all
 };
 
 #section server
-// TODO: hooks for game end detection and dialogue
+class CheckLostColonies : CEObjectiveCheck {
+	Scenario@ scenario;
+	CheckLostColonies(Scenario@ scenario) { @this.scenario = scenario; }
+
+	bool check() {
+		if (scenario.state is null) {
+			return false;
+		}
+		return scenario.state.lostColonies;
+	}
+};
+
+class CheckPlayerDead : CEObjectiveCheck {
+	Scenario@ scenario;
+	CheckPlayerDead(Scenario@ scenario) { @this.scenario = scenario; }
+
+	bool check() {
+		if (scenario.state is null) {
+			return false;
+		}
+		return scenario.state.playerDead;
+	}
+};
 #section all

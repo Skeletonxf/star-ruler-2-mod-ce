@@ -119,4 +119,25 @@ class CampaignScenarioState {
 		return count;
 	}
 }
+
+class OrObjectiveCheck : CEObjectiveCheck {
+	CEObjectiveCheck@ predicate1;
+	CEObjectiveCheck@ predicate2;
+
+	bool check() {
+		return predicate1.check() || predicate2.check();
+	}
+
+	OrObjectiveCheck(CEObjectiveCheck@ predicate1, CEObjectiveCheck@ predicate2) {
+		@this.predicate1 = predicate1;
+		@this.predicate2 = predicate2;
+	}
+}
+
+class CEObjectiveCheck : ObjectiveCheck {
+
+	CEObjectiveCheck@ _or_(CEObjectiveCheck@ other) {
+		return OrObjectiveCheck(this, other);
+	}
+}
 #section all
