@@ -253,8 +253,11 @@ class Military2 : AIComponent, IMilitary {
 	array<SupportOrder2@> supportOrders;
 	array<StagingBase@> stagingBases;
 
-	AllocateConstruction@ mainWait;
 	bool spentMoney = true;
+
+	array<AllocateConstruction@> constructionsInProgress;
+	array<DesignTarget@> flagshipDesigns;
+	double lastDesignedFlagship = 0;
 
 	void create() {
 		@fleets = cast<Fleets>(ai.fleets);
@@ -272,7 +275,10 @@ class Military2 : AIComponent, IMilitary {
 		for(uint i = 0; i < cnt; ++i)
 			supportOrders[i].save(this, file);
 
-		construction.saveConstruction(file, mainWait);
+		cnt = constructionsInProgress.length;
+		file << cnt;
+		for(uint i = 0; i < cnt; ++i)
+			construction.saveConstruction(file, constructionsInProgress[i]);
 		file << spentMoney;
 
 		cnt = stagingBases.length;
@@ -280,6 +286,14 @@ class Military2 : AIComponent, IMilitary {
 		for(uint i = 0; i < cnt; ++i) {
 			saveStaging(file, cast<StagingBase2>(stagingBases[i]));
 			cast<StagingBase2>(stagingBases[i]).save(this, file);
+		}
+
+		file << lastDesignedFlagship;
+
+		cnt = flagshipDesigns.length;
+		file << cnt;
+		for(uint i = 0; i < cnt; ++i) {
+			designs.saveDesign(file, flagshipDesigns[i]);
 		}
 	}
 
@@ -293,7 +307,9 @@ class Military2 : AIComponent, IMilitary {
 				supportOrders.insertLast(ord);
 		}
 
-		@mainWait = construction.loadConstruction(file);
+		file >> cnt;
+		for(uint i = 0; i < cnt; ++i)
+			constructionsInProgress[i] = construction.loadConstruction(file);
 		file >> spentMoney;
 
 		file >> cnt;
@@ -307,6 +323,13 @@ class Military2 : AIComponent, IMilitary {
 			else {
 				StagingBase2().load(this, file);
 			}
+		}
+
+		file >> lastDesignedFlagship;
+
+		file >> cnt;
+		for(uint i = 0; i < cnt; ++i) {
+			flagshipDesigns[i] = designs.loadDesign(file);
 		}
 	}
 
@@ -505,9 +528,9 @@ class Military2 : AIComponent, IMilitary {
 		supportOrders.insertLast(ord);
 	}
 
-	void findSomethingToDo() {
+	void retrofitFleets() {
 		//See if we should retrofit anything
-		if(mainWait is null && !spentMoney && gameTime > ai.behavior.flagshipBuildMinGameTime) {
+		if(!spentMoney && gameTime > ai.behavior.flagshipBuildMinGameTime) {
 			int availMoney = budget.spendable(BT_Military);
 			int moneyTargetSize = floor(double(availMoney) * ai.behavior.shipSizePerMoney);
 
@@ -558,7 +581,7 @@ class Military2 : AIComponent, IMilitary {
 				spentMoney = true;
 
 				auto@ retrofit = construction.retrofit(ship);
-				@mainWait = construction.buildNow(retrofit, factory);
+				construction.buildNow(retrofit, factory);
 
 				if(log)
 					ai.print("Retrofitting to size "+targetSize, fleet.obj);
@@ -567,92 +590,11 @@ class Military2 : AIComponent, IMilitary {
 
 				return;
 			}
-
-			//See if we should build a new fleet
-			Factory@ factory = construction.primaryFactory;
-			if(factory !is null && !factory.busy) {
-				//Figure out how large our flagship would be if we built one
-				factory.aimForLabor((double(moneyTargetSize) / ai.behavior.shipSizePerLabor) / ai.behavior.constructionMaxTime);
-				int targetSize = min(moneyTargetSize, int(factory.laborToBear(ai) * ai.behavior.shipSizePerLabor));
-				targetSize = 5 * floor(double(targetSize) / 5.0);
-
-				int expMaint = double(targetSize) * ai.behavior.maintenancePerShipSize;
-				int expCost = double(targetSize) / ai.behavior.shipSizePerMoney;
-				if(budget.canSpend(BT_Military, expCost, expMaint)) {
-					//Make sure we're building an adequately sized flagship
-					uint count = 0;
-					double avgSize = 0.0;
-					for(uint i = 0, cnt = fleets.fleets.length; i < cnt; ++i) {
-						FleetAI@ fleet = fleets.fleets[i];
-						Ship@ ship = cast<Ship>(fleet.obj);
-						if(ship !is null && fleet.fleetClass == FC_Combat) {
-							avgSize += ship.blueprint.design.size;
-							count += 1;
-						}
-					}
-					if(count != 0)
-						avgSize /= double(count);
-
-					if(count < ai.behavior.maxActiveFleets && targetSize >= avgSize * ai.behavior.flagshipBuildMinAvgSize) {
-						//Build the flagship
-						DesignTarget@ design = designs.design(DP_Combat, targetSize,
-								availMoney, budget.maintainable(BT_Military),
-								factory.laborToBear(ai),
-								findSize=true);
-
-						@mainWait = construction.buildFlagship(design, priority=5, force=true); // [[ MODIFY BASE GAME START ]]
-						mainWait.maxTime *= 1.5;
-						spentMoney = true;
-
-						if(log)
-							ai.print("Ordering a new fleet at size "+targetSize);
-
-						return;
-					}
-				}
-				// [[ MODIFY BASE GAME START ]]
-				else {
-					if (log)
-						ai.print("Unable to build large enough flagship of size "+targetSize);
-				}
-			}
-			else {
-				if (log)
-					ai.print("Primary factory is busy");
-			}
 		}
-		else {
-			if (log)
-				ai.print("Skipping considering building a flagship");
-			if (mainWait !is null) {
-				if (log) {
-					ai.print("Main wait not null");
-					ai.print(mainWait.toString());
-				}
-				if (false) {
-					// this is a horrible hacky way to try to make the AI
-					// actually build flagships, and I'm not sure it makes
-					// enough of a difference to even leave in
-					BuildFlagship flagshipWait = cast<BuildFlagship>(mainWait);
-					if (flagshipWait !is null && flagshipWait.design !is null && construction.primaryFactory !is null) {
-						ai.print("Starting construction of designed flagship at "+construction.primaryFactory.obj.name);
-						flagshipWait.construct(ai, construction.primaryFactory);
-					}
-				}
-			}
-			if (spentMoney) {
-				if (log)
-					ai.print("Already spent money");
-			}
-			if (gameTime < ai.behavior.flagshipBuildMinGameTime) {
-				if (log)
-					ai.print("Too early to build flagships");
-			}
-		}
-		// [[ MODIFY BASE GAME END ]]
+	}
 
+	void refillFleets() {
 		//See if any of our fleets need refilling
-		//TODO: Aim for labor on the factory so that the supports are built in reasonable time
 		for(uint i = 0, cnt = fleets.fleets.length; i < cnt; ++i) {
 			FleetAI@ fleet = fleets.fleets[i];
 			if(fleet.mission !is null && fleet.mission.isActive)
@@ -690,10 +632,6 @@ class Military2 : AIComponent, IMilitary {
 				return;
 			}
 		}
-
-		budget.checkedMilitarySpending = spentMoney;
-
-		//TODO: Build defense stations
 	}
 
 	bool hasSupportOrderFor(Object& obj) {
@@ -714,9 +652,41 @@ class Military2 : AIComponent, IMilitary {
 		}
 	}
 
+	void designNewFlagship() {
+		if (construction.primaryFactory is null) {
+			return;
+		}
+		double targetSize = (0.5 + randomd()) * ai.behavior.shipSizePerLabor * construction.primaryFactory.laborIncome * 6.0 * 60.0;
+		// tiny ships just give remnants xp
+		if (targetSize < 300) {
+			targetSize = 300;
+		}
+		DesignTarget@ newFlashipDesign = designs.design(
+				DP_Combat,
+				targetSize,
+				budget.spendable(BT_Military),
+				// try to leave enough maintence left over for another ship
+				budget.maintainable(BT_Military) * 0.5,
+				// aim for 6 minutes of labor
+				construction.primaryFactory.laborIncome * 6.0 * 60.0,
+				findSize=true);
+		flagshipDesigns.insertLast(newFlashipDesign);
+		ai.print("Designing flaship of target size "+targetSize);
+		lastDesignedFlagship = gameTime;
+
+		// TODO: Cull old designs somehow
+	}
+
 	void focusTick(double time) override {
-		//Find something for us to do
-		findSomethingToDo();
+		if (flagshipDesigns.length == 0 || gameTime > lastDesignedFlagship + (4 * 60)) {
+			designNewFlagship();
+		}
+
+		//TODO: Aim for labor on the factory so that the supports are built in reasonable time
+		//TODO: Build defense stations
+
+		retrofitFleets();
+		refillFleets();
 
 		//If we're far into the budget, spend our money on building supports at our factories
 		if(budget.Progress > 0.9 && budget.canSpend(BT_Military, 10)) {
@@ -773,18 +743,85 @@ class Military2 : AIComponent, IMilitary {
 	void turn() override {
 		//Fleet construction happens in the beginning of the turn, because we want
 		//to use our entire military budget on it.
-		if(mainWait !is null) {
-			if(mainWait.completed) {
-				@mainWait = null;
-			}
-			else if(!mainWait.started) {
-				if(true)
-					ai.print("Failed current main construction wait.");
-				construction.cancel(mainWait);
-				@mainWait = null;
+		for (uint i = 0, cnt = constructionsInProgress.length; i < cnt; ++i) {
+			if (constructionsInProgress[i] is null || constructionsInProgress[i].completed) {
+				constructionsInProgress.removeAt(i);
+				// removing the i'th item from the array downshifts
+				// all the others, so downshift i and cnt too
+				--i; --cnt;
+				continue;
 			}
 		}
 		spentMoney = false;
+
+		int availMoney = budget.spendable(BT_Military);
+
+		// make a new flagship if we have money
+		// this might be a bit overkill in willingness to make new flagships
+		// as the only stopping condition here is running out of money
+		// it also might be better to allow parallel construction based
+		// on how many factories we have instead of income
+		bool makeNewFlagship = (availMoney > 500 || fleets.fleets.length == 0)
+			&& fleets.fleets.length < ai.behavior.maxActiveFleets;
+
+		int availableMaint = budget.maintainable(BT_Military) * 0.5;
+		Factory@ factory = construction.primaryFactory;
+
+		if (factory is null || factory.busy) {
+			// find best non primary factory
+			for(uint i = 0, cnt = construction.factories.length; i < cnt; ++i) {
+				Factory@ f = construction.factories[i];
+				if ((!f.busy && f.obj.canBuildShips)
+						&& (factory is null
+							|| (factory.busy && f.laborIncome > (0.7 * factory.laborIncome))
+							|| f.laborIncome > factory.laborIncome)) {
+					@factory = f;
+				}
+			}
+		}
+
+		budget.checkedMilitarySpending = true;
+		if (factory is null) {
+			spentMoney = false;
+			return;
+		}
+
+		double factoryLabor = factory.laborIncome * 6 * 60;
+
+		// find the design to use
+		const Design@ flagshipDesign;
+		double weight = -1;
+		for(uint i = 0, cnt = flagshipDesigns.length; i < cnt; ++i) {
+			DesignTarget@ target = flagshipDesigns[i];
+			if (target.active is null) {
+				continue;
+			}
+			const Design@ possibleDesign = target.active;
+			double labor = possibleDesign.total(HV_LaborCost);
+			double build = possibleDesign.total(HV_BuildCost);
+			double maint = possibleDesign.total(HV_MaintainCost);
+			double w = 0;
+			// most importantly, we have to be able to build this flagship
+			// TODO: There has to be a better way to combine these factors
+			// so a bad match can't be hidden by the other two being good
+			// FIXME: This is always choosing size 300 flagships
+			w += 5 * (factoryLabor - labor);
+			w += 5 * (availMoney - build);
+			w += 10 * (availableMaint - maint);
+			if (w > weight) {
+				@flagshipDesign = possibleDesign;
+				weight = w;
+			}
+		}
+
+		if (flagshipDesign !is null) {
+			// Build immediately from the existing design
+			factory.obj.buildFlagship(flagshipDesign);
+			spentMoney = true;
+			ai.print("Building flagship");
+		} else {
+			spentMoney = false;
+		}
 	}
 
 	array<StagingBase@> get_StagingBases() {
