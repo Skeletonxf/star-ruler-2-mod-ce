@@ -5,7 +5,7 @@ System: Avarita
 	MakePlanet(Water, Conditions = False)
 	MakePlanet(Grain, Conditions = False)
 	MakePlanet(Oil, Conditions = False)
-	MakePlanet(Coal, Conditions = False)
+	MakePlanet(RareMetals, Conditions = False)
 	MakePlanet(UniqueDefense, Conditions = False)
 	MakePlanet(Salts, Conditions = False)
 	MakeAsteroidBelt(Count = 20, Cargo = Ore, Cargo Amount = 5:1000, Distribution Chance = 0.0)
@@ -23,7 +23,7 @@ System: Lubidinis
 System: Venae
 	Position: (-3500, 0, 12000)
 	MakeStar(Temperature = 9345, Radius = 123)
-	MakePlanet(Coal, Conditions = False)
+	MakePlanet(RareMetals, Conditions = False)
 	MakePlanet(Gems, Conditions = False)
 	MakePlanet(Iron, Conditions = False)
 	MakePlanet(Neutronium, Conditions = False)
@@ -36,7 +36,7 @@ System: Auri
 	MakePlanet(Titanium, Conditions = False)
 	MakePlanet(Uranium, Conditions = False)
 	MakePlanet(LocalAsteroidField, Conditions = False)
-	MakePlanet(Coal, Conditions = False)
+	MakePlanet(RareMetals, Conditions = False)
 	MakePlanet(Salts, Conditions = False)
 
 System: Aeris
@@ -51,7 +51,7 @@ System: Vis
 	Position: (-3456, 0, -4545)
 	MakeStar(Temperature = 2345, Radius = 45)
 	MakePlanet(Salts, Conditions = False)
-	MakePlanet(Coal, Conditions = False)
+	MakePlanet(RareMetals, Conditions = False)
 	MakePlanet(Supercarbons, Conditions = False)
 	MakePlanet(Iron, Conditions = False)
 	MakePlanet(RareMetals, Conditions = False)

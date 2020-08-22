@@ -27,6 +27,11 @@ from abilities import getAbilityID;
 #section all
 
 // TODO: Disable artifact spawning
+// TOOD: Add pressure capacity to AI's and player's main planets
+// TODO: Either fix the Mechanoid AI wasting all its money on Labor storage
+// on planets that don't need to build anything, or hack it a way to keep
+// it producing ships and/or money income at least before its eco gets 
+// destroyed by economy attacks via the player
 
 #section server
 
@@ -152,7 +157,17 @@ class MiningColonyScenario : CampaignScenarioState {
 		planet(2, 3).exportResource(enemy, 0, planet(1, 3));
 		planet(3, 0).exportResource(enemy, 0, planet(1, 3));
 		populate(planet(1, 3), enemy, 7.0);
-
+		// for some reason the AI just doesn't setup exports
+		planet(3, 3).exportResource(enemy, 0, planet(3, 1));
+		planet(5, 1).exportResource(enemy, 0, planet(5, 2));
+		planet(5, 4).exportResource(enemy, 0, planet(5, 2));
+        planet(0, 4).exportResource(enemy, 0, planet(1, 3));
+        planet(2, 1).exportResource(enemy, 0, planet(1, 3));
+        planet(2, 2).exportResource(enemy, 0, planet(1, 3));
+        planet(5, 3).exportResource(enemy, 0, planet(1, 3));
+        planet(1, 0).exportResource(enemy, 0, planet(1, 3));
+        planet(1, 2).exportResource(enemy, 0, planet(1, 3));
+		
 		// setup defense for some planets because the AI is
 		// quite slow to do this automatically
 		enemy.setDefending(planet(0, 4), true);
