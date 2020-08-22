@@ -11,7 +11,10 @@ import AIComponent@ createDevelopment() from "empire_ai.weasel.Development";
 import AIComponent@ createDesigns() from "empire_ai.weasel.Designs";
 import AIComponent@ createBudget() from "empire_ai.weasel.Budget";
 import AIComponent@ createConstruction() from "empire_ai.weasel.Construction";
+// [[ MODIFY BASE GAME START ]]
 import AIComponent@ createMilitary() from "empire_ai.weasel.Military";
+import AIComponent@ createMilitary2() from "empire_ai.dragon.Military";
+// [[ MODIFY BASE GAME END ]]
 import AIComponent@ createMovement() from "empire_ai.weasel.Movement";
 import AIComponent@ createCreeping() from "empire_ai.weasel.Creeping";
 import AIComponent@ createRelations() from "empire_ai.weasel.Relations";
@@ -259,6 +262,8 @@ final class AIBehavior {
 	// [[ MODIFY BASE GAME START ]]
 	//Whether to declare war on sight and never accept peace
 	bool hostile = false;
+	//Whether to enable Dragon AI components
+	bool dragonComponents = false;
 	// [[ MODIFY BASE GAME END ]]
 	//How much stronger we need to be than someone to declare war out of hatred
 	double hatredWarOverkill = 0.5;
@@ -309,6 +314,8 @@ final class AIBehavior {
 		// [[ MODIFY BASE GAME START ]]
 		if(flags & AIF_Hostile != 0)
 			hostile = true;
+		if(flags & AIF_Dragon != 0)
+			dragonComponents = true;
 		// [[ MODIFY BASE GAME END ]]
 
 		//Low difficulties can't colonize as many things at once
@@ -437,7 +444,14 @@ final class AI : AIController, Savable {
 		@development = add(createDevelopment());
 		@designs = add(createDesigns());
 		@construction = add(createConstruction());
-		@military = add(createMilitary());
+		// [[ MODIFY BASE GAME START ]]
+		if (behavior.dragonComponents) {
+			print("Enabling Dragon Military componet");
+			@military = add(createMilitary2());
+		} else {
+			@military = add(createMilitary());
+		}
+		// [[ MODIFY BASE GAME END ]]
 		@movement = add(createMovement());
 		@creeping = add(createCreeping());
 		@relations = add(createRelations());

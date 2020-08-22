@@ -40,6 +40,7 @@ import util.game_options;
 // must be kept in sync with the definition in game_settings.as or bugs could
 // creep in.
 int AIF_Hostile = 0x8;
+int AIF_Dragon = 0x10; // 0x10 is 16 or x10000 in binary
 // [[ MODIFY BASE GAME END ]]
 
 const int EMPIRE_SETUP_HEIGHT = 96;
@@ -1935,6 +1936,8 @@ string getAIName(EmpireSettings& settings) {
 	// [[ MODIFY BASE GAME START ]]
 	if(settings.aiFlags & AIF_Hostile != 0)
 		text += "#";
+	if(settings.aiFlags & AIF_Dragon != 0)
+		text += "~";
 	// [[ MODIFY BASE GAME END ]]
 	if(settings.aiFlags & AIF_CheatPrivileged != 0)
 		text += "$";
@@ -1976,6 +1979,7 @@ class AIPopup : BaseGuiElement {
 	GuiCheckbox@ biased;
 	// [[ MODIFY BASE GAME START ]]
 	GuiCheckbox@ hostile;
+	GuiCheckbox@ dragon;
 	// [[ MODIFY BASE GAME END ]]
 	GuiCheckbox@ legacy;
 
@@ -2040,6 +2044,10 @@ class AIPopup : BaseGuiElement {
 		@hostile = GuiCheckbox(this, pos, locale::AI_HOSTILE);
 		setMarkupTooltip(hostile, locale::AI_HOSTILE_DESC);
 		pos += vec2i(0, 30);
+
+		@dragon = GuiCheckbox(this, pos, locale::AI_DRAGON);
+		setMarkupTooltip(dragon, locale::AI_DRAGON_DESC);
+		pos += vec2i(0, 30);
 		// [[ MODIFY BASE GAME END ]]
 
 		@legacy = GuiCheckbox(this, pos, locale::AI_LEGACY);
@@ -2086,6 +2094,7 @@ class AIPopup : BaseGuiElement {
 		biased.checked = setup.settings.aiFlags & AIF_Biased != 0;
 		// [[ MODIFY BASE GAME START ]]
 		hostile.checked = setup.settings.aiFlags & AIF_Hostile != 0;
+		dragon.checked = setup.settings.aiFlags & AIF_Dragon != 0;
 		// [[ MODIFY BASE GAME END ]]
 		privileged.checked = setup.settings.aiFlags & AIF_CheatPrivileged != 0;
 		legacy.checked = setup.settings.type == ET_BumAI;
@@ -2119,6 +2128,8 @@ class AIPopup : BaseGuiElement {
 		// [[ MODIFY BASE GAME START ]]
 		if(hostile.checked)
 			flags |= AIF_Hostile;
+		if(dragon.checked)
+			flags |= AIF_Dragon;
 		// [[ MODIFY BASE GAME END ]]
 		if(privileged.checked)
 			flags |= AIF_CheatPrivileged;

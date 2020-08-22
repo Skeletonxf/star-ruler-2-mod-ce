@@ -14,6 +14,7 @@ enum AIFlags {
 	AIF_Biased = 0x4,
 	// [[ MODIFY BASE GAME START ]]
 	AIF_Hostile = 0x8,
+	AIF_Dragon = 0x10, // 0x10 is 16 or x10000 in binary
 	// [[ MODIFY BASE GAME END ]]
 
 	AIF_CheatPrivileged = 0x1000,

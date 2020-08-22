@@ -13,3 +13,9 @@ GTT_ENERGY: <<
 	Storage Penalty: [right]$4[/right]
 	Base Generation Rate: [right]$5[/right]
 >>
+
+AI_DRAGON: Dragon
+AI_DRAGON_DESC: <<
+	Allow the use of Dragon AI components to replace Weasel ones. Makes the AI
+	smarter.
+>>

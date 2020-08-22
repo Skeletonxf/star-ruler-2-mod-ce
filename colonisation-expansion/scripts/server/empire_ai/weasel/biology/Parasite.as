@@ -42,12 +42,6 @@ class Parasite : AIComponent {
 		@development = cast<IDevelopment>(ai.development);
 		@resources = cast<Resources>(ai.resources);
 		@colonization = cast<IColonization>(ai.colonization);
-		/*
-		@orbitals = cast<Orbitals>(ai.orbitals);
-	    @construction = cast<Construction>(ai.construction);
-		@systems = cast<Systems>(ai.systems);
-	    @budget = cast<Budget>(ai.budget);
-		@military = cast<Military>(ai.military); */
 
 		// cache lookups
 		foodClass = getResourceClass("Food").id;

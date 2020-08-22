@@ -566,8 +566,8 @@ class War : AIComponent {
 	Movement@ movement;
 	Scouting@ scouting;
 	Systems@ systems;
-	Military@ military;
 	// [[ MODIFY BASE GAME START ]]
+	IMilitary@ military;
 	Planets@ planets;
 	// [[ MODIFY BASE GAME START ]]
 
@@ -584,8 +584,8 @@ class War : AIComponent {
 		@movement = cast<Movement>(ai.movement);
 		@scouting = cast<Scouting>(ai.scouting);
 		@systems = cast<Systems>(ai.systems);
-		@military = cast<Military>(ai.military);
 		// [[ MODIFY BASE GAME START ]]
+		@military = cast<IMilitary>(ai.military);
 		@planets = cast<Planets>(ai.planets);
 		// [[ MODIFY BASE GAME START ]]
 	}

@@ -38,7 +38,7 @@ class LinkRegion : Savable {
 };
 
 class Linked : Race {
-	Military@ military;
+	IMilitary@ military; // [[ MODIFY BASE GAME ]]
 	Designs@ designs;
 	Construction@ construction;
 	IDevelopment@ development; // [[ MODIFY BASE GAME ]]
@@ -54,7 +54,7 @@ class Linked : Race {
 	double nextBuildTry = 15.0 * 60.0;
 
 	void create() override {
-		@military = cast<Military>(ai.military);
+		@military = cast<IMilitary>(ai.military); // [[ MODIFY BASE GAME ]]
 		@designs = cast<Designs>(ai.designs);
 		@construction = cast<Construction>(ai.construction);
 		@development = cast<IDevelopment>(ai.development); // [[ MODIFY BASE GAME ]]
@@ -225,8 +225,10 @@ class Linked : Race {
 		}
 
 		//Detect new staging bases to build mainframes at
-		for(uint i = 0, cnt = military.stagingBases.length; i < cnt; ++i) {
-			auto@ base = military.stagingBases[i];
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = military.StagingBases.length; i < cnt; ++i) {
+			auto@ base = military.StagingBases[i];
+			// [[ MODIFY BASE GAME END ]]
 			if(base.occupiedTime < MAINFRAME_MIN_TIMER)
 				continue;
 

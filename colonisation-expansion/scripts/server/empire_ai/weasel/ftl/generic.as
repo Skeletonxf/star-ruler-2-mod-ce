@@ -151,7 +151,7 @@ enum FTLTravelMethod {
 };
 
 class FTLGeneric : FTL {
-	Military@ military;
+	IMilitary@ military;
 	Designs@ designs;
 	Construction@ construction;
 	Development@ development;
@@ -196,7 +196,7 @@ class FTLGeneric : FTL {
 	bool hasSlipstreams = false;
 
 	void create() override {
-		@military = cast<Military>(ai.military);
+		@military = cast<IMilitary>(ai.military);
 		@designs = cast<Designs>(ai.designs);
 		@construction = cast<Construction>(ai.construction);
 		@development = cast<Development>(ai.development);
@@ -1199,8 +1199,8 @@ class FTLGeneric : FTL {
 
 	void detectNewStagingBases() {
 		//Detect new staging bases to build beacons at
-		for(uint i = 0, cnt = military.stagingBases.length; i < cnt; ++i) {
-			auto@ base = military.stagingBases[i];
+		for(uint i = 0, cnt = military.StagingBases.length; i < cnt; ++i) {
+			auto@ base = military.StagingBases[i];
 			if(base.occupiedTime < FLING_MIN_TIMER)
 				continue;
 
@@ -1217,8 +1217,8 @@ class FTLGeneric : FTL {
 		}
 
 		//Detect new staging bases to build gates at
-		for(uint i = 0, cnt = military.stagingBases.length; i < cnt; ++i) {
-			auto@ base = military.stagingBases[i];
+		for(uint i = 0, cnt = military.StagingBases.length; i < cnt; ++i) {
+			auto@ base = military.StagingBases[i];
 			if(base.occupiedTime < GATE_MIN_TIMER)
 				continue;
 
@@ -1234,8 +1234,8 @@ class FTLGeneric : FTL {
 			}
 		}
 		//Detect new staging bases to build SS gens at
-		for(uint i = 0, cnt = military.stagingBases.length; i < cnt; ++i) {
-			auto@ base = military.stagingBases[i];
+		for(uint i = 0, cnt = military.StagingBases.length; i < cnt; ++i) {
+			auto@ base = military.StagingBases[i];
 			if(base.occupiedTime < SS_MIN_TIMER)
 				continue;
 

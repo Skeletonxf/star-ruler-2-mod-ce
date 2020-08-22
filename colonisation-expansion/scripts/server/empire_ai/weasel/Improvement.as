@@ -29,7 +29,7 @@ class Improvement : AIComponent {
 	Construction@ construction;
 	Systems@ systems;
 	Budget@ budget;
-	Military@ military;
+	IMilitary@ military;
 	Intelligence@ intelligence;
 	Relations@ relations;
 
@@ -62,7 +62,7 @@ class Improvement : AIComponent {
 	    @construction = cast<Construction>(ai.construction);
 		@systems = cast<Systems>(ai.systems);
 	    @budget = cast<Budget>(ai.budget);
-		@military = cast<Military>(ai.military);
+		@military = cast<IMilitary>(ai.military);
 		@intelligence = cast<Intelligence>(ai.intelligence);
 		@relations = cast<Relations>(ai.relations);
 
@@ -187,8 +187,8 @@ class Improvement : AIComponent {
 
 		// Try to find a staging base to build this orbital at as they are
 		// easily shot down if not protected
-		for (uint i = 0, cnt = military.stagingBases.length; i < cnt; ++i) {
-			auto@ base = military.stagingBases[i];
+		for (uint i = 0, cnt = military.StagingBases.length; i < cnt; ++i) {
+			auto@ base = military.StagingBases[i];
 			if (base.occupiedTime < FTL_EXTRACTOR_MIN_HELD_BASE_TIMER) {
 				continue;
 			}
