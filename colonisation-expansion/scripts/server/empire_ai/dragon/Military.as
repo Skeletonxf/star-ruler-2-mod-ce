@@ -652,11 +652,20 @@ class Military2 : AIComponent, IMilitary {
 		}
 	}
 
+	/**
+	 * Allow building and designing ships that take a while if we already
+	 * have many fleets, likewise, if we're down to 0 fleets, we need a
+	 * new flagship ASAP.
+	 */
+	double flagshipBuildTimeFactor(Factory@ factory) {
+		return factory.laborIncome * (4 + fleets.fleets.length) * 60.0;
+	}
+
 	void designNewFlagship() {
 		if (construction.primaryFactory is null) {
 			return;
 		}
-		double targetSize = (0.5 + randomd()) * ai.behavior.shipSizePerLabor * construction.primaryFactory.laborIncome * 6.0 * 60.0;
+		double targetSize = (0.9 + (0.2 * randomd())) * ai.behavior.shipSizePerLabor * flagshipBuildTimeFactor(construction.primaryFactory);
 		// tiny ships just give remnants xp
 		if (targetSize < 300) {
 			targetSize = 300;
@@ -674,7 +683,10 @@ class Military2 : AIComponent, IMilitary {
 		ai.print("Designing flaship of target size "+targetSize);
 		lastDesignedFlagship = gameTime;
 
-		// TODO: Cull old designs somehow
+		// Cull old designs
+		if (flagshipDesigns.length > 12) {
+			flagshipDesigns.removeAt(0);
+		}
 	}
 
 	void focusTick(double time) override {
@@ -786,7 +798,7 @@ class Military2 : AIComponent, IMilitary {
 			return;
 		}
 
-		double factoryLabor = factory.laborIncome * 6 * 60;
+		double factoryLabor = flagshipBuildTimeFactor(factory);
 
 		// find the design to use
 		const Design@ flagshipDesign;
@@ -801,13 +813,28 @@ class Military2 : AIComponent, IMilitary {
 			double build = possibleDesign.total(HV_BuildCost);
 			double maint = possibleDesign.total(HV_MaintainCost);
 			double w = 0;
-			// most importantly, we have to be able to build this flagship
-			// TODO: There has to be a better way to combine these factors
-			// so a bad match can't be hidden by the other two being good
-			// FIXME: This is always choosing size 300 flagships
-			w += 5 * (factoryLabor - labor);
-			w += 5 * (availMoney - build);
-			w += 10 * (availableMaint - maint);
+			if (build > availMoney) {
+				w = -1000;
+			} else {
+				// maximise w if we are building something that costs
+				// all the allocated military spending money
+				w += build / availMoney;
+			}
+			if (maint > availableMaint) {
+				w = -1000;
+			} else {
+				// everything else being equal, favor designs that
+				// cost less to maintain
+				w += 0.3 * (availableMaint / (maint + (availableMaint * 0.5)));
+			}
+			// try to match up labor cost with available labor, but
+			// be willing to go over or under
+			if (labor > factoryLabor) {
+				w += factoryLabor / labor;
+			} else {
+				w += labor / factoryLabor;
+			}
+
 			if (w > weight) {
 				@flagshipDesign = possibleDesign;
 				weight = w;
@@ -818,7 +845,15 @@ class Military2 : AIComponent, IMilitary {
 			// Build immediately from the existing design
 			factory.obj.buildFlagship(flagshipDesign);
 			spentMoney = true;
-			ai.print("Building flagship");
+			ai.print("Building flagship of size "+flagshipDesign.size+" at "+factory.obj.name);
+			// TODO: Seems to not track actually spent money?, the AI
+			// is making designs way beyond what it can afford
+			// this seems to lead it to spamming loads of 300 size ships
+			// should subtract the maintence cost of the AI's fleet from
+			// availableMaint and availableMoney to make designs more
+			// appropriate
+			// also need to reserve a certain amount of funds for support
+			// building instead of filling these with another empty carrier
 		} else {
 			spentMoney = false;
 		}

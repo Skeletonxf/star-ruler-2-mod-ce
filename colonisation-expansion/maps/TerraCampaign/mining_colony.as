@@ -30,7 +30,7 @@ from abilities import getAbilityID;
 // TOOD: Add pressure capacity to AI's and player's main planets
 // TODO: Either fix the Mechanoid AI wasting all its money on Labor storage
 // on planets that don't need to build anything, or hack it a way to keep
-// it producing ships and/or money income at least before its eco gets 
+// it producing ships and/or money income at least before its eco gets
 // destroyed by economy attacks via the player
 
 #section server
@@ -167,7 +167,7 @@ class MiningColonyScenario : CampaignScenarioState {
         planet(5, 3).exportResource(enemy, 0, planet(1, 3));
         planet(1, 0).exportResource(enemy, 0, planet(1, 3));
         planet(1, 2).exportResource(enemy, 0, planet(1, 3));
-		
+
 		// setup defense for some planets because the AI is
 		// quite slow to do this automatically
 		enemy.setDefending(planet(0, 4), true);
@@ -290,6 +290,8 @@ class Scenario : Map {
 		// hostile stops the mining colony from being subjugated by the vultri
 		uint flags = 0;
 		flags |= AIF_Hostile;
+		// enable smarter components
+		flags |= AIF_Dragon;
 		settings.empires[1].aiFlags = flags;
 		// hostile stops the vultri from trying to surrender
 		settings.empires[2].aiFlags = flags;
