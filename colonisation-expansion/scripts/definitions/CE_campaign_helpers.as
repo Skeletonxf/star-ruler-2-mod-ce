@@ -85,6 +85,11 @@ class CampaignScenarioState {
 		return createOrbital(pos, definition, emp);
 	}
 
+	void spawnBuilding(Planet@ planet, vec2i pos, const string& type = "", bool develop = true) {
+		const BuildingType@ building = getBuildingType(type);
+		planet.spawnBuilding(building.id, pos, develop);
+	}
+
 	/**
 	 * Removes the influence, energy and research incomes added by
 	 * various sources to drop them back to 0.

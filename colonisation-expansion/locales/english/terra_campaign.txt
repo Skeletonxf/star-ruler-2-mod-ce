@@ -65,14 +65,6 @@ DOGFIGHT_TRAINING_COMPLETE_TEXT: <<|
 MINING_COLONY_PLAYER_EMP: 5th Terra Expedition
 MINING_COLONY_ALLY_EMP: Terra Mining Colony
 MINING_COLONY_ENEMY_EMP: Vultri
-// A mining colony from a previous Terra expedition have been
-// pleading for help to defend themselves again an onslaught of robots
-// No one else wanted to try out our new Terra manufactured prototype
-// hyperdrives so you're up. The colony say the robots are very vulnerable to
-// planetary bombardment, so we've hooked your fleets up with loads of the stuff.
-// You'll have to carve out your own trade network from the systems you siege
-// Keep in mind that until you get a factory up and running you won't be able
-// to replace any lost fleets so you'll have to engage carefully.
 
 MINING_COLONY_NAME: Mining Colony Attack
 MINING_COLONY_DESC: <<|
@@ -116,6 +108,10 @@ MINING_COLONY_INTRO2_TEXT: <<|
 	vulnerable to planetary bombardment, so each of your fleets are loaded
 	with the stuff. I recommend bombarding their tier 1 and 2 planets
 	immediately to delevel them and weaken the invaders' economy.
+
+	Keep in mind that while seiging a planet will [b]remove[/b] it from the
+	Vultri's economy entirely, it consumes much more supplies than just carpet
+	bombing it down to 1 population.
 >>
 
 MINING_COLONY_LOST_TITLE: In retreat

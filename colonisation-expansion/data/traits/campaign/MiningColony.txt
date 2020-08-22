@@ -4,7 +4,9 @@ Trait: MiningColony
 	Available: False
 	LoadDesigns(campaign/miningcolony)
 
+	ModAttribute(FactoryLaborMod, Add, 10)
 Trait: Invaders
 	Name: Invaders
 	Available: False
+	ModAttribute(FactoryLaborMod, Add, 20)
 	LoadDesigns(campaign/miningcolony)

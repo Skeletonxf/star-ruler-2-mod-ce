@@ -23,11 +23,10 @@ import victory;
 import settings.game_settings;
 import CE_campaign_helpers;
 from statuses import getStatusID;
+from abilities import getAbilityID;
 #section all
 
 // TODO: Disable artifact spawning
-// TODO: Move common scenario code into a parent class
-// TODO: Adjust terra mining colony color
 
 #section server
 
@@ -44,6 +43,7 @@ class MiningColonyScenario : CampaignScenarioState {
 	bool playerDead = false;
 	bool lostColonies = false;
 	bool won = false;
+	double lastTickedMiningShips = 0;
 
 	MiningColonyScenario() {
 		@player = getEmpire(0);
@@ -76,9 +76,38 @@ class MiningColonyScenario : CampaignScenarioState {
 			}
 		}
 
-		// TODO: Create mining ships over time for mining colony empire
-		// and set all to automine and dropoff at whichever planets the
-		// empire still controls
+		if (gameTime > lastTickedMiningShips + 60) {
+			lastTickedMiningShips = gameTime;
+
+			Planet@ dropOffPlanet;
+			DataList@ objs = ally.getPlanets();
+			Object@ obj;
+			uint count = 0;
+			while (receive(objs, obj)) {
+				Planet@ planet = cast<Planet>(obj);
+				if (planet !is null && dropOffPlanet is null) {
+					@dropOffPlanet = planet;
+				}
+			}
+
+			if (dropOffPlanet !is null) {
+				DataList@ objs = ally.getFlagships();
+				Object@ obj;
+				int dropOffAbility = getAbilityID("DropoffPoint");
+				uint miningShips = 0;
+				while (receive(objs, obj)) {
+					Ship@ ship = cast<Ship>(obj);
+					if (ship !is null) {
+						ship.activateAbilityTypeFor(ally, dropOffAbility, dropOffPlanet);
+						miningShips += 1;
+					}
+				}
+
+				if (miningShips < 6) {
+					spawnFleet(ally, dropOffPlanet.position + vec3d(-40.0,0.0,-40.0), "Miner", 0);
+				}
+			}
+		}
 	}
 
 	/**
@@ -89,17 +118,19 @@ class MiningColonyScenario : CampaignScenarioState {
 		populate(planet(0, 0), ally, 1.0, exportTo=planet(0, 2));
 		populate(planet(0, 1), ally, 1.0, exportTo=planet(0, 2));
 		populate(planet(0, 2), ally, 3.0);
-		populate(planet(0, 3), player, 1.0);
-		populate(planet(0, 4), enemy, 10.0);
-		populate(planet(0, 5), player, 1.0);
-		// TODO: Spawn factories and a Hydrogenator on 0, 3 for the player
-		// TODO: Spawn factories for the visual look on some of the ally
-		// planets
+		spawnBuilding(planet(0, 2), vec2i(2, 3), "Factory");
+		spawnBuilding(planet(0, 2), vec2i(5, 4), "Factory");
+		populate(planet(0, 3), player, 3.0);
+		populate(planet(0, 4), enemy, 5.0);
+		populate(planet(0, 5), player, 1.0, exportTo=planet(0, 3));
+		spawnBuilding(planet(0, 3), vec2i(1, 1), "Hydrogenator");
+		spawnBuilding(planet(0, 3), vec2i(5, 1), "Factory");
+		spawnBuilding(planet(0, 3), vec2i(5, 5), "Factory");
 		for (uint i = 1; i < systems.length; i++) {
 			uint j = 0;
 			Planet@ pl = planet(i, j);
 			while (pl !is null) {
-				populate(pl, enemy, 8.0);
+				populate(pl, enemy, 3.0);
 				j += 1;
 				@pl = planet(i, j);
 			}
@@ -109,14 +140,18 @@ class MiningColonyScenario : CampaignScenarioState {
 		// oil and titanium to uranium
 		planet(3, 0).exportResource(enemy, 0, planet(3, 1));
 		planet(1, 1).exportResource(enemy, 0, planet(3, 1));
+		populate(planet(3, 1), enemy, 5.0);
 		// natural gas and rate metals to supercarbons
 		planet(4, 0).exportResource(enemy, 0, planet(4, 1));
 		planet(4, 2).exportResource(enemy, 0, planet(4, 1));
+		populate(planet(4, 1), enemy, 5.0);
 		// get their hydroconductors to level 3
 		planet(1, 4).exportResource(enemy, 0, planet(1, 3));
 		planet(2, 4).exportResource(enemy, 0, planet(2, 3));
+		populate(planet(2, 3), enemy, 5.0);
 		planet(2, 3).exportResource(enemy, 0, planet(1, 3));
 		planet(3, 0).exportResource(enemy, 0, planet(1, 3));
+		populate(planet(1, 3), enemy, 7.0);
 
 		// setup defense for some planets because the AI is
 		// quite slow to do this automatically
@@ -130,15 +165,13 @@ class MiningColonyScenario : CampaignScenarioState {
 		removeStartingIncomes();
 		for (uint i = 0; i < empires.length; i++) {
 			empires[i].modFTLStored(+250);
-			empires[i].modTotalBudget(-100);
+			empires[i].modTotalBudget(+200);
 		}
 		// equipping the player with eco busting carpet bombs means the vultri's
 		// eco will take a big hit, so give the AI some leeway to stay able to
 		// buy countermeasures over time
-		empires[2].modTotalBudget(+900);
+		empires[2].modTotalBudget(+500);
 
-		// TODO: Make a custom design for the player to give them prototype
-		// hyperdrives
 		@playerShip = spawnFleet(player, planet(0,3).position + vec3d(180.0,0.0,0.0), "Heavy Carrier Bomber", 100);
 		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,40.0), "Heavy Carrier Bomber", 50);
 		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,40.0), "Heavy Carrier Bomber", 50);
@@ -153,8 +186,11 @@ class MiningColonyScenario : CampaignScenarioState {
 		spawnFleet(enemy, planet(4,0).position + vec3d(120.0,0.0,120.0), "Armored Heavy Carrier", 50);
 		spawnFleet(enemy, planet(5,1).position + vec3d(-120.0,0.0,-120.0), "Armored Heavy Carrier", 50);
 
-		// TODO: Spawn mining ships for mining colony and set to auto mine
 		spawnOrbital(ally, vec3d(-440.0,0.0,-440.0), "TradeOutpost");
+		spawnFleet(ally, planet(0,2).position + vec3d(120.0,0.0,-120.0), "Miner", 0);
+		spawnFleet(ally, planet(0,2).position + vec3d(-120.0,0.0,120.0), "Miner", 0);
+		spawnFleet(ally, planet(0,2).position + vec3d(-120.0,0.0,-120.0), "Miner", 0);
+		spawnFleet(ally, planet(0,2).position + vec3d(120.0,0.0,120.0), "Miner", 0);
 	}
 
 	void triggerDefeat() {
@@ -204,7 +240,7 @@ class Scenario : Map {
 		settings.empires[1].type = ET_NoAI;
 		settings.empires[1].portrait = "emp_portrait_harrian";
 		settings.empires[1].team = 1;
-		settings.empires[1].color = colors::Blue;
+		settings.empires[1].color = 0x9765caff;
 
 		settings.empires[2].name = locale::MINING_COLONY_ENEMY_EMP;
 		settings.empires[2].shipset = "Mechanica";
@@ -230,7 +266,7 @@ class Scenario : Map {
 		array<const Trait@> terraTraits;
 		terraTraits.insertLast(getTrait("Empire"));
 		terraTraits.insertLast(getTrait("Terrestial"));
-		terraTraits.insertLast(getTrait("Hyperdrive")); // TODO: Create prototype hyperdrive trait
+		terraTraits.insertLast(getTrait("Hyperdrive"));
 		terraTraits.insertLast(getTrait("NoResearch"));
 		terraTraits.insertLast(getTrait("MiningColony"));
 		settings.empires[0].traits = terraTraits;

@@ -8,6 +8,7 @@ System: Avarita
 	MakePlanet(Coal, Conditions = False)
 	MakePlanet(UniqueDefense, Conditions = False)
 	MakePlanet(Salts, Conditions = False)
+	MakeAsteroidBelt(Count = 20, Cargo = Ore, Cargo Amount = 5:1000, Distribution Chance = 0.0)
 
 System: Lubidinis
 	Position: (-400, 0, -9000)
