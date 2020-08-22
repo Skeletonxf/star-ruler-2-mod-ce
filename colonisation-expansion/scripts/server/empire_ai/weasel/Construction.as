@@ -698,10 +698,26 @@ class Factory {
 		laborIncome = obj.laborIncome;
 		storedLabor = obj.currentLaborStored;
 		laborMaxStorage = obj.laborStorageCapacity;
-		significantLabor = laborIncome >= 0.4 * construction.bestLabor && obj.baseLaborIncome > 4.0/60.0;
+		// [[ MODIFY BASE GAME START ]]
+		// Mechanoid empires will have absolutely loads of planets with a
+		// sizable amount of labor, the AI shouldn't be trying to put labor
+		// storage on all of their tier 2 planets just because their pop
+		// gives a bit of labor.
+		// Raising the labor income versus best threshold from 0.4 to 0.7
+		// seems to stop the Mono AI crashing its economy
+		significantLabor = laborIncome >= 0.7 * construction.bestLabor && obj.baseLaborIncome > 4.0/60.0;
+		// [[ MODIFY BASE GAME END ]]
 		if(storedLabor < laborMaxStorage)
 			idleSince = gameTime;
 		if(active is null && curBuilding is null && plAI !is null && gameTime - idleSince > ai.behavior.laborStoreIdleTimer && ai.behavior.buildLaborStorage && (laborMaxStorage+50) < ai.behavior.laborStoreMaxFillTime * max(obj.baseLaborIncome, laborAim) && significantLabor) {
+			// [[ MODIFY BASE GAME START ]]
+			if (log) {
+				ai.print("Planning to build labor storage at "+obj.name);
+				ai.print("Best labor source is "+construction.bestLabor);
+				ai.print("Planet has "+obj.baseLaborIncome+" labor income");
+			}
+			// [[ MODIFY BASE GAME END ]]
+
 			auto@ bld = ai.defs.LaborStorage;
 			if(bld !is null && buildingPenalty < gameTime) {
 				if(construction.log)

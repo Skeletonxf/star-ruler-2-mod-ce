@@ -51,6 +51,7 @@ class Improvement : AIComponent {
 	const BuildingType@ largeDefenseGrid;
 	int ringworldStatusID = -1;
 	int artificialPlanetoidStatusID = -1;
+	int hasDefensesStatusID = -1;
 	int nonCombatDefensesOrdered = 0;
 
 	void create() {
@@ -79,6 +80,7 @@ class Improvement : AIComponent {
 		ringworldStatusID = getStatusID("Ringworld");
 		artificialPlanetoidStatusID = getStatusID("ArtificialPlanetoid");
 		isMechanoid = ai.empire.hasTrait(getTraitID("Mechanoid"));
+		hasDefensesStatusID = getStatusID("HasDefenses");
 	}
 
 	void save(SaveFile& file) {
@@ -252,6 +254,9 @@ class Improvement : AIComponent {
 			}
 			if (planet.level < 2 || planet.population <= 5) {
 				// nothing to protect from carpet bombs
+				return;
+			}
+			if (planet.hasStatusEffect(hasDefensesStatusID)) {
 				return;
 			}
 			// Mechanoid are particularly vulnurable to carpet bomb
