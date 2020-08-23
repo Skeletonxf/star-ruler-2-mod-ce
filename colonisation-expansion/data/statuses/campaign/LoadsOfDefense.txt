@@ -1,0 +1,3 @@
+Status: LoadsOfDefense
+	Visible To: Nobody
+	AddLocalDefense(100)

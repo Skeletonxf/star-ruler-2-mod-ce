@@ -10,6 +10,7 @@ Trait: MiningColony
 Trait: Invaders
 	Name: Invaders
 	Available: False
+	AddStatusOwnedFleets(LoadsOfDefense)
 	AddStatusOwnedPlanets(NoInfluenceGen)
 	AddStatusOwnedPlanets(NoEnergyGen)
 	ModAttribute(FactoryLaborMod, Add, 20)
