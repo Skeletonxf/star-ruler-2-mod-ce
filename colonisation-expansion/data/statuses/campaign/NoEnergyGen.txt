@@ -1,0 +1,3 @@
+Status: NoEnergyGen
+	Visible To: Nobody
+	ConvertResource(Energy, 1, Defense)

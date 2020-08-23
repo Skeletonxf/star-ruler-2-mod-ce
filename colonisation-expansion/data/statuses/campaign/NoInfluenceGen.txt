@@ -1,0 +1,3 @@
+Status: NoInfluenceGen
+	Visible To: Nobody
+	ConvertResource(Influence, 1, Defense)

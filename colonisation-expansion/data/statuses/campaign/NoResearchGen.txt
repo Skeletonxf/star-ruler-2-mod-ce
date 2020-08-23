@@ -1,3 +1,3 @@
 Status: NoResearchGen
 	Visible To: Nobody
-	ConvertResource(Research, 1.0, Defense)
+	ConvertResource(Research, 1, Defense)
