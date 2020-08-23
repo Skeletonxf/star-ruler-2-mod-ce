@@ -665,19 +665,22 @@ class Military2 : AIComponent, IMilitary {
 		if (construction.primaryFactory is null) {
 			return;
 		}
-		double targetSize = (0.9 + (0.2 * randomd())) * ai.behavior.shipSizePerLabor * flagshipBuildTimeFactor(construction.primaryFactory);
+		// available labor to build flagships and the available cost of
+		// building at that size may vary quite a bit, so randomise the
+		// target size around the available labor to ensure if we have
+		// more labor than eco we still design things we can build
+		double targetSize = (0.7 + (0.4 * randomd())) * ai.behavior.shipSizePerLabor * flagshipBuildTimeFactor(construction.primaryFactory);
 		// tiny ships just give remnants xp
-		if (targetSize < 300) {
-			targetSize = 300;
+		if (targetSize < 250) {
+			targetSize = 250;
 		}
 		DesignTarget@ newFlashipDesign = designs.design(
 				DP_Combat,
 				targetSize,
-				budget.spendable(BT_Military),
-				// try to leave enough maintence left over for another ship
-				budget.maintainable(BT_Military) * 0.5,
+				availableMoneyForNewFlagship(),
+				availableMaintenanceForNewFlagship(),
 				// aim for 6 minutes of labor
-				construction.primaryFactory.laborIncome * 6.0 * 60.0,
+				flagshipBuildTimeFactor(construction.primaryFactory),
 				findSize=true);
 		flagshipDesigns.insertLast(newFlashipDesign);
 		ai.print("Designing flaship of target size "+targetSize);
@@ -687,6 +690,42 @@ class Military2 : AIComponent, IMilitary {
 		if (flagshipDesigns.length > 12) {
 			flagshipDesigns.removeAt(0);
 		}
+	}
+
+	// TODO: Count maintenace of fleets being built as well
+	double availableMoneyForNewFlagship() {
+		double existing = 0.0;
+		for(uint i = 0, cnt = fleets.fleets.length; i < cnt; ++i) {
+			auto@ flAI = fleets.fleets[i];
+			if (flAI.obj is null) {
+				continue;
+			}
+			Ship@ ship = cast<Ship>(flAI.obj);
+			if (ship is null) {
+				continue;
+			}
+			existing += ship.blueprint.design.total(HV_MaintainCost);
+		}
+		return budget.spendable(BT_Military) - existing;
+	}
+
+	// TODO: Count maintenace of fleets being built as well
+	double availableMaintenanceForNewFlagship() {
+		// try to reserve half a million for buying supports
+		double existing = 500.0;
+		for(uint i = 0, cnt = fleets.fleets.length; i < cnt; ++i) {
+			auto@ flAI = fleets.fleets[i];
+			if (flAI.obj is null) {
+				continue;
+			}
+			Ship@ ship = cast<Ship>(flAI.obj);
+			if (ship is null) {
+				continue;
+			}
+			existing += ship.blueprint.design.total(HV_MaintainCost);
+		}
+		// try to leave enough maintence left over for another ship
+		return (budget.maintainable(BT_Military) - existing) * 0.5;
 	}
 
 	void focusTick(double time) override {
@@ -766,7 +805,7 @@ class Military2 : AIComponent, IMilitary {
 		}
 		spentMoney = false;
 
-		int availMoney = budget.spendable(BT_Military);
+		int availMoney = availableMoneyForNewFlagship();
 
 		// make a new flagship if we have money
 		// this might be a bit overkill in willingness to make new flagships
@@ -776,7 +815,7 @@ class Military2 : AIComponent, IMilitary {
 		bool makeNewFlagship = (availMoney > 500 || fleets.fleets.length == 0)
 			&& fleets.fleets.length < ai.behavior.maxActiveFleets;
 
-		int availableMaint = budget.maintainable(BT_Military) * 0.5;
+		int availableMaint = availableMaintenanceForNewFlagship();
 		Factory@ factory = construction.primaryFactory;
 
 		if (factory is null || factory.busy) {
@@ -818,7 +857,7 @@ class Military2 : AIComponent, IMilitary {
 			} else {
 				// maximise w if we are building something that costs
 				// all the allocated military spending money
-				w += build / availMoney;
+				w += 2 * (build / availMoney);
 			}
 			if (maint > availableMaint) {
 				w = -1000;
@@ -845,15 +884,8 @@ class Military2 : AIComponent, IMilitary {
 			// Build immediately from the existing design
 			factory.obj.buildFlagship(flagshipDesign);
 			spentMoney = true;
-			ai.print("Building flagship of size "+flagshipDesign.size+" at "+factory.obj.name);
-			// TODO: Seems to not track actually spent money?, the AI
-			// is making designs way beyond what it can afford
-			// this seems to lead it to spamming loads of 300 size ships
-			// should subtract the maintence cost of the AI's fleet from
-			// availableMaint and availableMoney to make designs more
-			// appropriate
-			// also need to reserve a certain amount of funds for support
-			// building instead of filling these with another empty carrier
+			ai.print("Building flagship of size "+flagshipDesign.size+" at "+factory.obj.name+" for "+flagshipDesign.total(HV_BuildCost)+"k.");
+			ai.print("Budget is "+availMoney+"k / "+availableMaint+"k.");
 		} else {
 			spentMoney = false;
 		}
