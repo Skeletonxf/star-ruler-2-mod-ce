@@ -308,8 +308,9 @@ class Military2 : AIComponent, IMilitary {
 		}
 
 		file >> cnt;
+		constructionsInProgress.length = cnt;
 		for(uint i = 0; i < cnt; ++i)
-			constructionsInProgress[i] = construction.loadConstruction(file);
+			@constructionsInProgress[i] = construction.loadConstruction(file);
 		file >> spentMoney;
 
 		file >> cnt;
@@ -328,8 +329,9 @@ class Military2 : AIComponent, IMilitary {
 		file >> lastDesignedFlagship;
 
 		file >> cnt;
+		flagshipDesigns.length = cnt;
 		for(uint i = 0; i < cnt; ++i) {
-			flagshipDesigns[i] = designs.loadDesign(file);
+			@flagshipDesigns[i] = designs.loadDesign(file);
 		}
 	}
 
