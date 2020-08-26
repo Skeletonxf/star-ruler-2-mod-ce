@@ -25,10 +25,9 @@ Resource: DysonSphere
 	NativeLevelChain(Photovoltics)
 
 	DisableResourceExport()
-	DisableResourceImport()
 	ModTileDevelopRate(-1)
 	ModBuildingConstructRate(-1)
-	IfSystemHasStar(ProduceAllPressure(Energy))
+	IfSystemHasStar(AddStatus(DysonSphereEnergyProduction))
 
 	ReplacesCities(Amount = 1000)
 Level Chain: Photovoltics

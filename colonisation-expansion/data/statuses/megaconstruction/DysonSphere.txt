@@ -16,3 +16,6 @@ Status: DysonSphere
 Status: DysonSphereUpgrade
 	Visible To: Nobody
 	Collapses: True
+Status: DysonSphereEnergyProduction
+	Visible To: Nobody
+	ProduceNativePressurePct(Base = 1.0)
