@@ -42,3 +42,4 @@ ORB_DEFENSE_SATELLITE_DESC: <<
 
 	[i]Devastation from carpet bombing is reduced to 20% effectiveness[/i]
 >>
+MINI_WORMHOLE: Wormhole Network

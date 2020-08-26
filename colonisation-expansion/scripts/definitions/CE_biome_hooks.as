@@ -11,6 +11,7 @@ import int getAbilityID(const string&) from "abilities";
 import int getUnlockTag(const string& ident, bool create = true) from "unlock_tags";
 from requirement_effects import Requirement;
 #section server
+from objects.Oddity import createMiniWormhole;
 import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
 import void filterToResourceTransferAbilities(array<Ability>&) from "CE_resource_transfer";
 import CE_array_map;
@@ -772,6 +773,26 @@ class StartVoteIfAllAttributeLT : EmpireTrigger {
 			}
 			startInfluenceVote(emp, type, targs);
 		}
+	}
+#section all
+};
+
+class SpawnMiniWormhole : BonusEffect {
+	Document doc("Spawn a mini wormhole to a location.");
+	Argument duration("Duration", AT_Decimal, "-1", doc="Duration in seconds for the wormhole to last. -1 for permanent.");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		vec3d from = obj.position;
+
+		// TODO: Better logic for placing
+		//auto@ sys = getSystem(randomi(0, systemCount-1));
+		vec3d to = obj.position; //sys.position;
+		vec2d offset = random2d(225.0, 225.0);
+		to.x += offset.x;
+		to.z += offset.y;
+
+		createMiniWormhole(from, to, duration.decimal);
 	}
 #section all
 };

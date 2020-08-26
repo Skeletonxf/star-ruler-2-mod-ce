@@ -161,12 +161,12 @@ class MiningColonyScenario : CampaignScenarioState {
 		planet(3, 3).exportResource(enemy, 0, planet(3, 1));
 		planet(5, 1).exportResource(enemy, 0, planet(5, 2));
 		planet(5, 4).exportResource(enemy, 0, planet(5, 2));
-        planet(0, 4).exportResource(enemy, 0, planet(1, 3));
-        planet(2, 1).exportResource(enemy, 0, planet(1, 3));
-        planet(2, 2).exportResource(enemy, 0, planet(1, 3));
-        planet(5, 3).exportResource(enemy, 0, planet(1, 3));
-        planet(1, 0).exportResource(enemy, 0, planet(1, 3));
-        planet(1, 2).exportResource(enemy, 0, planet(1, 3));
+		planet(0, 4).exportResource(enemy, 0, planet(1, 3));
+		planet(2, 1).exportResource(enemy, 0, planet(1, 3));
+		planet(2, 2).exportResource(enemy, 0, planet(1, 3));
+		planet(5, 3).exportResource(enemy, 0, planet(1, 3));
+		planet(1, 0).exportResource(enemy, 0, planet(1, 3));
+		planet(1, 2).exportResource(enemy, 0, planet(1, 3));
 
 		// setup defense for some planets because the AI is
 		// quite slow to do this automatically

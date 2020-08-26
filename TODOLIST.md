@@ -3,12 +3,15 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Fix ship size tuning for Military2 component
+    - Include ships in progress of being built into size tuning
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
-    - port to CP
-    - Update in combat to apply to all orbitals that have dps
+    - finish port to CP
+    - Fix bug with outposts getting repeat entries in the in-combat quickbar
   - Fix OpenGL error with Dysons
     - Error code seems to be stack overflow?
+  - Fix mine asteroid ability not supporting dropoff out of system, and not able to mine multiple asteroids before dropoff
   - Make automated mining orders able to have a dropoff point in a different system to the asteroids
   - Make it possible to transfer fixed amounts of cargo in lump sums and as recurring per second between cargo sources without using flagships, some kind of automated civillian transporters?
     - Consider adding ore maintenace costs for Dysons once this system is working

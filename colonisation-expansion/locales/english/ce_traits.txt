@@ -34,3 +34,5 @@ CELESTIAL_DESC: <<
 CELESTIAL: Battleworlders
 TRAIT_SCIENTIFIC: Scientific
 TRAIT_SCIENTIFIC_DESC: Start the game with 1 additional research income per second.
+TRAIT_WORMHOLE: Wormhole Network
+TRAIT_WORMHOLE_DESC: Civillian ships in owned space passively spawn small wormholes connecting your systems and planets together.
