@@ -85,9 +85,9 @@ class Quickbar : BaseGuiElement, Savable {
 		auto@ exTrait = getTrait("Extragalactic");
 		// [[ MODIFY BASE GAME START ]]
 		auto@ bwTrait = getTrait("Battleworlders");
-		// [[ MODIFY BASE GAME END ]]
 
-		add(CardMode(this), closed=true);
+		add(CardMode(this));
+		// [[ MODIFY BASE GAME END ]]
 		if(exTrait !is null && playerEmpire.hasTrait(exTrait.id))
 			add(Beacons(this));
 		if(anTrait !is null && playerEmpire.hasTrait(anTrait.id))
@@ -109,10 +109,13 @@ class Quickbar : BaseGuiElement, Savable {
 		add(SiegePlanets(this));
 		add(LaborPlanets(this), closed=true);
 		add(DefenseTargets(this), closed=true);
+		// [[ MODIFY BASE GAME ]] TODO: Show fling beacons if empire unlocks them via research
 		add(FlingBeacons(this), closed=(flingTrait is null || !playerEmpire.hasTrait(flingTrait.id)));
 		add(CombatFleets(this));
 		add(LowSupplyFleets(this));
-		add(AllFleets(this), closed=true);
+		// [[ MODIFY BASE GAME START ]]
+		add(AllFleets(this));
+		// [[ MODIFY BASE GAME END ]]
 		add(CivilianFleets(this), closed=true);
 		if(playerEmpire.isUnlocked(subsystem::MothershipHull))
 			add(Motherships(this));

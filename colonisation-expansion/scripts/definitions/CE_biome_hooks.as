@@ -16,6 +16,7 @@ import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, b
 import void filterToResourceTransferAbilities(array<Ability>&) from "CE_resource_transfer";
 import CE_array_map;
 import influence_global;
+import systems;
 #section all
 
 // TODO: Rename as no longer just biomes
@@ -785,14 +786,107 @@ class SpawnMiniWormhole : BonusEffect {
 	void activate(Object@ obj, Empire@ emp) const override {
 		vec3d from = obj.position;
 
-		// TODO: Better logic for placing
-		//auto@ sys = getSystem(randomi(0, systemCount-1));
+		// TODO: Better logic for placing?
 		vec3d to = obj.position; //sys.position;
-		vec2d offset = random2d(225.0, 225.0);
+		vec2d offset = random2d(1000.0, 1000.0);
 		to.x += offset.x;
 		to.z += offset.y;
 
 		createMiniWormhole(from, to, duration.decimal);
+	}
+#section all
+};
+
+tidy final class SystemIndexData {
+	double lastTickTime = 0;
+	uint index = 0;
+}
+
+class MiniWormholeNetwork : EmpireEffect {
+	Document doc("Scripting for the mini wormhole network FTL trait.");
+	Argument orbital("Core", AT_OrbitalModule, doc="Type of orbital to spawn.");
+
+#section server
+	void enable(Empire& emp, any@ data) const override {
+		SystemIndexData indexes;
+		data.store(@indexes);
+	}
+
+	void tick(Empire& emp, any@ data, double time) const override {
+		SystemIndexData@ indexes;
+		data.retrieve(@indexes);
+		if (indexes is null) {
+			return;
+		}
+
+		// tick every 30 seconds
+		if (gameTime > (indexes.lastTickTime + 30.0)) {
+			indexes.lastTickTime = gameTime;
+		} else {
+			return;
+		}
+
+		// try to tick through 20% of the systems each 30 seconds to
+		// avoid lag
+		// this will roughly tick through 120% of the systems each
+		// budget cycle
+		uint tickRange = ceil(double(systemCount) / 5.0);
+		uint i = indexes.index;
+		for (; i < indexes.index + tickRange; ++i) {
+			if (i >= systemCount) {
+				// reset the index back to 0 and continue in 30 seconds
+				indexes.index = 0;
+				return;
+			}
+			auto@ sys = getSystem(i);
+
+			Region@ reg = sys.object;
+			uint tradeMask = reg.TradeMask;
+
+			bool ownedSpace = false;
+			if (tradeMask & emp.mask != 0) {
+				ownedSpace = true;
+			}
+
+			if (!ownedSpace) {
+				continue;
+			}
+
+			// randomly try to spawn in a wormhole producing orbital
+			if (randomd() < 0.9) {
+				auto@ def = getOrbitalModule(orbital.integer);
+				vec3d pos = reg.position;
+				vec2d offset = random2d(reg.radius * 0.5, reg.radius * 0.5);
+				pos.x += offset.x;
+				pos.z += offset.y;
+				auto@ orb = createOrbital(pos, def, emp);
+			}
+		}
+		indexes.index = i;
+	}
+
+	void disable(Empire& emp, any@ data) const override {
+		SystemIndexData@ indexes;
+		data.retrieve(@indexes);
+		if(indexes is null)
+			return;
+
+		@indexes = null;
+		data.store(@indexes);
+	}
+
+	void save(any@ data, SaveFile& file) const override {
+		SystemIndexData@ indexes;
+		data.retrieve(@indexes);
+		file << indexes.lastTickTime;
+		file << indexes.index;
+	}
+
+	void load(any@ data, SaveFile& file) const override {
+		SystemIndexData indexes;
+		file >> indexes.lastTickTime;
+		file >> indexes.index;
+		data.store(indexes);
 	}
 #section all
 };

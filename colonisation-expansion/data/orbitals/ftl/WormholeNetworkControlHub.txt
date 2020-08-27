@@ -1,0 +1,17 @@
+Module: WormholeNetworkControlHub
+	Name: #WORMHOLE_NETWORK_CONTROL_HUB
+	Description: #WORMHOLE_NETWORK_CONTROL_HUB_DESC
+	Combat Repair: False
+	Size: 5
+	Build Cost: 200
+	Labor Cost: 10
+	Health: 500
+	Model: FTLStorage
+	Material: GenericPBR_FTLStorage
+	Maintenance:
+	Blurb: #WORMHOLE_NETWORK_CONTROL_HUB_BLURB
+	Can Fling: False
+	ConsumeFTL(125)
+	DisableOnFTLBlock()
+	TriggerPeriodic(CE_biome_hooks::SpawnMiniWormhole(Duration = 120), Interval = 90)
+	BreakOrbitOnFTL()

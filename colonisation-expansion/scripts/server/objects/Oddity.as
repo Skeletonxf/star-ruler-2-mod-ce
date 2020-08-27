@@ -260,8 +260,11 @@ tidy class OddityScript {
 	}
 
 	void destroy(Oddity& obj) {
-		if(obj.region !is null)
+		// [[ MODIFY BASE GAME START ]]
+		// Check if icon is null too, as mini wormholes spawn without icons
+		if(obj.region !is null && icon !is null)
 			obj.region.removeStrategicIcon(-1, icon);
+		// [[ MODIFY BASE GAME END ]]
 		if(icon !is null)
 			icon.markForDeletion();
 		leaveRegion(obj);

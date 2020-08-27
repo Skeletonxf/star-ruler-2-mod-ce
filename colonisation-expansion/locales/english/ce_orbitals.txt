@@ -43,3 +43,6 @@ ORB_DEFENSE_SATELLITE_DESC: <<
 	[i]Devastation from carpet bombing is reduced to 20% effectiveness[/i]
 >>
 MINI_WORMHOLE: Wormhole Network
+WORMHOLE_NETWORK_CONTROL_HUB: Wormhole Network Control Hub
+WORMHOLE_NETWORK_CONTROL_HUB_DESC: Todo
+WORMHOLE_NETWORK_CONTROL_HUB_BLURB: Todo
