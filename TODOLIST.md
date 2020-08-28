@@ -4,7 +4,7 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Fix ship size tuning for Military2 component
-    - Include ships in progress of being built into size tuning
+    - Include ships in progress of being built into size tuning and costings
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
     - finish port to CP

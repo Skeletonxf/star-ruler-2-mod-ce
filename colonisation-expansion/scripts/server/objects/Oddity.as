@@ -74,7 +74,7 @@ void createMiniWormhole(const vec3d& from, const vec3d& to, double timer = -1.0,
 	output.linkVision(false);
 
 	int64 beam = (input.id << 32) | (0x2 << 24);
-	makeBeamEffect(ALL_PLAYERS, beam, input, output, 0xffffffff, 2, "Tractor", timer);
+	makeBeamEffect(ALL_PLAYERS, beam, input, output, 0xcbe4ffff, 10, "Tractor", timer);
 }
 // [[ MODIFY BASE GAME END ]]
 
@@ -257,6 +257,13 @@ tidy class OddityScript {
 		visualType = type;
 		visualColor = color;
 		@icon = makeOddityVisuals(obj, type, fromCreation, color=color);
+
+		// [[ MODIFY BASE GAME START ]]
+		if (visualType == Odd_MiniWormhole && obj.getLink() !is null && obj.id > obj.getLink().id) {
+			int64 beam = (obj.id << 32) | (0x2 << 24);
+			makeBeamEffect(ALL_PLAYERS, beam, obj, obj.getLink(), 0xcbe4ffff, 10, "Tractor", obj.getTimer());
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void destroy(Oddity& obj) {

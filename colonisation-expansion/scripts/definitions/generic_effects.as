@@ -3636,6 +3636,9 @@ class AddLocalDefense : GenericEffect {
 			tickDefense = 0;
 
 		// [[ MODIFY BASE GAME START ]]
+		// Loop while have defense for this tick to build with
+		// Fixes vanilla issue blowing all labor on the first support
+		// even when labor would be leftover
 		while (tickDefense > 0) {
 			if(dat.design is null) {
 				int maxSize = -1;

@@ -785,9 +785,18 @@ class SpawnMiniWormhole : BonusEffect {
 #section server
 	void activate(Object@ obj, Empire@ emp) const override {
 		vec3d from = obj.position;
+		vec3d to = obj.position;
 
-		// TODO: Better logic for placing?
-		vec3d to = obj.position; //sys.position;
+		if (randomd() < 0.6) {
+			Region@ region = obj.region;
+			if (region !is null) {
+				SystemDesc@ sys = getSystem(region);
+				uint index = randomi(0, sys.adjacent.length - 1);
+				SystemDesc@ neighbour = getSystem(sys.adjacent[index]);
+				to = neighbour.position;
+			}
+		}
+
 		vec2d offset = random2d(1000.0, 1000.0);
 		to.x += offset.x;
 		to.z += offset.y;
@@ -852,14 +861,32 @@ class MiniWormholeNetwork : EmpireEffect {
 				continue;
 			}
 
-			// randomly try to spawn in a wormhole producing orbital
-			if (randomd() < 0.9) {
-				auto@ def = getOrbitalModule(orbital.integer);
-				vec3d pos = reg.position;
-				vec2d offset = random2d(reg.radius * 0.5, reg.radius * 0.5);
-				pos.x += offset.x;
-				pos.z += offset.y;
-				auto@ orb = createOrbital(pos, def, emp);
+			auto@ def = getOrbitalModule(orbital.integer);
+			uint defID = uint(orbital.integer);
+			uint totalOrbitals = reg.orbitalCount;
+			uint totalHubsPresent = 0;
+			for (uint i = 0; i < totalOrbitals; i++) {
+				if (reg.get_orbitals(i).coreModule == defID) {
+					totalHubsPresent += 1;
+				}
+			}
+
+			// spawn two hubs to start, if none are present
+			uint hubsToSpawn = 1;
+			if (totalHubsPresent == 0) {
+				hubsToSpawn = 2;
+			}
+			// spawn immediately if no hubs present, gradually reduce the
+			// probability of spawning another hub on a given tick down to 0%
+			// at 7 hubs in a system.
+			if (totalHubsPresent == 0 || (randomd() < (1 - totalHubsPresent * 0.15))) {
+				for (uint i = 0; i < hubsToSpawn; i++) {
+					vec3d pos = reg.position;
+					vec2d offset = random2d(reg.radius * 0.3, reg.radius * 0.3);
+					pos.x += offset.x;
+					pos.z += offset.y;
+					auto@ orb = createOrbital(pos, def, emp);
+				}
 			}
 		}
 		indexes.index = i;

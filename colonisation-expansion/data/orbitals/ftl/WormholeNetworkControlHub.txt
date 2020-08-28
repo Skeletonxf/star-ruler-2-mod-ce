@@ -11,7 +11,9 @@ Module: WormholeNetworkControlHub
 	Maintenance:
 	Blurb: #WORMHOLE_NETWORK_CONTROL_HUB_BLURB
 	Can Fling: False
+	LimitSightRange(100)
+	CannotBuildManually()
 	ConsumeFTL(125)
 	DisableOnFTLBlock()
-	TriggerPeriodic(CE_biome_hooks::SpawnMiniWormhole(Duration = 120), Interval = 90)
+	TriggerPeriodic(CE_biome_hooks::SpawnMiniWormhole(Duration = 240), Interval = 180)
 	BreakOrbitOnFTL()
