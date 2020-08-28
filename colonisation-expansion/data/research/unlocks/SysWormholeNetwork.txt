@@ -1,0 +1,13 @@
+Technology: SysWormholeNetwork
+	Name: #WORMHOLE_NETWORK
+	Description: #WORMHOLE_NETWORK_UNLOCK_DESC
+	Class: Unlock
+
+	Point Cost: 1000
+	Time Cost: 120
+
+	Color: 66f4ffff
+	Icon: ActionBarIcons::7
+
+
+	SecondaryFTLCost(1000)

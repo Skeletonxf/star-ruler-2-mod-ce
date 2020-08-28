@@ -24,12 +24,10 @@ Grid: ColonisationExpansionGrid
 	FactoryLabor: -2,-2
 	Megacity: -4,0
 	Population: -4,-1
-	Population: -3,-2
 	AntimatterGen: -3,3
 	FactoryLabor: -3,-4
 	FactoryLabor: -4,-5
 	Prosperity: -5,-1
-	Obedience: -4,-2
 	FlagHealth: 0,-2
 	ArmorHealth: 3,-4
 	FactoryLabor: -1,0
@@ -50,7 +48,6 @@ Grid: ColonisationExpansionGrid
 	OrbitalConstruction: -2,-8
 	Damage: 7,0
 	PlanetSupport: -4,-4
-	PlanetSupport: -5,-5
 	Population: -5,-3
 	ColossusHull: 2,-9
 	DestroyerHull: 2,-8
@@ -62,13 +59,11 @@ Grid: ColonisationExpansionGrid
 	ArmorHealth: 3,-5
 	FlagHealth: 2,-6
 	FactoryLabor: -6,-9
-	RingHabitat: -6,-1
 	Damage: 4,0
 	SupportCap: -3,0
 	SupportCap: -5,1
 	SupportCap: -6,0
 	SupportCap: -8,0
-	CarrierHull: -8,1
 	SupportCap: -9,0
 	SupportCap: -3,-3
 	PlanetSupport2: -4,-6
@@ -80,7 +75,7 @@ Grid: ColonisationExpansionGrid
 	FireRate: 5,4
 	Range: 6,2
 	SupplyStorage: 0,-5
-	SupplyStorage: 0,-8
+	InfluenceHurdle: 0,-8
 	Defense: 8,-2
 	LiquidArmor: 4,-5
 	SupplyStorage2: 0,-11
@@ -115,7 +110,7 @@ Grid: ColonisationExpansionGrid
 	ArmorDR2: 5,-4
 	FireRate: 3,1
 	TargetSensor: 7,3
-	InfluenceHurdle: 0,-10
+	SupplyStorage: 0,-10
 	InfluenceHurdle: -2,-10
 	MoneyHurdle: -3,-10
 	Abundance: -6,-5
@@ -132,16 +127,12 @@ Grid: ColonisationExpansionGrid
 	SupportCap2: -7,-1
 	EnergyHurdle: 3,-9
 	Population: -6,-3
-	Laboratories: -6,-4
 	MoneyHurdle: 3,-11
 	FTLHurdle: 3,-12
 	KeyBuildCost: 3,-13
 	ImpDecaySpeed: -1,-5
 	ImpDecaySpeed: -3,-7
-	ImpDecaySpeed: -5,-4
 	ImpDecaySpeed2: -4,-8
-	InfluenceHurdle: -9,1
-	Wealth: -9,2
 	MoneyHurdle: 6,-4
 	KeyRailgunKnockback: 6,-5
 	ImpDecaySpeed2: -7,-9
@@ -153,17 +144,6 @@ Grid: ColonisationExpansionGrid
 	EnergyStorage: -11,9
 	Ringworld: -6,-16
 	InfluenceHurdle: -6,-15
-	InfiniteSupport: -12,0
-	SupportCap2: -11,0
-	Construction2: -10,0
-	InfluenceHurdle: -11,-1
-	CloakPlating: -11,-2
-	BroadcastAntenna: -10,-2
-	ImpCivConstructionRate: -6,-6
-	ImpCivConstructionRate: -3,1
-	Wealth: -8,-6
-	InfluenceHurdle: -7,-6
-	ImpCivConstructionRate2: -7,-5
 	ImpTileDevelopment: -6,-8
 	ImpTileDevelopment: -7,-10
 	FactoryLabor2: -9,-15
@@ -174,9 +154,6 @@ Grid: ColonisationExpansionGrid
 	ImpTileDevelopment2: -7,-13
 	ImpDecaySpeed: -8,-11
 	FactoryLabor2: -9,-14
-	Obedience: -8,-7
-	Obedience: -10,3
-	ImpCivConstructionRate: -9,3
 	EnergyStorage: -7,5
 	Energy: -9,6
 	FTL: -3,9
@@ -235,7 +212,6 @@ Grid: ColonisationExpansionGrid
 	FleetComputer: -8,-2
 	Construction: -7,0
 	Construction: -9,-1
-	Construction: -4,1
 	Construction: -2,0
 	BldSpire: -7,-2
 	HyperLaser: 5,-1
@@ -276,3 +252,26 @@ Grid: ColonisationExpansionGrid
 	EnergyHurdle: 4,7
 	GravitonCondenser: 5,7
 	GravitonChanneling: 3,10
+	RingHabitat: -8,1
+	Obedience: -6,-1
+	CarrierHull: -4,-2
+	Population: -5,-2
+	ImpCivConstructionRate: -3,1
+	Laboratories: -5,-4
+	InfluenceHurdle: -7,-5
+	Obedience: -7,-6
+	Laboratories: -8,-1
+	InfiniteSupport: -11,0
+	SupportCap2: -10,0
+	Wealth: -7,-4
+	SysWormholeNetwork: -8,-5
+	InfluenceHurdle: -8,-6
+	Obedience: -9,-7
+	Wealth: -9,-6
+	ImpCivConstructionRate: -5,-5
+	ImpCivConstructionRate2: -5,-6
+	PlanetSupport: -3,-6
+	BroadcastAntenna: -11,1
+	CloakPlating: -11,-1
+	ImpImpConstructionRate2: -10,1
+	ImpCivConstructionRate: -6,-7

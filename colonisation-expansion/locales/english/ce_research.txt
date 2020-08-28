@@ -54,3 +54,15 @@ R_SYS_LOW_POWER_SHIP_COMPUTER_DESC: <<
 	[bbloc=#SHIP_LOW_POWER_COMPUTER_DESC/]
 >>
 R_IMP_ANCIENT_TILE_DEVELOPMENT_DESC: Reduces the cost of manually developing tiles by a factor of $1.
+WORMHOLE_NETWORK: Wormhole Network Development
+WORMHOLE_NETWORK_UNLOCK_DESC: <<
+	Induces the civillian economy to contribute to building and maintaining a wormhole network.
+
+	[color=#aaa][i]Wormhole Network Control Hubs are built automatically over time in owned space and do not cost resources.[/i][/color]
+
+	[color=#aaa][i]Unlocks Wormhole Network Control Hubs.[/i][/color]
+
+	[bbloc=#WORMHOLE_NETWORK_CONTROL_HUB_DESC/]
+
+
+>>

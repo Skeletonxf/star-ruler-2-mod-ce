@@ -20,6 +20,5 @@ Trait: Wormhole
 	IfHaveTrait(Devout, LoadDesigns(devout/not_hyperdrive))
 
 	CE_biome_hooks::MiniWormholeNetwork(WormholeNetworkControlHub)
-	ModEmpireAttribute(ResearchUnlockedWormholeNetwork, Add, 1)
 	IfHaveTrait(Ancient, LoadDesigns(ancient/default))
 	IfHaveTrait(Ancient, LoadDesigns(ancient/not_hyperdrive))
