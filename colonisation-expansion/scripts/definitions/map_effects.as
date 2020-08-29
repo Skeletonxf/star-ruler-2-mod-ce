@@ -1252,22 +1252,30 @@ void makeCreepCamp(const vec3d& pos, const CampType@ type, Region@ region = null
 		if(lastLeader !is null)
 			leaderPos += random3d(10.0, 40.0);
 		@lastLeader = spawnRemnantFleet(leaderPos, type.flagshipSize, type.supportOccupation);
-		lastLeader.setAutoMode(config::REMNANT_AGGRESSION == 0 ? AM_HoldPosition : AM_RegionBound);
-
-		for(uint i = 0, cnt = type.statuses.length; i < cnt; ++i)
-			lastLeader.addStatus(type.statuses[i].id);
-		pickup.addPickupProtector(lastLeader);
+		// [[ MODIFY BASE GAME START ]]
+		// spawnRemnantFleet can return null
+		if (lastLeader !is null) {
+			lastLeader.setAutoMode(config::REMNANT_AGGRESSION == 0 ? AM_HoldPosition : AM_RegionBound);
+			for (uint i = 0, cnt = type.statuses.length; i < cnt; ++i)
+				lastLeader.addStatus(type.statuses[i].id);
+			pickup.addPickupProtector(lastLeader);
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 	if(type.targetStrength > 0) {
 		vec3d leaderPos = pos;
 		if(lastLeader !is null)
 			leaderPos += random3d(10.0, 40.0);
 		@lastLeader = spawnRemnantFleet(leaderPos, composeRemnantFleet(type.targetStrength));
-		lastLeader.setAutoMode(config::REMNANT_AGGRESSION == 0 ? AM_HoldPosition : AM_RegionBound);
-
-		for(uint i = 0, cnt = type.statuses.length; i < cnt; ++i)
-			lastLeader.addStatus(type.statuses[i].id);
-		pickup.addPickupProtector(lastLeader);
+		// [[ MODIFY BASE GAME START ]]
+		// spawnRemnantFleet can return null
+		if (lastLeader !is null) {
+			lastLeader.setAutoMode(config::REMNANT_AGGRESSION == 0 ? AM_HoldPosition : AM_RegionBound);
+			for (uint i = 0, cnt = type.statuses.length; i < cnt; ++i)
+				lastLeader.addStatus(type.statuses[i].id);
+			pickup.addPickupProtector(lastLeader);
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 }
 #section all
