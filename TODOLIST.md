@@ -3,6 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Buff non laser weapon speeds so they can hit moving targets more easily (compensates for nerfed research)
   - Fix ship size tuning for Military2 component
     - Include ships in progress of being built into size tuning and costings
   - Disallow resource transfering from planets under an annex vote
