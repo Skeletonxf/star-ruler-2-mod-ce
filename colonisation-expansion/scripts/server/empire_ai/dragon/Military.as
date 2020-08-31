@@ -16,6 +16,7 @@ import empire_ai.weasel.Systems;
 import empire_ai.weasel.Orbitals;
 
 import resources;
+//import construction.Constructible;
 
 // FIXME: Avoid hack'n'slashing the Support Order and Staging Base classes
 // from the Military component, instead, make them have a proper Interface
@@ -658,9 +659,13 @@ class Military2 : AIComponent, IMilitary {
 	 * Allow building and designing ships that take a while if we already
 	 * have many fleets, likewise, if we're down to 0 fleets, we need a
 	 * new flagship ASAP.
+	 *
+	 * Cap this at 12 minues, to avoid the AI getting stuck building flagships
+	 * that are obsolete by the time of finishing, or from building something
+	 * that gets taken over long before completion.
 	 */
 	double flagshipBuildTimeFactor(Factory@ factory) {
-		return factory.laborIncome * (4 + fleets.fleets.length) * 60.0;
+		return factory.laborIncome * (4 + max((3 * (fleets.fleets.length + constructionsInProgress.length)), 8)) * 60.0;
 	}
 
 	void designNewFlagship() {
@@ -694,38 +699,14 @@ class Military2 : AIComponent, IMilitary {
 		}
 	}
 
-	// TODO: Count maintenace of fleets being built as well
 	double availableMoneyForNewFlagship() {
 		double existing = 0.0;
-		for(uint i = 0, cnt = fleets.fleets.length; i < cnt; ++i) {
-			auto@ flAI = fleets.fleets[i];
-			if (flAI.obj is null) {
-				continue;
-			}
-			Ship@ ship = cast<Ship>(flAI.obj);
-			if (ship is null) {
-				continue;
-			}
-			existing += ship.blueprint.design.total(HV_MaintainCost);
-		}
 		return budget.spendable(BT_Military) - existing;
 	}
 
-	// TODO: Count maintenace of fleets being built as well
 	double availableMaintenanceForNewFlagship() {
 		// try to reserve half a million for buying supports
 		double existing = 500.0;
-		for(uint i = 0, cnt = fleets.fleets.length; i < cnt; ++i) {
-			auto@ flAI = fleets.fleets[i];
-			if (flAI.obj is null) {
-				continue;
-			}
-			Ship@ ship = cast<Ship>(flAI.obj);
-			if (ship is null) {
-				continue;
-			}
-			existing += ship.blueprint.design.total(HV_MaintainCost);
-		}
 		// try to leave enough maintence left over for another ship
 		return (budget.maintainable(BT_Military) - existing) * 0.5;
 	}
@@ -802,6 +783,9 @@ class Military2 : AIComponent, IMilitary {
 				// removing the i'th item from the array downshifts
 				// all the others, so downshift i and cnt too
 				--i; --cnt;
+				if (log) {
+					ai.print("Removing construction from in progress");
+				}
 				continue;
 			}
 		}
@@ -883,11 +867,21 @@ class Military2 : AIComponent, IMilitary {
 		}
 
 		if (flagshipDesign !is null) {
-			// Build immediately from the existing design
-			factory.obj.buildFlagship(flagshipDesign);
+			// Build immediately from the existing design, at the factory
+			// we chose.
+			BuildFlagship flagshipConstruction(flagshipDesign);
+			flagshipConstruction.moneyType = BT_Military;
+			//flagshipConstruction.priority = priority;
+			AllocateConstruction@ allocation = construction.build(flagshipConstruction, force=true);
+			@allocation = construction.buildNow(allocation, factory);
+
 			spentMoney = true;
-			ai.print("Building flagship of size "+flagshipDesign.size+" at "+factory.obj.name+" for "+flagshipDesign.total(HV_BuildCost)+"k.");
-			ai.print("Budget is "+availMoney+"k / "+availableMaint+"k.");
+			if (log) {
+				ai.print("Building flagship of size "+flagshipDesign.size+" at "+factory.obj.name+" for "+flagshipDesign.total(HV_BuildCost)+"k.");
+				ai.print("Budget is "+availMoney+"k / "+availableMaint+"k.");
+			}
+
+			constructionsInProgress.insertLast(allocation);
 		} else {
 			spentMoney = false;
 		}
