@@ -17,10 +17,9 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make it possible to transfer fixed amounts of cargo in lump sums and as recurring per second between cargo sources without using flagships, some kind of automated civillian transporters?
     - Consider adding ore maintenace costs for Dysons once this system is working
   - Look into integrating Dalo's suggested order code for transfering cargo types
-  - Fix First planet levels not having any relation to pressure production
-    - Ancient empires 'have' to build Lighting Systems like everyone else, except they get the pressure from the disabled resource anyway
+  - Fix First planets not being set to the highest level possible out of all their native resources
     - When Ancient empires expose the molten core of a tier 1 planet, the tier 2 resource added appears disabled, but pressure is produced for it anyway
-    - Ancient empires can't level scalable planets beyond level 2
+    - It is possible to add tier 1 and resources to a scalable planet which prevent construction of infusers
   - To fix in refactor of colonization and development code
     - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (easily reproduced in the mining colony scenario)
     - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
