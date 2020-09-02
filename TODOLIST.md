@@ -3,9 +3,8 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Buff non laser weapon speeds so they can hit moving targets more easily (compensates for nerfed research)
-  - Fix ship size tuning for Military2 component
-    - Include ships in progress of being built into size tuning and costings
+  - Buff non laser weapon speeds so they can hit moving targets more easily (to compensate for nerfed research)
+  - Finalise Military2 ship building tuning
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
     - finish port to CP
@@ -16,12 +15,13 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make automated mining orders able to have a dropoff point in a different system to the asteroids
   - Make it possible to transfer fixed amounts of cargo in lump sums and as recurring per second between cargo sources without using flagships, some kind of automated civillian transporters?
     - Consider adding ore maintenace costs for Dysons once this system is working
+    - Consider creating orders to instruct a civillian ship to transfer a fixed quantity of cargo to another target for free (but with civillian ship transport risks and slowness)
   - Look into integrating Dalo's suggested order code for transfering cargo types
   - Fix First planets not being set to the highest level possible out of all their native resources
     - When Ancient empires expose the molten core of a tier 1 planet, the tier 2 resource added appears disabled, but pressure is produced for it anyway
-    - It is possible to add tier 1 and resources to a scalable planet which prevent construction of infusers
+    - It is possible to add tier 1 and 2 resources to a scalable planet which prevent construction of infusers
   - To fix in refactor of colonization and development code
-    - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (easily reproduced in the mining colony scenario)
+    - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (cannot reproduce second time?)
     - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
     - Teach AI to deprioritise water/food colonisation if they have built a stockpile of unused ones
     - Teach AI to build outposts to bridge otherwise empty/useless systems
@@ -29,9 +29,6 @@ This is primarily intended as a developer focused project planning list, rather 
       - Extend the hooks to Constructions and do the same
   - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
     - The code looks like it does consider planet support strength, need to investigate further
-  - Fix the AI military component being designed around a single `mainWait` and primary factory for building flagships
-    - This is probably why the AI seemed to prioritise gates over flagships in an AI game I observed. Fleet building is only done at the main factory, and the Gate FTL code would have been more aggressive in queueing up another build, so it would have effectively blocked the AI from ever getting around to building a flagship, despite having the funds and labor income to do so. Should make it queue up a flagship and put to top priority if it is under attack and vulnerable regardless of what is already building.
-    - The AI also has some questionable parameters set for this, making it trying to rebuild fleets larger than it has labor for.
   - Replace the default miner ship with one using the mining hull
   - Teach AI to not put comets on worlds being razed
   - Teach AI to melt ice
@@ -45,6 +42,8 @@ This is primarily intended as a developer focused project planning list, rather 
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
   - Fix visual bug causing Drugs to appear to be filling the Light class requirement for planet levelling when they are not, probably related to dummy resources
+    - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
+  - Consider integrating Darloth's NMP into CE https://github.com/darloth/SR2-NewMovement (low priority as the mods are currently compatible minus gravitron adjust)
 
 - Not planned for any time soon
   - Work out how should implement deep space trading
