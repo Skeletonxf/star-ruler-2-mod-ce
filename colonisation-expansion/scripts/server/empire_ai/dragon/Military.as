@@ -684,7 +684,7 @@ class Military2 : AIComponent, IMilitary {
 		if (availableMaint < 1.0) {
 			return;
 		}
-		
+
 		// available labor to build flagships and the available cost of
 		// building at that size may vary quite a bit, so randomise the
 		// target size around the available labor to ensure if we have
@@ -706,10 +706,12 @@ class Military2 : AIComponent, IMilitary {
 			targetSize = 250;
 		}
 
-		if (laborTargetSize > moneyTargetSize) {
-			ai.print("Money constrained");
-		} else {
-			ai.print("Labor constrained");
+		if (log) {
+			if (laborTargetSize > moneyTargetSize) {
+				ai.print("Money constrained");
+			} else {
+				ai.print("Labor constrained");
+			}
 		}
 		// if target size = money target size, leave money target size as
 		// it is
@@ -720,15 +722,19 @@ class Military2 : AIComponent, IMilitary {
 		// do the same for labor target size, scaling down if money
 		// constrained
 		laborTargetSize *= targetSize / laborTargetSize;
-		ai.print("Budget is "+availableMoney+"k / "+availableMaint+"k.");
-		ai.print("Designing flaship of target size "+targetSize);
+		if (log) {
+			ai.print("Budget is "+availableMoney+"k / "+availableMaint+"k.");
+			ai.print("Designing flaship of target size "+targetSize);
+		}
 
 		// calaculate backwards to a labor and money target that are in
 		// proportion to the target size
 		double scaledLaborTarget = laborTargetSize * (1.0 / (laborTargetFactor * ai.behavior.shipSizePerLabor));
 		double scaledMoneyTarget = moneyTargetSize * (1.0 / (ai.behavior.shipSizePerMoney));
 
-		ai.print("Targeting "+scaledMoneyTarget+" build cost, "+scaledLaborTarget+" labor cost and "+availableMaint+" maintenace");
+		if (log) {
+			ai.print("Targeting "+scaledMoneyTarget+" build cost, "+scaledLaborTarget+" labor cost, and "+availableMaint+" maintenance");
+		}
 
 		DesignTarget@ newFlashipDesign = designs.design(
 				DP_Combat,
@@ -924,7 +930,7 @@ class Military2 : AIComponent, IMilitary {
 			@allocation = construction.buildNow(allocation, factory);
 
 			spentMoney = true;
-			if (true) {
+			if (log) {
 				ai.print("Building flagship of size "+flagshipDesign.size+" at "+factory.obj.name+" for "+flagshipDesign.total(HV_BuildCost)+"k.");
 				ai.print("Budget is "+availableMoney+"k / "+availableMaint+"k.");
 			}
