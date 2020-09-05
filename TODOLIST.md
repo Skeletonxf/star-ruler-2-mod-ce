@@ -4,7 +4,6 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Buff non laser weapon speeds so they can hit moving targets more easily (to compensate for nerfed research)
-  - Finalise Military2 ship building tuning
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
     - finish port to CP
