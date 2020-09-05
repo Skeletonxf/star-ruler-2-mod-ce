@@ -260,6 +260,9 @@ class Military2 : AIComponent, IMilitary {
 	array<DesignTarget@> flagshipDesigns;
 	double lastDesignedFlagship = 0;
 
+	double availableMoney = 0;
+	double availableMaint = 0;
+
 	void create() {
 		@fleets = cast<Fleets>(ai.fleets);
 		@development = cast<Development>(ai.development);
@@ -296,6 +299,9 @@ class Military2 : AIComponent, IMilitary {
 		for(uint i = 0; i < cnt; ++i) {
 			designs.saveDesign(file, flagshipDesigns[i]);
 		}
+
+		file << availableMoney;
+		file << availableMaint;
 	}
 
 	void load(SaveFile& file) {
@@ -334,6 +340,9 @@ class Military2 : AIComponent, IMilitary {
 		for(uint i = 0; i < cnt; ++i) {
 			@flagshipDesigns[i] = designs.loadDesign(file);
 		}
+
+		file >> availableMoney;
+		file >> availableMaint;
 	}
 
 	void loadFinalize(AI& ai) override {
@@ -672,25 +681,63 @@ class Military2 : AIComponent, IMilitary {
 		if (construction.primaryFactory is null) {
 			return;
 		}
+		if (availableMaint < 1.0) {
+			return;
+		}
+		
 		// available labor to build flagships and the available cost of
 		// building at that size may vary quite a bit, so randomise the
 		// target size around the available labor to ensure if we have
 		// more labor than eco we still design things we can build
-		double targetSize = (0.7 + (0.4 * randomd())) * ai.behavior.shipSizePerLabor * flagshipBuildTimeFactor(construction.primaryFactory);
+		double moneyTarget = availableMoney;
+		if (moneyTarget < 1.0) {
+			return;
+		}
+		double moneyTargetSize = floor(moneyTarget * ai.behavior.shipSizePerMoney);
+		double laborTarget = flagshipBuildTimeFactor(construction.primaryFactory);
+		if (laborTarget < 1.0) {
+			return;
+		}
+		double laborTargetFactor = (0.6 + (0.4 * randomd()));
+		double laborTargetSize = laborTargetFactor * ai.behavior.shipSizePerLabor * laborTarget;
+		double targetSize = min(moneyTargetSize, laborTargetSize);
 		// tiny ships just give remnants xp
 		if (targetSize < 250) {
 			targetSize = 250;
 		}
+
+		if (laborTargetSize > moneyTargetSize) {
+			ai.print("Money constrained");
+		} else {
+			ai.print("Labor constrained");
+		}
+		// if target size = money target size, leave money target size as
+		// it is
+		// if target size is substantially less than money target size due
+		// to labor constraints, scale money target size by a value less
+		// than 1, to bring it to the same proportion as labor target size
+		moneyTargetSize *= targetSize / moneyTargetSize;
+		// do the same for labor target size, scaling down if money
+		// constrained
+		laborTargetSize *= targetSize / laborTargetSize;
+		ai.print("Budget is "+availableMoney+"k / "+availableMaint+"k.");
+		ai.print("Designing flaship of target size "+targetSize);
+
+		// calaculate backwards to a labor and money target that are in
+		// proportion to the target size
+		double scaledLaborTarget = laborTargetSize * (1.0 / (laborTargetFactor * ai.behavior.shipSizePerLabor));
+		double scaledMoneyTarget = moneyTargetSize * (1.0 / (ai.behavior.shipSizePerMoney));
+
+		ai.print("Targeting "+scaledMoneyTarget+" build cost, "+scaledLaborTarget+" labor cost and "+availableMaint+" maintenace");
+
 		DesignTarget@ newFlashipDesign = designs.design(
 				DP_Combat,
 				targetSize,
-				availableMoneyForNewFlagship(),
-				availableMaintenanceForNewFlagship(),
-				// aim for 6 minutes of labor
-				flagshipBuildTimeFactor(construction.primaryFactory),
+				scaledMoneyTarget,
+				availableMaint,
+				scaledLaborTarget,
 				findSize=true);
 		flagshipDesigns.insertLast(newFlashipDesign);
-		ai.print("Designing flaship of target size "+targetSize);
 		lastDesignedFlagship = gameTime;
 
 		// Cull old designs
@@ -775,6 +822,10 @@ class Military2 : AIComponent, IMilitary {
 	}
 
 	void turn() override {
+		// Update the amount of money we have to spend and maintain
+		availableMoney = availableMoneyForNewFlagship();
+		availableMaint = availableMaintenanceForNewFlagship();
+
 		//Fleet construction happens in the beginning of the turn, because we want
 		//to use our entire military budget on it.
 		for (uint i = 0, cnt = constructionsInProgress.length; i < cnt; ++i) {
@@ -791,17 +842,14 @@ class Military2 : AIComponent, IMilitary {
 		}
 		spentMoney = false;
 
-		int availMoney = availableMoneyForNewFlagship();
-
 		// make a new flagship if we have money
 		// this might be a bit overkill in willingness to make new flagships
 		// as the only stopping condition here is running out of money
 		// it also might be better to allow parallel construction based
 		// on how many factories we have instead of income
-		bool makeNewFlagship = (availMoney > 500 || fleets.fleets.length == 0)
+		bool makeNewFlagship = (availableMoney > 500 || fleets.fleets.length == 0)
 			&& fleets.fleets.length < ai.behavior.maxActiveFleets;
 
-		int availableMaint = availableMaintenanceForNewFlagship();
 		Factory@ factory = construction.primaryFactory;
 
 		if (factory is null || factory.busy) {
@@ -838,19 +886,19 @@ class Military2 : AIComponent, IMilitary {
 			double build = possibleDesign.total(HV_BuildCost);
 			double maint = possibleDesign.total(HV_MaintainCost);
 			double w = 0;
-			if (build > availMoney) {
+			if (build > availableMoney) {
 				w = -1000;
 			} else {
 				// maximise w if we are building something that costs
 				// all the allocated military spending money
-				w += 2 * (build / availMoney);
+				w += 2 * (build / availableMoney);
 			}
 			if (maint > availableMaint) {
 				w = -1000;
 			} else {
 				// everything else being equal, favor designs that
 				// cost less to maintain
-				w += 0.3 * (availableMaint / (maint + (availableMaint * 0.5)));
+				w += 0.3 * (availableMaint / (maint + (availableMaint)));
 			}
 			// try to match up labor cost with available labor, but
 			// be willing to go over or under
@@ -876,9 +924,9 @@ class Military2 : AIComponent, IMilitary {
 			@allocation = construction.buildNow(allocation, factory);
 
 			spentMoney = true;
-			if (log) {
+			if (true) {
 				ai.print("Building flagship of size "+flagshipDesign.size+" at "+factory.obj.name+" for "+flagshipDesign.total(HV_BuildCost)+"k.");
-				ai.print("Budget is "+availMoney+"k / "+availableMaint+"k.");
+				ai.print("Budget is "+availableMoney+"k / "+availableMaint+"k.");
 			}
 
 			constructionsInProgress.insertLast(allocation);
