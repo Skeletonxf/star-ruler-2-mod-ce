@@ -264,7 +264,6 @@ Grid: ColonisationExpansionGrid
 	InfiniteSupport: -11,0
 	SupportCap2: -10,0
 	Wealth: -7,-4
-	SysWormholeNetwork: -8,-5
 	InfluenceHurdle: -8,-6
 	Obedience: -9,-7
 	Wealth: -9,-6

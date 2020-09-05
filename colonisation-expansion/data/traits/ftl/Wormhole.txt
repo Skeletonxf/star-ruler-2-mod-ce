@@ -8,6 +8,7 @@ Trait: Wormhole
 	Color: 66f4ffff
 
 	Unique: FTL
+	Available: False
 
 
 	LoadDesigns(default)
