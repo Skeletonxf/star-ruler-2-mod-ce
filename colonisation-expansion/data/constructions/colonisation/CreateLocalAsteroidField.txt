@@ -5,6 +5,7 @@ Construction: CreateLocalAsteroidField
 	Category: Development
 	Icon: ResourceIcons::28
 	Description: Using a large quantity of ore and part of the planet we can construct a local asteroid field on this planet to improve labor generation.
+	RequireNotStatus(MinimalDevelopment)
 	RequireNotTrait(NoResourceUse)
 	RequirePlanetNotBiome(AncientAtmosphere)
 	CE_biome_hooks::DealStellarPercentageDamage(0.3)

@@ -6,6 +6,7 @@ Construction: Fracture
 	Time Cost:
 	Description: #FRACTURE_PLANET_DESC
 	Category: Development
+	RequireNotStatus(MinimalDevelopment)
 	RequireNotStatus(ArtificialPlanetoid)
 	RequireNotStatus(Ringworld)
 	CE_biome_hooks::RequireNotHomeworld()

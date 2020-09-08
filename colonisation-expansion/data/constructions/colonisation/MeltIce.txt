@@ -6,6 +6,7 @@ Construction: MeltIce
 	Icon: DesignationIcons::2
 	Category: Terraforming
 
+	RequireNotStatus(MinimalDevelopment)
 	RequireNotTrait(NoResourceUse)
 	RequirePlanetBiome(Ice)
 	AddStatus(WaterBiome, Max Stacks = 1)

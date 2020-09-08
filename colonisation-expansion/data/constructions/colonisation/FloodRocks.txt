@@ -9,6 +9,7 @@ Construction: FloodRocks
 		Many important buildings have reduced build or maintenence costs on Oceanic biomes.
 	>>
 	Category: Terraforming
+	RequireNotStatus(MinimalDevelopment)
 	RequireNotTrait(NoResourceUse)
 	AddStatus(WaterBiome, Max Stacks = 1)
 	RequirePlanetBiome(Oceanic)
