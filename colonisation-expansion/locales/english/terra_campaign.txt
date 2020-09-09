@@ -73,10 +73,9 @@ MINING_COLONY_DESC: <<|
 	[i]The following message was received from the Terra mining colony directed
 	to the commander of the 5th Terra Expedition.[/i]
 
-	[offset=20][color=#ddd]
-	It's crazy out here! One shift we were directing some mining ships remotely
-	and the next half our fleet was gone and we've lost some of our mining
-	bases. Please get rid of these invaders.
+	[offset=20][color=#ddd]Help! One shift we were directing some mining ships
+	remotely and the next half our fleet was gone and we've lost some of our
+	mining bases. Please get rid of these invaders.
 
 	They won't even communicate with us. We sent a message over radio waves
 	to ask what they wanted and all they replied with was "Vultri". We could
@@ -98,6 +97,10 @@ MINING_COLONY_INTRO_TEXT: <<|
 	You've been assigned 5 state of the art hyperdrive fleets to take back
 	control of the mining base. Losing a few more mining colonies in the
 	conflict is fine but if you lose all of them we'll be in serious trouble.
+
+	We travelled light to get here in time, you'll want to retrofit your
+	fleets to be more heavily armored. Starting with your own flagship, of
+	course. Can't run an expedition if you're dead after all.
 >>
 
 MINING_COLONY_INTRO2_TITLE: Tips and tricks
@@ -110,8 +113,9 @@ MINING_COLONY_INTRO2_TEXT: <<|
 	immediately to delevel them and weaken the invaders' economy.
 
 	Keep in mind that while seiging a planet will [b]remove[/b] it from the
-	Vultri's economy entirely, it consumes much more supplies than just carpet
-	bombing it down to 1 population.
+	Vultri's economy entirely, capturing will consume more supplies than just
+	carpet bombing down to 1 population, as carpet bombs will keep firing
+	even while you capture.
 >>
 
 MINING_COLONY_LOST_TITLE: In retreat

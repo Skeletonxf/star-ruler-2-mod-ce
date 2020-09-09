@@ -366,6 +366,17 @@ class Scenario : Map {
 			.newObjective
 			.checker(1, CheckPlayerDead(this));
 		Dialogue("MINING_COLONY_PLAYER_DEAD");
+
+
+		/* Dialogue("TUT_DSG")
+			.checker(1, GUIChecker("Tutorial.Tutorial::CheckDesignEdit"))
+			.onPass(GUIAction("Tutorial.Tutorial::ShowDesigns"));
+		Dialogue("TUT_DSG2");
+		Dialogue("TUT_DSG3")
+			.checker(1, GUIChecker("Tutorial.Tutorial::CheckDesignArmor"));
+		Dialogue("TUT_DSG4")
+			.checker(1, GUIChecker("Tutorial.Tutorial::CheckDesignBulkhead"))
+			.checker(2, GUIChecker("Tutorial.Tutorial::CheckDesignSaved")); */
 	}
 
 #section all
