@@ -1,7 +1,0 @@
-Status: CanTakeCargo
-	Visible To: Nobody
-	Unique: True
-	GrantAbility(PickupForestation)
-	GrantAbility(PickupBaseMaterial)
-	GrantAbility(PickupOre)
-	GrantAbility(PickupCargo)
