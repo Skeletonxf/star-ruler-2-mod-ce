@@ -35,8 +35,11 @@ tidy class CargoOrder : Order {
 
 	string get_name() {
 		string cargoName = getCargoType(cargoId).name;
-		string opType = pickup ? locale::ABL_PICKUP_SPECIFIC_CARGO : locale::ABL_TRANSFER_SPECIFIC_CARGO;
-		return format(opType, cargoName);
+		if (pickup) {
+			return "Pickup " + cargoName + " from " + target.name;
+		} else {
+			return "Dropoff " + cargoName + " at " + target.name;
+		}
 	}
 
 	bool get_hasMovement() {
@@ -44,8 +47,10 @@ tidy class CargoOrder : Order {
 	}
 
 	vec3d getMoveDestination(const Object& obj) {
-		if(target !is null) return target.position;
-		else return vec3d();
+		if (target !is null) {
+			return target.position;
+		}
+		return vec3d();
 	}
 
 	OrderType get_type() {
@@ -54,6 +59,7 @@ tidy class CargoOrder : Order {
 
 	OrderStatus tick(Object& obj, double time) {
 		if (!obj.hasMover || !obj.hasCargo || target is null || !target.hasCargo || target.owner !is obj.owner) {
+			print("Completed cargo order");
 			return OS_COMPLETED;
 		}
 
@@ -69,7 +75,10 @@ tidy class CargoOrder : Order {
 			@dest = target;
 		}
 
-		if (type is null || type.storageSize > (dest.cargoCapacity - dest.cargoStored) || src.getCargoStored(cargoId) < 0.001) {
+		if (type is null
+				|| type.storageSize > (dest.cargoCapacity - dest.cargoStored)
+				|| src.getCargoStored(cargoId) < 0.001) {
+			print("Also completed cargo order");
 			return OS_COMPLETED;
 		}
 
@@ -83,6 +92,7 @@ tidy class CargoOrder : Order {
 				moveId = -1;
 				obj.stopMoving(false, false);
 			}
+			print("Completed cargo order properly");
 			return OS_COMPLETED;
 		}
 		return OS_BLOCKING;

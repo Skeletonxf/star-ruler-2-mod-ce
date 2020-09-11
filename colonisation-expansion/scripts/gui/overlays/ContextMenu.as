@@ -770,26 +770,23 @@ enum CargoTransfer {
 	CT_Dropoff
 };
 
-class TransferCargo : MultiOption {
-	Object@ target;
+class TransferCargo : SingleSelectionOption {
 	const CargoType@ type;
 	CargoTransfer transfer;
 
-	TransferCargo(Object@ targ, const CargoType@ type, CargoTransfer transfer) {
-		@target = targ;
+	TransferCargo(const CargoType@ type, CargoTransfer transfer) {
 		@this.type = type;
 		this.transfer = transfer;
 	}
 
-	void call(Object& obj) {
-		if(obj is null || !obj.hasCargo || !obj.hasLeaderAI || !obj.owner.controlled)
+	void call(Object@ obj) {
+		if(obj is null || !obj.hasCargo || !obj.hasLeaderAI || !obj.owner.controlled) {
 			return;
-		if(obj.getCargoStored(type.id) > 0) {
-			if (transfer == CT_Pickup) {
-				obj.addCargoOrder(target, type.id, true);
-			} else if (transfer == CT_Dropoff) {
-				obj.addCargoOrder(target, type.id, false);
-			}
+		}
+		if (transfer == CT_Pickup) {
+			obj.addCargoOrder(clicked, type.id, true);
+		} else if (transfer == CT_Dropoff) {
+			obj.addCargoOrder(clicked, type.id, false);
 		}
 	}
 }
@@ -1472,7 +1469,7 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 						selected,
 						clicked,
 						format(locale::ABL_TRANSFER_SPECIFIC_CARGO, type.name),
-						TransferCargo(clicked, type, CT_Dropoff),
+						TransferCargo(type, CT_Dropoff),
 						type.icon
 					);
 				}
@@ -1484,7 +1481,7 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 						selected,
 						clicked,
 						format(locale::ABL_PICKUP_SPECIFIC_CARGO, type.name),
-						TransferCargo(clicked, type, CT_Pickup),
+						TransferCargo(type, CT_Pickup),
 						type.icon
 					);
 				}
