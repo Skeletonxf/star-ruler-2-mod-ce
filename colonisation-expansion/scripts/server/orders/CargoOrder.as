@@ -58,19 +58,28 @@ tidy class CargoOrder : Order {
 		}
 
 		const CargoType@ type = getCargoType(cargoId);
-		Object@ src = pickup ? target : obj;
-		Object@ dest = pickup ? obj : target;
-		if(type is null || type.storageSize > dest.cargoCapacity - dest.cargoStored || src.getCargoStored(cargoId) < 0.001)
+
+		Object@ src;
+		Object@ dest;
+		if (pickup) {
+			@src = target;
+			@dest = obj;
+		} else {
+			@src = obj;
+			@dest = target;
+		}
+
+		if (type is null || type.storageSize > (dest.cargoCapacity - dest.cargoStored) || src.getCargoStored(cargoId) < 0.001) {
 			return OS_COMPLETED;
+		}
 
 		double range = 100 + obj.radius + target.radius;
 		double distance = obj.position.distanceToSQ(target.position);
-		if(distance >= range*range) {
+		if (distance >= range*range) {
 			obj.moveTo(target, moveId, range * 0.95, enterOrbit = false);
-		}
-		else {
+		} else {
 			src.transferCargoTo(cargoId, dest);
-			if(moveId != -1) {
+			if (moveId != -1) {
 				moveId = -1;
 				obj.stopMoving(false, false);
 			}

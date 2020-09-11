@@ -1460,7 +1460,7 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 	// Cargo Order system, credit to Dalo Lorn for starting this
 	if(selected !is null && clicked !is null) {
 		if(selected.hasMover && selected.hasCargo && clicked.hasCargo && selected.owner is clicked.owner) {
-			for(int i = 0; i < getCargoTypeCount(); i++) {
+			for(uint i = 0; i < getCargoTypeCount(); i++) {
 				const CargoType@ type = getCargoType(i);
 				// check if can drop off this type of cargo
 				bool goingToPickupCargo = false; // TODO, check if we have pickup orders queued somehow
