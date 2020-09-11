@@ -784,9 +784,9 @@ class TransferCargo : SingleSelectionOption {
 			return;
 		}
 		if (transfer == CT_Pickup) {
-			obj.addCargoOrder(clicked, type.id, true);
+			obj.addCargoOrder(clicked, type.id, true, shiftKey);
 		} else if (transfer == CT_Dropoff) {
-			obj.addCargoOrder(clicked, type.id, false);
+			obj.addCargoOrder(clicked, type.id, false, shiftKey);
 		}
 	}
 }
@@ -1460,10 +1460,11 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 			for(uint i = 0; i < getCargoTypeCount(); i++) {
 				const CargoType@ type = getCargoType(i);
 				// check if can drop off this type of cargo
-				bool goingToPickupCargo = false; // TODO, check if we have pickup orders queued somehow
+				bool goingToPickupCargo = false; // TODO, check if we have pickup order for this cargo type queued somehow
+				bool goingToDropoffCargo = false; // TODO: check if we have drop off orders for any cargo queued somehow
 				// TODO: Check if can transfer fractional cargo sizes
-				if ((goingToPickupCargo || selected.getCargoStored(i) >= 0.001)
-					&& (clicked.cargoCapacity - clicked.cargoStored) >= type.storageSize) {
+				if ((goingToPickupCargo || selected.getCargoStored(i) > 0)
+					&& (clicked.cargoCapacity - clicked.cargoStored) > 0) {
 					addOption(
 						menu,
 						selected,
@@ -1474,8 +1475,8 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 					);
 				}
 				// check if can pickup this type of cargo
-				if (clicked.getCargoStored(i) >= 0.001
-					&& (selected.cargoCapacity - selected.cargoStored) >= type.storageSize) {
+				if (clicked.getCargoStored(i) > 0
+					&& (((selected.cargoCapacity - selected.cargoStored) > 0) || goingToDropoffCargo)) {
 					addOption(
 						menu,
 						selected,

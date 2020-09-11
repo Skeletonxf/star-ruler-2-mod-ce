@@ -1335,7 +1335,6 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	// [[ MODIFY BASE GAME START ]]
 	void addCargoOrder(Object& obj, Object& targ, int cargoId, bool pickup, bool append) {
 		if (obj.owner !is targ.owner) {
-			print("Aborted add order");
 			return;
 		}
 		addOrder(obj, CargoOrder(targ, cargoId, pickup), append);
