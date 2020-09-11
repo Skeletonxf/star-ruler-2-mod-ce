@@ -1457,33 +1457,34 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 	}
 
 	// [[ MODIFY BASE GAME START ]]
-	//Cargo
+	// Cargo Order system, credit to Dalo Lorn for starting this
 	if(selected !is null && clicked !is null) {
 		if(selected.hasMover && selected.hasCargo && clicked.hasCargo && selected.owner is clicked.owner) {
 			for(int i = 0; i < getCargoTypeCount(); i++) {
 				const CargoType@ type = getCargoType(i);
 				// check if can drop off this type of cargo
 				bool goingToPickupCargo = false; // TODO, check if we have pickup orders queued somehow
+				// TODO: Check if can transfer fractional cargo sizes
 				if ((goingToPickupCargo || selected.getCargoStored(i) >= 0.001)
-					&& (clicked.cargoCapacity - clicked.cargoFilled) >= type.storageSize) {
+					&& (clicked.cargoCapacity - clicked.cargoStored) >= type.storageSize) {
 					addOption(
 						menu,
 						selected,
 						clicked,
 						format(locale::ABL_TRANSFER_SPECIFIC_CARGO, type.name),
-						TransferCargo(clicked, type, CT_Dropoff)
+						TransferCargo(clicked, type, CT_Dropoff),
 						type.icon
 					);
 				}
 				// check if can pickup this type of cargo
 				if (clicked.getCargoStored(i) >= 0.001
-					&& (selected.cargoCapacity - selected.cargoFilled) >= type.storageSize) {
+					&& (selected.cargoCapacity - selected.cargoStored) >= type.storageSize) {
 					addOption(
 						menu,
 						selected,
 						clicked,
 						format(locale::ABL_PICKUP_SPECIFIC_CARGO, type.name),
-						TransferCargo(clicked, type, CT_Pickup)
+						TransferCargo(clicked, type, CT_Pickup),
 						type.icon
 					);
 				}

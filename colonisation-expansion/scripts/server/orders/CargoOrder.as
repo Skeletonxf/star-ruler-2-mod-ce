@@ -2,6 +2,9 @@ import orders.Order;
 import cargo;
 import saving;
 
+// Credit to Dalo Lorn for providing the starting point of this cargo order
+// system
+
 tidy class CargoOrder : Order {
     Object@ target;
     int cargoId = -1;
@@ -50,12 +53,14 @@ tidy class CargoOrder : Order {
     }
 
     OrderStatus tick(Object& obj, double time) {
-        if(!obj.hasMover || !obj.hasCargo || target is null || !target.hasCargo || target.owner !is obj.owner)
+        if (!obj.hasMover || !obj.hasCargo || target is null || !target.hasCargo || target.owner !is obj.owner) {
             return OS_COMPLETED;
+        }
+
         const CargoType@ type = getCargoType(cargoId);
         Object@ src = pickup ? target : obj;
         Object@ dest = pickup ? obj : target;
-        if(type is null || type.storageSize > dest.cargoCapacity - dest.cargoFilled || src.getCargoStored(cargoId) < 0.001)
+        if(type is null || type.storageSize > dest.cargoCapacity - dest.cargoStored || src.getCargoStored(cargoId) < 0.001)
             return OS_COMPLETED;
 
         double range = 100 + obj.radius + target.radius;
