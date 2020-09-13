@@ -16,6 +16,7 @@ import constructions;
 
 // [[ MODIFY BASE GAME START ]]
 from statuses import getStatusID;
+import orders;
 // [[ MODIFY BASE GAME END ]]
 
 import dialogs.MessageDialog;
@@ -1465,9 +1466,14 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 			int canTakeCargoStatusID = getStatusID("CanTakeCargo");
 			for(uint i = 0; i < getCargoTypeCount(); i++) {
 				const CargoType@ type = getCargoType(i);
-				// check if can drop off this type of cargo
-				bool goingToPickupCargo = false; // TODO, check if we have pickup order for this cargo type queued somehow
-				bool goingToDropoffCargo = false; // TODO: check if we have drop off orders for any cargo queued somehow
+				// allow placing a dropoff order if we are going to pickup
+				// the right type of cargo even if we don't currently have it
+				// TODO: Check for only pickup cargo orders
+				bool goingToPickupCargo = selected.hasCargoOrder(type.id, checkQueued=true);
+				// allow placing a pickup order even if our cargo storage is
+				// full if we are going to dropoff cargo
+				// TODO: Check for only dropoff cargo orders
+				bool goingToDropoffCargo = selected.hasOrder(OT_Cargo, checkQueued=true);
 				if (selected.hasStatusEffect(canGiveCargoStatusID)
 					&& (goingToPickupCargo || selected.getCargoStored(i) > 0)
 					&& (clicked.cargoCapacity - clicked.cargoStored) > 0) {

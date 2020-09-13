@@ -25,6 +25,9 @@ local:
 restricted local:
 	safe bool get_hasOrders();
 	bool hasOrder(uint type, bool checkQueued = false);
+	// [[ MODIFY BASE GAME START ]]
+	bool hasCargoOrder(int cargoId, bool checkQueued = false);
+	// [[ MODIFY BASE GAME END ]]
 	uint get_orderCount();
 	string get_orderName(uint num);
 	uint get_orderType(uint num) const;

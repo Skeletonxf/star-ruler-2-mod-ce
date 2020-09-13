@@ -16,6 +16,7 @@ from orders.AutoExploreOrder import AutoExploreOrder;
 from orders.WaitOrder import WaitOrder;
 // [[ MODIFY BASE GAME START ]]
 from orders.CargoOrder import CargoOrder;
+from orders import OrderType;
 // [[ MODIFY BASE GAME END ]]
 from resources import getBuildCost, getMaintenanceCost, MoneyType, getLaborCost;
 import abilities;
@@ -862,6 +863,31 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		}
 		return false;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	bool hasCargoOrder(int cargoId, bool checkQueued = false) {
+		if(order is null)
+			return false;
+		if (!checkQueued) {
+			if (order.type == OT_Cargo) {
+				return cast<CargoOrder@>(order).cargoId == cargoId;
+			} else {
+				return false;
+			}
+		}
+
+		Order@ ord = @order;
+		while(ord !is null) {
+			if (ord.type == OT_Cargo) {
+				if (cast<CargoOrder@>(ord).cargoId == cargoId) {
+					return true;
+				};
+			}
+			@ord = ord.next;
+		}
+		return false;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	uint get_orderCount() {
 		uint ordCount = 0;
