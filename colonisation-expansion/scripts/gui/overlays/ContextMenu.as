@@ -14,6 +14,10 @@ import util.icon_view;
 import systems;
 import constructions;
 
+// [[ MODIFY BASE GAME START ]]
+from statuses import getStatusID;
+// [[ MODIFY BASE GAME END ]]
+
 import dialogs.MessageDialog;
 import dialogs.QuestionDialog;
 import dialogs.InputDialog;
@@ -1457,13 +1461,15 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 	// Cargo Order system, credit to Dalo Lorn for starting this
 	if(selected !is null && clicked !is null) {
 		if(selected.hasMover && selected.hasCargo && clicked.hasCargo && selected.owner is clicked.owner) {
+			int canGiveCargoStatusID = getStatusID("CanGiveCargo");
+			int canTakeCargoStatusID = getStatusID("CanTakeCargo");
 			for(uint i = 0; i < getCargoTypeCount(); i++) {
 				const CargoType@ type = getCargoType(i);
 				// check if can drop off this type of cargo
 				bool goingToPickupCargo = false; // TODO, check if we have pickup order for this cargo type queued somehow
 				bool goingToDropoffCargo = false; // TODO: check if we have drop off orders for any cargo queued somehow
-				// TODO: Check if can transfer fractional cargo sizes
-				if ((goingToPickupCargo || selected.getCargoStored(i) > 0)
+				if (selected.hasStatusEffect(canGiveCargoStatusID)
+					&& (goingToPickupCargo || selected.getCargoStored(i) > 0)
 					&& (clicked.cargoCapacity - clicked.cargoStored) > 0) {
 					addOption(
 						menu,
@@ -1475,7 +1481,8 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 					);
 				}
 				// check if can pickup this type of cargo
-				if (clicked.getCargoStored(i) > 0
+				if (selected.hasStatusEffect(canTakeCargoStatusID)
+					&& clicked.getCargoStored(i) > 0
 					&& (((selected.cargoCapacity - selected.cargoStored) > 0) || goingToDropoffCargo)) {
 					addOption(
 						menu,

@@ -59,7 +59,6 @@ tidy class CargoOrder : Order {
 
 	OrderStatus tick(Object& obj, double time) {
 		if (!obj.hasMover || !obj.hasCargo || target is null || !target.hasCargo || target.owner !is obj.owner) {
-			print("Completed cargo order due to invalid src/dest");
 			return OS_COMPLETED;
 		}
 
@@ -75,10 +74,10 @@ tidy class CargoOrder : Order {
 			@dest = target;
 		}
 
+		// TODO: Also check obj still has CanGiveCargo/CanTakeCargo statuses
 		if (!(type !is null
 				&& (dest.cargoCapacity - dest.cargoStored) > 0
 				&& src.getCargoStored(cargoId) > 0)) {
-			print("Completed cargo order due to lack of storage somewhere");
 			return OS_COMPLETED;
 		}
 
@@ -92,7 +91,6 @@ tidy class CargoOrder : Order {
 				moveId = -1;
 				obj.stopMoving(false, false);
 			}
-			print("Completed cargo order properly");
 			return OS_COMPLETED;
 		}
 		return OS_BLOCKING;
