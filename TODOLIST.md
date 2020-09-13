@@ -4,18 +4,19 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Buff non laser weapon speeds so they can hit moving targets more easily (to compensate for nerfed research)
+  - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
     - finish port to CP
     - Fix bug with outposts getting repeat entries in the in-combat quickbar
   - Fix OpenGL error with Dysons
     - Error code seems to be stack overflow?
+  - Finish cargo order system
   - Fix mine asteroid ability not supporting dropoff out of system, and not able to mine multiple asteroids before dropoff
   - Make automated mining orders able to have a dropoff point in a different system to the asteroids
   - Make it possible to transfer fixed amounts of cargo in lump sums and as recurring per second between cargo sources without using flagships, some kind of automated civillian transporters?
     - Consider adding ore maintenace costs for Dysons once this system is working
     - Consider creating orders to instruct a civillian ship to transfer a fixed quantity of cargo to another target for free (but with civillian ship transport risks and slowness)
-  - Look into integrating Dalo's suggested order code for transfering cargo types
   - Fix First planets not being set to the highest level possible out of all their native resources
     - When Ancient empires expose the molten core of a tier 1 planet, the tier 2 resource added appears disabled, but pressure is produced for it anyway
     - It is possible to add tier 1 and 2 resources to a scalable planet which prevent construction of infusers
