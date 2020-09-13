@@ -1,6 +1,7 @@
 import orders.Order;
 import cargo;
 import saving;
+from statuses import getStatusID;
 
 // Credit to Dalo Lorn for providing the starting point of this cargo order
 // system
@@ -10,11 +11,15 @@ tidy class CargoOrder : Order {
 	int cargoId = -1;
 	bool pickup;
 	int moveId = -1;
+	int canGiveCargoStatusID = -1;
+	int canTakeCargoStatusID = -1;
 
 	CargoOrder(Object@ targ, int id, bool pickup) {
 		@target = targ;
 		cargoId = id;
 		this.pickup = pickup;
+		canGiveCargoStatusID = getStatusID("CanGiveCargo");
+		canTakeCargoStatusID = getStatusID("CanTakeCargo");
 	}
 
 	CargoOrder(SaveFile& file) {
@@ -23,6 +28,8 @@ tidy class CargoOrder : Order {
 		file >> cargoId;
 		file >> pickup;
 		file >> moveId;
+		canGiveCargoStatusID = getStatusID("CanGiveCargo");
+		canTakeCargoStatusID = getStatusID("CanTakeCargo");
 	}
 
 	void save(SaveFile& file) {
@@ -62,6 +69,14 @@ tidy class CargoOrder : Order {
 			return OS_COMPLETED;
 		}
 
+		// Check obj still has CanGiveCargo/CanTakeCargo statuses as needed
+		if (pickup && !obj.hasStatusEffect(canTakeCargoStatusID)) {
+			return OS_COMPLETED;
+		}
+		if (!pickup && !obj.hasStatusEffect(canGiveCargoStatusID)) {
+			return OS_COMPLETED;
+		}
+
 		const CargoType@ type = getCargoType(cargoId);
 
 		Object@ src;
@@ -74,7 +89,6 @@ tidy class CargoOrder : Order {
 			@dest = target;
 		}
 
-		// TODO: Also check obj still has CanGiveCargo/CanTakeCargo statuses
 		if (!(type !is null
 				&& (dest.cargoCapacity - dest.cargoStored) > 0
 				&& src.getCargoStored(cargoId) > 0)) {
