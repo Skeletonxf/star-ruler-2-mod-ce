@@ -8,6 +8,9 @@ from statuses import getStatusID;
 
 tidy class CargoOrder : Order {
 	Object@ target;
+	// cargoId must be either a valid cargo id, in which case this cargo order
+	// is for a single type of cargo, or -1, in which case this order transfers
+	// all types of cargo from source to destination
 	int cargoId = -1;
 	bool pickup;
 	int moveId = -1;
@@ -41,11 +44,22 @@ tidy class CargoOrder : Order {
 	}
 
 	string get_name() {
-		string cargoName = getCargoType(cargoId).name;
+		const CargoType@ type = getCargoType(cargoId);
+		string cargoName = "";
+		if (cargoId == -1) {
+			cargoName = "all";
+		}
+		if (type !is null) {
+			cargoName = type.name;
+		}
+		string targetName = "";
+		if (target !is null) {
+			targetName = target.name;
+		}
 		if (pickup) {
-			return "Pickup " + cargoName + " from " + target.name;
+			return "Pickup " + cargoName + " from " + targetName;
 		} else {
-			return "Dropoff " + cargoName + " at " + target.name;
+			return "Dropoff " + cargoName + " at " + targetName;
 		}
 	}
 
@@ -89,10 +103,19 @@ tidy class CargoOrder : Order {
 			@dest = target;
 		}
 
-		if (!(type !is null
+		// Interpret -1 cargo id as transfer/pickup all cargo types, to
+		// avoid duplicating 99% of this file as a seperate order
+		if (cargoId == -1) {
+			if (!((dest.cargoCapacity - dest.cargoStored) > 0
+				&& src.cargoStored > 0)) {
+				return OS_COMPLETED;
+			}
+		} else {
+			if (!(type !is null
 				&& (dest.cargoCapacity - dest.cargoStored) > 0
 				&& src.getCargoStored(cargoId) > 0)) {
-			return OS_COMPLETED;
+					return OS_COMPLETED;
+				}
 		}
 
 		double range = 100 + obj.radius + target.radius;
@@ -100,7 +123,11 @@ tidy class CargoOrder : Order {
 		if (distance >= range*range) {
 			obj.moveTo(target, moveId, range * 0.95, enterOrbit = false);
 		} else {
-			src.transferCargoTo(cargoId, dest);
+			if (cargoId == -1) {
+				src.transferAllCargoTo(dest);
+			} else {
+				src.transferCargoTo(cargoId, dest);
+			}
 			if (moveId != -1) {
 				moveId = -1;
 				obj.stopMoving(false, false);

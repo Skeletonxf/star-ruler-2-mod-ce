@@ -1,0 +1,3 @@
+Status: CanTakeCargo
+	Visible To: Nobody
+	Unique: True

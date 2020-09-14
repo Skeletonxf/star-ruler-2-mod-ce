@@ -16,6 +16,7 @@ import constructions;
 
 // [[ MODIFY BASE GAME START ]]
 from statuses import getStatusID;
+from abilities import getAbilityType;
 import orders;
 // [[ MODIFY BASE GAME END ]]
 
@@ -788,10 +789,19 @@ class TransferCargo : SingleSelectionOption {
 		if(obj is null || !obj.hasCargo || !obj.hasLeaderAI || !obj.owner.controlled) {
 			return;
 		}
-		if (transfer == CT_Pickup) {
-			obj.addCargoOrder(clicked, type.id, true, shiftKey);
-		} else if (transfer == CT_Dropoff) {
-			obj.addCargoOrder(clicked, type.id, false, shiftKey);
+		// null cargo type is interpreted as transfer all cargo types
+		if (type is null) {
+			if (transfer == CT_Pickup) {
+				obj.addCargoOrder(clicked, -1, true, shiftKey);
+			} else if (transfer == CT_Dropoff) {
+				obj.addCargoOrder(clicked, -1, false, shiftKey);
+			}
+		} else {
+			if (transfer == CT_Pickup) {
+				obj.addCargoOrder(clicked, type.id, true, shiftKey);
+				} else if (transfer == CT_Dropoff) {
+					obj.addCargoOrder(clicked, type.id, false, shiftKey);
+				}
 		}
 	}
 }
@@ -1464,16 +1474,45 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 		if(selected.hasMover && selected.hasCargo && clicked.hasCargo && selected.owner is clicked.owner) {
 			int canGiveCargoStatusID = getStatusID("CanGiveCargo");
 			int canTakeCargoStatusID = getStatusID("CanTakeCargo");
+
+			bool goingToPickupAnyCargo = selected.hasAnyCargoPickupOrder();
+			bool goingToDropoffCargo = selected.hasAnyCargoDropoffOrder(checkQueued=true);
+
+			const AbilityType@ transferAbility = getAbilityType("TransferCargo");
+			if (selected.hasStatusEffect(canGiveCargoStatusID)
+				&& (goingToPickupAnyCargo || selected.cargoStored > 0)
+				&& (clicked.cargoCapacity - clicked.cargoStored) > 0) {
+				addOption(
+					menu,
+					selected,
+					clicked,
+					locale::ABL_TRANSFER_CARGO,
+					TransferCargo(null, CT_Dropoff),
+					transferAbility.icon
+				);
+			}
+
+			const AbilityType@ pickupAbility = getAbilityType("PickupCargo");
+			if (selected.hasStatusEffect(canTakeCargoStatusID)
+				&& clicked.cargoStored > 0
+				&& (((selected.cargoCapacity - selected.cargoStored) > 0) || goingToDropoffCargo)) {
+				addOption(
+					menu,
+					selected,
+					clicked,
+					locale::ABL_PICKUP_CARGO,
+					TransferCargo(null, CT_Pickup),
+					pickupAbility.icon
+				);
+			}
+
 			for(uint i = 0; i < getCargoTypeCount(); i++) {
 				const CargoType@ type = getCargoType(i);
 				// allow placing a dropoff order if we are going to pickup
 				// the right type of cargo even if we don't currently have it
-				// TODO: Check for only pickup cargo orders
 				bool goingToPickupCargo = selected.hasCargoPickupOrder(type.id, checkQueued=true);
 				// allow placing a pickup order even if our cargo storage is
 				// full if we are going to dropoff cargo
-				// TODO: Check for only dropoff cargo orders
-				bool goingToDropoffCargo = selected.hasAnyCargoDropoffOrder(checkQueued=true);
 				if (selected.hasStatusEffect(canGiveCargoStatusID)
 					&& (goingToPickupCargo || selected.getCargoStored(i) > 0)
 					&& (clicked.cargoCapacity - clicked.cargoStored) > 0) {
