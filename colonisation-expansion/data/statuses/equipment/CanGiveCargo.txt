@@ -1,3 +1,4 @@
 Status: CanGiveCargo
 	Visible To: Nobody
 	Unique: True
+	Description: Replaced with order system, no longer grants abilities, but is required to be present for replacement orders.
