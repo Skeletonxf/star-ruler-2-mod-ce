@@ -14,7 +14,10 @@ enum OrderType {
 	OT_AutoExplore,
 	OT_Wait,
 	OT_Jumpdrive,
-	OT_Cargo, // [[ MODIFY BASE GAME ]]
+	// [[ MODIFY BASE GAME START ]]
+	OT_Cargo,
+	OT_AutoMine,
+	// [[ MODIFY BASE GAME END ]]
 	OT_INVALID
 };
 
