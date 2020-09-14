@@ -887,6 +887,56 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		}
 		return false;
 	}
+
+	bool hasCargoPickupOrder(int cargoId, bool checkQueued = false) {
+		if(order is null)
+			return false;
+		if (!checkQueued) {
+			if (order.type == OT_Cargo) {
+				CargoOrder@ cargoOrder = cast<CargoOrder@>(order);
+				return cargoOrder.cargoId == cargoId && cargoOrder.pickup;
+			} else {
+				return false;
+			}
+		}
+
+		Order@ ord = @order;
+		while(ord !is null) {
+			if (ord.type == OT_Cargo) {
+				CargoOrder@ cargoOrder = cast<CargoOrder@>(ord);
+				if (cargoOrder.cargoId == cargoId && cargoOrder.pickup) {
+					return true;
+				};
+			}
+			@ord = ord.next;
+		}
+		return false;
+	}
+
+	bool hasAnyCargoDropoffOrder(bool checkQueued = false) {
+		if(order is null)
+			return false;
+		if (!checkQueued) {
+			if (order.type == OT_Cargo) {
+				CargoOrder@ cargoOrder = cast<CargoOrder@>(order);
+				return !cargoOrder.pickup;
+			} else {
+				return false;
+			}
+		}
+
+		Order@ ord = @order;
+		while(ord !is null) {
+			if (ord.type == OT_Cargo) {
+				CargoOrder@ cargoOrder = cast<CargoOrder@>(ord);
+				if (!cargoOrder.pickup) {
+					return true;
+				};
+			}
+			@ord = ord.next;
+		}
+		return false;
+	}
 	// [[ MODIFY BASE GAME END ]]
 
 	uint get_orderCount() {

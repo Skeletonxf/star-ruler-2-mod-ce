@@ -1469,11 +1469,11 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 				// allow placing a dropoff order if we are going to pickup
 				// the right type of cargo even if we don't currently have it
 				// TODO: Check for only pickup cargo orders
-				bool goingToPickupCargo = selected.hasCargoOrder(type.id, checkQueued=true);
+				bool goingToPickupCargo = selected.hasCargoPickupOrder(type.id, checkQueued=true);
 				// allow placing a pickup order even if our cargo storage is
 				// full if we are going to dropoff cargo
 				// TODO: Check for only dropoff cargo orders
-				bool goingToDropoffCargo = selected.hasOrder(OT_Cargo, checkQueued=true);
+				bool goingToDropoffCargo = selected.hasAnyCargoDropoffOrder(checkQueued=true);
 				if (selected.hasStatusEffect(canGiveCargoStatusID)
 					&& (goingToPickupCargo || selected.getCargoStored(i) > 0)
 					&& (clicked.cargoCapacity - clicked.cargoStored) > 0) {

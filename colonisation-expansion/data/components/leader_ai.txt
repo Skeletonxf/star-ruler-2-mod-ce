@@ -27,6 +27,8 @@ restricted local:
 	bool hasOrder(uint type, bool checkQueued = false);
 	// [[ MODIFY BASE GAME START ]]
 	bool hasCargoOrder(int cargoId, bool checkQueued = false);
+	bool hasCargoPickupOrder(int cargoId, bool checkQueued = false);
+	bool hasAnyCargoDropoffOrder(bool checkQueued = false);
 	// [[ MODIFY BASE GAME END ]]
 	uint get_orderCount();
 	string get_orderName(uint num);
