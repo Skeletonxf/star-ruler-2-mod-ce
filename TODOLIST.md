@@ -11,9 +11,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Fix bug with outposts getting repeat entries in the in-combat quickbar
   - Fix OpenGL error with Dysons
     - Error code seems to be stack overflow?
-  - Finish cargo order system
-  - Fix mine asteroid ability not supporting dropoff out of system, and not able to mine multiple asteroids before dropoff
-  - Make automated mining orders able to have a dropoff point in a different system to the asteroids
+  - Replace mining abilities with a non autocasting order so hauler ships don't have to fight the ability to work and the resulting order system can be explicitly made to work cross system.
   - Make it possible to transfer fixed amounts of cargo in lump sums and as recurring per second between cargo sources without using flagships, some kind of automated civillian transporters?
     - Consider adding ore maintenace costs for Dysons once this system is working
     - Consider creating orders to instruct a civillian ship to transfer a fixed quantity of cargo to another target for free (but with civillian ship transport risks and slowness)
