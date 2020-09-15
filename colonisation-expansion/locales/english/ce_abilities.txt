@@ -16,3 +16,5 @@ ABL_PICKUP_CARGO: Pickup All Cargo
 ABL_TRANSFER_CARGO: Transfer All Cargo
 ABL_TRANSFER_SPECIFIC_CARGO_DESC: Order the ship to transfer all $1 in its stores.
 ABL_TRANSFER_SPECIFIC_CARGO: Transfer All $1
+ABL_AUTOMINE_ORDER: Automine, dropoff here
+ABL_MINE_ASTEROID_DESC: Mine this asteroid for one full load of cargo.

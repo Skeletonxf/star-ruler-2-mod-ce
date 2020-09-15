@@ -805,6 +805,15 @@ class TransferCargo : SingleSelectionOption {
 		}
 	}
 }
+
+class AutoMine : SingleSelectionOption {
+	void call(Object@ obj) {
+		if(obj is null || !obj.hasCargo || !obj.hasLeaderAI || !obj.owner.controlled) {
+			return;
+		}
+		obj.addAutoMineOrder(clicked, shiftKey);
+	}
+}
 // [[ MODIFY BASE GAME END ]]
 
 class ConstructionOption : Option {
@@ -1538,6 +1547,20 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 						type.icon
 					);
 				}
+			}
+
+			// AutoMine order, replaces automine ability
+			int canMineAsteroidsStatusID = getStatusID("CanMineAsteroids");
+			const AbilityType@ automineAbility = getAbilityType("AutoMine");
+			if (selected.hasStatusEffect(canMineAsteroidsStatusID)) {
+				addOption(
+					menu,
+					selected,
+					clicked,
+					locale::ABL_AUTOMINE_ORDER,
+					AutoMine(),
+					automineAbility.icon
+				);
 			}
 		}
 	}

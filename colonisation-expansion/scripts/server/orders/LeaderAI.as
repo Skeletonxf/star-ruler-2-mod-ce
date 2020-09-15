@@ -16,6 +16,7 @@ from orders.AutoExploreOrder import AutoExploreOrder;
 from orders.WaitOrder import WaitOrder;
 // [[ MODIFY BASE GAME START ]]
 from orders.CargoOrder import CargoOrder;
+from orders.AutoMineOrder import AutoMineOrder;
 from orders import OrderType;
 // [[ MODIFY BASE GAME END ]]
 from resources import getBuildCost, getMaintenanceCost, MoneyType, getLaborCost;
@@ -248,6 +249,9 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 				// [[ MODIFY BASE GAME START ]]
 				case OT_Cargo:
 					@ord = CargoOrder(msg);
+				break;
+				case OT_AutoMine:
+					@ord = AutoMineOrder(msg);
 				break;
 				// [[ MODIFY BASE GAME END ]]
 				case OT_Wait:
@@ -1442,7 +1446,13 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		obj.wake();
 	}
 
-	// TODO: hasCargoOrder
+	void addAutoMineOrder(Object& obj, Object& targ, bool append) {
+		if (obj.owner !is targ.owner) {
+			return;
+		}
+		addOrder(obj, AutoMineOrder(targ), append);
+		obj.wake();
+	}
 	// [[ MODIFY BASE GAME END ]]
 
 	void leaderInit(Object& obj) {

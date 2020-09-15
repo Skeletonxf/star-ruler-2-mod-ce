@@ -1,0 +1,4 @@
+Status: CanMineAsteroids
+	Visible To: Nobody
+	Unique: True
+	Description: Mark for order system

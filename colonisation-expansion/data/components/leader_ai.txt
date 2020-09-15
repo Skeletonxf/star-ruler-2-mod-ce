@@ -72,6 +72,7 @@ restricted remote:
 	void addAutoExploreOrder(bool useFTL, bool append = false);
 	// [[ MODIFY BASE GAME START ]]
 	void addCargoOrder(Object& target, int cargoId, bool pickup, bool append = false);
+	void addAutoMineOrder(Object& target, bool append = false);
 	// [[ MODIFY BASE GAME END ]]
 
 	void addSecondaryToSlipstream(Object& other);

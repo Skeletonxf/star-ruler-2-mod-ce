@@ -26,6 +26,7 @@ Subsystem: MiningLaser
 	Hook: AddCargoStorage(CargoStorage)
 	Hook: AddPermanentStatus(CanGiveCargo)
 
+	Hook: AddStatus(CanMineAsteroids)
 	Assert: Sum.MiningLasers == 1
 		Unique: True
 		Message: #ERROR_ONLY_ONE
