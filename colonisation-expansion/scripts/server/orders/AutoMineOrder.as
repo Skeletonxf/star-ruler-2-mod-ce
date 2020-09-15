@@ -2,6 +2,7 @@ import orders.Order;
 import cargo;
 import saving;
 import resources;
+import regions.regions;
 from statuses import getStatusID;
 
 tidy class AutoMineOrder : Order {
@@ -94,7 +95,7 @@ tidy class AutoMineOrder : Order {
 
 		if (miningTarget is null) {
 			// look for nearest asteroid
-			Region@ region = obj.region;
+			Region@ region = getRegion(miningPosition);
 
 			if (region is null) {
 				// TODO: Work out how to find closest region later
@@ -118,8 +119,7 @@ tidy class AutoMineOrder : Order {
 			}
 			@miningTarget = closest;
 
-			// TODO: Pause for a bit if didn't find an asteroid to avoid
-			// computing this every tick
+			// Depleted all asteroids, stop order
 			if (miningTarget is null) {
 				return OS_COMPLETED;
 			}
@@ -144,6 +144,9 @@ tidy class AutoMineOrder : Order {
 				}
 				miningTarget.transferPrimaryCargoTo(obj, time * rate);
 				if (miningTarget.cargoStored == 0) {
+					// stop holding a reference to a depleted asteroid, and
+					// get ready to look for the closest one next tick
+					miningPosition = miningTarget.position;
 					@miningTarget = null;
 				}
 				if (moveId != -1) {
