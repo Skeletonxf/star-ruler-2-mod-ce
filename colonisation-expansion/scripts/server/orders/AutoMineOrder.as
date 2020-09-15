@@ -22,6 +22,8 @@ tidy class AutoMineOrder : Order {
 	vec3d miningPosition;
 	bool startedOrder;
 	bool mining = true;
+	// appliedBeam is not saved to file, as beam effects are lost on reload
+	bool appliedBeam = false;
 	int moveId = -1;
 	int canMineAsteroidsStatusID = -1;
 
@@ -78,12 +80,26 @@ tidy class AutoMineOrder : Order {
 		return OT_AutoMine;
 	}
 
+	void removeAppliedBeam(Object& obj) {
+		if (appliedBeam) {
+			int64 beam = (obj.id << 32) | (0x2 << 24);
+			removeGfxEffect(ALL_PLAYERS, beam);
+			appliedBeam = false;
+		}
+	}
+
 	OrderStatus tick(Object& obj, double time) {
 		if (!obj.hasMover || !obj.hasCargo || dropoffTarget is null || !dropoffTarget.hasCargo || dropoffTarget.owner !is obj.owner) {
+			removeAppliedBeam(obj);
 			return OS_COMPLETED;
 		}
 
 		if (!obj.hasStatusEffect(canMineAsteroidsStatusID)) {
+			if (appliedBeam) {
+				int64 beam = (obj.id << 32) | (0x2 << 24);
+				removeGfxEffect(ALL_PLAYERS, beam);
+				appliedBeam = false;
+			}
 			return OS_COMPLETED;
 		}
 
@@ -97,8 +113,9 @@ tidy class AutoMineOrder : Order {
 			// look for nearest asteroid
 			Region@ region = getRegion(miningPosition);
 
+			// TODO: Work out how to find closest region later
 			if (region is null) {
-				// TODO: Work out how to find closest region later
+				removeAppliedBeam(obj);
 				return OS_COMPLETED;
 			}
 
@@ -121,6 +138,7 @@ tidy class AutoMineOrder : Order {
 
 			// Depleted all asteroids, stop order
 			if (miningTarget is null) {
+				removeAppliedBeam(obj);
 				return OS_COMPLETED;
 			}
 
@@ -133,6 +151,7 @@ tidy class AutoMineOrder : Order {
 			double range = 100 + obj.radius + miningTarget.radius;
 			if (distance >= range*range) {
 				obj.moveTo(miningTarget, moveId, range * 0.95, enterOrbit = false);
+				removeAppliedBeam(obj);
 			} else {
 				Ship@ ship = cast<Ship>(obj);
 				double rate = 0;
@@ -153,11 +172,21 @@ tidy class AutoMineOrder : Order {
 					moveId = -1;
 					obj.stopMoving(false, false);
 				}
+
+				// apply beam effect or cancel
+				if (!appliedBeam) {
+					// compute the beam id we will use for mining beam graphics
+					int64 beam = (obj.id << 32) | (0x2 << 24);
+					makeBeamEffect(ALL_PLAYERS, beam, obj, miningTarget, 0x91692cff, obj.radius, "Tractor", -1.0);
+					appliedBeam = true;
+				}
 			}
 			mining = true;
 		}
 
 		if (!((obj.cargoCapacity - obj.cargoStored) > 0)) {
+			removeAppliedBeam(obj);
+
 			// dropoff
 			double distance = obj.position.distanceToSQ(dropoffTarget.position);
 			double range = 100 + obj.radius + dropoffTarget.radius;
