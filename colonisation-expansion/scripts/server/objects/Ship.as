@@ -1208,8 +1208,7 @@ tidy class ShipScript {
 		// hp regen was probably large enough to overcome the last bit of
 		// health in need of repair.
 		if (damage != 0 && damage < 0.0001) {
-			bp.currentHP = bp.design.totalHP;
-			bp.removedHP = 0;
+			bp.currentHP = bp.design.totalHP - bp.removedHP;
 			damage = 0;
 		}
 		// [[ MODIFY BASE GAME END ]]
