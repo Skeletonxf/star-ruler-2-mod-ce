@@ -88,6 +88,24 @@ tidy class AutoMineOrder : Order {
 		}
 	}
 
+	Asteroid@ findClosestAsteroid(vec3d position, DataList@ objs) {
+		double closestDistance = -1;
+		Asteroid@ closest;
+		Object@ obj;
+		while (receive(objs, obj)) {
+			Asteroid@ asteroid = cast<Asteroid>(obj);
+			// ignore special asteroids that don't have ore
+			if (asteroid.nativeResourceCount != 0) {
+				continue;
+			}
+			if (closestDistance == -1 || asteroid.position.distanceToSQ(position) < closestDistance) {
+				@closest = asteroid;
+				closestDistance = asteroid.position.distanceToSQ(position);
+			}
+		}
+		return closest;
+	}
+
 	OrderStatus tick(Object& obj, double time) {
 		if (!obj.hasMover || !obj.hasCargo || dropoffTarget is null || !dropoffTarget.hasCargo || dropoffTarget.owner !is obj.owner) {
 			removeAppliedBeam(obj);
@@ -111,32 +129,20 @@ tidy class AutoMineOrder : Order {
 
 		if (miningTarget is null) {
 			// look for nearest asteroid
+
+			// look in the region the ship is in first
 			Region@ region = getRegion(miningPosition);
-
-			// TODO: Work out how to find closest region later
-			if (region is null) {
-				removeAppliedBeam(obj);
-				return OS_COMPLETED;
+			if (region !is null) {
+				@miningTarget = findClosestAsteroid(miningPosition, region.getAsteroids());
 			}
+			// if no asteroids or not in a region, check all asteroids known
+			// to the empire as a fallback
+			//if (miningTarget is null) {
+				// TODO: Look at nearby regions that we have vision for
+				// and try to find asteroids there
+			//}
 
-			uint asteroidsInRegion = region.asteroidCount;
-			double closestDistance = -1;
-
-			// TODO: Try nearby regions that we have vision of till find an
-			// asteroid
-			Asteroid@ closest;
-			DataList@ objs = region.getAsteroids();
-			Object@ obj;
-			while (receive(objs, obj)) {
-				Asteroid@ asteroid = cast<Asteroid>(obj);
-				if (closestDistance == -1 || asteroid.position.distanceToSQ(miningPosition) < closestDistance) {
-					@closest = asteroid;
-					closestDistance = asteroid.position.distanceToSQ(miningPosition);
-				}
-			}
-			@miningTarget = closest;
-
-			// Depleted all asteroids, stop order
+			// Depleted all asteroids known to the empire, stop order
 			if (miningTarget is null) {
 				removeAppliedBeam(obj);
 				return OS_COMPLETED;
