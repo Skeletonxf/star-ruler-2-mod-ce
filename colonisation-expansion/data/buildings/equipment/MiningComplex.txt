@@ -1,0 +1,20 @@
+Building: MiningComplex
+	Name: #BLD_MINING_COMPLEX
+	Description: #BLD_MINING_COMPLEX_DESC
+	Sprite: Forge * aaeeff
+
+	Category: Infrastructure
+
+	Size: 5x5
+	Base Cost: 1000
+
+	Build Time: 240
+	Base Maintenance: 100
+	Tile Maintenance: 10
+
+
+	AddStatus(MiningPlanet)
+	ConflictBuilding(MiningComplex)
+	RequireNotStatus(Ringworld)
+	AddStatus(CanMineAsteroids)
+	RequireEither(RequireBuilding(PlanetaryEngine), RequireBuilding(CelestialPlanetaryEngine))

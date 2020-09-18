@@ -33,3 +33,9 @@ BLD_MINI_ANCIENT_CORE_DESC: <<
 
 	[i]Monitoring a Dyson Sphere is a lot less difficult than monitoring a planet.[/i]
 >>
+BLD_MINING_COMPLEX: Mining Complex
+BLD_MINING_COMPLEX_DESC: <<
+	This massive asteroid refinement complex grants planets the ability to refine ore directly, at a rapid rate.
+
+	Requires a Planetary Thruster to be present.
+>>

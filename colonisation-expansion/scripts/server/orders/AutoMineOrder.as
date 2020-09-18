@@ -214,6 +214,14 @@ tidy class AutoMineOrder : Order {
 				if (ship !is null) {
 					rate = ship.blueprint.design.total(SV_MiningRate);
 				}
+				if (ship is null) {
+					Planet@ planet = cast<Planet>(obj);
+					if (planet !is null) {
+						// planets with mining complexes have a hardcoded
+						// 'rapid' mining rate
+						rate = 300;
+					}
+				}
 				if (rate == 0) {
 					return OS_COMPLETED;
 				}
