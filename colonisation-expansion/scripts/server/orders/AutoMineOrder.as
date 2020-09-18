@@ -3,6 +3,7 @@ import cargo;
 import saving;
 import resources;
 import regions.regions;
+import systems;
 from statuses import getStatusID;
 
 tidy class AutoMineOrder : Order {
@@ -26,6 +27,8 @@ tidy class AutoMineOrder : Order {
 	bool appliedBeam = false;
 	int moveId = -1;
 	int canMineAsteroidsStatusID = -1;
+	uint systemCheckIndex = 0;
+	bool searchingUniverse = false;
 
 	AutoMineOrder(Object@ dropoffTarget) {
 		@this.dropoffTarget = dropoffTarget;
@@ -41,6 +44,8 @@ tidy class AutoMineOrder : Order {
 		file >> startedOrder;
 		file >> moveId;
 		file >> mining;
+		file >> systemCheckIndex;
+		file >> searchingUniverse;
 		canMineAsteroidsStatusID = getStatusID("CanMineAsteroids");
 	}
 
@@ -52,6 +57,8 @@ tidy class AutoMineOrder : Order {
 		file << startedOrder;
 		file << moveId;
 		file << mining;
+		file << systemCheckIndex;
+		file << searchingUniverse;
 	}
 
 	string get_name() {
@@ -127,27 +134,70 @@ tidy class AutoMineOrder : Order {
 			startedOrder = true;
 		}
 
-		if (miningTarget is null) {
+		if (searchingUniverse || miningTarget is null) {
 			// look for nearest asteroid
 
-			// look in the region the ship is in first
-			Region@ region = getRegion(miningPosition);
-			if (region !is null) {
-				@miningTarget = findClosestAsteroid(miningPosition, region.getAsteroids());
-			}
-			// if no asteroids or not in a region, check all asteroids known
-			// to the empire as a fallback
-			//if (miningTarget is null) {
-				// TODO: Look at nearby regions that we have vision for
-				// and try to find asteroids there
-			//}
+			if (!searchingUniverse) {
+				// look in the region the ship already mining in first
+				Region@ region = getRegion(miningPosition);
+				if (region !is null) {
+					@miningTarget = findClosestAsteroid(miningPosition, region.getAsteroids());
+				}
 
-			// Depleted all asteroids known to the empire, stop order
-			if (miningTarget is null) {
-				removeAppliedBeam(obj);
-				return OS_COMPLETED;
+				if (miningTarget is null) {
+					removeAppliedBeam(obj);
+				}
 			}
 
+			if (!searchingUniverse && miningTarget is null) {
+				// over multiple ticks, check every region
+				searchingUniverse = true;
+				systemCheckIndex = 0;
+			}
+
+			if (searchingUniverse) {
+				// continue to check every region
+				uint cnt = systemCheckIndex + 10;
+				uint totalSystems = systemCount;
+				uint i = systemCheckIndex;
+				for (; i < totalSystems && i < cnt; ++i) {
+					Region@ region = getSystem(i).object;
+
+					// Ignore regions we haven't ever obtained vision of yet
+					bool hasVision = region.MemoryMask & obj.owner.mask != 0;
+					if (!hasVision) {
+						continue;
+					}
+
+					Asteroid@ closestInRegion = findClosestAsteroid(miningPosition, region.getAsteroids());
+					if (closestInRegion !is null) {
+						if (miningTarget is null) {
+							@miningTarget = closestInRegion;
+						} else {
+							double distanceToCurrent = miningTarget.position.distanceToSQ(miningPosition);
+							double distanceToFound = closestInRegion.position.distanceToSQ(miningPosition);
+							if (distanceToFound < distanceToCurrent) {
+								@miningTarget = closestInRegion;
+							}
+						}
+					}
+				}
+				systemCheckIndex = i;
+
+				if (i >= totalSystems) {
+					searchingUniverse = false;
+					if (miningTarget is null) {
+						// Depleted all asteroids known to the empire, stop order
+						removeAppliedBeam(obj);
+						return OS_COMPLETED;
+					}
+				} else {
+					// not finished search yet
+					return OS_BLOCKING;
+				}
+			}
+
+			// begin mining
 			mining = true;
 		}
 
