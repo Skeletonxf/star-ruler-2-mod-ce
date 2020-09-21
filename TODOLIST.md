@@ -4,6 +4,8 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Buff non laser weapon speeds so they can hit moving targets more easily (to compensate for nerfed research)
+  - Disable FTL and thrusters on planets under an annex vote
+    - Remove the debuff if the vote is withdrawn
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
@@ -11,7 +13,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Fix bug with outposts getting repeat entries in the in-combat quickbar
   - Fix OpenGL error with Dysons
     - Error code seems to be stack overflow?
-  - Replace mining abilities with a non autocasting order so hauler ships don't have to fight the ability to work and the resulting order system can be explicitly made to work cross system.
   - Make it possible to transfer fixed amounts of cargo in lump sums and as recurring per second between cargo sources without using flagships, some kind of automated civillian transporters?
     - Consider adding ore maintenace costs for Dysons once this system is working
     - Consider creating orders to instruct a civillian ship to transfer a fixed quantity of cargo to another target for free (but with civillian ship transport risks and slowness)
