@@ -918,6 +918,7 @@ class MiniWormholeNetwork : EmpireEffect {
 #section all
 };
 
+// FIXME: Remove status if vote is withdrawn
 class StatusToPlanetDuringVote : InfluenceVoteEffect {
 	Document doc("Marks a planet or all planets in a system with a status while the vote is ongoing.");
 	Argument targ("Target", TT_Object);
@@ -995,6 +996,47 @@ class StatusToPlanetDuringVote : InfluenceVoteEffect {
 				contested.insertLast(obj);
 			}
 		}
+	}
+#section all
+};
+
+class TargetFilterHasTradePresenceOrDeepSpace : TargetFilter {
+	Document doc("Restricts target to regions with the empire's trade presence or targets in deep space.");
+	Argument targ(TT_Object);
+	Argument adjacent("Allow Adjacent", AT_Decimal, "True", doc="Whether to allow the target if adjacent regions have trade presence.");
+
+	string getFailReason(Empire@ emp, uint index, const Target@ targ) const override {
+		return locale::NTRG_TRADE_PRESENCE;
+	}
+
+#section game
+	bool isValidTarget(Empire@ emp, uint index, const Target@ targ) const override {
+		if(index != uint(arguments[0].integer))
+			return true;
+		Object@ obj = targ.obj;
+		Region@ reg = cast<Region>(obj);
+		if(reg is null)
+			@reg = obj.region;
+		if(reg is null)
+			return true; // diff from TargetFilterHasTradePresence
+		if(reg.TradeMask & emp.TradeMask.value == 0) {
+			if(!arguments[1].boolean)
+				return false;
+			const SystemDesc@ sys = getSystem(reg);
+			if(sys !is null) {
+				bool found = false;
+				for(uint i = 0, cnt = sys.adjacent.length; i < cnt; ++i) {
+					const SystemDesc@ other = getSystem(sys.adjacent[i]);
+					if(other.object.TradeMask & emp.TradeMask.value != 0) {
+						found = true;
+						break;
+					}
+				}
+				if(!found)
+					return false;
+			}
+		}
+		return true;
 	}
 #section all
 };
