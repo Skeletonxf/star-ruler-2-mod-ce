@@ -917,3 +917,84 @@ class MiniWormholeNetwork : EmpireEffect {
 	}
 #section all
 };
+
+class StatusToPlanetDuringVote : InfluenceVoteEffect {
+	Document doc("Marks a planet or all planets in a system with a status while the vote is ongoing.");
+	Argument targ("Target", TT_Object);
+	Argument status(AT_Status, EMPTY_DEFAULT, doc="A status to add to the planet(s) during the vote.");
+
+#section server
+	void onStart(InfluenceVote@ vote) const override {
+		array<Object@> contested;
+		vote.data[hookIndex].store(@contested);
+
+		Object@ obj = targ.fromTarget(vote.targets).obj;
+		if (status.integer != -1) {
+			if (obj.isPlanet && obj !is null) {
+				obj.addStatus(status.integer);
+			} else {
+				Region@ region = cast<Region>(obj);
+				if (region is null) {
+					@region = obj.region;
+				}
+				if (region !is null) {
+					for(uint i = 0, cnt = region.planetCount; i < cnt; ++i) {
+						Planet@ pl = region.planets[i];
+						if (pl !is null && pl.owner !is null && pl.owner !is vote.startedBy && pl.owner.valid) {
+							pl.addStatus(status.integer);
+							contested.insertLast(pl);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	void onEnd(InfluenceVote@ vote, bool passed, bool withdrawn) const override {
+		array<Object@>@ contested;
+		vote.data[hookIndex].retrieve(@contested);
+
+		Object@ obj = targ.fromTarget(vote.targets).obj;
+		if (status.integer != -1) {
+			if (obj.isPlanet && obj !is null) {
+				obj.removeStatusInstanceOfType(status.integer);
+			} else {
+				if (contested !is null) {
+					for (uint i = 0, cnt = contested.length; i < cnt; ++i) {
+						contested[i].removeStatusInstanceOfType(status.integer);
+					}
+				}
+			}
+		}
+	}
+
+	void save(InfluenceVote@ vote, SaveFile& file) const override {
+		array<Object@>@ contested;
+		vote.data[hookIndex].retrieve(@contested);
+
+		uint cnt = 0;
+		if (contested !is null) {
+			cnt = contested.length;
+		}
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			file << contested[i];
+		}
+	}
+
+	void load(InfluenceVote@ vote, SaveFile& file) const override {
+		array<Object@> contested;
+		vote.data[hookIndex].store(@contested);
+
+		uint cnt = 0;
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			Object@ obj;
+			file >> obj;
+			if (obj !is null) {
+				contested.insertLast(obj);
+			}
+		}
+	}
+#section all
+};
