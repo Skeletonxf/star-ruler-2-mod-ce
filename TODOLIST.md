@@ -3,9 +3,13 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - **Blocking balanced multiplayer games**
+    - Tweak the Star Children consume planet ability so that you can't almost destroy all your planets and still gain nearly all of the benefits.
+      - Perhaps all the max pop should come once the planet gets destroyed?
+    - Disable movement on planets under an annex vote
+      - InterdictMovement doesn't seem to work on planets for some reason
+      - Remove the debuff if the vote is withdrawn
   - Buff non laser weapon speeds so they can hit moving targets more easily (to compensate for nerfed research)
-  - Disable FTL and thrusters on planets under an annex vote
-    - Remove the debuff if the vote is withdrawn
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
@@ -33,8 +37,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to melt ice
   - Teach AI to make most of the constructions by extending the building hint code
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
-  - Tweak the Star Children consume planet ability so that you can't almost destroy all your planets and still gain nearly all of the benefits.
-    - Perhaps all the max pop should come once the planet gets destroyed?
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
   - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
@@ -55,13 +57,12 @@ This is primarily intended as a developer focused project planning list, rather 
   - Prevent dillemas occuring multiple times (not sure what's causing this bug, it's quite rare)
   - Teach Mechanoid AI to use FTL Breeder Reactors
   - StarChildren transfering of pop from Mothership -> Mothership
-  - Make Star Children habitats add some kind of control count to their systems, from which orbitals can be made to utilise the control in a way that means the Star Children can't build an infinite number of the things, but allows them to have some unique identity and strengths.
+  - Consider what to do about the Star Children being locked out of a lot of things only available as buildings
     - Vanilla buildings that Star Children have no equivalents of
-      - Megafarms, Hydrogenators, Research Complexes, Mueseums, Labor Storage, Space Elevator
+      - Megafarms, Hydrogenators, Research Complexes, Mueseums, Labor Storage, Space Elevator, Planetary Thruster
     - Buildings that Star Children already don't need or have alternatives to
       - FTL Storage, Megacities
-     - Ideas for new orbitals for Star Children
-       - TODO
+    - Maybe add a way to push planets around with motherships?
   - Make autoexplore continue to work after all systems have been visited once (will also split off into own mod or community patch)
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
@@ -73,7 +74,7 @@ This is primarily intended as a developer focused project planning list, rather 
       - Create stations at all??
       - Attempt to achieve the influence victory themselves??
       - Fling battle stations
-      - Use/design Motherships well
+      - Use Motherships well
       - Mine asteroids for ore
       - Move asteroids and other resources around with tractor beams
       - Create battleworlds
