@@ -420,6 +420,46 @@ class FreeFTLSystem : GenericEffect, TriggerableGeneric {
 #section all
 };
 
+// [[ MODIFY BASE GAME START ]]
+class ReducedFTLSystem : GenericEffect, TriggerableGeneric {
+	Document doc("Objects FTLing out of the system this effect is active in, that are owned by this effect object's owner, can FTL for 25% cost.");
+
+#section server
+	void tick(Object& obj, any@ data, double time) const override {
+		Region@ region = obj.region;
+		Empire@ owner = obj.owner;
+		if(region !is null && owner !is null && owner.valid)
+			region.ReducedFTLMask |= owner.mask;
+	}
+
+	void ownerChange(Object& obj, any@ data, Empire@ prevOwner, Empire@ newOwner) const override {
+		Region@ region = obj.region;
+		if(region !is null && prevOwner !is null && prevOwner.valid)
+			region.ReducedFTLMask &= ~prevOwner.mask;
+		if(region !is null && newOwner !is null && newOwner.valid)
+			region.ReducedFTLMask |= newOwner.mask;
+	}
+
+	void regionChange(Object& obj, any@ data, Region@ prevRegion, Region@ newRegion) const override {
+		Empire@ owner = obj.owner;
+		if(owner is null || !owner.valid)
+			return;
+		if(prevRegion !is null)
+			prevRegion.ReducedFTLMask &= ~owner.mask;
+		if(newRegion !is null)
+			newRegion.ReducedFTLMask |= owner.mask;
+	}
+
+	void disable(Object& obj, any@ data) const override {
+		Region@ region = obj.region;
+		Empire@ owner = obj.owner;
+		if(region !is null && owner !is null && owner.valid)
+			region.ReducedFTLMask &= ~owner.mask;
+	}
+#section all
+};
+// [[ MODIFY BASE GAME END ]]
+
 //GiveNeighbourVision()
 // Gives the empire vision over neighbouring systems.
 class GiveNeighbourVision : GenericEffect, TriggerableGeneric {

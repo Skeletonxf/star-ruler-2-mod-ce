@@ -3,3 +3,4 @@ Status: InAnnexVote
 	Icon: VoteIcons::1
 	Name: #VOTE_ANNEXED_STATUS
 	Description: #VOTE_ANNEXED_STATUS_DESC
+	InterdictMovement()

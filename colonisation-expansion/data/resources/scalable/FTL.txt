@@ -22,10 +22,10 @@ Resource: FTL
 	IfLevel(1, AddFTLIncome(+0.4)) #version>=105
 	IfLevel(2, AddFTLIncome(+0.5)) #version>=105
 	IfLevel(3, AddFTLIncome(+1.0)) #version>=105
-	IfLevel(4, AddFTLIncome(+2.0)) #version>=105
-	IfLevel(5, AddFTLIncome(+5.0)) #version>=105
+	IfLevel(4, AddFTLIncome(+4.0)) #version>=105
+	IfLevel(5, AddFTLIncome(+7.0)) #version>=105
 
-	IfLevel(5, FreeFTLSystem()) #version>=105
+	IfLevel(5, ReducedFTLSystem()) #version>=105
 	IfLevel(4, GrantAllFleetVision(System Space = False, Deep Space = False, In FTL = True)) #version>=107
 	IfLevel(4, GrantAllFleetVision(Flagships = False, Stations = True, Require Status = GateUnpacked)) #version>=125
 	IfLevel(4, GrantAllOddityGateVision()) #version>=125
