@@ -50,4 +50,14 @@ EXPEDITION_LEADER_DESC: <<
 	Your presence also improves ship effectiveness by 20%
 >>
 VOTE_ANNEXED_STATUS: Annexed
-VOTE_ANNEXED_STATUS_DESC: This planet is in danger of being forcibly transfered to a different empire under the galactic senate.
+VOTE_ANNEXED_STATUS_DESC: <<
+	This planet is in danger of being forcibly transfered to a different empire under the galactic senate.
+
+	Its people are fearful, and will no longer permit flying or FTLing the planet while the vote is active.
+>>
+VOTE_ANNEXED_BW_STATUS: Fearful
+VOTE_ANNEXED_BW_STATUS_DESC: <<
+	This planet is under an annex vote.
+
+	Its people are fearful, and will not permit transfering resources off the planet while the vote is active.
+>>

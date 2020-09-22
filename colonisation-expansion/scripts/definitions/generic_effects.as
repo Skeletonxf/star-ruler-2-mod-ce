@@ -1997,12 +1997,18 @@ class DelayFTL : GenericEffect, TriggerableGeneric {
 		Ship@ ship = cast<Ship>(obj);
 		if(ship !is null)
 			ship.delayFTL = true;
+		Planet@ planet = cast<Planet>(obj);
+		if(planet !is null)
+			planet.delayFTL = true;
 	}
 
 	void disable(Object& obj, any@ data) const override {
 		Ship@ ship = cast<Ship>(obj);
 		if(ship !is null)
 			ship.delayFTL = false;
+		Planet@ planet = cast<Planet>(obj);
+		if(planet !is null)
+			planet.delayFTL = false;
 	}
 #section all
 };

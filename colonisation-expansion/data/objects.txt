@@ -113,6 +113,9 @@ visible:
 	bool renamed = false
 	double Health = 1000000000
 	double MaxHealth = 1000000000
+	// [[ MODIFY BASE GAME START ]]
+	bool delayFTL = false
+	// [[ MODIFY BASE GAME END ]]
 
 	local safe uint get_moonCount() const;
 

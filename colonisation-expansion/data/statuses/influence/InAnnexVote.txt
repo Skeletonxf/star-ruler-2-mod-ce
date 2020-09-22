@@ -3,4 +3,10 @@ Status: InAnnexVote
 	Icon: VoteIcons::1
 	Name: #VOTE_ANNEXED_STATUS
 	Description: #VOTE_ANNEXED_STATUS_DESC
+	IfHaveTrait(Battleworlders, AddStatus(NoTransfer))
+	DelayFTL()
 	InterdictMovement()
+Status: NoTransfer
+	Name: #VOTE_ANNEXED_BW_STATUS
+	Description: #VOTE_ANNEXED_BW_STATUS_DESC
+	Icon: PlanetThruster * 9900ee
