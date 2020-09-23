@@ -1953,6 +1953,13 @@ class RepairPerSecond : GenericEffect {
 #section all
 };
 
+// [[ MODIFY BASE GAME START ]]
+class MovementData {
+	double maxAcceleration = 0;
+	double bonusAcceleration = 0;
+}
+// [[ MODIFY BASE GAME END ]]
+
 //InterdictMovement()
 // Remove all velocity from an object and prevent it from accelerating.
 class InterdictMovement : GenericEffect {
@@ -1960,30 +1967,66 @@ class InterdictMovement : GenericEffect {
 
 #section server
 	void enable(Object& obj, any@ data) const override {
+		// [[ MODIFY BASE GAME START ]]
+		MovementData dat;
+		data.store(@dat);
+
 		if(obj.hasMover) {
 			double acc = obj.maxAcceleration;
-			data.store(acc);
+			dat.maxAcceleration = acc;
+			dat.bonusAcceleration = obj.bonusAcceleration;
 
 			obj.velocity = vec3d();
 			obj.acceleration = vec3d();
+			// modifying bonus accel changes maxAccel too so do it first
+			obj.modAccelerationBonus(-obj.bonusAcceleration);
 			obj.maxAcceleration = 0.0;
+			// [[ MODIFY BASE GAME END ]]
 		}
 	}
 
 	void tick(Object& obj, any@ data, double time) const override {
-		if(obj.hasMover)
+		if (obj.hasMover) {
 			obj.maxAcceleration = 0.0;
+			// [[ MODIFY BASE GAME START ]]
+			// FIXME: Giving additional bonus acceleration to the object
+			// while under this effect will cheat the debuff.
+			// [[ MODIFY BASE GAME END ]]
+		}
 	}
 
 	void disable(Object& obj, any@ data) const override {
+		// [[ MODIFY BASE GAME START ]]
+		MovementData@ dat;
+		data.retrieve(@dat);
 		if(obj.hasMover) {
 			if(obj.maxAcceleration == 0.0) {
-				double acc = 0.0;
-				data.retrieve(acc);
+				double acc = dat.maxAcceleration;
+				// modifying bonus changes accel too so do it first
+				obj.modAccelerationBonus(dat.bonusAcceleration);
 				obj.maxAcceleration = acc;
+				// [[ MODIFY BASE GAME END ]]
 			}
 		}
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void save(any@ data, SaveFile& file) const override {
+		MovementData@ dat;
+		data.retrieve(@dat);
+
+		file << dat.maxAcceleration;
+		file << dat.bonusAcceleration;
+	}
+
+	void load(any@ data, SaveFile& file) const override {
+		MovementData dat;
+		data.store(@dat);
+
+		file >> dat.maxAcceleration;
+		file >> dat.bonusAcceleration;
+	}
+	// [[ MODIFY BASE GAME END ]]
 #section all
 };
 
