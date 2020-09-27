@@ -1,15 +1,15 @@
 Construction: CreateLocalAsteroidField
 	Name: Construct Local Asteroid Field
 	Build Cost: 1000
-	Labor Cost: 150
 	Category: Development
 	Icon: ResourceIcons::28
 	Description: Using a large quantity of ore and part of the planet we can construct a local asteroid field on this planet to improve labor generation.
+	Time Cost: 180
 	RequireNotStatus(MinimalDevelopment)
 	RequireNotTrait(NoResourceUse)
 	RequirePlanetNotBiome(AncientAtmosphere)
 	CE_biome_hooks::DealStellarPercentageDamage(0.3)
-	ConsumeCargo(Ore, 1000)
+	ConsumeCargo(Ore, 2000)
 	RequirePlanetNotBiome(Photovoltics)
 	RequirePlanetNotBiome(Artificial)
 	RequirePlanetNotBiome(Atmosphere)

@@ -2,8 +2,7 @@ Construction: Fracture
 	Name: Fracture Planet
 	Icon: ConditionIcons::2 * ffff00
 	Build Cost: 1500
-	Labor Cost: 300
-	Time Cost:
+	Time Cost: 180
 	Description: #FRACTURE_PLANET_DESC
 	Category: Development
 	RequireNotStatus(MinimalDevelopment)

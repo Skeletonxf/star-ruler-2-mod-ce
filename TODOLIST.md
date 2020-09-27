@@ -6,9 +6,13 @@ This is primarily intended as a developer focused project planning list, rather 
   - **Blocking balanced multiplayer games**
     - Tweak the Star Children consume planet ability so that you can't almost destroy all your planets and still gain nearly all of the benefits.
       - Perhaps all the max pop should come once the planet gets destroyed?
+  - Make the add local asteroid field construction apply true damage to the planet so population doesn't take the hit instead
+  - Fix primary resource identification code so scalable resources are highest priority, followed by tier 2 resources.
+    - Fix First planets not being set to the highest level possible out of all their native resources
+      - When Ancient empires expose the molten core of a tier 1 planet, the tier 2 resource added appears disabled, but pressure is produced for it anyway
+      - It is possible to add tier 1 and 2 resources to a scalable planet which prevent construction of infusers
   - Buff non laser weapon speeds so they can hit moving targets more easily (to compensate for nerfed research)
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
-  - Disallow resource transfering from planets under an annex vote
   - battleworld QoL changes
     - finish port to CP
     - Fix bug with outposts getting repeat entries in the in-combat quickbar
@@ -17,9 +21,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make it possible to transfer fixed amounts of cargo in lump sums and as recurring per second between cargo sources without using flagships, some kind of automated civillian transporters?
     - Consider adding ore maintenace costs for Dysons once this system is working
     - Consider creating orders to instruct a civillian ship to transfer a fixed quantity of cargo to another target for free (but with civillian ship transport risks and slowness)
-  - Fix First planets not being set to the highest level possible out of all their native resources
-    - When Ancient empires expose the molten core of a tier 1 planet, the tier 2 resource added appears disabled, but pressure is produced for it anyway
-    - It is possible to add tier 1 and 2 resources to a scalable planet which prevent construction of infusers
   - To fix in refactor of colonization and development code
     - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (cannot reproduce second time?)
     - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
