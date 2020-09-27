@@ -24,3 +24,14 @@ Technology: CelestialBldPlanetaryEngine
 	Icon: HexagonSubsystems::10
 	Color: #00f3ff
 	Default Unlock: True
+Technology: CelestialStationMaintenance2
+	Name: #R_STATION_MAINTENANCE
+	Description: #R_STATION_MAINTENANCE_DESC:40%
+	Symbol: GuiOrbitalIcons::0 * #30a67a
+	Color: #30a67a
+	Category: Special Upgrades
+	Class: BigUpgrade
+	Point Cost: 1000
+	Time Cost: 160
+	Icon: techConstruction * #30a67a
+	AddModifier(StationHull::MaintenanceModFactor(0.6))
