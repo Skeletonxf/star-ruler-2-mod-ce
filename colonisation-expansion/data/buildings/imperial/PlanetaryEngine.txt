@@ -20,4 +20,4 @@ Building: PlanetaryEngine
 
 	RequireUnlockTag(PlanetaryEngineUnlock)
 	RequireNotStatus(Ringworld)
-	IfNotHaveStatus(Ringworld, AddAccelerationBonus(0.5))
+	IfNotHaveStatus(Ringworld, IfNotHaveStatus(InAnnexVote, AddAccelerationBonus(0.5)))
