@@ -4,13 +4,10 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - **Blocking balanced multiplayer games**
+    - Don't allow multiple local asteroid field constructions to be queued on the same planet.
     - Tweak the Star Children consume planet ability so that you can't almost destroy all your planets and still gain nearly all of the benefits.
       - Perhaps all the max pop should come once the planet gets destroyed?
   - Make the add local asteroid field construction apply true damage to the planet so population doesn't take the hit instead
-  - Fix primary resource identification code so scalable resources are highest priority, followed by tier 2 resources.
-    - Fix First planets not being set to the highest level possible out of all their native resources
-      - When Ancient empires expose the molten core of a tier 1 planet, the tier 2 resource added appears disabled, but pressure is produced for it anyway
-      - It is possible to add tier 1 and 2 resources to a scalable planet which prevent construction of infusers
   - Buff non laser weapon speeds so they can hit moving targets more easily (to compensate for nerfed research)
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - battleworld QoL changes
@@ -43,6 +40,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix visual bug causing Drugs to appear to be filling the Light class requirement for planet levelling when they are not, probably related to dummy resources
     - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
   - Consider integrating Darloth's NMP into CE https://github.com/darloth/SR2-NewMovement (low priority as the mods are currently compatible minus gravitron adjust)
+  - Make InterdictMovement set a flag on the mover component to turn off self controlled motion rather than hack at modifying acceleration as it does in vanilla
 
 - Not planned for any time soon
   - Work out how should implement deep space trading
