@@ -6,17 +6,69 @@ import statuses;
 from resources import _tempResource;
 import bool getCheatsEverOn() from "cheats";
 
+// [[ MODIFY BASE GAME START ]]
+const ResourceClass@ scalableClass;
+// [[ MODIFY BASE GAME END ]]
+
 tidy class NativeResource : Resource {
 	TradePath@ path;
 
 	int opCmp(const NativeResource@ other) const {
-		return Resource::opCmp(other);
+		// [[ MODIFY BASE GAME START ]]
+		// Custom sorting logic to implement better primaryResource
+		// identification.
+		if (type is null && other.type is null)
+			return 0;
+		if (type is null)
+			return -1;
+		if (other.type is null)
+			return 1;
+		// compare resource types
+		int level = type.level;
+		int otherLevel = other.type.level;
+		if (scalableClass !is null) {
+			// treat scalable classes as far higher priority than
+			// tier classes, as they need to be the primary resource
+			// for functionality like Ancient Infusers
+			if (type.cls is scalableClass) {
+				level = 10;
+			}
+			if (other.type.cls is scalableClass) {
+				otherLevel = 10;
+			}
+		}
+		// order based on level before display weight or rarity
+		// to ensure adding a tier 2 resource to a tier 1 planet
+		// converts the primary resource to tier 2, which again is
+		// quite important for Ancient
+		if (level < otherLevel)
+			return -1;
+		if (level > otherLevel)
+			return 1;
+
+		// sort as Resource::opCmp would if no tie break yet
+		if(type.displayWeight > other.type.displayWeight)
+			return 1;
+		else if(type.displayWeight < other.type.displayWeight)
+			return -1;
+		if(type.rarityScore > other.type.rarityScore)
+			return -1;
+		if(type.rarityScore < other.type.rarityScore)
+			return 1;
+		if(type.id < other.type.id)
+			return -1;
+		if(type.id > other.type.id)
+			return 1;
+		return 0;
+		//return Resource::opCmp(other);
+		// [[ MODIFY BASE GAME END ]]
 	}
 };
 
 const ResourceClass@ foodCls;
 void init() {
 	@foodCls = getResourceClass("Food");
+	@scalableClass = getResourceClass("Scalable"); // [[ MODIFY BASE GAME ]]
 }
 
 tidy class ObjectResources : Component_Resources, Savable {
