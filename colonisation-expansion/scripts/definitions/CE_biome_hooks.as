@@ -260,6 +260,27 @@ class DealPlanetTrueDamage : BonusEffect {
 #section all
 };
 
+class DealPlanetPercentageTrueDamage : BonusEffect {
+	Document doc("Deal percentage max hp true damage to a planet (bypassing pop based modifiers).");
+	Argument amount(AT_Decimal, doc="Amount of % damage to deal (% of max HP).");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if(obj is null)
+			return;
+
+		if (obj.isPlanet) {
+			Planet@ planet = cast<Planet>(obj);
+			planet.Health -= planet.MaxHealth * amount.decimal;
+			if (planet.Health <= 0) {
+				planet.Health = 0;
+				planet.destroy();
+			}
+		}
+	}
+#section all
+};
+
 class IfPlanetPercentageHealthLessThan : IfHook {
 	Document doc("Only applies the inner hook if the planet has the specified % hp or less remaining.");
 	Argument amount(AT_Decimal, doc="% of hp threshold.");

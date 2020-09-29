@@ -1,0 +1,2 @@
+Status: MakingAsteroidField
+	Visible To: Nobody
