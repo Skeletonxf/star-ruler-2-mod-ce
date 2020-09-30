@@ -843,6 +843,10 @@ class MiniWormholeNetwork : EmpireEffect {
 	}
 
 	void tick(Empire& emp, any@ data, double time) const override {
+		if (emp.WormholeNetworkUnlocked == 0) {
+			return;
+		}
+
 		SystemIndexData@ indexes;
 		data.retrieve(@indexes);
 		if (indexes is null) {
@@ -1061,3 +1065,21 @@ class TargetFilterHasTradePresenceOrDeepSpace : TargetFilter {
 	}
 #section all
 };
+
+// Not making this usable until I have no better alternatives, this
+// is not very safe to use on arbitrary traits
+/* tidy final class GrantTrait : EmpireTrigger {
+	Document doc("Give a trait to the empire, post game start, via research.");
+	Argument trait(AT_Trait, EMPTY_DEFAULT, doc="Trait to give.");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if (emp is null) {
+			return;
+		}
+		if (!emp.hasTrait(trait.integer)) {
+			emp.addTraitPostStart(trait.integer);
+		}
+	}
+#section all
+}; */

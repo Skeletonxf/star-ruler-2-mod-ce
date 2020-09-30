@@ -274,3 +274,4 @@ Grid: ColonisationExpansionGrid
 	CloakPlating: -11,-1
 	ImpImpConstructionRate2: -10,1
 	ImpCivConstructionRate: -6,-7
+	SysWormholeNetwork: -9,-5

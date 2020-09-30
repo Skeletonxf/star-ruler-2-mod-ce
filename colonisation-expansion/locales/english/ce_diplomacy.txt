@@ -57,3 +57,15 @@ FTL_EXTRACTOR_RESEARCH_DESC: <<
 
 >>
 FTL_EXTRACTOR_RESEARCH_OBTAINED_DESC: All empires have permanently unlocked FTL Extractors through a galactic senate investigation.
+CARD_ALLONDIUM: Diplomatic Maneuvering
+CARD_ALLONDIUM_DESC: <<
+	By petitioning the Galactic Senate to use our world as a diplomacy hub with equality before the law for all we can reap the benefits for years to come.
+
+	[i]If the vote started by this action passes, the targeted planet will permanently gain Allondium as a resource.[/i]
+>>
+VOTE_ALLONDIUM_GENERATION: Create a diplomacy hub on $1
+VOTE_ALLONDIUM_GENERATION_DESC: <<
+	$1 proposes the Galactic Senate establish a permanent diplomacy hub.
+
+	[img=QuickbarIcons::6;32]If the vote passes, $1 gains Allondium as a resource, giving lasting influence benefits.[/img]
+>>

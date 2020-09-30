@@ -8,7 +8,6 @@ Trait: Wormhole
 	Color: 66f4ffff
 
 	Unique: FTL
-	Available: False
 
 
 	LoadDesigns(default)
@@ -20,6 +19,6 @@ Trait: Wormhole
 	IfHaveTrait(Devout, LoadDesigns(devout/default))
 	IfHaveTrait(Devout, LoadDesigns(devout/not_hyperdrive))
 
-	CE_biome_hooks::MiniWormholeNetwork(WormholeNetworkControlHub)
+	ModAttribute(WormholeNetworkUnlocked, Add, 1)
 	IfHaveTrait(Ancient, LoadDesigns(ancient/default))
 	IfHaveTrait(Ancient, LoadDesigns(ancient/not_hyperdrive))

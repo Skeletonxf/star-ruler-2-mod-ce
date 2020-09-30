@@ -5,6 +5,7 @@ Trait: AllPlayers
 
 
 
+	CE_biome_hooks::MiniWormholeNetwork(WormholeNetworkControlHub)
 	IfHaveTrait(Poor, ClearFirstBudget())
 	TriggerHomeworld(RemoveStatus(PrimitiveLife))
 	AddEmpireResourceIncome(Research, 1)

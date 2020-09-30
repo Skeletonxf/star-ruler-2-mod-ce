@@ -1,0 +1,31 @@
+Card: AllondiumGeneration
+	Name: #CARD_ALLONDIUM
+	Description: #CARD_ALLONDIUM_DESC
+	Icon: CardIcons::22
+	Class: Action
+	Rarity: Epic
+	Color: #99beff
+	Base Purchase Cost: 25
+	Base Play Cost: 10
+	Frequency: 0.01
+	Target: planet = Object
+
+	TargetFilterType(planet, Planet)
+	TargetFilterOwned(planet)
+	RequireContact()
+	StartVote(AllondiumGeneration, planet)
+
+	AI: PlayOnImportantPlanets(planet)
+
+	TargetFilterResourceNot(planet, Allondium)
+	TargetFilterNotStatus(planet, GiveAllondium)
+Vote: AllondiumGeneration
+	Name: #VOTE_ALLONDIUM_GENERATION
+	Icon: ResourceIconsSmall::61
+	Color: #99beff
+	Target: planet = Object
+	CancelOnLost(planet)
+	Trigger(planet, AddStatus(GiveAllondium))
+
+	AI: GoodFor(planet, Importance = 6)
+	AI: BadForNot(planet, Importance = 5)

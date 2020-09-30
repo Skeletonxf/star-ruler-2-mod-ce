@@ -66,3 +66,10 @@ WORMHOLE_NETWORK_UNLOCK_DESC: <<
 
 
 >>
+RESEARCH_ALLONDIUM: <<
+	[color=#aaa][i]Grants one free Diplomatic Maneuvering card every 15 minutes.[/i][/color]
+
+	[bbloc=#CARD_ALLONDIUM_DESC/]
+
+	[offset=20][bbloc=#ALLONDIUM_DESC]
+>>

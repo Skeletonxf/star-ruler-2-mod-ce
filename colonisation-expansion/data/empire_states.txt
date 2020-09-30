@@ -162,5 +162,7 @@ visible:
 	// [[ MODIFY BASE GAME START ]]
 	// track if FTL Extractors are unlocked
 	attribute double FTLExtractorsUnlocked = 0;
+	// track if wormhole network is unlocked
+	attribute double WormholeNetworkUnlocked = 0;
 	// [[ MODIFY BASE GAME END ]]
 }

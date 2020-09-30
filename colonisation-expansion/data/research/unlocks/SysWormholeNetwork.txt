@@ -10,4 +10,5 @@ Technology: SysWormholeNetwork
 	Icon: ActionBarIcons::7
 
 
+	ModAttribute(WormholeNetworkUnlocked, Add, 1)
 	SecondaryFTLCost(1000)

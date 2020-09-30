@@ -1,0 +1,9 @@
+Trait: Diplomatic
+	Name: #TRAIT_DIPLOMATIC
+	Description: #TRAIT_DIPLOMATIC_DESC
+	Order: 10
+	Category: Government
+	Icon: ResourceIconsSmall::61
+	Costs Points: 1
+	Color: #99beff
+	GainInfluenceCard(AllondiumGeneration, Uses = 2)
