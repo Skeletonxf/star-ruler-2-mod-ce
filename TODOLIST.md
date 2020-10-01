@@ -31,7 +31,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to make most of the constructions by extending the building hint code
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
-  - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
@@ -60,6 +59,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make autoexplore continue to work after all systems have been visited once (will also split off into own mod or community patch)
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
+  - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
 
 - Long term plans
   - Improving the AI

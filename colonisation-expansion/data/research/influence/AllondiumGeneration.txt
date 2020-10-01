@@ -1,8 +1,9 @@
 Technology: AllondiumGeneration
 	Name: #CARD_ALLONDIUM
-	Blurb: #RESEARCH_ALLONDIUM
-	Class: Boost
+	Class: Unlock
 	Icon: ResourceIconsSmall::61
 	Color: #99beff
 	Point Cost: 750
 	Time Cost: 60
+	Description: #RESEARCH_ALLONDIUM
+	ModAttribute(AllondiumCards, Add, 1)

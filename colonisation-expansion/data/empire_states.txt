@@ -164,5 +164,7 @@ visible:
 	attribute double FTLExtractorsUnlocked = 0;
 	// track if wormhole network is unlocked
 	attribute double WormholeNetworkUnlocked = 0;
+	// track if diplomatic maneuvering is unlocked
+	attribute double AllondiumCards = 0;
 	// [[ MODIFY BASE GAME END ]]
 }

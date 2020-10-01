@@ -71,5 +71,7 @@ RESEARCH_ALLONDIUM: <<
 
 	[bbloc=#CARD_ALLONDIUM_DESC/]
 
-	[offset=20][bbloc=#ALLONDIUM_DESC]
+	[color=#aaa][i]Allondium:[/i][/color]
+
+	[bbloc=#ALLONDIUM_DESC]
 >>
