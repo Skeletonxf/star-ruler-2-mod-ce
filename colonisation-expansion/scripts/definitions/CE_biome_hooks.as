@@ -969,7 +969,11 @@ tidy final class SpawnMiniWormhole : GenericEffect {
 
 			@hubData.wormhole = createMiniWormhole(from, to, -1);
 			hubData.hasWormhole = true;
+
+			obj.stopOrbit();
 		}
+
+		// TODO: Recreate wormhole if the wormhole was lost to FTL jamming
 	}
 
 	void save(any@ data, SaveFile& file) const override {
