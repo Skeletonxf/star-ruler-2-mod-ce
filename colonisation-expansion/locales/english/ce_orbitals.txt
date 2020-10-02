@@ -45,8 +45,8 @@ ORB_DEFENSE_SATELLITE_DESC: <<
 MINI_WORMHOLE: Wormhole Network
 WORMHOLE_NETWORK_CONTROL_HUB: Wormhole Network Control Hub
 WORMHOLE_NETWORK_CONTROL_HUB_DESC: <<
-	Periodically opens small wormholes, linking parts of space together.
+	Maintains a small wormhole, linking parts of space together.
 
 	[i]Very fragile, and disabled if FTL is blocked.[/i]
 >>
-WORMHOLE_NETWORK_CONTROL_HUB_BLURB: Periodically opens small wormholes
+WORMHOLE_NETWORK_CONTROL_HUB_BLURB: Maintains a small wormhole

@@ -799,34 +799,6 @@ class StartVoteIfAllAttributeLT : EmpireTrigger {
 #section all
 };
 
-class SpawnMiniWormhole : BonusEffect {
-	Document doc("Spawn a mini wormhole to a location.");
-	Argument duration("Duration", AT_Decimal, "-1", doc="Duration in seconds for the wormhole to last. -1 for permanent.");
-
-#section server
-	void activate(Object@ obj, Empire@ emp) const override {
-		vec3d from = obj.position;
-		vec3d to = obj.position;
-
-		if (randomd() < 0.6) {
-			Region@ region = obj.region;
-			if (region !is null) {
-				SystemDesc@ sys = getSystem(region);
-				uint index = randomi(0, sys.adjacent.length - 1);
-				SystemDesc@ neighbour = getSystem(sys.adjacent[index]);
-				to = neighbour.position;
-			}
-		}
-
-		vec2d offset = random2d(1000.0, 1000.0);
-		to.x += offset.x;
-		to.z += offset.y;
-
-		createMiniWormhole(from, to, duration.decimal);
-	}
-#section all
-};
-
 tidy final class SystemIndexData {
 	double lastTickTime = 0;
 	uint index = 0;
@@ -943,7 +915,79 @@ class MiniWormholeNetwork : EmpireEffect {
 #section all
 };
 
-// FIXME: Remove status if vote is withdrawn
+
+tidy final class WormholeControlHubData {
+	bool hasWormhole = false;
+	Oddity@ wormhole;
+};
+
+tidy final class SpawnMiniWormhole : GenericEffect {
+	Document doc("Spawns a mini wormhole to a location tied to the lifetime of this object.");
+
+#section server
+	void enable(Object& obj, any@ data) const override {
+		WormholeControlHubData hubData;
+		data.store(@hubData);
+	}
+
+	void disable(Object& obj, any@ data) const override {
+		WormholeControlHubData@ hubData;
+		data.retrieve(@hubData);
+
+		if (hubData.wormhole !is null) {
+			if (hubData.wormhole.getLink() !is null) {
+				hubData.wormhole.getLink().destroy();
+			}
+			hubData.wormhole.destroy();
+		}
+	}
+
+	void tick(Object& obj, any@ data, double tick) const override {
+		WormholeControlHubData@ hubData;
+		data.retrieve(@hubData);
+
+		if (!hubData.hasWormhole) {
+			// spawn wormhole
+			// TODO: Check if FTL blocked
+
+			vec3d from = obj.position;
+			vec3d to = obj.position;
+
+			if (randomd() < 0.6) {
+				Region@ region = obj.region;
+				if (region !is null) {
+					SystemDesc@ sys = getSystem(region);
+					uint index = randomi(0, sys.adjacent.length - 1);
+					SystemDesc@ neighbour = getSystem(sys.adjacent[index]);
+					to = neighbour.position;
+				}
+			}
+
+			vec2d offset = random2d(1000.0, 1000.0);
+			to.x += offset.x;
+			to.z += offset.y;
+
+			@hubData.wormhole = createMiniWormhole(from, to, -1);
+			hubData.hasWormhole = true;
+		}
+	}
+
+	void save(any@ data, SaveFile& file) const override {
+		WormholeControlHubData@ hubData;
+		data.retrieve(@hubData);
+		file << hubData.hasWormhole;
+		file << hubData.wormhole;
+	}
+
+	void load(any@ data, SaveFile& file) const override {
+		WormholeControlHubData hubData;
+		file >> hubData.hasWormhole;
+		file >> hubData.wormhole;
+		data.store(@hubData);
+	}
+#section all
+};
+
 class StatusToPlanetDuringVote : InfluenceVoteEffect {
 	Document doc("Marks a planet or all planets in a system with a status while the vote is ongoing.");
 	Argument targ("Target", TT_Object);

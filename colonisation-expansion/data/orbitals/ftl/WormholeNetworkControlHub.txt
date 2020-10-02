@@ -8,12 +8,12 @@ Module: WormholeNetworkControlHub
 	Health: 500
 	Model: FTLStorage
 	Material: GenericPBR_FTLStorage
-	Maintenance:
 	Blurb: #WORMHOLE_NETWORK_CONTROL_HUB_BLURB
 	Can Fling: False
+	DelayFTL()
 	LimitSightRange(100)
 	CannotBuildManually()
 	ConsumeFTL(125)
 	DisableOnFTLBlock()
-	TriggerPeriodic(CE_biome_hooks::SpawnMiniWormhole(Duration = 240), Interval = 180)
+	CE_biome_hooks::SpawnMiniWormhole()
 	BreakOrbitOnFTL()

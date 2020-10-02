@@ -39,8 +39,9 @@ void createSlipstream(const vec3d& from, const vec3d& to, double timer = -1.0, E
 }
 
 // [[ MODIFY BASE GAME START ]]
-// Creates a slipstream visually styled to look like a wormhole
-void createMiniWormhole(const vec3d& from, const vec3d& to, double timer = -1.0, Empire@ revealEmp = null) {
+// Creates a slipstream visually styled to look like a wormhole, returning
+// the oddity created at the from location.
+Oddity@ createMiniWormhole(const vec3d& from, const vec3d& to, double timer = -1.0, Empire@ revealEmp = null) {
 	ObjectDesc desc;
 	desc.type = OT_Oddity;
 	desc.radius = 15.0;
@@ -75,6 +76,8 @@ void createMiniWormhole(const vec3d& from, const vec3d& to, double timer = -1.0,
 
 	int64 beam = (input.id << 32) | (0x2 << 24);
 	makeBeamEffect(ALL_PLAYERS, beam, input, output, 0xdad9ecff, 10, "Tractor", timer);
+
+	return input;
 }
 // [[ MODIFY BASE GAME END ]]
 
@@ -268,6 +271,16 @@ tidy class OddityScript {
 
 	void destroy(Oddity& obj) {
 		// [[ MODIFY BASE GAME START ]]
+		// remove any beams created
+		if (visualType == Odd_MiniWormhole && obj.getLink() !is null) {
+			// remove the beam for either id, as the second wormhole linked
+			// to this one won't have the link by the time it is destroyed
+			int64 beam = (obj.id << 32) | (0x2 << 24);
+			removeGfxEffect(ALL_PLAYERS, beam);
+			beam = (obj.getLink().id << 32) | (0x2 << 24);
+			removeGfxEffect(ALL_PLAYERS, beam);
+		}
+
 		// Check if icon is null too, as mini wormholes spawn without icons
 		if(obj.region !is null && icon !is null)
 			obj.region.removeStrategicIcon(-1, icon);
