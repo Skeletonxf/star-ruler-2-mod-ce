@@ -947,8 +947,11 @@ tidy final class SpawnMiniWormhole : GenericEffect {
 		data.retrieve(@hubData);
 
 		if (!hubData.hasWormhole) {
-			// spawn wormhole
-			// TODO: Check if FTL blocked
+			// avoid spawning the wormhole if FTL is jammed
+			bool jammed = obj.region.BlockFTLMask.value & obj.owner.mask != 0;
+			if (jammed) {
+				return;
+			}
 
 			vec3d from = obj.position;
 			vec3d to = obj.position;
@@ -973,7 +976,46 @@ tidy final class SpawnMiniWormhole : GenericEffect {
 			obj.stopOrbit();
 		}
 
-		// TODO: Recreate wormhole if the wormhole was lost to FTL jamming
+		if (hubData.wormhole !is null) {
+			// check if we need to disable the control hub if either end
+			// of the wormhole or the hub itself are in a FTL jammed region
+			Region@ source = hubData.wormhole.region;
+			if (disableOnFTLJamming(obj, hubData, source)) {
+				return;
+			}
+			if (hubData.wormhole.getLink() !is null) {
+				Region@ destination = hubData.wormhole.getLink().region;
+				if (disableOnFTLJamming(obj, hubData, destination)) {
+					return;
+				}
+			}
+			Region@ hub = obj.region;
+			if (disableOnFTLJamming(obj, hubData, hub)) {
+				return;
+			}
+		}
+	}
+
+	/**
+	 * Disables the wormholes, returning true iff the region is FTL jammed
+	 * and the hub and wormholes were disabled.
+	 */
+	bool disableOnFTLJamming(Object& obj, WormholeControlHubData@ hubData, Region@ region) {
+		if (region !is null) {
+			if (region.BlockFTLMask.value & obj.owner.mask != 0) {
+				// FTL jamming is applied
+				if (hubData.wormhole !is null) {
+					if (hubData.wormhole.getLink() !is null) {
+						hubData.wormhole.getLink().destroy();
+					}
+					hubData.wormhole.destroy();
+					@hubData.wormhole = null;
+					hubData.hasWormhole = false;
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	void save(any@ data, SaveFile& file) const override {

@@ -77,6 +77,10 @@ Oddity@ createMiniWormhole(const vec3d& from, const vec3d& to, double timer = -1
 	int64 beam = (input.id << 32) | (0x2 << 24);
 	makeBeamEffect(ALL_PLAYERS, beam, input, output, 0xdad9ecff, 10, "Tractor", timer);
 
+	// the control hub will manage the FTL jamming
+	input.setSuperior(true);
+	output.setSuperior(true);
+
 	return input;
 }
 // [[ MODIFY BASE GAME END ]]
