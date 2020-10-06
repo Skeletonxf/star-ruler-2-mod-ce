@@ -129,8 +129,8 @@ class MiningColonyScenario : CampaignScenarioState {
 		populate(planet(0, 4), enemy, 5.0);
 		populate(planet(0, 5), player, 1.0, exportTo=planet(0, 3));
 		spawnBuilding(planet(0, 3), vec2i(1, 1), "Hydrogenator");
-		spawnBuilding(planet(0, 3), vec2i(5, 1), "Factory");
-		spawnBuilding(planet(0, 3), vec2i(5, 5), "Factory");
+		spawnBuilding(planet(0, 3), vec2i(4, 1), "Factory");
+		spawnBuilding(planet(0, 3), vec2i(7, 1), "Factory");
 		for (uint i = 1; i < systems.length; i++) {
 			uint j = 0;
 			Planet@ pl = planet(i, j);
@@ -195,11 +195,11 @@ class MiningColonyScenario : CampaignScenarioState {
 		playerShip.addStatus(getStatusID("Leader"));
 		spawnOrbital(player, vec3d(440.0,0.0,440.0), "TradeOutpost");
 
-		spawnFleet(enemy, planet(1,1).position + vec3d(-40.0,0.0,40.0), "Dreadnaught", 50);
-		spawnFleet(enemy, planet(2,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 50);
-		spawnFleet(enemy, planet(3,0).position + vec3d(80.0,0.0,0.0), "Dreadnaught", 50);
-		spawnFleet(enemy, planet(4,0).position + vec3d(120.0,0.0,120.0), "Armored Heavy Carrier", 50);
-		spawnFleet(enemy, planet(5,1).position + vec3d(-120.0,0.0,-120.0), "Armored Heavy Carrier", 50);
+		spawnFleet(enemy, planet(1,1).position + vec3d(-40.0,0.0,40.0), "Dreadnaught", 0);
+		spawnFleet(enemy, planet(2,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 0);
+		spawnFleet(enemy, planet(3,0).position + vec3d(80.0,0.0,0.0), "Dreadnaught", 0);
+		spawnFleet(enemy, planet(4,0).position + vec3d(120.0,0.0,120.0), "Armored Heavy Carrier", 0);
+		spawnFleet(enemy, planet(5,1).position + vec3d(-120.0,0.0,-120.0), "Armored Heavy Carrier", 0);
 
 		spawnOrbital(ally, vec3d(-440.0,0.0,-440.0), "TradeOutpost");
 		spawnFleet(ally, planet(0,2).position + vec3d(120.0,0.0,-120.0), "Miner", 0);

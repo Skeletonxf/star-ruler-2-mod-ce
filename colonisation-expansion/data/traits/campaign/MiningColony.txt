@@ -7,7 +7,7 @@ Trait: MiningColony
 	AddStatusOwnedPlanets(MinimalDevelopment)
 	AddStatusOwnedPlanets(NoEnergyGen)
 	AddStatusOwnedPlanets(NoInfluenceGen)
-	ModAttribute(FactoryLaborMod, Add, 10)
+	ModAttribute(FactoryLaborMod, Add, 20)
 Trait: Invaders
 	Name: Invaders
 	Available: False
@@ -15,5 +15,5 @@ Trait: Invaders
 	AddStatusOwnedFleets(LoadsOfDefense)
 	AddStatusOwnedPlanets(NoInfluenceGen)
 	AddStatusOwnedPlanets(NoEnergyGen)
-	ModAttribute(FactoryLaborMod, Add, 20)
+	ModAttribute(FactoryLaborMod, Add, 30)
 	LoadDesigns(campaign/miningcolony)
