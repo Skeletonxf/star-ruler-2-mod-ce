@@ -39,4 +39,4 @@ TRAIT_WORMHOLE_DESC: Civillian ships in owned space passively spawn small wormho
 TRAIT_DIPLOMATIC: Diplomatic
 TRAIT_DIPLOMATIC_DESC: [vspace=6/][b][color=#0087c7]Extra Starting Cards:[/color][/b] [offset=140]2x Diplomatic Maneuvering.[/offset]
 TRAIT_DECENTRALISED: Decentralised
-TRAIT_DECENTRALISED_DESC: Loyalty on planets is reduced by 0/1/3/5/7 depending on level.
+TRAIT_DECENTRALISED_DESC: Loyalty on planets is reduced by 0/1/3/5/7/9 depending on level.
