@@ -6,7 +6,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - **Blocking balanced multiplayer games**
     - Tweak the Star Children consume planet ability so that you can't almost destroy all your planets and still gain nearly all of the benefits.
       - Perhaps all the max pop should come once the planet gets destroyed?
-  - Buff non laser weapon speeds so they can hit moving targets more easily (to compensate for nerfed research)
+  - Teach the AI in the campaign to actually mine with its miners
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - battleworld QoL changes
     - finish port to CP
@@ -64,9 +64,8 @@ This is primarily intended as a developer focused project planning list, rather 
 - Long term plans
   - Improving the AI
     - Things players can do but AI just doesn't right now
-      - Carpet bomb raiding
-      - Create stations at all??
-      - Attempt to achieve the influence victory themselves??
+      - Create stations at all
+      - Attempt to achieve the influence victory themselves
       - Fling battle stations
       - Use Motherships well
       - Mine asteroids for ore
