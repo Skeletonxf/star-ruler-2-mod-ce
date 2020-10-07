@@ -4,6 +4,6 @@ Trait: Decentralised
 	Category: Personality
 	Order: 12
 	Gives Points: 1
-	Icon: AttributeIcons::1
-	Color: #d1a59e
+	Icon: AttributeIcons::1 * #aaaaff
+	Color: #d194cc
 	AddStatusOwnedPlanets(Decentralised)
