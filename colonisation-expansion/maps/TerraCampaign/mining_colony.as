@@ -22,6 +22,7 @@ import empire_ai.weasel.War;
 import victory;
 import settings.game_settings;
 import CE_campaign_helpers;
+import cargo;
 from statuses import getStatusID;
 from abilities import getAbilityID;
 #section all
@@ -48,7 +49,10 @@ class MiningColonyScenario : CampaignScenarioState {
 	bool playerDead = false;
 	bool lostColonies = false;
 	bool won = false;
-	double lastTickedMiningShips = 0;
+	double lastTickedMiningShips = -55;
+	// avoid computing some things when we immediately reopen a save because
+	// not everything is initialised instantly
+	double gameTimeAtLastSave = 0;
 
 	MiningColonyScenario() {
 		@player = getEmpire(0);
@@ -98,12 +102,11 @@ class MiningColonyScenario : CampaignScenarioState {
 			if (dropOffPlanet !is null) {
 				DataList@ objs = ally.getFlagships();
 				Object@ obj;
-				int dropOffAbility = getAbilityID("DropoffPoint");
 				uint miningShips = 0;
 				while (receive(objs, obj)) {
 					Ship@ ship = cast<Ship>(obj);
 					if (ship !is null) {
-						ship.activateAbilityTypeFor(ally, dropOffAbility, dropOffPlanet);
+						ship.addAutoMineOrder(dropOffPlanet);
 						miningShips += 1;
 					}
 				}
@@ -120,9 +123,16 @@ class MiningColonyScenario : CampaignScenarioState {
 	 * (ie not again after reloading).
 	 */
 	void postInit() {
+		auto@ ore = getCargoType("Ore");
 		populate(planet(0, 0), ally, 1.0, exportTo=planet(0, 2));
 		populate(planet(0, 1), ally, 1.0, exportTo=planet(0, 2));
 		populate(planet(0, 2), ally, 3.0);
+		if (ore !is null) {
+			// asesthetics, make it looks like the ally was mining for a while
+			planet(0, 0).addCargo(ore.id, 5321);
+			planet(0, 1).addCargo(ore.id, 7819);
+			planet(0, 2).addCargo(ore.id, 3786);
+		}
 		spawnBuilding(planet(0, 2), vec2i(2, 3), "Factory");
 		spawnBuilding(planet(0, 2), vec2i(5, 4), "Factory");
 		populate(planet(0, 3), player, 3.0);
@@ -131,6 +141,11 @@ class MiningColonyScenario : CampaignScenarioState {
 		spawnBuilding(planet(0, 3), vec2i(1, 1), "Hydrogenator");
 		spawnBuilding(planet(0, 3), vec2i(4, 1), "Factory");
 		spawnBuilding(planet(0, 3), vec2i(7, 1), "Factory");
+		// start player close to next food resource
+		auto@ forestation = getCargoType("Forestation");
+		if (forestation !is null) {
+			planet(0, 3).addCargo(forestation.id, 90);
+		}
 		for (uint i = 1; i < systems.length; i++) {
 			uint j = 0;
 			Planet@ pl = planet(i, j);
@@ -210,6 +225,16 @@ class MiningColonyScenario : CampaignScenarioState {
 
 	void triggerDefeat() {
 		declareVictor(enemy);
+	}
+
+	void save(SaveFile& file) {
+		file << playerShip;
+		file << lastTickedMiningShips;
+	}
+
+	void load(SaveFile& file) {
+		file >> playerShip;
+		file >> lastTickedMiningShips;
 	}
 }
 #section all
@@ -332,6 +357,7 @@ class Scenario : Map {
 
 	void save(SaveFile& file) {
 		saveDialoguePosition(file);
+		state.save(file);
 	}
 
 	void load(SaveFile& file) {
@@ -339,6 +365,7 @@ class Scenario : Map {
 
 		initDialogue();
 		loadDialoguePosition(file);
+		state.load(file);
 	}
 
 	void initDialogue() {
