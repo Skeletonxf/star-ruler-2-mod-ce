@@ -10,9 +10,8 @@ Grid: ColonisationExpansionGrid
 	ShieldGen: -2,5
 	ShieldReg: -1,6
 	ShieldCap: -1,7
-	ShieldReg2: -1,8
+	ShieldReg: -1,8
 	PowerGeneration: -3,5
-	ShieldReg: 0,9
 	Health: 0,-1
 	StationMaintenance: -1,-6
 	EnergyStorage: -3,4
@@ -102,18 +101,12 @@ Grid: ColonisationExpansionGrid
 	ConstructionBay: -3,-5
 	FactoryLabor: -6,-10
 	Health2: 4,-10
-	Thrust2: 4,8
-	MoneyHurdle: 3,7
-	GravityEngine: 3,9
-	EnergyHurdle: 0,8
-	ShieldCap2: 1,10
 	ArmorDR2: 5,-4
 	FireRate: 3,1
 	TargetSensor: 7,3
 	SupplyStorage: 0,-10
 	InfluenceHurdle: -2,-10
 	MoneyHurdle: -3,-10
-	Abundance: -6,-5
 	InfluenceHurdle: -5,-8
 	StarForge: -5,-11
 	HighEnergyHurdle: -5,-14
@@ -190,8 +183,7 @@ Grid: ColonisationExpansionGrid
 	HighEnergyHurdle: -6,14
 	FTL2: -6,15
 	FTLCost: -7,15
-	ShieldCap2: -2,8
-	ShieldHardener: -2,7
+	ShieldCap: -2,8
 	Thrust: 2,4
 	MuonCannon: 3,-1
 	EnergyHurdle: 1,-5
@@ -240,18 +232,11 @@ Grid: ColonisationExpansionGrid
 	FlakBattery: 2,1
 	ShockMissiles: 0,6
 	KeyEmergencyShields: 1,9
-	ShieldCap: 1,8
-	ShieldHarmonizer: 0,10
 	ShieldReg2: 0,11
 	ShieldCap2: 1,11
 	ShieldReg2: 1,12
-	InfiniteShields: 1,13
-	Thrust: 2,8
-	Thrust2: 3,6
-	InfiniteThrust: 4,9
-	EnergyHurdle: 4,7
-	GravitonCondenser: 5,7
-	GravitonChanneling: 3,10
+	EnergyHurdle: 2,8
+	Thrust: 3,6
 	RingHabitat: -8,1
 	Obedience: -6,-1
 	CarrierHull: -4,-2
@@ -276,3 +261,18 @@ Grid: ColonisationExpansionGrid
 	ImpCivConstructionRate: -6,-7
 	SysWormholeNetwork: -9,-5
 	AllondiumGeneration: -8,-7
+	ShieldHardener: 0,8
+	ShieldCap2: 1,10
+	ShieldHarmonizer: -1,9
+	ShieldReg2: 0,10
+	ShieldCap2: 0,9
+	GravityEngine: 4,10
+	GravitonChanneling: 3,11
+	InfiniteThrust: 5,10
+	EnergyHurdle: 5,8
+	GravitonCondenser: 6,8
+	Thrust2: 4,9
+	MoneyHurdle: 4,8
+	Thrust2: 3,7
+	InfiniteShields: 1,13
+	Abundance: -6,-4
