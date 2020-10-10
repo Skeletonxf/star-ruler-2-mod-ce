@@ -3,11 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Multiplayer bugs
-    - Check if there needs to be shadow implementations of:
-      - `double get_bonusAcceleration() const;` of Object.Mover
-      - `safe uint get_orbitalCount() const;` of Object.RegionObjects
-      - `safe Orbital@ get_orbitals(uint index) const;` of Object.RegionObjects
   - Teach the AI in the campaign to actually mine with its miners
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - battleworld QoL changes
