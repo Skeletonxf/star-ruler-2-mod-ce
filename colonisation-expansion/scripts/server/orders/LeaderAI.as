@@ -878,7 +878,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 			return false;
 		if (!checkQueued) {
 			if (order.type == OT_Cargo) {
-				return cast<CargoOrder@>(order).cargoId == cargoId;
+				return order.getCargoId() == cargoId;
 			} else {
 				return false;
 			}
@@ -887,7 +887,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		Order@ ord = @order;
 		while(ord !is null) {
 			if (ord.type == OT_Cargo) {
-				if (cast<CargoOrder@>(ord).cargoId == cargoId) {
+				if (ord.getCargoId() == cargoId) {
 					return true;
 				};
 			}
@@ -901,8 +901,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 			return false;
 		if (!checkQueued) {
 			if (order.type == OT_Cargo) {
-				CargoOrder@ cargoOrder = cast<CargoOrder@>(order);
-				return cargoOrder.cargoId == cargoId && cargoOrder.pickup;
+				return order.getCargoId() == cargoId && order.getIsPickup();
 			} else {
 				return false;
 			}
@@ -911,8 +910,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		Order@ ord = @order;
 		while(ord !is null) {
 			if (ord.type == OT_Cargo) {
-				CargoOrder@ cargoOrder = cast<CargoOrder@>(ord);
-				if (cargoOrder.cargoId == cargoId && cargoOrder.pickup) {
+				if (ord.getCargoId() == cargoId && ord.getIsPickup()) {
 					return true;
 				};
 			}
@@ -926,8 +924,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 			return false;
 		if (!checkQueued) {
 			if (order.type == OT_Cargo) {
-				CargoOrder@ cargoOrder = cast<CargoOrder@>(order);
-				return !cargoOrder.pickup;
+				return order.getIsDropoff();
 			} else {
 				return false;
 			}
@@ -936,8 +933,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		Order@ ord = @order;
 		while(ord !is null) {
 			if (ord.type == OT_Cargo) {
-				CargoOrder@ cargoOrder = cast<CargoOrder@>(ord);
-				if (!cargoOrder.pickup) {
+				if (ord.getIsDropoff()) {
 					return true;
 				};
 			}
@@ -951,8 +947,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 			return false;
 		if (!checkQueued) {
 			if (order.type == OT_Cargo) {
-				CargoOrder@ cargoOrder = cast<CargoOrder@>(order);
-				return cargoOrder.pickup;
+				return order.getIsPickup();
 			} else {
 				return false;
 			}
@@ -961,8 +956,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		Order@ ord = @order;
 		while(ord !is null) {
 			if (ord.type == OT_Cargo) {
-				CargoOrder@ cargoOrder = cast<CargoOrder@>(ord);
-				if (cargoOrder.pickup) {
+				if (order.getIsPickup()) {
 					return true;
 				};
 			}

@@ -30,6 +30,15 @@ class OrderDesc : Serializable {
 	uint type;
 	bool hasMovement;
 	vec3d moveDestination;
+	// [[ MODIFY BASE GAME START ]]
+	// Extra info for the clients so they can present cargo
+	// order options smartly. This is a bit of a hack because
+	// it's quite a waste to pass this for every non cargo
+	// order.
+	int cargoId = -1;
+	bool isPickup = false;
+	bool isDropoff = false;
+	// [[ MODIFY BASE GAME END ]]
 
 	void write(Message& msg) {
 		msg << uint(type);
@@ -40,6 +49,11 @@ class OrderDesc : Serializable {
 		else {
 			msg.write0();
 		}
+		// [[ MODIFY BASE GAME START ]]
+		msg << cargoId;
+		msg << isPickup;
+		msg << isDropoff;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void read(Message& msg) {
@@ -47,5 +61,10 @@ class OrderDesc : Serializable {
 		hasMovement = msg.readBit();
 		if(hasMovement)
 			msg >> moveDestination;
+		// [[ MODIFY BASE GAME START ]]
+		msg >> cargoId;
+		msg >> isPickup;
+		msg >> isDropoff;
+		// [[ MODIFY BASE GAME END ]]
 	}
 };

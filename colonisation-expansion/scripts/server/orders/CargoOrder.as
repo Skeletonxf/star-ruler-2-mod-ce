@@ -78,6 +78,11 @@ tidy class CargoOrder : Order {
 		return OT_Cargo;
 	}
 
+	// Override the extra info to send to client about this order
+	int getCargoId() { return cargoId; }
+	bool getIsPickup() { return pickup; }
+	bool getIsDropoff() { return !pickup; }
+
 	OrderStatus tick(Object& obj, double time) {
 		if (!obj.hasMover || !obj.hasCargo || target is null || !target.hasCargo || target.owner !is obj.owner) {
 			return OS_COMPLETED;
