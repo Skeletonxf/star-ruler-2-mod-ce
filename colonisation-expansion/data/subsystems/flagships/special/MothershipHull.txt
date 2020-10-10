@@ -3,7 +3,7 @@ Subsystem: MothershipHull
 	Description: #S_MOTHERSHIP_HULL_DESC
 
 	Tags: Applied:Hull, Category:Hulls, NoCore, Mothership
-	Tags: CannotDonate, Ability:MothershipConsume, Ability:MothershipColonize
+	Tags: CannotDonate, Ability:MothershipColonize
 	Hull: Flagship
 	EvaluationOrder: -200
 	BaseColor: #cc6a3a
@@ -42,6 +42,7 @@ Subsystem: MothershipHull
 	Modifier: LivingSpacePopIncrease
 		ShipMaxPopulationBonus := ShipMaxPopulationBonus + 1
 	Hook: AddStatus(Mothership)
+	Hook: AddStatus(CanConsumePlanets)
 	Assert: ShipSize >= 500
 		Message: #ERROR_MIN_SIZE:$1:500
 

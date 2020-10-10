@@ -266,7 +266,6 @@ tidy class AutoMineOrder : Order {
 			mining = false;
 		}
 
-		// NYI
 		return OS_BLOCKING;
 	}
 }

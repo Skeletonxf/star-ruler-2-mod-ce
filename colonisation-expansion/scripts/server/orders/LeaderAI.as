@@ -17,6 +17,7 @@ from orders.WaitOrder import WaitOrder;
 // [[ MODIFY BASE GAME START ]]
 from orders.CargoOrder import CargoOrder;
 from orders.AutoMineOrder import AutoMineOrder;
+from orders.ConsumePlanetOrder import ConsumePlanetOrder;
 from orders import OrderType;
 // [[ MODIFY BASE GAME END ]]
 from resources import getBuildCost, getMaintenanceCost, MoneyType, getLaborCost;
@@ -252,6 +253,9 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 				break;
 				case OT_AutoMine:
 					@ord = AutoMineOrder(msg);
+				break;
+				case OT_ConsumePlanet:
+					@ord = ConsumePlanetOrder(msg);
 				break;
 				// [[ MODIFY BASE GAME END ]]
 				case OT_Wait:
@@ -1451,6 +1455,11 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 			return;
 		}
 		addOrder(obj, AutoMineOrder(targ), append);
+		obj.wake();
+	}
+
+	void addConsumePlanetOrder(Object& obj, Object& targ, bool append) {
+		addOrder(obj, ConsumePlanetOrder(targ), append);
 		obj.wake();
 	}
 	// [[ MODIFY BASE GAME END ]]

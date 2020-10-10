@@ -1,0 +1,19 @@
+Ability: ConsumePlanet
+	Name: #ABL_CONSUME
+	Description: #ABL_CONSUME_DESC
+	Icon: ConditionIcons::7
+
+	Range: 100
+
+	Target: targ = Object
+	TargetFilterAttackable(targ)
+
+	IsToggleTarget(targ)
+	CooldownOnDeactivate(targ, 30)
+	PersistentBeamEffect(targ, Color = #e45500, Material = Tractor, Width = 8.0)
+
+	DealStellarDamageOverTime(targ, Sys.ConsumeDamage:7000000)
+
+	CE_biome_hooks::GenerateCargoWhile(LivingSpace, targ, Rate = Sys.LivingSpaceGain:7000000)
+	TargetFilterType(targ, Planet)
+	OffensiveToTarget(targ)

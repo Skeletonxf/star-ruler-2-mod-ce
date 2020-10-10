@@ -814,6 +814,15 @@ class AutoMine : SingleSelectionOption {
 		obj.addAutoMineOrder(clicked, shiftKey);
 	}
 }
+
+class ConsumePlanet : SingleSelectionOption {
+	void call(Object@ obj) {
+		if(obj is null || !obj.hasLeaderAI || !obj.owner.controlled) {
+			return;
+		}
+		obj.addConsumePlanetOrder(clicked, shiftKey);
+	}
+}
 // [[ MODIFY BASE GAME END ]]
 
 class ConstructionOption : Option {
@@ -1194,6 +1203,32 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 					Sprite(spritesheet::ContextIcons, 0, Color(0xffcd00ff)));
 		}
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	// ConsumePlanet order for Motherships
+	if (selected !is null && clicked !is null && selected.isShip && selected.hasLeaderAI && clicked.isPlanet) {
+		// consume is treated as a hostile action, player must be at war with
+		// owner of the planet unless it is abandoned or their own
+		bool needsWar = clickedOwner !is null && clickedOwner.valid && clickedOwner !is playerEmpire;
+		bool isProtected = clicked.isProtected(playerEmpire);
+		bool hostile = playerEmpire.isHostile(clickedOwner);
+		if (!isProtected && ((needsWar && hostile) || (!needsWar))) {
+			int canConsumePlanetsStatusID = getStatusID("CanConsumePlanets");
+			// FIXME, just set the icon directly in code
+			const AbilityType@ consumeAbility = getAbilityType("ConsumePlanet");
+			if (selected.hasStatusEffect(canConsumePlanetsStatusID)) {
+				addOption(
+					menu,
+					selected,
+					clicked,
+					locale::ABL_CONSUME_PLANET_ORDER,
+					ConsumePlanet(),
+					consumeAbility.icon
+				);
+			}
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	//System actions
 	if(selected !is null && selected.owner is playerEmpire) {
