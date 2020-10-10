@@ -73,6 +73,11 @@ tidy class ConsumePlanetOrder : Order {
 			return OS_COMPLETED;
 		}
 
+		if (!target.isPlanet) {
+			removeAppliedBeam(obj);
+			return OS_COMPLETED;
+		}
+
 		bool needsWar = target.owner !is null && target.owner.valid;
 		bool isProtected = target.isProtected(obj.owner);
 		bool hostile = obj.owner.isHostile(target.owner);
@@ -84,7 +89,7 @@ tidy class ConsumePlanetOrder : Order {
 		}
 
 		double distance = obj.position.distanceToSQ(target.position);
-		double range = 100 + obj.radius + target.radius;
+		double range = 50 + obj.radius + target.radius;
 		if (distance >= range*range) {
 			obj.moveTo(target, moveId, range * 0.95, enterOrbit = false);
 			removeAppliedBeam(obj);
@@ -98,10 +103,33 @@ tidy class ConsumePlanetOrder : Order {
 			}
 			if (moveId != -1) {
 				moveId = -1;
-				obj.stopMoving(false, false);
+				obj.stopMoving(false, enterOrbit = true);
+			}
+
+			Ship@ ship = cast<Ship>(obj);
+			double damageRate = 0;
+			if (ship !is null) {
+				damageRate = ship.blueprint.design.total(SV_ConsumeDamage);
+			}
+			Planet@ planet = cast<Planet>(target);
+			if (planet !is null) {
+				planet.dealPlanetDamage(damageRate * time);
+			} else {
+				// we did it, probably
+				// TODO: Apply living space benefits only when planet destroyed
+				removeAppliedBeam(obj);
+				return OS_COMPLETED;
 			}
 		}
 
 		return OS_BLOCKING;
+	}
+
+	/**
+	 * Remove beam when cancelled
+	 */
+	bool cancel(Object& obj) override {
+		removeAppliedBeam(obj);
+		return true;
 	}
 }

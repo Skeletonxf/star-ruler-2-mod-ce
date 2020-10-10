@@ -3,7 +3,7 @@ Ability: ConsumePlanet
 	Description: #ABL_CONSUME_DESC
 	Icon: ConditionIcons::7
 
-	Range: 100
+	Range: 50
 
 	Target: targ = Object
 	TargetFilterAttackable(targ)

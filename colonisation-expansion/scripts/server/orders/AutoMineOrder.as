@@ -268,4 +268,12 @@ tidy class AutoMineOrder : Order {
 
 		return OS_BLOCKING;
 	}
+
+	/**
+	 * Remove beam when cancelled
+	 */
+	bool cancel(Object& obj) override {
+		removeAppliedBeam(obj);
+		return true;
+	}
 }
