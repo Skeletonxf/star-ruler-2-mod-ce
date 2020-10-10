@@ -4,8 +4,6 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Multiplayer bugs
-    - Method non found on SurfaceComponent for get_hasUndevelopedSurfaceTiles
-      - Probably missing shadow implementation
   - Teach the AI in the campaign to actually mine with its miners
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - battleworld QoL changes
