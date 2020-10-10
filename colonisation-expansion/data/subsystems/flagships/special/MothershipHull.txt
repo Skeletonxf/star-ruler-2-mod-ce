@@ -31,14 +31,13 @@ Subsystem: MothershipHull
 
 	AddPostModifier: AddMaintainCost(max((1+ShipMaxPopulationIncome)-HexSum.MaintainCost, 0))
 	ConsumeDamage := 4000000 * ((HexSize * 40) / 100)
-	LivingSpaceGain := ConsumeDamage * 0.000000001
+	LivingSpaceGain := ConsumeDamage * 0.000000002
 	ShipMaxPopulationBase := 4 + floor(0.008 * max(ShipSize - 500, 0))
 	ShipMaxPopulationIncome := ShipMaxPopulationBase * 15
 	ShipMaxPopulationBonus := 0
 	ShipMaxPopulation := ShipMaxPopulationBase + ShipMaxPopulationBonus
 	Hook: IfNotHaveStatus(BonusMothershipPopulation, OnEnable(AddStatus(MothershipPopulation, Max Stacks = 5), Repeats = 5))
 	Hook: CE_biome_hooks::IfFewerStatusStacks(MothershipPopulation, Sum.ShipMaxPopulation, TriggerPeriodic(AddStatus(MothershipPopulation), Interval = 50))
-	Hook: ProcessCargo(LivingSpace, 1, 1, AddStatus(BonusMothershipPopulation))
 	Modifier: LivingSpacePopIncrease
 		ShipMaxPopulationBonus := ShipMaxPopulationBonus + 1
 	Hook: AddStatus(Mothership)

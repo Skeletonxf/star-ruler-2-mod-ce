@@ -103,20 +103,40 @@ tidy class ConsumePlanetOrder : Order {
 			}
 			if (moveId != -1) {
 				moveId = -1;
+				// FIXME: Actually ensure always enters orbit
 				obj.stopMoving(false, enterOrbit = true);
 			}
 
 			Ship@ ship = cast<Ship>(obj);
 			double damageRate = 0;
+			double livingSpaceRate = 0;
 			if (ship !is null) {
 				damageRate = ship.blueprint.design.total(SV_ConsumeDamage);
+				livingSpaceRate = ship.blueprint.design.total(SV_LivingSpaceGain);
 			}
+			auto@ livingSpace = getCargoType("LivingSpace");
 			Planet@ planet = cast<Planet>(target);
 			if (planet !is null) {
 				planet.dealPlanetDamage(damageRate * time);
+				if (livingSpace !is null) {
+					ship.addCargo(livingSpace.id, livingSpaceRate * time);
+				}
+				if (planet.Health <= 0) {
+					// Apply living space benefits now planet is destroyed
+					if (livingSpace !is null) {
+						double livingSpaceCargo = ship.getCargoStored(livingSpace.id);
+						int bonusPop = floor(livingSpaceCargo);
+						int bonusPopStatusID = getStatusID("BonusMothershipPopulation");
+						while (bonusPop > 0) {
+							ship.addStatus(bonusPopStatusID);
+							bonusPop -= 1;
+						}
+						ship.removeCargo(livingSpace.id, livingSpaceCargo);
+					}
+					removeAppliedBeam(obj);
+					return OS_COMPLETED;
+				}
 			} else {
-				// we did it, probably
-				// TODO: Apply living space benefits only when planet destroyed
 				removeAppliedBeam(obj);
 				return OS_COMPLETED;
 			}

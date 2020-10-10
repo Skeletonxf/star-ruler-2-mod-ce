@@ -17,7 +17,7 @@ ARTIFICIAL_LIGHT_DESC: <<
 >>
 ARTIFICIAL_LIGHT: Artificial Light
 C_LIVING_SPACE: Living Space
-C_LIVING_SPACE_DESC: Materials for increasing the max population on Motherships
+C_LIVING_SPACE_DESC: Materials for increasing the max population on Motherships. Slowly converts into Forestation if not activated by destroying planets.
 RAZED: Razed
 RAZED_DESC: Nothing left
 STAR_CHILDREN_ARTIFICIAL_LIGHT_DESC: <<

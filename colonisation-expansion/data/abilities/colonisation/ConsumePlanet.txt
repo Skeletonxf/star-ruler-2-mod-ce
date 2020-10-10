@@ -1,6 +1,6 @@
 Ability: ConsumePlanet
 	Name: #ABL_CONSUME
-	Description: #ABL_CONSUME_DESC
+	Description: No longer used directly, replaced with order system
 	Icon: ConditionIcons::7
 
 	Range: 50

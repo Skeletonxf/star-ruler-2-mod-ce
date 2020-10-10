@@ -2,3 +2,4 @@ Status: CanConsumePlanets
 	Visible To: Nobody
 	Unique: True
 	Description: Mark for order system
+	ProcessCargo(LivingSpace, 0.001, 0.1, AddCargo(Forestation, 1))
