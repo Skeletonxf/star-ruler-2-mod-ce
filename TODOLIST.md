@@ -3,9 +3,11 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - **Blocking balanced multiplayer games**
-    - Tweak the Star Children consume planet ability so that you can't almost destroy all your planets and still gain nearly all of the benefits.
-      - Perhaps all the max pop should come once the planet gets destroyed?
+  - Multiplayer bugs
+    - Method not found on LeaderAI orders for all 4 methods added that need checking from the context menu
+      - Probably misclassified in the data component for leader_ai
+    - Method non found on SurfaceComponent for get_hasUndevelopedSurfaceTiles
+      - Probably misclassified in the data component for surface
   - Teach the AI in the campaign to actually mine with its miners
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - battleworld QoL changes
