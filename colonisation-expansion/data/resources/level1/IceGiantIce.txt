@@ -4,8 +4,8 @@ Resource: IceGiantIce
 	Frequency: 0
 	Small Icon: Ice
 	Icon: Ice
-	Affinity: Energy
-	Pressure: 1 Energy
+	Affinity: Money + Influence
+	Pressure: 1 Influence
 	Pressure: 1 Money
 	Native Biome: Ice
 	Level: 1

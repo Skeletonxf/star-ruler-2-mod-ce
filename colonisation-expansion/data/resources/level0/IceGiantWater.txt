@@ -5,7 +5,7 @@ Resource: IceGiantWater
 	Frequency: 0
 	Small Icon: ResourceIconsSmall::99 * ffffbb
 	Icon: ResourceIconsSmall::99 * ffffbb
-	Affinity: Energy
-	Pressure: 2 Energy
+	Affinity: Money + Influence
+	Pressure: 2 Influence
 	Pressure: 1 Money
 	Native Biome: Ice

@@ -360,9 +360,9 @@ class MakePlanet : MapHook {
 				@resource = getResource("VolatileGases");
 			} else if (select_resource < 9) {
 				@resource = getResource("ExplosiveGases");
-			} else if (select_resource < 10) {
+			} else if (select_resource < 11) {
 				@resource = getResource("Helium3");
-			} else if (select_resource < 16) {
+			} else if (select_resource < 17) {
 				@resource = getResource("IceGiantIce");
 				ice_giant = true;
 			} else {
