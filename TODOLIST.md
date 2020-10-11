@@ -3,6 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Upscale the effects and weapon ranges of orbitals like Mainframes and Fling Beacons as the larger number of planets has increased system spacing by a non trivial amount
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - See if it's possible to auto unexport food resources that become useless with Forestation
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
@@ -58,6 +59,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
+  - Stellar Lifting to replace obtaining protoplanets from seed ships
 
 - Long term plans
   - Improving the AI
