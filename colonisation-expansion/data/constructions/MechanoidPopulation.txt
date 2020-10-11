@@ -4,8 +4,8 @@ Construction: MechanoidPopulation
 
 	Category: Infrastructure
 
-	Labor Cost: 5
-	Build Cost: 100
+	Labor Cost: 7
+	Build Cost: 150
 	Always Borrowable: True
 
 	RequireTrait(Mechanoid)
@@ -17,7 +17,3 @@ Construction: MechanoidPopulation
 	OnStart(ModAttribute(MechPopulationQueued, Add, 1))
 	OnCancel(ModAttribute(MechPopulationQueued, Add, -1))
 	ModAttribute(MechPopulationQueued, Add, -1)
-
-	AddBuildCostTotalPopulation(Add = -6, Add Attribute = MechPopulationQueued, Multiply = 10, Power = 0.5)
-	AddLaborCostTotalPopulation(Add = -6, Add Attribute = MechPopulationQueued, Power = 0.5, Multiply = 2)
-	AddLaborCostTotalPopulation(Add = -6, Add Attribute = MechPopulationQueued, Power = 0.33, Multiply = 2.5)
