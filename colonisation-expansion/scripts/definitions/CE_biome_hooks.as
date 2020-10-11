@@ -520,7 +520,7 @@ class UnlockRandomFTL : EmpireTrigger {
 		bool hasGates = emp.isUnlocked(gateSubsystem);
 		bool hasFling = emp.HasFling >= 1;
 		bool hasSlipstreams = emp.isUnlocked(slipstreamSubsystem);
-		bool hasWarpdrive = emp.isUnlocked(slipstreamSubsystem);
+		bool hasWarpdrive = emp.isUnlocked(warpdriveSubsystem);
 
 		array<FTLUnlock> unlockPool = array<FTLUnlock>();
 		if (!hasHyperdrives)
@@ -552,28 +552,24 @@ class UnlockRandomFTL : EmpireTrigger {
 		// mark the empire attribute as unlocked, and unlock the subsystem
 		if (unlock == FTLU_Hyperdrive) {
 			emp.setUnlocked(hyperdriveSubsystem, true);
-			emp.modAttribute(EA_ResearchUnlockedHyperdrive, AC_Add, 1);
 			if(emp.player is null)
 				return;
 			sendClientMessage(emp.player, "Hyperdrives unlocked", "You have unlocked Hyperdrives through a galactic senate vote");
 		}
 		if (unlock == FTLU_Jumpdrive) {
 			emp.setUnlocked(jumpdriveSubsystem, true);
-			emp.modAttribute(EA_ResearchUnlockedJumpdrive, AC_Add, 1);
 			if(emp.player is null)
 				return;
 			sendClientMessage(emp.player, "Jumpdrives unlocked", "You have unlocked Jumpdrives through a galactic senate vote");
 		}
 		if (unlock == FTLU_Gate) {
 			emp.setUnlocked(gateSubsystem, true);
-			emp.modAttribute(EA_ResearchUnlockedGate, AC_Add, 1);
 			if(emp.player is null)
 				return;
 			sendClientMessage(emp.player, "Gates unlocked", "You have unlocked Gates through a galactic senate vote");
 		}
 		if (unlock == FTLU_Slipstream) {
 			emp.setUnlocked(slipstreamSubsystem, true);
-			emp.modAttribute(EA_ResearchUnlockedSlipstream, AC_Add, 1);
 			if(emp.player is null)
 				return;
 			sendClientMessage(emp.player, "Slipstreams unlocked", "You have unlocked Slipstreams through a galactic senate vote");
@@ -582,14 +578,12 @@ class UnlockRandomFTL : EmpireTrigger {
 			int hasFlingUnlockTagID = getUnlockTag("HasFling", false);
 			emp.setTagUnlocked(hasFlingUnlockTagID, true);
 			emp.modAttribute(EA_HasFling, AC_Add, 1);
-			emp.modAttribute(EA_ResearchUnlockedFling, AC_Add, 1);
 			if(emp.player is null)
 				return;
 			sendClientMessage(emp.player, "Fling Beacons unlocked", "You have unlocked Fling Beacons through a galactic senate vote");
 		}
 		if (unlock == FTLU_Warpdrive) {
 			emp.setUnlocked(warpdriveSubsystem, true);
-			emp.modAttribute(EA_ResearchUnlockedWarpdrive, AC_Add, 1);
 			if(emp.player is null)
 				return;
 			sendClientMessage(emp.player, "Warpdrives unlocked", "You have unlocked Warpdrives through a galactic senate vote");
