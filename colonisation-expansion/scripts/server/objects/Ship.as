@@ -302,13 +302,30 @@ tidy class ShipScript {
 		ship.blueprint.statusID++;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	// mass that this is computed from now applies EmpireMassFactor
 	float getMass() {
 		return max(mass + massBonus, 0.01f);
 	}
 
+	// mass that this is computed from now applies EmpireMassFactor
 	float getBaseMass() {
 		return max(mass, 0.01f);
 	}
+
+	// Computes the mass of the ship factoring in the empire mass factor
+	void computeMass(Ship& ship) {
+		const Design@ dsg = ship.blueprint.design;
+		if (ship.owner !is null) {
+			mass = dsg.total(HV_Mass) * ship.owner.EmpireMassFactor;
+		} else {
+			mass = dsg.total(HV_Mass);
+		}
+		// previously vanilla callsites used dsg.total(HV_Mass), they have
+		// been changed to use Mass
+		ship.Mass = mass;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void modHPFactor(Ship& ship, float pct) {
 		auto@ bp = ship.blueprint;
@@ -482,7 +499,9 @@ tidy class ShipScript {
 			ship.MaxSupply = ship.blueprint.design.total(SV_SupplyCapacity) + supplyBonus;
 		else
 			ship.MaxSupply = ship.blueprint.design.total(SV_SupportSupplyCapacity) + supplyBonus;
-		mass = ship.blueprint.design.total(HV_Mass);
+		// [[ MODIFY BASE GAME START ]]
+		computeMass(ship);
+		// [[ MODIFY BASE GAME END ]]
 		/*ship.MaxEnergy = ship.blueprint.design.total(SV_EnergyCapacity);*/
 		ship.MaxEnergy = 0;
 
@@ -508,6 +527,11 @@ tidy class ShipScript {
 		if(ship.hasLeaderAI) {
 			float leaderAccel = thrust / max(mass + massBonus, 0.01f);
 			float supportAccel = ship.slowestSupportAccel;
+			// [[ MODIFY BASE GAME START ]]
+			if (ship.owner !is null) {
+				supportAccel *= ship.owner.EmpireMassFactor;
+			}
+			// [[ MODIFY BASE GAME END ]]
 
 			float resultAccel = leaderAccel;
 			if(supportAccel > 0.0f && supportAccel * 0.75f < leaderAccel)
@@ -527,6 +551,10 @@ tidy class ShipScript {
 
 	void updateStats(Ship& ship, bool init = false) {
 		const Design@ dsg = ship.blueprint.design;
+
+		// [[ MODIFY BASE GAME START ]]
+		computeMass(ship);
+		// [[ MODIFY BASE GAME END ]]
 
 		//Set the mover's maximum acceleration based on thrust
 		curThrust = ship.blueprint.getEfficiencySum(SV_Thrust);
@@ -1092,6 +1120,10 @@ tidy class ShipScript {
 			fleetEffectiveness *= owner.FleetEfficiencyFactor;
 			ship.setFleetEffectiveness(fleetEffectiveness);
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		computeMass(ship);
+		// [[ MODIFY BASE GAME END ]]
 
 		updateAccel(ship);
 

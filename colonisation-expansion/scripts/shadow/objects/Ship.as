@@ -5,16 +5,30 @@ tidy class ShipScript {
 	float commandUsed = 0.f;
 
 	float timer = 1.f;
-	
+
 	bool hasGraphics = false;
 
 	bool get_isStation(Ship& ship) {
 		return ship.blueprint.design.hasTag(ST_Station);
 	}
 
+	// Computes the mass of the ship factoring in the empire mass factor
+	void computeMass(Ship& ship) {
+		const Design@ dsg = ship.blueprint.design;
+		if (ship.owner !is null) {
+			ship.Mass = dsg.total(HV_Mass) * ship.owner.EmpireMassFactor;
+		} else {
+			ship.Mass = dsg.total(HV_Mass);
+		}
+	}
+
 	void occasional_tick(Ship& ship, float time) {
 		if(ship.hasLeaderAI)
 			ship.updateFleetStrength();
+
+		// [[ MODIFY BASE GAME START ]]
+		computeMass(ship);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	double tick(Ship& ship, double time) {
@@ -23,7 +37,7 @@ tidy class ShipScript {
 			if(node !is null)
 				node.hintParentObject(ship.region);
 		}
-		
+
 		ship.moverTick(time);
 		if(ship.hasLeaderAI)
 			ship.leaderTick(time);
@@ -45,7 +59,7 @@ tidy class ShipScript {
 					region.addShipDebris(ship.position, debris);
 			}
 		}
-		
+
 		leaveRegion(ship);
 		if(ship.hasLeaderAI)
 			ship.leaderDestroy();
@@ -57,7 +71,7 @@ tidy class ShipScript {
 			ship.leaderChangeOwner(prevOwner, ship.owner);
 		return false;
 	}
-	
+
 	void createGraphics(Ship& ship, const Design@ dsg) {
 		if(dsg is null)
 			return;
@@ -133,7 +147,7 @@ tidy class ShipScript {
 			ship.activateOrbit();
 			ship.readOrbit(msg);
 		}
-		
+
 		createGraphics(ship, ship.blueprint.design);
 	}
 
@@ -178,11 +192,14 @@ tidy class ShipScript {
 		const Design@ dsg = ship.blueprint.design;
 		if(dsg is null)
 			return;
-		
+
 		ship.DPS = ship.blueprint.getEfficiencySum(SV_DPS);
 		ship.MaxDPS = dsg.total(SV_DPS);
 		ship.MaxSupply = dsg.total(SV_SupplyCapacity);
 		ship.MaxShield = dsg.total(SV_ShieldCapacity);
+		// [[ MODIFY BASE GAME START ]]
+		computeMass(ship);
+		// [[ MODIFY BASE GAME END ]]
 		commandUsed = dsg.variable(ShV_REQUIRES_Command);
 	}
 
@@ -195,10 +212,10 @@ tidy class ShipScript {
 				createGraphics(ship, ship.blueprint.design);
 			updateStats(ship);
 		}
-		
+
 		if(msg.readBit())
 			ship.Shield = msg.readFixed(0.f, ship.MaxShield, 16);
-		
+
 		if(msg.readBit()) {
 			if(ship.hasLeaderAI)
 				ship.readLeaderAIDelta(msg);
@@ -229,7 +246,7 @@ tidy class ShipScript {
 				msg >> ship.Supply;
 			else
 				ship.Supply = 0;
-			
+
 			ship.isFTLing = msg.readBit();
 			ship.inCombat = msg.readBit();
 		}

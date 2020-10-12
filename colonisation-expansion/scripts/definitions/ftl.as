@@ -40,7 +40,8 @@ int hyperdriveCost(Object& obj, const vec3d& position) {
 	if (reg !is null && owner !is null && reg.ReducedFTLMask & owner.mask != 0) {
 		reductionFlagCostFactor = 0.25;
 	}
-	return ceil(log(dsg.size) * (dsg.total(HV_Mass)*0.5/dsg.size) * sqrt(position.distanceTo(obj.position)) * HYPERDRIVE_COST + HYPERDRIVE_START_COST + owner.HyperdriveStartCostMod * reductionFlagCostFactor) * owner.FTLCostFactor;
+	// Use mass of ship which includes empire mass factor
+	return ceil(log(dsg.size) * (ship.Mass*0.5/dsg.size) * sqrt(position.distanceTo(obj.position)) * HYPERDRIVE_COST + HYPERDRIVE_START_COST + owner.HyperdriveStartCostMod * reductionFlagCostFactor) * owner.FTLCostFactor;
 	// [[ MODIFY BASE GAME END ]]
 }
 
@@ -131,7 +132,10 @@ int flingCost(Object& obj, vec3d position) {
 		Ship@ ship = cast<Ship>(obj);
 		auto@ dsg = ship.blueprint.design;
 		int scale = dsg.size;
-		double massFactor = dsg.total(HV_Mass) * 0.3/dsg.size;
+		// [[ MODIFY BASE GAME START ]]
+		// Use mass of ship which includes empire mass factor
+		double massFactor = ship.Mass * 0.3/dsg.size;
+		// [[ MODIFY BASE GAME END ]]
 
 		double scaleFactor;
 		if(dsg.hasTag(ST_Station))
@@ -296,7 +300,8 @@ int jumpdriveCost(Object& obj, const vec3d& fromPos, const vec3d& position) {
 	double dist = position.distanceTo(fromPos);
 	dist = min(dist, jumpdriveRange(obj));
 
-	return ceil(log(dsg.size) * (dsg.total(HV_Mass)*0.5/dsg.size) * sqrt(dist) * JUMPDRIVE_COST + JUMPDRIVE_START_COST) * owner.FTLCostFactor * reductionFlagCostFactor; // [[ MODIFY BASE GAME ]]
+	// Use mass of ship which includes empire mass factor
+	return ceil(log(dsg.size) * (ship.Mass*0.5/dsg.size) * sqrt(dist) * JUMPDRIVE_COST + JUMPDRIVE_START_COST) * owner.FTLCostFactor * reductionFlagCostFactor; // [[ MODIFY BASE GAME ]]
 }
 
 int jumpdriveCost(Object& obj, const vec3d& position) {
@@ -317,7 +322,8 @@ int jumpdriveCost(Object& obj, const vec3d& position) {
 	double dist = position.distanceTo(obj.position);
 	dist = min(dist, jumpdriveRange(obj));
 
-	return ceil(log(dsg.size) * (dsg.total(HV_Mass)*0.5/dsg.size) * sqrt(dist) * JUMPDRIVE_COST + JUMPDRIVE_START_COST) * owner.FTLCostFactor * reductionFlagCostFactor; // [[ MODIFY BASE GAME ]]
+	// Use mass of ship which includes empire mass factor
+	return ceil(log(dsg.size) * (ship.Mass*0.5/dsg.size) * sqrt(dist) * JUMPDRIVE_COST + JUMPDRIVE_START_COST) * owner.FTLCostFactor * reductionFlagCostFactor; // [[ MODIFY BASE GAME ]]
 }
 
 int jumpdriveCost(array<Object@>& objects, const vec3d& destination) {

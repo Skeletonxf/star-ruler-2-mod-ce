@@ -684,8 +684,12 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 
 		if(moveToTerritory && obj.hasMover) {
 			auto@ closest = getClosestSystem(obj.position, newOwner);
-			if(closest.object !is obj.region)
+			// [[ MODIFY BASE GAME START ]]
+			// Avoid nullpointer error if closest is null
+			if (closest !is null && closest.object !is obj.region) {
 				obj.addGotoOrder(closest.object);
+			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 	}
 
@@ -2192,6 +2196,13 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		return obj.radius * 10.0 + 20.0;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	// Returns the slowest support accel, ignoring empire mass factor
+	// As far as I can tell I'd have to change the signature of this method
+	// to have access to the Object to grab the owner to grab the mass factor,
+	// so it's easier to apply the factor at the only callsite vanilla has
+	// inside Ship.as
+	// [[ MODIFY BASE GAME END ]]
 	double get_slowestSupportAccel() const {
 		double slowest = 0.0;
 

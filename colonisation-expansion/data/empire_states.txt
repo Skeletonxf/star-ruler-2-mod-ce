@@ -167,4 +167,9 @@ visible:
 	// track if diplomatic maneuvering is unlocked
 	attribute double AllondiumCards = 0;
 	// [[ MODIFY BASE GAME END ]]
+	// [[ MODIFY BASE GAME START ]]
+	// Attribute for First compressor workaround, to track bonus mass changes
+	// on the empire instead of on each ship as design revisions that leak
+	attribute double EmpireMassFactor = 1;
+	// [[ MODIFY BASE GAME END ]]
 }
