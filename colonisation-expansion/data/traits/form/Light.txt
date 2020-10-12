@@ -1,0 +1,11 @@
+Trait: Light
+	Name: #TRAIT_LIGHT
+	Description: #TRAIT_LIGHT_DESC
+	Icon: DwarfPlanet * ffffaa
+	Color: #fbffc9
+	Category: Biology
+	Order: 12
+	Costs Points: 1
+	Conflict: Ancient
+	Conflict: Heavy
+	ModEmpireAttribute(EmpireMassFactor, Multiply, 0.9)

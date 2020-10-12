@@ -1,0 +1,11 @@
+Trait: Heavy
+	Name: #TRAIT_HEAVY
+	Description: #TRAIT_HEAVY_DESC
+	Icon: EnormousPlanet * ffffaa
+	Color: #868c59
+	Category: Biology
+	Order: 13
+	Gives Points: 1
+	Conflict: Ancient
+	Conflict: Light
+	ModEmpireAttribute(EmpireMassFactor, Multiply, 1.15)
