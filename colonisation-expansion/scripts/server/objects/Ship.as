@@ -325,6 +325,32 @@ tidy class ShipScript {
 		// been changed to use Mass
 		ship.Mass = mass;
 	}
+
+	// Sets and checks the supply capacity of the ship to apply
+	// any changes if the empire bonus support capacity factor changes
+	// Note that a number of vanilla statuses also apply support capacity
+	// buffs, and they will reapply the buff after this updates it.
+	void checkSupplyCapacity(Ship& ship) {
+		//Set the supply capacity of the ship
+		// [[ MODIFY BASE GAME START ]]
+		// Why is support capacity called supplyCapacity in the LeaderAI?
+		// SupplyCapacity in the subsystem data is capacity for supplies,
+		// but somehow SV_SupportCapacity is set and read as supplyCapacity
+		// in the LeaderAI?
+		// The comment blind mind left just above this modification literally
+		// shows they know supply capacity is somehow Support Capacity??????
+		int supply = ship.blueprint.getEfficiencySum(SV_SupportCapacity);
+		double supportCommandFactor = 1.0;
+		if (ship.owner !is null) {
+			supportCommandFactor = ship.owner.EmpireSupportCapacityFactor;
+		}
+		supply = floor(double(supply) * supportCommandFactor);
+		// [[ MODIFY BASE GAME END ]]
+		if(supply != prevSupply) {
+			ship.modSupplyCapacity(supply - prevSupply);
+			prevSupply = supply;
+		}
+	}
 	// [[ MODIFY BASE GAME END ]]
 
 	void modHPFactor(Ship& ship, float pct) {
@@ -597,12 +623,9 @@ tidy class ShipScript {
 			shieldDelta = true;
 		}
 
-		//Set the supply capacity of the ship
-		int supply = ship.blueprint.getEfficiencySum(SV_SupportCapacity);
-		if(supply != prevSupply) {
-			ship.modSupplyCapacity(supply - prevSupply);
-			prevSupply = supply;
-		}
+		// [[ MODIFY BASE GAME START ]]
+		checkSupplyCapacity(ship);
+		// [[ MODIFY BASE GAME END ]]
 
 		//Modify ship efficiency based on available command
 		float commandAvail = ship.blueprint.getEfficiencySum(SV_Command);
@@ -1123,6 +1146,7 @@ tidy class ShipScript {
 
 		// [[ MODIFY BASE GAME START ]]
 		computeMass(ship);
+		checkSupplyCapacity(ship);
 		// [[ MODIFY BASE GAME END ]]
 
 		updateAccel(ship);

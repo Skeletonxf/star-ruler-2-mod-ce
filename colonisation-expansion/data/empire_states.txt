@@ -171,5 +171,8 @@ visible:
 	// Attribute for First compressor workaround, to track bonus mass changes
 	// on the empire instead of on each ship as design revisions that leak
 	attribute double EmpireMassFactor = 1;
+	// Attributes for First developer workaround
+	attribute double EmpireSupportCapacityFactor = 1;
+	attribute double EmpireSupportCapacityMassFactor = 1;
 	// [[ MODIFY BASE GAME END ]]
 }
