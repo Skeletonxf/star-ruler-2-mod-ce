@@ -56,7 +56,14 @@ FOOD_DESC_FORESTRY: <<
 	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
 >>
 HYPER_OATS_BLURB: Counts as two food resources for planet level requirements.
-SALTS_BLURB: Can be used as food. Adds pressure to the production of all resources.
+SALTS_BLURB: Can be used as food.
+SALTS_DESC: <<
+	Can be used as food.
+
+	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
+
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>
 R_SYRUP_BLURB: Can be used as food. Increases Influence pressure by 30%.
 FORESTED_CROP: Forested Crop (Food)
 FORESTED_CROP_2: Forested Fruit (Food)

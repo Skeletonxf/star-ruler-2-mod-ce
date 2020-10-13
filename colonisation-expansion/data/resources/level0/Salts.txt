@@ -14,7 +14,5 @@ Resource: Salts
 	Pressure: 1 Money
 	Pressure: 1 Research
 	Pressure: 1 Influence
-	Pressure: 1 Defense
-	Pressure: 1 Energy
 	Blurb: #SALTS_BLURB
 	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)
