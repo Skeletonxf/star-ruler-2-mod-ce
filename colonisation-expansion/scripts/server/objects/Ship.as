@@ -355,6 +355,18 @@ tidy class ShipScript {
 			prevSupply = supply;
 		}
 	}
+
+	// Computes the repair rate of the ship factoring in EmpireRepairFactor
+	void computeRepair(Ship& ship) {
+		//Store the amount of repair we have available
+		if (ship.owner !is null) {
+			currentRepair = ship.blueprint.getEfficiencySum(SV_Repair) * ship.owner.EmpireRepairFactor;
+			currentRepairCost = ship.blueprint.getEfficiencySum(SV_RepairSupplyCost) * ship.owner.EmpireRepairFactor;
+		} else {
+			currentRepair = ship.blueprint.getEfficiencySum(SV_Repair);
+			currentRepairCost = ship.blueprint.getEfficiencySum(SV_RepairSupplyCost);
+		}
+	}
 	// [[ MODIFY BASE GAME END ]]
 
 	void modHPFactor(Ship& ship, float pct) {
@@ -699,8 +711,9 @@ tidy class ShipScript {
 		}
 
 		//Store the amount of repair we have available
-		currentRepair = ship.blueprint.getEfficiencySum(SV_Repair);
-		currentRepairCost = ship.blueprint.getEfficiencySum(SV_RepairSupplyCost);
+		// [[ MODIFY BASE GAME START ]]
+		computeRepair(ship);
+		// [[ MODIFY BASE GAME END ]]
 
 		//Check if we should update our maintenance
 		if(!ship.isFree && ship.owner !is null && ship.owner.valid) {
@@ -1154,6 +1167,7 @@ tidy class ShipScript {
 		// [[ MODIFY BASE GAME START ]]
 		computeMass(ship);
 		checkSupportCapacity(ship);
+		computeRepair(ship);
 		// [[ MODIFY BASE GAME END ]]
 
 		updateAccel(ship);

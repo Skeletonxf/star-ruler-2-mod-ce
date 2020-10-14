@@ -1,0 +1,6 @@
+Status: AncientReinforcer
+	Visible To: Nobody
+
+
+	ModEmpireAttribute(EmpireRepairFactor, Multiply, 1.03)
+	ModEmpireAttribute(EmpireMassFactor, Multiply, 1.10)

@@ -3,8 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Rework the other two First buildings to be a similar as vanilla as possible but apply to the entire ship rather than individual subsystems.
-    - Will stop design leaks from First buildings (though not design leaks from other things, but the First really ran with design leaking far beyond any other system in the game)
+  - Make tractor beams not assume mass of the tractored object never changes
   - Give leverage to everyone when a player genocides to remind them that genociding is like **really** not a nice thing
   - Upscale the effects and weapon ranges of orbitals like Mainframes and Fling Beacons as the larger number of planets has increased system spacing by a non trivial amount
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
