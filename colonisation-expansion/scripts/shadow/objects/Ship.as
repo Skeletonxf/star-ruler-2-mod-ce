@@ -16,7 +16,12 @@ tidy class ShipScript {
 	void computeMass(Ship& ship) {
 		const Design@ dsg = ship.blueprint.design;
 		if (ship.owner !is null) {
-			ship.Mass = dsg.total(HV_Mass) * ship.owner.EmpireMassFactor;
+			double mass = dsg.total(HV_Mass) * ship.owner.EmpireMassFactor;
+			// increase mass by support capacity mass factor, in
+			// proportion to the amount of support capacity on the ship
+			double bonusMass = dsg.total(HV_SupportCapacityMass);
+			mass += bonusMass * max(ship.owner.EmpireSupportCapacityMassFactor - 1.0, 0.0);
+			ship.Mass = mass;
 		} else {
 			ship.Mass = dsg.total(HV_Mass);
 		}

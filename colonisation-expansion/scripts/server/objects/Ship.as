@@ -318,6 +318,10 @@ tidy class ShipScript {
 		const Design@ dsg = ship.blueprint.design;
 		if (ship.owner !is null) {
 			mass = dsg.total(HV_Mass) * ship.owner.EmpireMassFactor;
+			// increase mass by support capacity mass factor, in
+			// proportion to the amount of support capacity on the ship
+			double bonusMass = dsg.total(HV_SupportCapacityMass);
+			mass += bonusMass * max(ship.owner.EmpireSupportCapacityMassFactor - 1.0, 0.0);
 		} else {
 			mass = dsg.total(HV_Mass);
 		}
@@ -326,11 +330,11 @@ tidy class ShipScript {
 		ship.Mass = mass;
 	}
 
-	// Sets and checks the supply capacity of the ship to apply
+	// Sets and checks the support capacity of the ship to apply
 	// any changes if the empire bonus support capacity factor changes
 	// Note that a number of vanilla statuses also apply support capacity
 	// buffs, and they will reapply the buff after this updates it.
-	void checkSupplyCapacity(Ship& ship) {
+	void checkSupportCapacity(Ship& ship) {
 		//Set the supply capacity of the ship
 		// [[ MODIFY BASE GAME START ]]
 		// Why is support capacity called supplyCapacity in the LeaderAI?
@@ -555,6 +559,9 @@ tidy class ShipScript {
 			float supportAccel = ship.slowestSupportAccel;
 			// [[ MODIFY BASE GAME START ]]
 			if (ship.owner !is null) {
+				// As supports almost by definition cannot have support command
+				// there is no need to consider the empire's
+				// EmpireSupportCapacityMassFactor factor here
 				supportAccel *= ship.owner.EmpireMassFactor;
 			}
 			// [[ MODIFY BASE GAME END ]]
@@ -624,7 +631,7 @@ tidy class ShipScript {
 		}
 
 		// [[ MODIFY BASE GAME START ]]
-		checkSupplyCapacity(ship);
+		checkSupportCapacity(ship);
 		// [[ MODIFY BASE GAME END ]]
 
 		//Modify ship efficiency based on available command
@@ -1146,7 +1153,7 @@ tidy class ShipScript {
 
 		// [[ MODIFY BASE GAME START ]]
 		computeMass(ship);
-		checkSupplyCapacity(ship);
+		checkSupportCapacity(ship);
 		// [[ MODIFY BASE GAME END ]]
 
 		updateAccel(ship);
