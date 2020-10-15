@@ -5,7 +5,7 @@ Subsystem: SparseSupplyModule
 	BaseColor: #b1e07c
 	Elevation: 3
 
-	Tags: DefaultUnlock, NonContiguous, NoCore, HasInternals, Category:Control
+	Tags: NonContiguous, NoCore, HasInternals, Category:Control
 	Tags: Compressible
 	Hull: Flagship, Station
 

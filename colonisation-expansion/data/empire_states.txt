@@ -176,5 +176,6 @@ visible:
 	attribute double EmpireSupportCapacityMassFactor = 1;
 	// Attribute for reworked Reinforcer building, to track bonus repair
 	attribute double EmpireRepairFactor = 1;
+	attribute double EmpireRepairMassFactor = 1;
 	// [[ MODIFY BASE GAME END ]]
 }

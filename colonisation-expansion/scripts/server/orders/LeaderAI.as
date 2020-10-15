@@ -2197,14 +2197,21 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	}
 
 	// [[ MODIFY BASE GAME START ]]
-	// Returns the slowest support accel, ignoring empire mass factor
-	// As far as I can tell I'd have to change the signature of this method
-	// to have access to the Object to grab the owner to grab the mass factor,
-	// so it's easier to apply the factor at the only callsite vanilla has
-	// inside Ship.as
-	// [[ MODIFY BASE GAME END ]]
-	double get_slowestSupportAccel() const {
+	// Returns the slowest support accel, applying empire mass factors
+	// in the calculation. This required a change in signature from vanilla
+	double getSlowestSupportAccel(Object& obj) {
 		double slowest = 0.0;
+
+		double massFactor = 1;
+		double repairMassFactor = 1;
+
+		// As supports almost by definition cannot have support command
+		// there is no need to consider the empire's
+		// EmpireSupportCapacityMassFactor factor here
+		if (obj.owner !is null) {
+			massFactor = obj.owner.EmpireMassFactor;
+			repairMassFactor = obj.owner.EmpireRepairMassFactor;
+		}
 
 		for(uint i = 0, cnt = groupData.length; i < cnt; ++i) {
 			GroupData@ dat = groupData[i];
@@ -2213,7 +2220,8 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 
 			auto design = dat.dsg;
 
-			double mass = max(design.total(HV_Mass), 0.01f);
+			double mass = max(design.total(HV_Mass), 0.01f) * massFactor;
+			mass += design.total(HV_RepairMass) * repairMassFactor * massFactor;
 			double accel = design.total(SV_Thrust) / mass;
 			if((accel < slowest || slowest == 0) && accel > 0.0)
 				slowest = accel;
@@ -2221,6 +2229,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 
 		return slowest;
 	}
+	// [[ MODIFY BASE GAME START ]]
 
 	void modSupplyCapacity(int amt) {
 		supplyCapacity += amt;

@@ -320,8 +320,12 @@ tidy class ShipScript {
 			mass = dsg.total(HV_Mass) * ship.owner.EmpireMassFactor;
 			// increase mass by support capacity mass factor, in
 			// proportion to the amount of support capacity on the ship
-			double bonusMass = dsg.total(HV_SupportCapacityMass);
+			double bonusMass = dsg.total(HV_SupportCapacityMass) * ship.owner.EmpireMassFactor;
 			mass += bonusMass * max(ship.owner.EmpireSupportCapacityMassFactor - 1.0, 0.0);
+			// also increase mass by repair mass factor, in proportion
+			// to the amount of repair on the ship
+			double repairBonusMass = dsg.total(HV_RepairMass) * ship.owner.EmpireMassFactor;
+			mass += repairBonusMass * max(ship.owner.EmpireRepairMassFactor - 1.0, 0.0);
 		} else {
 			mass = dsg.total(HV_Mass);
 		}
@@ -568,15 +572,7 @@ tidy class ShipScript {
 		float thrust = curThrust;
 		if(ship.hasLeaderAI) {
 			float leaderAccel = thrust / max(mass + massBonus, 0.01f);
-			float supportAccel = ship.slowestSupportAccel;
-			// [[ MODIFY BASE GAME START ]]
-			if (ship.owner !is null) {
-				// As supports almost by definition cannot have support command
-				// there is no need to consider the empire's
-				// EmpireSupportCapacityMassFactor factor here
-				supportAccel *= ship.owner.EmpireMassFactor;
-			}
-			// [[ MODIFY BASE GAME END ]]
+			float supportAccel = ship.getSlowestSupportAccel();
 
 			float resultAccel = leaderAccel;
 			if(supportAccel > 0.0f && supportAccel * 0.75f < leaderAccel)

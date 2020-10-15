@@ -162,7 +162,10 @@ server:
 	void setFleetEffectiveness(float value);
 	void modFleetEffectiveness(float value);
 
-	double get_slowestSupportAccel() const;
+	// [[ MODIFY BASE GAME START ]]
+	// Change signature so we can factor in empire stats
+	double getSlowestSupportAccel();
+	// [[ MODIFY BASE GAME END ]]
 
 	void set_engageRange(double radius);
 

@@ -2,5 +2,5 @@ Status: AncientReinforcer
 	Visible To: Nobody
 
 
-	ModEmpireAttribute(EmpireRepairFactor, Multiply, 1.03)
-	ModEmpireAttribute(EmpireMassFactor, Multiply, 1.10)
+	ModEmpireAttribute(EmpireRepairFactor, Multiply, 1.05)
+	ModEmpireAttribute(EmpireRepairMassFactor, Multiply, 1.25)

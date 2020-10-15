@@ -27,6 +27,7 @@ Subsystem: ShipComputer
 
 	Hook: AddStatus(ComputerCore)
 
+	Hex.RepairMass := HexSize
 	Effect: ControlCore
 
 	Requires:

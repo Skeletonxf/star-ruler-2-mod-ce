@@ -19,8 +19,12 @@ tidy class ShipScript {
 			double mass = dsg.total(HV_Mass) * ship.owner.EmpireMassFactor;
 			// increase mass by support capacity mass factor, in
 			// proportion to the amount of support capacity on the ship
-			double bonusMass = dsg.total(HV_SupportCapacityMass);
+			double bonusMass = dsg.total(HV_SupportCapacityMass) * ship.owner.EmpireMassFactor;
 			mass += bonusMass * max(ship.owner.EmpireSupportCapacityMassFactor - 1.0, 0.0);
+			// also increase mass by repair mass factor, in proportion
+			// to the amount of repair on the ship
+			double repairBonusMass = dsg.total(HV_RepairMass) * ship.owner.EmpireMassFactor;
+			mass += repairBonusMass * max(ship.owner.EmpireRepairMassFactor - 1.0, 0.0);
 			ship.Mass = mass;
 		} else {
 			ship.Mass = dsg.total(HV_Mass);
