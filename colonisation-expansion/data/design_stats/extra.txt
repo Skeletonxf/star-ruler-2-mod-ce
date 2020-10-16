@@ -6,7 +6,7 @@ GlobalStat: MaxAcceleration
 	Secondary: Acceleration
 
 	Variable: MaxThrust
-	DivBy: Hex.Mass
+	DivByMassFormula:
 
  GlobalStat: MaxThrust
 	Name: #S_MAX_THRUST
@@ -24,7 +24,7 @@ GlobalStat: MaxTurnRate
 	Suffix: rad/s
 
 	Variable: MaxTurnThrust
-	DivBy: Hex.Mass
+	DivByMassFormula:
 
 GlobalStat: RamJetDiscount
 	Name: #S_RAMJET_MAINTAIN_DISCOUNT

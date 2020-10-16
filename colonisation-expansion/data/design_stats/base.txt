@@ -72,13 +72,16 @@ GlobalStat: SupportSupplyUse
 
 	 Variable: SupplyDrain
 
+// [[ MODIFY BASE GAME START ]]
+// Use custom formula to consider Ancient Developer buildings
 GlobalStat: SupportCap
 	Name: #S_SUPPORTCAP
 	Description: #STT_SUPPORTCAP
 	Icon: ActionBarIcons::2
 	Color: #00cffe
 
-	Variable: SupportCapacity
+	SupportCapacityFormula:
+// [[ MODIFY BASE GAME END ]]
 
 GlobalStat: Acceleration
 	Name: #S_ACCEL
@@ -89,7 +92,10 @@ GlobalStat: Acceleration
 	AlwaysShow: True
 
 	Variable: Thrust
-	DivBy: Hex.Mass
+	// [[ MODIFY BASE GAME START ]]
+	// Use custom formula to consider Ancient buildings
+	DivByMassFormula:
+	// [[ MODIFY BASE GAME END ]]
 
 	GlobalStat: Thrust
 		Name: #S_THRUST
@@ -105,7 +111,7 @@ GlobalStat: Acceleration
 		Color: #aaa
 		Secondary: Acceleration
 
-		Variable: Hex.Mass
+		MassFormula:
 
 	GlobalStat: TurnRate
 		Name: #S_TURN_THRUST

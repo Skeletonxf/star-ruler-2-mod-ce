@@ -9,7 +9,10 @@ enum StatType {
 enum SysVariableType {
 	SVT_SubsystemVariable,
 	SVT_HexVariable,
-	SVT_ShipVariable
+	SVT_ShipVariable,
+	// [[ MODIFY BASE GAME START ]]
+	SVT_CustomVariable
+	// [[ MODIFY BASE GAME END ]]
 };
 
 enum StatAggregate {
@@ -20,6 +23,9 @@ enum StatDisplayMode {
 	SDM_Normal,
 	SDM_Short,
 };
+
+int MASS_CUSTOM_VARIABLE = -2;
+int SUPPORT_CAPACITY_CUSTOM_VARIABLE = -3;
 
 class DesignStat {
 	uint index = 0;
@@ -139,6 +145,31 @@ namespace design_stats {
 		else if(type == SVT_ShipVariable) {
 			return dsg.variable(ShipVariable(var));
 		}
+		// [[ MODIFY BASE GAME START ]]
+		else if ((type == SVT_CustomVariable) && (var == MASS_CUSTOM_VARIABLE)) {
+			// Custom mass formula
+			if (playerEmpire !is null) {
+				double mass = dsg.total(HV_Mass) * playerEmpire.EmpireMassFactor;
+				// increase mass by support capacity mass factor, in
+				// proportion to the amount of support capacity on the ship
+				double bonusMass = dsg.total(HV_SupportCapacityMass) * playerEmpire.EmpireMassFactor;
+				mass += bonusMass * max(playerEmpire.EmpireSupportCapacityMassFactor - 1.0, 0.0);
+				// also increase mass by repair mass factor, in proportion
+				// to the amount of repair on the ship
+				double repairBonusMass = dsg.total(HV_RepairMass) * playerEmpire.EmpireMassFactor;
+				mass += repairBonusMass * max(playerEmpire.EmpireRepairMassFactor - 1.0, 0.0);
+				return mass;
+			}
+			return dsg.total(HV_Mass); // should never happen
+		}
+		else if ((type == SVT_CustomVariable) && (var == SUPPORT_CAPACITY_CUSTOM_VARIABLE)) {
+			// Custom support capacity formula
+			if (playerEmpire !is null) {
+				return dsg.total(SV_SupportCapacity) * playerEmpire.EmpireSupportCapacityFactor;
+			}
+			return dsg.total(SV_SupportCapacity); // should never happen
+		}
+		// [[ MODIFY BASE GAME END ]]
 		return 0.0;
 	}
 
@@ -314,6 +345,20 @@ void loadStats(const string& filename) {
 		// [[ MODIFY BASE GAME START ]]
 		else if(key == "AlwaysShow") {
 			stat.alwaysShow = toBool(value);
+		}
+		// custom mass formulas that use the empire attributes to apply
+		// First building stat modifiers
+		else if (key == "MassFormula") {
+			stat.varType = SVT_CustomVariable;
+			stat.variable = MASS_CUSTOM_VARIABLE;
+		}
+		else if (key == "DivByMassFormula") {
+			stat.divType = SVT_CustomVariable;
+			stat.divVar = MASS_CUSTOM_VARIABLE;
+		}
+		else if (key == "SupportCapacityFormula") {
+			stat.varType = SVT_CustomVariable;
+			stat.variable = SUPPORT_CAPACITY_CUSTOM_VARIABLE;
 		}
 		// [[ MODIFY BASE GAME END ]]
 		else if(key == "Secondary") {
