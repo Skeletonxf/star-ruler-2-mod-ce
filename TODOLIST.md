@@ -3,10 +3,10 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Make tractor beams not assume mass of the tractored object never changes
   - Give leverage to everyone when a player genocides to remind them that genociding is like **really** not a nice thing
-  - Upscale the effects and weapon ranges of orbitals like Mainframes and Fling Beacons as the larger number of planets has increased system spacing by a non trivial amount
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
+  - Extend the design stats changes to apply per hex for First build mass increases
+  - Make jumpdrive tractoring factor in tractor beam mass increase
   - See if it's possible to auto unexport food resources that become useless with Forestation
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - battleworld QoL changes

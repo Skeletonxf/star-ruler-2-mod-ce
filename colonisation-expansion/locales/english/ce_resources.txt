@@ -74,3 +74,10 @@ FRACTURED_PLANET_DESC: <<
 
 	[color=#ff7070][b]Cannot be exported.[/b][/color]
 >>
+SALTS_REV_DESC: <<
+	Can be used as food. Adds pressure to the production of several resources.
+
+	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
+
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>

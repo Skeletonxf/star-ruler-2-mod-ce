@@ -1,6 +1,6 @@
 Resource: Salts
 	Name: #SALTS
-	Description: #SALTS_DESC
+	Description: #SALTS_REV_DESC
 	Class: Food
 	Native Biome: Oceanic
 

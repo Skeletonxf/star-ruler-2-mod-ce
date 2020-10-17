@@ -50,3 +50,16 @@ WORMHOLE_NETWORK_CONTROL_HUB_DESC: <<
 	[i]Very fragile, and disabled if FTL is blocked.[/i]
 >>
 WORMHOLE_NETWORK_CONTROL_HUB_BLURB: Maintains a small wormhole
+ORB_MAINFRAME_REV_DESC: <<
+	Maintains the link of individual fleets to the collective network.
+
+	Fleets near mainframes fight with increased strength.
+
+	Fleets far away from mainframes fight with significantly weakened strength.
+
+	The mainframe's weapons will only fire when it is currently in allied territory.
+
+	Mainframes have small ion thrusters that allow it to move slowly.
+
+	[i][color=#aaa]Range indicator is breakeven point, fleets inside will be stronger, fleets outside weaker.[/color][/i]
+>>
