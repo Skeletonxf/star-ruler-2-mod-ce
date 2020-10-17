@@ -3,6 +3,11 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Investigate source and remedies for CTD in multiplayer session
+    - Potentially could be remnant pickup pieces
+  - Fix visuals for wormhole network not being coded for shadow Oddity.as
+    - Fix removeStrategicIcon crash on line 101 of shadow Oddity.as
+  - Reduce the points the Parasite trait gives for razing planets
   - Give leverage to everyone when a player genocides to remind them that genociding is like **really** not a nice thing
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Extend the design stats changes to apply per hex for First build mass increases
