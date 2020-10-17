@@ -9,6 +9,7 @@ Trait: Battleworlders
 	Unique: Lifestyle
 
 
+	ReplaceTechnologyNodes(BldSpire, Thrust2)
 	TriggerHomeworld(SpawnBuilding(Factory, (6, 5)), Run Post = True)
 	TriggerHomeworld(SpawnBuilding(LightSystem, (6, 1)), Run Post = True)
 	AddStatusOwnedFleets(BattleworlderFleet, Give To Stations = False)

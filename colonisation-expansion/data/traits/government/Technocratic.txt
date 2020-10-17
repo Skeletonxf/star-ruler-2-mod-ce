@@ -1,0 +1,9 @@
+Trait: Technocratic
+	Name: #TRAIT_TECHNOCRATIC
+	Description: #TRAIT_TECHNOCRATIC_DESC
+	Order: 10
+	Category: Government
+	Icon: CardIcons::29
+	Costs Points: 1
+	Color: #fffb35
+	GainInfluenceCard(Innovation, Uses = 3)

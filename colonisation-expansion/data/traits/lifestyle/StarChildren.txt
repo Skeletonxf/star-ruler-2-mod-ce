@@ -28,7 +28,7 @@ Trait: StarChildren
 	IfHaveTrait(Fling, LoadDesigns(starchildren/other))
 	IfHaveTrait(Sublight, LoadDesigns(starchildren/other))
 	IfHaveTrait(Wormhole, LoadDesigns(starchildren/other))
-	
+
 	UnlockSubsystem(MothershipHull)
 
 	TriggerHomeworld(SpawnShip(Mothership, Override Disable Starting = True, Set Home = True))
@@ -52,6 +52,8 @@ Trait: StarChildren
 	ReplaceTechnologyNodes(BldMegacity, ImpHabitat)
 	ReplaceTechnologyNodes(RingHabitat, ImpHabitat)
 
+	ReplaceTechnologyNodes(ArtificialMoon, Thrust2)
+	ReplaceTechnologyNodes(BldSpire, Thrust2)
 	ReplaceTechnologyNodes(KeyFTL, Thrust2)
 	ReplaceTechnologyNodes(FactoryLabor, MothershipLabor)
 	ReplaceTechnologyNodes(FactoryLabor2, MothershipLabor2)

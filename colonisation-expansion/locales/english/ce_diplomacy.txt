@@ -69,3 +69,8 @@ VOTE_ALLONDIUM_GENERATION_DESC: <<
 
 	[img=QuickbarIcons::6;32]If the vote passes, $1 gains Allondium as a resource, giving lasting influence benefits.[/img]
 >>
+CARD_INNOVATION_REV_DESC: <<
+	Create a big push for developing new ideas by heavily encouraging and subsidizing otherwise economically unviable research prospects.
+
+	[i]When purchased, immediately gain a random unlock on the research grid. This can enable you to bypass hurdles and start researching in a new region of the grid that would otherwise cost a lot of research to reach.[/i]
+>>

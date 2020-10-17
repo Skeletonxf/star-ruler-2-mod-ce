@@ -1236,3 +1236,14 @@ class CardGenerationIfAttributeGTE : EmpireEffect {
 	}
 #section all
 };
+
+class GiveRandomUnlock : EmpireTrigger {
+	Document doc("Gives a random unlock to this empire's research grid.");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if(emp !is null)
+			emp.grantRandomUnlock();
+	}
+#section all
+};

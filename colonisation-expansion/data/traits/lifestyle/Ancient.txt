@@ -73,4 +73,6 @@ Trait: Ancient
 	ReplaceTechnologyNodes(Population, FoundryLabor)
 	ReplaceTechnologyNodes(Laboratories, FoundryLabor2)
 
+	ReplaceTechnologyNodes(ArtificialMoon, Thrust2)
+	ReplaceTechnologyNodes(BldSpire, Thrust2)
 	ModAttribute(ColonizeDevelopTiles, Multiply, 0)
