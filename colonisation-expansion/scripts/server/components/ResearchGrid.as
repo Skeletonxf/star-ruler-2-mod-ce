@@ -448,6 +448,9 @@ tidy class ResearchGrid : Component_ResearchGrid, Savable {
 		if(pick !is null) {
 			pick.unlock(emp);
 			grid.markUnlocked(pick.position);
+			delta = true;
+			unlockDelta = true;
+			gridDelta = true;
 		}
 	}
 	// [[ MODIFY BASE GAME END ]]
