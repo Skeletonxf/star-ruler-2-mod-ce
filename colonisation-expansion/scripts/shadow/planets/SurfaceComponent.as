@@ -692,8 +692,14 @@ tidy class SurfaceComponent : Component_SurfaceComponent {
 		bldConstructRate = msg.read_float();
 		undevelopedMaint = msg.read_float();
 
-		originalSurfaceSize.x = msg.readSmall();
-		originalSurfaceSize.y = msg.readSmall();
+		// [[ MODIFY BASE GAME START ]]
+		// Write small sometimes is read as garbage which causes CTDs
+		// when it propagates to the graphics code
+		/* originalSurfaceSize.x = msg.readSmall();
+		originalSurfaceSize.y = msg.readSmall(); */
+		msg >> originalSurfaceSize.x;
+		msg >> originalSurfaceSize.y;
+		// [[ MODIFY BASE GAME END ]]
 		biome0 = msg.readSmall();
 		biome1 = msg.readSmall();
 		biome2 = msg.readSmall();

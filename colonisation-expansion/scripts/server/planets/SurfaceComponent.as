@@ -2912,8 +2912,14 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		msg << float(bldConstructRate);
 		msg << float(undevelopedMaint);
 
-		msg.writeSmall(originalSurfaceSize.x);
-		msg.writeSmall(originalSurfaceSize.y);
+		// [[ MODIFY BASE GAME START ]]
+		// Write small sometimes is read as garbage which causes CTDs
+		// when it propagates to the graphics code
+		/* msg.writeSmall(originalSurfaceSize.x);
+		msg.writeSmall(originalSurfaceSize.y); */
+		msg << originalSurfaceSize.x;
+		msg << originalSurfaceSize.y;
+		// [[ MODIFY BASE GAME END ]]
 		msg.writeSmall(biome0);
 		msg.writeSmall(biome1);
 		msg.writeSmall(biome2);

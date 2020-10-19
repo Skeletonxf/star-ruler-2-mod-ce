@@ -326,6 +326,17 @@ class DynTex {
 			return;
 		}
 
+		// [[ MODIFY BASE GAME START ]]
+		// Size is sometimes absolutely huge, which causes an immediate
+		// CTD. I think I fixed this in the non graphics shadow code, but
+		// probably best to check here and bail just in case.
+		if (size.x > 3000 || size.y > 3000) {
+			print("Read grid size that is way too high, aborting texture cache");
+			print(string(size.x)+"x"+string(size.y));
+			@this.obj = null;
+			return;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		Image img(size, 4);
 
 		uint shown = obj.getSurfaceData(img);
