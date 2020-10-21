@@ -2737,6 +2737,12 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 
 	void _writeRes(Message& msg) {
 		int maxLevel = getLevelChain(LevelChainId).levels.length-1;
+		// [[ MODIFY BASE GAME START ]]
+		if (maxLevel != 5) {
+			print("Dyson level chain is "+string(LevelChainId));
+			print("Level chain count is "+string(getLevelChainCount()));
+		}
+		// [[ MODIFY BASE GAME END ]]
 		msg.writeLimited(LevelChainId,getLevelChainCount());
 		msg.writeLimited(Level,maxLevel);
 		if(DecayLevel < Level) {
@@ -2908,9 +2914,16 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		_writeColonization(msg);
 
 		msg << Quarantined;
-		msg << float(tileDevelopRate);
+		// [[ MODIFY BASE GAME START ]]
+		// Remove another weird message communication and replace with less
+		// efficient but not likely to blow up approach
+		msg << tileDevelopRate;
+		msg << bldConstructRate;
+		msg << undevelopedMaint;
+		/* msg << float(tileDevelopRate);
 		msg << float(bldConstructRate);
-		msg << float(undevelopedMaint);
+		msg << float(undevelopedMaint); */
+		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
 		// Write small sometimes is read as garbage which causes CTDs
@@ -2919,10 +2932,13 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		msg.writeSmall(originalSurfaceSize.y); */
 		msg << originalSurfaceSize.x;
 		msg << originalSurfaceSize.y;
-		// [[ MODIFY BASE GAME END ]]
-		msg.writeSmall(biome0);
+		/* msg.writeSmall(biome0);
 		msg.writeSmall(biome1);
-		msg.writeSmall(biome2);
+		msg.writeSmall(biome2); */
+		msg << biome0;
+		msg << biome1;
+		msg << biome2;
+		// [[ MODIFY BASE GAME END ]]
 
 		grid.write(msg);
 	}

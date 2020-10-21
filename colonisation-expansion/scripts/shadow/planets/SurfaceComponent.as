@@ -688,9 +688,16 @@ tidy class SurfaceComponent : Component_SurfaceComponent {
 		_readColonization(msg);
 
 		msg >> Quarantined;
-		tileDevelopRate = msg.read_float();
+		// [[ MODIFY BASE GAME START ]]
+		// Remove another weird message communication and replace with less
+		// efficient but not likely to blow up approach
+		/* tileDevelopRate = msg.read_float();
 		bldConstructRate = msg.read_float();
-		undevelopedMaint = msg.read_float();
+		undevelopedMaint = msg.read_float(); */
+		msg >> tileDevelopRate;
+		msg >> bldConstructRate;
+		msg >> undevelopedMaint;
+		// [[ MODIFY BASE GAME START ]]
 
 		// [[ MODIFY BASE GAME START ]]
 		// Write small sometimes is read as garbage which causes CTDs
@@ -699,10 +706,13 @@ tidy class SurfaceComponent : Component_SurfaceComponent {
 		originalSurfaceSize.y = msg.readSmall(); */
 		msg >> originalSurfaceSize.x;
 		msg >> originalSurfaceSize.y;
-		// [[ MODIFY BASE GAME END ]]
-		biome0 = msg.readSmall();
+		/* biome0 = msg.readSmall();
 		biome1 = msg.readSmall();
-		biome2 = msg.readSmall();
+		biome2 = msg.readSmall(); */
+		msg >> biome0;
+		msg >> biome1;
+		msg >> biome2;
+		// [[ MODIFY BASE GAME END ]]
 
 		grid.read(msg);
 
@@ -714,6 +724,18 @@ tidy class SurfaceComponent : Component_SurfaceComponent {
 
 			if(obj.region !is null)
 				obj.region.addStrategicIcon(0, obj, icon);
+
+			// [[ MODIFY BASE GAME START ]]
+			if (grid.size.width == 0) {
+				print("0x0 grid is on "+pl.name);
+				print("Original Grid Size "+string(originalSurfaceSize.x)+"x"+string(originalSurfaceSize.y));
+				print("Max level is "+string(maxPlanetLevel));
+				print("Level is "+string(Level));
+				print("LevelChainId is "+string(LevelChainId));
+				print("Graphics flags are "+string(gfxFlags));
+				print("Growth rate is "+string(growthRate));
+			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 		else {
 			updateIcon(obj);

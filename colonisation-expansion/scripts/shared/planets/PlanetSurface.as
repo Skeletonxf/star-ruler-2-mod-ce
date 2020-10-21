@@ -173,10 +173,6 @@ class PlanetSurface : Serializable {
 	}
 
 	void write(Message& msg, bool delta) {
-		if (size.width >= 30 || size.height >= 30)
-			print("Writing grid size "+string(size.width)+"x"+string(size.height));
-		if (size.width == 0 || size.height == 0)
-			print("Writing grid size "+string(size.width)+"x"+string(size.height));
 		// [[ MODIFY BASE GAME START ]]
 		//msg.writeSmall(size.width);
 		//msg.writeSmall(size.height);
