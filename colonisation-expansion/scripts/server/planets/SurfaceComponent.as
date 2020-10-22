@@ -2731,6 +2731,9 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			msg.write0();
 		}
 		msg.writeBit(needsPopulationForLevel);
+		// [[ MODIFY BASE GAME START ]]
+		msg << LevelChainId;
+		// [[ MODIFY BASE GAME END ]]
 		msg.writeLimited(ResourceLevel,maxLevel);
 		msg.writeBit(isSendingColonizers);
 	}

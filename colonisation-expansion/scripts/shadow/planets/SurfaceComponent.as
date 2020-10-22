@@ -435,6 +435,9 @@ tidy class SurfaceComponent : Component_SurfaceComponent {
 			growthRate = 1.0;
 		needsPopulationForLevel = msg.readBit();
 
+		// [[ MODIFY BASE GAME START ]]
+		msg >> LevelChainId;
+		// [[ MODIFY BASE GAME END ]]
 		int maxLevel = getLevelChain(LevelChainId).levels.length-1;
 		ResourceLevel = msg.readLimited(maxLevel);
 
