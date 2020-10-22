@@ -3,6 +3,10 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Undo experimentations around Dysons triggering a fatal netcode bug BlindMind left in vanilla
+    - Create CP pull request
+    - Create BlindMind repo pull request
+    - Ask Dalo if I should make an OSR repo pull request
   - Fix visuals for wormhole network not being coded for shadow Oddity.as
   - Reduce the points the Parasite trait gives for razing planets
   - Give leverage to everyone when a player genocides to remind them that genociding is like **really** not a nice thing
