@@ -434,9 +434,21 @@ tidy class SurfaceComponent : Component_SurfaceComponent {
 		else
 			growthRate = 1.0;
 		needsPopulationForLevel = msg.readBit();
-
 		// [[ MODIFY BASE GAME START ]]
-		msg >> LevelChainId;
+		// Tell the client the LevelChainId before it tries
+		// to use it, fixes vanilla bug where the client
+		// was reading the max level of a planet before it
+		// found out the level chain of that planet. This meant
+		// that any planet with a level chain that had a different
+		// max level to the level chain with an id of 0 would
+		// be decoded incorrectly, and offset the rest of the message
+		// by some number of bits, completely breaking all decoding that
+		// followed. In the worst case, the broken decoding would
+		// cause a Crash To Desktop as the PlanetNode tried to
+		// create an Image with a ludicrous size, or the PlanetSurface
+		// tried to create an array for a ludicrous grid size that
+		// ran out of memory.
+		LevelChainId = msg.readLimited(getLevelChainCount());
 		// [[ MODIFY BASE GAME END ]]
 		int maxLevel = getLevelChain(LevelChainId).levels.length-1;
 		ResourceLevel = msg.readLimited(maxLevel);
@@ -691,31 +703,15 @@ tidy class SurfaceComponent : Component_SurfaceComponent {
 		_readColonization(msg);
 
 		msg >> Quarantined;
-		// [[ MODIFY BASE GAME START ]]
-		// Remove another weird message communication and replace with less
-		// efficient but not likely to blow up approach
-		/* tileDevelopRate = msg.read_float();
+		tileDevelopRate = msg.read_float();
 		bldConstructRate = msg.read_float();
-		undevelopedMaint = msg.read_float(); */
-		msg >> tileDevelopRate;
-		msg >> bldConstructRate;
-		msg >> undevelopedMaint;
-		// [[ MODIFY BASE GAME START ]]
+		undevelopedMaint = msg.read_float();
 
-		// [[ MODIFY BASE GAME START ]]
-		// Write small sometimes is read as garbage which causes CTDs
-		// when it propagates to the graphics code
-		/* originalSurfaceSize.x = msg.readSmall();
-		originalSurfaceSize.y = msg.readSmall(); */
-		msg >> originalSurfaceSize.x;
-		msg >> originalSurfaceSize.y;
-		/* biome0 = msg.readSmall();
+		originalSurfaceSize.x = msg.readSmall();
+		originalSurfaceSize.y = msg.readSmall();
+		biome0 = msg.readSmall();
 		biome1 = msg.readSmall();
-		biome2 = msg.readSmall(); */
-		msg >> biome0;
-		msg >> biome1;
-		msg >> biome2;
-		// [[ MODIFY BASE GAME END ]]
+		biome2 = msg.readSmall();
 
 		grid.read(msg);
 
@@ -727,18 +723,6 @@ tidy class SurfaceComponent : Component_SurfaceComponent {
 
 			if(obj.region !is null)
 				obj.region.addStrategicIcon(0, obj, icon);
-
-			// [[ MODIFY BASE GAME START ]]
-			if (grid.size.width == 0) {
-				print("0x0 grid is on "+pl.name);
-				print("Original Grid Size "+string(originalSurfaceSize.x)+"x"+string(originalSurfaceSize.y));
-				print("Max level is "+string(maxPlanetLevel));
-				print("Level is "+string(Level));
-				print("LevelChainId is "+string(LevelChainId));
-				print("Graphics flags are "+string(gfxFlags));
-				print("Growth rate is "+string(growthRate));
-			}
-			// [[ MODIFY BASE GAME END ]]
 		}
 		else {
 			updateIcon(obj);

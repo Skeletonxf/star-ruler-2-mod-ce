@@ -173,12 +173,8 @@ class PlanetSurface : Serializable {
 	}
 
 	void write(Message& msg, bool delta) {
-		// [[ MODIFY BASE GAME START ]]
-		//msg.writeSmall(size.width);
-		//msg.writeSmall(size.height);
-		msg << size.width;
-		msg << size.height;
-		// [[ MODIFY BASE GAME END ]]
+		msg.writeSmall(size.width);
+		msg.writeSmall(size.height);
 
 		msg << baseBiome.id;
 		msg.writeSmall(Maintenance);
@@ -260,29 +256,8 @@ class PlanetSurface : Serializable {
 
 	bool read(Message& msg, bool delta) {
 		bool surfaceDelta = false;
-		// [[ MODIFY BASE GAME START ]]
-		// Write small sometimes is read as garbage which causes CTDs
-		// when it propagates to the graphics code
-		// Garbage is still getting read occasionally in these messages,
-		// but they are least read as 0s rather than random numbers
-		// large enough to create a tileBuildings capable of making
-		// the computer run out of memory
-		//size.width = msg.readSmall();
-		//size.height = msg.readSmall();
-		uint width = 0;
-		uint height = 0;
-		msg >> width;
-		msg >> height;
-		if (width == 0 || height == 0) {
-			print("Read grid size "+string(width)+"x"+string(height));
-			print("Aborting");
-			// set to zero so other code sees us as uninitialised
-			size.width = 0;
-			size.height = 0;
-			return false;
-		}
-		size.width = width;
-		size.height = height;
+		size.width = msg.readSmall();
+		size.height = msg.readSmall();
 
 		uint8 baseId = 0;
 		msg >> baseId;
@@ -335,15 +310,6 @@ class PlanetSurface : Serializable {
 				for(uint y = 0; y < bld.type.size.y; ++y) {
 					vec2u rpos = (pos - center) + vec2u(x, y);
 					uint index = rpos.y * size.width + rpos.x;
-					// [[ MODIFY BASE GAME START ]]
-					// Seemed to only ever occur when garbage came in for
-					// the tile buildings length, so shouldn't be needed
-					// anymore
-					/* if (index >= tileBuildings.length) {
-						print("Index and tileBuildings mismatched: "+string(index)+" "+string(tileBuildings.length));
-						continue;
-					} */
-					// [[ MODIFY BASE GAME END ]]
 					@tileBuildings[index] = bld;
 				}
 			}

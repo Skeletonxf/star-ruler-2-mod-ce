@@ -2732,7 +2732,20 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		}
 		msg.writeBit(needsPopulationForLevel);
 		// [[ MODIFY BASE GAME START ]]
-		msg << LevelChainId;
+		// Tell the client the LevelChainId before it tries
+		// to use it, fixes vanilla bug where the client
+		// was reading the max level of a planet before it
+		// found out the level chain of that planet. This meant
+		// that any planet with a level chain that had a different
+		// max level to the level chain with an id of 0 would
+		// be decoded incorrectly, and offset the rest of the message
+		// by some number of bits, completely breaking all decoding that
+		// followed. In the worst case, the broken decoding would
+		// cause a Crash To Desktop as the PlanetNode tried to
+		// create an Image with a ludicrous size, or the PlanetSurface
+		// tried to create an array for a ludicrous grid size that
+		// ran out of memory.
+		msg.writeLimited(LevelChainId,getLevelChainCount());
 		// [[ MODIFY BASE GAME END ]]
 		msg.writeLimited(ResourceLevel,maxLevel);
 		msg.writeBit(isSendingColonizers);
@@ -2740,12 +2753,6 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 
 	void _writeRes(Message& msg) {
 		int maxLevel = getLevelChain(LevelChainId).levels.length-1;
-		// [[ MODIFY BASE GAME START ]]
-		if (maxLevel != 5) {
-			print("Dyson level chain is "+string(LevelChainId));
-			print("Level chain count is "+string(getLevelChainCount()));
-		}
-		// [[ MODIFY BASE GAME END ]]
 		msg.writeLimited(LevelChainId,getLevelChainCount());
 		msg.writeLimited(Level,maxLevel);
 		if(DecayLevel < Level) {
@@ -2917,31 +2924,15 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		_writeColonization(msg);
 
 		msg << Quarantined;
-		// [[ MODIFY BASE GAME START ]]
-		// Remove another weird message communication and replace with less
-		// efficient but not likely to blow up approach
-		msg << tileDevelopRate;
-		msg << bldConstructRate;
-		msg << undevelopedMaint;
-		/* msg << float(tileDevelopRate);
+		msg << float(tileDevelopRate);
 		msg << float(bldConstructRate);
-		msg << float(undevelopedMaint); */
-		// [[ MODIFY BASE GAME END ]]
+		msg << float(undevelopedMaint);
 
-		// [[ MODIFY BASE GAME START ]]
-		// Write small sometimes is read as garbage which causes CTDs
-		// when it propagates to the graphics code
-		/* msg.writeSmall(originalSurfaceSize.x);
-		msg.writeSmall(originalSurfaceSize.y); */
-		msg << originalSurfaceSize.x;
-		msg << originalSurfaceSize.y;
-		/* msg.writeSmall(biome0);
+		msg.writeSmall(originalSurfaceSize.x);
+		msg.writeSmall(originalSurfaceSize.y);
+		msg.writeSmall(biome0);
 		msg.writeSmall(biome1);
-		msg.writeSmall(biome2); */
-		msg << biome0;
-		msg << biome1;
-		msg << biome2;
-		// [[ MODIFY BASE GAME END ]]
+		msg.writeSmall(biome2);
 
 		grid.write(msg);
 	}

@@ -327,12 +327,13 @@ class DynTex {
 		}
 
 		// [[ MODIFY BASE GAME START ]]
-		// Size is sometimes absolutely huge, which causes an immediate
-		// CTD. I think I fixed this in the non graphics shadow code, but
-		// probably best to check here and bail just in case.
+		// If the netcode messes up this can sometimes be way larger than any
+		// actual grid size. In that scenario, trying to create the Image
+		// can easily cause a Crash To Desktop and completely stop the game.
 		if (size.x > 3000 || size.y > 3000) {
-			print("Read grid size that is way too high, aborting texture cache");
+			print("Read grid size that is way too high, aborting texture cache to avid CTD");
 			print(string(size.x)+"x"+string(size.y));
+			print("Has the netcode or PlanetSurface gone haywire?");
 			@this.obj = null;
 			return;
 		}
