@@ -4,10 +4,19 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - See if it's possible to auto unexport food resources that become useless with Forestation
+  - Reduce/remove the influence penalty Ancient gets for auto genociding worlds
+  - Fix NativeLife returning when terraforming a planet
+  - Allow shields on supports
+  - Try to make a Gate/Fling sharing treaty
+  - Fix vision being granted on things moving through deep space when the player doesn't have a telescope
+    - Planets with engines
+    - Asteroids being tugged?
+  - Stop Battleworlders transfering resources onto a planet with native life so they don't delete them by accident during the uplift
   - Reduce the points the Parasite trait gives for razing planets
   - Give leverage to everyone when a player genocides to remind them that genociding is like **really** not a nice thing
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Extend the design stats changes to apply per hex for First build mass increases
+  - Constructions for Gas Giants to make them more useful late game
   - Make jumpdrive tractoring factor in tractor beam mass increase
   - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - battleworld QoL changes
@@ -49,7 +58,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Colonisation ships similar to Motherships for other races
   - AI code to build orbitals like Outposts and Stations
   - Teach AI to scuttle unneeded FTL income orbitals
-  - Prevent dillemas occuring multiple times (not sure what's causing this bug, it's quite rare)
   - Teach Mechanoid AI to use FTL Breeder Reactors
   - StarChildren transfering of pop from Mothership -> Mothership
   - Consider what to do about the Star Children being locked out of a lot of things only available as buildings
@@ -76,7 +84,6 @@ This is primarily intended as a developer focused project planning list, rather 
       - Create battleworlds
       - Use slipstreams to speed up colony ships
       - Attack enemy territory that doesn't border AI's owned systems
-      - Recognise that it can't win a fair 1v1 flagship fight with another empire and instead spam loads of cheap siege ships to attack every system possible at once
       - Carpet bomb enemy planets (especially useful vs Mechanoid)
       - Use the tractor beam on Motherships to drag around an Outpost - hey presto my mothership can always fire its weapons and if the outpost gets shot down the labor cost to build a new one is low enough to queue up immediately
       - Use gates to coordinate surprise attacks on an enemy (the AI is already good at doing rapid attacks with Hyperdrives/Jumpdrives/Fling but gates and slipstreams aren't used as well here)
