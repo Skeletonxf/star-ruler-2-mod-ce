@@ -61,3 +61,4 @@ VOTE_ANNEXED_BW_STATUS_DESC: <<
 
 	Its people are fearful, and will not permit transfering resources off the planet while the vote is active.
 >>
+ANCIENT_GENOCIDE_STATUS_DESC: There might have been something under that building before we built it.

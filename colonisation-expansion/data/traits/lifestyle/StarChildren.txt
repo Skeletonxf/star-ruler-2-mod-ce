@@ -52,7 +52,6 @@ Trait: StarChildren
 	ReplaceTechnologyNodes(BldMegacity, ImpHabitat)
 	ReplaceTechnologyNodes(RingHabitat, ImpHabitat)
 
-	ReplaceTechnologyNodes(ArtificialMoon, Thrust2)
 	ReplaceTechnologyNodes(BldSpire, Thrust2)
 	ReplaceTechnologyNodes(KeyFTL, Thrust2)
 	ReplaceTechnologyNodes(FactoryLabor, MothershipLabor)

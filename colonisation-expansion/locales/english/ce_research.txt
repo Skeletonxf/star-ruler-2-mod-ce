@@ -75,3 +75,4 @@ RESEARCH_ALLONDIUM: <<
 
 	[bbloc=#ALLONDIUM_DESC]
 >>
+RESEARCH_REQ_MOON_BASES: Build $2 Moon Bases. [b]( $1 / $2 )[/b]

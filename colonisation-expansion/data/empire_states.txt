@@ -166,6 +166,8 @@ visible:
 	attribute double WormholeNetworkUnlocked = 0;
 	// track if diplomatic maneuvering is unlocked
 	attribute double AllondiumCards = 0;
+	// track moon bases built
+	attribute double MoonBasesBuilt = 0;
 	// [[ MODIFY BASE GAME END ]]
 	// [[ MODIFY BASE GAME START ]]
 	// Attribute for First compressor workaround, to track bonus mass changes

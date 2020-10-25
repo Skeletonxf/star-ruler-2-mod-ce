@@ -12,6 +12,7 @@ Construction: FractureMoonBase
 	RequireNotTrait(StarChildren)
 
 
+	ModAttribute(MoonBasesBuilt, Add, 1)
 	CE_biome_hooks::DealStellarPercentageDamage(0.1)
 	RequireStatus(FracturedPlanetSpawn)
 	AddSurfaceArea(Moon, (5, 5))

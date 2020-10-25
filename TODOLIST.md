@@ -4,10 +4,6 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - See if it's possible to auto unexport food resources that become useless with Forestation
-  - Change unlock requirements for Artifical Moons to building moon bases
-    - Enable more race support once dependency on Ring Habitats is gone
-  - Reduce/remove the influence penalty Ancient gets for auto genociding worlds
-  - Fix NativeLife returning when terraforming a planet
   - Allow shields on supports
   - Try to make a Gate/Fling sharing treaty
   - Fix vision being granted on things moving through deep space when the player doesn't have a telescope

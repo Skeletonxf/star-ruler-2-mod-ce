@@ -2,8 +2,11 @@ Status: Genocide
 	Name: Genocide
 	Description: #GENOCIDE_STATUS_DESC
 	Color: #ff140b
-	Icon: <<
-
-		ConditionIcons::10 * ff6622
-	>>
+	Icon: ConditionIcons::10 * ff6622
 	AddInfluenceStake(-2)
+Status: AncientGenocide
+	Description: #ANCIENT_GENOCIDE_STATUS_DESC
+	Name: Genocide
+	Icon: ConditionIcons::10 * ff6622
+	Color: #ff140b
+	IfNotHaveTrait(Ancient, AddInfluenceStake(-2))
