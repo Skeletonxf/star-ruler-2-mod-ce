@@ -17,6 +17,7 @@ import void filterToResourceTransferAbilities(array<Ability>&) from "CE_resource
 import CE_array_map;
 import influence_global;
 import systems;
+import planet_levels;
 #section all
 
 // TODO: Rename as no longer just biomes
@@ -1247,3 +1248,96 @@ class GiveRandomUnlock : EmpireTrigger {
 	}
 #section all
 };
+
+
+class BreakExcessFoodImports : BonusEffect {
+	Document doc("Breaks excess food imports to this planet");
+	Argument gaining_food(AT_Boolean, "True", doc="If the planet is about to gain 1 food resource.");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if (obj is null) {
+			return;
+		}
+		if (!obj.isPlanet) {
+			return;
+		}
+		if (obj.owner !is emp) {
+			return;
+		}
+		Planet@ planet = cast<Planet>(obj);
+		if (planet is null) {
+			return;
+		}
+		const PlanetLevelChain@ chain = getLevelChain(obj.levelChain);
+		if (chain is null) {
+			return;
+		}
+		// consider the level of the planet as what is currently is, or
+		// its resource level, whichever is higher (assume players will
+		// want to level planets up to their resource level)
+		int level = max(planet.level, planet.resourceLevel);
+		if (level < 0) {
+			return;
+		}
+		if (uint(level) >= chain.levels.length) {
+			return;
+		}
+		PlanetLevel@ currentLevel = chain.levels[level];
+		const ResourceClass@ foodClass = getResourceClass("Food");
+		uint foodNeededForCurrentLevel = 0;
+		// go through each level of the chain up to the current level of
+		// the planet
+		for (uint i = 0, metLevels = uint(level); i <= metLevels; ++i) {
+			PlanetLevel@ levelRow = chain.levels[i];
+			if (levelRow is null) {
+				continue;
+			}
+			// get requirements for this level
+			ResourceRequirements requirements = levelRow.reqs;
+			ResourceRequirement@[] reqs = requirements.reqs;
+			// go through each requirement
+			for (uint j = 0, jcnt = reqs.length; j < jcnt; ++j) {
+				ResourceRequirement@ requirement = reqs[j];
+				// not sure what the difference is between these two
+				if (requirement.type == RRT_Class || requirement.type == RRT_Class_Types) {
+					if (requirement.cls is foodClass) {
+						foodNeededForCurrentLevel += max(requirement.amount, 1);
+					}
+				}
+			}
+		}
+		// Now find out how many food resources the planet has
+		uint hasFood = planet.getFoodCount();
+		if (gaining_food.boolean) {
+			hasFood += 1;
+		}
+		// print("Planet "+string(planet.name)+ " needs "+string(foodNeededForCurrentLevel)+ " food resources for level "+string(level)+" Has "+string(hasFood)+ " food.");
+		if (hasFood <= foodNeededForCurrentLevel) {
+			return;
+		}
+		const ResourceType@ doubleFood = getResource("HyperOats");
+		int foodImportsToBreak = hasFood - foodNeededForCurrentLevel;
+		array<Resource> resources;
+		resources.syncFrom(obj.getImportedResources());
+		for(uint i = 0, cnt = resources.length; i < cnt; ++i) {
+			Resource@ resource = resources[i];
+			if (resource !is null && resource.type !is null) {
+				if (resource.type.cls is foodClass && foodImportsToBreak > 0) {
+					if (resource.origin !is null) {
+						if (resource.type is doubleFood) {
+							if (foodImportsToBreak >= 2) {
+								foodImportsToBreak -= 2;
+								resource.origin.exportResource(resource.id, null);
+							}
+						} else {
+							foodImportsToBreak -= 1;
+							resource.origin.exportResource(resource.id, null);
+						}
+					}
+				}
+			}
+		}
+	}
+#section all
+}
