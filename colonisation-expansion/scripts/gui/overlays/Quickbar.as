@@ -109,7 +109,7 @@ class Quickbar : BaseGuiElement, Savable {
 		add(SiegePlanets(this));
 		add(LaborPlanets(this), closed=true);
 		add(DefenseTargets(this), closed=true);
-		// [[ MODIFY BASE GAME ]] TODO: Show fling beacons if empire unlocks them via research
+		// [[ MODIFY BASE GAME ]]
 		add(FlingBeacons(this), closed=(flingTrait is null || !playerEmpire.hasTrait(flingTrait.id)));
 		add(CombatFleets(this));
 		add(LowSupplyFleets(this));
