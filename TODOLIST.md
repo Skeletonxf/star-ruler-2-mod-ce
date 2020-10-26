@@ -3,7 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - See if it's possible to auto unexport food resources that become useless with Forestation
   - Allow shields on supports
   - Try to make a Gate/Fling sharing treaty
   - Fix vision being granted on things moving through deep space when the player doesn't have a telescope

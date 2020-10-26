@@ -824,7 +824,18 @@ class PlayOnNearbyEnemySystem : CardAI {
 #section all
 };
 
+// [[ MODIFY BASE GAME START ]]
+class PlayWeightUnconditionally : CardAI {
+	Document doc("Apply a weighting to the value to playing this card unconditionally of any circumstances.");
+	Argument weight(AT_Decimal, "1.0", doc="Weight of the card in relation to other cards.");
 
+#section server
+	void considerAct(AIDiplomacy& ai, const InfluenceCard@ card, any@ data, Targets& targs, double& weight) const override {
+		weight *= this.weight.decimal;
+	}
+#section all
+};
+// [[ MODIFY BASE GAME END ]]
 
 class Important : VoteAI {
 	Document doc("This vote is important.");

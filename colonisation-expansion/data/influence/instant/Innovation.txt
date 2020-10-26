@@ -14,6 +14,7 @@ Card: Innovation
 
 	OnOwner(CE_biome_hooks::GiveRandomUnlock())
 
-	AI: BuyWeight(1.0)
+	AI: BuyWeight(2.0)
+	AI: PlayWeightUnconditionally(20.0)
 	Min Uses: 2
 	Max Uses: 3
