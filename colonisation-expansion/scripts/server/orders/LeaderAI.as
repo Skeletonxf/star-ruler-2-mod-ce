@@ -1411,15 +1411,19 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	}
 
 	void insertFlingOrder(Object& obj, Object& beacon, vec3d pos, uint index) {
-		if(obj.owner is null || !obj.owner.isFlingBeacon(beacon) || beacon is obj)
+		// [[ MODIFY BASE GAME START ]]
+		if(obj.owner is null || !obj.owner.isFriendlyFlingBeacon(beacon) || beacon is obj)
 			return;
+		// [[ MODIFY BASE GAME END ]]
 		insertOrder(obj, FlingOrder(beacon, pos), index);
 		obj.wake();
 	}
 
 	void addFlingOrder(Object& obj, Object& beacon, vec3d pos, bool append) {
-		if(obj.owner is null || !obj.owner.isFlingBeacon(beacon) || beacon is obj)
+		// [[ MODIFY BASE GAME START ]]
+		if(obj.owner is null || !obj.owner.isFriendlyFlingBeacon(beacon) || beacon is obj)
 			return;
+		// [[ MODIFY BASE GAME END ]]
 		addOrder(obj, FlingOrder(beacon, pos), append);
 		obj.wake();
 	}

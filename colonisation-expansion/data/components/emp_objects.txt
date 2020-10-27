@@ -8,8 +8,18 @@ restricted local:
 	Object@ getFlingBeacon(vec3d position);
 	Object@ getClosestFlingBeacon(vec3d position);
 	Object@ getClosestFlingBeacon(Object& obj);
+	// [[ MODIFY BASE GAME START ]]
+	Object@[] getFriendlyFlingBeacons();
+	Object@ getFriendlyFlingBeacon(vec3d position);
+	Object@ getClosestFriendlyFlingBeacon(vec3d position);
+	Object@ getClosestFriendlyFlingBeacon(Object& obj);
+	// [[ MODIFY BASE GAME END ]]
 	Object@[] getStargates();
 	Object@ getStargate(vec3d position);
+	// [[ MODIFY BASE GAME START ]]
+	Object@[] getFriendlyStargates();
+	Object@ getFriendlyStargate(vec3d position);
+	// [[ MODIFY BASE GAME END ]]
 	Orbital@[] getOrbitals();
 	bool hasStargates();
 	Artifact@[] getArtifacts();
@@ -26,6 +36,9 @@ restricted local:
 	Planet@ get_planetList(uint index);
 
 	bool isFlingBeacon(Object@ obj);
+	// [[ MODIFY BASE GAME START ]]
+	bool isFriendlyFlingBeacon(Object@ obj);
+	// [[ MODIFY BASE GAME END ]]
 
 	safe uint get_orbitalCount();
 	Orbital@ get_orbitals(uint index);
@@ -50,16 +63,25 @@ restricted remote:
 server:
 	async void registerColonization(Object@ from, Object@ to);
 	async void unregisterColonization(Object@ from, Object@ to, bool cancel = true);
-	
+
 	async void registerPlanet(Planet@ pl);
 	async void unregisterPlanet(Planet@ pl);
-	
+
 	async void registerFlingBeacon(Object@ obj);
 	async void unregisterFlingBeacon(Object@ obj);
-	
+	// [[ MODIFY BASE GAME START ]]
+	async void registerFriendlyFlingBeacon(Object@ obj);
+	async void unregisterFriendlyFlingBeacon(Object@ obj);
+	// [[ MODIFY BASE GAME END ]]
+
 	async void registerStargate(Object@ obj);
 	async void unregisterStargate(Object@ obj);
 	bool isStargate(Object@ obj);
+	// [[ MODIFY BASE GAME START ]]
+	async void registerFriendlyStargate(Object@ obj);
+	async void unregisterFriendlyStargate(Object@ obj);
+	bool isFriendlyStargate(Object@ obj);
+	// [[ MODIFY BASE GAME END ]]
 
 	void registerOrbital(Orbital@ obj);
 	void unregisterOrbital(Orbital@ obj);
@@ -91,12 +113,12 @@ server:
 	void pushAutoColonizeTarget(Object& obj);
 	void registerAutoColonizer(Object& obj, int ablId);
 	void unregisterAutoColonizer(Object& obj, int ablId);
-	
+
 server:
 	void planetTick(double time);
 
 	void writeObjects(Message& msg, bool initial = false);
-	
+
 	bool get_hasPlanets();
 
 shadow:

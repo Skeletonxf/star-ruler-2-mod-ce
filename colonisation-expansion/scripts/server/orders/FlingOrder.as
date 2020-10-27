@@ -108,7 +108,9 @@ tidy class FlingOrder : Order {
 
 			//Make sure we have a beacon in range
 			if(beacon is null || beacon.position.distanceToSQ(obj.position) > FLING_BEACON_RANGE_SQ) {
-				@beacon = obj.owner.getClosestFlingBeacon(obj.position);
+				// [[ MODIFY BASE GAME START ]]
+				@beacon = obj.owner.getClosestFriendlyFlingBeacon(obj.position);
+				// [[ MODIFY BASE GAME END ]]
 				if(beacon is null || beacon.position.distanceToSQ(obj.position) > FLING_BEACON_RANGE_SQ)
 					return OS_COMPLETED;
 			}

@@ -74,3 +74,5 @@ CARD_INNOVATION_REV_DESC: <<
 
 	[i]When purchased, immediately gain a random unlock on the research grid. This can enable you to bypass hurdles and start researching in a new region of the grid that would otherwise cost a lot of research to reach.[/i]
 >>
+CLAUSE_FTL: Share FTL
+CLAUSE_FTL_DESC: All empires that have signed this treaty will synchronise their FTL technology, giving each other mutual access to Gates and Fling Beacons. 

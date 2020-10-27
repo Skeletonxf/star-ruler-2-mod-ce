@@ -52,7 +52,7 @@ final class PathNode : Serializable, Savable {
 			return pathExit.position;
 		return pathTo;
 	}
-	
+
 #section server-side
 	uint get_visionMask() const {
 		if(pathExit !is null)
@@ -211,7 +211,7 @@ double getPathDistance(const vec3d& startPos, const vec3d& endPos, array<PathNod
 			auto@ node = path[i];
 			if(node.pathEntry !is null)
 				distance += node.pathEntry.position.distanceTo(pos);
-			else 
+			else
 				distance += node.pathTo.distanceTo(pos);
 			if(node.pathExit !is null)
 				pos = node.pathExit.position;
@@ -238,7 +238,7 @@ double getPathETA(const vec3d& startPos, const vec3d& endPos, double accel, arra
 			auto@ node = path[i];
 			if(node.pathEntry !is null)
 				eta += dumbETA(node.pathEntry.position.distanceTo(pos), accel);
-			else 
+			else
 				eta += dumbETA(node.pathTo.distanceTo(pos), accel);
 			if(node.pathExit !is null)
 				pos = node.pathExit.position;
@@ -258,8 +258,10 @@ uint doPathing(array<Oddity@>& gates, Empire@ emp, const vec3d& from, const vec3
 	double shortestDist = from.distanceTo(to);
 
 	if(emp.hasStargates()) {
-		Object@ entryGate = emp.getStargate(from);
-		Object@ exitGate = emp.getStargate(to);
+		// [[ MODIFY BASE GAME START ]]
+		Object@ entryGate = emp.getFriendlyStargate(from);
+		Object@ exitGate = emp.getFriendlyStargate(to);
+		// [[ MODIFY BASE GAME END ]]
 
 		if(entryGate !is null && exitGate !is null && entryGate !is exitGate) {
 			double gateDist = from.distanceTo(entryGate.position);
@@ -306,7 +308,7 @@ uint doPathing(array<Oddity@>& gates, Empire@ emp, const vec3d& from, const vec3
 		PathNode node;
 		@node.pathEntry = shortest;
 		@node.pathExit = shortest.getLink();
-		
+
 		if(index > path.length)
 			path.length = index+1;
 		path.insertAt(index, node);
@@ -323,7 +325,7 @@ uint doPathing(array<Oddity@>& gates, Empire@ emp, const vec3d& from, const vec3
 		PathNode node;
 		@node.pathEntry = shortestGateIn;
 		@node.pathExit = shortestGateOut;
-		
+
 		if(index > path.length)
 			path.length = index+1;
 		path.insertAt(index, node);

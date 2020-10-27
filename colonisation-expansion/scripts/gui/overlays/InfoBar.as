@@ -625,7 +625,7 @@ class ActionBar : BaseGuiElement {
 			add(TrivialAction(targetHyperdrive, locale::TT_HYPERDRIVE, icons::Hyperdrive));
 		if(canJumpdrive(obj))
 			add(TrivialAction(targetJumpdrive, locale::TT_JUMPDRIVE, icons::Hyperdrive));
-		if(canFling(obj) && obj.owner.getFlingBeacon(obj.position) !is null)
+		if(canFling(obj) && obj.owner.getFriendlyFlingBeacon(obj.position) !is null) // [[ MODIFY BASE GAME ]]
 			add(TrivialAction(targetFling, locale::TT_FLING, icons::Fling));
 		if(canSlipstream(obj))
 			add(TrivialAction(targetSlipstream, locale::TT_SLIPSTREAM, icons::Slipstream));

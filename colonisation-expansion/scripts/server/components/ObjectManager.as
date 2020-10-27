@@ -184,8 +184,22 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 	Mutex flingMutex;
 	Object@[] flingBeacons;
 
+	// [[ MODIFY BASE GAME START ]]
+	// Also track all fling beacons we can use, rather than just ones
+	// we own.
+	Mutex friendlyFlingMutex;
+	Object@[] friendlyFlingBeacons;
+	// [[ MODIFY BASE GAME END ]]
+
 	Mutex gateMutex;
 	Object@[] gates;
+
+	// [[ MODIFY BASE GAME START ]]
+	// Also track all (star)gates we can use, rather than just ones
+	// we own.
+	Mutex friendlyGateMutex;
+	Object@[] friendlyGates;
+	// [[ MODIFY BASE GAME END ]]
 
 	Mutex artifMutex;
 	Artifact@[] artifacts;
@@ -244,7 +258,7 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		}
 		return closest;
 	}
-	
+
 	bool get_hasPlanets() {
 		return planets.length != 0;
 	}
@@ -316,11 +330,27 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 			yield(flingBeacons[i]);
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void getFriendlyFlingBeacons() {
+		Lock lock(friendlyFlingMutex);
+		for(uint i = 0, cnt = friendlyFlingBeacons.length; i < cnt; ++i)
+			yield(friendlyFlingBeacons[i]);
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void getStargates() {
 		Lock lock(gateMutex);
 		for(uint i = 0, cnt = gates.length; i < cnt; ++i)
 			yield(gates[i]);
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void getFriendlyStargates() {
+		Lock lock(friendlyGateMutex);
+		for(uint i = 0, cnt = friendlyGates.length; i < cnt; ++i)
+			yield(friendlyGates[i]);
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void getArtifacts() {
 		Lock lock(artifMutex);
@@ -351,6 +381,16 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		return false;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	bool isFriendlyFlingBeacon(Object@ obj) {
+		Lock lock(friendlyFlingMutex);
+		for(uint i = 0, cnt = friendlyFlingBeacons.length; i < cnt; ++i)
+			if(friendlyFlingBeacons[i] is obj)
+				return true;
+		return false;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	bool isStargate(Object@ obj) {
 		Lock lock(gateMutex);
 		for(uint i = 0, cnt = gates.length; i < cnt; ++i)
@@ -358,6 +398,16 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 				return true;
 		return false;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	bool isFriendlyStargate(Object@ obj) {
+		Lock lock(friendlyGateMutex);
+		for(uint i = 0, cnt = friendlyGates.length; i < cnt; ++i)
+			if(friendlyGates[i] is obj)
+				return true;
+		return false;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void getQueuedColonizations(Empire& emp) {
 		ReadLock lock(plMutex);
@@ -371,9 +421,9 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 				yield(q.to);
 		}
 	}
-	
+
 	bool get_hasFlingBeacons() {
-		return flingBeacons.length != 0;
+		return friendlyFlingBeacons.length != 0; // [[ MODIFY BASE GAME ]]
 	}
 
 	Object@ getFlingBeacon(vec3d position) {
@@ -385,6 +435,18 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		}
 		return null;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	Object@ getFriendlyFlingBeacon(vec3d position) {
+		Lock lock(friendlyFlingMutex);
+		for(uint i = 0, cnt = friendlyFlingBeacons.length; i < cnt; ++i) {
+			Object@ beacon = friendlyFlingBeacons[i];
+			if(beacon.position.distanceToSQ(position) < FLING_BEACON_RANGE_SQ)
+				return beacon;
+		}
+		return null;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	Object@ getClosestFlingBeacon(vec3d position) {
 		Lock lock(flingMutex);
@@ -400,6 +462,23 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		}
 		return nearest;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	Object@ getClosestFriendlyFlingBeacon(vec3d position) {
+		Lock lock(friendlyFlingMutex);
+		Object@ nearest;
+		double dist = 0;
+		for(uint i = 0, cnt = friendlyFlingBeacons.length; i < cnt; ++i) {
+			Object@ beacon = friendlyFlingBeacons[i];
+			double d = beacon.position.distanceToSQ(position);
+			if(nearest is null || d < dist) {
+				@nearest = beacon;
+				dist = d;
+			}
+		}
+		return nearest;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	Object@ getClosestFlingBeacon(Object& obj) {
 		Lock lock(flingMutex);
@@ -418,6 +497,25 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		return nearest;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	Object@ getClosestFriendlyFlingBeacon(Object& obj) {
+		Lock lock(friendlyFlingMutex);
+		Object@ nearest;
+		double dist = 0;
+		for(uint i = 0, cnt = friendlyFlingBeacons.length; i < cnt; ++i) {
+			Object@ beacon = friendlyFlingBeacons[i];
+			if(beacon is obj)
+				continue;
+			double d = beacon.position.distanceToSQ(obj.position);
+			if(nearest is null || d < dist) {
+				@nearest = beacon;
+				dist = d;
+			}
+		}
+		return nearest;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	Object@ getStargate(vec3d position) {
 		Lock lock(gateMutex);
 		Object@ best;
@@ -432,6 +530,23 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		}
 		return best;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	Object@ getFriendlyStargate(vec3d position) {
+		Lock lock(friendlyGateMutex);
+		Object@ best;
+		double bestDist = INFINITY;
+		for(uint i = 0, cnt = friendlyGates.length; i < cnt; ++i) {
+			Object@ gate = friendlyGates[i];
+			double d = gate.position.distanceToSQ(position);
+			if(d < bestDist) {
+				bestDist = d;
+				@best = gate;
+			}
+		}
+		return best;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void load(SaveFile& file) {
 		uint cnt = 0;
@@ -455,10 +570,24 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		for(uint i = 0; i < cnt; ++i)
 			@flingBeacons[i] = file.readObject();
 
+		// [[ MODIFY BASE GAME START ]]
+		file >> cnt;
+		friendlyFlingBeacons.length = cnt;
+		for(uint i = 0; i < cnt; ++i)
+			@friendlyFlingBeacons[i] = file.readObject();
+		// [[ MODIFY BASE GAME END ]]
+
 		file >> cnt;
 		gates.length = cnt;
 		for(uint i = 0; i < cnt; ++i)
 			@gates[i] = file.readObject();
+
+		// [[ MODIFY BASE GAME START ]]
+		file >> cnt;
+		friendlyGates.length = cnt;
+		for(uint i = 0; i < cnt; ++i)
+			@friendlyGates[i] = file.readObject();
+		// [[ MODIFY BASE GAME END ]]
 
 		if(file >= SV_0029) {
 			file >> cnt;
@@ -548,10 +677,24 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		for(uint i = 0; i < cnt; ++i)
 			file << flingBeacons[i];
 
+		// [[ MODIFY BASE GAME START ]]
+		cnt = friendlyFlingBeacons.length;
+		file << cnt;
+		for(uint i = 0; i < cnt; ++i)
+			file << friendlyFlingBeacons[i];
+		// [[ MODIFY BASE GAME END ]]
+
 		cnt = gates.length;
 		file << cnt;
 		for(uint i = 0; i < cnt; ++i)
 			file << gates[i];
+
+		// [[ MODIFY BASE GAME START ]]
+		cnt = friendlyGates.length;
+		file << cnt;
+		for(uint i = 0; i < cnt; ++i)
+			file << friendlyGates[i];
+		// [[ MODIFY BASE GAME END ]]
 
 		cnt = artifacts.length;
 		file << cnt;
@@ -637,30 +780,99 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		objDelta = true;
 	}
 
-	void registerFlingBeacon(Object@ obj) {
+	void registerFlingBeacon(Empire& emp, Object@ obj) {
 		Lock lock(flingMutex);
 		flingBeacons.insertLast(obj);
 		objDelta = true;
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
+			Empire@ empire = getEmpire(i);
+			// don't filter out emp == empire, we want to track ally + self
+			if (empire.valid && empire.major) {
+				if (empire is emp || ((empire.FTLShareMask & emp.FTLShareMask.value) != 0)) {
+					empire.registerFriendlyFlingBeacon(obj);
+				}
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
-	void unregisterFlingBeacon(Object@ obj) {
+	void unregisterFlingBeacon(Empire& emp, Object@ obj) {
 		Lock lock(flingMutex);
 		flingBeacons.remove(obj);
 		objDelta = true;
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
+			Empire@ empire = getEmpire(i);
+			// don't filter out emp == empire, we want to track ally + self
+			if (empire.valid && empire.major) {
+				empire.unregisterFriendlyFlingBeacon(obj);
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void registerFriendlyFlingBeacon(Empire& emp, Object@ obj) {
+		Lock lock(friendlyFlingMutex);
+		friendlyFlingBeacons.insertLast(obj);
+		objDelta = true;
+	}
+
+	void unregisterFriendlyFlingBeacon(Empire& emp, Object@ obj) {
+		Lock lock(friendlyFlingMutex);
+		friendlyFlingBeacons.remove(obj);
+		objDelta = true;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void registerStargate(Empire& emp, Object@ obj) {
 		emp.PathId += 1;
 		Lock lock(gateMutex);
 		gates.insertLast(obj);
 		objDelta = true;
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
+			Empire@ empire = getEmpire(i);
+			// don't filter out emp == empire, we want to track ally + self
+			if (empire.valid && empire.major) {
+				if (empire is emp || ((empire.FTLShareMask & emp.FTLShareMask.value) != 0)) {
+					empire.registerFriendlyStargate(obj);
+				}
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
-	void unregisterStargate(Object@ obj) {
+	void unregisterStargate(Empire& emp, Object@ obj) {
 		Lock lock(gateMutex);
 		gates.remove(obj);
 		objDelta = true;
+		// [[ MODIFY BASE GAME START ]]
+		for(uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
+			Empire@ empire = getEmpire(i);
+			// don't filter out emp == empire, we want to track ally + self
+			if (empire.valid && empire.major) {
+				empire.unregisterFriendlyStargate(obj);
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void registerFriendlyStargate(Empire& emp, Object@ obj) {
+		emp.PathId += 1;
+		Lock lock(friendlyGateMutex);
+		friendlyGates.insertLast(obj);
+		objDelta = true;
+	}
+
+	void unregisterFriendlyStargate(Empire& emp, Object@ obj) {
+		Lock lock(friendlyGateMutex);
+		friendlyGates.remove(obj);
+		objDelta = true;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void registerArtifact(Artifact@ obj) {
 		Lock lock(artifMutex);
@@ -675,7 +887,7 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 	}
 
 	bool hasStargates() {
-		return gates.length != 0;
+		return friendlyGates.length != 0; // [[ MODIFY BASE GAME ]]
 	}
 
 	double get_globalDefenseRate() {
@@ -898,7 +1110,7 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 			}
 		}
 	}
-	
+
 	Object@ findFreeResource(Empire& emp, AutoImport@ imp, vec3d closeTo) {
 		double dist = INFINITY;
 		Object@ found;
@@ -1066,7 +1278,7 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 	void checkAutoImport(Empire& emp, Object@ from) {
 		if(autoImports.length == 0)
 			return;
-		
+
 		if(!from.nativeResourceUsable[0])
 			return;
 		const ResourceType@ res = getResource(from.primaryResourceType);
@@ -1145,10 +1357,10 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 			return;
 		}
 	}
-	
+
 	void cancelAutoImportTo(Empire& emp, Object& into) {
 		WriteLock lock(plMutex);
-		
+
 		for(int i = int(autoImports.length) - 1; i >= 0; --i) {
 			AutoImport@ imp = autoImports[i];
 			if(!imp.handled && imp.to is into) {
@@ -1529,6 +1741,16 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 					msg << flingBeacons[i];
 			}
 
+			// [[ MODIFY BASE GAME START ]]
+			{
+				Lock lock(friendlyFlingMutex);
+				cnt = friendlyFlingBeacons.length;
+				msg << cnt;
+				for(uint i = 0; i < cnt; ++i)
+					msg << friendlyFlingBeacons[i];
+			}
+			// [[ MODIFY BASE GAME END ]]
+
 			{
 				Lock lock(gateMutex);
 				cnt = gates.length;
@@ -1536,6 +1758,16 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 				for(uint i = 0; i < cnt; ++i)
 					msg << gates[i];
 			}
+
+			// [[ MODIFY BASE GAME START ]]
+			{
+				Lock lock(friendlyGateMutex);
+				cnt = friendlyGates.length;
+				msg << cnt;
+				for(uint i = 0; i < cnt; ++i)
+					msg << friendlyGates[i];
+			}
+			// [[ MODIFY BASE GAME END ]]
 
 			{
 				Lock lock(artifMutex);

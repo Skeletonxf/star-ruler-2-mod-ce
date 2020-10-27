@@ -4,7 +4,6 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Allow shields on supports
-  - Try to make a Gate/Fling sharing treaty
   - Fix vision being granted on things moving through deep space when the player doesn't have a telescope
     - Planets with engines
     - Asteroids being tugged?

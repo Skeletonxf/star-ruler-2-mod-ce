@@ -716,6 +716,13 @@ class Relations : AIComponent {
 					if(other !is null)
 						accept = !other.isThreat && !other.atWar && other.hate <= 10.0;
 				}
+				// [[ MODIFY BASE GAME START ]]
+				else if (respondTreaty.hasClause("FTLClause")) {
+					//This is an FTL sharing treaty
+					if(other !is null)
+						accept = !other.isThreat && !other.atWar && other.hate <= 10.0;
+				}
+				// [[ MODIFY BASE GAME END ]]
 
 				if(accept) {
 					if(log)
@@ -781,6 +788,9 @@ class Relations : AIComponent {
 					treaty.addClause(getInfluenceClauseType("AllianceClause"));
 					treaty.addClause(getInfluenceClauseType("VisionClause"));
 					treaty.addClause(getInfluenceClauseType("MutualDefenseClause"));
+					// [[ MODIFY BASE GAME START ]]
+					treaty.addClause(getInfluenceClauseType("FTLClause"));
+					// [[ MODIFY BASE GAME END ]]
 
 					if(treaty.canInvite(ai.empire, other.empire)) {
 						treaty.inviteMask = other.empire.mask;

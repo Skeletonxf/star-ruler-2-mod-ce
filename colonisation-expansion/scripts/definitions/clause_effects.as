@@ -7,6 +7,85 @@ import resources;
 import influence_global;
 #section all
 
+// [[ MODIFY BASE GAME START ]]
+class ShareFTL : InfluenceClauseHook {
+	Document doc("Shares passive FTL (Gates+Fling) from either of the parties in a treaty to the other (or both).");
+	Argument starter("To Starter", AT_Boolean, "True", doc="Whether the receiver shares vision with the starter.");
+	Argument other("To Other", AT_Boolean, "True", doc="Whether the starter shares vision with the receiver.");
+
+#section server
+	void onStart(Treaty@ treaty, Clause@ clause) const override {
+		onTick(treaty, clause, 0.0);
+		// Refresh all IsFlingBeacon and IsGate effects
+		refreshObjectManagedFTL(treaty);
+	}
+
+	void onTick(Treaty@ treaty, Clause@ clause, double time) const override {
+		// Apply FTL mask
+		uint mask = 0;
+		if(treaty.leader !is null)
+			mask = treaty.leader.mask;
+		for(uint i = 0, cnt = treaty.joinedEmpires.length; i < cnt; ++i)
+			mask |= treaty.joinedEmpires[i].mask;
+
+		if(starter.boolean && treaty.leader !is null)
+			treaty.leader.FTLShareMask |= mask;
+		if(other.boolean) {
+			for(uint i = 0, cnt = treaty.joinedEmpires.length; i < cnt; ++i) {
+				if(treaty.joinedEmpires[i] !is treaty.leader)
+					treaty.joinedEmpires[i].FTLShareMask |= mask;
+			}
+		}
+	}
+
+	// Reregisters all signed empires's gates and fling beacons to
+	// update the ObjectManager's lists
+	void refreshObjectManagedFTL(Treaty@ treaty) {
+		for(uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
+			Empire@ emp = getEmpire(i);
+			{
+				// Reregister all Fling Beacons
+				auto@ data = emp.getFlingBeacons();
+				Object@ obj;
+				while(receive(data, obj)) {
+					if(obj is null)
+						continue;
+					emp.unregisterFlingBeacon(obj);
+					emp.registerFlingBeacon(obj);
+				}
+			}
+			{
+				// Reregister all (star)Gates
+				auto@ data = emp.getStargates();
+				Object@ obj;
+				while(receive(data, obj)) {
+					if(obj is null)
+						continue;
+					emp.unregisterStargate(obj);
+					emp.registerStargate(obj);
+				}
+			}
+		}
+	}
+
+	void onEnd(Treaty@ treaty, Clause@ clause) const override {
+		if(treaty.leader !is null)
+			treaty.leader.FTLShareMask.value = treaty.leader.mask;
+		for(uint i = 0, cnt = treaty.joinedEmpires.length; i < cnt; ++i)
+			treaty.joinedEmpires[i].FTLShareMask.value = treaty.joinedEmpires[i].mask;
+		// Refresh all IsFlingBeacon and IsGate effects
+		refreshObjectManagedFTL(treaty);
+	}
+
+	void onLeave(Treaty@ treaty, Clause@ clause, Empire@ left) const override {
+		left.FTLShareMask.value = left.mask;
+		onEnd(treaty, clause);
+		onTick(treaty, clause, 0.0);
+	}
+#section all
+}
+// [[ MODIFY BASE GAME END ]]
+
 //ShareVision(To Starter = True, To Other = True)
 // Share empire vision between the empires.
 /// If <To Starter> is true, the treaty starter gets vision.

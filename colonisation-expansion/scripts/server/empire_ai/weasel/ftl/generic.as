@@ -398,21 +398,6 @@ class FTLGeneric : FTL {
 		return closest;
 	}
 
-	/**
-	 * Gets the distance from any position to the closest fling region
-	 * TODO: Consider wormholes/gates in distance estimates
-	 */
-	double getClosestFlingRegionDistance(const vec3d& position) {
-		double minDist = INFINITY;
-		for(uint i = 0, cnt = trackedFling.length; i < cnt; ++i) {
-			double d = trackedFling[i].region.position.distanceTo(position);
-			if(d < minDist) {
-				minDist = d;
-			}
-		}
-		return minDist;
-	}
-
 	void assignFlingTo(FlingRegion@ track, Object@ closest) {
 		unusedFling.remove(closest);
 		@track.obj = closest;
@@ -667,7 +652,12 @@ class FTLGeneric : FTL {
 
 	// Not a hyperdrive method but fits here best
 	double getFlingETA(Object& obj, const vec3d& position) {
-		double closestBeacon = getClosestFlingRegionDistance(obj.position);
+		// ETA includes all fling beacons we can use, not just ones we built
+		Object@ nearest = obj.owner.getClosestFriendlyFlingBeacon(obj.position);
+		if (nearest is null) {
+			return INFINITY;
+		}
+		double closestBeacon = nearest.position.distanceTo(obj.position);
 		if (closestBeacon < FLING_BEACON_RANGE) {
 			return 15;
 		} else {
@@ -937,8 +927,8 @@ class FTLGeneric : FTL {
 		}
 
 		if (travelMethod == TRAVEL_FLING) {
-			//Make sure we're in range of a beacon
-			Object@ beacon = getClosestFling(ord.obj.position);
+			//Make sure we're in range of a beacon we can use
+			Object@ beacon = ord.obj.owner.getClosestFriendlyFlingBeacon(ord.obj.position);
 			if (beacon is null || beacon.position.distanceTo(ord.obj.position) > FLING_BEACON_RANGE) {
 				return F_Pass;
 			}
@@ -1098,9 +1088,9 @@ class FTLGeneric : FTL {
 			Object@ obj;
 			while(receive(data, obj)) {
 				if(obj is null)
-				continue;
+					continue;
 				if(!trackingBeacon(obj))
-				unusedFling.insertLast(obj);
+					unusedFling.insertLast(obj);
 			}
 		}
 		{
@@ -1109,9 +1099,9 @@ class FTLGeneric : FTL {
 			Object@ obj;
 			while(receive(data, obj)) {
 				if(obj is null)
-				continue;
+					continue;
 				if(!trackingGate(obj))
-				unassignedGate.insertLast(obj);
+					unassignedGate.insertLast(obj);
 			}
 		}
 	}

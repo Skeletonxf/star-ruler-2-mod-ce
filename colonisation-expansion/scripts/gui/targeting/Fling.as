@@ -93,7 +93,7 @@ class FlingDisplay : PointDisplay {
 			toString(int(ht.cost)) + " " + locale::FTL
 			 + " (" + toString(ht.distance, 0) + "u)",
 			color);
-		
+
 		if(ht.beacon is null) {
 			font::OpenSans_11_Italic.draw(mousePos + vec2i(16, 16),
 				locale::NEED_FLING_BEACON,
@@ -136,7 +136,7 @@ class FlingCB : TargetCallback {
 	void call(TargetMode@ mode) override {
 		if(beacon is null)
 			return;
-		
+
 		bool anyFlung = false;
 		Object@[] selection = selectedObjects;
 		auto@ positions = getFleetTargetPositions(selection, mode.position, isFTL=true);
@@ -147,7 +147,7 @@ class FlingCB : TargetCallback {
 			obj.addFlingOrder(beacon, positions[i], shiftKey || obj.inFTL);
 			anyFlung = true;
 		}
-		
+
 		if(anyFlung)
 			sound::order_fling.play(priority=true);
 	}
@@ -158,7 +158,9 @@ void targetFling() {
 	if(sel.owner is null || !sel.owner.valid)
 		return;
 
-	Object@ beacon = sel.owner.getClosestFlingBeacon(sel);
+	// [[ MODIFY BASE GAME START ]]
+	Object@ beacon = sel.owner.getClosestFriendlyFlingBeacon(sel);
+	// [[ MODIFY BASE GAME END ]]
 
 	FlingTarget targ(beacon, selectedObject, max(getSelectionScale(), 1),
 					beacon !is null && beacon.position.distanceToSQ(sel.position) <= FLING_BEACON_RANGE_SQ);

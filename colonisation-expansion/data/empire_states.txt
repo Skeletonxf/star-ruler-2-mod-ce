@@ -52,6 +52,9 @@ visible:
 	synced bool GlobalTrade = false
 	synced locked_int ContactMask = 0
 	synced locked_int TradeMask = 0
+	// [[ MODIFY BASE GAME START ]]
+	synced locked_int FTLShareMask = 0
+	// [[ MODIFY BASE GAME END ]]
 	synced Empire SubjugatedBy
 	synced locked_int PathId = 1
 

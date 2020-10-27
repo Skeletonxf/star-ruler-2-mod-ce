@@ -1,0 +1,11 @@
+Clause: FTLClause
+	Name: #CLAUSE_FTL
+	Description: #CLAUSE_FTL_DESC
+
+	Icon: ActionBarIcons::7
+
+	Free Clause: True
+	Default Clause: True
+	Team Clause: True
+
+	ShareFTL()
