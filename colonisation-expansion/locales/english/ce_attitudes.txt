@@ -1,0 +1,2 @@
+ATT_PROGRESSIVE_REV_L5: Reduces the mass of all your ships and stations by 15%.
+ATT_XENOPHOBIC_REV_PROGRESS: Maintain [b]$1 Outpost(s)[/b].

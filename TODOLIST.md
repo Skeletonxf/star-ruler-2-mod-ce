@@ -3,6 +3,8 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Make Genocide leverage based penalty
+  - Port Dalo's palace exploit fixes
   - Allow shields on supports
   - Fix vision being granted on things moving through deep space when the player doesn't have a telescope
     - Planets with engines

@@ -183,4 +183,8 @@ visible:
 	attribute double EmpireRepairFactor = 1;
 	attribute double EmpireRepairMassFactor = 1;
 	// [[ MODIFY BASE GAME END ]]
+	// [[ MODIFY BASE GAME START ]]
+	// Attitude tweaks
+	attribute double ActiveOutposts = 0;
+	// [[ MODIFY BASE GAME END ]]
 }
