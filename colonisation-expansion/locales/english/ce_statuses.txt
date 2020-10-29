@@ -10,11 +10,7 @@ PARASITE_RAZE: Razing Planet
 PARASITE_RAZE_DESC: Planet will temporarily produce massive amounts of resources.
 PARASITE_RAZE_IN_PROGRESS: Razing
 BATTLEWORLD_PLANET: Battleworlder Planet
-GENOCIDE_STATUS_DESC: <<
-	An entire civilisation was eradicated here
-
-	-2 [img=ResourceIcon::1;20/]  Influence stake
->>
+GENOCIDE_STATUS_DESC: An entire civilisation was eradicated here
 STATUS_MOTHERSHIP_POPULATION_DESC: <<
 	This is a mothership, and is currently carrying population.
 

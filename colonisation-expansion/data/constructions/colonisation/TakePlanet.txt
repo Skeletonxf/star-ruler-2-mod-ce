@@ -2,10 +2,11 @@ Construction: TakePlanet
 	Time Cost: 120
 	Build Cost: 500
 	Name: Take over planet
-	Description: Eradicate the natives from this planet. This will give us full control over the planet's resource but leave a lasting influence loss.
+	Description: #TAKE_PLANET_DESC
 	Icon: ConditionIcons::10
 	Category: Dillema
 
+	CE_influence_hooks::GrantOthersLeverage(20)
 	OnStart(RemoveStatus(PossibleNativeLife))
 	RemoveStatus(RemovingNativeLife)
 	OnCancel(RemoveStatus(RemovingNativeLife))

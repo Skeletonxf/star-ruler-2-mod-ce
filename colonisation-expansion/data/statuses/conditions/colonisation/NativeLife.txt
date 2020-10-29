@@ -15,6 +15,7 @@ Status: NativeLife
 	IfHaveTrait(Ancient, OnEnable(AddStatus(AncientGenocide)))
 	IfHaveTrait(Ancient, RemoveAllStatus(NativeLife))
 	IfHaveTrait(Ancient, RemoveAllStatus(PossibleNativeLife))
+	IfHaveTrait(Ancient, OnEnable(CE_influence_hooks::GrantOthersLeverage(6)))
 	IfNotHaveTrait(StarChildren, IfNotHaveTrait(Ancient, ModBuildingConstructRate(-1)))
 	IfNotHaveTrait(StarChildren, ModPopulationGrowth(-1))
 	IfNotHaveTrait(StarChildren, ModTileDevelopRate(-1))
