@@ -187,4 +187,8 @@ visible:
 	// Attitude tweaks
 	attribute double ActiveOutposts = 0;
 	// [[ MODIFY BASE GAME END ]]
+	// [[ MODIFY BASE GAME START ]]
+	// Stop diplomatic victory if the Palace goes into deep space
+	attribute double SenatorialPalaceActive = 0;
+	// [[ MODIFY BASE GAME END ]]
 }

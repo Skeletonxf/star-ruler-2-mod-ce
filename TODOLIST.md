@@ -3,14 +3,12 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Port Dalo's palace exploit fixes
   - Allow shields on supports
   - Fix vision being granted on things moving through deep space when the player doesn't have a telescope
     - Planets with engines
     - Asteroids being tugged?
   - Stop Battleworlders transfering resources onto a planet with native life so they don't delete them by accident during the uplift
   - Reduce the points the Parasite trait gives for razing planets
-  - Give leverage to everyone when a player genocides to remind them that genociding is like **really** not a nice thing
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Extend the design stats changes to apply per hex for First build mass increases
   - Constructions for Gas Giants to make them more useful late game
