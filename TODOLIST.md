@@ -31,7 +31,6 @@ This is primarily intended as a developer focused project planning list, rather 
       - Extend the hooks to Constructions and do the same
   - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
     - The code looks like it does consider planet support strength, need to investigate further
-  - Replace the default miner ship with one using the mining hull
   - Teach AI to not put comets on worlds being razed
   - Teach AI to melt ice
   - Teach AI to make most of the constructions by extending the building hint code
