@@ -18,11 +18,9 @@ import empire_ai.weasel.Orbitals;
 import resources;
 //import construction.Constructible;
 
-// FIXME: Avoid hack'n'slashing the Support Order and Staging Base classes
-// from the Military component, instead, make them have a proper Interface
-// to expose to outside modules like the Military component itself now does.
-
-// TODO: Actually rewrite, rather than just copy and paste
+// TODO: Maybe make a proper interface for Support Order and Staging Base
+// as these child classes are 'implementing' a very leaky interface that
+// could blow up if other code gets written making more assumptions.
 
 class SupportOrder2 : SupportOrder {
 	/* DesignTarget@ design;
@@ -848,13 +846,41 @@ class Military2 : AIComponent, IMilitary {
 		}
 		spentMoney = false;
 
-		// make a new flagship if we have money
-		// this might be a bit overkill in willingness to make new flagships
+		// check how many flagships we have that are not fighting
+		// and not even close to full support capacity
+		uint fleetsNeedingSupportCapacity = 0;
+		for(uint i = 0, cnt = fleets.fleets.length; i < cnt; ++i) {
+			auto@ flAI = fleets.fleets[i];
+			if (flAI.fleetClass != FC_Combat)
+				continue;
+
+			bool inCombat = flAI.obj !is null && flAI.obj.inCombat;
+			if (flAI.filled < 0.75 && !inCombat) {
+				fleetsNeedingSupportCapacity += 1;
+			}
+		}
+
+		// Make a new flagship if we have money, and don't have too many
+		// flagships that need to build up support capacity (as we would
+		// rather spent money at the end of the budget cycle filling them up).
+		// This might be a bit overkill in willingness to make new flagships
 		// as the only stopping condition here is running out of money
 		// it also might be better to allow parallel construction based
-		// on how many factories we have instead of income
+		// on how many factories we have instead of income.
 		bool makeNewFlagship = (availableMoney > 500 || fleets.fleets.length == 0)
-			&& fleets.fleets.length < ai.behavior.maxActiveFleets;
+			&& fleets.fleets.length < ai.behavior.maxActiveFleets
+			&& fleetsNeedingSupportCapacity <= 3;
+
+		budget.checkedMilitarySpending = true;
+
+		if (!makeNewFlagship) {
+			spentMoney = false;
+			if (log) {
+				ai.print("Not building more flagships.");
+				ai.print("Budget is "+availableMoney+"k / "+availableMaint+"k.");
+			}
+			return;
+		}
 
 		Factory@ factory = construction.primaryFactory;
 
