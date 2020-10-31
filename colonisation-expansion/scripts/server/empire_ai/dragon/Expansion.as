@@ -111,6 +111,34 @@ class PotentialColonizeSource : PotentialColonize {
 	}
 }
 
+/**
+ * Subclass of ColonizeData, with save/load methods for use here.
+ */
+class ColonizeData2 : ColonizeData {
+	/* int id = -1;
+	Planet@ target;
+	Planet@ colonizeFrom;
+	bool completed = false;
+	bool canceled = false;
+	double checkTime = -1.0; */
+
+	void save(SaveFile& file) {
+		file << target;
+		file << colonizeFrom;
+		file << completed;
+		file << canceled;
+		file << checkTime;
+	}
+
+	void load(SaveFile& file) {
+		file >> target;
+		file >> colonizeFrom;
+		file >> completed;
+		file >> canceled;
+		file >> checkTime;
+	}
+};
+
 class ColonizeTree {
 	// TODO, want to track what planet we are colonizing resources for here
 	// so that if we lose the planet then we can stop colonizing all its
@@ -122,6 +150,12 @@ class ColonizeForest {
 	// TODO
 	array<ColonizeTree@> urgent;
 	array<ColonizeTree@> queue;
+
+	void save(SaveFile& file) {
+	}
+
+	void load(SaveFile& file) {
+	}
 }
 
 /**
@@ -151,12 +185,15 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	int nextColonizeId = 0;
 
 	// Things we might want to colonize
+	// Used by the Ancient component, at least for now.
+	// Long term would like to make this flexible enough to play Ancient well
 	array<PotentialColonize@> potentialColonizations;
+
 	// Things in the queue for colonizing
 	ColonizeForest@ queue;
 	// Things we need a colonize source to colonize with
 	array<ColonizeData@> awaitingSource;
-	// Things we are colonizing
+	// Things we are colonizing, includes things that are also in awaitingSource
 	array<ColonizeData@> colonizing;
 
 	array<ColonizeData@> loadIds;
@@ -167,11 +204,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@systems = cast<Systems>(ai.systems);
 		@budget = cast<Budget>(ai.budget);
 		@creeping = cast<Creeping>(ai.creeping);
+
+		@queue = ColonizeForest();
 	}
 
 	void save(SaveFile& file) {
-		Colonization dummy; // FIXME: use a custom ColonizeData
-
 		file << nextColonizeId;
 		limits.save(file);
 
@@ -179,18 +216,13 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		file << cnt;
 		for(uint i = 0; i < cnt; ++i) {
 			saveColonize(file, colonizing[i]);
-			colonizing[i].save(dummy, file);
+			cast<ColonizeData2>(colonizing[i]).save(file);
 		}
 
-		//cnt = queue.length;
-		//file << cnt;
-		//for(uint i = 0; i < cnt; ++i)
-		//	saveColonizeQueue(queue[i], this, file);
+		queue.save(file);
 	}
 
 	void load(SaveFile& file) {
-		Colonization dummy; // FIXME: use a custom ColonizeData
-
 		file >> nextColonizeId;
 		limits.load(file);
 
@@ -199,7 +231,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		for(uint i = 0; i < cnt; ++i) {
 			auto@ data = loadColonize(file);
 			if(data !is null) {
-				data.load(dummy, file);
+				cast<ColonizeData2>(data).load(file);
 				if(data.target !is null) {
 					colonizing.insertLast(data);
 					if(data.colonizeFrom is null)
@@ -210,16 +242,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				}
 			}
 			else {
-				ColonizeData().load(dummy, file);
+				ColonizeData2().load(file);
 			}
 		}
 
-		//file >> cnt;
-		//queue.length = cnt;
-		//for(uint i = 0; i < cnt; ++i) {
-		//	@queue[i] = ColonizeQueue();
-		//	loadColonizeQueue(queue[i], this, file);
-		//}
+		queue.load(file);
 	}
 
 	void tick(double time) override {
@@ -309,6 +336,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		return true;
 	}
 
+	// Puts a resource spec into the colonise queue
 	void queueColonizeLowPriority(ResourceSpec& spec, bool place = true) {
 		//ColonizeQueue q;
 		//@q.spec = spec;
@@ -318,7 +346,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		//return q;
 	}
 
-	// Places a resource spec into the colonize queue, returning the queue item
+	// Places a resource spec into the colonize queue
 	void queueColonizeHighPriority(ResourceSpec& spec, bool place = true) {
 		//ColonizeQueue q;
 		//@q.spec = spec;
@@ -346,7 +374,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			if(loadIds[i].id == id)
 				return loadIds[i];
 		}
-		ColonizeData data;
+		ColonizeData2 data;
 		data.id = id;
 		loadIds.insertLast(data);
 		return data;
@@ -364,14 +392,13 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		if(log)
 			ai.print("queue colonization", pl);
 
-		ColonizeData data;
+		ColonizeData2 data;
 		data.id = nextColonizeId++;
 		@data.target = pl;
 
 		budget.spend(BT_Colonization, 0, ai.behavior.colonizeBudgetCost);
 
 		colonizing.insertLast(data);
-		// TODO: Pick a source if we are able to
 		awaitingSource.insertLast(data);
 		return data;
 	}
@@ -440,6 +467,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// Getters and setters for the Development and Colonization interfaces
 	// we need to implement for other components to interact with us
 
+	// Returns the AwaitingSource list
 	array<ColonizeData@> get_AwaitingSource() {
 		return awaitingSource;
 	}

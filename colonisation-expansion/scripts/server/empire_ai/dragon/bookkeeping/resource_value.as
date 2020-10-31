@@ -43,8 +43,8 @@ class ResourceValuator {
 		if (resource.level == 2) {
 			value += 3;
 		}
-		// tier 1 resources will do if we completely out of options
-		if (resource.level == 2) {
+		// tier 1 resources will do if we are completely out of options
+		if (resource.level == 1) {
 			value += 1;
 		}
 		// Resources with pressure are generally more helpful than ones

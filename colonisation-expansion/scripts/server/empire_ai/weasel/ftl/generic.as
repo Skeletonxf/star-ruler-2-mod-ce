@@ -154,7 +154,7 @@ class FTLGeneric : FTL {
 	IMilitary@ military;
 	Designs@ designs;
 	Construction@ construction;
-	Development@ development;
+	IDevelopment@ development;
 	Systems@ systems;
 	Budget@ budget;
 	Fleets@ fleets;
@@ -199,7 +199,7 @@ class FTLGeneric : FTL {
 		@military = cast<IMilitary>(ai.military);
 		@designs = cast<Designs>(ai.designs);
 		@construction = cast<Construction>(ai.construction);
-		@development = cast<Development>(ai.development);
+		@development = cast<IDevelopment>(ai.development);
 		@systems = cast<Systems>(ai.systems);
 		@budget = cast<Budget>(ai.budget);
 		@fleets = cast<Fleets>(ai.fleets);
@@ -1019,11 +1019,11 @@ class FTLGeneric : FTL {
 			double duration = obj.blueprint.design.average(SV_SlipstreamDuration);
 			mostSSCost += baseCost / duration;
 		}
-		development.aimFTLStorage = max(
+		development.AimFTLStorage = max(
 			highestCost / (1.0 - ai.behavior.ftlReservePctCritical - ai.behavior.ftlReservePctNormal),
 			mostSSCost);
 		// Try to have more income as FTL storage is increased
-		development.aimFTLIncome = 1 + (max(development.aimFTLStorage - 250, 0.0) / 500);
+		development.AimFTLIncome = 1 + (max(development.AimFTLStorage - 250, 0.0) / 500);
 	}
 
 	void designGateIfNone() {
@@ -1244,8 +1244,8 @@ class FTLGeneric : FTL {
 
 	void detectImportantPlanetBuildLocations() {
 		//Detect new important planets to build beacons at
-		for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
-			auto@ focus = development.focuses[i];
+		for(uint i = 0, cnt = development.Focuses.length; i < cnt; ++i) {
+			auto@ focus = development.Focuses[i];
 			Region@ reg = focus.obj.region;
 			if(reg is null)
 				continue;
@@ -1263,8 +1263,8 @@ class FTLGeneric : FTL {
 		}
 
 		//Detect new important planets to build gates at
-		for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
-			auto@ focus = development.focuses[i];
+		for(uint i = 0, cnt = development.Focuses.length; i < cnt; ++i) {
+			auto@ focus = development.Focuses[i];
 			Region@ reg = focus.obj.region;
 			if(reg is null)
 				continue;
@@ -1282,8 +1282,8 @@ class FTLGeneric : FTL {
 		}
 
 		//Detect new important planets to build SS generator at
-		for(uint i = 0, cnt = development.focuses.length; i < cnt; ++i) {
-			auto@ focus = development.focuses[i];
+		for(uint i = 0, cnt = development.Focuses.length; i < cnt; ++i) {
+			auto@ focus = development.Focuses[i];
 			Region@ reg = focus.obj.region;
 			if(reg is null)
 				continue;

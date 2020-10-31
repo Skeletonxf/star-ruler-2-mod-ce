@@ -13,7 +13,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Extend the design stats changes to apply per hex for First build mass increases
   - Constructions for Gas Giants to make them more useful late game
   - Make jumpdrive tractoring factor in tractor beam mass increase
-  - Make new Military component hold off on building new carriers if there are already several waiting to fill up support capacity at staging bases
   - battleworld QoL changes
     - finish port to CP
     - Fix bug with outposts getting repeat entries in the in-combat quickbar

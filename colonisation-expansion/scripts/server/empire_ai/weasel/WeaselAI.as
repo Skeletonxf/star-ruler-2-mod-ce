@@ -262,7 +262,8 @@ final class AIBehavior {
 	// [[ MODIFY BASE GAME START ]]
 	//Whether to declare war on sight and never accept peace
 	bool hostile = false;
-	//Whether to enable Dragon AI components
+	// Whether to enable experimental Dragon AI components (non experimental ones
+	// are always enabled if the difficulty is set to hard)
 	bool dragonComponents = false;
 	// [[ MODIFY BASE GAME END ]]
 	//How much stronger we need to be than someone to declare war out of hatred
@@ -437,16 +438,31 @@ final class AI : AIController, Savable {
 		@budget = add(createBudget());
 		@planets = add(createPlanets());
 		@resources = add(createResources());
-		@colonization = add(createColonization());
+		// [[ MODIFY BASE GAME START ]]
+		if (behavior.dragonComponents && false) {
+			print("Enabling Dragon Expansion component");
+			@colonization = add(createExpansion());
+		} else {
+			@colonization = add(createColonization());
+		}
+		// [[ MODIFY BASE GAME END ]]
 		@systems = add(createSystems());
 		@fleets = add(createFleets());
 		@scouting = add(createScouting());
-		@development = add(createDevelopment());
+		// [[ MODIFY BASE GAME START ]]
+		if (behavior.dragonComponents && false) {
+			// dragon AI has a shared colonisation/development component,
+			// so set the field but don't add it to the components list again
+			@development = colonization;
+		} else {
+			@development = add(createDevelopment());
+		}
+		// [[ MODIFY BASE GAME END ]]
 		@designs = add(createDesigns());
 		@construction = add(createConstruction());
 		// [[ MODIFY BASE GAME START ]]
-		if (behavior.dragonComponents) {
-			print("Enabling Dragon Military componet");
+		if (behavior.dragonComponents || difficulty >= 2) {
+			print("Enabling Dragon Military component");
 			@military = add(createMilitary2());
 		} else {
 			@military = add(createMilitary());
@@ -710,7 +726,7 @@ final class AI : AIController, Savable {
 		// TODO: Consider expedite for Heralds AI
 		// TODO: Consider buying pop with leftover money for Mono AI
 		// TODO: Let components have an end of turn weighting, so can
-		// create a system where all excess money can be spend in
+		// create a system where all excess money can be spent in
 		// decreasing priority
 		if ((empire.BudgetTimer / empire.BudgetCycle) > 0.95 && endOfTurnTickReady) {
 			for(uint i = 0, cnt = components.length; i < cnt; ++i)

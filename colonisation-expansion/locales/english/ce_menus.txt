@@ -16,6 +16,9 @@ GTT_ENERGY: <<
 
 AI_DRAGON: Dragon
 AI_DRAGON_DESC: <<
-	Allow the use of Dragon AI components to replace Weasel ones. Makes the AI
-	smarter.
+	Allows all Dragon AI components to replace Weasel ones, including
+	experimental ones. Should make the AI smarter (with a small chance of it
+	breaking horribly).
+	Non experimental Dragon AI components are applied regardless if the AI
+	is set to hard.
 >>

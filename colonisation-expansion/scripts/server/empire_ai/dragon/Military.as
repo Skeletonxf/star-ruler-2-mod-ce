@@ -242,7 +242,7 @@ class StagingBase2 : StagingBase {
 
 class Military2 : AIComponent, IMilitary {
 	Fleets@ fleets;
-	Development@ development;
+	IDevelopment@ development;
 	Designs@ designs;
 	Construction@ construction;
 	Budget@ budget;
@@ -263,7 +263,7 @@ class Military2 : AIComponent, IMilitary {
 
 	void create() {
 		@fleets = cast<Fleets>(ai.fleets);
-		@development = cast<Development>(ai.development);
+		@development = cast<IDevelopment>(ai.development);
 		@designs = cast<Designs>(ai.designs);
 		@construction = cast<Construction>(ai.construction);
 		@budget = cast<Budget>(ai.budget);
@@ -809,8 +809,8 @@ class Military2 : AIComponent, IMilitary {
 		}
 
 		//If we don't have any staging bases, make one at a focus
-		if(stagingBases.length == 0 && development.focuses.length != 0) {
-			Region@ reg = development.focuses[0].obj.region;
+		if(stagingBases.length == 0 && development.Focuses.length != 0) {
+			Region@ reg = development.Focuses[0].obj.region;
 			if(reg !is null)
 				createStaging(reg);
 		}
