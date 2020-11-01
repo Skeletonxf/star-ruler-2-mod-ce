@@ -460,13 +460,6 @@ final class Resources : AIComponent {
 			// [[ MODIFY BASE GAME START ]]
 			// Actually remove the request rather than removing it from active
 			// Fixes vanilla bug making AI leave stray exports to lost planets
-			// FIXME: This is probably causing the AI to completely forget about
-			// resources it has, need to find a way to alter the ImportData
-			// without removing it so the AI doesn't try to waste it on a lost
-			// planet but still remembers it has it
-			/* if (data.obj !is null) {
-				link(data, data.obj);
-			} */
 			requested.remove(data);
 			// [[ MODIFY BASE GAME END ]]
 		}
