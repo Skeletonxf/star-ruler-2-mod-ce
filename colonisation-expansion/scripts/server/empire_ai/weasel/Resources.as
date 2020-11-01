@@ -284,6 +284,10 @@ final class Resources : AIComponent {
 		return true;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	// Links an import to a source. This is also somewhat confusingly used to
+	// 'link' a planet's native resource to itself
+	// [[ MODIFY BASE GAME END ]]
 	void link(ImportData@ req, ExportData@ source) {
 		//Manage the data
 		@source.request = req;
@@ -298,7 +302,7 @@ final class Resources : AIComponent {
 		available.remove(source);
 		used.insertLast(source);
 
-		if(log)
+		if(true)
 			ai.print("link "+source.resource.name+" from "+source.obj.name+" to "+req.obj.name);
 
 		//Perform the actual export
@@ -456,6 +460,13 @@ final class Resources : AIComponent {
 			// [[ MODIFY BASE GAME START ]]
 			// Actually remove the request rather than removing it from active
 			// Fixes vanilla bug making AI leave stray exports to lost planets
+			// FIXME: This is probably causing the AI to completely forget about
+			// resources it has, need to find a way to alter the ImportData
+			// without removing it so the AI doesn't try to waste it on a lost
+			// planet but still remembers it has it
+			/* if (data.obj !is null) {
+				link(data, data.obj);
+			} */
 			requested.remove(data);
 			// [[ MODIFY BASE GAME END ]]
 		}
@@ -534,9 +545,27 @@ final class Resources : AIComponent {
 				addSpecs.insertLast(implementSpec(need));
 		}
 
+		// [[ MODIFY BASE GAME START ]]
+		// Remove all dummy resources from the required specs
+		for(int i = addSpecs.length-1; i >= 0; --i) {
+			auto@ spec = addSpecs[i];
+			// TODO: My gosh BlindMind really did make identifying dummy
+			// resources as complicated as possible, going to have to add
+			// quite a bit of logic to the Resources component to infer
+			// what dummy resources a planet has
+			//if(spec.type == RST_Class && (spec.cls is foodClass || spec.cls is waterClass))
+			//	specs.removeAt(i);
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		if(race !is null)
 			race.levelRequirements(obj, targetLevel, addSpecs);
 
+		// [[ MODIFY BASE GAME START ]]
+		// Filter out activeRequests that match the specs
+		// Note: this includes native resources, as the AI still treats
+		// them as requested/active resources
+		// [[ MODIFY BASE GAME END ]]
 		for(uint i = 0, cnt = addSpecs.length; i < cnt; ++i) {
 			auto@ spec = addSpecs[i];
 

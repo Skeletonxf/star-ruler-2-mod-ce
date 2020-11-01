@@ -3,6 +3,28 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Properly fix the AI breaking imports to lost planets
+    - Suspect current fix actually makes the AI forget about the broken imports
+      for the rest of the game
+  - Expansion AI Component
+    - Teach AI Resources component to understand dummy imports
+    - Actually save PotentialColonize info
+    - Teach AI to colonize high value planets to level up
+    - Finish teaching AI to colonize planets for levelling others
+      - Save colonize queues into tree structure so can abort if lose export target
+    - Teach AI to prune imports/exports on non focuses
+    - Port colonisation penalty system
+    - Teach AI to use buildings/constructions to meet resource requests
+    - General notes on AI issues to fix in rework
+      - To fix in refactor of colonization and development code
+        - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (cannot reproduce second time?)
+        - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
+        - Teach AI to deprioritise water/food colonisation if they have built a stockpile of unused ones
+        - Teach AI to build outposts to bridge otherwise empty/useless systems
+        - Make new component directly consider the AsCreatedResource hooks on buildings rather than going through the consider code, which is quite useless at   responding to levelling needs due to how generic it is.
+          - Extend the hooks to Constructions and do the same
+      - Teach AI to melt ice
+      - Teach AI to make most of the constructions by extending the building hint code
   - Allow shields on supports
   - Fix vision being granted on things moving through deep space when the player doesn't have a telescope
     - Planets with engines
@@ -21,18 +43,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make it possible to transfer fixed amounts of cargo in lump sums and as recurring per second between cargo sources without using flagships, some kind of automated civillian transporters?
     - Consider adding ore maintenace costs for Dysons once this system is working
     - Consider creating orders to instruct a civillian ship to transfer a fixed quantity of cargo to another target for free (but with civillian ship transport risks and slowness)
-  - To fix in refactor of colonization and development code
-    - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (cannot reproduce second time?)
-    - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
-    - Teach AI to deprioritise water/food colonisation if they have built a stockpile of unused ones
-    - Teach AI to build outposts to bridge otherwise empty/useless systems
-    - Make new component directly consider the AsCreatedResource hooks on buildings rather than going through the consider code, which is quite useless at responding to levelling needs due to how generic it is.
-      - Extend the hooks to Constructions and do the same
-  - AI doesn't seem to weight up the strength of a planet, I should not have been attacked by an Oko ship with 10x less strength than my support around my planet
-    - The code looks like it does consider planet support strength, need to investigate further
   - Teach AI to not put comets on worlds being razed
-  - Teach AI to melt ice
-  - Teach AI to make most of the constructions by extending the building hint code
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked

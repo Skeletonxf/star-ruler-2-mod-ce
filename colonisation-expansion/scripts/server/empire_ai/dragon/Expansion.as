@@ -165,6 +165,7 @@ class DevelopmentFocus2 : DevelopmentFocus {
 				dev.resources.breakImport(res);
 		}
 
+
 		//TODO: We should be able to bump managed pressure resources back to Development for
 		//redistribution if we run out of pressure capacity.
 	}
