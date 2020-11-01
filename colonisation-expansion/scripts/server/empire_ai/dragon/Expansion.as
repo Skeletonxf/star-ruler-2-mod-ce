@@ -9,6 +9,7 @@ import empire_ai.weasel.Creeping;
 
 import planet_levels;
 import buildings;
+import systems;
 
 import ai.consider;
 from ai.buildings import Buildings, BuildingAI, BuildingUse;
@@ -109,6 +110,14 @@ class PotentialColonizeSource : PotentialColonize {
 		@resource = getResource(planet.primaryResourceType);
 		@pl = planet;
 	}
+
+	void save(SaveFile& file) {
+		// TODO?
+	}
+
+	void load(SaveFile& file) {
+		// TODO?
+	}
 }
 
 /**
@@ -144,17 +153,152 @@ class ColonizeTree {
 	// so that if we lose the planet then we can stop colonizing all its
 	// children, or at the very least reconsider if we need them and
 	// move them to a different tree in the forest
+	Planet@ target;
+
+	void save(SaveFile& file) {
+		file << target;
+	}
+
+	void load(SaveFile& file) {
+		file >> target;
+	}
 }
 
 class ColonizeForest {
 	// TODO
-	array<ColonizeTree@> urgent;
+	//array<ColonizeTree@> urgent;
 	array<ColonizeTree@> queue;
+	double nextCheckForPotentialColonizeTargets = 0;
+
+	ResourceValuator@ resourceValuator;
+
+	ColonizeForest() {
+		@resourceValuator = ResourceValuator();
+	}
 
 	void save(SaveFile& file) {
+		uint cnt = queue.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i)
+			queue[i].save(file);
+		file << nextCheckForPotentialColonizeTargets;
 	}
 
 	void load(SaveFile& file) {
+		uint cnt = 0;
+		file >> cnt;
+		queue.length = cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			@queue[i] = ColonizeTree();
+			queue[i].load(file);
+		}
+		file >> nextCheckForPotentialColonizeTargets;
+	}
+
+	void tick(Expansion& expansion, AI& ai) {
+		if (gameTime > nextCheckForPotentialColonizeTargets) {
+			checkBorderSystems(expansion, ai);
+		}
+
+		if (expansion.potentialColonizations.length == 0 && gameTime < 60.0) {
+			nextCheckForPotentialColonizeTargets = gameTime + 1.0;
+		} else {
+			nextCheckForPotentialColonizeTargets = gameTime + randomd(10.0, 40.0);
+		}
+	}
+
+	// Updates the expansion potentials list, including potentials for
+	// all nearby planets we might want to colonise that we haven't already
+	// queued.
+	void checkBorderSystems(Expansion& expansion, AI& ai) {
+		// reset list of potential colonise targets
+		expansion.potentialColonizations.length = 0;
+
+		// check systems inside border
+		for (uint i = 0, cnt = expansion.systems.owned.length; i < cnt; ++i) {
+			checkSystem(expansion.systems.owned[i], expansion, ai);
+		}
+		// check systems 1 hop away
+		for (uint i = 0, cnt = expansion.systems.outsideBorder.length; i < cnt; ++i) {
+			checkSystem(expansion.systems.outsideBorder[i], expansion, ai);
+		}
+
+		// check home system or all systems we can see if no owned systems
+		if (expansion.systems.owned.length == 0) {
+			Region@ homeSys = ai.empire.HomeSystem;
+			if (homeSys !is null) {
+				auto@ homeAI = expansion.systems.getAI(homeSys);
+				if (homeAI !is null) {
+					checkSystem(homeAI, expansion, ai);
+				}
+			} else {
+				for (uint i = 0, cnt = expansion.systems.all.length; i < cnt; ++i) {
+					if (expansion.systems.all[i].visible) {
+						checkSystem(expansion.systems.all[i], expansion, ai);
+					}
+				}
+			}
+		}
+
+		// TODO: Check planets we found in deep space
+	}
+
+	void checkSystem(SystemAI@ sys, Expansion& expansion, AI& ai) {
+		// seenPresent is a cache of the PlanetsMask of this system
+		uint presentMask = sys.seenPresent;
+		bool isOwned = presentMask & ai.mask != 0;
+		if(!isOwned) {
+			// abort if not colonising enemy systems and we think the enemy
+			// has planets here
+			if(!ai.behavior.colonizeEnemySystems && (presentMask & ai.enemyMask) != 0)
+				return;
+			// abort if not colonising neutral systems and we think there are some???
+			if(!ai.behavior.colonizeNeutralOwnedSystems && (presentMask & ai.neutralMask) != 0)
+				return;
+			// abort if not colonising ally systems and an ally has planets here
+			// (this doesn't work for heralds obviously)
+			if(!ai.behavior.colonizeAllySystems && (presentMask & ai.allyMask) != 0)
+				return;
+		}
+
+		// Add weighting to planets in systems we don't have any planets in,
+		// as they will expand our borders
+		double sysWeight = 1.0;
+		if (!isOwned)
+			sysWeight *= ai.behavior.weightOutwardExpand;
+
+		uint plCnt = sys.planets.length;
+		for (uint n = 0; n < plCnt; ++n) {
+			Planet@ pl = sys.planets[n];
+			Empire@ visOwner = pl.visibleOwnerToEmp(ai.empire);
+			if(!pl.valid || visOwner.valid)
+				continue;
+			if(expansion.isColonizing(pl))
+				continue;
+			/* if(penaltySet.contains(pl.id))
+				continue; */
+			if(pl.quarantined)
+				continue;
+
+			/* int resId = pl.primaryResourceType;
+			if(resId == -1)
+				continue; */
+
+			PotentialColonizeSource@ p = PotentialColonizeSource(pl, resourceValuator);
+			p.weight *= sysWeight;
+			//TODO: this should be weighted according to the position of the planet,
+			//we should try to colonize things in favorable positions
+			expansion.potentialColonizations.insertLast(p);
+		}
+	}
+
+	// Checks if a planet is in the queue
+	bool isQueuedForColonizing(Planet& pl) {
+		for(uint i = 0, cnt = queue.length; i < cnt; ++i) {
+			if(queue[i].target is pl)
+				return true;
+		}
+		return false;
 	}
 }
 
@@ -184,7 +328,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// Colonization state
 	int nextColonizeId = 0;
 
-	// Things we might want to colonize
+	// Things we might want to colonize to expand (ie, within 1 hop to the border)
 	// Used by the Ancient component, at least for now.
 	// Long term would like to make this flexible enough to play Ancient well
 	array<PotentialColonize@> potentialColonizations;
@@ -253,6 +397,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		for (uint i = 0, cnt = focuses.length; i < cnt; ++i) {
 			// TODO
 		}
+
+		queue.tick(this, ai);
 	}
 
 	void focusTick(double time) override {
@@ -430,22 +576,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			if(colonizing[i].target is pl)
 				return true;
 		}
-		//for(uint i = 0, cnt = queue.length; i < cnt; ++i) {
-		//	if(isColonizing(pl, queue[i]))
-		//		return true;
-		//}
-		return false;
+		return queue.isQueuedForColonizing(pl);
 	}
-
-	/* bool isColonizing(Planet& pl, ColonizeQueue@ q) {
-		if(q.target is pl)
-			return true;
-		for(uint i = 0, cnt = q.children.length; i < cnt; ++i) {
-			if(isColonizing(pl, q.children[i]))
-				return true;
-		}
-		return false;
-	} */
 
 	// Check how recently we colonized something matching the spec
 	double timeSinceMatchingColonize(ResourceSpec& spec) {

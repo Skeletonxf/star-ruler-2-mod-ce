@@ -80,7 +80,7 @@ class PlanetValuables {
 
 	PlanetValuables(Planet@ planet) {
 		@this.planet = planet;
-		array<Status@> planetStatuses;
+		array<Status> planetStatuses;
 		planetStatuses.syncFrom(planet.getStatusEffects());
 		for (uint i = 0, cnt = planetStatuses.length; i < cnt; ++i) {
 			if (planetStatuses[i].type.conditionFrequency > 0) {

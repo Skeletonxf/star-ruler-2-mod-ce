@@ -170,6 +170,10 @@ class Parasite : AIComponent {
 			}
 			weight += resourceValue;
 		}
+
+		// TODO: Penalise razing planets we have built or requested buildings
+		// on, except Ice Giants
+
 		return weight;
 	}
 
