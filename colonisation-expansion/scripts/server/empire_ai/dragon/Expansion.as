@@ -21,6 +21,7 @@ from ai.resources import AIResources, ResourceAI;
 from resources import ResourceType;
 import empire_ai.dragon.bookkeeping.resource_flows;
 from empire_ai.dragon.bookkeeping.resource_value import RaceResourceValuation, ResourceValuator;
+import empire_ai.dragon.expansion.expand_logic;
 
 from statuses import getStatusID;
 from traits import getTraitID;
@@ -64,37 +65,6 @@ class Limits {
 		file >> previousColonizations;
 	}
 }
-
-/* void saveColonizeQueue(ColonizeQueue queue, Expansion& expansion, SaveFile& file) {
-	file << queue.spec;
-	file << queue.target;
-
-	expansion.saveColonize(file, queue.step);
-	expansion.resources.saveImport(file, queue.forData);
-
-	uint cnt = queue.children.length;
-	file << cnt;
-	for(uint i = 0; i < cnt; ++i)
-		saveColonizeQueue(queue.children[i], expansion, file);
-}
-
-void loadColonizeQueue(ColonizeQueue queue, Expansion& expansion, SaveFile& file) {
-	@queue.spec = ResourceSpec();
-	file >> queue.spec;
-	file >> queue.target;
-
-	@queue.step = expansion.loadColonize(file);
-	@queue.forData = expansion.resources.loadImport(file);
-
-	uint cnt = 0;
-	file >> cnt;
-	queue.children.length = cnt;
-	for(uint i = 0; i < cnt; ++i) {
-		@queue.children[i] = ColonizeQueue();
-		@queue.children[i].parent = queue;
-		loadColonizeQueue(queue.children[i], expansion, file);
-	}
-} */
 
 class PotentialColonizeSource : PotentialColonize {
 	// Existing parent class fields, these are needed because
@@ -147,6 +117,88 @@ class ColonizeData2 : ColonizeData {
 		file >> checkTime;
 	}
 };
+
+/**
+ * Subclass of DevelopmentFocus, with save/load methods for use here
+ */
+class DevelopmentFocus2 : DevelopmentFocus {
+	/* Object@ obj;
+	PlanetAI@ plAI;
+	int targetLevel = 0;
+	int requestedLevel = 0;
+	int maximumLevel = INT_MAX;
+	array<ExportData@> managedPressure;
+	double weight = 1.0; */
+
+	void tick(AI& ai, Expansion& dev, double time) {
+		if(targetLevel != requestedLevel) {
+			if(targetLevel > requestedLevel) {
+				int nextLevel = min(targetLevel, min(obj.resourceLevel, requestedLevel)+1);
+				if(nextLevel != requestedLevel) {
+					for(int i = requestedLevel+1; i <= nextLevel; ++i)
+						dev.resources.organizeImports(obj, i);
+					requestedLevel = nextLevel;
+				}
+			}
+			else {
+				dev.resources.organizeImports(obj, targetLevel);
+				requestedLevel = targetLevel;
+			}
+		}
+
+		//Remove managed pressure resources that are no longer valid
+		for(uint i = 0, cnt = managedPressure.length; i < cnt; ++i) {
+			ExportData@ res = managedPressure[i];
+			if(res.request !is null || res.obj is null || !res.obj.valid || res.obj.owner !is ai.empire || !res.usable || res.developUse !is obj) {
+				if(res.developUse is obj)
+					@res.developUse = null;
+				managedPressure.removeAt(i);
+				--i; --cnt;
+			}
+		}
+
+		//Make sure we're not exporting our resource
+		if(plAI !is null && plAI.resources !is null && plAI.resources.length != 0) {
+			auto@ res = plAI.resources[0];
+			res.localOnly = true;
+			if(res.request !is null && res.request.obj !is res.obj)
+				dev.resources.breakImport(res);
+		}
+
+		//TODO: We should be able to bump managed pressure resources back to Development for
+		//redistribution if we run out of pressure capacity.
+	}
+
+	void save(Expansion& development, SaveFile& file) {
+		file << obj;
+		development.planets.saveAI(file, plAI);
+		file << targetLevel;
+		file << requestedLevel;
+		file << maximumLevel;
+		file << weight;
+
+		uint cnt = managedPressure.length;
+		file << cnt;
+		for(uint i = 0; i < cnt; ++i)
+			development.resources.saveExport(file, managedPressure[i]);
+	}
+
+	void load(Expansion& development, SaveFile& file) {
+		file >> obj;
+		@plAI = development.planets.loadAI(file);
+		file >> targetLevel;
+		file >> requestedLevel;
+		file >> maximumLevel;
+		file >> weight;
+
+		uint cnt = 0;
+		file >> cnt;
+		for(uint i = 0; i < cnt; ++i) {
+			auto@ data = development.resources.loadExport(file);
+			managedPressure.insertLast(data);
+		}
+	}
+}
 
 class ColonizeTree {
 	// TODO, want to track what planet we are colonizing resources for here
@@ -300,6 +352,29 @@ class ColonizeForest {
 		}
 		return false;
 	}
+
+	void fillQueueFromRequests(Expansion& expansion, AI& ai) {
+		// look through the requests made to the Resources component
+		// and try to colonise to fill them
+		for(uint i = 0, cnt = expansion.resources.requested.length; i < cnt && expansion.limits.remainingColonizations > 0; ++i) {
+			ImportData@ req = expansion.resources.requested[i];
+			if(!req.isOpen)
+				continue;
+			if(!req.cycled)
+				continue;
+			if(req.claimedFor)
+				continue;
+			if(req.isColonizing)
+				continue;
+
+			queueColonizeForResourceSpec(req, expansion, ai);
+			req.isColonizing = true;
+		}
+	}
+
+	void queueColonizeForResourceSpec(ImportData@ request, Expansion& expansion, AI& ai) {
+		ai.print("colonize for requested resource: "+request.spec.dump(), request.obj);
+	}
 }
 
 /**
@@ -342,6 +417,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	array<ColonizeData@> loadIds;
 
+	ExpandType expandType;
+
 	void create() {
 		@resources = cast<Resources>(ai.resources);
 		@planets = cast<Planets>(ai.planets);
@@ -364,6 +441,17 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 
 		queue.save(file);
+
+		// TODO: Save potential colonizations?
+
+		cnt = focuses.length;
+		file << cnt;
+		for(uint i = 0; i < cnt; ++i) {
+			auto@ focus = focuses[i];
+			cast<DevelopmentFocus2>(focus).save(this, file);
+		}
+
+		file << uint(expandType);
 	}
 
 	void load(SaveFile& file) {
@@ -391,11 +479,25 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 
 		queue.load(file);
+
+		cnt = 0;
+		file >> cnt;
+		for(uint i = 0; i < cnt; ++i) {
+			auto@ focus = DevelopmentFocus2();
+			cast<DevelopmentFocus2>(focus).load(this, file);
+
+			if(focus.obj !is null)
+				focuses.insertLast(focus);
+		}
+
+		uint expandTypeID = 0;
+		file >> expandTypeID;
+		expandType = convertToExpandType(expandTypeID);
 	}
 
 	void tick(double time) override {
 		for (uint i = 0, cnt = focuses.length; i < cnt; ++i) {
-			// TODO
+			cast<DevelopmentFocus2>(focuses[i]).tick(ai, this, time);
 		}
 
 		queue.tick(this, ai);
@@ -403,10 +505,27 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	void focusTick(double time) override {
 		// Colonize and Develop bookeeping
+
+		if (expandType == LevelingHomeworld) {
+			// Look for resource requests made to resources that we can
+			// colonize for to meet
+			queue.fillQueueFromRequests(this, ai);
+		}
 	}
 
 	void start() {
-		// Level up something to level 3 to start
+		// Level up homeworld to level 3 to start
+		for (uint i = 0, cnt = ai.empire.planetCount; i < cnt; ++i) {
+			Planet@ homeworld = ai.empire.planetList[i];
+			if(homeworld !is null && homeworld.valid) {
+				auto@ hwFocus = addFocus(planets.register(homeworld));
+				if(homeworld.nativeResourceCount >= 2 || homeworld.primaryResourceLimitLevel >= 3 || cnt == 1)
+					hwFocus.targetLevel = 3;
+			}
+		}
+		expandType = LevelingHomeworld;
+		// TODO: Ancient should skip to Expanding, Star Children should start
+		// at LookingForHomeworld instead
 	}
 
 	void turn() {
@@ -470,6 +589,22 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				return true;
 		}
 		return false;
+	}
+
+	DevelopmentFocus@ addFocus(PlanetAI@ plAI) {
+		// don't add a focus twice!
+		DevelopmentFocus@ existingFocus = getFocus(plAI.obj);
+		if (existingFocus !is null) {
+			return existingFocus;
+		}
+
+		DevelopmentFocus2 focus;
+		@focus.obj = plAI.obj;
+		@focus.plAI = plAI;
+		focus.maximumLevel = getMaxPlanetLevel(plAI.obj);
+
+		focuses.insertLast(focus);
+		return focus;
 	}
 
 	// Method for the ConsiderFilter interface
