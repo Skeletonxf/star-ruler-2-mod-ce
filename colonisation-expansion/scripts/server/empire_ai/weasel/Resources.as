@@ -546,16 +546,23 @@ final class Resources : AIComponent {
 
 		// [[ MODIFY BASE GAME START ]]
 		// Remove all dummy resources from the required specs
-
-		resourcesShim.inferDummyResources(obj);
-		for(int i = addSpecs.length-1; i >= 0; --i) {
+		array<ResourceSpec@> dummySpecs = resourcesShim.inferDummyResources(obj);
+		for(int i = 0, cnt = addSpecs.length; i < cnt; ++i) {
 			auto@ spec = addSpecs[i];
-			// TODO: My gosh BlindMind really did make identifying dummy
-			// resources as complicated as possible, going to have to add
-			// quite a bit of logic to the Resources component to infer
-			// what dummy resources a planet has
-			//if(spec.type == RST_Class && (spec.cls is foodClass || spec.cls is waterClass))
-			//	specs.removeAt(i);
+
+			bool foundMatch = false;
+			for (uint j = 0, jcnt = dummySpecs.length; j < jcnt; ++j) {
+				if (dummySpecs[j] == spec) {
+					foundMatch = true;
+					dummySpecs.removeAt(j);
+					break;
+				}
+			}
+
+			if (foundMatch) {
+				addSpecs.removeAt(i);
+				--i; --cnt;
+			}
 		}
 		// [[ MODIFY BASE GAME END ]]
 
