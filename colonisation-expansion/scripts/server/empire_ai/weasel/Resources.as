@@ -6,6 +6,12 @@ import planet_levels;
 import system_pathing;
 import systems;
 
+// [[ MODIFY BASE GAME START ]]
+import empire_ai.weasel.resources_shim;
+// cache for the available resources of a planet
+ResourcesShim resourcesShim;
+// [[ MODFIY BASE GAME END ]]
+
 interface RaceResources {
 	void levelRequirements(Object& obj, int targetLevel, array<ResourceSpec@>& specs);
 };
@@ -540,6 +546,8 @@ final class Resources : AIComponent {
 
 		// [[ MODIFY BASE GAME START ]]
 		// Remove all dummy resources from the required specs
+
+		resourcesShim.inferDummyResources(obj);
 		for(int i = addSpecs.length-1; i >= 0; --i) {
 			auto@ spec = addSpecs[i];
 			// TODO: My gosh BlindMind really did make identifying dummy

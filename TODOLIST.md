@@ -3,9 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Properly fix the AI breaking imports to lost planets
-    - Suspect current fix actually makes the AI forget about the broken imports
-      for the rest of the game
   - Expansion AI Component
     - Teach AI Resources component to understand dummy imports
     - Actually save PotentialColonize info
