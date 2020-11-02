@@ -40,23 +40,25 @@ class ResourcesShim {
 			uint id = availableResources.types[i];
 			int amount = availableResources.amounts[i];
 			auto@ type = getResource(id);
-			print("Found dummy resource of type "+type.name+" and amount "+amount);
+			//print("Found dummy resource of type "+type.name+" and amount "+amount);
 
-			// assume dummy resources are always used for levelling, as
-			// otherwise they would have no purpose
-			ResourceSpec spec;
-			spec.isLevelRequirement = true;
-			// assume dummy resource was used for a level requirement or as
-			// a class requirement, as again otherwise it would have had
-			// no purpose
-			if (type.cls !is null) {
-				spec.type = RST_Class;
-				@spec.cls = type.cls;
-			} else {
-				spec.type = RST_Level_Specific;
-				spec.level = type.level;
+			for (int j = 0; j < amount; ++j) {
+				// assume dummy resources are always used for levelling, as
+				// otherwise they would have no purpose
+				ResourceSpec spec;
+				spec.isLevelRequirement = true;
+				// assume dummy resource was used for a level requirement or as
+				// a class requirement, as again otherwise it would have had
+				// no purpose
+				if (type.cls !is null) {
+					spec.type = RST_Class;
+					@spec.cls = type.cls;
+				} else {
+					spec.type = RST_Level_Specific;
+					spec.level = type.level;
+				}
+				inferredDummyResourceSpecs.insertLast(spec);
 			}
-			inferredDummyResourceSpecs.insertLast(spec);
 		}
 
 		return inferredDummyResourceSpecs;

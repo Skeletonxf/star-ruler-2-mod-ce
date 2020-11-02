@@ -82,11 +82,25 @@ class PotentialColonizeSource : PotentialColonize {
 	}
 
 	void save(SaveFile& file) {
-		// TODO?
+		file << pl;
+		if (resource !is null) {
+			file.write1();
+			file.writeIdentifier(SI_Resource, resource.id);
+		} else {
+			file.write0();
+		}
+		file << weight;
 	}
 
+	// only for deserialisation
+	PotentialColonizeSource() {}
+
 	void load(SaveFile& file) {
-		// TODO?
+		file >> pl;
+		if (file.readBit())
+			@resource = getResource(file.readIdentifier(SI_Resource));
+		file >> weight;
+		@valuables = PlanetValuables(pl);
 	}
 }
 
@@ -375,6 +389,11 @@ class ColonizeForest {
 
 	void queueColonizeForResourceSpec(ImportData@ request, Expansion& expansion, AI& ai) {
 		ai.print("colonize for requested resource: "+request.spec.dump(), request.obj);
+
+		for (uint i = 0, cnt = expansion.potentialColonizations.length; i < cnt; ++i) {
+			PotentialColonizeSource@ p = cast<PotentialColonizeSource>(expansion.potentialColonizations[i]);
+			// err, evaluate this against the spec to pick one to colonise?
+		}
 	}
 }
 
@@ -407,7 +426,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// Things we might want to colonize to expand (ie, within 1 hop to the border)
 	// Used by the Ancient component, at least for now.
 	// Long term would like to make this flexible enough to play Ancient well
-	array<PotentialColonize@> potentialColonizations;
+	array<PotentialColonize@> potentialColonizations; // TODO: Move this into the queue
 
 	// Things in the queue for colonizing
 	ColonizeForest@ queue;
@@ -441,9 +460,13 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			cast<ColonizeData2>(colonizing[i]).save(file);
 		}
 
-		queue.save(file);
+		cnt = potentialColonizations.length;
+		file << cnt;
+		for(uint i = 0; i < cnt; ++i) {
+			cast<PotentialColonizeSource>(potentialColonizations[i]).save(file);
+		}
 
-		// TODO: Save potential colonizations?
+		queue.save(file);
 
 		cnt = focuses.length;
 		file << cnt;
@@ -477,6 +500,14 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			else {
 				ColonizeData2().load(file);
 			}
+		}
+
+		file >> cnt;
+		potentialColonizations.length = cnt;
+		for(uint i = 0; i < cnt; ++i) {
+			PotentialColonizeSource@ p = PotentialColonizeSource();
+			p.load(file);
+			potentialColonizations[i] = p;
 		}
 
 		queue.load(file);
