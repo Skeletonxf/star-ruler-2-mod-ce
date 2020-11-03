@@ -79,6 +79,6 @@ S_POWER_AMPLIFIER_DESC: <<
 	Refined manufactoring processes can increase the power generation of the subsystem, but they do not come cheaply.
 
 	[img=Plus]Increases the [b][color=#80ffea]power generation[/color][/b] of the subsystem by 25%.[/img]
-	[img=Minus]Increases the build cost of the subsystem by 30%.[/img]
+	[img=Minus]Increases the build cost of the subsystem.[/img]
 	[i][color=#aaa]Placing more than one power amplifier on a subsystem will continue to increase its power generation, but will skyrocket its build cost.[/color][/i]
 >>
