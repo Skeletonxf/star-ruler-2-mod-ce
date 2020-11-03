@@ -1,0 +1,8 @@
+Template: var/Power, hexVar/BuildCost, tag/IsReactor, !tag/NoCore
+	Module: PowerAmplifier
+		Name: #S_POWER_AMPLIFIER
+		Description: #S_POWER_AMPLIFIER_DESC
+		Color: #00a4db
+		Sprite: TechIcons::16
+		AddModifier: BuildCostFactor(2.0)
+		AddModifier: PowerFactor(1.25)

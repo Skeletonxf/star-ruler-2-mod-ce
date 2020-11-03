@@ -76,3 +76,9 @@ RESEARCH_ALLONDIUM: <<
 	[bbloc=#ALLONDIUM_DESC]
 >>
 RESEARCH_REQ_MOON_BASES: Build $2 Moon Bases. [b]( $1 / $2 )[/b]
+R_MOD_POWER_AMPLIFIER_DESC: <<
+	[color=#aaa][i]Unlocks the 'Power Amplifier' modifier.[/i][/color]
+
+	[bbloc=#S_POWER_AMPLIFIER_DESC/]
+>>
+R_MOD_POWER_AMPLIFIER: Power Amplifier

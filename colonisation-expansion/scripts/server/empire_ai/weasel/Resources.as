@@ -308,7 +308,7 @@ final class Resources : AIComponent {
 		available.remove(source);
 		used.insertLast(source);
 
-		if(true)
+		if(log)
 			ai.print("link "+source.resource.name+" from "+source.obj.name+" to "+req.obj.name);
 
 		//Perform the actual export

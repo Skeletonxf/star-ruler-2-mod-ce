@@ -7,7 +7,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully
       working
   - Expansion AI Component
-    - Actually save PotentialColonize info
     - Teach AI to colonize high value planets to level up
     - Finish teaching AI to colonize planets for levelling others
       - Save colonize queues into tree structure so can abort if lose export target

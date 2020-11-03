@@ -1,0 +1,15 @@
+Technology: PowerAmplifier
+	Name: #R_MOD_POWER_AMPLIFIER
+	Description: #R_MOD_POWER_AMPLIFIER_DESC
+	Class: Unlock
+	Category: Modifiers
+
+	Point Cost: 500
+	Time Cost: 90
+
+	Color: #00a4db
+	Icon: TechIcons::16
+	Symbol: techIonization * #42b4bd
+
+	UnlockModule(PowerAmplifier)
+	SkipOnUnlockedModule(PowerAmplifier)
