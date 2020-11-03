@@ -14,9 +14,31 @@ import void mapCopyRegion(SystemDesc@ from, SystemDesc@ to, uint typeMask = ~0) 
 import util.map_tools;
 
 // [[ MODIFY BASE GAME START ]]
+import cargo;
 // TODO: Use data files for rouge generation stuff
-// TODO: work out how to import createAsteroid
 import Artifact@ makeRougeArtifact(vec3d pos, uint type = uint(-1)) from "map_effects";
+Asteroid@ createRougeAsteroid(const vec3d& position, Region@ region = null, bool delay = true) {
+	ObjectDesc desc;
+	desc.type = OT_Asteroid;
+	desc.radius = 5.0;
+	desc.position = position;
+	desc.name = locale::ASTEROID;
+	desc.flags |= objNoDamage;
+
+	if(region !is null)
+		desc.delayedCreation = true;
+
+	Asteroid@ obj = Asteroid(desc);
+
+	if(region !is null) {
+		@obj.region = region;
+		obj.finalizeCreation();
+		region.enterRegion(obj);
+	}
+	if(!delay)
+		obj.initMesh();
+	return obj;
+}
 // [[ MODIFY BASE GAME END ]]
 
 //Global data to be access after generation
@@ -1117,8 +1139,9 @@ class MapGeneration {
 		// then in those can use modified map hooks like MakePlanet
 		auto numberOfSystems = systems.length;
 		// TODO: bump this up once can generate rouge asteroids
-		auto rougeObjects = numberOfSystems * 8;
-		//auto@ ore = getCargoType("Ore");
+		auto rougeObjects = numberOfSystems * 24;
+		auto@ ore = getCargoType("Ore"); // TODO: Distributed resources
+		// FIXME: AutoMine doesn't work with asteroids in deep space
 
 		int objectsPlaced = 0;
 		for (uint i = 0; i < rougeObjects; ++i) {
@@ -1128,8 +1151,22 @@ class MapGeneration {
 			double distanceToSystem = closest.position.distanceTo(pos);
 			if (distanceToSystem > 6000 && distanceToSystem < 18000) {
 				// place rouge object
-				// TODO: place asteroids and debris fields and planets
-				makeRougeArtifact(pos);
+				// TODO: place debris fields and planets
+				if (randomd(0, 10) >= 2) {
+					Asteroid@ roid = createRougeAsteroid(pos);
+					if (ore !is null) {
+						// have some rare asteroids that are worth a lot, but
+						// not many
+						if (randomd(0, 10) >= 8) {
+							roid.addCargo(ore.id, randomd(5, 10000));
+						} else {
+							roid.addCargo(ore.id, randomd(5, 1000));
+						}
+					}
+					roid.initMesh();
+				} else {
+					makeRougeArtifact(pos);
+				}
 				objectsPlaced += 1;
 			}
 		}
