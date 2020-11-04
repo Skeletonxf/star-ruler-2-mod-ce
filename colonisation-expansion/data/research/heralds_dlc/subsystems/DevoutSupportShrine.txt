@@ -1,0 +1,17 @@
+Technology: DevoutSupportShrine
+	Name: #R_SUPPORT_SHRINE
+	Description: #R_SUPPORT_SHRINE_DESC
+
+	Class: Unlock
+	Category: Subsystems
+
+	Point Cost: 500
+	Time Cost: 90
+
+	Icon: AntimatterReactor * #408fc1
+	Color: #408fc1
+
+	SkipOnUnlockedSubsystem(SupportDevoutShrine)
+
+	SecondaryInfluenceCost(10)
+	UnlockSubsystem(SupportDevoutShrine)

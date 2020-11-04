@@ -7,9 +7,12 @@ This is primarily intended as a developer focused project planning list, rather 
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully
       working
   - Expansion AI Component
-    - Teach AI to colonize high value planets to level up
+    - Apply weights based on distance from colonise sources when picking colonise targets
+    - Actually colonise planets off the queue
+    - Teach AI to pick and colonise high value planets to level up
     - Finish teaching AI to colonize planets for levelling others
       - Save colonize queues into tree structure so can abort if lose export target
+    - Teach AI to optimistically start colonising the dependants for a colonise target if it doesn't have anything else to colonise
     - Teach AI to prune imports/exports on non focuses
     - Port colonisation penalty system
     - Teach AI to use buildings/constructions to meet resource requests
@@ -23,7 +26,6 @@ This is primarily intended as a developer focused project planning list, rather 
           - Extend the hooks to Constructions and do the same
       - Teach AI to melt ice
       - Teach AI to make most of the constructions by extending the building hint code
-  - Allow shields on supports
   - Fix vision being granted on things moving through deep space when the player doesn't have a telescope
     - Planets with engines
     - Asteroids being tugged?

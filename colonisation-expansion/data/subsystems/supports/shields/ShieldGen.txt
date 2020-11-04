@@ -1,0 +1,31 @@
+Subsystem: SupportShieldGen
+	Name: #SHIELDGEN_NAME
+	Description: #SHIELDGEN_DESC
+	BaseColor: #0044db
+	Elevation: 1
+
+	DamageOrder: -100
+
+	Tags: IsShield, Defense, Category:Defense, HasInternals
+	Tags: SecondaryDefense
+	Hull: Support, Satellite
+
+	Size := HexSize * Hexes
+	ShieldCapacity := Size * 10.0
+	ShieldRegen := Size * 0.5
+	ShieldHexes := Hexes
+
+	Hex.Resistance := 0.3
+	Hex.HP := 12 * HexSize
+	Hex.Mass := HexSize
+
+	Hex.BuildCost := 1.25 * HexSize
+	Hex.LaborCost := 0.10 * HexSize
+	Effect: ShieldDamage
+
+	Requires:
+		Command = 1
+
+	Module: Core
+		Sprite: FissionReactor
+		Hex.BuildCost := 2 * Hex.BuildCost

@@ -82,3 +82,10 @@ R_MOD_POWER_AMPLIFIER_DESC: <<
 	[bbloc=#S_POWER_AMPLIFIER_DESC/]
 >>
 R_MOD_POWER_AMPLIFIER: Power Amplifier
+R_SUPPORT_SHRINE: Compact Prayer
+R_SUPPORT_SHRINE_DESC: <<
+	[color=#aaa][i]Unlocks the Shrine subsystem for supports.[/i][/color]
+
+	[bbloc=#S_SHRINE_DESC/]
+>>
+R_SUPPORT_SHRINE_DUMMY: Compact Prayer (Dummy)
