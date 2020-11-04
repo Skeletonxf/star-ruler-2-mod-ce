@@ -489,6 +489,13 @@ class Ancient : Race, RaceResources, RaceColonization {
 			if(hasReplicator(p.pl))
 				continue;
 
+			// [[ MODIFY BASE GAME START ]]
+			// potential colonize resources are now nullable
+			if (p.resource is null) {
+				continue;
+			}
+			// [[ MODIFY BASE GAME END ]]
+
 			double w = p.weight;
 			if(!foundFirstT2 && p.resource.level >= 2)
 				w *= 100.0;

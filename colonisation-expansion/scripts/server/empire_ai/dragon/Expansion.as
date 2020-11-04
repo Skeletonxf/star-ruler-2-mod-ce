@@ -20,7 +20,7 @@ from ai.resources import AIResources, ResourceAI;
 // class for the AI Resources component
 from resources import ResourceType;
 import empire_ai.dragon.bookkeeping.resource_flows;
-from empire_ai.dragon.bookkeeping.resource_value import RaceResourceValuation, ResourceValuator;
+from empire_ai.dragon.bookkeeping.resource_value import RaceResourceValuation, ResourceValuator, PlanetValuables;
 import empire_ai.dragon.expansion.expand_logic;
 
 from statuses import getStatusID;
@@ -76,7 +76,12 @@ class PotentialColonizeSource : PotentialColonize {
 
 	PotentialColonizeSource(Planet@ planet, ResourceValuator& valuation) {
 		@valuables = PlanetValuables(planet);
-		weight = 0; // TODO: PlanetValuables should produce a colonize weight
+		// weight is NOT based on resources, we will frequently loop through
+		// potential colonize sources for the best choice to meet a spec,
+		// and hence this is for breaking ties given a spec
+		// we also scale this by distance to our border, to favor expanding
+		// our border at times
+		weight = valuables.getGenericValue(valuation);
 		@resource = getResource(planet.primaryResourceType);
 		@pl = planet;
 	}
@@ -101,6 +106,10 @@ class PotentialColonizeSource : PotentialColonize {
 			@resource = getResource(file.readIdentifier(SI_Resource));
 		file >> weight;
 		@valuables = PlanetValuables(pl);
+	}
+
+	bool canMeet(ResourceSpec@ spec) {
+		return valuables.canExportToMeet(spec);
 	}
 }
 
@@ -222,12 +231,18 @@ class ColonizeTree {
 	// move them to a different tree in the forest
 	Planet@ target;
 
+	ColonizeTree(Planet@ target) {
+		@this.target = target;
+	}
+
 	void save(SaveFile& file) {
 		file << target;
 	}
 
-	void load(SaveFile& file) {
+	ColonizeTree@ load(SaveFile& file) {
+		Planet@ target;
 		file >> target;
+		return ColonizeTree(target);
 	}
 }
 
@@ -256,14 +271,13 @@ class ColonizeForest {
 		file >> cnt;
 		queue.length = cnt;
 		for (uint i = 0; i < cnt; ++i) {
-			@queue[i] = ColonizeTree();
-			queue[i].load(file);
+			@queue[i] = queue[i].load(file);
 		}
 		file >> nextCheckForPotentialColonizeTargets;
 	}
 
 	void tick(Expansion& expansion, AI& ai) {
-		if (gameTime > nextCheckForPotentialColonizeTargets) {
+		if (nextCheckForPotentialColonizeTargets > gameTime) {
 			checkBorderSystems(expansion, ai);
 		}
 
@@ -383,16 +397,63 @@ class ColonizeForest {
 				continue;
 
 			queueColonizeForResourceSpec(req, expansion, ai);
-			req.isColonizing = true;
 		}
 	}
 
 	void queueColonizeForResourceSpec(ImportData@ request, Expansion& expansion, AI& ai) {
 		ai.print("colonize for requested resource: "+request.spec.dump(), request.obj);
+		ResourceSpec@ spec = request.spec;
+		Object@ requestingObject = request.obj;
 
+		Planet@ newColony;
+		double bestWeight = 0.0;
+
+		// evaluate each potential source against the spec to pick one to colonise
 		for (uint i = 0, cnt = expansion.potentialColonizations.length; i < cnt; ++i) {
 			PotentialColonizeSource@ p = cast<PotentialColonizeSource>(expansion.potentialColonizations[i]);
-			// err, evaluate this against the spec to pick one to colonise?
+			// can't use as a source if it doesn't meet the spec
+			if (!p.canMeet(request.spec)) {
+				continue;
+			}
+			Region@ region = p.pl.region;
+			if (region is null) {
+				// TODO: Will need to handle this eventually
+				continue;
+			}
+			if (expansion.isColonizing(p.pl)) {
+				continue;
+			}
+			// TODO: Work out how to check the planet isn't being colonised
+			// without cheating vision
+			/* if (p.pl.isBeingColonized) {
+				continue;
+			} */
+			// TODO: Check this planet is actually still unowned
+
+			auto@ sys = expansion.systems.getAI(region);
+			bool regionIsOccupiedByOthers = sys.obj.PlanetsMask & ~ai.mask != 0;
+
+			double weight = p.weight;
+			if (regionIsOccupiedByOthers) {
+				weight *= 0.25;
+			}
+
+			// TODO: Weigh slightly by proximity to our colonise sources,
+			// ie, if we can colonise one of two food planets we probably
+			// want to favor the one that will colonise faster
+
+			if (weight > bestWeight) {
+				@newColony = p.pl;
+				bestWeight = weight;
+			}
+		}
+
+		if (newColony !is null) {
+			ai.print("found colonize target for requested resource: "+request.spec.dump(), newColony);
+			queue.insertLast(ColonizeTree(newColony));
+			request.isColonizing = true;
+		} else {
+			ai.print("failed to find target for requested resource: "+request.spec.dump());
 		}
 	}
 }
@@ -542,6 +603,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			// Look for resource requests made to resources that we can
 			// colonize for to meet
 			queue.fillQueueFromRequests(this, ai);
+
+			// TODO: Try to pull from the queue and start colonising if we're a
+			// terrestrial race, otherwise put the colonise data in awaitingSource
 		}
 	}
 

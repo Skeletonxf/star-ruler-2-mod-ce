@@ -1,4 +1,8 @@
 import resources;
+import empire_ai.weasel.ImportData;
+from resources import ResourceType;
+from resources import Resource;
+import statuses;
 
 interface RaceResourceValuation {
 	/**
@@ -67,5 +71,80 @@ class ResourceValuator {
 		if (razed !is null && resource.id == razed.id)
 			return -5;
 		return currentValue;
+	}
+}
+
+/**
+ * All the desirable or not so desirable things on a planet to
+ * consider for colonisation, development and levelling.
+ */
+class PlanetValuables {
+	Planet@ planet;
+	array<const ResourceType@> exportable;
+	array<const ResourceType@> unexportable;
+	//array<?> dummy;
+	array<const StatusType@> conditions;
+
+	PlanetValuables(Planet@ planet) {
+		@this.planet = planet;
+		array<Status> planetStatuses;
+		planetStatuses.syncFrom(planet.getStatusEffects());
+		for (uint i = 0, cnt = planetStatuses.length; i < cnt; ++i) {
+			if (planetStatuses[i].type.conditionFrequency > 0) {
+				conditions.insertLast(planetStatuses[i].type);
+			}
+		}
+		array<Resource> planetResources;
+		planetResources.syncFrom(planet.getNativeResources());
+		for (uint i = 0; i < planetResources.length; ++i) {
+			auto planetResourceType = planetResources[i].type;
+			if (planetResourceType.exportable) {
+				exportable.insertLast(planetResourceType);
+			} else {
+				unexportable.insertLast(planetResourceType);
+			}
+		}
+	}
+
+	/**
+	 * Gets the value of a planet based on its conditions and other non
+	 * resource factors.
+	 *
+	 * ie, if we're looking for a particular resource to meet a resource
+	 * spec, we want to colonise the planet with exotic atmosphere instead
+	 * of the planet with a noxious atmosphere
+	 */
+	double getGenericValue(ResourceValuator& valuation) {
+		return 1; // NYI
+	}
+
+	/**
+	 * Gets the value of a planet based on its resources and other
+	 * non resource factors like conditions.
+	 *
+	 * ie, how much we want this planet for levelling and income
+	 * purposes
+	 */
+	double getResourceValue(ResourceValuator& valuation) {
+		double weight = 0;
+		for (uint i = 0, cnt = unexportable.length; i < cnt; ++i) {
+			const ResourceType@ resource = unexportable[i];
+			weight += 0.8 * valuation.getValue(resource);
+		}
+		for (uint i = 0, cnt = exportable.length; i < cnt; ++i) {
+			const ResourceType@ resource = exportable[i];
+			weight += valuation.getValue(resource);
+		}
+		return weight + getGenericValue(valuation);
+	}
+
+	bool canExportToMeet(ResourceSpec@ spec) {
+		for (uint i = 0, cnt = exportable.length; i < cnt; ++i) {
+			const ResourceType@ resource = exportable[i];
+			if (spec.meets(resource)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -67,36 +67,3 @@ enum ResourceUsageType {
 	void save(SaveFile& file) {}
 	void load(SaveFile& file) {}
 } */
-
-/**
- * All the valuable or not so undesirable things on a planet to
- * consider for colonisation, development and levelling.
- */
-class PlanetValuables {
-	Planet@ planet;
-	//array<ResourceFlow@> exportable;
-	//array<const ResourceType@> unexportable;
-	//array<?> dummy;
-	array<const StatusType@> conditions;
-
-	PlanetValuables(Planet@ planet) {
-		@this.planet = planet;
-		array<Status> planetStatuses;
-		planetStatuses.syncFrom(planet.getStatusEffects());
-		for (uint i = 0, cnt = planetStatuses.length; i < cnt; ++i) {
-			if (planetStatuses[i].type.conditionFrequency > 0) {
-				conditions.insertLast(planetStatuses[i].type);
-			}
-		}
-		//array<Resource> planetResources;
-		//planetResources.syncFrom(planet.getNativeResources());
-		//for (uint i = 0; i < planetResources.length; ++i) {
-		//	auto planetResourceType = planetResources[i].type;
-		//	if (planetResourceType.exportable) {
-		//		exportable.insertLast(ResourceFlow(planetResourceType, planet));
-		//	} else {
-		//		unexportable.insertLast(planetResourceType);
-		//	}
-		//}
-	}
-}
