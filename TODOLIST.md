@@ -26,9 +26,10 @@ This is primarily intended as a developer focused project planning list, rather 
           - Extend the hooks to Constructions and do the same
       - Teach AI to melt ice
       - Teach AI to make most of the constructions by extending the building hint code
-  - Fix vision being granted on things moving through deep space when the player doesn't have a telescope
-    - Planets with engines
-    - Asteroids being tugged?
+  - Fix whatever kind of memory / seen mask is applied when first sighting a planet
+    - Should be able to reset this when the planet leaves it current region
+    - It's not memoryMask, or resetting just that doesn't lose vision
+    - Seems the fix will be needed in region.as or RegionObjects.as but no clue which mask yet
   - Stop Battleworlders transfering resources onto a planet with native life so they don't delete them by accident during the uplift
   - Reduce the points the Parasite trait gives for razing planets
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
