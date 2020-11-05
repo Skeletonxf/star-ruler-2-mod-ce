@@ -12,6 +12,7 @@ Ability: BWAluminumTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWCoalTransfer
 	Name: #TRANSFER_RESOURCE
@@ -27,6 +28,7 @@ Ability: BWCoalTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWFulrateTransfer
 	Name: #TRANSFER_RESOURCE
@@ -42,6 +44,7 @@ Ability: BWFulrateTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWGemsTransfer
 	Name: #TRANSFER_RESOURCE
@@ -57,6 +60,7 @@ Ability: BWGemsTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWIronTransfer
 	Name: #TRANSFER_RESOURCE
@@ -72,6 +76,7 @@ Ability: BWIronTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWPekelmTransfer
 	Name: #TRANSFER_RESOURCE
@@ -87,6 +92,7 @@ Ability: BWPekelmTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWPhasiteTransfer
 	Name: #TRANSFER_RESOURCE
@@ -102,6 +108,7 @@ Ability: BWPhasiteTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWSpiceTransfer
 	Name: #TRANSFER_RESOURCE
@@ -117,6 +124,7 @@ Ability: BWSpiceTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWUnobtaniumTransfer
 	Name: #TRANSFER_RESOURCE
@@ -132,6 +140,7 @@ Ability: BWUnobtaniumTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWDrugsTransfer
 	Name: #TRANSFER_RESOURCE
@@ -147,3 +156,4 @@ Ability: BWDrugsTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)

@@ -12,6 +12,7 @@ Ability: BWWaterTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWIceGiantWaterTransfer
 	Name: #TRANSFER_RESOURCE
@@ -27,3 +28,4 @@ Ability: BWIceGiantWaterTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)

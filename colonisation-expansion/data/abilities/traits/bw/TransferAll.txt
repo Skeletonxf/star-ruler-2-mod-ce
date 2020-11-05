@@ -11,6 +11,7 @@ Ability: TransferAll
 	TargetFilterNotSelf(targ)
 	RequireNotUnderSiege()
 	TargetFilterOwned(targ)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: AbilityAbandon
 	Target: targ = Object

@@ -12,6 +12,7 @@ Ability: BWDegenerateMatterTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWHelium3Transfer
 	Name: #TRANSFER_RESOURCE
@@ -27,6 +28,7 @@ Ability: BWHelium3Transfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWHypervolatilesTransfer
 	Name: #TRANSFER_RESOURCE
@@ -42,6 +44,7 @@ Ability: BWHypervolatilesTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWJewelryTransfer
 	Name: #TRANSFER_RESOURCE
@@ -57,6 +60,7 @@ Ability: BWJewelryTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWLatticesTransfer
 	Name: #TRANSFER_RESOURCE
@@ -72,6 +76,7 @@ Ability: BWLatticesTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWMedicinesTransfer
 	Name: #TRANSFER_RESOURCE
@@ -87,6 +92,7 @@ Ability: BWMedicinesTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWNeutroniumTransfer
 	Name: #TRANSFER_RESOURCE
@@ -102,6 +108,7 @@ Ability: BWNeutroniumTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWPlutoniumTransfer
 	Name: #TRANSFER_RESOURCE
@@ -117,6 +124,7 @@ Ability: BWPlutoniumTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWPsionicReagentsTransfer
 	Name: #TRANSFER_RESOURCE
@@ -132,6 +140,7 @@ Ability: BWPsionicReagentsTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWSupercarbonsTransfer
 	Name: #TRANSFER_RESOURCE
@@ -147,6 +156,7 @@ Ability: BWSupercarbonsTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWThoriumTransfer
 	Name: #TRANSFER_RESOURCE
@@ -162,6 +172,7 @@ Ability: BWThoriumTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
 
 Ability: BWUraniumTransfer
 	Name: #TRANSFER_RESOURCE
@@ -177,3 +188,4 @@ Ability: BWUraniumTransfer
 	TargetFilterNotSelf(targ)
 	TargetFilterNotQuarantined(targ)
 	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
