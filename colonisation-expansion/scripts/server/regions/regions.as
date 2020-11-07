@@ -151,15 +151,45 @@ bool updateRegion(Object& obj, bool takeVision = true) {
 	}
 
 	Region@ newRegion = getRegion(obj.position);
+	// [[ MODIFY BASE GAME START ]]
+	// Clear memory of objects that have left their region or moved around
+	// in deep space.
+	// Don't clear for objects that enter a region after being in deep space,
+	// because this also triggers on objects spawning into a region
+	// and would messes up more things than it would fix.
+	// FIXME: Visible mask doesn't seem to factor in empires like the
+	// Dread pirate, the C++ code will refactor them back in but ideally
+	// we shouldn't be repetedly flipping those bits
+	bool hasMemory = obj.memoryMask != 0 && obj.memoryMask != obj.visibleMask;
+	bool leftRegionOrInDeepSpace = prevRegion !is null
+		|| (prevRegion is null && newRegion is null);
+	// don't adjust memory of supports or flagships, they don't need adjusting
+	bool exclude = obj.isShip; // && obj.hasSupportAI;
+	if (hasMemory && !exclude && leftRegionOrInDeepSpace) {
+		bool changedRegion = prevRegion !is newRegion;
+		bool movingAroundInDeepSpace = newRegion is null
+			&& obj.velocity.lengthSQ >= 0.01;
+		if (changedRegion || movingAroundInDeepSpace) {
+			// clear memory to just be what can currently see this object
+			// ie, moving a planet around will cause everyone to lose
+			// their memory of it
+			// This is a bit of a hack because it clears the high level bits
+			// that seem to be for non major empires like the dread pirate
+			// but then the C++ game vision code adds them back in anywy
+			// Ideally we should find a way to not try to clear those bits,
+			// and also then avoid trying to clear memory that doesn't need
+			// clearing when a planet moves around in deep space
+			// Also this doesn't totally patch away all the visual artifacts
+			// that can sometimes linger, the zoomed out object and icon
+			// go immediately, but the zoomed in object model can linger,
+			// which is a vanilla bug that seems more deeply rooted in the game
+			// print("losing memory of "+obj.name+" was "+obj.memoryMask+" now "+obj.visibleMask+" donated is "+obj.donatedVision);
+			obj.memoryMask &= obj.visibleMask;
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
 	if(newRegion is null && prevRegion is null)
 		return false;
-
-	// [[ MODIFY BASE GAME START ]]
-	// TODO: Not sure how to lose vision/memory/seen
-	/* if (obj.isPlanet && (newRegion !is prevRegion)) {
-		print("might be a good idea to lose memory of "+obj.name);
-	} */
-	// [[ MODIFY BASE GAME END ]]
 
 	@obj.region = newRegion;
 	if(newRegion !is null) {

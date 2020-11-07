@@ -336,9 +336,6 @@ tidy class PlanetScript {
 			planet.changeSurfaceRegion(prevRegion, planet.region);
 			planet.changeStatusRegion(prevRegion, planet.region);
 			@prevRegion = planet.region;
-			// [[ MODIFY BASE GAME START ]]
-			// TODO: Clear memory of this planet
-			// [[ MODIFY BASE GAME END ]]
 		}
 
 		// [[ MODIFY BASE GAME START ]]
@@ -348,7 +345,7 @@ tidy class PlanetScript {
 		} else {
 			// planet.donatedVision |= ~0;
 			// Do **not** make planets in deep space globally visible
-			planet.donatedVision |= 0;
+			planet.donatedVision &= 0;
 		}
 		// [[ MODIFY BASE GAME END ]]
 
