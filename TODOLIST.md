@@ -3,6 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Let battleworlders transfer asteroids from mining bases onto planets
   - Stress test teaching of dummy resources to the AI
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully
       working
@@ -26,10 +27,6 @@ This is primarily intended as a developer focused project planning list, rather 
           - Extend the hooks to Constructions and do the same
       - Teach AI to melt ice
       - Teach AI to make most of the constructions by extending the building hint code
-  - Fix whatever kind of memory / seen mask is applied when first sighting a planet
-    - Should be able to reset this when the planet leaves it current region
-    - It's not memoryMask, or resetting just that doesn't lose vision
-    - Seems the fix will be needed in region.as or RegionObjects.as but no clue which mask yet
   - Reduce the points the Parasite trait gives for razing planets
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Extend the design stats changes to apply per hex for First build mass increases
@@ -53,6 +50,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
   - Consider integrating Darloth's NMP into CE https://github.com/darloth/SR2-NewMovement (low priority as the mods are currently compatible minus gravitron adjust)
   - Make InterdictMovement set a flag on the mover component to turn off self controlled motion rather than hack at modifying acceleration as it does in vanilla
+  - Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
 
 - Not planned for any time soon
   - Work out how should implement deep space trading
