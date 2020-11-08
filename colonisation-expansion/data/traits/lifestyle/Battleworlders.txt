@@ -9,13 +9,12 @@ Trait: Battleworlders
 	Unique: Lifestyle
 
 
-	ReplaceTechnologyNodes(BldSpire, Thrust2)
+	ReplaceTechnologyNodeAt((-5, -8), CelestialStationMaintenance2)
 	TriggerHomeworld(SpawnBuilding(Factory, (6, 5)), Run Post = True)
 	TriggerHomeworld(SpawnBuilding(LightSystem, (6, 1)), Run Post = True)
 	AddStatusOwnedFleets(BattleworlderFleet, Give To Stations = False)
 	ModAttribute(ForbidColonization, Add, 1)
 	TriggerHomeworld(DestroyBuildingAt((4, 3), Undevelop = True))
-	ReplaceTechnologyNodes(Megacity, CelestialStationMaintenance2)
 	ReplaceTechnologyNodes(StationMaintenance, CelestialStationMaintenance)
 	ReplaceTechnologyNodes(PlanetaryEngine, CelestialBldPlanetaryEngine)
 	AddModifier(StationHull::MaintenanceModFactor(0.6))
