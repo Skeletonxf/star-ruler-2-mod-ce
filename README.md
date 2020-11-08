@@ -29,6 +29,10 @@ Also comes with forestry notifications: <img src="screenshots/forestry-notificat
 Ice Giants and Gas Giants are intended to be more difficult to colonise than rock planets, but provide useful ways to keep expanding your economy once your borders are constrained.
 ### Additional subsystems/hulls for low maintence exploration and mining ships
 Scouting and mining cost much less in maintence.
+#### Mining logistics improvements
+Ships ordered to mine can now mine cross systems, and will only stop if you deplete all asteroids known to your empire. Mining asteroid belts is a lot more efficient than in vanilla. You can also queue transfer and dropoff cargo orders if you'll meet the requirements by the time the ship would execute the order. (ie you can order an ore pickup and immediately queue the ore dropoff because you'll have ore to dropoff by the time you need it). Cargo pickups and dropoffs can now be done per cargo type.
+### Support ship shields
+You can now put shields on supports, and Devout can unlock shrines for supports.
 ### Tweaks to motherships
 Mothership max population scales with ship size and provides labor. Motherships can also use an ability on planets to deal damage to them and gain additional max pop. Note that the max pop for any ship design still avoids creating net positive income as with vanilla for balancing, so to get to net positive income you'll need to consume planets which aren't an infinite resource.
 ### Dilemma conditions that appear on planets and force you to make hard decisions
@@ -41,18 +45,31 @@ Just because you have a 300 labor planet shouldn't mean you can build an outpost
 I found in many games of unmodded Star Ruler my ships were either orders of magnitude stronger than my opponent's or orders of magnitude weaker. Nerfing stat bonuses makes ships much closer in strength even if one empire is ahead in terms of eco/research. To get more powerful ships you actually have to have the economy to field larger ships rather than just stacking multipliers that turn ks of combat strength into Ms of combat strength for free.
 ### Rebalanced Carpet Bombs
 Carpet Bombs can now be directly countered by making certain buildings or orbitals which reduce the effectiveness, but more importantly it is not possible to abuse edge cases in the subsystem variable code to make extremely cheap ships that can delevel tier 2+ planets in seconds.
+### Diplomatic Victory
+You can snowball your diplomatic strength with Diplomatic Maneuvering if you play your cards right. Senatorial Palaces are now disabled if they leave your owned space. Planets in deep space can now be targeted for annex votes if you can obtain vision of them.
+### Attitude tweaks
+Attitudes which require maintaining x can no longer go into the negatives (as they will now count progress you made before starting the attitude). Xenophobic no longer requires you put the Outposts in border systems.
+### Secret Project overhaul
+Secret projects are no longer secret, you will be able to unlock any of them if you meet the unlock requirements as in vanilla. Artifical Moons require building moon bases instead of ring habitats. The Innovation card now grants you random unlocks on the reserach grid, which can let you leapfrog into unexplored areas of the tech tree. Ironically Innovation will never give you a Secret Project anymore.
 ### Ability to unlock all types of FTL and FTL income orbital from the research grid
 For balancing this is a costly research path to go down and provides few other benefits. Each unlock also starts a vote to give the technology to all empires. This makes getting extra FTL technology a tradeoff as you might not keep it exclusive to just you, and then your research points have been wasted on something your opponents got for free.
 #### Supplementary new FTL
 Jumpdrives can be unlocked for Stations
+### FTL Sharing
+New treaty clause that shares access of Gates and Fling beacons between signatories.
 ### Biology traits such as Aquatic or Flying
 These traits have positive and negative factors together. New races featuring these traits:
 #### Parasite
 This trait makes you get only half of the pressure from planetary resources, but allows you to raze planets down to nothing, gaining massively increased resource production while doing so. Includes dedicated AI support.
 ### Battleworlders
 The battleworlders lifestyle makes every planet a battleworld, and lets your empire conquer the galaxy from the comfort of its own planets. No AI support at this time. Inspired by Philip Reeve's Mortal Engines series and Darloth's / Dalo Lorn's Ringworlders. Balancing far from final.
+A number of Quality of Life changes to mobile planets in general have also been made, including: planets no longer grant everyone vision of them if they go into deep space, memory of objects are now lost if they leave regions or move around in deep space, and planets can be ordered to attack.
 ### Improved AI
-AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to. AI can handle having multiple FTL abilities unlocked at once. AI will build FTL income orbitals if it needs more FTL income. AI will seek to counter carpet bombing if it sees an opponent with them (AIs cannot do carpet bombing raids themselves yet). Reworked and improved AI flagship building, colonising and planet leveling are in progress.
+AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to. AI can handle having multiple FTL abilities unlocked at once. AI will build FTL income orbitals if it needs more FTL income. AI will seek to counter carpet bombing if it sees an opponent with them (AIs cannot do carpet bombing raids themselves yet). Reworked and improved AI colonising and planet leveling are in progress.
+#### Military
+The AI will be much more eager to build military flagships when it has spare money than vanilla, and it will prepare designs in advance.
+#### Colonisation and Development
+Overhaul still work in progress, but the AI will now correctly detect dummy resources.
 
 ## Copying and license info
 My own AngelScript code in this mod is licensed under the MIT license. Most of the AngelScript code in this repository comes from the source code of Star Ruler 2 by [Blind Mind Studios](https://github.com/BlindMindStudios/StarRuler2-Source) which is also MIT licensed. The assets in Star Ruler 2 were placed under the Creative Commons CC-BY-NC license, which permits free non commercial use. The art assets I've added in this mod are licensed under the Creative Commons [CC-BY license](https://creativecommons.org/licenses/by/4.0/) instead, which permits commercial use just as the MIT license does. I try not to accidently commit any of the CC-BY-NC SR2 assets or derivations of them into this repository. The modding engine has a useful system where assets can be 'modified' via recolorisation without actually saving new modified files into this mod.
