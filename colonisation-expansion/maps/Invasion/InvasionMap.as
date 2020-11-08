@@ -77,7 +77,7 @@ class InvasionMap : Map {
 
 		uint players = estPlayerCount;
 		if(players == 0)
-			players = 3;
+			players = 1; // [[ MODIFY BASE GAME: HACK, let this be configurable from the settings ]]
 
 		double radSize = spacing * 10.0 * double(players+1);
 		double startDist = (radSize / (2.0 * pi)) + (spacing * 6.0);
