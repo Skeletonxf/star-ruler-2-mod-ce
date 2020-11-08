@@ -454,7 +454,7 @@ void updateHoveredObject() {
 			if(hoverFilter is null) {
 				if(obj.selected)
 					score /= 10.0;
-				else if(owner.controlled)
+				else if(owner !is null && owner.controlled) // [[ MODIFY BASE GAME ]]
 					score *= 1.5;
 			}
 			else {
