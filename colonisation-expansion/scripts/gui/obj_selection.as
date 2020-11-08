@@ -972,7 +972,7 @@ class BEAMS {
 
 		//Update movement beams
 		uint movInd = 0;
-		if(obj.owner.controlled) {
+		if(obj.owner !is null && obj.owner.controlled) { // [[ MODIFY BASE GAME ]]
 			vec3d atPos = obj.node_position;
 			uint ordCnt = 0;
 			bool wasPath = false;
