@@ -170,7 +170,7 @@ vec3d getSelectionPosition(bool onlyMovable = false) {
 	for(uint i = 0, cnt = selection.length; i < cnt; ++i) {
 		Object@ obj = selection[i];
 		if(onlyMovable) {
-			if(!obj.hasMover || !obj.owner.controlled)
+			if(!obj.hasMover || obj.owner is null || !obj.owner.controlled) // [[ MODIFY BASE GAME ]]
 				continue;
 		}
 		pos += selection[i].position;
@@ -269,7 +269,7 @@ SelectionType classifyRestrictive(array<Object@>& objs) {
 
 	for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 		Object@ obj = objs[i];
-		if(!obj.owner.controlled)
+		if(obj.owner is null || !obj.owner.controlled) // [[ MODIFY BASE GAME ]]
 			continue;
 
 		uint newType = ST_Other;
@@ -300,7 +300,7 @@ SelectionType classifyRelaxed(array<Object@>& objs) {
 
 	for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 		Object@ obj = objs[i];
-		if(!obj.owner.controlled)
+		if(obj.owner is null || !obj.owner.controlled) // [[ MODIFY BASE GAME ]]
 			return ST_Other;
 
 		switch(obj.type) {
@@ -340,7 +340,7 @@ void filter(array<Object@>& objs, SelectionType type) {
 		case ST_Fleets:
 		for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 			Object@ obj = objs[i];
-			if(!obj.owner.controlled || !isSortOfShip(obj) || !obj.hasLeaderAI) // [[ MODIFY BASE GAME ]]
+			if(obj.owner is null || !obj.owner.controlled || !isSortOfShip(obj) || !obj.hasLeaderAI) // [[ MODIFY BASE GAME ]]
 				continue;
 			output.insertLast(obj);
 		}
@@ -349,7 +349,7 @@ void filter(array<Object@>& objs, SelectionType type) {
 		case ST_Military:
 		for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 			Object@ obj = objs[i];
-			if(!obj.owner.controlled || !isSortOfShip(obj) || !obj.hasLeaderAI) // [[ MODIFY BASE GAME ]]
+			if(obj.owner is null || !obj.owner.controlled || !isSortOfShip(obj) || !obj.hasLeaderAI) // [[ MODIFY BASE GAME ]]
 				continue;
 			if((obj.getFleetStrength() < 1000.0) != (type == ST_Civilian))
 				continue;
@@ -359,7 +359,7 @@ void filter(array<Object@>& objs, SelectionType type) {
 		case ST_Planets:
 		for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 			Object@ obj = objs[i];
-			if(!obj.owner.controlled || !obj.isPlanet)
+			if(obj.owner is null || !obj.owner.controlled || !obj.isPlanet) // [[ MODIFY BASE GAME ]]
 				continue;
 			output.insertLast(obj);
 		}
@@ -1073,7 +1073,7 @@ class BEAMS {
 		else
 			hideBeam(projectBeam);
 
-		if(obj.hasConstruction && obj.owner.controlled && obj.isRallying)
+		if(obj.hasConstruction && obj.owner !is null && obj.owner.controlled && obj.isRallying) // [[ MODIFY BASE GAME ]]
 			updateBeam(rallyBeam, myPos, obj.rallyPosition, RALLY_BEAM_COLOR);
 		else
 			hideBeam(rallyBeam);
@@ -1141,7 +1141,7 @@ class BEAMS {
 						myPos, theirPos, color);
 				}
 
-				if(obj.owner.controlled) {
+				if(obj.owner !is null && obj.owner.controlled) { // [[ MODIFY BASE GAME ]]
 					resources.syncFrom(obj.getAvailableResources());
 					for(uint i = 0; i < resources.length; ++i) {
 						auto@ res = resources[i];
