@@ -827,6 +827,12 @@ class MiniWormholeNetwork : EmpireEffect {
 			return;
 		}
 
+		auto@ def = getOrbitalModule(orbital.integer);
+		if (def is null) {
+			return;
+		}
+		uint defID = uint(orbital.integer);
+
 		// try to tick through 20% of the systems each 30 seconds to
 		// avoid lag
 		// this will roughly tick through 120% of the systems each
@@ -853,8 +859,6 @@ class MiniWormholeNetwork : EmpireEffect {
 				continue;
 			}
 
-			auto@ def = getOrbitalModule(orbital.integer);
-			uint defID = uint(orbital.integer);
 			uint totalOrbitals = reg.orbitalCount;
 			uint totalHubsPresent = 0;
 			for (uint i = 0; i < totalOrbitals; i++) {
@@ -868,6 +872,13 @@ class MiniWormholeNetwork : EmpireEffect {
 			if (totalHubsPresent == 0) {
 				hubsToSpawn = 2;
 			}
+
+			// stop spawning after 5 hubs, 7 was a bit too much, leave the
+			// chance to spawn in based on 7 though.
+			if (totalHubsPresent >= 5) {
+				continue;
+			}
+
 			// spawn immediately if no hubs present, gradually reduce the
 			// probability of spawning another hub on a given tick down to 0%
 			// at 7 hubs in a system.
