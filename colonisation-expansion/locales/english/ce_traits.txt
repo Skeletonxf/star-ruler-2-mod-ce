@@ -45,4 +45,4 @@ TRAIT_LIGHT_DESC: All ship and station mass reduced by 10%. This reduces mass ba
 TRAIT_HEAVY: Heavy
 TRAIT_HEAVY_DESC: All ship and station mass increased by 15%. This increases mass based FTL costs and reduces acceleration.
 TRAIT_TECHNOCRATIC: Technocratic
-TRAIT_TECHNOCRATIC_DESC: [vspace=6/][b][color=#0087c7]Extra Starting Cards:[/color][/b] [offset=140]3x Innovation.[/offset]
+TRAIT_TECHNOCRATIC_DESC: [vspace=6/][b][color=#0087c7]Extra Starting Cards:[/color][/b] [offset=140]2x Innovation.[/offset]

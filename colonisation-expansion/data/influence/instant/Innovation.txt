@@ -16,5 +16,5 @@ Card: Innovation
 
 	AI: BuyWeight(2.0)
 	AI: PlayWeightUnconditionally(20.0)
-	Min Uses: 2
-	Max Uses: 3
+	Max Uses: 2
+	Can Overquality: False

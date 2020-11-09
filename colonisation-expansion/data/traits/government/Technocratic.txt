@@ -6,4 +6,4 @@ Trait: Technocratic
 	Icon: CardIcons::29
 	Costs Points: 1
 	Color: #fffb35
-	GainInfluenceCard(Innovation, Uses = 3)
+	GainInfluenceCard(Innovation, Uses = 2)
