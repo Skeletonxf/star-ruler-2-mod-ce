@@ -181,6 +181,7 @@ final class PlanetNodeScript {
 			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_right(), -1));
 			material::GenericPBR_RingworldInner.switchTo();
 			model::RingworldInner.draw(lodDist);
+			undoTransform();
 
 			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_front(), 0.5));
 			material::GenericPBR_RingworldInner.switchTo();
@@ -331,7 +332,7 @@ class DynTex {
 		// actual grid size. In that scenario, trying to create the Image
 		// can easily cause a Crash To Desktop and completely stop the game.
 		if (size.x > 3000 || size.y > 3000) {
-			print("Read grid size that is way too high, aborting texture cache to avid CTD");
+			print("Read grid size that is way too high, aborting texture cache to avoid CTD");
 			print(string(size.x)+"x"+string(size.y));
 			print("Has the netcode or PlanetSurface gone haywire?");
 			@this.obj = null;
