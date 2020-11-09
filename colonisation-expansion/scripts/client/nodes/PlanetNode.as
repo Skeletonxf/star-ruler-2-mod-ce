@@ -181,6 +181,7 @@ final class PlanetNodeScript {
 			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_right(), -1));
 			material::GenericPBR_RingworldInner.switchTo();
 			model::RingworldInner.draw(lodDist);
+			undoTransform();
 
 			applyAbsTransform(vec3d(0.0, 0.0, 0.0), vec3d(1.0), quaterniond_fromAxisAngle(vec3d_front(), 0.5));
 			material::GenericPBR_RingworldInner.switchTo();
