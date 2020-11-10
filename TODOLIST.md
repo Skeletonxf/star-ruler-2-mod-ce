@@ -35,8 +35,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - battleworld QoL changes
     - finish port to CP
     - Fix bug with outposts getting repeat entries in the in-combat quickbar
-  - Fix OpenGL error with Dysons
-    - Error code seems to be stack overflow?
   - Make it possible to transfer fixed amounts of cargo in lump sums and as recurring per second between cargo sources without using flagships, some kind of automated civillian transporters?
     - Consider adding ore maintenace costs for Dysons once this system is working
     - Consider creating orders to instruct a civillian ship to transfer a fixed quantity of cargo to another target for free (but with civillian ship transport risks and slowness)
@@ -72,6 +70,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
+  - Get the AI to play invasion properly
   - Stellar Lifting to replace obtaining protoplanets from seed ships
 
 - Long term plans

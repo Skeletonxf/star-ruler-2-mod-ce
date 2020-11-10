@@ -21,6 +21,10 @@ enum MapSetting {
 	M_SysCount,
 	M_SystemSpacing,
 	M_Flatten,
+	// [[ MODIFY BASE GAME START ]]
+	M_ClusterCount,
+	M_IsCoop,
+	// [[ MODIFY BASE GAME END ]]
 };
 
 const double BASE_STRENGTH = 6000.0;
@@ -56,12 +60,23 @@ class InvasionMap : Map {
 		diff.set(0.5);
 
 		Description(locale::INVASION_MAP_TEXT, lines=2);
+
+		// [[ MODIFY BASE GAME START ]]
+		Description(locale::INVASION_MAP_CONFIG);
+		Number(locale::CLUSTERS_IF_NO_PLAYERS, M_ClusterCount, 3, decimals=0, step=1, min=1, max=20, halfWidth=false);
+		Toggle(locale::INVASION_COOP_CONFIG, M_IsCoop, true, halfWidth=true, tooltip=locale::TT_INVASION_CONFIG_COOP);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 #section server
 	void modSettings(GameSettings& settings) override {
-		config::ENABLE_INFLUENCE_VICTORY = 0.0;
-		settings.setNamed("ENABLE_INFLUENCE_VICTORY", 0.0);
+		// [[ MODIFY BASE GAME START ]]
+		bool coop = settings.getSetting(M_IsCoop, 0.0) != 0.0;
+		if (coop) {
+			config::ENABLE_INFLUENCE_VICTORY = 0.0;
+			settings.setNamed("ENABLE_INFLUENCE_VICTORY", 0.0);
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		config::ENABLE_DREAD_PIRATE = 0.0;
 		settings.setNamed("ENABLE_DREAD_PIRATE", 0.0);
@@ -74,10 +89,13 @@ class InvasionMap : Map {
 	void placeSystems() {
 		double spacing = modSpacing(getSetting(M_SystemSpacing, DEFAULT_SPACING));
 		bool flatten = getSetting(M_Flatten, 0.0) != 0.0;
+		// [[ MODIFY BASE GAME START ]]
+		uint clustersCount = uint(getSetting(M_ClusterCount, 3));
+		// [[ MODIFY BASE GAME END ]]
 
 		uint players = estPlayerCount;
 		if(players == 0)
-			players = 3;
+			players = clustersCount; // [[ MODIFY BASE GAME ]]
 
 		double radSize = spacing * 10.0 * double(players+1);
 		double startDist = (radSize / (2.0 * pi)) + (spacing * 6.0);
@@ -227,12 +245,17 @@ class InvasionMap : Map {
 				hw.modLaborIncome(+5.0 / 60.0);
 		}
 
-		//YOU WILL SIT IN THE CIRCLE AND SING KUMBAYA DAMNIT
-		for(uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
-			Empire@ emp = getEmpire(i);
-			if(emp.major)
+		// [[ MODIFY BASE GAME START ]]
+		bool coop = getSetting(M_IsCoop, 0.0) != 0.0;
+		if (coop) {
+			//YOU WILL SIT IN THE CIRCLE AND SING KUMBAYA DAMNIT
+			for(uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
+				Empire@ emp = getEmpire(i);
+				if(emp.major)
 				emp.ForcedPeaceMask |= majorMask;
+			}
 		}
+		// [[ MODIFY BASE GAME END ]]
 
 		//Spawn remnant defenses
 		const Design@ defStation = Creeps.getDesign("Defense Station");

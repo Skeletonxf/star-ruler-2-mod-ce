@@ -1,0 +1,6 @@
+INVASION_MAP_CONFIG: Extra Settings:
+CLUSTERS_IF_NO_PLAYERS: Clusters if no homeworlds spawn
+INVASION_COOP_CONFIG: Coop
+TT_INVASION_CONFIG_COOP: <<
+	Play the Invasion Map cooperatively, with war and influence victory turned off.
+>>
