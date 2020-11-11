@@ -89,3 +89,10 @@ R_SUPPORT_SHRINE_DESC: <<
 	[bbloc=#S_SHRINE_DESC/]
 >>
 R_SUPPORT_SHRINE_DUMMY: Compact Prayer (Dummy)
+R_UNLOCK_MAKE_NEBULA_DESC: <<
+	[color=#aaa][i]Unlocks the ability to turn Gas Giants into nebula.[/i][/color]
+
+	[bbloc=#MAKE_NEBULAE_DESC:#e666f0/]
+>>
+R_UNLOCK_MAKE_NEBULA: Nebula Formation
+RESEARCH_REQ_FRACTURED_PLANETS: Fracture $2 Planets. [b]( $1 / $2 )[/b]

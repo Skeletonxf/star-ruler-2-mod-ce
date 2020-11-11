@@ -72,6 +72,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
   - Get the AI to play invasion properly
   - Stellar Lifting to replace obtaining protoplanets from seed ships
+  - Teach AI to scout nebulae properly
 
 - Long term plans
   - Improving the AI

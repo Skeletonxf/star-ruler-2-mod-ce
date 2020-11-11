@@ -36,3 +36,7 @@ FRACTURE_PLANET_DESC: <<
 	Fractured Planets can build an infinite number of moons and generate ore over time, but are easily destroyed by further planetary damage.
 >>
 TAKE_PLANET_DESC: Eradicate the natives from this planet. This will give us full control over the planet's resource but grant substantial leverage against us.
+MAKE_NEBULAE: Create Nebulae
+MAKE_NEBULAE_DESC: <<
+	Blowing up this Gas Giant in just the right way can spew its gases all over the system in a [b][color=$1]pretty color[/color][/b].
+>>

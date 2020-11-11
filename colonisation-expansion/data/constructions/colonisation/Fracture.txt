@@ -5,6 +5,7 @@ Construction: Fracture
 	Time Cost: 180
 	Description: #FRACTURE_PLANET_DESC
 	Category: Development
+	ModAttribute(PlanetsFractured, Add, 1)
 	RequireNotStatus(MinimalDevelopment)
 	RequireNotStatus(ArtificialPlanetoid)
 	RequireNotStatus(Ringworld)

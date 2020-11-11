@@ -276,3 +276,4 @@ Grid: ColonisationExpansionGrid
 	Thrust2: 3,7
 	InfiniteShields: 1,13
 	Abundance: -6,-4
+	Nebulaefication: -8,-9

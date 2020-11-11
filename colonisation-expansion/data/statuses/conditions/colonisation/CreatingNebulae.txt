@@ -1,0 +1,4 @@
+Status: CreatingNebulae
+	Visible To: Nobody
+Status: CreatingNebulaeInRegion
+	Visible To: Nobody

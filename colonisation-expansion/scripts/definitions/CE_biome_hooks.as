@@ -12,6 +12,7 @@ import int getUnlockTag(const string& ident, bool create = true) from "unlock_ta
 from requirement_effects import Requirement;
 #section server
 from objects.Oddity import createMiniWormhole;
+from objects.Oddity import createNebula;
 import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
 import void filterToResourceTransferAbilities(array<Ability>&) from "CE_resource_transfer";
 import CE_array_map;
@@ -1355,3 +1356,51 @@ class BreakExcessFoodImports : BonusEffect {
 	}
 #section all
 }
+
+class SpawnNebula : BonusEffect {
+	Document doc("Turn the system the object is in into a nebula.");
+	Argument color(AT_Color, "#f0c870", doc="Color of the nebula.");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if (obj is null || obj.region is null) {
+			return;
+		}
+		SystemDesc@ sys = getSystem(obj.region);
+		if (sys is null || sys.object is null) {
+			return;
+		}
+		Color col = toColor(color.str);
+		// create oddity
+		createNebula(sys.position, sys.radius, color=col.rgba, region=sys.object);
+		// turn off region vision
+		sys.donateVision = false;
+		// set static seeable range
+		for(uint i = 0, cnt = sys.object.objectCount; i < cnt; ++i) {
+			Object@ obj = sys.object.objects[i];
+			if(obj.hasStatuses)
+				continue;
+			obj.seeableRange = 100;
+		}
+	}
+#section all
+};
+
+class RemoveRegionStatus : BonusEffect {
+	Document doc("Remove a status effect from everything in the target region.");
+	Argument type(AT_Status, doc="Type of status effect to remove.");
+	Argument empire_limited(AT_Boolean, "True", doc="Whether the status should be limited to the target empire.");
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		Region@ region = cast<Region>(obj);
+		if(region is null)
+			@region = obj.region;
+		if(region is null)
+			return;
+		if(!empire_limited.boolean)
+			@emp = null;
+		region.removeRegionStatus(emp, uint(type.integer));
+	}
+#section all
+};
