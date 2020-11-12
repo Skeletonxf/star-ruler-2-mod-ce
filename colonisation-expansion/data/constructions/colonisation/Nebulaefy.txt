@@ -28,8 +28,8 @@ Construction: Nebulaefy1
 Construction: Nebulaefy2
 	Name: #MAKE_NEBULAE
 	Category: Development
-	Icon: Nebulas::6 * #23d110
-	Description: #MAKE_NEBULAE_DESC:#23d110
+	Icon: Nebulas::6 * #2aff13
+	Description: #MAKE_NEBULAE_DESC:#2aff13
 	Time Cost: 60
 	Build Cost: 500
 	OnStart(AddStatus(CreatingNebulae))
@@ -48,7 +48,7 @@ Construction: Nebulaefy2
 	RequireUnlockTag(MakeNebula)
 	CE_biome_hooks::RequireNotHomeworld()
 	AddRegionStatus(LimitedSight, Empire Limited = False)
-	CE_biome_hooks::SpawnNebula(Color = #23d110)
+	CE_biome_hooks::SpawnNebula(Color = #2aff13)
 	ConsumeEnergy(1500)
 	Destroy(Quiet = True)
 

@@ -7,9 +7,10 @@ Building: CelestialPlanetaryEngine
 
 	Size: 5x5
 
-
 	RequireNotStatus(Ringworld)
+	RequireNotStatus(InAnnexVote)
+	RequireNotStatus(CreatingNebulae)
 	AddPlanetResource(Battleworld)
 	CannotBuildManually()
 	CannotRemove()
-	IfNotHaveStatus(Ringworld, IfNotHaveStatus(InAnnexVote, AddAccelerationBonus(1.5)))
+	IfNotHaveStatus(Ringworld, AddAccelerationBonus(1.5))

@@ -39,4 +39,6 @@ TAKE_PLANET_DESC: Eradicate the natives from this planet. This will give us full
 MAKE_NEBULAE: Create Nebulae
 MAKE_NEBULAE_DESC: <<
 	Blowing up this Gas Giant in just the right way can spew its gases all over the system in a [b][color=$1]pretty color[/color][/b].
+
+	[color=#f00]Planet will be destroyed[/color]
 >>

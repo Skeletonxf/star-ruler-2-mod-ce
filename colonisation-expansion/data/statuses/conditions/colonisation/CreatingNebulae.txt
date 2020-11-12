@@ -1,4 +1,8 @@
 Status: CreatingNebulae
-	Visible To: Nobody
+	Name: #CREATING_NEBULAE
+	Description: #CREATING_NEBULA_DESC
+	Icon: Nebulas::10 * #10bbf0
+	InterdictMovement()
+	DelayFTL()
 Status: CreatingNebulaeInRegion
 	Visible To: Nobody
