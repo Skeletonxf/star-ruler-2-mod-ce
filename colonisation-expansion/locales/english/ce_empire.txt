@@ -10,7 +10,7 @@ RACE_WANDI_LORE: <<|
 
 	No!
 
-	We made our prison a home. We fled the empire without ever setting food off our planet. We made our home move.
+	We made our prison a home. We fled the empire without ever setting foot off our planet. We made our home move.
 
 	Why crowd into ships now that we are free? We have wandered the universe for generations.
 
@@ -51,7 +51,7 @@ HELP_BATTLEWORLDERS: <<
 
 	[font=Medium]Battle[/font][vspace=4/]
 	[color=#ccc]Your ships are weak compared to other races, but they become extra weak if far away from your planets. Orbitals are not weakened.[/color]
-	[color=#ccc]Keep in mind that you can build orbitals within a planet's gravitational field to move them with the planet.[/color]
+	[color=#ccc]You can build orbitals within a planet's gravitational field to move them with the planet.[/color]
 	[color=#ccc]You can take out early remnants with battleworlds if you build up a support fleet and enable defense for the planet.[/color]
 
 	[font=Medium]Deep Space[/font][vspace=4/]

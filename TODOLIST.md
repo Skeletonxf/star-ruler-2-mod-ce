@@ -27,6 +27,7 @@ This is primarily intended as a developer focused project planning list, rather 
           - Extend the hooks to Constructions and do the same
       - Teach AI to melt ice
       - Teach AI to make most of the constructions by extending the building hint code
+      - Teach Star Children to not put supports on their Small Motherships
   - Reduce the points the Parasite trait gives for razing planets
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Extend the design stats changes to apply per hex for First build mass increases

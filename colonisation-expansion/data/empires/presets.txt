@@ -88,6 +88,8 @@ Preset: Nylli
 	Trait: Slipstream
 	Trait: StarChildren
 	Trait: Innovative
+	Trait: Light
+	Trait: Decentralised
 
 Preset: Heralds
 	Name: #RACE_HERALDS
@@ -122,7 +124,7 @@ Preset: Wandi
 	Tagline: #RACE_WANDI_TAGLINE
 	Lore: #RACE_WANDI_LORE
 	Portrait: emp_portrait_harrian
-	Shipset: Moirai
+	Shipset: Farum
 	Hard: True
 
 	Trait: Battleworlders
@@ -135,8 +137,7 @@ Preset: Locusto
 	Tagline: #RACE_LOCUSTO_TAGLINE
 	Lore: #RACE_LOCUSTO_LORE
 	Portrait: emp_portrait_oko
-	Shipset: Volkur
-	Hard: True
+	Shipset: Bromma
 
 	Trait: ParasiteTrait
 	Trait: Verdant
