@@ -660,8 +660,11 @@ class RequireNotHomeworld : Requirement {
 	Document doc("Can only be built on planets that are not the homeworld.");
 
 	bool meets(Object& obj, bool ignoreState = false) const override {
-		if (obj is null || !obj.isPlanet || obj.owner is null || obj.owner.Homeworld is null) {
+		if (obj is null || !obj.isPlanet || obj.owner is null) {
 			return false;
+		}
+		if (obj.owner.Homeworld is null) {
+			return true;
 		}
 		Planet@ planet = cast<Planet>(obj);
 		return obj.owner.Homeworld.id != planet.id;
