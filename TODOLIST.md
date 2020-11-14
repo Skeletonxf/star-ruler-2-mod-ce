@@ -3,6 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Buff black hole expolsion range
   - Let battleworlders transfer asteroids from mining bases onto planets
   - Stress test teaching of dummy resources to the AI
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully
@@ -28,6 +29,8 @@ This is primarily intended as a developer focused project planning list, rather 
       - Teach AI to melt ice
       - Teach AI to make most of the constructions by extending the building hint code
       - Teach Star Children to not put supports on their Small Motherships
+  - Tweak tractor default design
+  - Make the differences between the low power computer and control computer better defined
   - Reduce the points the Parasite trait gives for razing planets
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Extend the design stats changes to apply per hex for First build mass increases
