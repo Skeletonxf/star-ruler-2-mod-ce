@@ -18,7 +18,7 @@ STATUS_MOTHERSHIP_POPULATION_DESC: <<
 
 	Planetary resources can be exploited by building habitats around planets to offload population into.
 
-	Every population currently living on this mothership increases your income by §15k and labor by 1.
+	Every population currently living on this mothership increases your income by §15k and labor by 2.
 
 	[b]Motherships cannot fire outside friendly territory.[/b]
 >>
