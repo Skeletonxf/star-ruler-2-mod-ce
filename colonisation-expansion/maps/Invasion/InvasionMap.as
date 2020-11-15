@@ -285,14 +285,23 @@ class InvasionMap : Map {
 				vec3d offset = (sys.desc.position - dat.homeworld.desc.position).normalized(radius * 0.75);
 
 				auto@ obj = createShip(sys.desc.position + offset, defStation, Pirates, free=true);
+				// [[ MODIFY BASE GAME START ]]
+				obj.addStatus(getStatusID("RemnantDefenseStation"));
+				// [[ MODIFY BASE GAME END ]]
 				obj.orbitDuration(1000000000000.0);
 				sys.defenses.insertLast(obj);
 
 				@obj = createShip(sys.desc.position + quaterniond_fromAxisAngle(vec3d_up(), pi * 0.2) * offset, defStation, Pirates, free=true);
+				// [[ MODIFY BASE GAME START ]]
+				obj.addStatus(getStatusID("RemnantDefenseStation"));
+				// [[ MODIFY BASE GAME END ]]
 				obj.orbitDuration(1000000000000.0);
 				sys.defenses.insertLast(obj);
 
 				@obj = createShip(sys.desc.position + quaterniond_fromAxisAngle(vec3d_up(), -pi * 0.2) * offset, defStation, Pirates, free=true);
+				// [[ MODIFY BASE GAME START ]]
+				obj.addStatus(getStatusID("RemnantDefenseStation"));
+				// [[ MODIFY BASE GAME END ]]
 				obj.orbitDuration(1000000000000.0);
 				sys.defenses.insertLast(obj);
 			}

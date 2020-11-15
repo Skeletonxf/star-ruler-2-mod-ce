@@ -1,0 +1,3 @@
+Status: RemnantDefenseStation
+	Visible To: Nobody
+	CE_biome_hooks::DamageIfLeavesRegion()

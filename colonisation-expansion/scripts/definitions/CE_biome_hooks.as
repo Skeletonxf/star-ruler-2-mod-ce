@@ -1404,3 +1404,55 @@ class RemoveRegionStatus : BonusEffect {
 	}
 #section all
 };
+
+tidy final class RegionData {
+	Region@ region = null;
+}
+
+class DamageIfLeavesRegion : GenericEffect {
+	Document doc("Deal percent max hp damage to the object if it is leaves its starting region.");
+	Argument amount(AT_Decimal, "0.01", doc="Percent damage per second.");
+
+#section server
+	void enable(Object& obj, any@ data) const override {
+		RegionData regionData;
+		data.store(@regionData);
+		@regionData.region = obj.region;
+	}
+
+	void tick(Object& obj, any@ data, double time) const override {
+		RegionData@ regionData;
+		data.retrieve(@regionData);
+
+		Region@ region = obj.region;
+		if(region !is regionData.region) {
+			if (obj.isShip) {
+				Ship@ ship = cast<Ship>(obj);
+				const Blueprint@ bp = ship.blueprint;
+				const Design@ design = bp.design;
+				double maxHP = (design.totalHP - bp.removedHP) * bp.hpFactor;
+				ship.damageAllHexes(maxHP * amount.decimal * time);
+			} else if (obj.isPlanet) {
+				Planet@ planet = cast<Planet>(obj);
+				planet.dealPlanetDamage(planet.MaxHealth * amount.decimal * time);
+			} else if (obj.isStar) {
+				Star@ star = cast<Star>(obj);
+				star.dealStarDamage(star.MaxHealth * amount.decimal * time);
+			}
+			// TODO: Orbital dps
+		}
+	}
+
+	void save(any@ data, SaveFile& file) const override {
+		RegionData@ regionData;
+		data.retrieve(@regionData);
+		file << regionData.region;
+	}
+
+	void load(any@ data, SaveFile& file) const override {
+		RegionData regionData;
+		file >> regionData.region;
+		data.store(regionData);
+	}
+#section all
+};
