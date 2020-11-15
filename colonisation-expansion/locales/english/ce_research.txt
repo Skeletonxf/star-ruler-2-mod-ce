@@ -96,3 +96,4 @@ R_UNLOCK_MAKE_NEBULA_DESC: <<
 >>
 R_UNLOCK_MAKE_NEBULA: Nebula Formation
 RESEARCH_REQ_FRACTURED_PLANETS: Fracture $2 Planets. [b]( $1 / $2 )[/b]
+R_VERY_HIGH_ENRGY_HURDLE: Very High Energy Experiments

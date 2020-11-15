@@ -5,7 +5,7 @@ Trait: AllPlayers
 
 	AddModifier(tag/Weapon::RangeFactor(1.4))
 	CE_influence_hooks::ScalingCardGenerationIfAttributeGTE(AllondiumGeneration, AllondiumCards, Interval = 900)
-	CE_biome_hooks::MiniWormholeNetwork(WormholeNetworkControlHub)
+
 	IfHaveTrait(Poor, ClearFirstBudget())
 	TriggerHomeworld(RemoveStatus(PrimitiveLife))
 	AddEmpireResourceIncome(Research, 1)
