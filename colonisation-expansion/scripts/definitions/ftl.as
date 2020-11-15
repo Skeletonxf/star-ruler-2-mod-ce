@@ -135,13 +135,16 @@ int flingCost(Object& obj, vec3d position) {
 		// [[ MODIFY BASE GAME START ]]
 		// Use mass of ship which includes empire mass factor
 		double massFactor = ship.Mass * 0.3/dsg.size;
-		// [[ MODIFY BASE GAME END ]]
 
+		// Also discount stations by a flat 10x cost to bring them to the same
+		// sorts of costs as ships and orbitals
 		double scaleFactor;
-		if(dsg.hasTag(ST_Station))
-			scaleFactor = pow(double(scale), 0.75);
-		else
+		if (dsg.hasTag(ST_Station)) {
+			scaleFactor = pow(double(scale), 0.75) * 0.1;
+		} else {
 			scaleFactor = sqrt(double(scale));
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		return ceil(FLING_COST * scaleFactor * massFactor * owner.FTLCostFactor * reductionFlagCostFactor); // [[ MODIFY BASE GAME ]]
 	}
