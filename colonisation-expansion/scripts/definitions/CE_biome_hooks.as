@@ -1410,7 +1410,7 @@ tidy final class RegionData {
 }
 
 class DamageIfLeavesRegion : GenericEffect {
-	Document doc("Deal percent max hp damage to the object if it is leaves its starting region.");
+	Document doc("Deal percent max hp damage to the object if it leaves its starting region.");
 	Argument amount(AT_Decimal, "0.01", doc="Percent damage per second.");
 
 #section server
