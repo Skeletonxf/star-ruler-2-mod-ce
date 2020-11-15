@@ -4,7 +4,7 @@ Trait: AllPlayers
 	Name: Player
 
 	AddModifier(tag/Weapon::RangeFactor(1.4))
-	CE_biome_hooks::CardGenerationIfAttributeGTE(AllondiumGeneration, AllondiumCards, Interval = 900)
+	CE_influence_hooks::ScalingCardGenerationIfAttributeGTE(AllondiumGeneration, AllondiumCards, Interval = 900)
 	CE_biome_hooks::MiniWormholeNetwork(WormholeNetworkControlHub)
 	IfHaveTrait(Poor, ClearFirstBudget())
 	TriggerHomeworld(RemoveStatus(PrimitiveLife))

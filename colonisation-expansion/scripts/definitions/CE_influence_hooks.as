@@ -52,3 +52,78 @@ class GrantOthersLeverage : EmpireTrigger {
 	}
 #section all
 };
+
+tidy final class CardGenerationData {
+	double lastTickTime = 0;
+	double scaleFactor = 1;
+}
+
+class ScalingCardGenerationIfAttributeGTE : EmpireEffect {
+	Document doc("Gives a card to the empire every x * factor seconds if an attribute is >= to an amount.");
+	Argument card(AT_InfluenceCard, doc="Card type to give.");
+	Argument attribute(AT_EmpAttribute, doc="Attribute to check.");
+	Argument value(AT_Decimal, "1", doc="Value to test against.");
+	Argument interval(AT_Decimal, "60", doc="Base Seconds to wait between giving cards.");
+	Argument scale_factor(AT_Decimal, "1.5", doc="Scaling factor to apply to base seconds, multiplying with each grant.");
+
+#section server
+	void enable(Empire& emp, any@ data) const override {
+		CardGenerationData cardData;
+		data.store(@cardData);
+	}
+
+	void tick(Empire& emp, any@ data, double time) const override {
+		if (emp.getAttribute(attribute.integer) < value.decimal) {
+			return;
+		}
+
+		CardGenerationData@ cardData;
+		data.retrieve(@cardData);
+		if (cardData is null) {
+			return;
+		}
+
+		// tick every x seconds
+		double scaledInterval = interval.decimal * cardData.scaleFactor;
+		if (gameTime > (cardData.lastTickTime + scaledInterval)) {
+			cardData.lastTickTime = gameTime;
+
+			// give card
+			const InfluenceCardType@ cardType =  getInfluenceCardType(card.str);
+			if (cardType is null) {
+				error("Invalid card type: "+card.str);
+				return;
+			}
+			InfluenceCard@ card = cardType.create();
+			cast<InfluenceStore>(emp.InfluenceManager).addCard(emp, card);
+			cardData.scaleFactor *= scale_factor.decimal;
+		} else {
+			return;
+		}
+	}
+
+	void disable(Empire& emp, any@ data) const override {
+		CardGenerationData@ cardData;
+		data.retrieve(@cardData);
+		if(cardData is null)
+			return;
+
+		@cardData = null;
+		data.store(@cardData);
+	}
+
+	void save(any@ data, SaveFile& file) const override {
+		CardGenerationData@ cardData;
+		data.retrieve(@cardData);
+		file << cardData.lastTickTime;
+		file << cardData.scaleFactor;
+	}
+
+	void load(any@ data, SaveFile& file) const override {
+		CardGenerationData cardData;
+		file >> cardData.lastTickTime;
+		file >> cardData.scaleFactor;
+		data.store(cardData);
+	}
+#section all
+};
