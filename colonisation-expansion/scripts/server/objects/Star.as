@@ -117,10 +117,13 @@ tidy class StarScript {
 				for(uint i = 0, cnt = systemCount; i < cnt; ++i) {
 					auto@ sys = getSystem(i);
 					double dist = star.position.distanceTo(sys.position);
-					if(dist < 100000.0) {
-						double factor = sqr(1.0 - (dist / 100000));
+					// [[ MODIFY BASE GAME START ]]
+					// Double explosion damage range
+					if(dist < 200000.0) {
+						double factor = sqr(1.0 - (dist / 200000));
 						sys.object.addStarDPS(factor * star.MaxHealth * 0.08);
 					}
+					// [[ MODIFY BASE GAME END ]]
 				}
 			}
 			playParticleSystem("StarExplosion", star.position, star.rotation, explRad);
