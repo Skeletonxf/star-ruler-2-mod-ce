@@ -22,6 +22,7 @@ from resources import ResourceType;
 import empire_ai.dragon.bookkeeping.resource_flows;
 from empire_ai.dragon.bookkeeping.resource_value import RaceResourceValuation, ResourceValuator, PlanetValuables;
 import empire_ai.dragon.expansion.expand_logic;
+import empire_ai.dragon.expansion.terrestrial_colonization;
 
 from statuses import getStatusID;
 from traits import getTraitID;
@@ -385,7 +386,7 @@ class ColonizeForest {
 	void fillQueueFromRequests(Expansion& expansion, AI& ai) {
 		// look through the requests made to the Resources component
 		// and try to colonise to fill them
-		for(uint i = 0, cnt = expansion.resources.requested.length; i < cnt && expansion.limits.remainingColonizations > 0; ++i) {
+		for(uint i = 0, cnt = expansion.resources.requested.length; i < cnt; ++i) {
 			ImportData@ req = expansion.resources.requested[i];
 			if(!req.isOpen)
 				continue;
@@ -441,6 +442,8 @@ class ColonizeForest {
 			// TODO: Weigh slightly by proximity to our colonise sources,
 			// ie, if we can colonise one of two food planets we probably
 			// want to favor the one that will colonise faster
+			// This might not be needed as we will colonize from the faster
+			// location when looking to meet this colonize request
 
 			if (weight > bestWeight) {
 				@newColony = p.pl;
@@ -456,6 +459,21 @@ class ColonizeForest {
 			ai.print("failed to find target for requested resource: "+request.spec.dump());
 		}
 	}
+
+	/**
+	 * Pops the oldest planet off the queue
+	 *
+	 * TODO: This should be much smarter once the queue is an actual forest
+	 * of trees instead of a FIFO queue
+	 */
+	Planet@ pop() {
+		if (queue.length == 0) {
+			return null;
+		}
+		Planet@ target = queue[0].target;
+		queue.removeAt(0);
+		return target;
+	}
 }
 
 /**
@@ -464,7 +482,7 @@ class ColonizeForest {
  * which doesn't sit on unused resources or colonise resources not needed for
  * levelling.
  */
-class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization {
+class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting {
 	Resources@ resources;
 	Planets@ planets;
 	Systems@ systems;
@@ -602,10 +620,35 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		if (expandType == LevelingHomeworld) {
 			// Look for resource requests made to resources that we can
 			// colonize for to meet
-			queue.fillQueueFromRequests(this, ai);
 
-			// TODO: Try to pull from the queue and start colonising if we're a
-			// terrestrial race, otherwise put the colonise data in awaitingSource
+			if (limits.remainingColonizations > 0) {
+				// Fill the queue with planets we shall colonize to meet
+				// requested resources
+				queue.fillQueueFromRequests(this, ai);
+
+				// Try to pull off the queue
+				// FIXME: This needs to have some kind of stopping condition
+				// maybe only do this while awaitingSource is less than a
+				// threshold?
+				Planet@ planet = queue.pop();
+				while (planet !is null) {
+					colonize(planet);
+					@planet = queue.pop();
+				}
+			}
+		}
+
+		// Try to colonise planets we are waiting on a source for
+		for (uint i = 0, cnt = awaitingSource.length; i < cnt; ++i) {
+			// TODO: Own a TerrestrialColonization
+			/* ColonizeData@ colonizeData = awaitingSource[i];
+			PotentialSource@ source = terrestrial.findPlanetColonizeSource(colonizeData);
+			if (source !is null) {
+				if (log)
+					ai.print("start colonizing "+colonizeData.target.name, source.pl);
+				terrestrial.orderColonization(colonizeData, source);
+				awaitingSource.remove(colonizeData);
+			} */
 		}
 	}
 
@@ -773,8 +816,6 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		data.id = nextColonizeId++;
 		@data.target = pl;
 
-		budget.spend(BT_Colonization, 0, ai.behavior.colonizeBudgetCost);
-
 		colonizing.insertLast(data);
 		awaitingSource.insertLast(data);
 		return data;
@@ -813,6 +854,18 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// Check how recently we colonized something matching the spec
 	double timeSinceMatchingColonize(ResourceSpec& spec) {
 		return 181.0; // TODO
+	}
+
+	// Methods for ColonizeBudgeting
+	void payColonize() {
+		limits.remainingColonizations -= 1;
+		limits.currentColonizations += 1;
+		// Only spend upon paying for colonization, the Colonization component
+		// would eagerly spend on colonizations it hasn't started yet
+		budget.spend(BT_Colonization, 0, ai.behavior.colonizeBudgetCost);
+	}
+	bool canAffordColonize() {
+		return limits.remainingColonizations > 0;
 	}
 
 	// This method is only used in the Colonization and Development components,

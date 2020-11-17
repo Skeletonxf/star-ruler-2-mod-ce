@@ -3,7 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Buff black hole expolsion range
   - Let battleworlders transfer asteroids from mining bases onto planets
   - Stress test teaching of dummy resources to the AI
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully
