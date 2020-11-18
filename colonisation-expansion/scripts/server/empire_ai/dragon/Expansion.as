@@ -457,6 +457,9 @@ class ColonizeForest {
 			request.isColonizing = true;
 		} else {
 			ai.print("failed to find target for requested resource: "+request.spec.dump());
+			// TODO: We should see if we can obtain this resource with a building or a construction
+			// eg, build a lighting system on the planet requesting Light
+			// or a megafarm/hydrogenator if we are completely out of natural food/water sources
 		}
 	}
 
@@ -648,9 +651,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	}
 
 	void drainQueue() {
-		// TODO: We should pull off the queue in relation to what
-		// we can afford both in terms of how many colonise sources
-		// we have and what our budget is
+		// Try to drain the queue whenever we don't have many things we
+		// decided to colonise waiting on a source to colonise with
 		while (awaitingSource.length < 3) {
 			// Try to pull off the queue
 			Planet@ planet = queue.pop();
@@ -670,7 +672,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		if (!actions.performColonization) {
 			return;
 		}
-		// Potentially refresh the planets we can use a colonise sources
+		// Potentially refresh the planets we can use as colonise sources
 		terrestrial.tick();
 		for (uint i = 0, cnt = awaitingSource.length; i < cnt; ++i) {
 			ColonizeData@ colonizeData = awaitingSource[i];

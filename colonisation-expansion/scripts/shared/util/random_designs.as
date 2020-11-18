@@ -162,6 +162,11 @@ tidy class Designer {
 		//Control core
 		if(owner.hasTrait(getTraitID("Ancient"))) {
 			composition.insertLast(Internal(subsystem("AncientCore"), 0.025, 0.05));
+			// [[ MODIFY BASE GAME START ]]
+			// Have 2-3 control cores, not 1-2, having a single control core
+			// is very high risk if the AI didn't shield it well
+			composition.insertLast(Internal(subsystem("AncientCore"), 0.025, 0.05));
+			// [[ MODIFY BASE GAME END ]]
 			composition.insertLast(Chance(0.5, Internal(subsystem("AncientCore"), 0.025, 0.05)));
 
 			if(power)
@@ -169,6 +174,11 @@ tidy class Designer {
 		}
 		else {
 			composition.insertLast(Internal(tag("ControlCore"), 0.025, 0.05));
+			// [[ MODIFY BASE GAME START ]]
+			// Have 2-3 control cores, not 1-2, having a single control core
+			// is very high risk if the AI didn't shield it well
+			composition.insertLast(Internal(tag("ControlCore"), 0.025, 0.05));
+			// [[ MODIFY BASE GAME END ]]
 			composition.insertLast(Chance(0.5, Internal(tag("ControlCore"), 0.025, 0.05)));
 
 			if(power)
@@ -272,6 +282,11 @@ tidy class Designer {
 	void composeScout() {
 		composition.length = 0;
 
+		// [[ MODIFY BASE GAME START ]]
+		// Scouts should use the exploration hull
+		composition.insertLast(Applied(tag("ExplorationHull")));
+		// [[ MODIFY BASE GAME END ]]
+
 		composition.insertLast(Exhaust(tag("Engine") & tag("GivesThrust"), 0.80, 0.80));
 		composition.insertLast(Internal(tag("ControlCore"), 0.05, 0.05));
 		// [[ MODIFY BASE GAME START ]]
@@ -281,10 +296,6 @@ tidy class Designer {
 		//Shrine if needed
 		if(owner.hasTrait(getTraitID("Devout")))
 			composition.insertLast(Internal(tag("Prayer"), 0.15, 0.20));
-
-		// [[ MODIFY BASE GAME START ]]
-		composition.insertLast(Applied(tag("ExplorationHull")));
-		// [[ MODIFY BASE GAME END ]]
 
 		composition.insertLast(ArmorLayer(tag("PrimaryArmor"), HM_DownLeft | HM_UpLeft | HM_Down | HM_Up, 1, 1));
 	}

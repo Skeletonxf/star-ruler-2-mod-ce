@@ -2,7 +2,7 @@ Subsystem: ExplorationHull
 	Name: #S_EXPLORATION_HULL
 	Description: #S_EXPLORATION_HULL_DESC
 
-	Tags: DefaultUnlock, Applied:Hull, Category:Hulls, NoCore
+	Tags: DefaultUnlock, Applied:Hull, Category:Hulls, NoCore, ExplorationHull
 	Hull: Flagship
 	EvaluationOrder: -200
 	BaseColor: #4723d6
