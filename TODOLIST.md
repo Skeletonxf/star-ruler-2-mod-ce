@@ -9,7 +9,8 @@ This is primarily intended as a developer focused project planning list, rather 
       working
   - Expansion AI Component
     - Apply weights based on distance from colonise sources when picking colonise targets
-    - Actually colonise planets off the queue
+      - Currently done for picking planets to colonise with, need the reverse to improve Star Children AI
+    - Fix oversight where AI tries to colonise to meet requests it could meet by importing from food planets it already has that are idle
     - Teach AI to pick and colonise high value planets to level up
     - Finish teaching AI to colonize planets for levelling others
       - Save colonize queues into tree structure so can abort if lose export target

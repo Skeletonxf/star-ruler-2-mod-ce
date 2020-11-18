@@ -13,6 +13,7 @@ class TerrestrialColonization {
 	array<PotentialSource@> sources;
 	RaceColonization@ race;
 	ColonizeBudgeting@ budgeting;
+	bool disabled = false;
 
 	TerrestrialColonization(Planets@ planets, RaceColonization@ race, ColonizeBudgeting@ budgeting) {
 		@this.planets = planets;
@@ -24,7 +25,18 @@ class TerrestrialColonization {
 		planets.getColonizeSources(sources);
 	}
 
+	/**
+	 * Stops this component doing any work each tick, for AIs that aren't
+	 * playing as a terrestrial race and colonise with orbitals or ships.
+	 */
+	void disable() {
+		disabled = true;
+	}
+
 	void tick() {
+		if (disabled) {
+			return;
+		}
 		if (sourceUpdate < gameTime) {
 			refreshColonizeSources();
 			if (sources.length == 0 && gameTime < 60.0) {
@@ -76,6 +88,8 @@ class TerrestrialColonization {
 		}
 
 		@data.colonizeFrom = source.pl;
+		// Assuming the AI will never need to colonise multiple planets at
+		// once from a single planet
 		sources.remove(source);
 		source.pl.colonize(data.target);
 		budgeting.payColonize();

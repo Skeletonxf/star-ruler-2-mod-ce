@@ -518,6 +518,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	ExpandType expandType;
 
+	TerrestrialColonization@ terrestrial;
+
 	void create() {
 		@resources = cast<Resources>(ai.resources);
 		@planets = cast<Planets>(ai.planets);
@@ -526,6 +528,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@creeping = cast<Creeping>(ai.creeping);
 
 		@queue = ColonizeForest();
+		RaceColonization@ race;
+		@race = cast<RaceColonization>(ai.race);
+		@terrestrial = TerrestrialColonization(planets, race, this);
 	}
 
 	void save(SaveFile& file) {
@@ -542,7 +547,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		cnt = potentialColonizations.length;
 		file << cnt;
 		for(uint i = 0; i < cnt; ++i) {
-			cast<PotentialColonizeSource>(potentialColonizations[i]).save(file);
+			(cast<PotentialColonizeSource>(potentialColonizations[i])).save(file);
 		}
 
 		queue.save(file);
@@ -555,6 +560,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 
 		file << uint(expandType);
+
+		terrestrial.save(file);
 	}
 
 	void load(SaveFile& file) {
@@ -586,7 +593,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		for(uint i = 0; i < cnt; ++i) {
 			PotentialColonizeSource@ p = PotentialColonizeSource();
 			p.load(file);
-			potentialColonizations[i] = p;
+			@potentialColonizations[i] = p;
 		}
 
 		queue.load(file);
@@ -604,6 +611,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		uint expandTypeID = 0;
 		file >> expandTypeID;
 		expandType = convertToExpandType(expandTypeID);
+
+		terrestrial.load(file);
 	}
 
 	void tick(double time) override {
@@ -616,39 +625,63 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	void focusTick(double time) override {
 		// Colonize and Develop bookeeping
-
 		if (expandType == LevelingHomeworld) {
 			// Look for resource requests made to resources that we can
 			// colonize for to meet
 
 			if (limits.remainingColonizations > 0) {
+				// FIXME: Must meet any requests we can with planets we already
+				// own that aren't exporting anything before trying to queue
+				// colonisations to meet the requests, this is causing the AI
+				// to colonise to meet requests it already has food planets
+				// it can use instead
 				// Fill the queue with planets we shall colonize to meet
 				// requested resources
 				queue.fillQueueFromRequests(this, ai);
-
-				// Try to pull off the queue
-				// FIXME: This needs to have some kind of stopping condition
-				// maybe only do this while awaitingSource is less than a
-				// threshold?
-				Planet@ planet = queue.pop();
-				while (planet !is null) {
-					colonize(planet);
-					@planet = queue.pop();
-				}
+				// Pull planets off the queue for colonising
+				drainQueue();
 			}
 		}
 
-		// Try to colonise planets we are waiting on a source for
+		// Try to colonise any planets we are waiting on a source for
+		doColonizations();
+	}
+
+	void drainQueue() {
+		// TODO: We should pull off the queue in relation to what
+		// we can afford both in terms of how many colonise sources
+		// we have and what our budget is
+		while (awaitingSource.length < 3) {
+			// Try to pull off the queue
+			Planet@ planet = queue.pop();
+			if (planet is null) {
+				// we fully drained the queue, no more work to do here
+				return;
+			}
+			// mark the planet as awaiting a source and in our colonising list
+			colonize(planet);
+		}
+	}
+
+	/**
+	 * Finds planets to colonise other planets that are awaiting a source.
+	 */
+	void doColonizations() {
+		if (!actions.performColonization) {
+			return;
+		}
+		// Potentially refresh the planets we can use a colonise sources
+		terrestrial.tick();
 		for (uint i = 0, cnt = awaitingSource.length; i < cnt; ++i) {
-			// TODO: Own a TerrestrialColonization
-			/* ColonizeData@ colonizeData = awaitingSource[i];
+			ColonizeData@ colonizeData = awaitingSource[i];
 			PotentialSource@ source = terrestrial.findPlanetColonizeSource(colonizeData);
 			if (source !is null) {
-				if (log)
+				if (true)
 					ai.print("start colonizing "+colonizeData.target.name, source.pl);
 				terrestrial.orderColonization(colonizeData, source);
 				awaitingSource.remove(colonizeData);
-			} */
+				--i; --cnt;
+			}
 		}
 	}
 
