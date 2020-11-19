@@ -77,3 +77,10 @@ GlobalStat: BombardmentCost
 	 Secondary: SupplyCap
 
 	 Variable: BombardCost
+
+SubsystemStat: ExperienceRate
+	Name: #S_ExperienceRate
+	Color: #f17757
+
+	Suffix: /s
+	Variable: Rate

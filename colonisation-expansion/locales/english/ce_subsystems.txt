@@ -83,3 +83,9 @@ S_POWER_AMPLIFIER_DESC: <<
 	[i][color=#aaa]Placing more than one power amplifier on a subsystem will continue to increase its power generation, but will skyrocket its build cost.[/color][/i]
 >>
 INSUFICIENT_CONTROL: Low Power Computer must provide at least 1 Control
+S_SIMULATOR_DESC: <<
+	A realistic combat simulator that the ship's crew can train at when not following any other orders.
+
+	[img=Plus]The ship slowly gains veterancy levels while stationed in a friendly system. The larger the simulator, the faster it gains experience.[/img]
+	[img=MenuIcons::3;20][color=#aaa]Increasing the size of the ship increases the experience rate of the simulator but also increases the total experience required for each level by equal amounts.[/color][/img]
+>>
