@@ -4,7 +4,7 @@ Subsystem: AICore
 	BaseColor: #ffa4a0
 	Elevation: 4
 
-	Tags: DefaultUnlock, Control, ControlCore, HasInternals
+	Tags: Control, ControlCore, HasInternals
 	Tags: HeraldsDLC
 	Tags: NoBulkhead, BadFiller, Important
 	Tags: Category:Control

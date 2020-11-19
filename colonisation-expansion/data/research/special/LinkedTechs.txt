@@ -19,3 +19,11 @@ Technology: LinkedEmergencySupplies
 	Icon: AntimatterReactor * #b8b800
 	Color: #b88b00
 	Default Unlock: True
+Technology: LinkedShipComputer
+	Name: #R_SYS_SHIP_COMPUTER
+	Description: #R_SYS_SHIP_COMPUTER_DESC
+	Category: Subsystems
+	Class: Unlock
+	Icon: ComputerCore
+	Color: #ffa4a0
+	Default Unlock: True

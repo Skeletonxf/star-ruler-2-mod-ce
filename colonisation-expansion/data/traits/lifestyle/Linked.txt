@@ -11,9 +11,10 @@ Trait: Linked
 
 	AddStatusOwnedFleets(FleetLinked, Give to Stations = False)
 
-	UnlockSubsystem(LowPowerShipComputer)
+	UnlockSubsystem(ShipComputer)
 	UnlockSubsystem(EmergencySupplies)
 
+	CE_biome_hooks::UnlockSubsystem(AICore)
 	ReplaceTechnologyNodes(EmergencySupplies, LinkedEmergencySupplies)
-	ReplaceTechnologyNodes(LowPowerShipComputer, LinkedLowPowerShipComputer)
+	ReplaceTechnologyNodes(ShipComputer, LinkedShipComputer)
 	SpawnOrbital(Mainframe, Free = True)

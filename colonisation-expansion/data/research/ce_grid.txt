@@ -157,7 +157,7 @@ Grid: ColonisationExpansionGrid
 	FTL: -4,7
 	FTLCost: -3,7
 	ImpDecaySpeed: -4,-9
-	LowPowerShipComputer: 1,-2
+	ShipComputer: 1,-2
 	OrbFTLExtractor: -1,2
 	TroopPods: 7,-3
 	BoosterEngine: 1,4

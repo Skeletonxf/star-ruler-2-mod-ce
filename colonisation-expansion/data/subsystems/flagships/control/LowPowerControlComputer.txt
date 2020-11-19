@@ -6,13 +6,13 @@ Subsystem: LowPowerShipComputer
 	Elevation: 4
 
 	Tags: BaseCost, Category:Control, BadFiller
-	Tags: Control, ControlCore, HasInternals, Important
+	Tags: DefaultUnlock, Control, ControlCore, HasInternals, Important
 	Hull: Flagship, Station
 
 	EvaluationOrder: -10
 
 	Size := HexSize * Hexes
-	Command := Hexes * 1
+	Command := Hexes * 0.25
 	PowerUse := 10 * Size
 
 	SupplyRate := 30 * HexSize * (Hexes-1)
@@ -23,14 +23,17 @@ Subsystem: LowPowerShipComputer
 
 
 
-	Hex.MaintainCost := 1.5 * HexSize / ShipSize^0.5
+	Hex.MaintainCost := 0
+	Assert: Sum.Command >= 1
+		Message: #INSUFICIENT_CONTROL
+		Unique: True
 	Effect: ControlCore
 
 	Requires:
 		Power = PowerUse
 
 	Provides:
-		Command = Command
+		Command = floor(Command)
 
 	Module: Default
 		Sprite: HexagonSubsystems::4 * #a0a4ff

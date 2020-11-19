@@ -22,10 +22,10 @@ SHIP_LOW_POWER_COMPUTER_DESC: <<
 	An autonomous low power computer capable of controlling a small number of ship systems.
 
 	[img=ActionBarIcons::0;22;#00ff80]Provides a small amount of [b][color=#00ff80]Control[/color][/b] to operate other subsystems.[/img]
-	[img=Plus]Very low maintenece cost.[/img]
+	[img=Plus]No maintenece cost.[/img]
+	[img=Minus]Uses a lot of space to provide adequate control.[/img]
 	[img=Minus]Does not repair the vessel.[/img]
 	[img=Minus]Ship is destroyed if no control remains.[/img]
-	[img=MenuIcons::3;20]Requires more power and maintenence than a standard Control Computer per control given.[/img]
 
 >>
 S_EXPLORATION_HULL: Exploration Hull
@@ -82,3 +82,4 @@ S_POWER_AMPLIFIER_DESC: <<
 	[img=Minus]Increases the build cost of the subsystem.[/img]
 	[i][color=#aaa]Placing more than one power amplifier on a subsystem will continue to increase its power generation, but will skyrocket its build cost.[/color][/i]
 >>
+INSUFICIENT_CONTROL: Low Power Computer must provide at least 1 Control
