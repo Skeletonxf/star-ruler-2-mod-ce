@@ -1,0 +1,5 @@
+STATUS_SHIPLEVEL_DESC: <<
+	The crew of this flagship consists of seasoned veterans, increasing its health and combat effectiveness by 20%, its support command by 10%, and its shield capacity by 30% for every veterancy level.
+
+	Destroy enemy flagships or use a simulator to train your crew to increase a ship's veterancy level.
+>>
