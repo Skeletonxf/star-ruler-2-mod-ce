@@ -131,6 +131,19 @@ class CampaignScenarioState {
 		}
 		return count;
 	}
+
+	uint getEmpireFleetCount(Empire@ empire) {
+		uint total = 0;
+		DataList@ objs = empire.getFlagships();
+		Object@ obj;
+		while (receive(objs, obj)) {
+			Ship@ ship = cast<Ship>(obj);
+			if (ship !is null) {
+				total += 1;
+			}
+		}
+		return total;
+	}
 }
 
 class OrObjectiveCheck : CEObjectiveCheck {

@@ -33,6 +33,9 @@ from abilities import getAbilityID;
 // on planets that don't need to build anything, or hack it a way to keep
 // it producing ships and/or money income at least before its eco gets
 // destroyed by economy attacks via the player
+// TODO: Give player starting ships 3 times the supply storage and no supply
+// leakage so they don't run out of resources way too fast to see the effects
+// of bombing
 
 #section server
 
@@ -53,6 +56,7 @@ class MiningColonyScenario : CampaignScenarioState {
 	// avoid computing some things when we immediately reopen a save because
 	// not everything is initialised instantly
 	double gameTimeAtLastSave = 0;
+	bool enemyLastEffort = false;
 
 	MiningColonyScenario() {
 		@player = getEmpire(0);
@@ -82,6 +86,39 @@ class MiningColonyScenario : CampaignScenarioState {
 			if (getEmpirePlanetCount(ally) == 0) {
 				lostColonies = true;
 				triggerDefeat();
+			}
+
+			if (getEmpireFleetCount(enemy) == 0) {
+				if (enemyLastEffort) {
+					completeCampaignScenario("MiningColony");
+					won = true;
+					triggerVictory();
+				} else {
+					// spawn in an armored heavy carrier as a 'last ditch effort'
+					// onto any tier 2 or 3 world of the AI's so the player doesn't
+					// autowin after taking out the Dreadnaughts.
+					// If the player is doing awfully at this campaign, the AI will
+					// also start making its own ships as it is coded to in normal games,
+					// and the eco difference will likely mean the player loses a drawn
+					// out game.
+					Planet@ spawnPlanet;
+					DataList@ objs = enemy.getPlanets();
+					Object@ obj;
+					while (receive(objs, obj)) {
+						Planet@ planet = cast<Planet>(obj);
+						if (planet !is null && spawnPlanet is null && planet.level >= 2) {
+							@spawnPlanet = planet;
+						}
+					}
+					if (spawnPlanet is null) {
+						completeCampaignScenario("MiningColony");
+						won = true;
+						triggerVictory();
+					} else {
+						spawnFleet(enemy, spawnPlanet.position + vec3d(60.0,0.0,60.0), "Armored Heavy Carrier", 300);
+						enemyLastEffort = true;
+					}
+				}
 			}
 		}
 
@@ -213,8 +250,6 @@ class MiningColonyScenario : CampaignScenarioState {
 		spawnFleet(enemy, planet(1,1).position + vec3d(-40.0,0.0,40.0), "Dreadnaught", 0);
 		spawnFleet(enemy, planet(2,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 0);
 		spawnFleet(enemy, planet(3,0).position + vec3d(80.0,0.0,0.0), "Dreadnaught", 0);
-		spawnFleet(enemy, planet(4,0).position + vec3d(120.0,0.0,120.0), "Armored Heavy Carrier", 0);
-		spawnFleet(enemy, planet(5,1).position + vec3d(-120.0,0.0,-120.0), "Armored Heavy Carrier", 0);
 
 		spawnOrbital(ally, vec3d(-440.0,0.0,-440.0), "TradeOutpost");
 		spawnFleet(ally, planet(0,2).position + vec3d(120.0,0.0,-120.0), "Miner", 0);
@@ -230,11 +265,13 @@ class MiningColonyScenario : CampaignScenarioState {
 	void save(SaveFile& file) {
 		file << playerShip;
 		file << lastTickedMiningShips;
+		file << enemyLastEffort;
 	}
 
 	void load(SaveFile& file) {
 		file >> playerShip;
 		file >> lastTickedMiningShips;
+		file >> enemyLastEffort;
 	}
 }
 #section all
