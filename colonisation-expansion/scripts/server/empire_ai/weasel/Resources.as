@@ -178,7 +178,7 @@ final class Resources : AIComponent {
 			checkIdx = (checkIdx+1) % used.length;
 			ExportData@ res = used[checkIdx];
 			if(res.request !is null && res.request.obj !is null && !res.isExportedTo(res.request.obj)) {
-				if(true)
+				if(log)
 					ai.print("Break export to "+res.request.obj.name+": link changed underfoot", res.obj);
 				breakImport(res);
 			}

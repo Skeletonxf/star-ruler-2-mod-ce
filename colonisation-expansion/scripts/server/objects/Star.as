@@ -1,6 +1,10 @@
 import regions.regions;
 import saving;
 import systems;
+// [[ MODIFY BASE GAME START ]]
+from objects.Oddity import createNebula;
+from statuses import getStatusID;
+// [[ MODIFY BASE GAME END ]]
 
 LightDesc lightDesc;
 
@@ -134,6 +138,29 @@ tidy class StarScript {
 			removeAmbientSource(CURRENT_PLAYER, star.id);
 			if(star.region !is null)
 				star.region.addSystemDPS(star.MaxHealth * 0.12);
+
+			// [[ MODIFY BASE GAME START ]]
+			// Have a 33% chance of leaving a nebulae behind on star death
+			if (randomd() < 0.33 && star.region !is null) {
+				SystemDesc@ sys = getSystem(star.region);
+				Node@ node = star.getNode();
+				if (sys !is null && sys.object !is null && node !is null) {
+					Color col = node.color;
+					// create oddity
+					createNebula(sys.position, sys.radius, color=col.rgba, region=sys.object);
+					// turn off region vision
+					sys.donateVision = false;
+					// set static seeable range
+					for(uint i = 0, cnt = sys.object.objectCount; i < cnt; ++i) {
+						Object@ obj = sys.object.objects[i];
+						if(obj.hasStatuses)
+							continue;
+						obj.seeableRange = 100;
+					}
+					star.region.addRegionStatus(null, getStatusID("LimitedSight"));
+				}
+			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 		leaveRegion(star);
 	}
