@@ -12,7 +12,7 @@ import buildings;
 import systems;
 
 import ai.consider;
-from ai.buildings import Buildings, BuildingAI, BuildingUse;
+from ai.buildings import Buildings, BuildingAI, BuildingUse, AsCreatedResource;
 from ai.resources import AIResources, ResourceAI;
 
 // It is very important we don't just import the entire resources definition
@@ -396,11 +396,27 @@ class ColonizeForest {
 				continue;
 			if(req.isColonizing)
 				continue;
+			if(req.buildingFor)
+				continue;
 
 			queueColonizeForResourceSpec(req, expansion, ai);
 		}
 	}
 
+	/**
+	 * Enqueues actions to meet resource specs. Primarily colonising planets,
+	 * but also tries to meet requests that can't be met by any known planets
+	 * via buildings. This assumes planets are always cheaper than buildings.
+	 *
+	 * It also has the benefit of taking full advantage of the fact that we
+	 * can know if we can colonise for a resource, so we can immediately request
+	 * a building when we can't colonise for it, rather than the vanilla method
+	 * where Development would rely on having waited for a resource for a while
+	 * before building to meet it, hoping that the Colonisation component would
+	 * have sorted out the problem first (and thus waiting unnecessarily when
+	 * there was never going to be a way to provide the resource via
+	 * colonisiation).
+	 */
 	void queueColonizeForResourceSpec(ImportData@ request, Expansion& expansion, AI& ai) {
 		ai.print("colonize for requested resource: "+request.spec.dump(), request.obj);
 		ResourceSpec@ spec = request.spec;
@@ -456,10 +472,60 @@ class ColonizeForest {
 			queue.insertLast(ColonizeTree(newColony));
 			request.isColonizing = true;
 		} else {
+			// FIXME: Star Children AI is allowed to make buildings on certain
+			// planets now, this should just check if we're actually capable
+			// of building on this planet
+			// Also check if the planet is a Gas Giant, we should make a moon
+			// base first if we need to build on them
+			if (expansion.actions.buildBuildings) {
+				// Get the PlanetAI for the object making this request
+				auto@ plAI = expansion.planets.getAI(cast<Planet>(request.obj));
+
+				// try checking the next building type out of the list on
+				// this tick to see if we can meet the request with a building
+				for (uint i = 0, cnt = getBuildingTypeCount(); i < cnt; ++i) {
+					auto@ type = getBuildingType(i);
+					if (type.ai.length == 0)
+						continue;
+
+					if (expansion.planets.isBuilding(plAI.obj, type)) {
+						// don't try to make two of the same type on the same planet at once
+						continue;
+					}
+
+					// check all the hooks on this building type
+					for (uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
+						auto@ hook = cast<BuildingAI>(type.ai[n]);
+						if (hook is null) {
+							continue;
+						}
+
+						auto@ resourceBuilding = cast<AsCreatedResource>(hook);
+						if (resourceBuilding !is null) {
+							// our hook is an AsCreatedResource, check if this resource
+							// is what we need to meet the spec (this completely bypasses
+							// most of the logic to how these hooks work in vanilla, but will
+							// also stop the AI waiting for chunks of time when a building is
+							// the only way to meet a resource, so this is intended hackery)
+							if (request.spec.meets(getResource(resourceBuilding.resource.integer), fromObj=request.obj, toObj=request.obj)) {
+								// got match, close request
+								ai.print("building "+type.name+" to meet requested resource: "+request.spec.dump());
+								request.buildingFor = true;
+								auto@ req = expansion.planets.requestBuilding(plAI, type, priority=2, expire=ai.behavior.genericBuildExpire);
+								if (req !is null) {
+									auto@ tracker = BuildTracker(req);
+									@tracker.importRequestReason = request;
+									expansion.genericBuilds.insertLast(tracker);
+								}
+								// all done here, met the resource
+								return;
+							}
+						}
+					}
+				}
+			}
+
 			ai.print("failed to find target for requested resource: "+request.spec.dump());
-			// TODO: We should see if we can obtain this resource with a building or a construction
-			// eg, build a lighting system on the planet requesting Light
-			// or a megafarm/hydrogenator if we are completely out of natural food/water sources
 		}
 	}
 
@@ -480,6 +546,49 @@ class ColonizeForest {
 }
 
 /**
+ * Tracks a BuildingRequest AND the reason we made it, so we can respond
+ * appropriately if it gets cancelled.
+ */
+class BuildTracker {
+	// Building request we are tracking
+	BuildingRequest@ buildingRequest;
+	// Nullable set of reasons we made the building request:
+	// - To meet an import data
+	ImportData@ importRequestReason;
+
+	BuildTracker(BuildingRequest@ buildingRequest) {
+		@this.buildingRequest = buildingRequest;
+	}
+
+	void save(Expansion& expansion, SaveFile& file) {
+		expansion.planets.saveBuildingRequest(file, buildingRequest);
+		if (importRequestReason !is null) {
+			file.write1();
+			expansion.resources.saveImport(file, importRequestReason);
+		} else {
+			file.write0();
+		}
+	}
+
+	// For deserialisation only
+	BuildTracker() {}
+
+	void load(Expansion& expansion, SaveFile& file) {
+		@this.buildingRequest = expansion.planets.loadBuildingRequest(file);
+		if (file.readBit()) {
+			@this.importRequestReason = expansion.resources.loadImport(file);
+		}
+	}
+
+	const BuildingType@ buildingType() {
+		if (buildingRequest is null) {
+			return null;
+		}
+		return buildingRequest.type;
+	}
+}
+
+/**
  * A combined and rewritten AIComponent which is responsible for colonization
  * and development, and as such will hopefully do the two together in a way
  * which doesn't sit on unused resources or colonise resources not needed for
@@ -495,7 +604,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	array<DevelopmentFocus@> focuses;
 
 	// Building hook state
-	array<BuildingRequest@> genericBuilds;
+	array<BuildTracker@> genericBuilds;
 	const BuildingType@ filterType;
 
 	Actions actions;
@@ -565,6 +674,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		file << uint(expandType);
 
 		terrestrial.save(file);
+
+		cnt = genericBuilds.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i)
+			genericBuilds[i].save(this, file);
 	}
 
 	void load(SaveFile& file) {
@@ -616,6 +730,14 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		expandType = convertToExpandType(expandTypeID);
 
 		terrestrial.load(file);
+
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			auto@ data = BuildTracker();
+			data.load(this, file);
+			if (data !is null)
+				genericBuilds.insertLast(data);
+		}
 	}
 
 	void tick(double time) override {
@@ -640,6 +762,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				// it can use instead
 				// Fill the queue with planets we shall colonize to meet
 				// requested resources
+				resources.dumpRequests();
+				resources.dumpAvailable();
 				queue.fillQueueFromRequests(this, ai);
 				// Pull planets off the queue for colonising
 				drainQueue();
@@ -648,6 +772,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		// Try to colonise any planets we are waiting on a source for
 		doColonizations();
+
+		checkBuildingsInProgress();
 	}
 
 	void drainQueue() {
@@ -713,6 +839,43 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		return false;
 	}
 
+	/**
+	 * Keeps the genericBuilds list up to date, removing items from it
+	 * as we finish or cancel building them.
+	 */
+	void checkBuildingsInProgress() {
+		for (uint i = 0, cnt = genericBuilds.length; i < cnt; ++i) {
+			bool removeTracker = genericBuilds[i].buildingRequest is null;
+			bool aborted = false;
+			if (!removeTracker) {
+				auto@ build = genericBuilds[i].buildingRequest;
+				if (build.canceled) {
+					removeTracker = true;
+					aborted = true;
+				} else if (build.built) {
+					if (build.getProgress() >= 1.f) {
+						if(build.expires < gameTime) {
+							removeTracker = true;
+						}
+					} else {
+						build.expires = gameTime + 60.0;
+					}
+				}
+			}
+			if (aborted) {
+				if (genericBuilds[i].importRequestReason !is null) {
+					// reset buildingFor flag so we try to meet this resource
+					// potentially by colonisation again
+					genericBuilds[i].importRequestReason.buildingFor = false;
+				}
+			}
+			if (removeTracker) {
+				genericBuilds.removeAt(i);
+				--i; --cnt;
+			}
+		}
+	}
+
 	// Methods for the Buildings interface and AIResources interface
 	void registerUse(BuildingUse use, const BuildingType& type) {
 		switch(use) {
@@ -743,7 +906,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	bool isBuilding(const BuildingType& type) {
 		for(uint i = 0, cnt = genericBuilds.length; i < cnt; ++i) {
-			if(genericBuilds[i].type is type)
+			if(genericBuilds[i].buildingType() is type)
 				return true;
 		}
 		return false;
@@ -785,7 +948,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	bool filter(Object@ obj) {
 		for(uint i = 0, cnt = genericBuilds.length; i < cnt; ++i) {
 			auto@ build = genericBuilds[i];
-			if(build.type is filterType && build.plAI.obj is obj)
+			if(build.buildingType() is filterType && build.buildingRequest.plAI.obj is obj)
 				return false;
 		}
 		return true;

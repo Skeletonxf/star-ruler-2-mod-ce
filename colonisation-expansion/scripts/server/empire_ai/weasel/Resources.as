@@ -178,7 +178,7 @@ final class Resources : AIComponent {
 			checkIdx = (checkIdx+1) % used.length;
 			ExportData@ res = used[checkIdx];
 			if(res.request !is null && res.request.obj !is null && !res.isExportedTo(res.request.obj)) {
-				if(log)
+				if(true)
 					ai.print("Break export to "+res.request.obj.name+": link changed underfoot", res.obj);
 				breakImport(res);
 			}
@@ -747,6 +747,17 @@ final class Resources : AIComponent {
 			}
 		}
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void dumpAvailable(Object@ forObject = null) {
+		for(uint i = 0, cnt = available.length; i < cnt; ++i) {
+			if(forObject !is null && available[i].obj !is forObject)
+				continue;
+			if(available[i].obj !is null && available[i].resource !is null)
+				print(available[i].obj.name+" has available "+available[i].resource.name);
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
 };
 
 AIComponent@ createResources() {
