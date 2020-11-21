@@ -10,24 +10,26 @@ This is primarily intended as a developer focused project planning list, rather 
   - Expansion AI Component
     - Apply weights based on distance from colonise sources when picking colonise targets
       - Currently done for picking planets to colonise with, need the reverse to improve Star Children AI
-    - Fix oversight where AI tries to colonise to meet requests it could meet by importing from food planets it already has that are idle
+    - Fix oversight where AI queues a colonise request it then doesn't need because it met it another way
+      - Seems the AI can sometimes queueu to colonise food it then gets for free from forestation, and the info about the resource the AI was trying to meet has been lost so it just pull the request off the queue and colonises the now not needed resource anyway
+    - Teach AI to penalise conditions
+      - Currently recording them, but not using the info
+      - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
     - Teach AI to pick and colonise high value planets to level up
     - Finish teaching AI to colonize planets for levelling others
       - Save colonize queues into tree structure so can abort if lose export target
     - Teach AI to optimistically start colonising the dependants for a colonise target if it doesn't have anything else to colonise
     - Teach AI to prune imports/exports on non focuses
     - Port colonisation penalty system
-    - Teach AI to use buildings/constructions to meet resource requests
+    - Teach AI to use constructions to meet resource requests
+    - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
+        - Teach AI to melt ice
+        - Teach AI to make most of the constructions by extending the building hint code
     - General notes on AI issues to fix in rework
       - To fix in refactor of colonization and development code
         - Prevent Mono AI repeatedly colonising a food planet and then abandoning it (cannot reproduce second time?)
         - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
-        - Teach AI to deprioritise water/food colonisation if they have built a stockpile of unused ones
         - Teach AI to build outposts to bridge otherwise empty/useless systems
-        - Make new component directly consider the AsCreatedResource hooks on buildings rather than going through the consider code, which is quite useless at   responding to levelling needs due to how generic it is.
-          - Extend the hooks to Constructions and do the same
-      - Teach AI to melt ice
-      - Teach AI to make most of the constructions by extending the building hint code
       - Teach Star Children AI to not put supports on their Small Motherships
   - Tweak tractor default design
   - Reduce the points the Parasite trait gives for razing planets
