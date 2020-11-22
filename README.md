@@ -1,5 +1,7 @@
 # Colonisation Expansion
 
+*Become a type II civilisation as you engineer the galaxy to your whims, or die trying*
+
 This is a mod for Star Ruler 2. It is now growing into a mod that provides many features to make the game feel more rich without drastically changing the gameplay. This mod provides many options to build an empire up vertically (as opposed to building an empire up by taking more systems), as well as the start of a single player campaign, and improved AI code.
 
 ## Status
