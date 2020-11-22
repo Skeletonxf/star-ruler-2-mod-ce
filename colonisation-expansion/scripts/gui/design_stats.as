@@ -26,6 +26,7 @@ enum StatDisplayMode {
 
 int MASS_CUSTOM_VARIABLE = -2;
 int SUPPORT_CAPACITY_CUSTOM_VARIABLE = -3;
+int REPAIR_CUSTOM_VARIABLE = -4;
 
 class DesignStat {
 	uint index = 0;
@@ -90,9 +91,43 @@ namespace design_stats {
 		return false;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	/**
+	 * Applies the mass scaling factor from empire stat variables on a per hex or subsystem
+	 * calculation.
+	 */
+	double massScalingFactor(double baseMass, bool isSupportHex = false, bool isRepairHex = false) {
+		if (playerEmpire is null) {
+			return baseMass;
+		}
+		double mass = baseMass * playerEmpire.EmpireMassFactor;
+		if (isSupportHex) {
+			// increase mass by support capacity mass factor, in
+			// proportion to the amount of support capacity on the ship
+			double bonusMass = baseMass * playerEmpire.EmpireMassFactor;
+			mass += bonusMass * max(playerEmpire.EmpireSupportCapacityMassFactor - 1.0, 0.0);
+		}
+		if (isRepairHex) {
+			// also increase mass by repair mass factor, in proportion
+			// to the amount of repair on the ship
+			double repairBonusMass = baseMass * playerEmpire.EmpireMassFactor;
+			mass += repairBonusMass * max(playerEmpire.EmpireRepairMassFactor - 1.0, 0.0);
+		}
+		return mass;
+	}
+
 	double getValue(const Design@ dsg, const Subsystem@ sys, vec2u hex, SysVariableType type, int var, int aggregate = 0) {
 		if(type == SVT_HexVariable) {
 			if(hex != vec2u(uint(-1))) {
+				// [[ MODIFY BASE GAME START ]]
+				if (HexVariable(var) == HV_Mass) {
+					return massScalingFactor(
+						dsg.variable(hex, HexVariable(var)),
+						isSupportHex=sys !is null && sys.has(HV_SupportCapacityMass),
+						isRepairHex=sys !is null && sys.has(HV_RepairMass)
+					);
+				}
+				// [[ MODIFY BASE GAME END ]]
 				return dsg.variable(hex, HexVariable(var));
 			}
 			else if(sys !is null) {
@@ -104,6 +139,15 @@ namespace design_stats {
 						break;
 					}
 				}
+				// [[ MODIFY BASE GAME START ]]
+				if (HexVariable(var) == HV_Mass) {
+					return massScalingFactor(
+						val,
+						isSupportHex=sys.has(HV_SupportCapacityMass),
+						isRepairHex=sys.has(HV_RepairMass)
+					);
+				}
+				// [[ MODIFY BASE GAME END ]]
 				return val;
 			}
 			else {
@@ -111,13 +155,29 @@ namespace design_stats {
 				for(uint n = 0, ncnt = dsg.subsystemCount; n < ncnt; ++n) {
 					auto@ sys = dsg.subsystem(n);
 					if(sys.has(HexVariable(var))) {
-						for(uint i = 0, cnt = sys.hexCount; i < cnt; ++i) {
-							switch(aggregate) {
-								case ::SA_Sum:
-									val += double(sys.hexVariable(HexVariable(var), i));
-								break;
+						// [[ MODIFY BASE GAME START ]]
+						if (HexVariable(var) == HV_Mass) {
+							for(uint i = 0, cnt = sys.hexCount; i < cnt; ++i) {
+								switch(aggregate) {
+									case ::SA_Sum:
+										val += massScalingFactor(
+											double(sys.hexVariable(HexVariable(var), i)),
+											isSupportHex=sys.has(HV_SupportCapacityMass),
+											isRepairHex=sys.has(HV_RepairMass)
+										);
+									break;
+								}
+							}
+						} else {
+							for(uint i = 0, cnt = sys.hexCount; i < cnt; ++i) {
+								switch(aggregate) {
+									case ::SA_Sum:
+										val += double(sys.hexVariable(HexVariable(var), i));
+									break;
+								}
 							}
 						}
+						// [[ MODIFY BASE GAME END ]]
 					}
 				}
 				return val;
@@ -168,6 +228,13 @@ namespace design_stats {
 				return dsg.total(SV_SupportCapacity) * playerEmpire.EmpireSupportCapacityFactor;
 			}
 			return dsg.total(SV_SupportCapacity); // should never happen
+		}
+		else if ((type == SVT_CustomVariable) && (var == REPAIR_CUSTOM_VARIABLE)) {
+			// Custom shipwide repair formula
+			if (playerEmpire !is null) {
+				return dsg.total(SV_Repair) * playerEmpire.EmpireRepairFactor;
+			}
+			return dsg.total(SV_Repair); // should never happen
 		}
 		// [[ MODIFY BASE GAME END ]]
 		return 0.0;
@@ -359,6 +426,10 @@ void loadStats(const string& filename) {
 		else if (key == "SupportCapacityFormula") {
 			stat.varType = SVT_CustomVariable;
 			stat.variable = SUPPORT_CAPACITY_CUSTOM_VARIABLE;
+		}
+		else if (key == "RepairFormula") {
+			stat.varType = SVT_CustomVariable;
+			stat.variable = REPAIR_CUSTOM_VARIABLE;
 		}
 		// [[ MODIFY BASE GAME END ]]
 		else if(key == "Secondary") {

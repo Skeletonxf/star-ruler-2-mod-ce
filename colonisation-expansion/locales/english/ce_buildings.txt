@@ -40,7 +40,7 @@ BLD_MINING_COMPLEX_DESC: <<
 	Requires a Planetary Thruster to be present.
 >>
 BLD_ANCIENT_REINFORCER_REV_DESC: <<
-	All your ships have 5% increased repair rates and systems that repair have 25% more mass.
+	All your ships have 7% increased repair rates and systems that repair have 25% more mass.
 
 	[bbloc=#TIP_CONSUME_BASE_MATERIAL:10/]
 

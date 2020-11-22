@@ -13,7 +13,7 @@ GlobalStat: HP
 		Color: #aaa
 		Secondary: HP
 
-		Variable: Repair
+		RepairFormula:
 
 GlobalStat: DPS
 	Name: #S_DPS
