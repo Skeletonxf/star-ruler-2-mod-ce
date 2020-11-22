@@ -148,16 +148,19 @@ tidy class StarScript {
 					Color col = node.color;
 					// create oddity
 					createNebula(sys.position, sys.radius, color=col.rgba, region=sys.object);
-					// turn off region vision
-					sys.donateVision = false;
-					// set static seeable range
-					for(uint i = 0, cnt = sys.object.objectCount; i < cnt; ++i) {
-						Object@ obj = sys.object.objects[i];
-						if(obj.hasStatuses)
+					// check the system isn't already a nebulae before applying vision mechanics
+					if (sys.donateVision) {
+						// turn off region vision
+						sys.donateVision = false;
+						// set static seeable range
+						for(uint i = 0, cnt = sys.object.objectCount; i < cnt; ++i) {
+							Object@ obj = sys.object.objects[i];
+							if(obj.hasStatuses)
 							continue;
-						obj.seeableRange = 100;
+							obj.seeableRange = 100;
+						}
+						star.region.addRegionStatus(null, getStatusID("LimitedSight"));
 					}
-					star.region.addRegionStatus(null, getStatusID("LimitedSight"));
 				}
 			}
 			// [[ MODIFY BASE GAME END ]]

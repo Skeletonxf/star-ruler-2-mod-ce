@@ -632,6 +632,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	TerrestrialColonization@ terrestrial;
 
+	const ResourceClass@ scalableClass;
+
 	void create() {
 		@resources = cast<Resources>(ai.resources);
 		@planets = cast<Planets>(ai.planets);
@@ -643,6 +645,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
 		@terrestrial = TerrestrialColonization(planets, race, this);
+
+		@scalableClass = getResourceClass("Scalable");
 	}
 
 	void save(SaveFile& file) {
@@ -755,15 +759,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			// colonize for to meet
 
 			if (limits.remainingColonizations > 0) {
-				// FIXME: Must meet any requests we can with planets we already
-				// own that aren't exporting anything before trying to queue
-				// colonisations to meet the requests, this is causing the AI
-				// to colonise to meet requests it already has food planets
-				// it can use instead
 				// Fill the queue with planets we shall colonize to meet
 				// requested resources
-				resources.dumpRequests();
-				resources.dumpAvailable();
+				// The Resources component will match open requests to planets
+				// we already have for the most part, so this should only
+				// colonise for things we actually don't have
 				queue.fillQueueFromRequests(this, ai);
 				// Pull planets off the queue for colonising
 				drainQueue();
@@ -777,6 +777,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	}
 
 	void drainQueue() {
+		array<Resource> planetResources;
 		// Try to drain the queue whenever we don't have many things we
 		// decided to colonise waiting on a source to colonise with
 		while (awaitingSource.length < 3) {
@@ -786,8 +787,44 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				// we fully drained the queue, no more work to do here
 				return;
 			}
-			// mark the planet as awaiting a source and in our colonising list
-			colonize(planet);
+
+			// This check doesn't seem to make the AI ever actually abort
+			// a colonise, so removing it for now as no need to waste compute
+			// if there's only one path through it in practise.
+			/* // check we actually still need to colonise for this planet's
+			// resources, or that at least the planet has resources we'll
+			// always value
+			PlanetValuables@ valuables = PlanetValuables(planet);
+			bool stillColonize = valuables.hasGenericUsefulnessOutsideLevelChains();
+			if (!stillColonize) {
+				// if the planet has no intrinsic value then check if it meets any
+				// import request we have open or marked as isColonizing
+				for (uint i = 0, cnt = resources.requested.length; i < cnt; ++i) {
+					ImportData@ req = resources.requested[i];
+					if(!req.isOpen)
+						continue;
+					if(!req.cycled)
+						continue;
+					if(req.claimedFor)
+						continue;
+					if(req.buildingFor)
+						continue;
+					// Don't filter import requests we are colonising for, they
+					// might include the import request we matched to this planet
+
+					if (valuables.canExportToMeet(req.spec)) {
+						stillColonize = true;
+						break;
+					}
+				}
+			} */
+
+			if (true) {
+				// mark the planet as awaiting a source and in our colonising list
+				colonize(planet);
+			} else {
+				ai.print("Decided to not bother colonising "+planet.name);
+			}
 		}
 	}
 
@@ -833,6 +870,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		limits.previousColonizations = limits.currentColonizations;
 		limits.remainingColonizations = ai.behavior.maxColonizations;
 		limits.currentColonizations = 0;
+
+		if (true) {
+			resources.dumpRequests();
+			resources.dumpAvailable();
+		}
 	}
 
 	bool isDevelopingIn(Region@ reg) {

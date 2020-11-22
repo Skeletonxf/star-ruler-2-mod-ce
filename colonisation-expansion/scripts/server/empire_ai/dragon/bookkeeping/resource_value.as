@@ -147,4 +147,41 @@ class PlanetValuables {
 		}
 		return false;
 	}
+
+	/**
+	 * Checks if any resources have any generic value, such as pressure of any
+	 * kind or a level/scalable resource. This notably excludes resources
+	 * we only colonise for levelling purposes, such as most food and water.
+	 *
+	 * Scalable resources are assumed to always have hooks or other reasons
+	 * we want them.
+	 */
+	bool hasGenericUsefulnessOutsideLevelChains() {
+		const ResourceClass@ scalableClass = getResourceClass("Scalable");
+		for (uint i = 0, cnt = exportable.length; i < cnt; ++i) {
+			const ResourceType@ resource = exportable[i];
+			if (resource.level >= 1) {
+				return true;
+			}
+			if (resource.totalPressure > 0) {
+				return true;
+			}
+			if (resource.cls is scalableClass) {
+				return true;
+			}
+		}
+		for (uint i = 0, cnt = unexportable.length; i < cnt; ++i) {
+			const ResourceType@ resource = unexportable[i];
+			if (resource.level >= 1) {
+				return true;
+			}
+			if (resource.totalPressure > 0) {
+				return true;
+			}
+			if (resource.cls is scalableClass) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

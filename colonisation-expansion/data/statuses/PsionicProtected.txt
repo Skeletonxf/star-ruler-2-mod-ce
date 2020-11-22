@@ -4,10 +4,12 @@ Status: PsionicProtected
 	Icon: ResourceIconsSmall::37
 
 	Unique: True
-	Visible To: Global
+	Visible To: Nobody
 	EnableAfter(AddStatus(PsionicShielded), Start Timer = 180)
 	ApplyToPlanets()
 Status: PsionicShielded
 	Name: #STATUS_PSIONIC_PROTECTED
 	Description: #STATUS_PSIONIC_PROTECTED_DESC
+	Visible To: Global
+	Icon: ResourceIconsSmall::37
 	ModLoyalty(10)
