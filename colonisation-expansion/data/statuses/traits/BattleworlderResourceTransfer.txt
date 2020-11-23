@@ -2,6 +2,7 @@ Status: BattleworlderResourceTransfer
 	Visible To: Nobody
 
 	GrantAbility(TransferAll)
+	GrantAbility(BWAsteroidTransfer)
 
 	IfNative(Meat, GrantAbility(BWMeatTransfer))
 	IfNative(Fruit, GrantAbility(BWFruitTransfer))
@@ -24,6 +25,10 @@ Status: BattleworlderResourceTransfer
 	IfNative(Spice, GrantAbility(BWSpiceTransfer))
 	IfNative(Unobtanium, GrantAbility(BWUnobtaniumTransfer))
 	IfNative(Drugs, GrantAbility(BWDrugsTransfer))
+
+	IfNative(AsteroidAffinity, GrantAbility(BWAsteroidAffinityTransfer))
+	IfNative(AsteroidGrowth, GrantAbility(BWAsteroidGrowthTransfer))
+	IfNative(AsteroidLabor, GrantAbility(BWAsteroidLaborTransfer))
 
 	IfNative(Ammonia, GrantAbility(BWAmmoniaTransfer))
 	IfNative(Atium, GrantAbility(BWAtiumTransfer))

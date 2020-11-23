@@ -408,6 +408,50 @@ class ConsumePlanetResource : AbilityHook {
 #section all
 };
 
+class TakeAsteroidResource : AbilityHook {
+	Document doc("Takes all asteroid resources from the targeted asteroid and puts it onto the planet casting the ability.");
+	Argument objTarget(TT_Object, doc="Target to cast ability on.");
+
+	bool canActivate(const Ability@ abl, const Targets@ targs, bool ignoreCost) const override {
+		if(abl.obj is null)
+			return false;
+
+		return abl.obj.isPlanet;
+	}
+
+#section server
+	void activate(Ability@ abl, any@ data, const Targets@ targs) const override {
+		if(abl.obj is null)
+			return;
+
+		auto@ targ = objTarget.fromConstTarget(targs);
+		if(targ is null || targ.obj is null)
+			return;
+
+		// remove resources from targetted asteroid and put onto planet
+		if (abl.obj.isPlanet && targ.obj.isAsteroid) {
+			Asteroid@ asteroid = cast<Asteroid>(targ.obj);
+			Planet@ planet = cast<Planet>(abl.obj);
+
+			array<Resource> asteroidResources;
+			asteroidResources.syncFrom(asteroid.getNativeResources());
+			for (uint i = 0, cnt = asteroidResources.length; i < cnt; i++) {
+				auto asteroidResourceType = asteroidResources[i].type;
+				// planet gains resource type
+				planet.createResource(asteroidResourceType.id);
+				// asteroid loses native resource
+				// native resources are identified differently to their
+				// type identifier
+				asteroid.removeResource(asteroidResources[i].id);
+			}
+
+			// delete the depleted asteroid
+			asteroid.destroy();
+		}
+	}
+#section all
+};
+
 tidy final class UpdatedValue {
 	double value = 0;
 	double timer = 0;

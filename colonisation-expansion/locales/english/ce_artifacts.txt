@@ -1,3 +1,4 @@
 ART_DEEPSPACE_COMET_DESC: A comet that can be harvested to provide water for a planet [b]once moved to owned territory to activate[/b].
 ART_ABANDONED_SATELLITE: Abandoned Satellite
 ART_ABANDONED_SATELLITE_DESC: An ancient exploratory vessel. [b]Must be moved to owned territory to activate.[/b]
+NTRG_NO_CARGO: Must target object without cargo storage.

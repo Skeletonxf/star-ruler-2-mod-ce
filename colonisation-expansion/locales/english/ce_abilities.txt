@@ -4,6 +4,7 @@ RAZE: Raze Planet
 RAZE_DESC: Raze the planet, gaining massively increased resource production from it for three minutes then destroying its native resource.
 ABL_BATTLEWORLDER_COLONIZE_DESC: Colonise a nearby planet.
 TRANSFER_RESOURCE: Transfer Resource
+TRANSFER_ASTEROID_RESOURCE: Take Asteroid Resource
 ABL_BATTLEWORLDER_COLONISE: Colonise
 ABL_BATTLEWORLDER_COLONISE_DESC: Colonise a planet within 100 units.
 TRANSFER_ALL: Transfer All & Abandon

@@ -1,0 +1,56 @@
+Ability: BWAsteroidTransfer
+	Name: #TRANSFER_ASTEROID_RESOURCE
+	Icon: AsteroidIcon::0
+	Range: 100
+	Target: targ = Object
+	CE_biome_hooks::TakeAsteroidResource(targ)
+	TargetFilterOwned(targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterType(targ, Asteroid)
+	TargetFilterNotHasCargoStored(targ)
+
+Ability: BWAsteroidAffinityTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::44
+	Range: 100
+	Target: targ = Object
+	Resource Transfer: True
+	Resource: AsteroidAffinity
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(AsteroidAffinity))
+	CE_biome_hooks::ConsumePlanetResource(AsteroidAffinity, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWAsteroidGrowthTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::20
+	Range: 100
+	Target: targ = Object
+	Resource Transfer: True
+	Resource: AsteroidGrowth
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(AsteroidGrowth))
+	CE_biome_hooks::ConsumePlanetResource(AsteroidGrowth, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+
+Ability: BWAsteroidLaborTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::46
+	Range: 100
+	Target: targ = Object
+	Resource Transfer: True
+	Resource: AsteroidLabor
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(AsteroidLabor))
+	CE_biome_hooks::ConsumePlanetResource(AsteroidLabor, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
