@@ -23,6 +23,7 @@ import empire_ai.dragon.bookkeeping.resource_flows;
 from empire_ai.dragon.bookkeeping.resource_value import RaceResourceValuation, ResourceValuator, PlanetValuables;
 import empire_ai.dragon.expansion.expand_logic;
 import empire_ai.dragon.expansion.terrestrial_colonization;
+import empire_ai.dragon.expansion.planet_management;
 
 from statuses import getStatusID;
 from traits import getTraitID;
@@ -631,6 +632,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	ExpandType expandType;
 
 	TerrestrialColonization@ terrestrial;
+	PlanetManagement@ planetManagement;
 
 	const ResourceClass@ scalableClass;
 
@@ -645,6 +647,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
 		@terrestrial = TerrestrialColonization(planets, race, this);
+		@planetManagement = PlanetManagement(planets, budget, ai, log);
 
 		@scalableClass = getResourceClass("Scalable");
 	}
@@ -683,6 +686,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		file << cnt;
 		for (uint i = 0; i < cnt; ++i)
 			genericBuilds[i].save(this, file);
+
+		planetManagement.save(file);
 	}
 
 	void load(SaveFile& file) {
@@ -742,6 +747,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			if (data !is null)
 				genericBuilds.insertLast(data);
 		}
+
+		planetManagement.load(file);
 	}
 
 	void tick(double time) override {
@@ -774,6 +781,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		doColonizations();
 
 		checkBuildingsInProgress();
+
+		// Manage our owned planets
+		planetManagement.focusTick(ai);
 	}
 
 	void drainQueue() {
