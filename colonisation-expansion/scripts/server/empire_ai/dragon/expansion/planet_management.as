@@ -63,6 +63,14 @@ class PlanetManagement {
 		// TODO: Long term this should all be generic hook based responses
 	}
 
+	// TODO: Track the construction requests we make in a ConstructionTracker
+	// so we can prompt other parts of the AI to do things when they complete
+	// or fail.
+	// Should add uplifted planets as dev focus when the uplift finishes
+	// Should also open a new colonise to makeup for lost resource
+	// this would ideally be done by unsetting the import request the planet
+	// was matched to but this info isn't tracked yet
+
 	/**
 	 * Deals with native life status on planets
 	 */

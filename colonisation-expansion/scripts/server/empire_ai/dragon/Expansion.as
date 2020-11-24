@@ -860,6 +860,55 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 	}
 
+	/**
+	 * Checks if we finished or failed any colonizations.
+	 */
+	void checkColonizations() {
+		for (uint i = 0, cnt = colonizing.length; i < cnt; ++i) {
+			ColonizeData@ colonizeData = colonizing[i];
+
+			Empire@ visOwner = colonizeData.target.visibleOwnerToEmp(ai.empire);
+			bool canSeeOwnedByOtherEmpire = visOwner !is ai.empire && (visOwner is null || visOwner.valid);
+			if (canSeeOwnedByOtherEmpire) {
+				// TODO: Fail this colonise and unset the ImportData
+				//Fail out this colonization
+				//cancelColonization(c);
+				//--i; --cnt;
+				//continue;
+			}
+
+			bool owned = visOwner is ai.empire;
+			if (owned) {
+				double population = colonizeData.target.population;
+				if (population >= 1.0) {
+					// finished colonising successfully
+					// TODO: Succeed and clear from list
+				} else {
+					// either we're in progress or we failed due to some
+					// colony ships being shot down
+					if (colonizeData.checkTime == -1.0) {
+						colonizeData.checkTime = gameTime;
+					} else {
+						double gracePeriod = ai.behavior.colonizeFailGraceTime;
+						if (population > 0.9) {
+							gracePeriod *= 2.0;
+						}
+						if (gameTime > colonizeData.checkTime + gracePeriod) {
+							// creeping.requestClear(systems.getAI(c.target.region));
+							// Give up on colonise and try to clear the system
+							// TODO: Fail this colonise and unset the ImportData
+							// TODO: Penalise the target so we don't try to colonise
+							// it again too soon
+						}
+					}
+				}
+			}
+
+			// TODO: Check that the planet we're colonising this from is still
+			// owned and has sufficient pop, if we're playing a terrestrial race
+		}
+	}
+
 	void start() {
 		// Level up homeworld to level 3 to start
 		for (uint i = 0, cnt = ai.empire.planetCount; i < cnt; ++i) {
