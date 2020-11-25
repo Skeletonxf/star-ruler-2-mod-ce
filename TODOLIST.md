@@ -7,18 +7,23 @@ This is primarily intended as a developer focused project planning list, rather 
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully
       working
   - Expansion AI Component
-    - Apply weights based on distance from colonise sources when picking colonise targets
-      - Currently done for picking planets to colonise with, need the reverse to improve Star Children AI
+    - Reteach AI to actually check its colonisations succeeded or failed
+    - Reteach AI to build moon bases when it tries and fails to make a building
+    - Teach AI to bridge systems with Outposts if it ever finds its territory split up
+      - Can now free up the import data when faliure happens so it can immediately look for a new source
+    - Fix bug where AI is putting things in awaitingSource that it shouldn't be
+      - Start thinking about how Expansion AI is going to handle non terrestrial colonisation sources
+    - Reteach AI to handle colonisation failiure penalties
     - Teach AI to penalise conditions
       - Currently recording them, but not using the info
       - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
+    - Reteach AI to colonise planets for non levelling purposes
+    - Apply weights based on distance from colonise sources when picking colonise targets
+      - Currently done for picking planets to colonise with, need the reverse to improve Star Children AI
     - Teach AI to pick and colonise high value planets to level up once it runs out of requests
     - Finish teaching AI to colonize planets for levelling others
       - Save colonize queues into tree structure so can abort if lose export target
-    - Port colonisation penalty system
     - Teach AI to use constructions to meet resource requests
-      - And reteach AI to handle native life
-      - And reteach AI to handle Gas Giants and moon bases
     - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
         - Teach AI to melt ice
         - Teach AI to make most of the constructions by extending the building hint code
