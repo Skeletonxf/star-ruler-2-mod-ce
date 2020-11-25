@@ -125,21 +125,32 @@ class ColonizeData2 : ColonizeData {
 	bool completed = false;
 	bool canceled = false;
 	double checkTime = -1.0; */
+	// Nullable import data that might be associated with our node
+	ImportData@ request;
 
-	void save(SaveFile& file) {
+	void save(Expansion& expansion, SaveFile& file) {
 		file << target;
 		file << colonizeFrom;
 		file << completed;
 		file << canceled;
 		file << checkTime;
+		if (request !is null) {
+			file.write1();
+			expansion.resources.saveImport(file, request);
+		} else {
+			file.write0();
+		}
 	}
 
-	void load(SaveFile& file) {
+	void load(Expansion& expansion, SaveFile& file) {
 		file >> target;
 		file >> colonizeFrom;
 		file >> completed;
 		file >> canceled;
 		file >> checkTime;
+		if (file.readBit()) {
+			@this.request = expansion.resources.loadImport(file);
+		}
 	}
 };
 
@@ -232,19 +243,38 @@ class ColonizeTree {
 	// children, or at the very least reconsider if we need them and
 	// move them to a different tree in the forest
 	Planet@ target;
+	// Nullable import data that might be associated with our node
+	ImportData@ request;
 
 	ColonizeTree(Planet@ target) {
 		@this.target = target;
 	}
 
-	void save(SaveFile& file) {
-		file << target;
+	ColonizeTree(Planet@ target, ImportData@ request) {
+		@this.target = target;
+		@this.request = request;
 	}
 
-	ColonizeTree@ load(SaveFile& file) {
+	void save(Expansion& expansion, SaveFile& file) {
+		file << target;
+		if (request !is null) {
+			file.write1();
+			expansion.resources.saveImport(file, request);
+		} else {
+			file.write0();
+		}
+	}
+
+	// only for deserialisation
+	ColonizeTree() {}
+
+	void load(Expansion& expansion, SaveFile& file) {
 		Planet@ target;
 		file >> target;
-		return ColonizeTree(target);
+		@this.target = target;
+		if (file.readBit()) {
+			@this.request = expansion.resources.loadImport(file);
+		}
 	}
 }
 
@@ -260,20 +290,22 @@ class ColonizeForest {
 		@resourceValuator = ResourceValuator();
 	}
 
-	void save(SaveFile& file) {
+	void save(Expansion& expansion, SaveFile& file) {
 		uint cnt = queue.length;
 		file << cnt;
 		for (uint i = 0; i < cnt; ++i)
-			queue[i].save(file);
+			queue[i].save(expansion, file);
 		file << nextCheckForPotentialColonizeTargets;
 	}
 
-	void load(SaveFile& file) {
+	void load(Expansion& expansion, SaveFile& file) {
 		uint cnt = 0;
 		file >> cnt;
 		queue.length = cnt;
 		for (uint i = 0; i < cnt; ++i) {
-			@queue[i] = queue[i].load(file);
+			ColonizeTree@ tree = ColonizeTree();
+			tree.load(expansion, file);
+			@queue[i] = tree;
 		}
 		file >> nextCheckForPotentialColonizeTargets;
 	}
@@ -470,7 +502,7 @@ class ColonizeForest {
 
 		if (newColony !is null) {
 			ai.print("found colonize target for requested resource: "+request.spec.dump(), newColony);
-			queue.insertLast(ColonizeTree(newColony));
+			queue.insertLast(ColonizeTree(newColony, request));
 			request.isColonizing = true;
 		} else {
 			// FIXME: Star Children AI is allowed to make buildings on certain
@@ -536,13 +568,13 @@ class ColonizeForest {
 	 * TODO: This should be much smarter once the queue is an actual forest
 	 * of trees instead of a FIFO queue
 	 */
-	Planet@ pop() {
+	ColonizeTree@ pop() {
 		if (queue.length == 0) {
 			return null;
 		}
-		Planet@ target = queue[0].target;
+		ColonizeTree@ node = queue[0];
 		queue.removeAt(0);
-		return target;
+		return node;
 	}
 }
 
@@ -571,7 +603,7 @@ class BuildTracker {
 		}
 	}
 
-	// For deserialisation only
+	// only for deserialisation
 	BuildTracker() {}
 
 	void load(Expansion& expansion, SaveFile& file) {
@@ -660,7 +692,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		file << cnt;
 		for(uint i = 0; i < cnt; ++i) {
 			saveColonize(file, colonizing[i]);
-			cast<ColonizeData2>(colonizing[i]).save(file);
+			cast<ColonizeData2>(colonizing[i]).save(this, file);
 		}
 
 		cnt = potentialColonizations.length;
@@ -669,7 +701,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			(cast<PotentialColonizeSource>(potentialColonizations[i])).save(file);
 		}
 
-		queue.save(file);
+		queue.save(this, file);
 
 		cnt = focuses.length;
 		file << cnt;
@@ -699,9 +731,12 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		for(uint i = 0; i < cnt; ++i) {
 			auto@ data = loadColonize(file);
 			if(data !is null) {
-				cast<ColonizeData2>(data).load(file);
+				cast<ColonizeData2>(data).load(this, file);
 				if(data.target !is null) {
 					colonizing.insertLast(data);
+					// FIXME: We're not using this anymore and it won't work properly with non terrestrial races
+					// We need to properly track if the colonise data was in awaitingSource when saving rather
+					// than try to infer it from a field which is now always null
 					if(data.colonizeFrom is null)
 						awaitingSource.insertLast(data);
 				}
@@ -710,7 +745,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				}
 			}
 			else {
-				ColonizeData2().load(file);
+				ColonizeData2().load(this, file);
 			}
 		}
 
@@ -722,7 +757,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			@potentialColonizations[i] = p;
 		}
 
-		queue.load(file);
+		queue.load(this, file);
 
 		cnt = 0;
 		file >> cnt;
@@ -792,11 +827,12 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		// decided to colonise waiting on a source to colonise with
 		while (awaitingSource.length < 3) {
 			// Try to pull off the queue
-			Planet@ planet = queue.pop();
-			if (planet is null) {
+			ColonizeTree@ node = queue.pop();
+			if (node is null || node.target is null) {
 				// we fully drained the queue, no more work to do here
 				return;
 			}
+			Planet@ planet = node.target;
 
 			// This check doesn't seem to make the AI ever actually abort
 			// a colonise, so removing it for now as no need to waste compute
@@ -831,7 +867,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 			if (true) {
 				// mark the planet as awaiting a source and in our colonising list
-				colonize(planet);
+				colonize(planet, node.request);
 			} else {
 				ai.print("Decided to not bother colonising "+planet.name);
 			}
@@ -863,9 +899,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	/**
 	 * Checks if we finished or failed any colonizations.
 	 */
-	void checkColonizations() {
+	void checkColonizationsInProgress() {
 		for (uint i = 0, cnt = colonizing.length; i < cnt; ++i) {
-			ColonizeData@ colonizeData = colonizing[i];
+			ColonizeData2@ colonizeData = cast<ColonizeData2>(colonizing[i]);
 
 			Empire@ visOwner = colonizeData.target.visibleOwnerToEmp(ai.empire);
 			bool canSeeOwnedByOtherEmpire = visOwner !is ai.empire && (visOwner is null || visOwner.valid);
@@ -906,6 +942,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 			// TODO: Check that the planet we're colonising this from is still
 			// owned and has sufficient pop, if we're playing a terrestrial race
+			// in which case try to find a different awaitingSource
 		}
 	}
 
@@ -965,6 +1002,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			}
 			if (aborted) {
 				if (genericBuilds[i].importRequestReason !is null) {
+					if (genericBuilds[i].importRequestReason.obj !is null)
+						ai.print("Failed build on "+genericBuilds[i].importRequestReason.obj.name);
 					// reset buildingFor flag so we try to meet this resource
 					// potentially by colonisation again
 					genericBuilds[i].importRequestReason.buildingFor = false;
@@ -1114,6 +1153,22 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		ColonizeData2 data;
 		data.id = nextColonizeId++;
 		@data.target = pl;
+
+		colonizing.insertLast(data);
+		awaitingSource.insertLast(data);
+		return data;
+	}
+
+	// Colonizes a planet, with an associated ImportData, marking the
+	// ColonizeData as colonizing and awaitingSource
+	ColonizeData@ colonize(Planet& pl, ImportData@ request) {
+		if(log)
+			ai.print("queue colonization", pl);
+
+		ColonizeData2 data;
+		data.id = nextColonizeId++;
+		@data.target = pl;
+		@data.request = request;
 
 		colonizing.insertLast(data);
 		awaitingSource.insertLast(data);
