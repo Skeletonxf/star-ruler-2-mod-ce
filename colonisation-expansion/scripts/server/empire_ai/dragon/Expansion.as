@@ -967,7 +967,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		limits.remainingColonizations = ai.behavior.maxColonizations;
 		limits.currentColonizations = 0;
 
-		if (true) {
+		if (log) {
 			resources.dumpRequests();
 			resources.dumpAvailable();
 		}
@@ -1003,11 +1003,27 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			if (aborted) {
 				if (genericBuilds[i].importRequestReason !is null) {
 					if (genericBuilds[i].importRequestReason.obj !is null)
-						ai.print("Failed build on "+genericBuilds[i].importRequestReason.obj.name);
+						if (log) {
+							ai.print("Failed build on "+genericBuilds[i].importRequestReason.obj.name);
+						}
 					// reset buildingFor flag so we try to meet this resource
 					// potentially by colonisation again
 					genericBuilds[i].importRequestReason.buildingFor = false;
 				}
+				// Check if we failed and we were trying to build on a Gas Giant
+				auto@ build = genericBuilds[i].buildingRequest;
+				// our build failed on this planet, probably because we ran out
+				// of space
+				// if this is a gas giant there are probably moons we can start a moon
+				// base with here. Set a flag so we can consider building another
+				// moon base on this planet from the Improvement.as focus phase
+				if (build.couldNotFindLocation) {
+					if (log) {
+						ai.print("Marking as failed place on "+build.plAI.obj.name);
+					}
+					build.plAI.failedToPlaceBuilding = true;
+				}
+				// [[ MODIFY BASE GAME END ]]
 			}
 			if (removeTracker) {
 				genericBuilds.removeAt(i);

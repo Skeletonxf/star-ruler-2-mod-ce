@@ -24,6 +24,12 @@ final class BuildingRequest {
 	bool canceled = false;
 	bool scatter = false;
 	vec2i builtAt;
+	// [[ MODIFY BASE GAME START ]]
+	// Track if we failed to build due to nowhere to put the
+	// building seperately from if we failed at all, so we can
+	// disambiguate between timeouts and no space
+	bool couldNotFindLocation = false;
+	// [[ MODIFY BASE GAME END ]]
 
 	BuildingRequest(Budget& budget, const BuildingType@ type, double priority, uint moneyType) {
 		@this.type = type;
@@ -42,6 +48,9 @@ final class BuildingRequest {
 		file << canceled;
 		file << builtAt;
 		file << scatter;
+		// [[ MODIFY BASE GAME START ]]
+		file << couldNotFindLocation;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void load(Planets& planets, SaveFile& file) {
@@ -54,6 +63,9 @@ final class BuildingRequest {
 		file >> builtAt;
 		if(file >= SV_0153)
 			file >> scatter;
+		// [[ MODIFY BASE GAME START ]]
+		file >> couldNotFindLocation;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	double cachedProgress = 0.0;
@@ -88,6 +100,9 @@ final class BuildingRequest {
 			if(builtAt == vec2i(-1,-1)) {
 				planets.budget.remove(alloc);
 				canceled = true;
+				// [[ MODIFY BASE GAME START ]]
+				couldNotFindLocation = true;
+				// [[ MODIFY BASE GAME END ]]
 			}
 			else
 				built = true;
@@ -191,7 +206,7 @@ final class PlanetAI {
 	int requestedLevel = 0;
 	double prevTick = 0;
 	// [[ MODIFY BASE GAME START ]]
-	bool failedGasGiantBuild = false;
+	bool failedToPlaceBuilding = false;
 	// [[ MODIFY BASE GAME END ]]
 	array<ExportData@>@ resources;
 	ImportData@ claimedChain;
@@ -210,7 +225,7 @@ final class PlanetAI {
 		file << requestedLevel;
 		file << prevTick;
 		// [[ MODIFY BASE GAME START ]]
-		file << failedGasGiantBuild;
+		file << failedToPlaceBuilding;
 		file << underBombardment;
 		// [[ MODIFY BASE GAME END ]]
 
@@ -229,7 +244,7 @@ final class PlanetAI {
 		file >> requestedLevel;
 		file >> prevTick;
 		// [[ MODIFY BASE GAME START ]]
-		file >> failedGasGiantBuild;
+		file >> failedToPlaceBuilding;
 		file >> underBombardment;
 		// [[ MODIFY BASE GAME END ]]
 		uint cnt = 0;

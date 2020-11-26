@@ -21,6 +21,13 @@ from buildings import getBuildingType, BuildingType;
 
 const double FTL_EXTRACTOR_MIN_HELD_BASE_TIMER = 3 * 60.0;
 
+/**
+ * Component responsible for minor tweaks and actions to take that improve
+ * the AI's existing infrastructure and planets.
+ *
+ * Mostly reactive actions in response to problems that occur from other
+ * components.
+ */
 class Improvement : AIComponent {
 	Planets@ planets;
 	Resources@ resources;
@@ -100,7 +107,7 @@ class Improvement : AIComponent {
 	}
 
 	void focusTick(double time) override {
-		lookToBuildGasGiants();
+		lookToBuildMoonBases();
 
 		// check again to see if we unlocked FTL Extractors
 		ftlExtractorsUnlocked = ai.empire.FTLExtractorsUnlocked >= 1;
@@ -109,54 +116,77 @@ class Improvement : AIComponent {
 		lookToBuildDefenses();
 	}
 
-	void lookToBuildGasGiants() {
-		// check for any gas giants we have no moon bases on
+	/**
+	 * Tries to place moon bases on planets we logged as failing to build on
+	 * in Development/Expansion. Mostly aimed at building a moon base for
+	 * Gas Giants that need space for a Megafarm/Hydrogenator but may also
+	 * help with AI with development focuses running out of room.
+	 */
+	void lookToBuildMoonBases() {
+		// don't build moon bases as Star Children or Ancient
+		// star children don't need them as they don't build
+		// and Ancient bypasses biome cost/build time mods
+		// so can just build on planet surfaces as normal and
+		// thus doesn't need them
+		if (no_build_moon_bases) {
+			return;
+		}
+		// check for any planets we have no moon bases on
 		if (budget.canSpend(BT_Development, 500)) {
 			for(uint i = 0, cnt = planets.planets.length; i < cnt; ++i) {
 				auto@ plAI = planets.planets[i];
 				auto@ planet = plAI.obj;
-				if (no_build_moon_bases) {
-					// don't build moon bases as Star Children or Ancient
-					// star children don't need them as they don't build
-					// and Ancient bypasses biome cost/build time mods
-					// so can just build on planet surfaces as normal and
-					// thus doesn't need them
-					continue;
-				}
 				if (planet.moonCount == 0) {
 					continue;
 				}
-				if (planet.get_Biome0() != atmosphere) {
+				// We could try to check here if the planet actually needs a moon base.
+				// There's a high chance we get the gas giant to level 1 via importing
+				// food and water, in which case we shouldn't waste money on a moon base
+				// we don't use. Instead we'll only act reactively, and build another
+				// moon base following a failed attempt to build on this planet
+				if (!plAI.failedToPlaceBuilding) {
 					continue;
 				}
-				if (planet.getStatusStackCountAny(moon_base) > 0 && !plAI.failedGasGiantBuild) {
-					// If we already have a moon base and haven't attempted
-					// and failed to build anything on this planet we don't need
-					// more
+				// Loosening up restrictions so the AI can consider building
+				// moons on non gas giants if it runs out of space there too
+				/* if (planet.get_Biome0() != atmosphere) {
 					continue;
-				}
-				if (planet.moonCount >= planet.getStatusStackCountAny(moon_base)) {
+				} */
+				if (planet.getStatusStackCountAny(moon_base) >= planet.moonCount) {
 					// can't build more moon bases
 					continue;
 				}
-				if (!plAI.failedGasGiantBuild) {
-					// don't need a moon base if this planet has all its
-					// food and water imported
-					continue;
-				}
-				if (!planets.isConstructing(planet, build_moon_base)) {
-					// This is always high priority because we either have no
-					// moon base in which case we can't build anything
-					// or we already tried to build something and don't have
-					// enough moon bases
-					if (log && planet.getStatusStackCountAny(moon_base) > 1) {
-						ai.print("Building additional moon base at " + planet.name);
+				bool alreadyConstructingMoonBase = planets.isConstructing(planet, build_moon_base);
+				if (alreadyConstructingMoonBase) {
+					// Set the flag back, don't try to make another moon base till we finish
+					// this one and fail a build again
+					plAI.failedToPlaceBuilding = false;
+				} else {
+					// TODO: Check for how many spare tiles we have on the planet
+					// so we can allow building multiple moon bases but ensure the
+					// AI doesn't waste money on moon bases for buildings its already
+					// making
+					if (true && planet.getStatusStackCountAny(moon_base) > 0) {
+						//ai.print("Building additional moon base at " + planet.name);
+						// FIXME: Why does the AI think it needs to make 2 moon
+						// bases the moment a build request fails when we are
+						// clearly checking that we've not already queued one
+						// and why does the AI think it needs to make a third moon
+						// base once we actually finish building the first two, all
+						// for a single megafarm?
+						return;
+					}
+					if (log && planet.getStatusStackCountAny(moon_base) == 0) {
+						ai.print("Building moon base at " + planet.name);
 					}
 					// Set the flag back
-					plAI.failedGasGiantBuild = false;
+					plAI.failedToPlaceBuilding = false;
+					// This is always highish priority because we only try
+					// to make a moon base after finding out a building failed
+					// to be placed.
 					planets.requestConstruction(
-						plAI, planet, build_moon_base, priority=3, expire=gameTime + 600, moneyType=BT_Development);
-						// only build one thing each tick so the empire
+						plAI, planet, build_moon_base, priority=2, expire=gameTime + 600, moneyType=BT_Development);
+						// only build max of one moon base thing each tick so the empire
 						// does other things than improvements
 						return;
 				}

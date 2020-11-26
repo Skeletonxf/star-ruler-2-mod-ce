@@ -738,7 +738,7 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 					// Set a flag so we can consider building another
 					// moon base on this planet from the Improvement.as
 					// focus phase
-					build.plAI.failedGasGiantBuild = true;
+					build.plAI.failedToPlaceBuilding = true;
 				}
 				// [[ MODIFY BASE GAME END ]]
 			}
