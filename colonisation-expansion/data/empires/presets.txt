@@ -22,7 +22,6 @@ Preset: Oko
 	Trait: Fling
 	Trait: Verdant
 	Trait: Prideful
-	Trait: Aquatic
 
 Preset: Hoonan
 	Name: #RACE_HOONAN
@@ -73,7 +72,6 @@ Preset: Mono
 	Trait: Gate
 	Trait: Mechanoid
 	Trait: Workshop
-	Trait: Flying
 
 Preset: Nylli
 	Name: #RACE_NYLLI
