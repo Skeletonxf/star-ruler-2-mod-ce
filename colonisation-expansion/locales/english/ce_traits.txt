@@ -8,6 +8,8 @@ TRAIT_JUMPDRIVE_DESC: <<
 	Ships are equipped with jump drives that let them cheaply jump to positions within their safe jump range.
 
 	Jumping outside of safe jump range is possible, but can cause damage to the ship and may drop the ship at an location away from the intended destination.
+
+	Tractored objects can be jumped along with the ship but doing so costs much more FTL.
 >>
 TRAIT_WARPDRIVE_DESC: <<
 	Unlocks the Warpdrive subsystem (for stations) at game start. This FTL technology can be taken additively with other FTL methods

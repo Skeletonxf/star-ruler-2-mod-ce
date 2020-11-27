@@ -89,3 +89,12 @@ S_SIMULATOR_DESC: <<
 	[img=Plus]The ship slowly gains veterancy levels while stationed in a friendly system. The larger the simulator, the faster it gains experience.[/img]
 	[img=MenuIcons::3;20][color=#aaa]Increasing the size of the ship increases the experience rate of the simulator but also increases the total experience required for each level by equal amounts.[/color][/img]
 >>
+S_JUMPDRIVE_DESC: <<
+	Allows the ship to make subspace jumps to other locations within range. Larger jump drive subsystems allow for larger safe jump distances.
+
+	Jumping outside of safe jump range is possible, but can cause damage to the ship and may drop the ship at an location away from the intended destination.
+
+	Jumpdrives require a large amount of [b]Control[/b] for the jump calculations.
+
+	Tractored objects can be jumped along with the ship but doing so costs much more FTL.
+>>
