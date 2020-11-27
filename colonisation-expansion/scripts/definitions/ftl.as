@@ -303,8 +303,10 @@ int jumpdriveCost(Object& obj, const vec3d& fromPos, const vec3d& position) {
 	double dist = position.distanceTo(fromPos);
 	dist = min(dist, jumpdriveRange(obj));
 
-	// Use mass of ship which includes empire mass factor
-	return ceil(log(dsg.size) * (ship.Mass*0.5/dsg.size) * sqrt(dist) * JUMPDRIVE_COST + JUMPDRIVE_START_COST) * owner.FTLCostFactor * reductionFlagCostFactor; // [[ MODIFY BASE GAME ]]
+	// Use mass of ship which includes empire mass factor + any bonus mass from eg
+	// tractor beams, which we scale up by 1.25 times to stop players having too much
+	// fun with jumptractoring enemy ships/stations
+	return ceil(log(dsg.size) * ((ship.Mass+(1.25*ship.BonusMass))*0.5/dsg.size) * sqrt(dist) * JUMPDRIVE_COST + JUMPDRIVE_START_COST) * owner.FTLCostFactor * reductionFlagCostFactor; // [[ MODIFY BASE GAME ]]
 }
 
 int jumpdriveCost(Object& obj, const vec3d& position) {
@@ -325,8 +327,10 @@ int jumpdriveCost(Object& obj, const vec3d& position) {
 	double dist = position.distanceTo(obj.position);
 	dist = min(dist, jumpdriveRange(obj));
 
-	// Use mass of ship which includes empire mass factor
-	return ceil(log(dsg.size) * (ship.Mass*0.5/dsg.size) * sqrt(dist) * JUMPDRIVE_COST + JUMPDRIVE_START_COST) * owner.FTLCostFactor * reductionFlagCostFactor; // [[ MODIFY BASE GAME ]]
+	// Use mass of ship which includes empire mass factor + any bonus mass from eg
+	// tractor beams, which we scale up by 1.25 times to stop players having too much
+	// fun with jumptractoring enemy ships/stations
+	return ceil(log(dsg.size) * ((ship.Mass+(1.25*ship.BonusMass))*0.5/dsg.size) * sqrt(dist) * JUMPDRIVE_COST + JUMPDRIVE_START_COST) * owner.FTLCostFactor * reductionFlagCostFactor; // [[ MODIFY BASE GAME ]]
 }
 
 int jumpdriveCost(array<Object@>& objects, const vec3d& destination) {

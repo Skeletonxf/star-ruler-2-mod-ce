@@ -157,6 +157,15 @@ tidy class ShipScript {
 			ship.readOrbit(msg);
 		}
 
+		// [[ MODIFY BASE GAME START ]]
+		// Sync bonus mass (shadow can infer mass from design + empire)
+		if (msg.readBit()) {
+			msg >> ship.BonusMass;
+		} else {
+			ship.BonusMass = 0.0;
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		createGraphics(ship, ship.blueprint.design);
 	}
 
@@ -195,6 +204,15 @@ tidy class ShipScript {
 				ship.activateConstruction();
 			ship.readConstruction(msg);
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		// Sync bonus mass (shadow can infer mass from design + empire)
+		if (msg.readBit()) {
+			msg >> ship.BonusMass;
+		} else {
+			ship.BonusMass = 0.0;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void updateStats(Ship& ship) {
@@ -271,5 +289,14 @@ tidy class ShipScript {
 				ship.readConstructionDelta(msg);
 			}
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		// Sync bonus mass (shadow can infer mass from design + empire)
+		if (msg.readBit()) {
+			msg >> ship.BonusMass;
+		} else {
+			ship.BonusMass = 0.0;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 };

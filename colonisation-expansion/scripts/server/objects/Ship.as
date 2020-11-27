@@ -300,6 +300,9 @@ tidy class ShipScript {
 	void modMass(Ship& ship, float amount) {
 		massBonus += amount;
 		ship.blueprint.statusID++;
+		// [[ MODIFY BASE GAME START ]]
+		ship.BonusMass = massBonus;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	// [[ MODIFY BASE GAME START ]]
@@ -1552,6 +1555,16 @@ tidy class ShipScript {
 		else {
 			msg.write0();
 		}
+		
+		// [[ MODIFY BASE GAME START ]]
+		// Sync bonus mass (shadow can infer mass from design + empire)
+		if (ship.BonusMass != 0.0) {
+			msg.write1();
+			msg << ship.BonusMass;
+		} else {
+			msg.write0();
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void retrofit(Ship& ship, const Design@ newDesign) {
@@ -1617,6 +1630,15 @@ tidy class ShipScript {
 		else {
 			msg.write0();
 		}
+		// [[ MODIFY BASE GAME START ]]
+		// Sync bonus mass (shadow can infer mass from design + empire)
+		if (ship.BonusMass != 0.0) {
+			msg.write1();
+			msg << ship.BonusMass;
+		} else {
+			msg.write0();
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool prevFTL = false, prevCombat = false;
@@ -1719,6 +1741,16 @@ tidy class ShipScript {
 		else {
 			msg.write0();
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		// Sync bonus mass (shadow can infer mass from design + empire)
+		if (ship.BonusMass != 0.0) {
+			msg.write1();
+			msg << ship.BonusMass;
+		} else {
+			msg.write0();
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		return used;
 	}

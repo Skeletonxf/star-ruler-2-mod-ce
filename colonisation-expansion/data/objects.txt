@@ -28,6 +28,11 @@ visible:
 	// [[ MODIFY BASE GAME START ]]
 	// Track mass for client and server, as a EmpireMassFactor * mass of design
 	double Mass = 0.01;
+	// Track bonus mass (eg from tractoring) for client and server as well
+	// This does NOT include Mass!
+	// This is thus a different value from getMass() which equals
+	// Mass + BonusMass and from getBaseMass() which equals Mass
+	double BonusMass = 0.0;
 	// [[ MODIFY BASE GAME END ]]
 	bool isFree = false
 	quaterniond formationDest

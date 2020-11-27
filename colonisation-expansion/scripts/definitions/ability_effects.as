@@ -962,7 +962,7 @@ class TractorObject : AbilityHook {
 			// add the mass we just cached
 			// yes this will allow a tractor to not gain more mass when the
 			// tractored object increases its mass while tractored, trying
-			// to syncronise the mass increase will lead to all sorts of
+			// to syncronise the mass increase would lead to all sorts of
 			// problems if two objects tractor each other
 			if(abl.obj !is null && abl.obj.isShip)
 				cast<Ship>(abl.obj).modMass(td.tractorMass);

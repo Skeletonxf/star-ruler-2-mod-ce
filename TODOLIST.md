@@ -8,7 +8,6 @@ This is primarily intended as a developer focused project planning list, rather 
       working
   - Expansion AI Component
     - Reteach AI to actually check its colonisations succeeded or failed
-    - Reteach AI to build moon bases when it tries and fails to make a building
     - Teach AI to bridge systems with Outposts if it ever finds its territory split up
       - Can now free up the import data when faliure happens so it can immediately look for a new source
     - Fix bug where AI is putting things in awaitingSource that it shouldn't be
@@ -37,7 +36,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Reduce the points the Parasite trait gives for razing planets
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Constructions for Gas Giants to make them more useful late game
-  - Make jumpdrive tractoring factor in tractor beam mass increase
   - battleworld QoL changes
     - finish port to CP
     - Fix bug with outposts getting repeat entries in the in-combat quickbar
