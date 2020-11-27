@@ -53,6 +53,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Consider integrating Darloth's NMP into CE https://github.com/darloth/SR2-NewMovement (low priority as the mods are currently compatible minus gravitron adjust)
   - Make InterdictMovement set a flag on the mover component to turn off self controlled motion rather than hack at modifying acceleration as it does in vanilla
   - Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
+  - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
+    - Replace beams with lines?
 
 - Not planned for any time soon
   - Work out how should implement deep space trading
@@ -60,10 +62,9 @@ This is primarily intended as a developer focused project planning list, rather 
     - However the current region system assumes regions don't move, and has some bookkeeping that it does to make indexing for regions fast
     - Either need a way to create mobile regions or allow planets with Lighting Systems to bypass region based trade logic
   - Colonisation ships similar to Motherships for other races
-  - AI code to build orbitals like Outposts and Stations
+  - AI code to build orbitals like Stations
   - Teach AI to scuttle unneeded FTL income orbitals
   - Teach Mechanoid AI to use FTL Breeder Reactors
-  - StarChildren transfering of pop from Mothership -> Mothership
   - Consider what to do about the Star Children being locked out of a lot of things only available as buildings
     - Vanilla buildings that Star Children have no equivalents of
       - Megafarms, Hydrogenators, Research Complexes, Mueseums, Labor Storage, Space Elevator, Planetary Thruster
@@ -71,11 +72,12 @@ This is primarily intended as a developer focused project planning list, rather 
       - FTL Storage, Megacities
     - Maybe add a way to push planets around with motherships?
   - Make autoexplore continue to work after all systems have been visited once (will also split off into own mod or community patch)
+  - Make auto import refresh when resources on already colonised planets become available
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
   - Get the AI to play invasion properly
-  - Stellar Lifting to replace obtaining protoplanets from seed ships
+  - Stellar Lifting to obtain protoplanets directly
   - Teach AI to scout nebulae properly
 
 - Long term plans
