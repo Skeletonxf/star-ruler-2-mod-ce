@@ -98,3 +98,4 @@ S_JUMPDRIVE_DESC: <<
 
 	Tractored objects can be jumped along with the ship but doing so costs much more FTL.
 >>
+ERROR_SIMULATOR_TOO_BIG: Simulator cannot exceed 20% of the ship

@@ -16,9 +16,12 @@ Subsystem: Simulator
 	Hex.HP := 18 * HexSize
 
 	Rate := (Size / 60) * 2
+	Assert: Ship.SimulatorSize <= Sum.HexLimit * 0.2
+		Message: #ERROR_SIMULATOR_TOO_BIG
 
 	Hook: ExperienceOverTime(Rate, True)
 
+	Ship.SimulatorSize := Ship.SimulatorSize + Hexes 
 	Requires:
 		Command = 3
 
