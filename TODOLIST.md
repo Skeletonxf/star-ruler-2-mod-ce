@@ -7,21 +7,17 @@ This is primarily intended as a developer focused project planning list, rather 
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully
       working
   - Expansion AI Component
-    - Reteach AI to actually check its colonisations succeeded or failed
-    - Teach AI to bridge systems with Outposts if it ever finds its territory split up
-      - Can now free up the import data when faliure happens so it can immediately look for a new source
-    - Fix bug where AI is putting things in awaitingSource that it shouldn't be
+    - Fix assumptions AI component is making about colonisation sources that are making it mess up when playing other races
       - Start thinking about how Expansion AI is going to handle non terrestrial colonisation sources
-    - Reteach AI to handle colonisation failiure penalties
+    - Teach AI to bridge systems with Outposts if it ever finds its territory split up
     - Teach AI to penalise conditions
       - Currently recording them, but not using the info
       - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
     - Reteach AI to colonise planets for non levelling purposes
+      - Notably level 0 planets
     - Apply weights based on distance from colonise sources when picking colonise targets
       - Currently done for picking planets to colonise with, need the reverse to improve Star Children AI
     - Teach AI to pick and colonise high value planets to level up once it runs out of requests
-    - Finish teaching AI to colonize planets for levelling others
-      - Save colonize queues into tree structure so can abort if lose export target
     - Teach AI to use constructions to meet resource requests
     - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
         - Teach AI to melt ice
@@ -32,7 +28,20 @@ This is primarily intended as a developer focused project planning list, rather 
         - Teach AI to build outposts to bridge otherwise empty/useless systems
       - Teach Star Children AI to not put supports on their Small Motherships
   - Tweak tractor default design
+  - Reduce the pop motherships spawn in with so they can't spawn with more pop than their max
+  - Make support shrines have same hex count ratio with control as flagships
+  - Remove expose molten core construction on artificial planetoids
+  - Make expose molten core more obviously unexportable
+  - Remove all buildings from the menu for star children on normal planets
+  - Nerf mothership metallurgy to bring into line with factory labor/upkeep
+  - Nerf destroyer hull
+    - Port Rising Stars hull reworks?
+  - Gate the star children consume planet ability so it's not available in the early game
+  - Make mainframes easier to build/deploy to counteract exponential build distance penalties
+  - Give players a notification when they colonise a planet with native life
+  - Stop players putting floating continents on dyson spheres
   - Stop AI putting Low Power Computers on flagships
+  - Rework the Flying trait downside so it is less severe
   - Reduce the points the Parasite trait gives for razing planets
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Constructions for Gas Giants to make them more useful late game

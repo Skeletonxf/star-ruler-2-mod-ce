@@ -327,6 +327,28 @@ final class PlanetAI {
 		return w;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	/**
+	 * Like get_colonizeWeight but doesn't return 0 for planets that are
+	 * colonising
+	 */
+	double get_abstractColonizeWeight() {
+		if(obj.level == 0)
+			return 0.0;
+		if(!obj.canSafelyColonize)
+			return 0.0;
+		double w = 1.0;
+		double pop = obj.population;
+		double maxPop = obj.maxPopulation;
+		if(pop < maxPop-0.1) {
+			if(obj.resourceLevel > 1 && pop/maxPop < 0.9)
+				return 0.0;
+			w *= 0.01 * (pop / maxPop);
+		}
+		return w;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	vec2i buildBuilding(AI& ai, Planets& planets, const BuildingType@ type, bool scatter = true) {
 		if(type is null || !type.canBuildOn(obj))
 			return vec2i(-1,-1);

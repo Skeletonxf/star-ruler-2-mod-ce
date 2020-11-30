@@ -127,6 +127,9 @@ class ColonizeData2 : ColonizeData {
 	double checkTime = -1.0; */
 	// Nullable import data that might be associated with our node
 	ImportData@ request;
+	// The time we began actually colonising for this data, or -1
+	// if we didn't start yet
+	double startColonizeTime = -1;
 
 	void save(Expansion& expansion, SaveFile& file) {
 		file << target;
@@ -140,6 +143,7 @@ class ColonizeData2 : ColonizeData {
 		} else {
 			file.write0();
 		}
+		file << startColonizeTime;
 	}
 
 	void load(Expansion& expansion, SaveFile& file) {
@@ -151,8 +155,44 @@ class ColonizeData2 : ColonizeData {
 		if (file.readBit()) {
 			@this.request = expansion.resources.loadImport(file);
 		}
+		file >> startColonizeTime;
+	}
+
+	bool hasTakenTooLong(double colonizePenalizeTime) {
+		return startColonizeTime != -1 && gameTime > startColonizeTime + colonizePenalizeTime;
 	}
 };
+
+/**
+ * This is essentially the same as Colonization's ColonizePenalty but
+ * with a different name to avoid name conflicts and potentially be
+ * expanded later.
+ */
+class AvoidColonizeMarker {
+	Planet@ planet;
+	/**
+	 * Minimum game time to consider colonising this planet again
+	 */
+	double until;
+
+	void save(SaveFile& file) {
+		file << planet;
+		file << until;
+	}
+
+	void load(SaveFile& file) {
+		file >> planet;
+		file >> until;
+	}
+
+	AvoidColonizeMarker(Planet@ planet, double until) {
+		@this.planet = planet;
+		this.until = until;
+	}
+
+	// only for deserialisation
+	AvoidColonizeMarker() {}
+}
 
 /**
  * Subclass of DevelopmentFocus, with save/load methods for use here
@@ -285,9 +325,11 @@ class ColonizeForest {
 	double nextCheckForPotentialColonizeTargets = 0;
 
 	ResourceValuator@ resourceValuator;
+	const ConstructionType@ build_moon_base;
 
 	ColonizeForest() {
 		@resourceValuator = ResourceValuator();
+		@build_moon_base = getConstructionType("MoonBase");
 	}
 
 	void save(Expansion& expansion, SaveFile& file) {
@@ -390,8 +432,8 @@ class ColonizeForest {
 				continue;
 			if(expansion.isColonizing(pl))
 				continue;
-			/* if(penaltySet.contains(pl.id))
-				continue; */
+			if(expansion.penaltySet.contains(pl.id)) // probably a remnant in the way
+				continue;
 			if(pl.quarantined)
 				continue;
 
@@ -513,6 +555,15 @@ class ColonizeForest {
 			if (expansion.actions.buildBuildings) {
 				// Get the PlanetAI for the object making this request
 				auto@ plAI = expansion.planets.getAI(cast<Planet>(request.obj));
+
+				if (plAI.obj is null)
+					return;
+
+				bool alreadyConstructingMoonBase = expansion.planets.isConstructing(plAI.obj, build_moon_base);
+				if (alreadyConstructingMoonBase && plAI.failedToPlaceBuilding) {
+					// we're working on it, no point trying a third time
+					return;
+				}
 
 				// try checking the next building type out of the list on
 				// this tick to see if we can meet the request with a building
@@ -661,6 +712,12 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	array<ColonizeData@> loadIds;
 
+	// list of penalties that will stop us colonising planets we recently
+	// failed at colonising
+	array<AvoidColonizeMarker@> penalties;
+	// a set of the ids in penalties
+	set_int penaltySet;
+
 	ExpandType expandType;
 
 	TerrestrialColonization@ terrestrial;
@@ -703,6 +760,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		queue.save(this, file);
 
+		cnt = penalties.length;
+		file << cnt;
+		for(uint i = 0; i < cnt; ++i)
+			penalties[i].save(file);
+
 		cnt = focuses.length;
 		file << cnt;
 		for(uint i = 0; i < cnt; ++i) {
@@ -734,7 +796,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				cast<ColonizeData2>(data).load(this, file);
 				if(data.target !is null) {
 					colonizing.insertLast(data);
-					// FIXME: We're not using this anymore and it won't work properly with non terrestrial races
+					// FIXME: This won't work properly with non terrestrial races
 					// We need to properly track if the colonise data was in awaitingSource when saving rather
 					// than try to infer it from a field which is now always null
 					if(data.colonizeFrom is null)
@@ -758,6 +820,16 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 
 		queue.load(this, file);
+
+		file >> cnt;
+		for(uint i = 0; i < cnt; ++i) {
+			AvoidColonizeMarker@ penalty = AvoidColonizeMarker();
+			penalty.load(file);
+			if(penalty.planet !is null) {
+				penalties.insertLast(penalty);
+				penaltySet.insert(penalty.planet.id);
+			}
+		}
 
 		cnt = 0;
 		file >> cnt;
@@ -816,6 +888,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		doColonizations();
 
 		checkBuildingsInProgress();
+		checkColonizationsInProgress();
+		updatePenalties();
 
 		// Manage our owned planets
 		planetManagement.focusTick(ai);
@@ -833,37 +907,6 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				return;
 			}
 			Planet@ planet = node.target;
-
-			// This check doesn't seem to make the AI ever actually abort
-			// a colonise, so removing it for now as no need to waste compute
-			// if there's only one path through it in practise.
-			/* // check we actually still need to colonise for this planet's
-			// resources, or that at least the planet has resources we'll
-			// always value
-			PlanetValuables@ valuables = PlanetValuables(planet);
-			bool stillColonize = valuables.hasGenericUsefulnessOutsideLevelChains();
-			if (!stillColonize) {
-				// if the planet has no intrinsic value then check if it meets any
-				// import request we have open or marked as isColonizing
-				for (uint i = 0, cnt = resources.requested.length; i < cnt; ++i) {
-					ImportData@ req = resources.requested[i];
-					if(!req.isOpen)
-						continue;
-					if(!req.cycled)
-						continue;
-					if(req.claimedFor)
-						continue;
-					if(req.buildingFor)
-						continue;
-					// Don't filter import requests we are colonising for, they
-					// might include the import request we matched to this planet
-
-					if (valuables.canExportToMeet(req.spec)) {
-						stillColonize = true;
-						break;
-					}
-				}
-			} */
 
 			if (true) {
 				// mark the planet as awaiting a source and in our colonising list
@@ -891,6 +934,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 					ai.print("start colonizing "+colonizeData.target.name, source.pl);
 				terrestrial.orderColonization(colonizeData, source);
 				awaitingSource.remove(colonizeData);
+				cast<ColonizeData2>(colonizeData).startColonizeTime = gameTime;
 				--i; --cnt;
 			}
 		}
@@ -902,15 +946,14 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	void checkColonizationsInProgress() {
 		for (uint i = 0, cnt = colonizing.length; i < cnt; ++i) {
 			ColonizeData2@ colonizeData = cast<ColonizeData2>(colonizing[i]);
+			// TODO: Should we check that the planet we're colonising still exists?
 
 			Empire@ visOwner = colonizeData.target.visibleOwnerToEmp(ai.empire);
 			bool canSeeOwnedByOtherEmpire = visOwner !is ai.empire && (visOwner is null || visOwner.valid);
 			if (canSeeOwnedByOtherEmpire) {
-				// TODO: Fail this colonise and unset the ImportData
-				//Fail out this colonization
-				//cancelColonization(c);
-				//--i; --cnt;
-				//continue;
+				abortColonize(colonizeData, avoidRetry=false);
+				--i; --cnt;
+				continue;
 			}
 
 			bool owned = visOwner is ai.empire;
@@ -918,7 +961,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				double population = colonizeData.target.population;
 				if (population >= 1.0) {
 					// finished colonising successfully
-					// TODO: Succeed and clear from list
+					finishColonize(colonizeData);
+					--i; --cnt;
+					continue;
 				} else {
 					// either we're in progress or we failed due to some
 					// colony ships being shot down
@@ -930,19 +975,44 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 							gracePeriod *= 2.0;
 						}
 						if (gameTime > colonizeData.checkTime + gracePeriod) {
-							// creeping.requestClear(systems.getAI(c.target.region));
 							// Give up on colonise and try to clear the system
-							// TODO: Fail this colonise and unset the ImportData
-							// TODO: Penalise the target so we don't try to colonise
+							// Penalise the target so we don't try to colonise
 							// it again too soon
+							creeping.requestClear(systems.getAI(colonizeData.target.region));
+							abortColonize(colonizeData, avoidRetry=true);
+							--i; --cnt;
+							continue;
 						}
 					}
 				}
 			}
 
-			// TODO: Check that the planet we're colonising this from is still
-			// owned and has sufficient pop, if we're playing a terrestrial race
+			// Check that the planet we're colonising this from is still
+			// owned and has sufficient pop if we're playing a terrestrial race
 			// in which case try to find a different awaitingSource
+			// TODO: Need to rework colonizeFrom to apply to all colonise units
+			// of every race or replicate all this logic into each Race
+			// component
+			if (colonizeData.colonizeFrom !is null) {
+				// have a little bit of leeway in allowing colonisations to
+				// contine from planets that dropped levels for a brief
+				// period before stopping them
+				bool hasTakenTooLong = colonizeData.hasTakenTooLong(ai.behavior.colonizePenalizeTime * 0.5);
+				if (hasTakenTooLong) {
+					PlanetAI@ plAI = planets.getAI(colonizeData.colonizeFrom);
+					bool canStillColonizeFrom = plAI !is null
+						&& plAI.obj !is null
+						&& plAI.obj.valid
+						&& plAI.abstractColonizeWeight >= 0;
+					if (!canStillColonizeFrom) {
+						ai.print("aborting colonise, source invalid");
+						// did we lose our source planet?
+						abortColonize(colonizeData, avoidRetry=false);
+						--i; --cnt;
+						continue;
+					}
+				}
+			}
 		}
 	}
 
@@ -1197,21 +1267,6 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		return null;
 	}
 
-	/* void orderColonization(ColonizeData& data, Planet& sourcePlanet) {
-		if(log)
-			ai.print("start colonizing "+data.target.name, sourcePlanet);
-
-		if(race !is null) {
-			if(race.orderColonization(data, sourcePlanet))
-				return;
-		}
-
-		@data.colonizeFrom = sourcePlanet;
-		awaitingSource.remove(data);
-
-		sourcePlanet.colonize(data.target);
-	} */
-
 	// Checks if a planet is being colonized or is in the queue
 	bool isColonizing(Planet& pl) {
 		for(uint i = 0, cnt = colonizing.length; i < cnt; ++i) {
@@ -1219,6 +1274,60 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				return true;
 		}
 		return queue.isQueuedForColonizing(pl);
+	}
+
+	void abortColonize(ColonizeData2@ data, bool avoidRetry=false) {
+		data.completed = false;
+		data.canceled = true;
+		if(data.colonizeFrom !is null && data.colonizeFrom.owner is ai.empire)
+			data.colonizeFrom.stopColonizing(data.target);
+		if (data.target !is null) {
+			if(data.target.owner is ai.empire)
+				data.target.forceAbandon();
+		}
+		awaitingSource.remove(data);
+		colonizing.remove(data);
+		ImportData@ request = data.request;
+		if (request !is null) {
+			// unset the isColonizing flag because we failed to colonise for
+			// this
+			request.isColonizing = false;
+		}
+
+		if (avoidRetry) {
+			double nextAllowedColonizeTime = gameTime + ai.behavior.colonizePenalizeTime;
+			if (data.target !is null) {
+				AvoidColonizeMarker@ penalty = AvoidColonizeMarker(data.target, nextAllowedColonizeTime);
+				penalties.insertLast(penalty);
+				penaltySet.insert(penalty.planet.id);
+			}
+		}
+	}
+
+	void finishColonize(ColonizeData2@ data) {
+		data.completed = true;
+		data.canceled = false;
+		awaitingSource.remove(data);
+		colonizing.remove(data);
+		if (data.target !is null) {
+			PlanetAI@ plAI = planets.register(data.target);
+			if (log) {
+				ai.print("Colonised "+data.target.name);
+			}
+		}
+	}
+
+	void updatePenalties() {
+		for (uint i = 0, cnt = penalties.length; i < cnt; ++i) {
+			AvoidColonizeMarker@ penalty = penalties[i];
+			if (penalty.planet is null || gameTime > penalty.until) {
+				penalties.removeAt(i);
+				if (penalty.planet !is null) {
+					penaltySet.erase(penalty.planet.id);
+				}
+				--i; --cnt;
+			}
+		}
 	}
 
 	// Check how recently we colonized something matching the spec

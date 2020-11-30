@@ -157,11 +157,7 @@ class Improvement : AIComponent {
 					continue;
 				}
 				bool alreadyConstructingMoonBase = planets.isConstructing(planet, build_moon_base);
-				if (alreadyConstructingMoonBase) {
-					// Set the flag back, don't try to make another moon base till we finish
-					// this one and fail a build again
-					plAI.failedToPlaceBuilding = false;
-				} else {
+				if (!alreadyConstructingMoonBase) {
 					// TODO: Check for how many spare tiles we have on the planet
 					// so we can allow building multiple moon bases but ensure the
 					// AI doesn't waste money on moon bases for buildings its already
