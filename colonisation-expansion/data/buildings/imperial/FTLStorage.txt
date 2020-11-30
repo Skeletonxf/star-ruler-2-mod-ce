@@ -16,4 +16,5 @@ Building: FTLStorage
 	IfNative(FTL, AddFTLStorage(250))
 
 
+	RequireEither(RequireNotTrait(StarChildren), RequireNotStatus(StarHabitatsNoPlanetUseSingle))
 	AI:AsFTLStorage()

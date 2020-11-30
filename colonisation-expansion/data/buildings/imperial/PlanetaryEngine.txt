@@ -18,6 +18,7 @@ Building: PlanetaryEngine
 
 	Build Time: 300
 
+	RequireEither(RequireNotTrait(StarChildren), RequireNotStatus(StarHabitatsNoPlanetUseSingle))
 	RequireUnlockTag(PlanetaryEngineUnlock)
 	RequireNotStatus(Ringworld)
 	RequireNotStatus(InAnnexVote)

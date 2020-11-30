@@ -7,6 +7,7 @@ Building: LightSystem
 	Base Cost: 300
 	Build Time: 60
 	Tile Cost: 25
+	RequireEither(RequireNotTrait(StarChildren), RequireNotStatus(StarHabitatsNoPlanetUseSingle))
 	RequireNotTrait(Ancient)
 	AI:AsCreatedResource(ArtificialLight, 30, 0, 0)
 	ConflictBuilding(LightSystem)

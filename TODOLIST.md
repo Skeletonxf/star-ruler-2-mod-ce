@@ -32,8 +32,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make support shrines have same hex count ratio with control as flagships
   - Remove expose molten core construction on artificial planetoids
   - Make expose molten core more obviously unexportable
-  - Remove all buildings from the menu for star children on normal planets
-  - Nerf mothership metallurgy to bring into line with factory labor/upkeep
   - Nerf destroyer hull
     - Port Rising Stars hull reworks?
   - Make mainframes easier to build/deploy to counteract exponential build distance penalties

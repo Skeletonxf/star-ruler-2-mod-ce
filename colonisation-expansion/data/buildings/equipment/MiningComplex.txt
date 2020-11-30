@@ -13,6 +13,7 @@ Building: MiningComplex
 	Tile Maintenance: 10
 
 
+	RequireEither(RequireNotTrait(StarChildren), RequireNotStatus(StarHabitatsNoPlanetUseSingle))
 	AddStatus(MiningPlanet)
 	ConflictBuilding(MiningComplex)
 	RequireNotStatus(Ringworld)
