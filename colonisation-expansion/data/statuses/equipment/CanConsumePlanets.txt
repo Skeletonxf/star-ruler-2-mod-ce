@@ -3,3 +3,8 @@ Status: CanConsumePlanets
 	Unique: True
 	Description: Mark for order system
 	ProcessCargo(LivingSpace, 0.001, 0.1, AddCargo(Forestation, 1))
+Status: CanUnlockConsumePlanets
+	Visible To: Nobody
+	Unique: True
+	Description: Enables mark for order system once researched
+	IfAttributeGTE(ConsumePlanetUnlocked, 1, AddStatus(CanConsumePlanets))

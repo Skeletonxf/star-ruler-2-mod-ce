@@ -97,3 +97,11 @@ R_UNLOCK_MAKE_NEBULA_DESC: <<
 R_UNLOCK_MAKE_NEBULA: Nebula Formation
 RESEARCH_REQ_FRACTURED_PLANETS: Fracture $2 Planets. [b]( $1 / $2 )[/b]
 R_VERY_HIGH_ENRGY_HURDLE: Very High Energy Experiments
+R_CONSUME_PLANET_DESC: <<
+	[color=#aaa][i]Unlocks the ability to consume planets with Motherships.[/i][/color]
+
+	Consuming a planet slowly destroys it and gives the Mothership increased maximum population once finished. Sacrificing enough planets allows Motherships to reach net positive income.
+
+	[color=#aaa][i]Consuming rate is proportional to Mothership size. Consuming a planet owned by another race is possible, but will take 4 times as long. Planets can only be consumed if the player is at war with the target's owner or the planet is uncolonised.[/i][/color]
+>>
+R_CONSUME_PLANET: Consume Planet

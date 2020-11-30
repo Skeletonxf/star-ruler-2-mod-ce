@@ -114,6 +114,12 @@ tidy class ConsumePlanetOrder : Order {
 				damageRate = ship.blueprint.design.total(SV_ConsumeDamage);
 				livingSpaceRate = ship.blueprint.design.total(SV_LivingSpaceGain);
 			}
+			// slow down rate if used on another empire
+			// if you want to destroy someone else's planet you should use gravitrons
+			// not get an effective gravitron for free on your warship
+			if (target.owner !is obj.owner && target.owner !is defaultEmpire) {
+				damageRate *= 0.25;
+			}
 			auto@ livingSpace = getCargoType("LivingSpace");
 			Planet@ planet = cast<Planet>(target);
 			if (planet !is null) {

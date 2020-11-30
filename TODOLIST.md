@@ -36,7 +36,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Nerf mothership metallurgy to bring into line with factory labor/upkeep
   - Nerf destroyer hull
     - Port Rising Stars hull reworks?
-  - Gate the star children consume planet ability so it's not available in the early game
   - Make mainframes easier to build/deploy to counteract exponential build distance penalties
   - Give players a notification when they colonise a planet with native life
   - Stop players putting floating continents on dyson spheres
@@ -44,6 +43,10 @@ This is primarily intended as a developer focused project planning list, rather 
   - Rework the Flying trait downside so it is less severe
   - Reduce the points the Parasite trait gives for razing planets
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
+  - Make remnant parts less big than starts
+  - Don't allow multiple razes on a single planet to be queued
+  - Don't let random life assign a life that other traits the player took are incompatible with
+  - Remove fire damage from Aquatic trait given it doesn't do anything
   - Constructions for Gas Giants to make them more useful late game
   - battleworld QoL changes
     - finish port to CP

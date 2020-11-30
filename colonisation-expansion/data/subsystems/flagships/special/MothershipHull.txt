@@ -41,7 +41,7 @@ Subsystem: MothershipHull
 	Modifier: LivingSpacePopIncrease
 		ShipMaxPopulationBonus := ShipMaxPopulationBonus + 1
 	Hook: AddStatus(Mothership)
-	Hook: AddStatus(CanConsumePlanets)
+	Hook: AddStatus(CanUnlockConsumePlanets)
 	Assert: ShipSize >= 500
 		Message: #ERROR_MIN_SIZE:$1:500
 

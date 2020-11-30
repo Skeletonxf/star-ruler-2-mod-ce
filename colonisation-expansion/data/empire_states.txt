@@ -192,5 +192,7 @@ visible:
 	// [[ MODIFY BASE GAME START ]]
 	// Stop diplomatic victory if the Palace goes into deep space
 	attribute double SenatorialPalaceActive = 0;
+	// flag for star children to unlock consume planet ability
+	attribute double ConsumePlanetUnlocked = 0;
 	// [[ MODIFY BASE GAME END ]]
 }

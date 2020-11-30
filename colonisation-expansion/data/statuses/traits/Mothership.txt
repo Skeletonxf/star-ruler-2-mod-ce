@@ -9,7 +9,7 @@ Status: Mothership
 
 	AllowConstruction(Ships = True, Orbitals = True, Asteroids = True, Terraforming = True)
 
-	AddLaborIncome(7)
+	AddLaborIncome(5)
 	AddLaborEmpireAttribute(FactoryLaborMod)
 	CopyLaborFromOrbitPlanet()
 
