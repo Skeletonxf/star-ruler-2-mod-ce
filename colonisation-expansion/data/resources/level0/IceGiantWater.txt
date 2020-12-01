@@ -9,3 +9,5 @@ Resource: IceGiantWater
 	Pressure: 2 Influence
 	Pressure: 1 Money
 	Native Biome: Ice
+	Gas Giant Frequency: 0.29
+	Ice Giant: True

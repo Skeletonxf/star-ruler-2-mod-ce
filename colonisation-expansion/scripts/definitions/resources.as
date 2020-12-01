@@ -21,7 +21,7 @@ enum WelfareMode {
 	WM_Research,
 	WM_HW_Labor,
 	WM_Defense,
-	
+
 	WM_COUNT
 };
 
@@ -113,6 +113,11 @@ tidy final class ResourceType {
 	bool limitlessLevel = false;
 	bool canBeTerraformed = true;
 
+	// [[ MODIFY BASE GAME START ]]
+	double gasGiantFrequency = 0.0;
+	bool isIceGiant = false;
+	// [[ MODIFY BASE GAME END ]]
+
 	bool get_hasEffect() const {
 		for(uint i = 0, cnt = hooks.length; i < cnt; ++i) {
 			if(hooks[i].hasEffect)
@@ -156,7 +161,7 @@ tidy final class ResourceType {
 		}
 		return true;
 	}
-	
+
 	double get_totalRarity() const {
 		return 1.0 / rarityScore;
 	}
@@ -392,17 +397,17 @@ string getResourceTooltip(const ResourceType@ type, const Resource@ r = null, Ob
 		text += format(type.blurb, toString(curLevel, 0));
 	else
 		text += format(type.description, toString(curLevel, 0));
-	
+
 	if(type.totalPressure > 0) {
 		uint types = 0;
 		for(uint i = 0; i < TR_COUNT; ++i)
 			if(type.tilePressure[i] > 0)
 				types += 1;
-		
+
 		if(types <= 2) {
 			if(type.description.length > 0 || type.blurb.length > 0)
 				text += "\n\n";
-			
+
 			bool first = true;
 			for(uint i = 0; i < TR_COUNT; ++i) {
 				if(type.tilePressure[i] > 0) {
@@ -445,14 +450,14 @@ string getResourceTooltip(const ResourceType@ type, const Resource@ r = null, Ob
 			else
 				text += format(locale::VANISH_TIP_NOUSE, formatTime(timeLeft));
 		}
-		
+
 		if(!r.usable) {
 			string err;
 			if(r.origin !is null)
 				err = r.origin.getDisabledReason(r.id);
 			else if(drawFrom !is null)
 				err = drawFrom.getDisabledReason(r.id);
-			
+
 			if(err.length > 0) {
 				text += "\n\n";
 				string base;
@@ -615,7 +620,7 @@ tidy final class Resources : Serializable, Savable {
 			return 0;
 		return amounts[index];
 	}
-	
+
 	void clear() {
 		types.length = 0;
 		amounts.length = 0;
@@ -1363,7 +1368,7 @@ void parseLine(string& line, ResourceType@ r, ReadFile@ file) {
 
 void loadResources(const string& filename) {
 	ReadFile file(filename, true);
-	
+
 	string key, value;
 	ResourceType@ r;
 	bool advance = true;
@@ -1371,7 +1376,7 @@ void loadResources(const string& filename) {
 		key = file.key;
 		value = file.value;
 		advance = true;
-		
+
 		if(file.fullLine) {
 			if(r is null) {
 				error("Missing 'Resource: ID' line in " + filename);
@@ -1549,6 +1554,14 @@ void loadResources(const string& filename) {
 				r.tilePressure[resource] += amt;
 			}
 		}
+		// [[ MODIFY BASE GAME START ]]
+		else if (key == "Gas Giant Frequency") {
+			r.gasGiantFrequency = toDouble(value);
+		}
+		else if (key == "Ice Giant") {
+			r.isIceGiant = toBool(value);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		else if(key.equals_nocase("AI")) {
 			auto@ hook = parseHook(value, "ai.resources::", instantiate=false, file=file);
 			if(hook !is null)
@@ -1561,7 +1574,7 @@ void loadResources(const string& filename) {
 			parseLine(line, r, file);
 		}
 	}
-	
+
 	if(r !is null)
 		addResourceType(r);
 }
@@ -1733,7 +1746,7 @@ void addResourceType(ResourceType@ type) {
 	lFreq.types.insertLast(type);
 	rFreq.totalDistribution += type.distribution;
 	rFreq.types.insertLast(type);
-	
+
 	//Figure out class
 	if(type.className.length != 0) {
 		ResourceClass@ cls;

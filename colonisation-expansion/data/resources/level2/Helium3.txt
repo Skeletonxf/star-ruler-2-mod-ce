@@ -9,3 +9,4 @@ Resource: Helium3
 	Small Icon: He3
 	Icon: He3
 	Level: 2
+	Gas Giant Frequency: 0.05

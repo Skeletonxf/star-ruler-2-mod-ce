@@ -11,3 +11,4 @@ Resource: VolatileGases
 
 	Pressure: 2 Defense
 	Frequency: 0
+	Gas Giant Frequency: 0.15

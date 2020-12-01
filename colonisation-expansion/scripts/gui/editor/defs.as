@@ -474,6 +474,10 @@ class ResourceFile : FileDef {
 			field("Vanish Mode", AT_Selection, "Never", doc="Condition for when the resource is ticking down or not.").setOptions(vanishModes);
 			field("Can Be Terraformed", AT_Boolean, "True", doc="Whether planets with this as their primary resource can be terraformed to something else.");
 			field("Pressure", AT_TileResourceSpec, "", repeatable=true, doc="An amount of pressure this resource provides.");
+			// [[ MODIFY BASE GAME START ]]
+			field("Gas Giant Frequency", AT_Decimal, "0", doc="Global factor for the occurrence of this resource on gas giants, at the expense of every other resource.");
+			field("Ice Giant", AT_Decimal, "False", doc="If Gas Giant Frequency is non zero, marks this resource as for Ice Giants, otherwise the resource will be treated as for Gas Giants.");
+			// [[ MODIFY BASE GAME END ]]
 			field("Affinity", AT_Selection, "", repeatable=true, doc="A resource's affinities indicate what types of resources it is associated with. Icons for each of the specified affinities will be shown next to the name of the resource. These do not currently have a gameplay effect.")
 				.setOptions(affinityTypes);
 	}

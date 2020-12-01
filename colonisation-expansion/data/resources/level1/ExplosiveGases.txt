@@ -12,3 +12,4 @@ Resource: ExplosiveGases
 	Pressure: 2 Defense
 	Frequency: 0
 	Pressure: 2 Energy
+	Gas Giant Frequency: 0.1

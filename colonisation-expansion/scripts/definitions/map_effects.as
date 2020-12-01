@@ -290,6 +290,62 @@ bool parseResourceSpec(array<const ResourceType@>@ resPossib, const string& v) {
 	}
 }
 
+// [[ MODIFY BASE GAME START ]]
+double totalGasGiantResourcesFrequency = 0;
+array<const ResourceType@> gasGiantLookupTable;
+array<double> gasGiantIndexLookupTable;
+
+/**
+ * Picks a gas giant resources by rolling a random double in the probability
+ * distribution of all gas giant resources (based on intervals sized by gasGiantFrequency)
+ *
+ * Blind mind seem to have a fancier algorithm for rock planets but I don't
+ * understand it and this won't cache too much because there's not going to be many
+ * gas giant resources anyway, and we only cache pointers in the lookup tables.
+ */
+const ResourceType@ rollGasGiantResource() {
+	// set cache on first call
+	if (totalGasGiantResourcesFrequency == 0) {
+		//double gasTotalFrequency = 0;
+		//double iceTotalFrequency = 0;
+		for (uint i = 0, cnt = getResourceCount(); i < cnt; ++i) {
+			const ResourceType@ type = getResource(i);
+			if (type.gasGiantFrequency > 0) {
+				gasGiantIndexLookupTable.insertLast(totalGasGiantResourcesFrequency);
+				gasGiantLookupTable.insertLast(type);
+				totalGasGiantResourcesFrequency += type.gasGiantFrequency;
+				//if (type.isIceGiant) {
+				//	iceTotalFrequency += type.gasGiantFrequency;
+				//} else {
+				//	gasTotalFrequency += type.gasGiantFrequency;
+				//}
+			}
+		}
+		//print("Gas Giant Frequency Total: "+gasTotalFrequency);
+		//print("Ice Giant Frequency Total: "+iceTotalFrequency);
+	}
+	if (totalGasGiantResourcesFrequency == 0) {
+		return null;
+	}
+	if (gasGiantIndexLookupTable.length == 0) {
+		return null;
+	}
+	double roll = randomd() * totalGasGiantResourcesFrequency;
+	uint i = 0;
+	uint cnt = gasGiantIndexLookupTable.length;
+	// advance through the lookups till we hit an inverval beyond our roll or the
+	// end of the list
+	while (i < cnt && roll > gasGiantIndexLookupTable[i]) {
+		i += 1;
+	}
+	if (i > 0) {
+		return gasGiantLookupTable[i - 1];
+	} else {
+		return gasGiantLookupTable[0];
+	}
+}
+// [[ MODIFY BASE GAME END ]]
+
 //MakePlanet(<Resource> = Destributed, <Radius> = 6:14, <Orbit Spacing> = 125:275,
 //           <Grid Size> = (-1, -1))
 // Create a new planet with <Resource> and size <Radius>. Spaced in the orbit from
@@ -312,7 +368,7 @@ class MakePlanet : MapHook {
 	Argument rings(AT_Boolean, "True", doc="Whether the planet can have rings generated around it.");
 	Argument physics(AT_Boolean, "True", doc="Whether the planet should be a physical object.");
 	// [[ MODIFY BASE GAME START ]]
-	Argument gas(AT_Boolean, "False", doc="Whether the planet should be a gas planet");
+	Argument gas(AT_Boolean, "False", doc="Whether the planet should be created as a gas/ice giant, and use that resource pool instead");
 	// [[ MODIFY BASE GAME END ]]
 
 	bool instantiate() override {
@@ -353,21 +409,9 @@ class MakePlanet : MapHook {
 		// set resources for gas giants seperately
 		bool ice_giant = false;
 		if (gas.boolean) {
-			int select_resource = randomi(0, 20);
-			if (select_resource < 4) {
-				@resource = getResource("HeavyGases");
-			} else if (select_resource < 7) {
-				@resource = getResource("VolatileGases");
-			} else if (select_resource < 9) {
-				@resource = getResource("ExplosiveGases");
-			} else if (select_resource < 11) {
-				@resource = getResource("Helium3");
-			} else if (select_resource < 17) {
-				@resource = getResource("IceGiantIce");
-				ice_giant = true;
-			} else {
-				@resource = getResource("IceGiantWater");
-				ice_giant = true;
+			@resource = rollGasGiantResource();
+			if (@resource !is null) {
+				ice_giant = resource.isIceGiant;
 			}
 		}
 		// [[ MODIFY BASE GAME END ]]

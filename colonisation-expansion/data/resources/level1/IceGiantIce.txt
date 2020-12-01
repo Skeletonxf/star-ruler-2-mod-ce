@@ -9,3 +9,5 @@ Resource: IceGiantIce
 	Pressure: 1 Money
 	Native Biome: Ice
 	Level: 1
+	Gas Giant Frequency: 0.30
+	Ice Giant: True
