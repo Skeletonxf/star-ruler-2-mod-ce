@@ -10,6 +10,10 @@ Material: Gases3
 	Inherit: Image2D
 	Texture: data/images/gases-3.png
 
+Material: Gases4
+	Inherit: Image2D
+	Texture: data/images/gases-4.png
+
 Material: Subsystem1
 	Alpha: True
 	DepthTest: NoDepthTest

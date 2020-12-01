@@ -1,0 +1,32 @@
+Resource: NitrousOxide
+	Name: #NITROUS_OXIDE
+	Description: #NITROUS_OXIDE_DESC
+	Blurb: #NITROUS_OXIDE_BLURB
+	Class: Scalable
+	Exportable: False
+	Limitless Level: True
+	Can Be Terraformed: False
+	Affinity: Money
+	Pressure: 1 Money
+	Pressure: 1 Influence
+	Small Icon: Gases4
+	Native Biome: Atmosphere
+	Gas Giant Frequency: 0.02
+	Frequency: 0
+
+	NativeLevelChain(FernChain)
+
+	IfLevel(1, AddPressure(Influence, 1))
+	IfLevel(2, AddPressure(Influence, 2))
+	IfLevel(3, AddPressure(Influence, 2))
+	IfLevel(4, AddPressure(Influence, 2))
+	IfLevel(5, AddPressure(Influence, 2))
+
+	IfLevel(1, AddPressure(Money, 1))
+	IfLevel(2, AddPressure(Money, 2))
+	IfLevel(3, AddPressure(Money, 2))
+	IfLevel(4, AddPressure(Money, 2))
+	IfLevel(5, AddPressure(Money, 2))
+
+	IfLevel(4, ModGlobalLoyalty(+4))
+	IfLevel(5, TriggerPeriodic(TriggerRandomPlanet(AddStatus(Happy)), Interval = 240, Random Margin = 0.25))

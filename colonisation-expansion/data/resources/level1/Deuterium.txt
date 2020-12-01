@@ -12,5 +12,20 @@ Resource: Deuterium
 
 	Pressure: 2 Research
 	Pressure: 2 Defense
+
+Resource: DeuteriumIceGiant
+	Name: #DEUTERIUM
+	Description: #DEUTERIUM_DESC
+	Native Biome: Ice
+
+	Icon: ResourceIcons::31
+	Small Icon: ResourceIconsSmall::31
+
+	Level: 1
+	Affinity: Research + Defense
+
+	Pressure: 2 Research
+	Pressure: 2 Defense
 	Gas Giant Frequency: 0.02
 	Ice Giant: True
+	Frequency: 0

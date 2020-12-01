@@ -410,7 +410,7 @@ class MakePlanet : MapHook {
 		bool ice_giant = false;
 		if (gas.boolean) {
 			@resource = rollGasGiantResource();
-			if (@resource !is null) {
+			if (resource !is null) {
 				ice_giant = resource.isIceGiant;
 			}
 		}
