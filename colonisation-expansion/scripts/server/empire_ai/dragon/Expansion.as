@@ -6,6 +6,7 @@ import empire_ai.weasel.Systems;
 import empire_ai.weasel.Development;
 import empire_ai.weasel.Budget;
 import empire_ai.weasel.Creeping;
+import empire_ai.weasel.Construction;
 
 import planet_levels;
 import buildings;
@@ -24,6 +25,7 @@ from empire_ai.dragon.bookkeeping.resource_value import RaceResourceValuation, R
 import empire_ai.dragon.expansion.expand_logic;
 import empire_ai.dragon.expansion.terrestrial_colonization;
 import empire_ai.dragon.expansion.planet_management;
+import empire_ai.dragon.expansion.region_linking;
 
 from statuses import getStatusID;
 from traits import getTraitID;
@@ -684,6 +686,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	Systems@ systems;
 	Budget@ budget;
 	Creeping@ creeping;
+	Construction@ construction;
 
 	array<DevelopmentFocus@> focuses;
 
@@ -723,6 +726,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	TerrestrialColonization@ terrestrial;
 	PlanetManagement@ planetManagement;
 
+	RegionLinking@ regionLinking;
+
 	const ResourceClass@ scalableClass;
 
 	void create() {
@@ -731,12 +736,14 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@systems = cast<Systems>(ai.systems);
 		@budget = cast<Budget>(ai.budget);
 		@creeping = cast<Creeping>(ai.creeping);
+		@construction = cast<Construction>(ai.construction);
 
 		@queue = ColonizeForest();
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
 		@terrestrial = TerrestrialColonization(planets, race, this);
 		@planetManagement = PlanetManagement(planets, budget, ai, log);
+		@regionLinking = RegionLinking(planets, construction, resources, systems);
 
 		@scalableClass = getResourceClass("Scalable");
 	}
@@ -782,6 +789,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			genericBuilds[i].save(this, file);
 
 		planetManagement.save(file);
+		regionLinking.save(file);
 	}
 
 	void load(SaveFile& file) {
@@ -856,6 +864,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 
 		planetManagement.load(file);
+		regionLinking.load(file);
 	}
 
 	void tick(double time) override {
@@ -893,6 +902,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		// Manage our owned planets
 		planetManagement.focusTick(ai);
+
+		// Keep our regions linked
+		regionLinking.focusTick(ai);
 	}
 
 	void drainQueue() {

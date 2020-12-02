@@ -1107,6 +1107,34 @@ class Construction : AIComponent {
 		return best;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	/**
+	 * Finds the factory that can build in the given region the quickest,
+	 * or returns null if no factories can.
+	 */
+	Factory@ getClosestFactory(Region@ region) {
+		Factory@ best;
+		double bestLabor = 0;
+		for(uint i = 0, cnt = factories.length; i < cnt; ++i) {
+			if (!factories[i].obj.canBuildOrbitals) {
+				continue;
+			}
+			int hops = cast<Systems>(ai.systems).tradeDistance(factories[i].obj.region, region);
+			if (hops == -1) {
+				continue;
+			}
+			double l = factories[i].obj.laborIncome;
+			double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** double(hops + 1);
+			l *= penalty;
+			if (l > bestLabor) {
+				bestLabor = l;
+				@best = factories[i];
+			}
+		}
+		return best;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	BuildConstruction@ buildConstruction(const ConstructionType@ type, double priority = 1.0, bool force = false, uint moneyType = BT_Development) {
 		//Potentially build a flagship
 		BuildConstruction f(type);
