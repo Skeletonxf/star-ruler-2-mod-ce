@@ -29,4 +29,4 @@ Resource: NitrousOxide
 	IfLevel(5, AddPressure(Money, 2))
 
 	IfLevel(4, ModGlobalLoyalty(+4))
-	IfLevel(5, TriggerPeriodic(TriggerRandomPlanet(AddStatus(Happy)), Interval = 240, Random Margin = 0.25))
+	IfLevel(5, PeriodicInfluenceCard(Gift:Enhance:Bribe:Infiltrate, Timer = 240))

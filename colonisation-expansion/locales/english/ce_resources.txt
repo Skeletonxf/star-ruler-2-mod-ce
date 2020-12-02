@@ -93,11 +93,11 @@ NITROUS_OXIDE_DESC: <<
 	[offset=30]Loyalty on all planets is increased by 4.[/offset]
 
 	[b]If this planet is Level 5 or higher:[/b]
-	[offset=30]A planet becomes a Happy every 4 minutes.[/offset]
+	[offset=30]Every 4 minutes gain a random Bribe, Gift, Enhance or Infiltrate card[/offset]
 
 	[i][color=#aaa]This resource is a scalable resource and cannot be exported or used to level up. Its bonuses depend on the level of the planet.[/color][/i]
 >>
 NITROUS_OXIDE_BLURB: <<
 	Gains influence and money pressure per level
-	Various improvements to planets
+	Improvements to loyalty and diplomacy
 >>
