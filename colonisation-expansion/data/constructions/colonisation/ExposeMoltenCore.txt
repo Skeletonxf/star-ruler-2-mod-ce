@@ -1,15 +1,15 @@
 Construction: ExposeMoltenCore
-	Name: Expose Molten Core
-	Description: <<
-		Through extensive drilling and explosives we can open up this planet's molten core, providing a valuable Tier 2 resource.
-		Unfortunately the process makes the planet inhospitable in the interim.
-	>>
+	Name: #EXPOSE_CORE
+	Description: #EXPOSE_CORE_DESC
 	Icon: ConditionIcons::1 * ffaa00
 	Category: Development
 	Build Cost: 1000
 	Labor Cost:
 	Time Cost: 120
 
+	RequireNotStatus(Ringworld)
+	RequireNotStatus(DysonSphere)
+	RequireNotStatus(ArtificialPlanetoid)
 	RequireNotStatus(MinimalDevelopment)
 	RequirePlanetNotBiome(Ice)
 	RequireNotTrait(NoResourceUse)

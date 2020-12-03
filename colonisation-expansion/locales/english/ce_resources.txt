@@ -101,3 +101,9 @@ NITROUS_OXIDE_BLURB: <<
 	Gains influence and money pressure per level
 	Improvements to loyalty and diplomacy
 >>
+EXPOSED_CORE_DESC: <<
+	This planet's molten core is exposed, allowing access to precious metals.
+
+	[color=#ff7070][b]Cannot be exported.[/b][/color]
+>>
+EXPOSED_CORE: Exposed Core

@@ -1,6 +1,6 @@
 Resource: ExposedCore
-	Name: Exposed Core
-	Description: This planet's molten core is exposed, allowing access to precious metals.
+	Name: #EXPOSED_CORE
+	Description: #EXPOSED_CORE_DESC
 	Native Biome: Volcanic
 
 	Icon: ResourceIconsSmall::13
