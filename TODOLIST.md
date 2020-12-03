@@ -9,7 +9,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Expansion AI Component
     - Fix assumptions AI component is making about colonisation sources that are making it mess up when playing other races
       - Start thinking about how Expansion AI is going to handle non terrestrial colonisation sources
-    - Teach AI to bridge systems with Outposts if it ever finds its territory split up
+    - Teach AI to expand over border systems that have nothing of value for colonisation with outposts/temples
     - Teach AI to penalise conditions
       - Currently recording them, but not using the info
       - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
@@ -28,21 +28,17 @@ This is primarily intended as a developer focused project planning list, rather 
         - Teach AI to build outposts to bridge otherwise empty/useless systems
       - Teach Star Children AI to not put supports on their Small Motherships
   - Tweak tractor default design
+  - Investigate issues recolonising razed planets
   - Reduce the pop motherships spawn in with so they can't spawn with more pop than their max
-  - Make support shrines have same hex count ratio with control as flagships
-  - Remove expose molten core construction on artificial planetoids
-  - Make expose molten core more obviously unexportable
   - Nerf destroyer hull
     - Port Rising Stars hull reworks?
   - Make mainframes easier to build/deploy to counteract exponential build distance penalties
   - Give players a notification when they colonise a planet with native life
   - Stop players putting floating continents on dyson spheres
-  - Stop AI putting Low Power Computers on flagships
   - Rework the Flying trait downside so it is less severe
   - Reduce the points the Parasite trait gives for razing planets
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
-  - Make remnant parts less big than starts
-  - Don't allow multiple razes on a single planet to be queued
+  - Make remnant parts less big than stars
   - Don't let random life assign a life that other traits the player took are incompatible with
   - Remove fire damage from Aquatic trait given it doesn't do anything
   - Constructions for Gas Giants to make them more useful late game
@@ -61,6 +57,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix visual bug causing Drugs to appear to be filling the Light class requirement for planet levelling when they are not, probably related to dummy resources
     - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
   - Consider integrating Darloth's NMP into CE https://github.com/darloth/SR2-NewMovement (low priority as the mods are currently compatible minus gravitron adjust)
+  - Stop AI putting Low Power Computers on flagships
   - Make InterdictMovement set a flag on the mover component to turn off self controlled motion rather than hack at modifying acceleration as it does in vanilla
   - Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
   - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
@@ -85,7 +82,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make auto import refresh when resources on already colonised planets become available
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
-  - Prevent the Star Children from attempting to build buildings on planets they are not allowed to do so, right now the buildings will not go past 0%, but you can still waste money trying.
   - Get the AI to play invasion properly
   - Stellar Lifting to obtain protoplanets directly
   - Teach AI to scout nebulae properly
