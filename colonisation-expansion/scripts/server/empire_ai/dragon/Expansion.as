@@ -881,9 +881,10 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			if (limits.remainingColonizations > 0) {
 				// Fill the queue with planets we shall colonize to meet
 				// requested resources
-				// The Resources component will match open requests to planets
-				// we already have for the most part, so this should only
-				// colonise for things we actually don't have
+				// We tick the Resources component first to ensure it has matched
+				// all match open requests to planets we already have, so this
+				// should only colonise for things we actually don't have available
+				resources.focusTick(time);
 				queue.fillQueueFromRequests(this, ai);
 				// Pull planets off the queue for colonising
 				drainQueue();
