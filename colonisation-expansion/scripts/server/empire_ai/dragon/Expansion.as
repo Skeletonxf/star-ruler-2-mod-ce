@@ -41,8 +41,6 @@ class ResourceIncomes {
 class Actions {
 	// Do we need to manage pressure on our planets
 	bool managePressure = true;
-	// Can we make buildings
-	bool buildBuildings = true;
 	// Can we colonize or do we need the race component to handle this for us
 	bool performColonization = true;
 	// Can we manually pick targets to colonize
@@ -532,7 +530,7 @@ class ColonizeForest {
 				weight *= 0.25;
 			}
 
-			// TODO: Weigh slightly by proximity to our colonise sources,
+			// TODO: Weight slightly by proximity to our colonise sources,
 			// ie, if we can colonise one of two food planets we probably
 			// want to favor the one that will colonise faster
 			// This might not be needed as we will colonize from the faster
@@ -549,68 +547,67 @@ class ColonizeForest {
 			queue.insertLast(ColonizeTree(newColony, request));
 			request.isColonizing = true;
 		} else {
-			// FIXME: Star Children AI is allowed to make buildings on certain
-			// planets now, this should just check if we're actually capable
-			// of building on this planet
-			// Also check if the planet is a Gas Giant, we should make a moon
-			// base first if we need to build on them
-			if (expansion.actions.buildBuildings) {
-				// Get the PlanetAI for the object making this request
-				auto@ plAI = expansion.planets.getAI(cast<Planet>(request.obj));
+			// Perhaps check if the planet is a Gas Giant first, as we should make a moon
+			// base if we need to build on them
 
-				if (plAI.obj is null)
-					return;
+			// Get the PlanetAI for the object making this request
+			auto@ plAI = expansion.planets.getAI(cast<Planet>(request.obj));
 
-				bool alreadyConstructingMoonBase = expansion.planets.isConstructing(plAI.obj, build_moon_base);
-				if (alreadyConstructingMoonBase && plAI.failedToPlaceBuilding) {
-					// we're working on it, no point trying a third time
-					return;
+			if (plAI.obj is null)
+				return;
+
+			bool alreadyConstructingMoonBase = expansion.planets.isConstructing(plAI.obj, build_moon_base);
+			if (alreadyConstructingMoonBase && plAI.failedToPlaceBuilding) {
+				// we're working on it, no point trying a third time
+				return;
+			}
+
+			// try checking the next building type out of the list on
+			// this tick to see if we can meet the request with a building
+			for (uint i = 0, cnt = getBuildingTypeCount(); i < cnt; ++i) {
+				auto@ type = getBuildingType(i);
+				if (type.ai.length == 0)
+					continue;
+
+				if (!type.canBuildOn(plAI.obj))
+					continue;
+
+				if (expansion.planets.isBuilding(plAI.obj, type)) {
+					// don't try to make two of the same type on the same planet at once
+					continue;
 				}
 
-				// try checking the next building type out of the list on
-				// this tick to see if we can meet the request with a building
-				for (uint i = 0, cnt = getBuildingTypeCount(); i < cnt; ++i) {
-					auto@ type = getBuildingType(i);
-					if (type.ai.length == 0)
-						continue;
-
-					if (expansion.planets.isBuilding(plAI.obj, type)) {
-						// don't try to make two of the same type on the same planet at once
+				// check all the hooks on this building type
+				for (uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
+					auto@ hook = cast<BuildingAI>(type.ai[n]);
+					if (hook is null) {
 						continue;
 					}
 
-					// check all the hooks on this building type
-					for (uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
-						auto@ hook = cast<BuildingAI>(type.ai[n]);
-						if (hook is null) {
-							continue;
-						}
-
-						auto@ resourceBuilding = cast<AsCreatedResource>(hook);
-						if (resourceBuilding !is null) {
-							// our hook is an AsCreatedResource, check if this resource
-							// is what we need to meet the spec (this completely bypasses
-							// most of the logic to how these hooks work in vanilla, but will
-							// also stop the AI waiting for chunks of time when a building is
-							// the only way to meet a resource, so this is intended hackery)
-							if (request.spec.meets(getResource(resourceBuilding.resource.integer), fromObj=request.obj, toObj=request.obj)) {
-								// got match, close request
-								ai.print("building "+type.name+" to meet requested resource: "+request.spec.dump());
-								request.buildingFor = true;
-								auto@ req = expansion.planets.requestBuilding(plAI, type, priority=2, expire=ai.behavior.genericBuildExpire);
-								if (req !is null) {
-									auto@ tracker = BuildTracker(req);
-									@tracker.importRequestReason = request;
-									expansion.genericBuilds.insertLast(tracker);
-								}
-								// all done here, met the resource
-								return;
+					auto@ resourceBuilding = cast<AsCreatedResource>(hook);
+					if (resourceBuilding !is null) {
+						// our hook is an AsCreatedResource, check if this resource
+						// is what we need to meet the spec (this completely bypasses
+						// most of the logic to how these hooks work in vanilla, but will
+						// also stop the AI waiting for chunks of time when a building is
+						// the only way to meet a resource, so this is intended hackery)
+						if (request.spec.meets(getResource(resourceBuilding.resource.integer), fromObj=request.obj, toObj=request.obj)) {
+							// FIXME: This is being way too eager to make megafarms when we have food resources around us
+							// got match, close request
+							ai.print("building "+type.name+" to meet requested resource: "+request.spec.dump());
+							request.buildingFor = true;
+							auto@ req = expansion.planets.requestBuilding(plAI, type, priority=2, expire=ai.behavior.genericBuildExpire);
+							if (req !is null) {
+								auto@ tracker = BuildTracker(req);
+								@tracker.importRequestReason = request;
+								expansion.genericBuilds.insertLast(tracker);
 							}
+							// all done here, met the resource
+							return;
 						}
 					}
 				}
 			}
-
 			ai.print("failed to find target for requested resource: "+request.spec.dump());
 		}
 	}
@@ -1404,8 +1401,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	void set_AimFTLIncome(double value) { incomes.FTLIncome = value; }
 	bool get_ManagePlanetPressure() { return actions.managePressure; }
 	void set_ManagePlanetPressure(bool value) { actions.managePressure = value; }
-	bool get_BuildBuildings() { return actions.buildBuildings; }
-	void set_BuildBuildings(bool value) { actions.buildBuildings = value; }
+	bool get_BuildBuildings() { return true; }
+	// We just check if we are able to build per building type and planet, no
+	// need for an empire wide flag anymore (Star Children are allowed to build
+	// on uplifted planets now)
+	void set_BuildBuildings(bool value) { }
 
 	// This flag is set to false when the race is Ancient, which stops the
 	// Development component from colonizing to develop resources. This is just

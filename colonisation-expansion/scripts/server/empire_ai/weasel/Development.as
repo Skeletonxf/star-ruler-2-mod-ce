@@ -134,9 +134,6 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 	const ConstructionType@ genocide_planet;
 	bool no_uplift = false;
 	uint atmosphere = 0;
-	// uplift costs 800 except for Mono where it is cheaper because
-	// it is less beneficial, FIXME, ideally this would be pulled out
-	// of the data files rather than duplicated here
 	double uplift_cost = 800;
 	uint currentlyStarlitStatusID = 0;
 	uint razingStatusID = 0;
@@ -176,7 +173,9 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 		// mono empire has a cheaper uplift option
 		if (ai.empire.hasTrait(getTraitID("Mechanoid"))) {
 			@uplift_planet = getConstructionType("SharePlanetMono");
-			uplift_cost = 500;
+		}
+		if (uplift_planet !is null) {
+			uplift_cost = uplift_planet.buildCost;
 		}
 		atmosphere = getBiomeID("Atmosphere");
 		currentlyStarlitStatusID = getStatusID("CurrentlyStarlit");

@@ -45,7 +45,7 @@ class Improvement : AIComponent {
 	const ConstructionType@ build_moon_base;
 	bool no_build_moon_bases = false;
 
-	int ftlExtractorModuleID = -1;
+	const OrbitalModule@ ftlExtractor;
 	bool ftlExtractorsUnlocked = false;
 	bool immuneToCarpetBombs = false;
 	bool isMechanoid = false;
@@ -78,7 +78,7 @@ class Improvement : AIComponent {
 		moon_base = getStatusID("MoonBase");
 		@build_moon_base = getConstructionType("MoonBase");
 		no_build_moon_bases = ai.empire.hasTrait(getTraitID("Ancient")) || ai.empire.hasTrait(getTraitID("StarChildren"));
-		ftlExtractorModuleID = getOrbitalModuleID("FTLExtractor");
+		@ftlExtractor = getOrbitalModule("FTLExtractor");
 		ftlExtractorsUnlocked = ai.empire.FTLExtractorsUnlocked >= 1;
 
 		immuneToCarpetBombs = ai.empire.hasTrait(getTraitID("Ancient")) || ai.empire.hasTrait(getTraitID("StarChildren"));
@@ -132,7 +132,7 @@ class Improvement : AIComponent {
 			return;
 		}
 		// check for any planets we have no moon bases on
-		if (budget.canSpend(BT_Development, 500)) {
+		if (budget.canSpend(BT_Development, build_moon_base.buildCost)) {
 			for(uint i = 0, cnt = planets.planets.length; i < cnt; ++i) {
 				auto@ plAI = planets.planets[i];
 				auto@ planet = plAI.obj;
@@ -191,6 +191,10 @@ class Improvement : AIComponent {
 	}
 
 	void lookToBuildFTLExtractors() {
+		if (ftlExtractor is null) {
+			return;
+		}
+
 		if (!development.requestsFTLIncome()) {
 			return;
 		}
@@ -204,10 +208,7 @@ class Improvement : AIComponent {
 			// Don't try to build a second extractor while first is in progress
 			return;
 		}
-
-		if (!budget.canSpend(BT_Military, 300, 75)) {
-			// TODO: Pull these values from the orbital module rather than
-			// hardcoding
+		if (!budget.canSpend(BT_Military, ftlExtractor.buildCost, ftlExtractor.maintenance)) {
 			return;
 		}
 
@@ -232,9 +233,7 @@ class Improvement : AIComponent {
 				continue;
 			}
 
-			// TODO: Should this be military money?
-			BuildOrbital@ buildPlan = construction.buildLocalOrbital(getOrbitalModule(ftlExtractorModuleID));
-
+			BuildOrbital@ buildPlan = construction.buildLocalOrbital(ftlExtractor);
 			@extractorBuild = construction.buildNow(buildPlan, factory);
 			if (log) {
 				ai.print("Creating FTL Extractor", base.region);

@@ -15,9 +15,6 @@ class PlanetManagement {
 	const ConstructionType@ uplift_planet;
 	const ConstructionType@ genocide_planet;
 	bool no_uplift = false;
-	// uplift costs 800 except for Mono where it is cheaper because
-	// it is less beneficial, FIXME, ideally this would be pulled out
-	// of the data files rather than duplicated here
 	double uplift_cost = 800;
 
 	uint planetCheckIndex = 0;
@@ -38,7 +35,9 @@ class PlanetManagement {
 		// mono empire has a cheaper uplift option
 		if (ai.empire.hasTrait(getTraitID("Mechanoid"))) {
 			@uplift_planet = getConstructionType("SharePlanetMono");
-			uplift_cost = 500;
+		}
+		if (uplift_planet !is null) {
+			uplift_cost = uplift_planet.buildCost;
 		}
 	}
 
@@ -96,7 +95,7 @@ class PlanetManagement {
 				//// we'll automatically seek to level it to 3 now
 			} else {
 				if (log) {
-					ai.print("cant afford uplift, taking over planet");
+					ai.print("can't afford uplift, taking over planet");
 				}
 				// this is high priority because until the NativeLife status is removed the
 				// AI may think it can use this planet as an export and get very confused or

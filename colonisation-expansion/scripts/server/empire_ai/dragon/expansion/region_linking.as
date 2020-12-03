@@ -32,8 +32,8 @@ class RegionLinking {
 	double lastCheckedRegionsLinked = 0;
 	const OrbitalModule@ outpost;
 	const OrbitalModule@ starTemple;
-	const OrbitalModule@ beacon;
-	const OrbitalModule@ commerceStation;
+	const OrbitalModule@ beacon; // TODO
+	const OrbitalModule@ commerceStation; // TODO
 
 	array<LinkBuild@> linkBuilds;
 
@@ -43,6 +43,7 @@ class RegionLinking {
 		@this.resources = resources;
 		@this.systems = systems;
 		@this.outpost = getOrbitalModule("TradeOutpost");
+		@this.starTemple = getOrbitalModule("Temple");
 	}
 
 	// TODO: Check roughly every 20 seconds or so that we can connect trade lines
@@ -53,8 +54,7 @@ class RegionLinking {
 	//
 	// TODO, we should also check if we've hit a system that we need to expand
 	// through to reach more planets but has nothing of value to colonise
-	// itself, in which case we should build an outpost/star temple onto it.
-	// check if any of our borders
+	// itself, in which case we should build an outpost/star temple in it.
 	void focusTick(AI& ai) {
 		if (lastCheckedRegionsLinked + 20 < gameTime) {
 			checkRegionsLinked(ai);
@@ -91,7 +91,7 @@ class RegionLinking {
 				continue;
 			}
 			if (!resources.canTradeBetween(planet_i.obj.region, planet_j.obj.region)) {
-				print("No trade connection found between "+planet_i.obj.name+" and "+planet_j.obj.name);
+				ai.print("No trade connection found between "+planet_i.obj.name+" and "+planet_j.obj.name);
 				tryToConnectTrade(planet_i, planet_j, ai.empire);
 			}
 		}
@@ -128,9 +128,17 @@ class RegionLinking {
 								position.x = sys.obj.position.x + offset.x;
 								position.y = sys.obj.position.y;
 								position.z = sys.obj.position.z + offset.y;
-								BuildOrbital@ buildPlan = construction.buildOrbital(outpost, position);
-								linkBuilds.insertLast(LinkBuild(construction.buildNow(buildPlan, factory), region));
-								print("Making outpost for trade connection at "+region.name);
+
+								BuildOrbital@ buildPlan;
+								if (outpost !is null && outpost.canBuild(factory.obj, position)) {
+									@buildPlan = construction.buildOrbital(outpost, position);
+								} else if (starTemple !is null && starTemple.canBuild(factory.obj, position)) {
+									@buildPlan = construction.buildOrbital(starTemple, position);
+								}
+								if (buildPlan !is null) {
+									linkBuilds.insertLast(LinkBuild(construction.buildNow(buildPlan, factory), region));
+									print("Making outpost for trade connection at "+region.name);
+								}
 							}
 						}
 					}
