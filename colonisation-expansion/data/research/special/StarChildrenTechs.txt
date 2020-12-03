@@ -44,7 +44,7 @@ Technology: ImpHabitat
 Technology: UnlockConsumePlanet
 	Name: #R_CONSUME_PLANET
 	Description: #R_CONSUME_PLANET_DESC
-	Class: Unlock
+	Class: BigUpgrade
 	Category: Subsystems
 	Point Cost: 500
 	Time Cost: 60
