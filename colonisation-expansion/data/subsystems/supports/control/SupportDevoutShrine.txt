@@ -8,7 +8,7 @@ Subsystem: SupportDevoutShrine
 	Tags: IsShield, Defense, Category:Control, HasInternals
 	Hull: Support, Satellite
 
-	Prayer := Hexes
+	Prayer := Hexes * 2
 
 	Size := HexSize * Hexes
 	ShieldCapacity := Size * 25
