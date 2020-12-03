@@ -40,3 +40,5 @@ Status: RazeWithoutAbandon
 	Visible To: Nobody
 Status: ParasiteHomeworldRazed
 	Visible To: Nobody
+Status: RazeQueued
+	Visible To: Nobody

@@ -4,6 +4,9 @@ Construction: RazeConstuction
 	Icon: Revolutionaries
 	Category: Destruction
 	Time Cost: 1
+	OnCancel(RemoveStatus(RazeQueued))
+	OnStart(AddStatus(RazeQueued))
+	RequireNotStatus(RazeQueued)
 	RequireNotStatus(ParasiteRazeDone)
 	AddStatus(ParasiteRaze)
 	RequireNotStatus(ParasiteRaze)
