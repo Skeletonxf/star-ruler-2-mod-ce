@@ -85,7 +85,7 @@ final class SystemAI {
 		file << enemyStrength;
 		file << lastStrengthCheck;
 	}
-	
+
 	void load(SaveFile& file) {
 		file >> obj;
 		file >> prevTick;
@@ -159,6 +159,23 @@ final class SystemAI {
 
 		//Check if we should be owned
 		bool shouldOwned = obj.PlanetsMask & ai.mask != 0;
+		// [[ MODIFY BASE GAME START ]]
+		bool hasTrade = obj.TradeMask & ai.mask != 0;
+		if (!shouldOwned && hasTrade) {
+			// if we have a trade claim on this system and can trade
+			// to it from an adjacent owned system then consider us
+			// to own this system even if we don't have any planets in it
+			for(uint i = 0, cnt = desc.adjacent.length; i < cnt; ++i) {
+				auto@ other = systems.getAI(desc.adjacent[i]);
+				if(other !is null && other.owned) {
+					if (systems.canTrade(obj, other.obj)) {
+						shouldOwned = true;
+						break;
+					}
+				}
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 		if(owned != shouldOwned) {
 			if(shouldOwned) {
 				systems.owned.insertLast(this);
@@ -541,7 +558,7 @@ class Systems : AIComponent {
 	}
 
 	SystemPath pather;
-	int hopDistance(Region& fromRegion, Region& toRegion){ 
+	int hopDistance(Region& fromRegion, Region& toRegion){
 		pather.generate(getSystem(fromRegion), getSystem(toRegion), keepCache=true);
 		if(!pather.valid)
 			return INT_MAX;
