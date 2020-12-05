@@ -4,7 +4,7 @@ Subsystem: SupportDevoutShrine
 	BaseColor: #408fc1
 	Elevation: 1
 
-	Tags: BaseCost, Prayer, RaceSpecial, Important
+	Tags: Prayer, RaceSpecial, Important
 	Tags: IsShield, Defense, Category:Control, HasInternals
 	Hull: Support, Satellite
 
