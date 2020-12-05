@@ -29,8 +29,8 @@ This is primarily intended as a developer focused project planning list, rather 
       - Teach Star Children AI to not put supports on their Small Motherships
   - Tweak tractor default design
   - Investigate issues recolonising razed planets
-  - Nerf destroyer hull
-    - Port Rising Stars hull reworks?
+  - Do something with the hulls on the tech tree to organise them better
+  - Do something with the Titan and Collosus hulls
   - Stop players putting floating continents on dyson spheres
   - Rework the Flying trait downside so it is less severe
   - Reduce the points the Parasite trait gives for razing planets
