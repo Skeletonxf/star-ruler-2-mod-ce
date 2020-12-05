@@ -1,7 +1,7 @@
 Technology: ImpMothershipLabor
 	Name: #R_IMP_MOTHERSHIP_LABOR
 	Blurb: #R_IMP_MOTHERSHIP_LABOR_BLURB:2
-	Description: #R_IMP_MOTHERSHIP_LABOR_DESC:2:12
+	Description: #R_IMP_MOTHERSHIP_LABOR_DESC:2:1000
 
 	Icon: ResourceIcon::6
 	Color: #b1b4b6
@@ -11,12 +11,12 @@ Technology: ImpMothershipLabor
 
 	ModAttribute(FactoryLaborMod, Add, 2)
 
-	SecondaryInfluenceCost(12)
 
+	SecondaryMoneyCost(1000)
 Technology: ImpMothershipLabor2
 	Name: #R_IMP_MOTHERSHIP_LABOR2
 	Blurb: #R_IMP_MOTHERSHIP_LABOR_BLURB:4
-	Description: #R_IMP_MOTHERSHIP_LABOR_DESC:4:24
+	Description: #R_IMP_MOTHERSHIP_LABOR_DESC:4:2000
 
 	Icon: ResourceIcon::6
 	Color: #b1b4b6
@@ -26,8 +26,8 @@ Technology: ImpMothershipLabor2
 
 	ModAttribute(FactoryLaborMod, Add, 4)
 
-	SecondaryInfluenceCost(24)
 
+	SecondaryMoneyCost(2000)
 Technology: ImpHabitat
 	Name: #R_IMP_HABITAT
 	Blurb: #R_IMP_HABITAT_BLURB:3%:5%
