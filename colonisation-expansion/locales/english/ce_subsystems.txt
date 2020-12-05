@@ -120,3 +120,10 @@ S_CARRIER_HULL_DESC: <<
 	[img=Minus]Less internal space available.[/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Carrier Hulls can only be used on ships of size 300 or greater.[/color][/i][/img]
 >>
+SUPPORTCAPMODULE_DESC: <<
+	Technical infrastructure for commanding a fleet of support ships.
+
+	[img=ActionBarIcons::2;22]Provides [b][color=#00cffe]Support Command[/color][/b].[/img]
+	[img=Plus]Generates local defense which slowly produces support ships until at full capacity.[/img]
+	[img=Minus]May lose control over support ships when destroyed.[/img]
+>>

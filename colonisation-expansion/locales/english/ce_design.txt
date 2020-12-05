@@ -1,1 +1,3 @@
 S_ExperienceRate: Experience Rate
+S_LOCAL_DEFENSE: Local Defense
+STT_S_LOCAL_DEFENSE: Amount of local defense generation while in friendly space.

@@ -84,3 +84,11 @@ SubsystemStat: ExperienceRate
 
 	Suffix: /s
 	Variable: Rate
+
+GlobalStat: Defense
+	Name: #S_LOCAL_DEFENSE
+	Description: #STT_S_LOCAL_DEFENSE
+	Icon: AffinityIcons::3
+	Color: #ffbb35
+
+	Variable: Defense
