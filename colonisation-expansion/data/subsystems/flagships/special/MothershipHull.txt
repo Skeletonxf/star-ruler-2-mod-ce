@@ -36,8 +36,8 @@ Subsystem: MothershipHull
 	ShipMaxPopulationIncome := ShipMaxPopulationBase * 15
 	ShipMaxPopulationBonus := 0
 	ShipMaxPopulation := ShipMaxPopulationBase + ShipMaxPopulationBonus
-	Hook: IfNotHaveStatus(BonusMothershipPopulation, OnEnable(AddStatus(MothershipPopulation, Max Stacks = 5), Repeats = 5))
-	Hook: CE_biome_hooks::IfFewerStatusStacks(MothershipPopulation, Sum.ShipMaxPopulation, TriggerPeriodic(AddStatus(MothershipPopulation), Interval = 50))
+	Hook: IfNotHaveStatus(BonusMothershipPopulation, OnEnable(AddStatus(MothershipPopulation, Max Stacks = 1), Repeats = 1))
+	Hook: CE_biome_hooks::IfFewerStatusStacks(MothershipPopulation, Sum.ShipMaxPopulation, TriggerPeriodic(AddStatus(MothershipPopulation), Interval = 60))
 	Modifier: LivingSpacePopIncrease
 		ShipMaxPopulationBonus := ShipMaxPopulationBonus + 1
 	Hook: AddStatus(Mothership)
