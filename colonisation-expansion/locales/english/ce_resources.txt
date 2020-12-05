@@ -90,16 +90,16 @@ NITROUS_OXIDE_DESC: <<
 	This planet generates [levels=$1;#ffb4b6]0/1/3/5/7/9[/levels] bonus influence and money pressure.
 
 	[b]If this planet is Level 4 or higher:[/b]
-	[offset=30]Loyalty on all planets is increased by 4.[/offset]
+	[offset=30]Every 4 minutes gain a random Bribe, Gift, Enhance or Infiltrate card.[/offset]
 
 	[b]If this planet is Level 5 or higher:[/b]
-	[offset=30]Every 4 minutes gain a random Bribe, Gift, Enhance or Infiltrate card[/offset]
+	[offset=30]All planets produce one additional pressure of all resources they are producing.[/offset]
 
 	[i][color=#aaa]This resource is a scalable resource and cannot be exported or used to level up. Its bonuses depend on the level of the planet.[/color][/i]
 >>
 NITROUS_OXIDE_BLURB: <<
 	Gains influence and money pressure per level
-	Improvements to loyalty and diplomacy
+	Improvements to economy and diplomacy
 >>
 EXPOSED_CORE_DESC: <<
 	This planet's molten core is exposed, allowing access to precious metals.

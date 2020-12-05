@@ -28,5 +28,5 @@ Resource: NitrousOxide
 	IfLevel(4, AddPressure(Money, 2))
 	IfLevel(5, AddPressure(Money, 2))
 
-	IfLevel(4, ModGlobalLoyalty(+4))
-	IfLevel(5, PeriodicInfluenceCard(Gift:Enhance:Bribe:Infiltrate, Timer = 240))
+	IfLevel(5, AddStatusOwnedPlanets(Welfare))
+	IfLevel(4, PeriodicInfluenceCard(Gift:Enhance:Bribe:Infiltrate, Timer = 240))

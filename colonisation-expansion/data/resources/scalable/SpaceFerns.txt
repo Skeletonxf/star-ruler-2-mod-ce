@@ -15,6 +15,7 @@ Resource: SpaceFerns
 
 	Limitless Level: True
 	Exportable: False
+	Frequency: 2
 
 	IfLevel(0, EnableModifier(tag/Engine::MaintCostFactor(0.95)), Exact = True)
 	IfLevel(1, EnableModifier(tag/Engine::MaintCostFactor(0.90)), Exact = True)

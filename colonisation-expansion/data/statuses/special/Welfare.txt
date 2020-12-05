@@ -1,0 +1,15 @@
+Status: Welfare
+	Name: #STATUS_WELFARE
+	Description: #STATUS_HAPPY_DESC
+	Icon: HappyFace
+	Color: #00ff00
+
+	Visible To: Nobody
+
+	ModExistingResource(Labor, +1)
+	ModExistingResource(Money, +1)
+	ModExistingResource(Research, +1)
+	ModExistingResource(Influence, +1)
+	ModExistingResource(Defense, +1)
+	ModExistingResource(Energy, +1)
+

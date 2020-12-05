@@ -64,3 +64,4 @@ CREATING_NEBULA_DESC: <<
 
 	The planet cannot be moved during this process.
 >>
+STATUS_WELFARE: High Welfare
