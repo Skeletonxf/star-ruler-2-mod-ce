@@ -31,7 +31,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Investigate issues recolonising razed planets
   - Nerf destroyer hull
     - Port Rising Stars hull reworks?
-  - Give players a notification when they colonise a planet with native life
   - Stop players putting floating continents on dyson spheres
   - Rework the Flying trait downside so it is less severe
   - Reduce the points the Parasite trait gives for razing planets
