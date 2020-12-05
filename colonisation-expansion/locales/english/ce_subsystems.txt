@@ -99,3 +99,24 @@ S_JUMPDRIVE_DESC: <<
 	Tractored objects can be jumped along with the ship but doing so costs much more FTL.
 >>
 ERROR_SIMULATOR_TOO_BIG: Simulator cannot exceed 20% of the ship
+S_DESTROYER_HULL_DESC: <<
+	A hull optimized to fit many different weapon turrets at the cost of being unable to field a support fleet.
+
+	[img=Plus]Increases health by 200%.[/img]
+	[img=Plus]Increases armor resistance by 50%.[/img]
+	[img=Plus]Decreases mass by 30%.[/img]
+	[img=Plus]More internal space available.[/img]
+	[img=Minus]Cannot have any support command on the flagship.[/img]
+	[img=Minus]Weapon range reduced by 30%.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Destroyer Hulls can only be used on ships of size 300 or greater.[/color][/i][/img]
+>>
+S_CARRIER_HULL_DESC: <<
+	A hull specifically designed to control and maintain a large fleet of support ships.
+
+	[img=Plus]Doubles any support capacity.[/img]
+	[img=Plus]Increases supply capacity by 100%.[/img]
+	[img=Plus]Increases health by 100%.[/img]
+	[img=Minus]Cannot have any weapons on the flagship.[/img]
+	[img=Minus]Less internal space available.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Carrier Hulls can only be used on ships of size 300 or greater.[/color][/i][/img]
+>>
