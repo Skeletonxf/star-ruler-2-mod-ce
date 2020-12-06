@@ -8,19 +8,20 @@ Subsystem: MothershipHull
 	EvaluationOrder: -200
 	BaseColor: #cc6a3a
 
-	AddShipModifier: FlagshipHull::HexLimitFactor(1.76)
+	HexLimit := 97
+
 	AddShipModifier: FlagshipHull::GridWidthFactor(sqrt(1.5))
 	AddShipModifier: FlagshipHull::GridHeightFactor(sqrt(1.5))
-	AddShipModifier: HPFactor(3.0)
-	AddShipModifier: DamageResistFactor(2.0)
-	AddShipModifier: SupplyCapacityFactor(0.01)
+	AddShipModifier: HPFactor(1.70)
+	AddShipModifier: DamageResistFactor(1.6)
+	AddShipModifier: SupplyCapacityFactor(0.006)
 	AddShipModifier: SupplyCostFactor(0)
 	AddShipModifier: RepairSupplyCostFactor(-1)
 	AddShipModifier: SlipstreamDistCostFactor(0.5)
 	AddShipModifier: SlipstreamOverheadFactor(0.16)
 	AddShipModifier: ThrustFactor(2.0)
 	AddShipModifier: TurnThrustFactor(2.0)
-	AddShipModifier: DamageFactor(0.5)
+	AddShipModifier: DamageFactor(0.3)
 
 	SupportCapacity := 128
 	Hex.MaintainCost := 0

@@ -127,3 +127,22 @@ SUPPORTCAPMODULE_DESC: <<
 	[img=Plus]Generates local defense which slowly produces support ships until at full capacity.[/img]
 	[img=Minus]May lose control over support ships when destroyed.[/img]
 >>
+S_MOTHERSHIP_HULL_DESC: <<
+	Motherships carry and grow population.
+
+	Motherships can construct things with labor. When in orbit of a planet with labor, the mothership gains that labor.
+
+	Planetary resources can be exploited by building habitats around planets to offload population into.
+
+	[b]Motherships cannot fire outside friendly territory.[/b]
+
+	[img=Plantation;22][b][color=#1c9bb4]Only available when the 'Star Children' race option is chosen.[/color][/b][/img]
+	[img=Plus]Much more internal space available.[/img]
+	[img=Plus]No supply costs.[/img]
+	[img=Plus]Increases health by 70%.[/img]
+	[img=Plus]Increases armor resistance by 60%.[/img]
+	[img=Plus]Slipstream range increased by 100%.[/img]
+	[img=Plus]Thrust and turn thrust increased by 100%.[/img]
+	[img=Minus]Decreases weapon damage by 70%.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Mothership Hulls can only be used on ships of size 500 or greater.[/color][/i][/img]
+>>

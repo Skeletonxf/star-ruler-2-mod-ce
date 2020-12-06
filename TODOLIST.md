@@ -7,16 +7,13 @@ This is primarily intended as a developer focused project planning list, rather 
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully
       working
   - Expansion AI Component
-    - Fix assumptions AI component is making about colonisation sources that are making it mess up when playing other races
-      - Start thinking about how Expansion AI is going to handle non terrestrial colonisation sources
+    - Implement custom ColonizeAbility interface for Star Children, Mechanoid and Ancient AI empires
     - Teach AI to expand over border systems that have nothing of value for colonisation with outposts/temples
     - Teach AI to penalise conditions
       - Currently recording them, but not using the info
       - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
     - Reteach AI to colonise planets for non levelling purposes
       - Notably level 0 planets
-    - Apply weights based on distance from colonise sources when picking colonise targets
-      - Currently done for picking planets to colonise with, need the reverse to improve Star Children AI
     - Teach AI to pick and colonise high value planets to level up once it runs out of requests
     - Teach AI to use constructions to meet resource requests
     - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
