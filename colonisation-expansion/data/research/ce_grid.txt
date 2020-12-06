@@ -48,10 +48,6 @@ Grid: ColonisationExpansionGrid
 	Damage: 7,0
 	PlanetSupport: -4,-4
 	Population: -5,-3
-	ColossusHull: 2,-9
-	DestroyerHull: 2,-8
-	SuperstructureHull: 3,-8
-	TitanHull: 2,-7
 	Health: 2,-5
 	Health: 3,-6
 	ArmorDR: 4,-4
@@ -86,10 +82,8 @@ Grid: ColonisationExpansionGrid
 	AugmentReload: 3,3
 	OreProcessor: -1,-8
 	SkipDrive: -5,4
-	Health2: 5,-10
 	Energy: -6,4
 	FlareBomb: -6,5
-	InfiniteHealth: 5,-11
 	DroneCount: 9,-5
 	Energy: -2,4
 	SubspaceShredder: 2,3
@@ -120,9 +114,6 @@ Grid: ColonisationExpansionGrid
 	SupportCap2: -7,-1
 	EnergyHurdle: 3,-9
 	Population: -6,-3
-	MoneyHurdle: 3,-11
-	FTLHurdle: 3,-12
-	KeyBuildCost: 3,-13
 	ImpDecaySpeed: -1,-5
 	ImpDecaySpeed: -3,-7
 	ImpDecaySpeed2: -4,-8
@@ -186,7 +177,7 @@ Grid: ColonisationExpansionGrid
 	ShieldCap: -2,8
 	Thrust: 2,4
 	MuonCannon: 3,-1
-	EnergyHurdle: 1,-5
+	Health: 1,-5
 	FlagHealth2: 0,-3
 	SupplyStorage: 0,-6
 	SupplyStorage2: -1,-11
@@ -276,3 +267,12 @@ Grid: ColonisationExpansionGrid
 	InfiniteShields: 1,13
 	Abundance: -6,-4
 	Nebulaefication: -8,-9
+	DestroyerHull: 1,-7
+	Health2: 2,-7
+	Health2: 3,-8
+	SuperstructureHull: -1,-9
+	FTLHurdle: 1,-12
+	KeyBuildCost: 1,-13
+	TitanHull: 3,-10
+	ColossusHull: 2,-10
+	InfiniteHealth: 3,-11
