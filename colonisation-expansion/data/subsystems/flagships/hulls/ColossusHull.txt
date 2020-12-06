@@ -12,8 +12,9 @@ Subsystem: ColossusHull
 	AddShipModifier: FlagshipHull::GridHeightFactor(sqrt(2.2))
 	AddShipModifier: BuildCostFactor(1.5)
 	AddShipModifier: LaborCostFactor(1.5)
-	AddShipModifier: MaintCostFactor(0.80)
+	AddShipModifier: MaintCostFactor(0.75)
 	AddShipModifier: MassFactor(2.0)
+	AddShipModifier: ShieldCapacityFactor(3.0)
 	Assert: Sum.Mothership == 0
 		Message: #ERROR_INCOMPATIBLE_HULL_MOTHERSHIP
 	Assert: Sum.Titan == 0

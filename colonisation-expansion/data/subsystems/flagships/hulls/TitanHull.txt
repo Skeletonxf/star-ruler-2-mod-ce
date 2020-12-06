@@ -2,7 +2,7 @@ Subsystem: TitanHull
 	Name: #S_TITAN_HULL
 	Description: #S_TITAN_HULL_DESC
 
-	Tags: Applied:Hull, Category:Hulls, NoCore
+	Tags: Category:Hulls, Hull, Applied, NoCore,
 	Hull: Flagship
 	EvaluationOrder: -200
 	BaseColor: #cc6a3a
@@ -17,6 +17,12 @@ Subsystem: TitanHull
 	AddShipModifier: FireArcFactor(2.0)
 
 	Titan := 1
+	AddShipModifier: tag/Weapon::SupplyCostFactor(1.25)
+	AddShipModifier: tag/Weapon::DamageFactor(1.30)
+
+	Assert: Sum.Mothership == 0
+		Message: #ERROR_INCOMPATIBLE_HULL_MOTHERSHIP_T
+
 	Assert: ShipSize >= 750
 		Message: #ERROR_MIN_SIZE:$1:750
 
