@@ -36,7 +36,7 @@ Subsystem: MothershipHull
 	Hook: ModSupplyConsumeFactor(-1.0)
 
 
-	AddPostModifier: AddMaintainCost(max((1+ShipMaxPopulationIncome)-(HexSum.MaintainCost*0.6), 0))
+	AddPostModifier: AddMaintainCost(max((1+ShipMaxPopulationIncome)-(HexSum.MaintainCost), 0))
 	ConsumeDamage := 4000000 * ((HexSize * 40) / 100)
 	LivingSpaceGain := ConsumeDamage * 0.000000002
 	ShipMaxPopulationBase := 4 + floor(0.008 * max(ShipSize - 500, 0))
