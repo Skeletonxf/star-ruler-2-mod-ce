@@ -22,15 +22,21 @@ Subsystem: MothershipHull
 	AddShipModifier: ThrustFactor(2.0)
 	AddShipModifier: TurnThrustFactor(2.0)
 	AddShipModifier: DamageFactor(0.3)
+	AddShipModifier: BuildCostFactor(0.60)
+	AddShipModifier: LaborCostFactor(0.60)
+	AddShipModifier: MaintCostFactor(0.60)
+	AddShipModifier: SupportCapacityFactor(0.70)
 
-	SupportCapacity := 128
-	Hex.MaintainCost := 0
+	Hex.MaintainCost := 50
+	Hex.BuildCost := 200
+	Hex.LaborCost := 20
+	Mothership := 1
 
 	Hook: AddCargoStorage(100000)
 	Hook: ModSupplyConsumeFactor(-1.0)
 
 
-	AddPostModifier: AddMaintainCost(max((1+ShipMaxPopulationIncome)-HexSum.MaintainCost, 0))
+	AddPostModifier: AddMaintainCost(max((1+ShipMaxPopulationIncome)-(HexSum.MaintainCost*0.6), 0))
 	ConsumeDamage := 4000000 * ((HexSize * 40) / 100)
 	LivingSpaceGain := ConsumeDamage * 0.000000002
 	ShipMaxPopulationBase := 4 + floor(0.008 * max(ShipSize - 500, 0))

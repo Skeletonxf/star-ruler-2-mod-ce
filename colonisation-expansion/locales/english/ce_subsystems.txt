@@ -143,8 +143,10 @@ S_MOTHERSHIP_HULL_DESC: <<
 	[img=Plus]Increases armor resistance by 60%.[/img]
 	[img=Plus]Slipstream range increased by 100%.[/img]
 	[img=Plus]Thrust and turn thrust increased by 100%.[/img]
+	[img=Plus]Build, labor and maintenance costs reduced by 40%.[/img]
 	[img=Minus]Decreases weapon damage by 70%.[/img]
-	[img=MenuIcons::3;20][i][color=#aaa]Mothership Hulls can only be used on ships of size 500 or greater.[/color][/i][/img]
+	[img=Minus]Decreases support command by 30%.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Mothership Hulls can only be used on ships of size 500 or greater, and become more cost effective as they are made larger.[/color][/i][/img]
 >>
 S_TITAN_HULL_DESC: <<
 	An extremely heavy hull frame that allows larger ships to be constructed more efficiently.
