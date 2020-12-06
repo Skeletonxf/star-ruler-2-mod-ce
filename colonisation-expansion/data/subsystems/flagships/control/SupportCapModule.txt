@@ -17,8 +17,8 @@ Subsystem: SupportCapModule
 	Hex.Mass := HexSize
 
 	Hex.SupportCapacityMass := HexSize
-	Defense := SupportCapacity / 2.9 / 10
-	Hook: IfInOwnedSpace(AddLocalDefense(Defense, Global Factor = 0.0), Allow Allies = True)
+	Defense := SupportCapacity / 120
+	Hook: AddLocalDefense(Defense, Global Factor = 0.0, Owned Space Only = True)
 	Modifier: SupportCapacityFactor(factor)
 		SupportCapacity := SupportCapacity * factor
 

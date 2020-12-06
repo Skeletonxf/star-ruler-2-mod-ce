@@ -3708,6 +3708,9 @@ class AddLocalDefense : GenericEffect {
 	Argument global_factor(AT_Decimal, "1.0", doc="Multiplication factor to the defense before it gets added to the global pool.");
 	Argument build_satellites(AT_Boolean, "False", doc="Whether to only build satellite designs locally.");
 	Argument stop_filled(AT_Boolean, "True", doc="Don't build past what fills up this object.");
+	// [[ MODIFY BASE GAME START ]]
+	Argument owned_space_only(AT_Boolean, "False", doc="Whether to only build when in owned space.");
+	// [[ MODIFY BASE GAME END ]]
 
 #section server
 	void enable(Object& obj, any@ data) const override {
@@ -3723,6 +3726,19 @@ class AddLocalDefense : GenericEffect {
 		double tickDefense = secondDefense * time;
 		if(disable_in_combat.boolean && obj.inCombat)
 			tickDefense = 0;
+		// [[ MODIFY BASE GAME START ]]
+		if (owned_space_only.boolean) {
+			if (obj.region !is null) {
+				bool allied = obj.region.PlanetsMask & obj.owner.ForcedPeaceMask.value != 0;
+				bool self = obj.region.PlanetsMask & obj.owner.mask != 0;
+				if (!self && !allied) {
+					tickDefense = 0;
+				}
+			} else {
+				tickDefense = 0;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
 		// Loop while have defense for this tick to build with
