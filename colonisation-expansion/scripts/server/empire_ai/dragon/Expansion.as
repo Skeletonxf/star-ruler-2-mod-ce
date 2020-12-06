@@ -19,6 +19,8 @@ from ai.resources import AIResources, ResourceAI;
 // It is very important we don't just import the entire resources definition
 // because it defines a Resource class which conflicts with the Resources
 // class for the AI Resources component
+import empire_ai.dragon.expansion.colonization;
+import empire_ai.dragon.expansion.colony_data;
 from resources import ResourceType;
 import empire_ai.dragon.bookkeeping.resource_flows;
 from empire_ai.dragon.bookkeeping.resource_value import RaceResourceValuation, ResourceValuator, PlanetValuables;
@@ -113,85 +115,6 @@ class PotentialColonizeSource : PotentialColonize {
 	bool canMeet(ResourceSpec@ spec) {
 		return valuables.canExportToMeet(spec);
 	}
-}
-
-/**
- * Subclass of ColonizeData, with save/load methods for use here.
- */
-class ColonizeData2 : ColonizeData {
-	/* int id = -1;
-	Planet@ target;
-	Planet@ colonizeFrom;
-	bool completed = false;
-	bool canceled = false;
-	double checkTime = -1.0; */
-	// Nullable import data that might be associated with our node
-	ImportData@ request;
-	// The time we began actually colonising for this data, or -1
-	// if we didn't start yet
-	double startColonizeTime = -1;
-
-	void save(Expansion& expansion, SaveFile& file) {
-		file << target;
-		file << colonizeFrom;
-		file << completed;
-		file << canceled;
-		file << checkTime;
-		if (request !is null) {
-			file.write1();
-			expansion.resources.saveImport(file, request);
-		} else {
-			file.write0();
-		}
-		file << startColonizeTime;
-	}
-
-	void load(Expansion& expansion, SaveFile& file) {
-		file >> target;
-		file >> colonizeFrom;
-		file >> completed;
-		file >> canceled;
-		file >> checkTime;
-		if (file.readBit()) {
-			@this.request = expansion.resources.loadImport(file);
-		}
-		file >> startColonizeTime;
-	}
-
-	bool hasTakenTooLong(double colonizePenalizeTime) {
-		return startColonizeTime != -1 && gameTime > startColonizeTime + colonizePenalizeTime;
-	}
-};
-
-/**
- * This is essentially the same as Colonization's ColonizePenalty but
- * with a different name to avoid name conflicts and potentially be
- * expanded later.
- */
-class AvoidColonizeMarker {
-	Planet@ planet;
-	/**
-	 * Minimum game time to consider colonising this planet again
-	 */
-	double until;
-
-	void save(SaveFile& file) {
-		file << planet;
-		file << until;
-	}
-
-	void load(SaveFile& file) {
-		file >> planet;
-		file >> until;
-	}
-
-	AvoidColonizeMarker(Planet@ planet, double until) {
-		@this.planet = planet;
-		this.until = until;
-	}
-
-	// only for deserialisation
-	AvoidColonizeMarker() {}
 }
 
 /**
@@ -547,6 +470,10 @@ class ColonizeForest {
 			queue.insertLast(ColonizeTree(newColony, request));
 			request.isColonizing = true;
 		} else {
+			// FIXME: This is being way too eager to make megafarms when we have food resources around us
+			// we should check that this resource isn't something we're already colonising for before we
+			// commit to a building we might not need in a few minutes
+
 			// Perhaps check if the planet is a Gas Giant first, as we should make a moon
 			// base if we need to build on them
 
@@ -583,7 +510,6 @@ class ColonizeForest {
 					if (hook is null) {
 						continue;
 					}
-
 					auto@ resourceBuilding = cast<AsCreatedResource>(hook);
 					if (resourceBuilding !is null) {
 						// our hook is an AsCreatedResource, check if this resource
@@ -592,7 +518,6 @@ class ColonizeForest {
 						// also stop the AI waiting for chunks of time when a building is
 						// the only way to meet a resource, so this is intended hackery)
 						if (request.spec.meets(getResource(resourceBuilding.resource.integer), fromObj=request.obj, toObj=request.obj)) {
-							// FIXME: This is being way too eager to make megafarms when we have food resources around us
 							// got match, close request
 							ai.print("building "+type.name+" to meet requested resource: "+request.spec.dump());
 							request.buildingFor = true;
@@ -720,7 +645,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	ExpandType expandType;
 
-	TerrestrialColonization@ terrestrial;
+	ColonizationAbility@ colonyManagement;
 	PlanetManagement@ planetManagement;
 
 	RegionLinking@ regionLinking;
@@ -738,7 +663,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@queue = ColonizeForest();
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
-		@terrestrial = TerrestrialColonization(planets, race, this);
+		@colonyManagement = TerrestrialColonization(planets, this);
 		@planetManagement = PlanetManagement(planets, budget, ai, log);
 		@regionLinking = RegionLinking(planets, construction, resources, systems);
 
@@ -753,7 +678,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		file << cnt;
 		for(uint i = 0; i < cnt; ++i) {
 			saveColonize(file, colonizing[i]);
-			cast<ColonizeData2>(colonizing[i]).save(this, file);
+			cast<ColonizeData2>(colonizing[i]).save(resources, colonyManagement, file);
 		}
 
 		cnt = potentialColonizations.length;
@@ -778,7 +703,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		file << uint(expandType);
 
-		terrestrial.save(file);
+		colonyManagement.saveManager(file);
 
 		cnt = genericBuilds.length;
 		file << cnt;
@@ -798,13 +723,10 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		for(uint i = 0; i < cnt; ++i) {
 			auto@ data = loadColonize(file);
 			if(data !is null) {
-				cast<ColonizeData2>(data).load(this, file);
-				if(data.target !is null) {
+				cast<ColonizeData2>(data).load(resources, colonyManagement, file);
+				if (data.target !is null) {
 					colonizing.insertLast(data);
-					// FIXME: This won't work properly with non terrestrial races
-					// We need to properly track if the colonise data was in awaitingSource when saving rather
-					// than try to infer it from a field which is now always null
-					if(data.colonizeFrom is null)
+					if (cast<ColonizeData2>(data).colonizeUnit is null)
 						awaitingSource.insertLast(data);
 				}
 				else {
@@ -812,7 +734,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				}
 			}
 			else {
-				ColonizeData2().load(this, file);
+				ColonizeData2().load(resources, colonyManagement, file);
 			}
 		}
 
@@ -850,7 +772,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		file >> expandTypeID;
 		expandType = convertToExpandType(expandTypeID);
 
-		terrestrial.load(file);
+		colonyManagement.loadManager(file);
 
 		file >> cnt;
 		for (uint i = 0; i < cnt; ++i) {
@@ -928,23 +850,23 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	}
 
 	/**
-	 * Finds planets to colonise other planets that are awaiting a source.
+	 * Finds colony units to colonise other planets that are awaiting a source.
 	 */
 	void doColonizations() {
 		if (!actions.performColonization) {
 			return;
 		}
-		// Potentially refresh the planets we can use as colonise sources
-		terrestrial.tick();
+		// Potentially refresh the units we can use as colonise sources
+		colonyManagement.tick();
 		for (uint i = 0, cnt = awaitingSource.length; i < cnt; ++i) {
-			ColonizeData@ colonizeData = awaitingSource[i];
-			PotentialSource@ source = terrestrial.findPlanetColonizeSource(colonizeData);
+			ColonizeData2@ colonizeData = cast<ColonizeData2>(awaitingSource[i]);
+			ColonizationSource@ source = colonyManagement.getFastestSource(colonizeData.target);
 			if (source !is null) {
 				if (true)
-					ai.print("start colonizing "+colonizeData.target.name, source.pl);
-				terrestrial.orderColonization(colonizeData, source);
+					ai.print("start colonizing "+colonizeData.target.name+" from "+source.toString());
+				colonyManagement.orderColonization(colonizeData, source);
 				awaitingSource.remove(colonizeData);
-				cast<ColonizeData2>(colonizeData).startColonizeTime = gameTime;
+				colonizeData.startColonizeTime = gameTime;
 				--i; --cnt;
 			}
 		}
@@ -997,24 +919,24 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				}
 			}
 
-			// Check that the planet we're colonising this from is still
-			// owned and has sufficient pop if we're playing a terrestrial race
-			// in which case try to find a different awaitingSource
-			// TODO: Need to rework colonizeFrom to apply to all colonise units
-			// of every race or replicate all this logic into each Race
-			// component
-			if (colonizeData.colonizeFrom !is null) {
+			// Check that the planet we're colonising this from is valid
+			// to use, ie owned and sufficient pop if we're playing a terrestrial race
+			// if it isn't try to find a different awaitingSource
+			if (colonizeData.colonizeUnit !is null) {
 				// have a little bit of leeway in allowing colonisations to
 				// contine from planets that dropped levels for a brief
 				// period before stopping them
 				bool hasTakenTooLong = colonizeData.hasTakenTooLong(ai.behavior.colonizePenalizeTime * 0.5);
 				if (hasTakenTooLong) {
-					PlanetAI@ plAI = planets.getAI(colonizeData.colonizeFrom);
-					bool canStillColonizeFrom = plAI !is null
-						&& plAI.obj !is null
-						&& plAI.obj.valid
-						&& plAI.abstractColonizeWeight >= 0;
-					if (!canStillColonizeFrom) {
+					bool stillValid = colonizeData.colonizeUnit.valid(ai);
+					if (stillValid && colonizeData.colonizeFrom !is null) {
+						PlanetAI@ plAI = planets.getAI(colonizeData.colonizeFrom);
+						bool stillValid = plAI !is null
+							&& plAI.obj !is null
+							&& plAI.obj.valid
+							&& plAI.abstractColonizeWeight >= 0;
+					}
+					if (!stillValid) {
 						ai.print("aborting colonise, source invalid");
 						// did we lose our source planet?
 						abortColonize(colonizeData, avoidRetry=false);
