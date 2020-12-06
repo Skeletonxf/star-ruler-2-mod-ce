@@ -12,7 +12,7 @@ void ReactorOverload(Event& evt, double Damage) {
 
 	Ship@ ship = cast<Ship>(evt.target);
 	if(ship.MaxShield > 0)
-		Damage *= ship.Shield / ship.MaxShield;
+		Damage *= 1.0 - (ship.Shield / ship.MaxShield);
 
 	DamageEvent dmg;
 	dmg.damage = Damage * double(evt.efficiency) * double(evt.partiality);
@@ -100,32 +100,32 @@ void AoEDamage(Object& source, Object@ targ, const vec3d& impact, double Damage,
 
 	uint hits = round(Hits);
 	double maxDSq = Radius * Radius;
-	
+
 	for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 		Object@ target = objs[i];
 		vec3d off = target.position - center;
 		double dist = off.length - target.radius;
 		if(dist > Radius)
 			continue;
-		
+
 		double deal = Damage;
 		if(dist > 0.0)
 			deal *= 1.0 - (dist / Radius);
-		
+
 		//Rock the boat
 		if(pushback > 0 && target.hasMover) {
 			double amplitude = deal * pushback / (target.radius * target.radius);
 			target.impulse(off.normalize(min(amplitude,8.0)));
 			target.rotate(quaterniond_fromAxisAngle(off.cross(off.cross(target.rotation * vec3d_front())).normalize(), (randomi(0,1) == 0 ? 1.0 : -1.0) * atan(amplitude * 0.2) * 2.0));
 		}
-		
+
 		DamageEvent dmg;
 		@dmg.obj = source;
 		@dmg.target = target;
 		dmg.flags |= DT_Explosive | DF_FullDR;
 		dmg.impact = off.normalized(target.radius);
 		dmg.spillable = spillable;
-		
+
 		vec2d dir = vec2d(off.x, off.z).normalized();
 
 		for(uint n = 0; n < hits; ++n) {
@@ -135,7 +135,7 @@ void AoEDamage(Object& source, Object@ targ, const vec3d& impact, double Damage,
 			target.damage(dmg, -1.0, dir);
 		}
 	}
-	
+
 }
 
 ThreadLocal<HexLineDamage@> hexLine;
@@ -285,14 +285,14 @@ void WarheadAoE(Object& source, Object@ targ, vec3d& impact, double Damage, doub
 	array<Object@>@ objs = findInBox(center - vec3d(Radius), center + vec3d(Radius), source.owner.hostileMask);
 
 	double maxDSq = Radius * Radius;
-	
+
 	for(uint i = 0, cnt = objs.length; i < cnt; ++i) {
 		Object@ target = objs[i];
 		vec3d off = target.position - center;
 		double dist = off.length - target.radius;
 		if(dist > Radius)
 			continue;
-		
+
 		double deal = Damage;
 		if(dist > 0.0)
 			deal *= 1.0 - (dist / Radius);
