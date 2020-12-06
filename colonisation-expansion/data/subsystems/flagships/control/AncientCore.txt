@@ -4,7 +4,7 @@ Subsystem: AncientCore
 	BaseColor: #c5f946
 
 	Tags: BaseCost, Category:Control, HeraldsDLC, BadFiller, RaceSpecial
-	Tags: Crewed, Control, ControlCore, HasInternals, Important
+	Tags: Crewed, Control, ControlCore, HasInternals, Important, IsReactor
 	Tags: NoBulkhead
 	Hull: Flagship, Station
 
