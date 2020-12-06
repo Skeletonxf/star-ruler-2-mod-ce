@@ -1,0 +1,25 @@
+Subsystem: TitanHull
+	Name: #S_TITAN_HULL
+	Description: #S_TITAN_HULL_DESC
+
+	Tags: Applied:Hull, Category:Hulls, NoCore
+	Hull: Flagship
+	EvaluationOrder: -200
+	BaseColor: #cc6a3a
+
+	HexLimit := 100
+	AddShipModifier: FlagshipHull::GridWidthFactor(sqrt(1.8))
+	AddShipModifier: FlagshipHull::GridHeightFactor(sqrt(1.8))
+
+	AddShipModifier: HyperdriveSpeedFactor(0.66)
+	AddShipModifier: MassFactor(2.0)
+	AddShipModifier: BuildCostFactor(1.0 - 0.5 * min(sqrt((ShipSize - 500) / 3000), 1.0))
+	AddShipModifier: FireArcFactor(2.0)
+
+	Titan := 1
+	Assert: ShipSize >= 750
+		Message: #ERROR_MIN_SIZE:$1:750
+
+	Module: Default
+		Sprite: DesignationIcons::16
+		DrawMode: 3

@@ -146,3 +146,26 @@ S_MOTHERSHIP_HULL_DESC: <<
 	[img=Minus]Decreases weapon damage by 70%.[/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Mothership Hulls can only be used on ships of size 500 or greater.[/color][/i][/img]
 >>
+S_TITAN_HULL_DESC: <<
+	An extremely heavy hull frame that allows larger ships to be constructed more efficiently.
+
+	[img=Plus]Much more internal space available.[/img]
+	[img=Plus]Reduces build costs by up to 50% as the ship size gets bigger.[/img]
+	[img=Plus]Turret potential firing arcs increased by 100%.[/img]
+	[img=Minus]Mass increased by 100%.[/img]
+	[img=Minus]Hyperdrive speed reduced by 66%.[/img]
+	[img=Minus]Can only be used for ships of size 750 or greater.[/img]
+>>
+S_COLOSSUS_HULL_DESC: <<
+	The pinnacle of giant ship construction, the colossus hull needs to use a sustained structural integrity field in order to prevent it from collapsing in on itself.
+
+	[img=Plus]Much much more internal space available.[/img]
+	[img=Plus]Maintenance costs reduced by 20%.[/img]
+	[img=Minus]Build and labor costs increased by 50%.[/img]
+	[img=Minus]Mass increased by 100%.[/img]
+	[img=Minus]Requires a large amount of Control and Power.[/img]
+	[img=Minus]Can only be used for ships of size 3000 or greater.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Can be applied together with most other hulls.[/color][/i][/img]
+>>
+ERROR_INCOMPATIBLE_HULL_TITAN: Colossus is not compatible with the Titan hull
+ERROR_INCOMPATIBLE_HULL_MOTHERSHIP: Colossus is not compatible with Motherships
