@@ -10,19 +10,19 @@ Subsystem: ColossusHull
 	HexLimit := 150
 	AddShipModifier: FlagshipHull::GridWidthFactor(sqrt(2.2))
 	AddShipModifier: FlagshipHull::GridHeightFactor(sqrt(2.2))
-	AddShipModifier: BuildCostFactor(1.5)
+	AddShipModifier: BuildCostFactor(0.65)
 	AddShipModifier: LaborCostFactor(1.5)
-	AddShipModifier: MaintCostFactor(0.75)
+	AddShipModifier: MaintCostFactor(0.65)
 	AddShipModifier: MassFactor(2.0)
 	AddShipModifier: ShieldCapacityFactor(3.0)
+	AddShipModifier: ShieldRegenFactor(2.0)
+	EnergyBuildCost := sqrt(ShipSize) * 40
+	AddShipModifier: RepairFactor(2.0)
+	AddShipModifier: SupplyCostFactor(0.75)
 	Assert: Sum.Mothership == 0
 		Message: #ERROR_INCOMPATIBLE_HULL_MOTHERSHIP
 	Assert: Sum.Titan == 0
 		Message: #ERROR_INCOMPATIBLE_HULL_TITAN
-
-	Requires:
-		Command = 20
-		Power = ShipSize * 0.3
 
 	Assert: ShipSize >= 3000
 		Message: #ERROR_MIN_SIZE:$1:3000
