@@ -4,10 +4,10 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Stress test teaching of dummy resources to the AI
-    - Can unhack Mechanoid and Ancient AI components and CP once sure fully
-      working
+    - Can unhack Mechanoid and Ancient AI components and CP once sure fully working
   - Expansion AI Component
-    - Implement custom ColonizeAbility interface for Star Children, Mechanoid and Ancient AI empires
+    - Implement custom ColonizeAbility interface for Mechanoid and Ancient AI empires
+    - Refine Star Children ColonizeAbility code and reintroduce LaborMissions
     - Teach AI to expand over border systems that have nothing of value for colonisation with outposts/temples
     - Teach AI to penalise conditions
       - Currently recording them, but not using the info
@@ -21,9 +21,7 @@ This is primarily intended as a developer focused project planning list, rather 
         - Teach AI to make most of the constructions by extending the building hint code
     - General notes on AI issues to fix in rework
       - To fix in refactor of colonization and development code
-        - Make AI idle Motherships/Replicators that aren't building anything go colonise something rather than just sit around being useless
-        - Teach AI to build outposts to bridge otherwise empty/useless systems
-      - Teach Star Children AI to not put supports on their Small Motherships
+        - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
   - Tweak tractor default design
   - Investigate issues recolonising razed planets
   - Stop players putting floating continents on dyson spheres

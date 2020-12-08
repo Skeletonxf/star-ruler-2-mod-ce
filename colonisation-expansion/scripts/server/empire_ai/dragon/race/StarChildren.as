@@ -22,6 +22,8 @@ from statuses import getStatusID;
 // Should use idle motherships for scouting, especially when we run low
 // on explored neighbouring systems and requests are drying up
 // Make the AI not put command computers on motherships
+// Make sure AI will flee from remnants and abort if mothership takes heavy damage
+// Propagate failiures back to the Expansion component so we can choose a new colony
 
 class HabitatMission : Mission {
 	Planet@ target;
