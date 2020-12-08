@@ -3,6 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Fix bug with there not being a FlagTiny for at least one of the new shipsets
   - Stress test teaching of dummy resources to the AI
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully working
   - Expansion AI Component
@@ -26,7 +27,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Investigate issues recolonising razed planets
   - Stop players putting floating continents on dyson spheres
   - Rework the Flying trait downside so it is less severe
-  - Reduce the points the Parasite trait gives for razing planets
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Make remnant parts less big than stars
   - Don't let random life assign a life that other traits the player took are incompatible with
