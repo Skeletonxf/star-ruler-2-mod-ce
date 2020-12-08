@@ -397,7 +397,7 @@ class ColonizeForest {
 			if(req.buildingFor)
 				continue;
 
-			queueColonizeForResourceSpec(req, expansion, ai);
+			queueColonizeForRequest(req, expansion, ai);
 		}
 	}
 
@@ -415,10 +415,10 @@ class ColonizeForest {
 	 * there was never going to be a way to provide the resource via
 	 * colonisiation).
 	 */
-	void queueColonizeForResourceSpec(ImportData@ request, Expansion& expansion, AI& ai) {
+	void queueColonizeForRequest(ImportData@ request, Expansion& expansion, AI& ai) {
 		ai.print("colonize for requested resource: "+request.spec.dump(), request.obj);
 		ResourceSpec@ spec = request.spec;
-		Object@ requestingObject = request.obj;
+		//Object@ requestingObject = request.obj;
 
 		Planet@ newColony;
 		double bestWeight = 0.0;
@@ -538,6 +538,63 @@ class ColonizeForest {
 	}
 
 	/**
+	 * Colonizes for a resource spec
+	 *
+	 * The assumption is that if we're colonising for a resource, we need a planet,
+	 * so does not try to meet the spec via any other means.
+	 */
+	ColonizeTree@ queueColonizeForResourceSpec(ResourceSpec@ spec, Expansion& expansion, AI& ai) {
+		ai.print("colonize for resource spec: "+spec.dump());
+
+		Planet@ newColony;
+		double bestWeight = 0.0;
+
+		// evaluate each potential source against the spec to pick one to colonise
+		for (uint i = 0, cnt = expansion.potentialColonizations.length; i < cnt; ++i) {
+			PotentialColonizeSource@ p = cast<PotentialColonizeSource>(expansion.potentialColonizations[i]);
+			// can't use as a source if it doesn't meet the spec
+			if (!p.canMeet(spec)) {
+				continue;
+			}
+			Region@ region = p.pl.region;
+			if (region is null) {
+				// TODO: Will need to handle this eventually
+				continue;
+			}
+			if (expansion.isColonizing(p.pl)) {
+				continue;
+			}
+			// TODO: Work out how to check the planet isn't being colonised
+			// without cheating vision
+			/* if (p.pl.isBeingColonized) {
+				continue;
+			} */
+			// TODO: Check this planet is actually still unowned
+
+			auto@ sys = expansion.systems.getAI(region);
+			bool regionIsOccupiedByOthers = sys.obj.PlanetsMask & ~ai.mask != 0;
+
+			double weight = p.weight;
+			if (regionIsOccupiedByOthers) {
+				weight *= 0.25;
+			}
+
+			if (weight > bestWeight) {
+				@newColony = p.pl;
+				bestWeight = weight;
+			}
+		}
+
+		if (newColony !is null) {
+			ai.print("found colonize target for spec: "+spec.dump(), newColony);
+			ColonizeTree@ node = ColonizeTree(newColony);
+			queue.insertLast(node);
+			return node;
+		}
+		return null;
+	}
+
+	/**
 	 * Pops the oldest planet off the queue
 	 *
 	 * TODO: This should be much smarter once the queue is an actual forest
@@ -602,7 +659,7 @@ class BuildTracker {
  * which doesn't sit on unused resources or colonise resources not needed for
  * levelling.
  */
-class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting {
+class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner {
 	Resources@ resources;
 	Planets@ planets;
 	Systems@ systems;
@@ -797,20 +854,49 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	void focusTick(double time) override {
 		// Colonize and Develop bookeeping
 		if (expandType == LevelingHomeworld) {
-			// Look for resource requests made to resources that we can
-			// colonize for to meet
-
-			if (limits.remainingColonizations > 0) {
-				// Fill the queue with planets we shall colonize to meet
-				// requested resources
-				// We tick the Resources component first to ensure it has matched
-				// all match open requests to planets we already have, so this
-				// should only colonise for things we actually don't have available
-				resources.focusTick(time);
-				queue.fillQueueFromRequests(this, ai);
-				// Pull planets off the queue for colonising
-				drainQueue();
+			// No particular special logic here just yet
+		}
+		if (expandType == LookingForHomeworld) {
+			// grab the first tier 1 we see
+			ResourceSpec spec;
+			spec.type = RST_Level_Specific;
+			spec.level = 1;
+			spec.isForImport = false;
+			spec.isLevelRequirement = false;
+			if (queue.queueColonizeForResourceSpec(spec, this, ai) !is null) {
+				print("Enqueued starting tier 1");
+				expandType = WaitingForHomeworld;
 			}
+		}
+		if (expandType == WaitingForHomeworld) {
+			// Level up 'homeworld' to level 3 to start
+			// TODO: Star Children should really pick the first appropraite scalable
+			// as the main dev focus, this is just a temporary hack to see them colonise
+			if (ai.empire.planetCount > 0) {
+				for (uint i = 0, cnt = ai.empire.planetCount; i < cnt; ++i) {
+					Planet@ planet = ai.empire.planetList[i];
+					if (planet !is null && planet.valid) {
+						auto@ focus = addFocus(planets.register(planet));
+						focus.targetLevel = 3;
+						expandType = LevelingHomeworld;
+						break;
+					}
+				}
+			}
+		}
+
+		// Look for resource requests made to resources that we can
+		// colonize for to meet
+		if (limits.remainingColonizations > 0) {
+			// Fill the queue with planets we shall colonize to meet
+			// requested resources
+			// We tick the Resources component first to ensure it has matched
+			// all match open requests to planets we already have, so this
+			// should only colonise for things we actually don't have available
+			resources.focusTick(time);
+			queue.fillQueueFromRequests(this, ai);
+			// Pull planets off the queue for colonising
+			drainQueue();
 		}
 
 		// Try to colonise any planets we are waiting on a source for
@@ -828,7 +914,6 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	}
 
 	void drainQueue() {
-		array<Resource> planetResources;
 		// Try to drain the queue whenever we don't have many things we
 		// decided to colonise waiting on a source to colonise with
 		while (awaitingSource.length < 3) {
@@ -857,7 +942,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			return;
 		}
 		// Potentially refresh the units we can use as colonise sources
-		colonyManagement.tick();
+		colonyManagement.colonizeTick();
+		// Try to move things out of awaiting source
 		for (uint i = 0, cnt = awaitingSource.length; i < cnt; ++i) {
 			ColonizeData2@ colonizeData = cast<ColonizeData2>(awaitingSource[i]);
 			ColonizationSource@ source = colonyManagement.getFastestSource(colonizeData.target);
@@ -959,8 +1045,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			}
 		}
 		expandType = LevelingHomeworld;
-		// TODO: Ancient should skip to Expanding, Star Children should start
-		// at LookingForHomeworld instead
+		if (ai.empire.planetCount == 0) {
+			print("Spawned with no planets, need to find a new homeworld");
+			expandType = LookingForHomeworld;
+		}
+		// TODO: Ancient should skip to Expanding
 	}
 
 	void turn() {
@@ -1341,6 +1430,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// The Ancient component doesn't pickup awaitingSource's like Star Children
 	// do?
 	void set_PerformColonization(bool value) { actions.performColonization = value; }
+
+	// ColonyManagement interface hook
+	void setColonyManagement(ColonizationAbility@ colonyManagement) {
+		@this.colonyManagement = colonyManagement;
+	}
 }
 
 AIComponent@ createExpansion() {

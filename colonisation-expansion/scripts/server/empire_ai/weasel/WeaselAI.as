@@ -45,6 +45,9 @@ import AIComponent@ createFTLGeneric() from "empire_ai.weasel.ftl.generic";
 import AIComponent@ createVerdant() from "empire_ai.weasel.race.Verdant";
 import AIComponent@ createMechanoid() from "empire_ai.weasel.race.Mechanoid";
 import AIComponent@ createStarChildren() from "empire_ai.weasel.race.StarChildren";
+// [[ MODIFY BASE GAME START ]]
+import AIComponent@ createStarChildren2() from "empire_ai.dragon.race.StarChildren";
+// [[ MODIFY BASE GAME END ]]
 import AIComponent@ createExtragalactic() from "empire_ai.weasel.race.Extragalactic";
 import AIComponent@ createLinked() from "empire_ai.weasel.race.Linked";
 import AIComponent@ createDevout() from "empire_ai.weasel.race.Devout";
@@ -439,7 +442,8 @@ final class AI : AIController, Savable {
 		@planets = add(createPlanets());
 		@resources = add(createResources());
 		// [[ MODIFY BASE GAME START ]]
-		if (behavior.dragonComponents && false) {
+		bool expansionComponent = behavior.dragonComponents && false;
+		if (expansionComponent) {
 			print("Enabling Dragon Expansion component");
 			@colonization = add(createExpansion());
 		} else {
@@ -450,7 +454,7 @@ final class AI : AIController, Savable {
 		@fleets = add(createFleets());
 		@scouting = add(createScouting());
 		// [[ MODIFY BASE GAME START ]]
-		if (behavior.dragonComponents && false) {
+		if (expansionComponent) {
 			// dragon AI has a shared colonisation/development component,
 			// so set the field but don't add it to the components list again
 			@development = colonization;
@@ -492,9 +496,16 @@ final class AI : AIController, Savable {
 			@race = add(createVerdant());
 		else if(empire.hasTrait(getTraitID("Mechanoid")))
 			@race = add(createMechanoid());
-		else if(empire.hasTrait(getTraitID("StarChildren")))
-			@race = add(createStarChildren());
-		else if(empire.hasTrait(getTraitID("Extragalactic")))
+		else if(empire.hasTrait(getTraitID("StarChildren"))) {
+			// [[ MODIFY BASE GAME START ]]
+			if (expansionComponent) {
+				print("Enabling Dragon Star Children component");
+				@race = add(createStarChildren2());
+			} else {
+				@race = add(createStarChildren());
+			}
+			// [[ MODIFY BASE GAME END ]]
+		} else if(empire.hasTrait(getTraitID("Extragalactic")))
 			@race = add(createExtragalactic());
 		else if(empire.hasTrait(getTraitID("Linked")))
 			@race = add(createLinked());

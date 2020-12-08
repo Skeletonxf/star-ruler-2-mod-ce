@@ -338,7 +338,7 @@ class StarChildren : Race {
 
 		// [[ MODIFY BASE GAME START ]]
 		// Star Children can colonise with all available motherships at once
-		ai.behavior.maxConcurrentColonizations = motherships.length;
+		//ai.behavior.maxConcurrentColonizations = motherships.length;
 		// [[ MODIFY BASE GAME END ]]
 
 		/*if(motherCount > totalCount) {*/

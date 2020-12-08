@@ -41,7 +41,7 @@ class TerrestrialColonization : ColonizationAbility {
 		@this.budgeting = budgeting;
 	}
 
-	void tick() {
+	void colonizeTick() {
 		if (sourceUpdate < gameTime) {
 			refreshSources();
 			if (planetSources.length == 0 && gameTime < 60.0) {
@@ -131,11 +131,9 @@ class TerrestrialColonization : ColonizationAbility {
 	void saveSource(SaveFile& file, ColonizationSource@ source) {
 		if (source !is null) {
 			file.write1();
-			for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
-				ColonizerPlanet@ source = cast<ColonizerPlanet>(planetSources[i]);
-				// just save the planet
-				file << source.colonizeFrom.pl;
-			}
+			ColonizerPlanet@ source = cast<ColonizerPlanet>(source);
+			// just save the planet
+			file << source.colonizeFrom.pl;
 		} else {
 			file.write0();
 		}
@@ -151,6 +149,7 @@ class TerrestrialColonization : ColonizationAbility {
 			// read back the planet
 			Planet@ planet;
 			file >> planet;
+			// look for the source that has this planet
 			for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
 				ColonizerPlanet@ source = cast<ColonizerPlanet>(planetSources[i]);
 				if (source.colonizeFrom.pl is planet) {

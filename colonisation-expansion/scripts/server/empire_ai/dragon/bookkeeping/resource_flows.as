@@ -3,7 +3,7 @@ from resources import ResourceType;
 from resources import Resource;
 import statuses;
 
-enum ResourceUsageType {
+/* enum ResourceUsageType {
 	// The resource is used for levelling up a planet
 	// eg a Tier 1 resource
 	RUT_Levelling,
@@ -19,7 +19,7 @@ enum ResourceUsageType {
 	RUT_Pressure,
 	// This resource isn't in use
 	RUT_Unused,
-};
+}; */
 
 // Don't think this is the right level of abstraction for colonising purposes
 /**

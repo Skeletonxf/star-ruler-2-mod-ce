@@ -1,5 +1,9 @@
 import empire_ai.weasel.Colonization;
 
+interface ColonizationAbilityOwner {
+	void setColonyManagement(ColonizationAbility@ colonyManagement);
+}
+
 /**
  * The interface for the colonisation mechanism our race/empire uses.
  */
@@ -24,7 +28,7 @@ interface ColonizationAbility {
 	/**
 	 * Update tick for the implementation
 	 */
-	void tick();
+	void colonizeTick();
 
 	/**
 	 * Actually orders a colonisation command to colonise the planet
