@@ -4,3 +4,5 @@ INVASION_COOP_CONFIG: Coop
 TT_INVASION_CONFIG_COOP: <<
 	Play the Invasion Map cooperatively, with war and influence victory turned off.
 >>
+LATTICE_MAP: Lattice
+LATTICE_MAP_DESC: A bizarre uniform grid with strange relics of a lost age.

@@ -831,6 +831,24 @@ class AddPlanetResource : MapHook {
 #section all
 };
 
+// [[ MODIFY BASE GAME START ]]
+//AddPlanetResource(<Resource> = Distributed)
+// Add another resource to the previously generated object.
+class AddPlanetStatus : MapHook {
+	Document doc("Adds a single status to the most recently created planet.");
+	Argument status("Status", AT_Status, doc="Type of status to add.");
+
+#section server
+	void trigger(SystemData@ data, SystemDesc@ system, Object@& current) const override {
+		Object@ cur = current;
+		if(cur is null || !cur.hasResources)
+			return;
+		cur.addStatus(status.integer);
+	}
+#section all
+};
+// [[ MODIFY BASE GAME END ]]
+
 //AddResource(<Tile Resource>, <Amount>)
 // Add an income to the previously generated object.
 class AddResource : MapHook {

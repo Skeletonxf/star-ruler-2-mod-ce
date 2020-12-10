@@ -1,0 +1,10 @@
+Resource: SpecialLight
+	Class: Light
+	Frequency: 0
+	Exportable: False
+	Can Be Terraformed: False
+	Artificial: True
+	Small Icon: LightResourceClass
+	Icon: LightResourceClass
+	Name: #ARTIFICIAL_LIGHT
+	Display Weight: -100
