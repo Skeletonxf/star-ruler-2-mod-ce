@@ -44,9 +44,12 @@ class LatticeMap : Map {
 		double spacing = modSpacing(getSetting(M_SystemSpacing, DEFAULT_SPACING));
 		//bool flatten = getSetting(M_Flatten, 0.0) != 0.0;
 
+		uint emptySystems = systemCount / 20;
+		uint totalSystems = 4 + emptySystems + systemCount;
+
 		// Calculate size of grid
-		uint width = ceil(sqrt(double(systemCount)));
-		uint height = floor(sqrt(double(systemCount)));
+		uint width = ceil(sqrt(double(totalSystems)));
+		uint height = floor(sqrt(double(totalSystems)));
 
 		// roll randomly till picked all homeworld locations
 		array<Coord@> homeworlds;
@@ -71,6 +74,25 @@ class LatticeMap : Map {
 			}
 			if (!tooClose) {
 				homeworlds.insertLast(Coord(x, y));
+			}
+		}
+
+		array<Coord@> empty;
+		while (emptySystems > 0) {
+			uint x = randomi(0, width - 1);
+			uint y = randomi(0, height - 1);
+			bool badLocation = false;
+			if ((x == width/2 || x == width/2 - 1 || x == width/2 + 1) && (y == height/2 || y == height/2 - 1 || y == height/2 + 1)) {
+				badLocation = true;
+			}
+			for (uint i = 0, cnt = homeworlds.length; i < cnt && !badLocation; ++i) {
+				if (homeworlds[i].x == x && homeworlds[i].y == y) {
+					badLocation = true;
+				}
+			}
+			if (!badLocation) {
+				empty.insertLast(Coord(x, y));
+				emptySystems -= 1;
 			}
 		}
 
@@ -142,7 +164,21 @@ class LatticeMap : Map {
 						<< "ExpandSystem(1550)"
 					);
 				} else {
-					@sys = addSystem(position, quality=int(quality));
+					bool emptySystem = false;
+					for (uint k = 0, cnt = empty.length; k < cnt; ++k) {
+						if (empty[k].x == i && empty[k].y == j) {
+							emptySystem = true;
+						}
+					}
+					if (emptySystem) {
+						@sys = addSystem(position, code=SystemCode()
+							<< "MakeAsteroid()"
+							<< "MakeArtifact()"
+							<< "ExpandSystem(1450)"
+						);
+					} else {
+						@sys = addSystem(position, quality=int(quality));
+					}
 				}
 
 				grid.insertLast(sys);
