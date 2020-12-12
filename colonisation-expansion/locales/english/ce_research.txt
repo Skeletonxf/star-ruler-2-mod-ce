@@ -105,3 +105,4 @@ R_CONSUME_PLANET_DESC: <<
 	[color=#aaa][i]Consuming rate is proportional to Mothership size. Consuming a planet owned by another race is possible, but will take 4 times as long. Planets can only be consumed if the player is at war with the target's owner or the planet is uncolonised.[/i][/color]
 >>
 R_CONSUME_PLANET: Consume Planet
+R_IMP_MOTHERSHIP_LABOR_DESC_REV: Increases the labor available on motherships by $1 and extra labor per population by 0.1

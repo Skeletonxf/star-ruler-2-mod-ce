@@ -194,5 +194,7 @@ visible:
 	attribute double SenatorialPalaceActive = 0;
 	// flag for star children to unlock consume planet ability
 	attribute double ConsumePlanetUnlocked = 0;
+	// variable for upgrading mothership pop bonus labor through research tech
+	attribute double MothershipPopBonusLabor = 1;
 	// [[ MODIFY BASE GAME END ]]
 }

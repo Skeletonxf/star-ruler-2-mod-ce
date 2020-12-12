@@ -4,5 +4,5 @@ Status: MothershipPopulation
 	Icon: ResourceIcon::8
 	Collapses: True
 
-	RepeatStacks(AddLaborIncome(2))
+	RepeatStacks(RepeatEmpireAttribute(MothershipPopBonusLabor, AddLaborIncome(Amount = 0.1)))
 	RepeatStacks(AddMoneyIncome(15))
