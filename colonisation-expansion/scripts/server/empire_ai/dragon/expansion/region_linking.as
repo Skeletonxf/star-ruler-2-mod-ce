@@ -28,6 +28,7 @@ class RegionLinking {
 	Construction@ construction;
 	Resources@ resources;
 	Systems@ systems;
+	Budget@ budget;
 
 	double lastCheckedRegionsLinked = 0;
 	const OrbitalModule@ outpost;
@@ -37,11 +38,12 @@ class RegionLinking {
 
 	array<LinkBuild@> linkBuilds;
 
-	RegionLinking(Planets@ planets, Construction@ construction, Resources@ resources, Systems@ systems) {
+	RegionLinking(Planets@ planets, Construction@ construction, Resources@ resources, Systems@ systems, Budget@ budget) {
 		@this.planets = planets;
 		@this.construction = construction;
 		@this.resources = resources;
 		@this.systems = systems;
+		@this.budget = budget;
 		@this.outpost = getOrbitalModule("TradeOutpost");
 		@this.starTemple = getOrbitalModule("Temple");
 	}
@@ -92,53 +94,63 @@ class RegionLinking {
 			}
 			if (!resources.canTradeBetween(planet_i.obj.region, planet_j.obj.region)) {
 				ai.print("No trade connection found between "+planet_i.obj.name+" and "+planet_j.obj.name);
-				tryToConnectTrade(planet_i, planet_j, ai.empire);
+				tryToConnectTrade(planet_i.obj.region, planet_j.obj.region, ai.empire);
 			}
 		}
 	}
 
-	void tryToConnectTrade(PlanetAI@ a, PlanetAI@ b, Empire@ emp) {
-		Region@ fromRegion = a.obj.region;
-		Region@ toRegion = b.obj.region;
+	void tryToConnectTrade(Region@ a, Region@ b, Empire@ emp) {
 		// path based on links not our empire's connections, as we'll be looking
 		// to add a connection
 		TradePath tradePather(null);
 		//tradePather.maxLinkDistance = 5; // abort if we would save money using a commerce station
-		tradePather.generate(getSystem(fromRegion), getSystem(toRegion), keepCache=true);
+		tradePather.generate(getSystem(a), getSystem(b), keepCache=true);
 		if (!tradePather.valid) {
 			// might not be connected to each other closely, perhaps we need a commerce station
 		} else {
 			for (uint i = 0, cnt = tradePather.path.length; i < cnt; ++i) {
 				SystemDesc@ hop = tradePather.get_pathNode(i);
 				Region@ region = hop.object;
-				if (alreadyMakingLinkAt(region)) {
-					continue;
-				}
-				if (region.TradeMask & emp.TradeMask.value == 0) {
-					// we should consider building an outpost here, if this is
-					// a border system
-					for (uint i = 0, cnt = systems.outsideBorder.length; i < cnt; ++i) {
-						SystemAI@ sys = systems.outsideBorder[i];
-						if (sys.explored && sys.obj is region) {
-							// TODO: The AI should use this method for all the orbitals it builds like Mainframes and Gates
-							auto@ factory = construction.getClosestFactory(region);
-							if (factory !is null) {
-								vec3d position;
-								vec2d offset = random2d(sys.desc.radius * 0.1, sys.desc.radius * 0.4);
-								position.x = sys.obj.position.x + offset.x;
-								position.y = sys.obj.position.y;
-								position.z = sys.obj.position.z + offset.y;
+				considerMakingLinkAt(region, emp, force=true);
+			}
+		}
+	}
 
-								BuildOrbital@ buildPlan;
-								if (outpost !is null && outpost.canBuild(factory.obj, position)) {
-									@buildPlan = construction.buildOrbital(outpost, position);
-								} else if (starTemple !is null && starTemple.canBuild(factory.obj, position)) {
-									@buildPlan = construction.buildOrbital(starTemple, position);
-								}
-								if (buildPlan !is null) {
-									linkBuilds.insertLast(LinkBuild(construction.buildNow(buildPlan, factory), region));
-									print("Making outpost for trade connection at "+region.name);
-								}
+	void considerMakingLinkAt(Region@ region, Empire@ emp, bool force=false) {
+		if (alreadyMakingLinkAt(region, emp)) {
+			return;
+		}
+		bool canAfford = force
+			|| (outpost !is null && budget.canSpend(BT_Development, outpost.buildCost, outpost.maintenance));
+		if (!canAfford) {
+			return;
+		}
+		if (region.TradeMask & emp.TradeMask.value == 0) {
+			// we should consider building an outpost here, if this is
+			// a border system
+			for (uint i = 0, cnt = systems.outsideBorder.length; i < cnt; ++i) {
+				SystemAI@ sys = systems.outsideBorder[i];
+				if (sys.explored && sys.obj is region) {
+					// TODO: The AI should use this method for all the orbitals it builds like Mainframes and Gates
+					auto@ factory = construction.getClosestFactory(region);
+					if (factory !is null) {
+						vec3d position;
+						vec2d offset = random2d(sys.desc.radius * 0.1, sys.desc.radius * 0.4);
+						position.x = sys.obj.position.x + offset.x;
+						position.y = sys.obj.position.y;
+						position.z = sys.obj.position.z + offset.y;
+
+						BuildOrbital@ buildPlan;
+						if (outpost !is null && outpost.canBuild(factory.obj, position)) {
+							@buildPlan = construction.buildOrbital(outpost, position, force=force, moneyType=BT_Development);
+						} else if (starTemple !is null && starTemple.canBuild(factory.obj, position)) {
+							@buildPlan = construction.buildOrbital(starTemple, position, force=force, moneyType=BT_Development);
+						}
+						if (buildPlan !is null) {
+							AllocateConstruction@ allocation = construction.buildNow(buildPlan, factory);
+							if (allocation !is null) {
+								linkBuilds.insertLast(LinkBuild(allocation, region));
+								print("Making outpost for trade connection at "+region.name);
 							}
 						}
 					}
@@ -147,13 +159,27 @@ class RegionLinking {
 		}
 	}
 
-	bool alreadyMakingLinkAt(Region@ region) {
+	bool alreadyMakingLinkAt(Region@ region, Empire@ empire) {
 		for (uint i = 0, cnt = linkBuilds.length; i < cnt; ++i) {
 			if (linkBuilds[i].region is region) {
 				return true;
 			}
 		}
-		return false;
+
+		// the AI has an annoying habit of forgetting about things it actually
+		// enqueued previously, check we don't actually have an outpost here already
+		uint totalOrbitals = region.orbitalCount;
+		uint totalOwnedOutpostsPresent = 0;
+		for (uint i = 0; i < totalOrbitals; i++) {
+			Orbital@ orbital = region.get_orbitals(i);
+			if (orbital.owner is empire
+				&& ((outpost !is null && orbital.coreModule == outpost.id)
+					|| (starTemple !is null && orbital.coreModule == starTemple.id))) {
+				totalOwnedOutpostsPresent += 1;
+			}
+		}
+
+		return totalOwnedOutpostsPresent > 0;
 	}
 
 	void checkLinkBuilds() {
@@ -161,7 +187,7 @@ class RegionLinking {
 			AllocateConstruction@ build = linkBuilds[i].build;
 			// TODO: We should probably manually timeout builds here as there
 			// doesn't seem to be any automatic timeout in Construction.as
-			if (build.completed) {
+			if (build is null || build.completed) {
 				linkBuilds.removeAt(i);
 				--i; --cnt;
 			}

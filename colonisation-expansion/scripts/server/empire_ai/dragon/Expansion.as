@@ -250,6 +250,8 @@ class ColonizeForest {
 	ResourceValuator@ resourceValuator;
 	const ConstructionType@ build_moon_base;
 
+	double lastOutpostExpandCheck = 0;
+
 	ColonizeForest() {
 		@resourceValuator = ResourceValuator();
 		@build_moon_base = getConstructionType("MoonBase");
@@ -261,6 +263,7 @@ class ColonizeForest {
 		for (uint i = 0; i < cnt; ++i)
 			queue[i].save(expansion, file);
 		file << nextCheckForPotentialColonizeTargets;
+		file << lastOutpostExpandCheck;
 	}
 
 	void load(Expansion& expansion, SaveFile& file) {
@@ -273,6 +276,7 @@ class ColonizeForest {
 			@queue[i] = tree;
 		}
 		file >> nextCheckForPotentialColonizeTargets;
+		file >> lastOutpostExpandCheck;
 	}
 
 	void tick(Expansion& expansion, AI& ai) {
@@ -290,6 +294,9 @@ class ColonizeForest {
 	// Updates the expansion potentials list, including potentials for
 	// all nearby planets we might want to colonise that we haven't already
 	// queued.
+	//
+	// Can also tell the Exapansion component to build an outpost to advance
+	// through a system that we're never going to colonise.
 	void checkBorderSystems(Expansion& expansion, AI& ai) {
 		// reset list of potential colonise targets
 		expansion.potentialColonizations.length = 0;
@@ -300,7 +307,17 @@ class ColonizeForest {
 		}
 		// check systems 1 hop away
 		for (uint i = 0, cnt = expansion.systems.outsideBorder.length; i < cnt; ++i) {
-			checkSystem(expansion.systems.outsideBorder[i], expansion, ai);
+			SystemAI@ sys = expansion.systems.outsideBorder[i];
+			uint valuablePlanets = checkSystem(sys, expansion, ai);
+			if (valuablePlanets == 0 && gameTime > lastOutpostExpandCheck + 90) {
+				// we should consider making an outpost to claim this, we're not
+				// going to be colonising any planets in it any time soon
+				if (log) {
+					ai.print("Found no available valuable planets in "+sys.obj.name);
+				}
+				expansion.regionLinking.considerMakingLinkAt(sys.obj, ai.empire);
+				lastOutpostExpandCheck = gameTime;
+			}
 		}
 
 		// check home system or all systems we can see if no owned systems
@@ -323,22 +340,24 @@ class ColonizeForest {
 		// TODO: Check planets we found in deep space
 	}
 
-	void checkSystem(SystemAI@ sys, Expansion& expansion, AI& ai) {
+	uint checkSystem(SystemAI@ sys, Expansion& expansion, AI& ai) {
 		// seenPresent is a cache of the PlanetsMask of this system
 		uint presentMask = sys.seenPresent;
 		bool isOwned = presentMask & ai.mask != 0;
+		// if we abort, return 1 because we don't want to bridge our way
+		// through this
 		if(!isOwned) {
 			// abort if not colonising enemy systems and we think the enemy
 			// has planets here
 			if(!ai.behavior.colonizeEnemySystems && (presentMask & ai.enemyMask) != 0)
-				return;
+				return 1;
 			// abort if not colonising neutral systems and we think there are some???
 			if(!ai.behavior.colonizeNeutralOwnedSystems && (presentMask & ai.neutralMask) != 0)
-				return;
+				return 1;
 			// abort if not colonising ally systems and an ally has planets here
 			// (this doesn't work for heralds obviously)
 			if(!ai.behavior.colonizeAllySystems && (presentMask & ai.allyMask) != 0)
-				return;
+				return 1;
 		}
 
 		// Add weighting to planets in systems we don't have any planets in,
@@ -347,14 +366,30 @@ class ColonizeForest {
 		if (!isOwned)
 			sysWeight *= ai.behavior.weightOutwardExpand;
 
+		// track how many planets in this system are already owned by us,
+		// or we would like to colonise them
+		uint valuablePlanets = 0;
+
 		uint plCnt = sys.planets.length;
+
+		if (plCnt == 0 && !sys.explored) {
+			// there's probably something here, we just don't know it yet
+			return 1;
+		}
+
 		for (uint n = 0; n < plCnt; ++n) {
 			Planet@ pl = sys.planets[n];
 			Empire@ visOwner = pl.visibleOwnerToEmp(ai.empire);
-			if(!pl.valid || visOwner.valid)
+			if(!pl.valid || visOwner.valid) {
+				if (visOwner is ai.empire) {
+					valuablePlanets += 1;
+				}
 				continue;
-			if(expansion.isColonizing(pl))
+			}
+			if (expansion.isColonizing(pl)) {
+				valuablePlanets += 1;
 				continue;
+			}
 			if(expansion.penaltySet.contains(pl.id)) // probably a remnant in the way
 				continue;
 			if(pl.quarantined)
@@ -365,11 +400,16 @@ class ColonizeForest {
 				continue; */
 
 			PotentialColonizeSource@ p = PotentialColonizeSource(pl, resourceValuator);
+			if (p.weight >= 1) {
+				valuablePlanets += 1;
+			}
 			p.weight *= sysWeight;
 			//TODO: this should be weighted according to the position of the planet,
 			//we should try to colonize things in favorable positions
 			expansion.potentialColonizations.insertLast(p);
 		}
+
+		return valuablePlanets;
 	}
 
 	// Checks if a planet is in the queue
@@ -722,7 +762,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@race = cast<RaceColonization>(ai.race);
 		@colonyManagement = TerrestrialColonization(planets, this);
 		@planetManagement = PlanetManagement(planets, budget, ai, log);
-		@regionLinking = RegionLinking(planets, construction, resources, systems);
+		@regionLinking = RegionLinking(planets, construction, resources, systems, budget);
 
 		@scalableClass = getResourceClass("Scalable");
 	}
@@ -864,7 +904,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			spec.isForImport = false;
 			spec.isLevelRequirement = false;
 			if (queue.queueColonizeForResourceSpec(spec, this, ai) !is null) {
-				print("Enqueued starting tier 1");
+				if (log) {
+					ai.print("Enqueued starting tier 1");
+				}
 				expandType = WaitingForHomeworld;
 			}
 		}
@@ -1046,7 +1088,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 		expandType = LevelingHomeworld;
 		if (ai.empire.planetCount == 0) {
-			print("Spawned with no planets, need to find a new homeworld");
+			if (log) {
+				ai.print("Spawned with no planets, need to find a new homeworld");
+			}
 			expandType = LookingForHomeworld;
 		}
 		// TODO: Ancient should skip to Expanding

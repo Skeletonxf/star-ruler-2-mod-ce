@@ -9,7 +9,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Expansion AI Component
     - Implement custom ColonizeAbility interface for Mechanoid and Ancient AI empires
     - Refine Star Children ColonizeAbility code and reintroduce LaborMissions
-    - Teach AI to expand over border systems that have nothing of value for colonisation with outposts/temples
     - Teach AI to penalise conditions
       - Currently recording them, but not using the info
       - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
@@ -24,6 +23,8 @@ This is primarily intended as a developer focused project planning list, rather 
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
   - Tweak tractor default design
+  - Fix issues with Star Children artificial planetoids and ringworlds starting at 0 pop and never increasing
+    - Probably need to not let star children build habitats on planets that have growable pop
   - Investigate issues recolonising razed planets
   - Stop players putting floating continents on dyson spheres
   - Rework the Flying trait downside so it is less severe

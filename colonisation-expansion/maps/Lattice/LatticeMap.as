@@ -128,7 +128,6 @@ class LatticeMap : Map {
 						<< "    Rename(Superbia Prime)"
 						<< "    AddPlanetResource(Water)"
 						<< "    AddPlanetResource(Grain)"
-						<< "    AddPlanetResource(SpecialLight)"
 						<< "    AddPlanetResource(Grain)"
 						<< "    AddPlanetResource(Corinium)"
 						<< "    AddPlanetStatus(Ringworld)"

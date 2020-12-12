@@ -133,7 +133,7 @@ class TerrestrialColonization : ColonizationAbility {
 			file.write1();
 			ColonizerPlanet@ source = cast<ColonizerPlanet>(source);
 			// just save the planet
-			file << source.colonizeFrom.pl;
+			file << source.colonizeFrom.pl; // FIXME: Why is this derefencing a null pointer
 		} else {
 			file.write0();
 		}

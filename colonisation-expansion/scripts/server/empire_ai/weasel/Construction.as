@@ -1180,10 +1180,12 @@ class Construction : AIComponent {
 		return f;
 	}
 
-	BuildOrbital@ buildOrbital(const OrbitalModule@ module, const vec3d& position, double priority = 1.0, bool force = false) {
+	// [[ MODIFY BASE GAME START ]]
+	BuildOrbital@ buildOrbital(const OrbitalModule@ module, const vec3d& position, double priority = 1.0, bool force = false, uint moneyType = BT_Military) {
+		// [[ MODIFY BASE GAME END ]]
 		//Potentially build a flagship
 		BuildOrbital f(module, position);
-		f.moneyType = BT_Military;
+		f.moneyType = moneyType;
 		f.priority = priority;
 		build(f, force=force);
 		return f;
