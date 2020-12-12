@@ -12,7 +12,7 @@ void ReactorOverload(Event& evt, double Damage) {
 
 	Ship@ ship = cast<Ship>(evt.target);
 	if(ship.MaxShield > 0)
-		Damage *= 1.0 - (ship.Shield / ship.MaxShield);
+		Damage *= 1.0 - (ship.Shield / ship.MaxShield); // [[ MODIFY BASE GAME ]]
 
 	DamageEvent dmg;
 	dmg.damage = Damage * double(evt.efficiency) * double(evt.partiality);
