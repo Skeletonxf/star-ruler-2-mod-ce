@@ -23,8 +23,6 @@ This is primarily intended as a developer focused project planning list, rather 
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
   - Tweak tractor default design
-  - Fix issues with Star Children artificial planetoids and ringworlds starting at 0 pop and never increasing
-    - Probably need to not let star children build habitats on planets that have growable pop
   - Investigate issues recolonising razed planets
   - Stop players putting floating continents on dyson spheres
   - Rework the Flying trait downside so it is less severe
@@ -76,6 +74,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Get the AI to play invasion properly
   - Stellar Lifting to obtain protoplanets directly
   - Teach AI to scout nebulae properly
+  - Make Star Children habitats and uplifted planets interact a little better
 
 - Long term plans
   - Improving the AI

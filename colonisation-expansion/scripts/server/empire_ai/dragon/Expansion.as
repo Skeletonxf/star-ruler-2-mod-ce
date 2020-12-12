@@ -312,7 +312,7 @@ class ColonizeForest {
 			if (valuablePlanets == 0 && gameTime > lastOutpostExpandCheck + 90) {
 				// we should consider making an outpost to claim this, we're not
 				// going to be colonising any planets in it any time soon
-				if (log) {
+				if (false) {
 					ai.print("Found no available valuable planets in "+sys.obj.name);
 				}
 				expansion.regionLinking.considerMakingLinkAt(sys.obj, ai.empire);

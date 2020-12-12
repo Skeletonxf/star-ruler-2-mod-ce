@@ -684,6 +684,52 @@ class TargetFilterUpgradableQuality : TargetFilter {
 	}
 };
 
+// [[ MODIFY BASE GAME START ]]
+//TargetFilterOwned(<Target>)
+// Only allow objects you own into <Target>.
+class TargetFilterNotOwned : TargetFilter {
+	Document doc("Restricts target to objects not owned by the source empire.");
+	Argument targ(TT_Object);
+	Argument allow_null(AT_Boolean, "False", doc="Whether to allow the ability to be triggered on nulls (for example, for toggle deactivates.)");
+
+	string getFailReason(Empire@ emp, uint index, const Target@ targ) const override {
+		return locale::NTRG_OWNED;
+	}
+
+	bool isValidTarget(Empire@ emp, uint index, const Target@ targ) const override {
+		if(index != uint(arguments[0].integer))
+			return true;
+		if(targ.obj is null)
+			return allow_null.boolean;
+		if(targ.obj.isStar) {
+			Region@ region = targ.obj.region;
+			if(region is null)
+				return false;
+			return region.TradeMask & emp.mask == 0;
+		}
+		else if(targ.obj.isRegion) {
+			return cast<Region>(targ.obj).TradeMask & emp.mask == 0;
+		}
+		else {
+#section client-side
+			if(targ.obj.hasSurfaceComponent) {
+				if(targ.obj.visibleOwner is emp)
+					return false;
+			}
+			else {
+				if(targ.obj.owner is emp)
+					return false;
+			}
+#section server-side
+			if(targ.obj.owner is emp)
+				return false;
+#section all
+			return true;
+		}
+	}
+};
+// [[ MODIFY BASE GAME END ]]
+
 //TargetFilterOwned(<Target>)
 // Only allow objects you own into <Target>.
 class TargetFilterOwned : TargetFilter {

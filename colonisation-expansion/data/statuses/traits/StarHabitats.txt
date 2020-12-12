@@ -6,7 +6,10 @@ Status: StarHabitats
 
 
 
+	
+	IfHaveStatus(ArtificialPlanetoid, ModBuildingConstructRate(1))
+	IfHaveStatus(Ringworld, ModBuildingConstructRate(1))
 	AbandonOnDisableIfSameOrigin()
 	IfNotHaveStatus(Uplift, IfNotHaveStatus(ArtificialPlanetoid, IfNotHaveStatus(Ringworld, AddStatus(StarHabitatsNoPlanetUseSingle))))
-	RepeatStacks(IfNotHaveStatus(Uplift, IfNotHaveStatus(ArtificialPlanetoid, IfNotHaveStatus(Ringworld, AddStatus(StarHabitatsNoPlanetUse)))))
+	RepeatStacks(IfNotHaveStatus(Uplift, AddStatus(StarHabitatsNoPlanetUse)))
 	ForbidLaborExport()
