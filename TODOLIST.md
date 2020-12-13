@@ -43,8 +43,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
-  - Fix visual bug causing Drugs to appear to be filling the Light class requirement for planet levelling when they are not, probably related to dummy resources
-    - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
   - Consider integrating Darloth's NMP into CE https://github.com/darloth/SR2-NewMovement (low priority as the mods are currently compatible minus gravitron adjust)
   - Stop AI putting Low Power Computers on flagships
   - Make InterdictMovement set a flag on the mover component to turn off self controlled motion rather than hack at modifying acceleration as it does in vanilla
@@ -75,6 +73,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stellar Lifting to obtain protoplanets directly
   - Teach AI to scout nebulae properly
   - Make Star Children habitats and uplifted planets interact a little better
+  - Fix visual bug causing Drugs to appear to be filling the Light class requirement for planet levelling when they are not, probably related to dummy resources
+    - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
 
 - Long term plans
   - Improving the AI
