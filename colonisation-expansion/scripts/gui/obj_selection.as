@@ -326,7 +326,7 @@ SelectionType classifyRelaxed(array<Object@>& objs) {
 // even if the selection type would otherwise exclude planets, this is
 // primarily a QoL change for playing as a battleworlder race.
 bool isSortOfShip(Object@ obj) {
-	return obj.isShip || (obj.isPlanet && obj.hasMover);
+	return obj.isShip || (obj.isPlanet && obj.hasMover && obj.maxAcceleration > 0.0);
 }
 // [[ MODIFY BASE GAME END ]]
 
