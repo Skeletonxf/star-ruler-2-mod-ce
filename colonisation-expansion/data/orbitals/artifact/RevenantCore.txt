@@ -12,7 +12,7 @@ Module: RevenantCore
 
 	Model: RevenantCore
 	Material: TyrantPBRAdvanced
-	Size: 140
+	Size: 42
 
 	Strategic Icon: OrbitalIcons::26
 

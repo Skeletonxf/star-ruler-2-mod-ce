@@ -12,7 +12,7 @@ Module: RevenantCannon
 
 	Model: RevenantCannon
 	Material: TyrantPBRAdvanced
-	Size: 840
+	Size: 168
 
 	Strategic Icon: OrbitalIcons::6
 

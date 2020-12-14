@@ -3,7 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Fix bug with there not being a FlagTiny for at least one of the new shipsets
+  - Port FlagTiny bugfix to community patch
   - Stress test teaching of dummy resources to the AI
   - Make maintenace reduction from ramjets, collosus, superstructure, mothership and other subsystems/hulls all count towards a single stat which is capped at 50% so players can't double dip
     - Should also open up more room for gravitron thrusters with players getting other ways to hit 50% reduction without using ramjets (and thus not being pressured to use ramjets just for the discounts and losing the benefits of gravitrons)
@@ -29,7 +29,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stop players putting floating continents on dyson spheres
   - Rework the Flying trait downside so it is less severe
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
-  - Make remnant parts less big than stars
   - Don't let random life assign a life that other traits the player took are incompatible with
   - Remove fire damage from Aquatic trait given it doesn't do anything
   - Constructions for Gas Giants to make them more useful late game

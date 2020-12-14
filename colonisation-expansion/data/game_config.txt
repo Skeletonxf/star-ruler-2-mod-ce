@@ -53,9 +53,13 @@ SYSTEMS_PER_WORMHOLE: 30
 GALAXY_MIN_WORMHOLES: 2
 
 //Stored energy increment that halves energy generation.
-ENERGY_EFFICIENCY_STEP: 500
+// [[ MODIFY BASE GAME START ]]
+// 500 -> 400 increments, should make energy a little harder to stockpile even with dysons
+ENERGY_EFFICIENCY_STEP: 400
 //Amount of energy to be collected for every seed ship.
-ENERGY_PER_SEEDSHIP: 2000
+// 2000 -> 3500 increments, should make seed ships a little less common when loads of dysons are on the map
+ENERGY_PER_SEEDSHIP: 3500
+// [[ MODIFY BASE GAME END ]]
 //Amount of artifacts per system to aim for.
 TARGET_ARTIFACTS_PER_SYSTEM: 0.3
 //Artifacts seeded per seed ship.

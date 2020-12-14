@@ -12,7 +12,7 @@ Module: RevenantEngine
 
 	Model: RevenantEngine
 	Material: TyrantPBRAdvanced
-	Size: 620
+	Size: 124
 
 	Strategic Icon: OrbitalIcons::27
 

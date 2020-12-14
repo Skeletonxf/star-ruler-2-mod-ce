@@ -12,7 +12,7 @@ Module: RevenantChassis
 
 	Model: RevenantChassis
 	Material: TyrantPBRAdvanced
-	Size: 580
+	Size: 116
 
 	Strategic Icon: OrbitalIcons::25
 
