@@ -21,6 +21,5 @@ Building: PlanetaryEngine
 	RequireEither(RequireNotTrait(StarChildren), RequireNotStatus(StarHabitatsNoPlanetUseSingle))
 	RequireUnlockTag(PlanetaryEngineUnlock)
 	RequireNotStatus(Ringworld)
-	RequireNotStatus(InAnnexVote)
 	RequireNotStatus(CreatingNebulae)
 	IfNotHaveStatus(Ringworld, AddAccelerationBonus(0.5))

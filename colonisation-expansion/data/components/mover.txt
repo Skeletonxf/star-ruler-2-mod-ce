@@ -61,6 +61,12 @@ server:
 	bool writeMoverDelta(Message& msg) const;
 	void writeMover(Message& msg) const;
 
+	// [[ MODIFY BASE GAME START ]]
+	// InterdictMovement overhaul
+	void addInterdictMovementEffect();
+	void removeInterdictMovementEffect();
+	// [[ MODIFY BASE GAME END ]]
+
 shadow:
 	void readMoverDelta(Message& msg);
 	void readMover(Message& msg);

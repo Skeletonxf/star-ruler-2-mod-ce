@@ -46,8 +46,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Increase the resolution of the Helium 3 icon to make it clearer
   - Consider integrating Darloth's NMP into CE https://github.com/darloth/SR2-NewMovement (low priority as the mods are currently compatible minus gravitron adjust)
   - Stop AI putting Low Power Computers on flagships
-  - Make InterdictMovement set a flag on the mover component to turn off self controlled motion rather than hack at modifying acceleration as it does in vanilla
-  - Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
+  -  Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
   - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
     - Replace beams with lines?
 
