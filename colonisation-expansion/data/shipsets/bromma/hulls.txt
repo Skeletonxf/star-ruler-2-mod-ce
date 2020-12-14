@@ -6,7 +6,7 @@ Hull: BrommaTiny
 	Material: BrommaGenericPBR
 	Model: BrommaTiny
 	Shape: data/shipsets/bromma/support_tiny.shape.png
-	
+
 	Tags: Support
 	MinSize: 1
 	Subsystem: SupportHull
@@ -63,7 +63,7 @@ Hull: BrommaHuge
 	MinSize: 80
 	Subsystem: SupportHull
 
-Hull: BrommaFlagSmall
+Hull: BrommaFlagTiny
 	Name: Small Battleship
 	Background: VolkurBlueprint
 	ModelScale: 1.0
@@ -127,7 +127,7 @@ Hull: BrommaFlagHuge
 	Tags: Flagship
 	MinSize: 16
 	Subsystem: FlagshipHull
-	
+
 Hull: BrommaStation
 	Name: Station
 	Background: VolkurBlueprint
@@ -140,7 +140,7 @@ Hull: BrommaStation
 	Tags: Station
 	MinSize: 16
 	Subsystem: StationHull
-	
+
 Hull: BrommaSatellite
 	Name: Satellite
 	Background: VolkurBlueprint

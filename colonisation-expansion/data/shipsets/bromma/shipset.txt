@@ -1,11 +1,11 @@
 Shipset: Bromma
 	Name: Bromma
-	
+
 	Hull: BrommaFlagHuge
 	Hull: BrommaFlagVeryLarge
 	Hull: BrommaFlagLarge
 	Hull: BrommaFlagMedium
-	Hull: BrommaFlagSmall
+	Hull: BrommaFlagTiny
 	Hull: BrommaHuge
 	Hull: BrommaLarge
 	Hull: BrommaMedium

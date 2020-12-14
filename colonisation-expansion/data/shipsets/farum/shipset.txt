@@ -1,11 +1,11 @@
 Shipset: Farum
 	Name: Farum
-	
+
 	Hull: FarumFlagHuge
 	Hull: FarumFlagVeryLarge
 	Hull: FarumFlagLarge
 	Hull: FarumFlagMedium
-	Hull: FarumFlagSmall
+	Hull: FarumFlagTiny
 	Hull: FarumHuge
 	Hull: FarumLarge
 	Hull: FarumMedium

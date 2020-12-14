@@ -6,7 +6,7 @@ Hull: FarumTiny
 	Material: FarumGenericPBR
 	Model: FarumTiny
 	Shape: data/shipsets/farum/support_tiny.shape.png
-	
+
 	Tags: Support
 	MinSize: 1
 	Subsystem: SupportHull
@@ -63,7 +63,7 @@ Hull: FarumHuge
 	MinSize: 80
 	Subsystem: SupportHull
 
-Hull: FarumFlagSmall
+Hull: FarumFlagTiny
 	Name: Small Battleship
 	Background: VolkurBlueprint
 	ModelScale: 1.0
@@ -127,7 +127,7 @@ Hull: FarumFlagHuge
 	Tags: Flagship
 	MinSize: 16
 	Subsystem: FlagshipHull
-	
+
 Hull: FarumStation
 	Name: Station
 	Background: VolkurBlueprint
@@ -140,7 +140,7 @@ Hull: FarumStation
 	Tags: Station
 	MinSize: 16
 	Subsystem: StationHull
-	
+
 Hull: FarumSatellite
 	Name: Satellite
 	Background: VolkurBlueprint
