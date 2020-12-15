@@ -56,7 +56,7 @@ S_SOLARPANEL_DESC: <<
 	Solar Panels are a cheap and efficient way to provide power for subsystems, but rely on being near a star to operate.
 
 	[img=ResourceIcon::2;22]Provides [b][color=#42b4bd]Power[/color][/b] to operate other subsystems.[/img]
-	[img=Plus]No maintainece cost[/img]
+	[img=Plus]No maintenance cost[/img]
 	[img=Minus]Slightly decreases combat strength when fighting near stars with low luminosity.[/img]
 	[img=Minus]Significantly decreases combat strength when fighting in deep space.[/img]
 	[img=Minus]Solar Panels must be placed on the exterior of the ship.[/img]
