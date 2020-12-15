@@ -1010,6 +1010,14 @@ tidy class ShipScript {
 				ship.donatedVision |= reg.DonateVisionMask;
 		}
 
+		// [[ MODIFY BASE GAME START ]]
+		// Also take vision from the empire that last hit this ship, if any, to
+		// aide them with tracking this ship
+		if (killCredit !is null) {
+			ship.donatedVision |= killCredit.mask;
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		//Update in combat flags
 		bool engaged = ship.engaged;
 		if(cachedLeader !is null) {
@@ -1025,7 +1033,7 @@ tidy class ShipScript {
 			ship.blueprint.holdFire = false;
 
 		if(engaged)
-			combatTimer = 5.f;
+			combatTimer = 25.f; // [[ MODIFY BASE GAME START ]] 5 -> 25, even lasers struggle to maintain sub 5 seconds continual damage
 		else
 			combatTimer -= time;
 
@@ -1555,7 +1563,7 @@ tidy class ShipScript {
 		else {
 			msg.write0();
 		}
-		
+
 		// [[ MODIFY BASE GAME START ]]
 		// Sync bonus mass (shadow can infer mass from design + empire)
 		if (ship.BonusMass != 0.0) {
