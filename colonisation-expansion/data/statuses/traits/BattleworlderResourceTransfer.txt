@@ -34,6 +34,7 @@ Status: BattleworlderResourceTransfer
 	IfNative(Atium, GrantAbility(BWAtiumTransfer))
 	IfNative(Chemicals, GrantAbility(BWChemicalsTransfer))
 	IfNative(Deuterium, GrantAbility(BWDeuteriumTransfer))
+	IfNative(DeuteriumIceGiant, GrantAbility(BWDeuteriumIceGiantTransfer))
 	IfNative(Electronics, GrantAbility(BWElectronicsTransfer))
 	IfNative(ExplosiveGases, GrantAbility(BWExplosiveGasesTransfer))
 	IfNative(Explosives, GrantAbility(BWExplosivesTransfer))
@@ -54,6 +55,7 @@ Status: BattleworlderResourceTransfer
 	IfNative(VolatileGases, GrantAbility(BWVolatileGasesTransfer))
 
 	IfNative(DegenerateMatter, GrantAbility(BWDegenerateMatterTransfer))
+	IfNative(DegenerateMatterGasGiant, GrantAbility(BWDegenerateMatterGasGiantTransfer))
 	IfNative(Helium3, GrantAbility(BWHelium3Transfer))
 	IfNative(Hypervolatiles, GrantAbility(BWHypervolatilesTransfer))
 	IfNative(Jewelry, GrantAbility(BWJewelryTransfer))

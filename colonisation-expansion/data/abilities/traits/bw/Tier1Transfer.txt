@@ -62,6 +62,22 @@ Ability: BWDeuteriumTransfer
 	TargetFilterType(targ, Planet)
 	TargetFilterNotStatus(targ, NativeLife)
 
+Ability: BWDeuteriumIceGiantTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::31
+	Range: 100
+	Target: targ = Object
+	Resource: DeuteriumIceGiant
+	Resource Transfer: True
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(DeuteriumIceGiant))
+	CE_biome_hooks::ConsumePlanetResource(DeuteriumIceGiant, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
+
 Ability: BWElectronicsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::5

@@ -14,6 +14,22 @@ Ability: BWDegenerateMatterTransfer
 	TargetFilterType(targ, Planet)
 	TargetFilterNotStatus(targ, NativeLife)
 
+Ability: BWDegenerateMatterGasGiantTransfer
+	Name: #TRANSFER_RESOURCE
+	Icon: ResourceIconsSmall::42
+	Range: 100
+	Target: targ = Object
+	Resource Transfer: True
+	Resource: DegenerateMatterGasGiant
+	TargetFilterOwned(targ)
+	Trigger(targ, GainPlanetResource(DegenerateMatterGasGiant))
+	CE_biome_hooks::ConsumePlanetResource(DegenerateMatterGasGiant, targ)
+	RequireNotUnderSiege()
+	TargetFilterNotSelf(targ)
+	TargetFilterNotQuarantined(targ)
+	TargetFilterType(targ, Planet)
+	TargetFilterNotStatus(targ, NativeLife)
+
 Ability: BWHelium3Transfer
 	Name: #TRANSFER_RESOURCE
 	Icon: He3
