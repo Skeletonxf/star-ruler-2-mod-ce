@@ -1,0 +1,12 @@
+Technology: Gyroscope
+	Name: #R_SYS_GYROSCOPE
+	Class: Unlock
+	Category: Subsystems
+	Description: #R_SYS_GYROSCOPE_DESC
+	Point Cost: 500
+	Time Cost: 90
+	Icon: TechIcons::7
+	Color: #f9f5cb
+	SecondaryMoneyCost(1000)
+	SkipOnUnlockedSubsystem(Gyroscope)
+	UnlockSubsystem(Gyroscope)

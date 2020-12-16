@@ -198,3 +198,12 @@ S_SUPERSTRUCTURE_HULL_DESC: <<
 	[img=Plus]Reduces maintenance costs by 34%.[/img]
 	[img=Minus]Adds an Ore cost to building the ship.[/img]
 >>
+GYROSCOPE: Gyroscope
+GYROSCOPE_DESC: <<
+	A complex frame, rotor and gimbal system that allows an object to rotate effortlessly
+
+	[img=Plus]Provides a high turn rate.[/img]
+	[img=Plus]Can be placed internally.[/img]
+	[img=Minus]Does not provide any thrust.[/img]
+>>
+ERROR_GYRO_TOO_SMALL: Gyroscope must fill at least 30% of the ship

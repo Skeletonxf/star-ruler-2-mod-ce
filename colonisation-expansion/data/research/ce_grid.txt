@@ -276,3 +276,4 @@ Grid: ColonisationExpansionGrid
 	TitanHull: 3,-10
 	ColossusHull: 2,-10
 	InfiniteHealth: 3,-11
+	Gyroscope: 4,6

@@ -1,0 +1,32 @@
+Subsystem: Gyroscope
+	Name: #GYROSCOPE
+	Description: #GYROSCOPE_DESC
+	BaseColor: #f9f5cb
+	TypeColor: #f9f5cb
+	Picture: SubsystemButtonArt::9
+	Elevation: 0
+
+	Tags: BaseCost, Category:Propulsion
+	Tags: HasInternals, TurnToThrust
+	Hull: Flagship, Station
+
+	Size := HexSize * Hexes
+	TurnThrust := 8.0 * Size
+	Hex.Mass := 2.5 * HexSize
+
+	Hex.Resistance := 0.2
+	Hex.HP := 18 * HexSize
+
+	MaxTurnThrust := TurnThrust
+	Ship.GyroSize := Ship.GyroSize + Hexes
+	Assert: Ship.GyroSize >= Sum.HexLimit * 0.3
+		Message: #ERROR_GYRO_TOO_SMALL
+	Requires:
+		Command = 1
+
+	Module: Default
+		Hex.BuildCost := 2 * Hex.BuildCost
+
+	Module: Core
+		Sprite: TechIcons::7
+		Hex.BuildCost := 3 * Hex.BuildCost
