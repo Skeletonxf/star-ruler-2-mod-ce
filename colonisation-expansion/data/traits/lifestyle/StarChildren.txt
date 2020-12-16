@@ -52,7 +52,6 @@ Trait: StarChildren
 	ReplaceTechnologyNodes(BldMegacity, ImpHabitat)
 	ReplaceTechnologyNodes(RingHabitat, ImpHabitat)
 
-	ReplaceTechnologyNodeAt((-8, -13), UnlockConsumePlanet)
 	ReplaceTechnologyNodes(BldSpire, Thrust2)
 	ReplaceTechnologyNodes(KeyFTL, Thrust2)
 	ReplaceTechnologyNodes(FactoryLabor, MothershipLabor)

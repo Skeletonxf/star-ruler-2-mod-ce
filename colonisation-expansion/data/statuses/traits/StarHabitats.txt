@@ -6,7 +6,8 @@ Status: StarHabitats
 
 
 
-	
+
+	ForcePopulationToAtLeastStacks()
 	IfHaveStatus(ArtificialPlanetoid, ModBuildingConstructRate(1))
 	IfHaveStatus(Ringworld, ModBuildingConstructRate(1))
 	AbandonOnDisableIfSameOrigin()

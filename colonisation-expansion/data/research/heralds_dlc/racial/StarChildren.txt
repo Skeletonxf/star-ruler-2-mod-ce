@@ -1,7 +1,7 @@
 Technology: HabitatUpgrade
 	Name: #R_IMP_HABITAT
-	Blurb: #R_IMP_HABITAT_BLURB:5%:3%
-	Description: #R_IMP_HABITAT_DESC:5%:3%
+	Blurb: #R_IMP_HABITAT_BLURB:50%:9%
+	Description: #R_IMP_HABITAT_DESC:50%:9%
 
 	Icon: ResourceIcon::8
 	Color: #ca6700
@@ -9,8 +9,8 @@ Technology: HabitatUpgrade
 	Point Cost: 600
 	Time Cost: 90
 
-	ModAttribute(HabitatUpgrade, Multiply, 1.05)
-	ModAttribute(StaticDamageFactor, Multiply, 1.03)
+	ModAttribute(HabitatUpgrade, Multiply, 1.5)
+	ModAttribute(StaticDamageFactor, Multiply, 1.09)
 
 Technology: MothershipLabor
 	Name: #R_IMP_MOTHERSHIP_LABOR
@@ -32,7 +32,7 @@ Technology: MothershipLabor
 Technology: MothershipLabor2
 	Name: #R_IMP_MOTHERSHIP_LABOR2
 	Blurb: #R_IMP_MOTHERSHIP_LABOR_BLURB:2
-	Description: #R_IMP_MOTHERSHIP_LABOR_DESC_REV:2:2000
+	Description: #R_IMP_MOTHERSHIP_LABOR2_DESC_REV:2:2000
 
 	Icon: ResourceIcon::6
 	Color: #b1b4b6
@@ -42,5 +42,5 @@ Technology: MothershipLabor2
 
 	ModAttribute(FactoryLaborMod, Add, 2)
 
-	ModAttribute(MothershipPopBonusLabor, Add, 1)
+	ModAttribute(MothershipPopBonusLabor, Add, 2)
 	SecondaryMoneyCost(2000)

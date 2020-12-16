@@ -791,6 +791,25 @@ class ForcePopulationToStacks : StatusHook {
 #section all
 };
 
+// [[ MODIFY BASE GAME START ]]
+class ForcePopulationToAtLeastStacks : StatusHook {
+	Document doc("Force the planet to always have at least as much population as this status' stack count.");
+	Argument factor(AT_Decimal, "1.0", doc="Multiplication factor to stack count.");
+
+#section server
+	bool onTick(Object& obj, Status@ status, any@ data, double time) override {
+		if(obj.hasSurfaceComponent) {
+			double curPop = obj.population;
+			double targPop = double(status.stacks) * factor.decimal;
+			if(curPop < targPop)
+				obj.addPopulation(targPop - curPop);
+		}
+		return true;
+	}
+#section all
+};
+// [[ MODIFY BASE GAME END ]]
+
 tidy final class EnabledData {
 	bool enabled = false;
 	any data;

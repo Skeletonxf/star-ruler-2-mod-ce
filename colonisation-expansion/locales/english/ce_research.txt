@@ -106,3 +106,4 @@ R_CONSUME_PLANET_DESC: <<
 >>
 R_CONSUME_PLANET: Consume Planet
 R_IMP_MOTHERSHIP_LABOR_DESC_REV: Increases the labor available on motherships by $1 and extra labor per population by 0.1
+R_IMP_MOTHERSHIP_LABOR2_DESC_REV: Increases the labor available on motherships by $1 and extra labor per population by 0.2

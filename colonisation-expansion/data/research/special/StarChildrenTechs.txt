@@ -17,7 +17,7 @@ Technology: ImpMothershipLabor
 Technology: ImpMothershipLabor2
 	Name: #R_IMP_MOTHERSHIP_LABOR2
 	Blurb: #R_IMP_MOTHERSHIP_LABOR_BLURB:2
-	Description: #R_IMP_MOTHERSHIP_LABOR_DESC_REV:2:2000
+	Description: #R_IMP_MOTHERSHIP_LABOR2_DESC_REV:2:2000
 
 	Icon: ResourceIcon::6
 	Color: #b1b4b6
@@ -28,12 +28,12 @@ Technology: ImpMothershipLabor2
 	ModAttribute(FactoryLaborMod, Add, 2)
 
 
-	ModAttribute(MothershipPopBonusLabor, Add, 1)
+	ModAttribute(MothershipPopBonusLabor, Add, 2)
 	SecondaryMoneyCost(2000)
 Technology: ImpHabitat
 	Name: #R_IMP_HABITAT
-	Blurb: #R_IMP_HABITAT_BLURB:3%:5%
-	Description: #R_IMP_HABITAT_DESC:5%:3%
+	Blurb: #R_IMP_HABITAT_BLURB:50%:9%
+	Description: #R_IMP_HABITAT_DESC:50%:9%
 
 	Icon: ResourceIcon::8
 	Color: #b1b4b6
@@ -41,8 +41,8 @@ Technology: ImpHabitat
 	Point Cost: 600
 	Time Cost: 60
 
-	ModAttribute(HabitatUpgrade, Multiply, 1.05)
-	ModAttribute(StaticDamageFactor, Multiply, 1.03)
+	ModAttribute(HabitatUpgrade, Multiply, 1.5)
+	ModAttribute(StaticDamageFactor, Multiply, 1.09)
 Technology: UnlockConsumePlanet
 	Name: #R_CONSUME_PLANET
 	Description: #R_CONSUME_PLANET_DESC
