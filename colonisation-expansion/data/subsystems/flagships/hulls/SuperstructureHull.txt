@@ -10,7 +10,7 @@ Subsystem: SuperstructureHull
 
 	AddShipModifier: BuildCostFactor(0.5)
 	AddShipModifier: LaborCostFactor(0.5)
-	AddShipModifier: MaintCostFactor(0.66)
+	Ship.HullDiscount := Ship.HullDiscount + 34
 
 	Hex.OreCost := 0
 	AddPostModifier: AddOreCost(HexSum.BuildCost)

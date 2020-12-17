@@ -37,8 +37,10 @@ Subsystem: FlagshipHull
 	FTLBuildCost := 0
 	AddPostModifier: AddFTLBuildCost(if(HasFTLCost, ShipSize*2.0, 0)))
 
-	Ship.RamjetDiscount := 0
-	AddPostModifier: AddMaintainCost(-HexSum.MaintainCost * min((Ship.RamjetDiscount * 0.01), 1))
+	Ship.RamJetDiscount := Ship.RamJetDiscount + 0
+	Ship.HullDiscount := Ship.HullDiscount + 0
+	AddPostModifier: AddMaintainCost(-HexSum.MaintainCost * min((min(Ship.RamJetDiscount + Ship.HullDiscount, 60) * 0.01), 1))
+
 	Modifier: IncreaseHexLimit(Hexes)
 		HexLimit := HexLimit + Hexes
 		FreeHexLimit := FreeHexLimit + Hexes

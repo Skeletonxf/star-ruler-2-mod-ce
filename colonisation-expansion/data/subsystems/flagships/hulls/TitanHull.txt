@@ -17,12 +17,9 @@ Subsystem: TitanHull
 	AddShipModifier: FireArcFactor(2.0)
 
 	Titan := 1
-	AddShipModifier: tag/IsArmor::HpFactor(3.0)
+	AddShipModifier: tag/IsArmor::HpFactor(2.0)
 	AddShipModifier: ArmorResistFactor(2.5)
 	AddShipModifier: tag/IsArmor::MaintCostFactor(0.5)
-
-	Assert: Sum.Mothership == 0
-		Message: #ERROR_INCOMPATIBLE_HULL_MOTHERSHIP_T
 
 	Assert: ShipSize >= 750
 		Message: #ERROR_MIN_SIZE:$1:750

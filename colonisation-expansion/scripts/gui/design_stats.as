@@ -27,6 +27,7 @@ enum StatDisplayMode {
 int MASS_CUSTOM_VARIABLE = -2;
 int SUPPORT_CAPACITY_CUSTOM_VARIABLE = -3;
 int REPAIR_CUSTOM_VARIABLE = -4;
+int TOTAL_MAINT_DISCOUNT_VARIABLE = -5;
 
 class DesignStat {
 	uint index = 0;
@@ -236,6 +237,11 @@ namespace design_stats {
 			}
 			return dsg.total(SV_Repair); // should never happen
 		}
+		else if ((type == SVT_CustomVariable) && (var == TOTAL_MAINT_DISCOUNT_VARIABLE)) {
+			// Custom total maintence discount formula
+			// Honestly this one should be done in data files by extending the formula logic but this is less effort
+			return min(dsg.variable(ShV_RamjetDiscount) + dsg.variable(ShV_HullDiscount), 60.0);
+		}
 		// [[ MODIFY BASE GAME END ]]
 		return 0.0;
 	}
@@ -430,6 +436,10 @@ void loadStats(const string& filename) {
 		else if (key == "RepairFormula") {
 			stat.varType = SVT_CustomVariable;
 			stat.variable = REPAIR_CUSTOM_VARIABLE;
+		}
+		else if (key == "TotalMaintDiscountFormula") {
+			stat.varType = SVT_CustomVariable;
+			stat.variable = TOTAL_MAINT_DISCOUNT_VARIABLE;
 		}
 		// [[ MODIFY BASE GAME END ]]
 		else if(key == "Secondary") {

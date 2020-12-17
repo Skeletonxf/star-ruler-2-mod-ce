@@ -26,14 +26,34 @@ GlobalStat: MaxTurnRate
 	Variable: MaxTurnThrust
 	DivByMassFormula:
 
-GlobalStat: RamJetDiscount
-	Name: #S_RAMJET_MAINTAIN_DISCOUNT
-	Description: #STT_RAMJET_MAINTAIN_DISCOUNT
-	Color: #afa
-	Icon: ResearchIcons::0
+GlobalStat: MaintDiscount
+	Name: #S_TOTAL_MAINTAIN_DISCOUNT
+	Description: #STT_TOTAL_MAINTAIN_DISCOUNT
+	Color: #dede34
+	Icon: ResourceIcon::0
 	Suffix: %
 
-	Variable: Ship.RamjetDiscount
+	TotalMaintDiscountFormula:
+
+	GlobalStat: RamJetDiscount
+		Name: #S_RAMJET_MAINTAIN_DISCOUNT
+		Description: #STT_RAMJET_MAINTAIN_DISCOUNT
+		Secondary: MaintDiscount
+		Color: #afa
+		Icon: ResearchIcons::0
+		Suffix: %
+
+		Variable: Ship.RamjetDiscount
+
+	GlobalStat: HullDiscount
+		Name: #S_HULL_MAINTAIN_DISCOUNT
+		Description: #STT_HULL_MAINTAIN_DISCOUNT
+		Secondary: MaintDiscount
+		Color: #cc6a3a
+		Icon: HullSubsystems::3
+		Suffix: %
+
+		Variable: Ship.HullDiscount
 
 GlobalStat: ShipMaxPopulation
 	Name: #S_SHIP_MAX_POP

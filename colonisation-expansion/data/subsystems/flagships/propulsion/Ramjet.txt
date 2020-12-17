@@ -28,6 +28,7 @@ Subsystem: Ramjet
 	MaxThrust := Thrust
 	MaxTurnThrust := TurnThrust
 	Ship.RamjetDiscount := min(Ship.RamjetDiscount + Hexes * 2, 50)
+
 	Modifier: MaintCostFactor(factor)
 		Hex.MaintainCost := Hex.MaintainCost //No change, since this is negative
 

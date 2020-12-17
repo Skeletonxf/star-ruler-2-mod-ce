@@ -2,7 +2,7 @@ Subsystem: MothershipHull
 	Name: #S_MOTHERSHIP_HULL
 	Description: #S_MOTHERSHIP_HULL_DESC
 
-	Tags: Applied:Hull, Category:Hulls, NoCore, Mothership
+	Tags: Category:Hulls, Hull, Applied, NoCore, Mothership
 	Tags: CannotDonate, Ability:MothershipColonize
 	Hull: Flagship
 	EvaluationOrder: -200
@@ -24,7 +24,7 @@ Subsystem: MothershipHull
 	AddShipModifier: DamageFactor(0.3)
 	AddShipModifier: BuildCostFactor(0.60)
 	AddShipModifier: LaborCostFactor(0.60)
-	AddShipModifier: MaintCostFactor(0.60)
+	Ship.HullDiscount := Ship.HullDiscount + 40
 	AddShipModifier: SupportCapacityFactor(0.70)
 
 	Hex.MaintainCost := 50

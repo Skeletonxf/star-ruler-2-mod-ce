@@ -138,7 +138,13 @@ S_MAX_ACCEL: Maximum Acceleration
 STT_MAX_ACCEL: The maximum acceleration the ship can maintain in transit in perfect conditions (ie next to a Star with Solar Sails).
 
 S_RAMJET_MAINTAIN_DISCOUNT: Ramjet discount
-STT_RAMJET_MAINTAIN_DISCOUNT: Bussard Ramjet subsystem hexes reduce ship maintenance costs by up to 50%.
+STT_RAMJET_MAINTAIN_DISCOUNT: Bussard Ramjet subsystem hexes reduce ship maintenance costs by up to 40%.
+
+S_HULL_MAINTAIN_DISCOUNT: Hull discount
+STT_HULL_MAINTAIN_DISCOUNT: Ship maintenance cost reduction from Hulls.
+
+S_TOTAL_MAINTAIN_DISCOUNT: Maintenance discount
+STT_TOTAL_MAINTAIN_DISCOUNT: Total reduction in ship maintence costs. Capped at 60%.
 
 S_SHIP_MAX_POP: Maximum population
 STT_SHIP_MAX_POP: Maximum population that can live on this ship. Each billion population also provides additional labor.
