@@ -29,8 +29,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make seiging order work better on a moving target
   - Possibly make a new order to chase a moving target (as move command needs to terminate when reaching target, so isn't suitable for this)
   - Maybe cap system loyalty bonuses so they don't scale past 6 or so planets in a system
-  - Fix 0 labor cost bug with Orbital Frame constructors
-  - Rework gyroscope into hull and make it work on stations
   - Penalise battleworld colonising while in debt
   - Possibly gate some of the full battleworlder engine thrust behind propulsion techs to slow down early game
   - Spawn protecting remnants on the lattice ringworld
