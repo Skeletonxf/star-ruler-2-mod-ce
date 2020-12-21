@@ -9,4 +9,6 @@ Technology: Gyroscope
 	Color: #f9f5cb
 	SecondaryMoneyCost(1000)
 	SkipOnUnlockedSubsystem(Gyroscope)
+	SkipOnUnlockedSubsystem(GyroscopeStation)
 	UnlockSubsystem(Gyroscope)
+	UnlockSubsystem(GyroscopeStation)

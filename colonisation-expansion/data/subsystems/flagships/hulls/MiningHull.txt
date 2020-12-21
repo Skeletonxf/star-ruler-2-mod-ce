@@ -2,11 +2,10 @@ Subsystem: MiningHull
 	Name: #S_MINING_HULL
 	Description: #S_MINING_HULL_DESC
 
-	Tags: DefaultUnlock, Applied:Hull, Category:Hulls, NoCore
+	Tags: Applied:Hull, Category:Hulls, NoCore
 	Hull: Flagship
 	EvaluationOrder: -200
 	BaseColor: #a1692c
-
 
 	AddShipModifier: HpFactor(0.2)
 	AddShipModifier: MaintCostFactor(0.34)

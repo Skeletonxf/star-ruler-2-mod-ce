@@ -200,10 +200,11 @@ S_SUPERSTRUCTURE_HULL_DESC: <<
 >>
 GYROSCOPE: Gyroscope
 GYROSCOPE_DESC: <<
-	A complex frame, rotor and gimbal system that allows an object to rotate effortlessly
+	A complex frame, rotor and gimbal hull that allows an object to rotate effortlessly
 
 	[img=Plus]Provides a high turn rate.[/img]
-	[img=Plus]Can be placed internally.[/img]
-	[img=Minus]Does not provide any thrust.[/img]
+	[img=Minus]Increases labor costs by 15%.[/img]
+	[img=Minus]Increases build costs by 5%.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Can be applied together with most other hulls.[/color][/i][/img]
 >>
 ERROR_GYRO_TOO_SMALL: Gyroscope must fill at least 30% of the ship

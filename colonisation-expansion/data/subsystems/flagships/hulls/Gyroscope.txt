@@ -1,0 +1,36 @@
+Subsystem: Gyroscope
+	Name: #GYROSCOPE
+	Description: #GYROSCOPE_DESC
+
+	Tags: Category:Hulls, Hull, Applied, NoCore,
+	Hull: Flagship
+	EvaluationOrder: -200
+	BaseColor: #f9f5cb
+
+	TurnThrust := 8.0 * HexSize * 30
+	MaxTurnThrust := TurnThrust
+	AddShipModifier: LaborCostFactor(1.15)
+	AddShipModifier: BuildCostFactor(1.05)
+
+	Module: Default
+		Sprite: TechIcons::7
+		DrawMode: 3
+
+Subsystem: GyroscopeStation
+	Name: #GYROSCOPE
+	Description: #GYROSCOPE_DESC
+
+	Tags: Category:Hulls, Hull, Applied, NoCore,
+	Hull: Station
+	EvaluationOrder: -200
+	BaseColor: #f9f5cb
+
+	TurnThrust := 8.0 * HexSize * 30
+	MaxTurnThrust := TurnThrust
+	AddShipModifier: LaborCostFactor(1.15)
+	AddShipModifier: BuildCostFactor(1.05)
+
+	Hook: AddAccelerationBonus(0.1)
+	Module: Default
+		Sprite: TechIcons::7
+		DrawMode: 3
