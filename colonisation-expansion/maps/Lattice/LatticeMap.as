@@ -1,5 +1,6 @@
 #include "include/map.as"
 
+
 enum MapSetting {
 	M_SystemCount,
 	M_SystemSpacing,
@@ -7,6 +8,8 @@ enum MapSetting {
 };
 
 #section server
+from empire import Creeps;
+
 class Coord {
 	uint x;
 	uint y;
@@ -19,6 +22,8 @@ class Coord {
 #section all
 
 class LatticeMap : Map {
+	vec3d ringworldPosition;
+
 	LatticeMap() {
 		super();
 
@@ -133,8 +138,10 @@ class LatticeMap : Map {
 						<< "    AddPlanetStatus(Ringworld)"
 						<< "MakeAsteroid()"
 						<< "MakeArtifact()"
+						<< "AddRegionStatus(RemnantBlockedColonization)"
 						<< "ExpandSystem(1500)"
 					);
+					ringworldPosition = position;
 				} else if (!homeworld && i == width/2 && (j == height/2 - 1)) {
 					@sys = addSystem(position, code=SystemCode()
 						<< "NameSystem(Avarita)"
@@ -226,5 +233,22 @@ class LatticeMap : Map {
 		}
 
 	}
+
+	bool initialized = false;
+
+	void tick(double time) {
+		if(!initialized && !isLoadedSave) {
+			initialized = true;
+			postInit();
+		}
+	}
+
+	void postInit() {
+		const Design@ guardian = Creeps.getDesign("Superbia Guardian");
+		vec3d position = ringworldPosition;
+		position.y += 200.0;
+		createShip(position, guardian, Creeps, free=true);
+	}
+
 #section all
 };

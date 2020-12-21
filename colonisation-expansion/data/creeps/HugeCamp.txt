@@ -1,0 +1,14 @@
+Camp: HugeCamp
+	Frequency: 0.0
+
+	Ship: Kyllaros [Remnant Kyllaros]
+	Ship: 15-30x Gunship
+	Ship: 10-30x Missile Boat
+	Ship: 4-17x Beamship
+	Ship: 0-10x Heavy Gunship
+
+	Pickup: AncientKnowledge
+		Name: #PICKUP_ANCIENT_KNOWLEDGE
+		Description: #PICKUP_ANCIENT_KNOWLEDGE_DESC
+
+		GainInfluenceCard(AncientKnowledge)
