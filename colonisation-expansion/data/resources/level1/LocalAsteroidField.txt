@@ -15,3 +15,24 @@ Resource: LocalAsteroidField
 	AddStatus(PlanetHasAsteroidField)
 	ModCivResourceMult(Labor, +0.5) #version>=71
 	AsteroidGraphics()
+
+Resource: LocalAsteroidFieldGasGiant
+	Name: #LOCAL_ASTEROID_FIELD
+	Description: #LOCAL_ASTEROID_FIELD_DESC
+	Native Biome: Atmosphere
+
+	Icon: ResourceIcons::28
+	Small Icon: ResourceIconsSmall::28
+
+	Level: 1
+	Exportable: False
+	Rarity: Uncommon
+	Affinity: Labor
+
+	Pressure: 10 Labor
+	AddStatus(PlanetHasAsteroidField)
+	ModCivResourceMult(Labor, +0.5) #version>=71
+	AsteroidGraphics()
+
+	Frequency: 0
+	Gas Giant Frequency: 0.10

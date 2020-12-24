@@ -11,4 +11,4 @@ Resource: HeavyGases
 
 	Pressure: 3 Energy
 	Frequency: 0
-	Gas Giant Frequency: 0.2
+	Gas Giant Frequency: 0.15

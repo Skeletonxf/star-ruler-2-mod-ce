@@ -26,5 +26,5 @@ Resource: DegenerateMatterGasGiant
 	Affinity: Research
 
 	Pressure: 7 Research
-	Gas Giant Frequency: 0.02
+	Gas Giant Frequency: 0.03
 	Frequency: 0

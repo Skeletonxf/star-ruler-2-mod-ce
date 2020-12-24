@@ -306,19 +306,19 @@ array<double> gasGiantIndexLookupTable;
 const ResourceType@ rollGasGiantResource() {
 	// set cache on first call
 	if (totalGasGiantResourcesFrequency == 0) {
-		//double gasTotalFrequency = 0;
-		//double iceTotalFrequency = 0;
+		double gasTotalFrequency = 0;
+		double iceTotalFrequency = 0;
 		for (uint i = 0, cnt = getResourceCount(); i < cnt; ++i) {
 			const ResourceType@ type = getResource(i);
 			if (type.gasGiantFrequency > 0) {
 				gasGiantIndexLookupTable.insertLast(totalGasGiantResourcesFrequency);
 				gasGiantLookupTable.insertLast(type);
 				totalGasGiantResourcesFrequency += type.gasGiantFrequency;
-				//if (type.isIceGiant) {
-				//	iceTotalFrequency += type.gasGiantFrequency;
-				//} else {
-				//	gasTotalFrequency += type.gasGiantFrequency;
-				//}
+				if (type.isIceGiant) {
+					iceTotalFrequency += type.gasGiantFrequency;
+				} else {
+					gasTotalFrequency += type.gasGiantFrequency;
+				}
 			}
 		}
 		//print("Gas Giant Frequency Total: "+gasTotalFrequency);

@@ -6,8 +6,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Port FlagTiny bugfix to community patch
   - Port interdict movement fixes to community patch
   - Stress test teaching of dummy resources to the AI
-  - Make maintenace reduction from ramjets, collosus, superstructure, mothership and other subsystems/hulls all count towards a single stat which is capped at 50% so players can't double dip
-    - Should also open up more room for gravitron thrusters with players getting other ways to hit 50% reduction without using ramjets (and thus not being pressured to use ramjets just for the discounts and losing the benefits of gravitrons)
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully working
   - Expansion AI Component
     - Implement custom ColonizeAbility interface for Mechanoid and Ancient AI empires
