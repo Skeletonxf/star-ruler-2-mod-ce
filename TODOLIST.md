@@ -33,9 +33,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make battleworlds take some time to come online and ready to move
   - Make battleworld colonisation take some time to get target to 1 pop
   - Fix battleworlds staying visible while moving around deep space without being seen
-  - Spawn protecting remnants on the lattice ringworld
   - Gravitron damage should have a ramp up time to reach 100% dps
-  - Investigate losing memory of a planet still letting it be seen as 'uncolonised' when rescouted
   - Investigate issues recolonising razed planets
   - Stop players putting floating continents on dyson spheres
   - Rework the Flying trait downside so it is less severe
