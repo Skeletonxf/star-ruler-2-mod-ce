@@ -50,9 +50,9 @@ Subsystem: StationHull
 	AddShipModifier: FireArcFactor(2.0)
 	AddShipModifier: TrackingFactor(2.0)
 
-	Ship.RamJetDiscount := Ship.RamJetDiscount + 0
+	Ship.RamjetDiscount := Ship.RamjetDiscount + 0
 	Ship.HullDiscount := Ship.HullDiscount + 0
-	AddPostModifier: AddMaintainCost(-HexSum.MaintainCost * min((min(Ship.RamJetDiscount + Ship.HullDiscount, 60) * 0.01), 1))
+	AddPostModifier: AddMaintainCost(-HexSum.MaintainCost * min((min(Ship.RamjetDiscount + Ship.HullDiscount, 60) * 0.01), 1))
 
 	Modifier: IncreaseHexLimit(Hexes)
 		HexLimit := HexLimit + Hexes
