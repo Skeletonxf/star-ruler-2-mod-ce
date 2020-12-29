@@ -24,11 +24,15 @@ This is primarily intended as a developer focused project planning list, rather 
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
   - Tweak tractor default design
+  - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
   - Make seiging order work better on a moving target
-  - Possibly make a new order to chase a moving target (as move command needs to terminate when reaching target, so isn't suitable for this)
+  - Make a new order to follow a moving target (as move command needs to terminate when reaching target, so isn't suitable for this)
+    - Possibly chase/pursue commands for stay on top of target and stay within firing range of target respectively
   - Maybe cap system loyalty bonuses so they don't scale past 6 or so planets in a system
   - Penalise battleworld colonising while in debt
-  - Possibly gate some of the full battleworlder engine thrust behind propulsion techs to slow down early game
+  - Make battleworlds take some time to come online and ready to move
+  - Make battleworld colonisation take some time to get target to 1 pop
+  - Fix battleworlds staying visible while moving around deep space without being seen
   - Spawn protecting remnants on the lattice ringworld
   - Gravitron damage should have a ramp up time to reach 100% dps
   - Investigate losing memory of a planet still letting it be seen as 'uncolonised' when rescouted

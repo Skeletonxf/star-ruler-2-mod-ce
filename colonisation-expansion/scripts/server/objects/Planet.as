@@ -345,7 +345,9 @@ tidy class PlanetScript {
 		} else {
 			// planet.donatedVision |= ~0;
 			// Do **not** make planets in deep space globally visible
-			planet.donatedVision &= 0;
+			//planet.donatedVision &= 0;
+			// Planets should only become visible to anything that can see them
+			planet.donatedVision |= planet.visibleMask;
 		}
 		// [[ MODIFY BASE GAME END ]]
 
