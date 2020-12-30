@@ -41,6 +41,7 @@ Subsystem: FlagshipHull
 	Ship.HullDiscount := Ship.HullDiscount + 0
 	AddPostModifier: AddMaintainCost(-HexSum.MaintainCost * min((min(Ship.RamjetDiscount + Ship.HullDiscount, 60) * 0.01), 1))
 
+	Hook: CE_biome_hooks::IfMoreStatusStacks(MothershipPopulation, Sum.ShipMaxPopulation, RemoveStatusInstance(MothershipPopulation))
 	Modifier: IncreaseHexLimit(Hexes)
 		HexLimit := HexLimit + Hexes
 		FreeHexLimit := FreeHexLimit + Hexes

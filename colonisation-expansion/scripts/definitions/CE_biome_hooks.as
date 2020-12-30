@@ -241,6 +241,28 @@ class IfFewerStatusStacks : IfHook {
 #section all
 };
 
+class IfMoreStatusStacks : IfHook {
+	Document doc("Only applies the inner hook if the object has more status stacks than an amount.");
+	Argument status(AT_Status, doc="Type of status effect to limit.");
+	Argument amount(AT_Integer, doc="Maximum number of stacks to stop triggering inner hook at.");
+	Argument hookID(AT_Hook, "planet_effects::GenericEffect");
+
+	bool instantiate() override {
+		if(!withHook(hookID.str))
+			return false;
+		return GenericEffect::instantiate();
+	}
+
+#section server
+	bool condition(Object& obj) const override {
+		if(!obj.hasStatuses)
+			return false;
+		int count = obj.getStatusStackCount(status.integer);
+		return count > amount.integer;
+	}
+#section all
+};
+
 class DealPlanetTrueDamage : BonusEffect {
 	Document doc("Deal true damage to a planet (bypassing pop based modifiers).");
 	Argument amount(AT_Decimal, doc="Amount of damage to deal.");
