@@ -4,7 +4,8 @@
 enum MapSetting {
 	M_SystemCount,
 	M_SystemSpacing,
-	M_Flatten,
+	M_LinkCorners,
+	M_RelicsEnabled,
 };
 
 #section server
@@ -23,6 +24,7 @@ class Coord {
 
 class LatticeMap : Map {
 	vec3d ringworldPosition;
+	bool spawnRelics = true;
 
 	LatticeMap() {
 		super();
@@ -40,14 +42,17 @@ class LatticeMap : Map {
 	void makeSettings() {
 		Number(locale::SYSTEM_COUNT, M_SystemCount, DEFAULT_SYSTEM_COUNT, decimals=0, step=10, min=20, halfWidth=true);
 		Number(locale::SYSTEM_SPACING, M_SystemSpacing, DEFAULT_SPACING, decimals=0, step=1000, min=MIN_SPACING, halfWidth=true);
-		//Toggle(locale::FLATTEN, M_Flatten, true, halfWidth=true);
+		Toggle(locale::LATTICE_LINK_CORNERS, M_LinkCorners, true, halfWidth=true);
+		Toggle(locale::LATTICE_RELICS_ENABLED, M_RelicsEnabled, true, halfWidth=true);
 	}
 
 #section server
 	void placeSystems() {
 		uint systemCount = uint(getSetting(M_SystemCount, DEFAULT_SYSTEM_COUNT));
 		double spacing = modSpacing(getSetting(M_SystemSpacing, DEFAULT_SPACING));
-		//bool flatten = getSetting(M_Flatten, 0.0) != 0.0;
+
+		bool linkCorners = getSetting(M_LinkCorners, 0.0) != 0.0;
+		spawnRelics = getSetting(M_RelicsEnabled, 0.0) != 0.0;
 
 		uint emptySystems = systemCount / 20;
 		uint totalSystems = 4 + emptySystems + systemCount;
@@ -126,7 +131,7 @@ class LatticeMap : Map {
 				}
 
 				SystemData@ sys;
-				if (i == width/2 && j == height/2) {
+				if (i == width/2 && j == height/2 && spawnRelics) {
 					@sys = addSystem(position, code=SystemCode()
 						<< "NameSystem(Superbia)"
 						<< "MakePlanet(Ringworld, Radius = 550, Conditions = False, Moons = False, Physics = False)"
@@ -229,6 +234,16 @@ class LatticeMap : Map {
 						addLink(sys, other);
 					}
 				}
+
+				//Create the wormholes
+				if (linkCorners && i == 0 && j == 0) {
+					SystemData@ other = grid[((width - 1) * height) + (height - 1)];
+					createWormhole(sys, other);
+				}
+				if (linkCorners && i == (width - 1) && j == 0) {
+					SystemData@ other = grid[(0 * height) + (height - 1)];
+					createWormhole(sys, other);
+				}
 			}
 		}
 
@@ -247,7 +262,9 @@ class LatticeMap : Map {
 		const Design@ guardian = Creeps.getDesign("Superbia Guardian");
 		vec3d position = ringworldPosition;
 		position.y += 200.0;
-		createShip(position, guardian, Creeps, free=true);
+		if (spawnRelics) {
+			createShip(position, guardian, Creeps, free=true);
+		}
 	}
 
 #section all
