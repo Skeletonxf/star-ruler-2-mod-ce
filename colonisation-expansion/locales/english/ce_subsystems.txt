@@ -208,3 +208,10 @@ GYROSCOPE_DESC: <<
 	[img=MenuIcons::3;20][i][color=#aaa]Can be applied together with most other hulls.[/color][/i][/img]
 >>
 ERROR_GYRO_TOO_SMALL: Gyroscope must fill at least 30% of the ship
+S_NILINGARMOR_DESC: <<
+	Strands of quantum-reactive fibre connect the outer plating to a zero-sized sink hole in spacetime, allowing incoming energy flows to be safely redirected and stored. When enough energy has been stored, it is channeled back into normal spacetime, creating a strong EM pulse to damage surrounding enemies.
+
+	[img=Plus]Reduces the damage from any incoming energy-based weapons by 45%.[/img]
+	[img=Plus]After the threshold amount of damage is absorbed, an area-of-effect burst is released, damaging all nearby enemies relative to the stored amount.[/img]
+	[img=Minus]Provides absolutely no protection against other weapon types, and has no intrinsic Health.[/img]
+>>

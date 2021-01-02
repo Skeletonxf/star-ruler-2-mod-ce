@@ -79,7 +79,7 @@ DamageEventStatus NilingAbsorb(DamageEvent& evt, const vec2u& position, double D
 	double value = bp.decimal(sys, 0);
 	value += evt.damage;
 
-	if(value >= Damage) {
+	while(value >= Damage) { // [[ MODIFY BASE GAME ]]
 		playParticleSystem("NilingExplosion", evt.target.position, quaterniond(), Radius / 15.0, evt.target.visibleMask);
 		AoEDamage(evt.target, evt.target, vec3d(), Damage * 0.9, Radius, 10.0);
 
@@ -87,8 +87,10 @@ DamageEventStatus NilingAbsorb(DamageEvent& evt, const vec2u& position, double D
 	}
 
 	bp.decimal(sys, 0) = value;
-	evt.damage = 0;
-	return DE_EndDamage;
+	// [[ MODIFY BASE GAME START ]]
+	evt.damage *= 0.55;
+	return DE_Continue;
+	// [[ MODIFY BASE GAME END ]]
 }
 
 void AoEDamage(Object& source, Object@ targ, const vec3d& impact, double Damage, double Radius, double Hits = 1.0, double partiality = 1.0, double pushback = 0.0, bool spillable = true) {
