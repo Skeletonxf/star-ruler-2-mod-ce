@@ -59,3 +59,11 @@ Material: Ammonia
 Material: LightResourceClass
 	Inherit: Image2D
 	Texture: data/images/light.png
+
+Material: DownArrow
+	Inherit: Image2D
+	Texture: data/images/down-1.png
+
+Material: UpArrow
+	Inherit: Image2D
+	Texture: data/images/up-1.png

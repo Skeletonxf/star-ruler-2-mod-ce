@@ -85,6 +85,7 @@ class Quickbar : BaseGuiElement, Savable {
 		auto@ exTrait = getTrait("Extragalactic");
 		// [[ MODIFY BASE GAME START ]]
 		auto@ bwTrait = getTrait("Battleworlders");
+		auto@ mechTrait = getTrait("Mechanoid");
 
 		add(CardMode(this));
 		// [[ MODIFY BASE GAME END ]]
@@ -103,6 +104,10 @@ class Quickbar : BaseGuiElement, Savable {
 		// [[ MODIFY BASE GAME START ]]
 		if(playerEmpire.hasTrait(bwTrait.id))
 			add(IdlePlanets(this));
+		if (!playerEmpire.hasTrait(anTrait.id)) {
+			add(PlanetsOverMaxPop(this), closed=!playerEmpire.hasTrait(mechTrait.id));
+			add(PlanetsUnderMaxPop(this), closed=!playerEmpire.hasTrait(scTrait.id));
+		}
 		// [[ MODIFY BASE GAME END ]]
 		add(ColonizingPlanets(this));
 		add(ColonizeSafePlanets(this), closed=true);
@@ -915,6 +920,54 @@ class IdlePlanets : ObjectMode {
 
 	string get_name() override {
 		return locale::IDLE_PLANETS;
+	}
+};
+
+class PlanetsUnderMaxPop : ObjectMode {
+	PlanetsUnderMaxPop(IGuiElement@ parent) {
+		super(parent);
+		color = Color(0x8060ffff);
+	}
+
+	bool filter(ObjectData@ dat) {
+		if(!dat.obj.isPlanet)
+			return false;
+		Planet@ planet = cast<Planet>(dat.obj);
+		if (planet is null)
+			return false;
+		return double(planet.maxPopulation) > ceil(planet.population);
+	}
+
+	Sprite get_icon() override {
+		return Sprite(material::DownArrow);
+	}
+
+	string get_name() override {
+		return locale::UNDERPOPULATED_PLANETS;
+	}
+};
+
+class PlanetsOverMaxPop : ObjectMode {
+	PlanetsOverMaxPop(IGuiElement@ parent) {
+		super(parent);
+		color = Color(0x8060ffff);
+	}
+
+	bool filter(ObjectData@ dat) {
+		if(!dat.obj.isPlanet)
+			return false;
+		Planet@ planet = cast<Planet>(dat.obj);
+		if (planet is null)
+			return false;
+		return floor(planet.population) > double(planet.maxPopulation);
+	}
+
+	Sprite get_icon() override {
+		return Sprite(material::UpArrow);
+	}
+
+	string get_name() override {
+		return locale::OVERPOPULATED_PLANETS;
 	}
 };
 // [[ MODIFY BASE GAME END ]]

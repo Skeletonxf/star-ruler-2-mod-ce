@@ -1,0 +1,3 @@
+IDLE_PLANETS: Idle Planets
+UNDERPOPULATED_PLANETS: Underpopulated Planets
+OVERPOPULATED_PLANETS: Overpopulated Planets
