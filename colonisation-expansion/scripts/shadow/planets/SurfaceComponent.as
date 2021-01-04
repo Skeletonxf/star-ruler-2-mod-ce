@@ -320,6 +320,12 @@ tidy class SurfaceComponent : Component_SurfaceComponent {
 	}
 
 	bool get_canSafelyColonize(const Object& obj) const {
+		// [[ MODIFY BASE GAME START ]]
+		// Allow colonising with pop that is overpopulated regardless of other factors
+		if (floor(Population - double(colonization.length + 1.0)) > ceil(MaxPopulation) && !obj.inCombat) {
+			return true;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		if(Level < 1)
 			return false;
 

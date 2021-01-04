@@ -9,7 +9,6 @@ Status: ParasiteRaze
 	AddPressureCap(1000)
 	OnEnable(RemoveStatus(NativeLife))
 	IfHaveStatus(RazeWithoutAbandon, OnDisable(AddStatus(ParasiteHomeworldRazed)))
-	IfNotHaveStatus(RazeWithoutAbandon, OnDisable(LosePopulation(1000)))
 	AddMaxPopulation(5)
 	OnDisable(AddStatus(ParasiteRazeDone))
 	CE_biome_hooks::DealPlanetPercentageTrueDamageOverTime(0.009)
@@ -37,6 +36,8 @@ Status: ParasiteRaze
 	ForbidLaborExport()
 Status: ParasiteRazeDone
 	Visible To: Nobody
+	PlanetLevelIncomeMod(+85, -80, 0)
+	AddMaxPopulation(1)
 Status: RazeWithoutAbandon
 	Visible To: Nobody
 Status: ParasiteHomeworldRazed
