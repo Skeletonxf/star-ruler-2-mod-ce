@@ -31,12 +31,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make a new order to follow a moving target (as move command needs to terminate when reaching target, so isn't suitable for this)
     - Possibly chase/pursue commands for stay on top of target and stay within firing range of target respectively
   - Maybe cap system loyalty bonuses so they don't scale past 6 or so planets in a system
-  - Penalise battleworld colonising while in debt
-  - Make battleworlds take some time to come online and ready to move
-  - Make battleworld colonisation take some time to get target to 1 pop
-  - Fix battleworlds staying visible while moving around deep space without being seen
   - Gravitron damage should have a ramp up time to reach 100% dps
-  - Investigate issues recolonising razed planets
+  - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands
   - Stop players putting floating continents on dyson spheres
   - Rework the Flying trait downside so it is less severe
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
