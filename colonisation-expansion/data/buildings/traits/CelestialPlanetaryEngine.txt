@@ -12,4 +12,4 @@ Building: CelestialPlanetaryEngine
 	AddPlanetResource(Battleworld)
 	CannotBuildManually()
 	CannotRemove()
-	IfNotHaveStatus(Ringworld, AddAccelerationBonus(1.5))
+	IfNotHaveStatus(Ringworld, AddAccelerationBonus(1.25))

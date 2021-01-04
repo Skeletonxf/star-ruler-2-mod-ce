@@ -20,3 +20,4 @@ Trait: Battleworlders
 	AddModifier(StationHull::MaintenanceModFactor(0.6))
 	UnlockTag(PlanetaryEngineUnlock)
 	AddStatusOwnedPlanets(Celestial)
+	TriggerHomeworld(SpawnBuilding(CelestialPlanetaryEngine, (10, 2)), Run Post = True)

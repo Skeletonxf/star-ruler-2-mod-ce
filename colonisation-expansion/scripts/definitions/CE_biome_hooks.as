@@ -1522,3 +1522,29 @@ class DamageIfLeavesRegion : GenericEffect {
 	}
 #section all
 };
+
+class SpawnQueuedBuilding : BonusEffect {
+	Document doc("Attempt to spawn a building at a particular position, but build it normally.");
+	Argument type(AT_Building, doc="Type of building to spawn.");
+	Argument position(AT_Position2D, doc="Surface position to spawn at.");
+	Argument develop(AT_Boolean, "False", doc="Whether to mark all tiles its on as developed.");
+
+	const BuildingType@ bldType;
+
+	bool instantiate() {
+		@bldType = getBuildingType(type.str);
+		if(bldType is null) {
+			error(" Error: Could not find building type: '"+escape(type.str)+"'");
+			return false;
+		}
+		return BonusEffect::instantiate();
+	}
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if(obj is null || !obj.hasSurfaceComponent)
+			return;
+		obj.spawnBuilding(bldType.id, vec2i(position.fromPosition2D()), develop.boolean, 0.f);
+	}
+#section all
+};

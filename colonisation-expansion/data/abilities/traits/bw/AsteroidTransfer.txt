@@ -1,7 +1,7 @@
 Ability: BWAsteroidTransfer
 	Name: #TRANSFER_ASTEROID_RESOURCE
 	Icon: AsteroidIcon::0
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	CE_biome_hooks::TakeAsteroidResource(targ)
 	TargetFilterOwned(targ)
@@ -13,7 +13,7 @@ Ability: BWAsteroidTransfer
 Ability: BWAsteroidAffinityTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::44
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: AsteroidAffinity
@@ -28,7 +28,7 @@ Ability: BWAsteroidAffinityTransfer
 Ability: BWAsteroidGrowthTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::20
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: AsteroidGrowth
@@ -43,7 +43,7 @@ Ability: BWAsteroidGrowthTransfer
 Ability: BWAsteroidLaborTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::46
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: AsteroidLabor

@@ -7,7 +7,7 @@ LIGHT_SYSTEM_DESC: <<
 BLD_CELESTIAL_PLANET_ENGINE_DESC: <<
 	A ludicrously large thruster constructed on the planet's surface allows the planet to accelerate itself slightly.
 
-	Gives the planet 1.5 u/s² of acceleration to move with.
+	Gives the planet 1.25 u/s² of acceleration to move with.
 >>
 BLD_DEFENSE_GRID_DESC: <<
 	A massive field of missile silos located on the surface of the planet, capable of firing at nearby enemy fleets.

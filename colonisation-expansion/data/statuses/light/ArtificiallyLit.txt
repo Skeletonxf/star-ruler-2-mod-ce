@@ -15,3 +15,8 @@ Status: StarChildrenArtificiallyLit
 Status: StarChildrenLightingApplied
 	Visible To: Nobody
 	IfSystemHasStar(AddPlanetResource(StarChildrenArtificialLight))
+
+Status: AncientArtificiallyLit
+	Name: Artificial Lighting
+	Visible To: Nobody
+	IfNotHaveStatus(CurrentlyStarlit, AddPlanetResource(AncientArtificialLight))

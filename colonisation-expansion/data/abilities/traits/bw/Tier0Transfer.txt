@@ -1,7 +1,7 @@
 Ability: BWAluminumTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::16
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Aluminum
@@ -17,7 +17,7 @@ Ability: BWAluminumTransfer
 Ability: BWCoalTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::12
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Coal
@@ -33,7 +33,7 @@ Ability: BWCoalTransfer
 Ability: BWFulrateTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::43
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Fulrate
@@ -49,7 +49,7 @@ Ability: BWFulrateTransfer
 Ability: BWGemsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::51
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Gems
@@ -65,7 +65,7 @@ Ability: BWGemsTransfer
 Ability: BWIronTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::15
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Iron
@@ -81,7 +81,7 @@ Ability: BWIronTransfer
 Ability: BWPekelmTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::25
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Pekelm
@@ -97,7 +97,7 @@ Ability: BWPekelmTransfer
 Ability: BWPhasiteTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::24
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Phasite
@@ -113,7 +113,7 @@ Ability: BWPhasiteTransfer
 Ability: BWSpiceTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::2
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Spice
@@ -129,7 +129,7 @@ Ability: BWSpiceTransfer
 Ability: BWUnobtaniumTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::26
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Unobtanium
@@ -145,7 +145,7 @@ Ability: BWUnobtaniumTransfer
 Ability: BWDrugsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::22
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Drugs

@@ -1,7 +1,7 @@
 Ability: BWDegenerateMatterTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::42
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: DegenerateMatter
@@ -17,7 +17,7 @@ Ability: BWDegenerateMatterTransfer
 Ability: BWDegenerateMatterGasGiantTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::42
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: DegenerateMatterGasGiant
@@ -33,7 +33,7 @@ Ability: BWDegenerateMatterGasGiantTransfer
 Ability: BWHelium3Transfer
 	Name: #TRANSFER_RESOURCE
 	Icon: He3
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Helium3
@@ -49,7 +49,7 @@ Ability: BWHelium3Transfer
 Ability: BWHypervolatilesTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::45
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Hypervolatiles
@@ -65,7 +65,7 @@ Ability: BWHypervolatilesTransfer
 Ability: BWJewelryTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::1
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Jewelry
@@ -81,7 +81,7 @@ Ability: BWJewelryTransfer
 Ability: BWLatticesTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::80
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Lattices
@@ -97,7 +97,7 @@ Ability: BWLatticesTransfer
 Ability: BWMedicinesTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::6
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Medicines
@@ -113,7 +113,7 @@ Ability: BWMedicinesTransfer
 Ability: BWNeutroniumTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::36
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Neutronium
@@ -129,7 +129,7 @@ Ability: BWNeutroniumTransfer
 Ability: BWPlutoniumTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::34
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Plutonium
@@ -145,7 +145,7 @@ Ability: BWPlutoniumTransfer
 Ability: BWPsionicReagentsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::37
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: PsionicReagents
@@ -161,7 +161,7 @@ Ability: BWPsionicReagentsTransfer
 Ability: BWSupercarbonsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::39
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Supercarbons
@@ -177,7 +177,7 @@ Ability: BWSupercarbonsTransfer
 Ability: BWThoriumTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::35
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Thorium
@@ -193,7 +193,7 @@ Ability: BWThoriumTransfer
 Ability: BWUraniumTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::4
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource: Uranium
 	Resource Transfer: True

@@ -901,7 +901,7 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		++SurfaceModId;
 	}
 
-	void spawnBuilding(Object& obj, uint tid, vec2i pos, bool develop = false) {
+	void spawnBuilding(Object& obj, uint tid, vec2i pos, bool develop = false, float spawnCompletion = 1.f) {
 		const BuildingType@ type = getBuildingType(tid);
 		if(type is null)
 			return;
@@ -912,7 +912,7 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		if(pos.x >= int(grid.size.x) || pos.y >= int(grid.size.y))
 			return;
 
-		grid.build(obj, type, pos, true, develop=develop);
+		grid.build(obj, type, pos, true, develop=develop, spawnCompletion=spawnCompletion);
 		++SurfaceModId;
 	}
 

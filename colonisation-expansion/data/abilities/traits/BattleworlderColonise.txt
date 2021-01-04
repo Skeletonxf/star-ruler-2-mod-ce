@@ -4,7 +4,7 @@ Ability: BattleworlderColonize
 	Hotkey: C
 
 	Target: targ = Object
-	Range: 100
+	Range: 200
 	Description: #ABL_BATTLEWORLDER_COLONISE_DESC
 	TargetFilterType(targ, Planet)
 	TargetFilterNotQuarantined(targ)

@@ -2,7 +2,7 @@ Ability: TransferAll
 	Name: #TRANSFER_ALL
 	Description: #TRANSFER_ALL_DESC
 	Icon: ConditionIcons::7
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Hotkey: Y
 	CE_biome_hooks::TransferAllResourcesAndAbandon(targ)
@@ -12,6 +12,7 @@ Ability: TransferAll
 	RequireNotUnderSiege()
 	TargetFilterOwned(targ)
 	TargetFilterNotStatus(targ, NativeLife)
+	CE_resource_transfer::RequireHasTransferAbilities()
 
 Ability: AbilityAbandon
 	Target: targ = Object

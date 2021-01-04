@@ -1,11 +1,11 @@
 Status: Celestial
 	Name: Celestial
 	Visible To: Nobody
+	IfNative(Battleworld, GrantAbility(BattleworlderColonize))
+	IfNative(Battleworld, IfNotHaveStatus(NativeLife, IfNotHaveStatus(RemovingNativeLife, IfNotHaveStatus(NoTransfer, AddStatus(BattleworlderResourceTransfer)))))
 	OnEnable(DestroyBuildingAt((2,2), Undevelop = True))
 	OnDisable(DestroyBuildingAt((2,2), Undevelop = True))
-	IfNotHaveStatus(NativeLife, IfNotHaveStatus(RemovingNativeLife, IfNotHaveStatus(NoTransfer, AddStatus(BattleworlderResourceTransfer))))
 	DisableResourceImport()
 	DisableResourceExport()
-	GrantAbility(BattleworlderColonize)
-	OnEnable(SpawnBuilding(CelestialPlanetaryEngine, (2,2), Develop = True))
+	OnEnable(CE_biome_hooks::SpawnQueuedBuilding(CelestialPlanetaryEngine, (2,2)))
 	OnDisable(SpawnBuilding(PlanetaryEngine, (2,2)))

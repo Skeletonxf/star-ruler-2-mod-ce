@@ -129,7 +129,10 @@ server:
 	void restoreLoyalty(double mod);
 	void modLoyaltyFacing(Empire@ emp, double mod);
 	void setLoyaltyBonus(int bonus);
-	void spawnBuilding(uint tid, vec2i pos, bool develop = false);
+	// [[ MODIFY BASE GAME START ]]
+	// Make spawnCompletion configurable
+	void spawnBuilding(uint tid, vec2i pos, bool develop = false, float spawnCompletion = 1.f);
+	// [[ MODIFY BASE GAME END ]]
 	void setBuildingCompletion(uint x, uint y, float progress);
 	void modCityCount(int mod);
 	void addSurfaceArea(vec2i size, uint biome, uint voidBiome = uint(-1), bool separate = false, bool developed = false, bool vertical = false);

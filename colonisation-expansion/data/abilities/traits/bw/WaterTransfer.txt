@@ -1,7 +1,7 @@
 Ability: BWWaterTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::18
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Water
@@ -17,7 +17,7 @@ Ability: BWWaterTransfer
 Ability: BWIceGiantWaterTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::99 * ffffbb
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: IceGiantWater

@@ -25,3 +25,16 @@ Resource: StarChildrenArtificialLight
 	Frequency: 0
 	Small Icon: FusionReactor
 	Icon: FusionReactor
+
+Resource: AncientArtificialLight
+	Name: #ARTIFICIAL_LIGHT
+	Class: Light
+
+	Display Weight: -100
+
+	Exportable: False
+	Can Be Terraformed: False
+	Artificial: True
+	Frequency: 0
+	Small Icon: FusionReactor
+	Icon: FusionReactor

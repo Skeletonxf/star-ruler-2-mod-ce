@@ -2,5 +2,5 @@ Status: AncientClaim
 	Visible To: Nobody
 	Collapses: True
 
-	AddStatus(ArtificiallyLit)
+	AddStatus(AncientArtificiallyLit)
 	OnRemoveStatusAttribLT(HasPopulation, 0.5, AbandonPlanet())

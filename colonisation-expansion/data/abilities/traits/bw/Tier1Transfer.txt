@@ -1,7 +1,7 @@
 Ability: BWAmmoniaTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: Ammonia
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Ammonia
@@ -17,7 +17,7 @@ Ability: BWAmmoniaTransfer
 Ability: BWAtiumTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::78
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Atium
@@ -33,7 +33,7 @@ Ability: BWAtiumTransfer
 Ability: BWChemicalsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::10
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource: Chemicals
 	Resource Transfer: True
@@ -49,7 +49,7 @@ Ability: BWChemicalsTransfer
 Ability: BWDeuteriumTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::31
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource: Deuterium
 	Resource Transfer: True
@@ -65,7 +65,7 @@ Ability: BWDeuteriumTransfer
 Ability: BWDeuteriumIceGiantTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::31
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource: DeuteriumIceGiant
 	Resource Transfer: True
@@ -81,7 +81,7 @@ Ability: BWDeuteriumIceGiantTransfer
 Ability: BWElectronicsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::5
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Electronics
@@ -97,7 +97,7 @@ Ability: BWElectronicsTransfer
 Ability: BWExplosiveGasesTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: Gases3
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: ExplosiveGases
@@ -113,7 +113,7 @@ Ability: BWExplosiveGasesTransfer
 Ability: BWExplosivesTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::13
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource: Explosives
 	Resource Transfer: True
@@ -129,7 +129,7 @@ Ability: BWExplosivesTransfer
 Ability: BWGlassTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::27
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Glass
@@ -145,7 +145,7 @@ Ability: BWGlassTransfer
 Ability: BWHadociteTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::29
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource: Hadocite
 	Resource Transfer: True
@@ -161,7 +161,7 @@ Ability: BWHadociteTransfer
 Ability: BWHeavyGasesTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: Gases1
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: HeavyGases
@@ -177,7 +177,7 @@ Ability: BWHeavyGasesTransfer
 Ability: BWIceGiantIceTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: Ice
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource: IceGiantIce
 	Resource Transfer: True
@@ -193,7 +193,7 @@ Ability: BWIceGiantIceTransfer
 Ability: BWLuxuryMaterialsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::32
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: LuxuryMaterials
@@ -209,7 +209,7 @@ Ability: BWLuxuryMaterialsTransfer
 Ability: BWMarbleTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::77
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Marble
@@ -225,7 +225,7 @@ Ability: BWMarbleTransfer
 Ability: BWNativeGoldTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::30
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: NativeGold
@@ -241,7 +241,7 @@ Ability: BWNativeGoldTransfer
 Ability: BWNaturalGasTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::41
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: NaturalGas
@@ -257,7 +257,7 @@ Ability: BWNaturalGasTransfer
 Ability: BWOilTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::7
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource: Oil
 	TargetFilterOwned(targ)
@@ -272,7 +272,7 @@ Ability: BWOilTransfer
 Ability: BWPlasticsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::9
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Plastics
@@ -288,7 +288,7 @@ Ability: BWPlasticsTransfer
 Ability: BWRareMetalsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::11
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: RareMetals
@@ -304,7 +304,7 @@ Ability: BWRareMetalsTransfer
 Ability: BWSiliconTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::76
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Silicon
@@ -320,7 +320,7 @@ Ability: BWSiliconTransfer
 Ability: BWTextilesTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::8
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Textiles
@@ -336,7 +336,7 @@ Ability: BWTextilesTransfer
 Ability: BWTitaniumTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::33
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Titanium
@@ -352,7 +352,7 @@ Ability: BWTitaniumTransfer
 Ability: BWVolatileGasesTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: Gases2
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: VolatileGases

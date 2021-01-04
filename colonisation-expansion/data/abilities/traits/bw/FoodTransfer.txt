@@ -1,7 +1,7 @@
 Ability: BWGrainTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::20
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Grain
@@ -16,7 +16,7 @@ Ability: BWGrainTransfer
 Ability: BWFishTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::19
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Fish
@@ -31,7 +31,7 @@ Ability: BWFishTransfer
 Ability: BWMeatTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::17
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Meat
@@ -46,7 +46,7 @@ Ability: BWMeatTransfer
 Ability: BWFruitTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::14
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Fruit
@@ -61,7 +61,7 @@ Ability: BWFruitTransfer
 Ability: BWNativeFishTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::19 * #ff00e6
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: NativeFish
@@ -76,7 +76,7 @@ Ability: BWNativeFishTransfer
 Ability: BWHyperOatsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::52
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: HyperOats
@@ -91,7 +91,7 @@ Ability: BWHyperOatsTransfer
 Ability: BWSaltsTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::23
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Salts
@@ -106,7 +106,7 @@ Ability: BWSaltsTransfer
 Ability: BWSyrupTransfer
 	Name: #TRANSFER_RESOURCE
 	Icon: ResourceIconsSmall::79
-	Range: 100
+	Range: 200
 	Target: targ = Object
 	Resource Transfer: True
 	Resource: Syrup
