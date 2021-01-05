@@ -6,7 +6,7 @@ Subsystem: LowPowerShipComputer
 	Elevation: 4
 
 	Tags: BaseCost, Category:Control, BadFiller
-	Tags: DefaultUnlock, Control, ControlCore, HasInternals, Important
+	Tags: DefaultUnlock, Control, ControlCore, HasInternals, Important, BadControlForWar
 	Hull: Flagship, Station
 
 	EvaluationOrder: -10

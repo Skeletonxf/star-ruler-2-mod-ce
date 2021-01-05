@@ -16,7 +16,7 @@ Subsystem: SolarSail
 	Elevation: 3
 
 	Tags: BaseCost, Category:Propulsion, VectorThrust
-	Tags: DefaultUnlock, Engine, GivesThrust, HasInternals, NonContiguous, NoCore
+	Tags: DefaultUnlock, Engine, HasInternals, NonContiguous, NoCore
 	Hull: Flagship
 
 

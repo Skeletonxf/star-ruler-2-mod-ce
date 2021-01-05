@@ -173,13 +173,13 @@ tidy class Designer {
 				composition.insertLast(Chance(0.2, Internal(tag("IsReactor"), 0.01, 0.03)));
 		}
 		else {
-			composition.insertLast(Internal(tag("ControlCore"), 0.025, 0.05));
 			// [[ MODIFY BASE GAME START ]]
+			composition.insertLast(Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.025, 0.05));
 			// Have 2-3 control cores, not 1-2, having a single control core
 			// is very high risk if the AI didn't shield it well
-			composition.insertLast(Internal(tag("ControlCore"), 0.025, 0.05));
+			composition.insertLast(Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.025, 0.05));
+			composition.insertLast(Chance(0.5, Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.025, 0.05)));
 			// [[ MODIFY BASE GAME END ]]
-			composition.insertLast(Chance(0.5, Internal(tag("ControlCore"), 0.025, 0.05)));
 
 			if(power)
 				composition.insertLast(Internal(tag("IsReactor"), 0.04, 0.06));
@@ -190,7 +190,7 @@ tidy class Designer {
 			composition.insertLast(Internal(tag("Prayer"), 0.05, 0.10));
 
 		//Secondary modules
-		composition.insertLast(Chance(0.5, Internal(tag("SecondaryDefense"), 0.075, 0.15)));
+		composition.insertLast(Chance(1.0, Internal(tag("SecondaryDefense"), 0.075, 0.15)));
 
 		// [[ MODIFY BASE GAME START ]]
 		if (tryFTL) {
@@ -227,8 +227,8 @@ tidy class Designer {
 			composition.insertLast(Chance(0.2, Internal(tag("IsReactor"), 0.01, 0.03)));
 		}
 		else {
-			composition.insertLast(Internal(tag("ControlCore"), 0.025, 0.05));
-			composition.insertLast(Chance(0.5, Internal(tag("ControlCore"), 0.025, 0.05)));
+			composition.insertLast(Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.025, 0.05)); // [[ MODIFY BASE GAME ]]
+			composition.insertLast(Chance(0.5, Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.025, 0.05))); // [[ MODIFY BASE GAME ]]
 
 			composition.insertLast(Internal(tag("IsReactor"), 0.04, 0.06));
 		}
@@ -236,7 +236,7 @@ tidy class Designer {
 		//Shrine if needed
 		composition.insertLast(Internal(tag("Prayer"), 0.15, 0.20));
 
-		composition.insertLast(Chance(0.5, Internal(tag("SecondaryDefense"), 0.075, 0.15)));
+		composition.insertLast(Chance(1.0, Internal(tag("SecondaryDefense"), 0.075, 0.15)));
 		composition.insertLast(Filler(subsystem("SupplyModule"), 0.09, 0.13));
 
 		composition.insertLast(ArmorLayer(tag("PrimaryArmor"), HM_ALL, 1, 1));
@@ -248,15 +248,15 @@ tidy class Designer {
 		composition.length = 0;
 
 		composition.insertLast(HorizSpan(tag("Gate"), 1.0, 1.0));
-		composition.insertLast(Internal(tag("ControlCore"), 0.02, 0.03));
+		composition.insertLast(Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.02, 0.03)); // [[ MODIFY BASE GAME ]]
 		composeStation(clear=false);
 	}
 
 	void composeSlipstream() {
 		composition.length = 0;
 		composition.insertLast(Exhaust(tag("Engine") & tag("GivesThrust"), 0.50, 0.50));
-		composition.insertLast(Internal(tag("ControlCore"), 0.05, 0.05));
-		composition.insertLast(Internal(tag("ControlCore"), 0.05, 0.05));
+		composition.insertLast(Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.05, 0.05)); // [[ MODIFY BASE GAME ]]
+		composition.insertLast(Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.05, 0.05)); // [[ MODIFY BASE GAME ]]
 		composition.insertLast(Internal(tag("Slipstream"), 1.00, 1.00));
 
 		//Shrine if needed
@@ -268,8 +268,8 @@ tidy class Designer {
 
 	void composeMothership() {
 		composition.length = 0;
-		composition.insertLast(Internal(tag("ControlCore"), 0.2, 0.5));
-		composition.insertLast(Internal(tag("ControlCore"), 0.2, 0.5));
+		composition.insertLast(Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.2, 0.5)); // [[ MODIFY BASE GAME ]]
+		composition.insertLast(Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.2, 0.5)); // [[ MODIFY BASE GAME ]]
 		composition.insertLast(Applied(tag("Mothership")));
 		// [[ MODIFY BASE GAME START ]]
 		// Add another set of engine components to make motherships fast
@@ -303,6 +303,12 @@ tidy class Designer {
 	Tag@ tag(const string& value) {
 		return Tag(this, value);
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	NotTag@ notTag(const string& value) {
+		return NotTag(this, value);
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	SubsystemFilter@ subsystem(const string& value) {
 		return SubsystemFilter(getSubsystemDef(value));
@@ -1358,6 +1364,71 @@ tidy class Tag : Filter {
 		return this;
 	}
 };
+
+// [[ MODIFY BASE GAME START ]]
+// Filters for absence of a tag instead of presence
+tidy class NotTag : Filter {
+	SubsystemTag tag;
+	array<const SubsystemDef@> types;
+	bool computed = false;
+	string hullTag;
+	Empire@ owner;
+
+	NotTag(Designer& dsg, const string& tag) {
+		this.tag = getSubsystemTag(tag);
+		hullTag = dsg.hulltag;
+		@owner = dsg.owner;
+	}
+
+	const SubsystemDef@ choose() {
+		compute();
+		if(types.length == 0)
+			return null;
+		return types[randomi(0, types.length-1)];
+	}
+
+	void compute() {
+		if(computed)
+			return;
+
+		computed = true;
+		for(uint i = 0, cnt = getSubsystemDefCount(); i < cnt; ++i) {
+			auto@ def = getSubsystemDef(i);
+			if(def.hasTag(tag))
+				continue;
+			if(def.hasHullTag(hullTag))
+				continue;
+			if(def.hasTag(ST_SpecialCost))
+				continue;
+			if(def.hasTag(ST_Disabled))
+				continue;
+			if(!owner.isUnlocked(def))
+				continue;
+			if(def.hasTag(ST_RaceSpecial) && !owner.major)
+				continue;
+			types.insertLast(def);
+		}
+	}
+
+	bool filter(const SubsystemDef& def) const {
+		if(computed)
+			return types.find(def) != -1;
+		return !def.hasTag(tag);
+	}
+
+	NotTag& opAnd(Filter& other) {
+		compute();
+		for(uint i = 0, cnt = types.length; i < cnt; ++i) {
+			if(!other.filter(types[i])) {
+				types.removeAt(i);
+				--i; --cnt;
+			}
+		}
+		other.clear();
+		return this;
+	}
+};
+// [[ MODIFY BASE GAME END ]]
 
 tidy class SubsystemFilter : Filter {
 	const SubsystemDef@ type;
