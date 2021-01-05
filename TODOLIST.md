@@ -3,10 +3,9 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Port mothership retrofitting exploit to mod pack
+  - Port mothership retrofitting exploit fix to mod pack
     - Will need to port a number of custom hooks that the fix relies on along with this, and should probably take the opportunity to move them out of CE_biome_hooks
-  - Port FlagTiny bugfix to mod pack
-  - Port interdict movement fixes to community patch
+  - Port interdict movement fixes to mod pack
   - Stress test teaching of dummy resources to the AI
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully working
   - Expansion AI Component
@@ -53,7 +52,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
   - Consider integrating Darloth's NMP into CE https://github.com/darloth/SR2-NewMovement (low priority as the mods are currently compatible minus gravitron adjust)
-  - Stop AI putting Low Power Computers on flagships
   -  Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
   - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
     - Replace beams with lines?

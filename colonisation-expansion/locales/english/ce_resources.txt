@@ -107,3 +107,15 @@ EXPOSED_CORE_DESC: <<
 	[color=#ff7070][b]Cannot be exported.[/b][/color]
 >>
 EXPOSED_CORE: Exposed Core
+CYLLIUM_REV_DESC: <<
+	Energy generation on this planet is increased by [levels=$1;#ffb4b6]10%/20%/30%/40%/50%/60%[/levels].
+
+	Increases the empire's free energy storage by [levels=$1;#ffb4b6]0/50/100/150/200/300[/levels].
+
+	Generates a new random artifact in the system every 2 minutes. Up to [levels=$1;#ffb4b6]1/2/3/5/8/15[/levels] artifacts will remain in the system, older artifacts will expire.
+
+	[b]If this planet is Level 4 or higher:[/b]
+	[offset=30]Artifacts in this system are 25% cheaper to activate.[/offset]
+
+	[i][color=#aaa]This resource is a scalable resource and cannot be exported or used to level up. Its bonuses depend on the level of the planet.[/color][/i]
+>>
