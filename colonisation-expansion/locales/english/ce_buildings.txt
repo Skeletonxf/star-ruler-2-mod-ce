@@ -62,8 +62,6 @@ BLD_BARRACKS_REV_DESC: <<
 	Adds 15 Defense Reserve to your global pool.
 
 	When your defense reserve is full, it can be deployed at any time to one of your planets to spawn defense ships.
-
-	[i][color=#aaa]Cheaper to maintain on Desert biomes.[/color][/i]
 >>
 BLD_METROPOLIS_REV_DESC: <<
 	A large urban area covering and connecting multiple smaller population centers.
@@ -71,21 +69,15 @@ BLD_METROPOLIS_REV_DESC: <<
 	Replaces up to 5 regular cities.
 
 	Increases the planet's total pressure capacity by 5.
-
-	[i][color=#aaa]Cheaper to maintain on Forest biomes.[/color][/i]
 >>
 BLD_RESEARCHCOMPLEX_REV_DESC: <<
 	Generates research points for the empire, and provides training and resources to civil scientists.
 
 	Gives 1 research generation.
 	Adds 1 research pressure.
-
-	[i][color=#aaa]Cheaper to maintain on Crystallic biomes.[/color][/i]
 >>
 BLD_WAREHOUSE_REV_DESC: <<
 	Adds 100 Labor Storage.
 
 	Labor storage fills up when not building anything, and empties as extra labor for construction projects.
-
-	[i][color=#aaa]Cheaper to maintain on Desert biomes.[/color][/i]
 >>
