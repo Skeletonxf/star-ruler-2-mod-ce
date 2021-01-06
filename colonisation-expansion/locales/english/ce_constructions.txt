@@ -44,7 +44,7 @@ MAKE_NEBULAE_DESC: <<
 >>
 EXPOSE_CORE_DESC: <<
 	Through extensive drilling and explosives we can open up this planet's molten core, providing a valuable local Tier 2 resource.
-	Unfortunately the process makes the planet inhospitable in the interim.
+	Unfortunately the process makes the planet inhospitable in the interim, reducing pressure capacity and max population by 12.
 >>
 EXPOSE_CORE: Expose Molten Core
 CREATE_WATER: Synthesise Water
