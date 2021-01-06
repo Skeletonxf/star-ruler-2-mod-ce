@@ -1,6 +1,6 @@
 Building: Warehouse
 	Name: #BLD_WAREHOUSE
-	Description: #BLD_WAREHOUSE_DESC
+	Description: #BLD_WAREHOUSE_REV_DESC
 	Sprite: Warehouse
 
 	Category: Storage

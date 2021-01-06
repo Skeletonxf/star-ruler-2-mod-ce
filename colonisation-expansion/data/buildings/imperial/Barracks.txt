@@ -1,6 +1,6 @@
 Building: Barracks
 	Name: #BLD_BARRACKS
-	Description: #BLD_BARRACKS_DESC
+	Description: #BLD_BARRACKS_REV_DESC
 	Sprite: Barracks
 
 	Category: Storage

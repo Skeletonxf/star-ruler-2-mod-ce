@@ -1,6 +1,6 @@
 Building: Metropolis
 	Name: #BLD_METROPOLIS
-	Description: #BLD_METROPOLIS_DESC
+	Description: #BLD_METROPOLIS_REV_DESC
 	Sprite: Metropolis
 
 	Category: Infrastructure

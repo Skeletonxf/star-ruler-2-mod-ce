@@ -215,3 +215,14 @@ S_NILINGARMOR_DESC: <<
 	[img=Plus]After the threshold amount of damage is absorbed, an area-of-effect burst is released, damaging all nearby enemies relative to the stored amount.[/img]
 	[img=Minus]Provides absolutely no protection against other weapon types, and has no intrinsic Health.[/img]
 >>
+ANTI_MATTER_GEN_DESC: <<
+	A sustained matter-antimatter annihilation reaction provides continuous power for the ship.
+
+	[img=ResourceIcon::2;22]Provides [b][color=#42b4bd]Power[/color][/b] to operate other subsystems.[/img]
+	[img=Plus]Provides a very large amount of power in a small amount of space.[/img]
+	[img=Plus]Cheap to maintain.[/img]
+	[img=Minus]Expensive to build.[/img]
+	[img=Minus]If an antimatter generator core is destroyed, the ship explodes.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Best reinforced with Nano Mesh.[/color][/i][/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Losing required power generation in combat reduces the ship's overall effectiveness.[/color][/i][/img]
+>>

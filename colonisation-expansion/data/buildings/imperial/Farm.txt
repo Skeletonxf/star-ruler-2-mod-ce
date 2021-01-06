@@ -1,6 +1,6 @@
 Building: Farm
 	Name: #BLD_FARM
-	Description: #BLD_FARM_DESC
+	Description: #BLD_FARM_REV_DESC
 	Sprite: Megafarm
 
 	Category: Resource

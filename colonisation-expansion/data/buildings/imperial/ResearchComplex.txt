@@ -1,6 +1,6 @@
 Building: ResearchComplex
 	Name: #BLD_RESEARCHCOMPLEX
-	Description: #BLD_RESEARCHCOMPLEX_DESC
+	Description: #BLD_RESEARCHCOMPLEX_REV_DESC
 	Sprite: ResearchComplex
 
 	Category: Production

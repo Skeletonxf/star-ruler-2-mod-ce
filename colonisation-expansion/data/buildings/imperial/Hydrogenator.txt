@@ -1,6 +1,6 @@
 Building: Hydrogenator
 	Name: #BLD_HYDROGENATOR
-	Description: #BLD_HYDROGENATOR_DESC
+	Description: #BLD_HYDROGENATOR_REV_DESC
 	Sprite: Hydrogenator
 
 	Category: Resource

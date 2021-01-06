@@ -48,3 +48,44 @@ BLD_ANCIENT_REINFORCER_REV_DESC: <<
 	[i][color=#aaa]Alas, while the Reinforcer was neither overpowered, not utterly useless, it had to be reworked anyway, for what it lacked in meta defining functionality it certainly made up for in its capability to leak design revisions all over the place and bloat save files beyond what multiplayer could manage. A horrific way to never lose, if I'm winning I won't build this, and if I'm losing I'll stop the game. The Reinforcer was not unique in this power, but its cousins could be salvaged with creative workarounds to retain their effects. The Reinforcer simply could not. So it had to go, and in its place is a spiritual successor that will hopefully carve out its own niche and identity without the fangs of its parent.[/color][/i]
 >>
 BLD_ANCIENT_REINFORCER_REV: Reinforcer II
+BLD_FARM_REV_DESC: <<
+	Generates a basic unexportable food resource.
+
+	[i][color=#aaa]More expensive than maintaining a food planet.[/color][/i]
+>>
+BLD_HYDROGENATOR_REV_DESC: <<
+	Generates a basic unexportable water resource.
+
+	[i][color=#aaa]More expensive than maintaining a water planet.[/color][/i]
+>>
+BLD_BARRACKS_REV_DESC: <<
+	Adds 15 Defense Reserve to your global pool.
+
+	When your defense reserve is full, it can be deployed at any time to one of your planets to spawn defense ships.
+
+	[i][color=#aaa]Cheaper to maintain on Desert biomes.[/color][/i]
+>>
+BLD_METROPOLIS_REV_DESC: <<
+	A large urban area covering and connecting multiple smaller population centers.
+
+	Replaces up to 5 regular cities.
+
+	Increases the planet's total pressure capacity by 5.
+
+	[i][color=#aaa]Cheaper to maintain on Forest biomes.[/color][/i]
+>>
+BLD_RESEARCHCOMPLEX_REV_DESC: <<
+	Generates research points for the empire, and provides training and resources to civil scientists.
+
+	Gives 1 research generation.
+	Adds 1 research pressure.
+
+	[i][color=#aaa]Cheaper to maintain on Crystallic biomes.[/color][/i]
+>>
+BLD_WAREHOUSE_REV_DESC: <<
+	Adds 100 Labor Storage.
+
+	Labor storage fills up when not building anything, and empties as extra labor for construction projects.
+
+	[i][color=#aaa]Cheaper to maintain on Desert biomes.[/color][/i]
+>>
