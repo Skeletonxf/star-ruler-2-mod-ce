@@ -1,0 +1,10 @@
+Technology: CreateWater
+	Name: #R_UNLOCK_CREATE_WATER
+	Description: #R_UNLOCK_CREATE_WATER_DESC
+	Class: Unlock
+	Category: Colonisation
+	Point Cost: 500
+	Time Cost: 60
+	Icon: DesignationIcons::2 * ffaaff
+	Color: #9debff
+	UnlockTag(CreateWater)

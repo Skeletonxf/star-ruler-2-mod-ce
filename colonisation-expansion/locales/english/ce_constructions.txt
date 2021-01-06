@@ -47,3 +47,5 @@ EXPOSE_CORE_DESC: <<
 	Unfortunately the process makes the planet inhospitable in the interim.
 >>
 EXPOSE_CORE: Expose Molten Core
+CREATE_WATER: Synthesise Water
+CREATE_WATER_DESC: Using a ludicrous amount of energy, hydrogen and oxygen we can create enough water for an entire planet, at the cost of the mostly controlled explosion [color=#f00]losing all the planet's existing resources.[/color]

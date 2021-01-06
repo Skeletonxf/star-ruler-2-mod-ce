@@ -113,3 +113,9 @@ R_SYS_GYROSCOPE_DESC: <<
 	[bbloc=#GYROSCOPE_DESC/]
 >>
 R_SYS_GYROSCOPE: Gyroscope
+R_UNLOCK_CREATE_WATER: Water Synthesis
+R_UNLOCK_CREATE_WATER_DESC: <<
+	[color=#aaa][i]Unlocks the ability to convert planets into water worlds.[/i][/color]
+
+	[bbloc=#CREATE_WATER_DESC/]
+>>

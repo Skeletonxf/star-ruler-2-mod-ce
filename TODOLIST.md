@@ -26,6 +26,7 @@ This is primarily intended as a developer focused project planning list, rather 
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
   - Tweak tractor default design
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
+  - Fix discrepencies with EnergyIncome client/server side
   - Make seiging order work better on a moving target
   - Make a new order to follow a moving target (as move command needs to terminate when reaching target, so isn't suitable for this)
     - Possibly chase/pursue commands for stay on top of target and stay within firing range of target respectively
@@ -36,8 +37,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Rework the Flying trait downside so it is less severe
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Don't let random life assign a life that other traits the player took are incompatible with
-  - Remove fire damage from Aquatic trait given it doesn't do anything
   - Constructions for Gas Giants to make them more useful late game
+  - Give stations orders to pick a planet to orbit
   - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little
   - battleworld QoL changes
     - finish port to CP
@@ -52,7 +53,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
   - Consider integrating Darloth's NMP into CE https://github.com/darloth/SR2-NewMovement (low priority as the mods are currently compatible minus gravitron adjust)
-  -  Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
   - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
     - Replace beams with lines?
 
@@ -81,6 +81,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make Star Children habitats and uplifted planets interact a little better
   - Fix visual bug causing Drugs to appear to be filling the Light class requirement for planet levelling when they are not, probably related to dummy resources
     - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
+  -  Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
 
 - Long term plans
   - Improving the AI

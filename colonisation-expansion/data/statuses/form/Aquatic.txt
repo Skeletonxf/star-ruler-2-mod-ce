@@ -1,4 +1,5 @@
 Status: Aquatic
 	Name: Aquatic
 	Visible To: Nobody
+	ChangeLevelChain(AquaticChain)
 	IfHaveStatus(WaterBiome, AddStatus(Happy))

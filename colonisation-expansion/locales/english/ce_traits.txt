@@ -20,7 +20,13 @@ TRAIT_STAR_CHILDREN_DESC: [vspace=3/] [img=ResourceIcon::8;22]Population grows o
 WALKING: Walking
 TRAIT_TERRESTIAL_DESC: No particular effects on gameplay
 WALKING_DESC: No particular bonuses.
-AQUATIC_TRAIT: All colonised planets with water biomes become happy. Development and building construction rates reduced 20%. Fire damage taken on ships is doubled.
+AQUATIC_TRAIT: <<
+	Planets require a second water resource instead of food to reach level 3.
+	Tile development and building construction are 10% slower.
+	Crew subsystems have 75% more mass.
+	Water Synthesis is available from the start and cheaper
+	All colonised planets with water biomes become happy.
+>>
 CELESTIAL_DESC: <<
 	[color=#f00]NO AI SUPPORT[/color]
 

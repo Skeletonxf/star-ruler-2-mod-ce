@@ -277,3 +277,4 @@ Grid: ColonisationExpansionGrid
 	ColossusHull: 2,-10
 	InfiniteHealth: 3,-11
 	Gyroscope: 4,6
+	CreateWater: -8,-4
