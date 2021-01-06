@@ -21,7 +21,7 @@ Subsystem: ConstructionBay
 
 		Hex.BuildCost := Hex.BuildCost + LaborIncome * 50
 		Hex.LaborCost := Hex.BuildCost + LaborIncome * 3
-		Hex.MaintainCost := Hex.MaintainCost + LaborIncome * 15
+		Hex.MaintainCost := Hex.MaintainCost + LaborIncome * 13
 
 	Module: Default
 		Sprite: SupplyStorage * #fca404
