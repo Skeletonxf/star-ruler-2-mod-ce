@@ -226,3 +226,8 @@ ANTI_MATTER_GEN_DESC: <<
 	[img=MenuIcons::3;20][i][color=#aaa]Best reinforced with Nano Mesh.[/color][/i][/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Losing required power generation in combat reduces the ship's overall effectiveness.[/color][/i][/img]
 >>
+S_CONSTRUCTION_BAY_REV_DESC: <<
+	Equipment and space for construction of new ships in the field.
+
+	[img=$Labor;22]Provides labor to construct new ships and orbitals with.[/img]
+>>

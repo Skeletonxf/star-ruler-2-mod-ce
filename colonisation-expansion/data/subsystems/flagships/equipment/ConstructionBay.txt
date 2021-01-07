@@ -1,6 +1,6 @@
 Subsystem: ConstructionBay
 	Name: #S_CONSTRUCTION_BAY
-	Description: #S_CONSTRUCTION_BAY_DESC
+	Description: #S_CONSTRUCTION_BAY_REV_DESC
 	BaseColor: #fca404
 	TypeColor: #fca404
 	Elevation: 1
