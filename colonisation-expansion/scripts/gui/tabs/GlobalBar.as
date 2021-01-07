@@ -168,28 +168,24 @@ class EnergyResource : ResourceDisplay {
 
 	string get_tooltip() {
 		// [[ MODIFY BASE GAME START ]]
-		double income = playerEmpire.EnergyIncome;
-		// [[ MODIFY BASE GAME END ]]
+		double income = playerEmpire.NetEnergyIncome;
+		double baseIncome = playerEmpire.EnergyIncome;
 		double factor = playerEmpire.EnergyEfficiency;
-		if(income > 0)
-			income *= factor;
 
 		return format(locale::GTT_ENERGY,
 				toString(playerEmpire.EnergyStored, 0),
 				formatIncomeRate(income),
 				toString(playerEmpire.FreeEnergyStorage, 0),
 				"-"+toString((1.0-factor)*100.0, 0)+"%",
-				formatIncomeRate(income / factor));
+				formatIncomeRate(baseIncome));
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void update() {
 		double stored = playerEmpire.EnergyStored;
 		// [[ MODIFY BASE GAME START ]]
-		double income = playerEmpire.EnergyIncome;
+		double income = playerEmpire.NetEnergyIncome;
 		// [[ MODIFY BASE GAME END ]]
-		double factor = playerEmpire.EnergyEfficiency;
-		if(income > 0)
-			income *= factor;
 
 		upperText.text = toString(stored, 0);
 		lowerText.text = formatIncomeRate(income);

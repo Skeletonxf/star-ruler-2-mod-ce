@@ -73,6 +73,22 @@ tidy class ResourceManager : Component_ResourceManager {
 	}
 
 	//Energy
+	// [[ MODIFY BASE GAME START ]]
+	// Energy income is now reported after deducting energy use,
+	// and energy use is applied to the base energy income before
+	// the efficiency rate is applied.
+	double get_NetEnergyIncome(Empire& emp) {
+		double netEnergy = (Energy_Income - Energy_Use) * emp.EnergyGenerationFactor;
+		if(netEnergy > 0)
+			netEnergy *= emp.EnergyEfficiency;
+		return netEnergy;
+	}
+
+	double get_BaseNetEnergyIncome(Empire& emp) {
+		return (Energy_Income - Energy_Use) * emp.EnergyGenerationFactor;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	double get_EnergyIncome() {
 		return Energy_Income;
 	}
@@ -89,33 +105,38 @@ tidy class ResourceManager : Component_ResourceManager {
 		return pow(0.5, max(Energy_Stored + Energy_Allocated - emp.FreeEnergyStorage, 0.0) / config::ENERGY_EFFICIENCY_STEP);
 	}
 
-	bool get_EnergyShortage() {
-		return Energy_Stored <= 0.0001 && Energy_Use > EnergyIncome + 0.0001;
+	// [[ MODIFY BASE GAME START ]]
+	bool get_EnergyShortage(Empire& emp) {
+		return Energy_Stored <= 0.0001 && 0 > ((Energy_Income - Energy_Use) * emp.EnergyGenerationFactor) + 0.0001;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
-	bool isEnergyShortage(double amt) {
-		if(Energy_Use + amt <= EnergyIncome + 0.0001)
+	// [[ MODIFY BASE GAME START ]]
+	bool isEnergyShortage(Empire& emp, double amt) {
+		if(0 <= ((Energy_Income - (Energy_Use + amt)) * emp.EnergyGenerationFactor) + 0.0001)
 			return false;
 
 		//Only not a shortage if we can run it for at least a minute
-		double cons = (Energy_Use + amt) * 60.0;
-		double have = Energy_Stored + EnergyIncome * 60.0;
-		return cons >= have;
+		double have = Energy_Stored + (Energy_Income - (Energy_Use + amt)) * 60.0 * emp.EnergyGenerationFactor;
+		return 0 >= have;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
-	bool consumeEnergyUse(double amt) {
+	bool consumeEnergyUse(Empire& emp, double amt) {
 		Lock lock(energyMutex);
-		if(Energy_Use + amt <= EnergyIncome + 0.0001) {
+		// [[ MODIFY BASE GAME START ]]
+		if(0 <= ((Energy_Income - (Energy_Use + amt)) * emp.EnergyGenerationFactor) + 0.0001) {
+
 			Energy_Use += amt;
 			return true;
 		}
 
 		//Only not a shortage if we can run it for at least a minute
-		double cons = (Energy_Use + amt) * 60.0;
-		double have = Energy_Stored + EnergyIncome * 60.0;
-		if(cons >= have)
+		double have = Energy_Stored + (Energy_Income - (Energy_Use + amt)) * 60.0 * emp.EnergyGenerationFactor;
+		if(0 >= have)
 			return false;
 
+		// [[ MODIFY BASE GAME END ]]
 		Energy_Use += amt;
 		return true;
 	}
@@ -182,7 +203,7 @@ tidy class ResourceManager : Component_ResourceManager {
 	int get_BudgetCycleId() {
 		return Budget_CycleId;
 	}
-	
+
 	uint get_WelfareMode() const {
 		return welfareMode;
 	}
@@ -226,7 +247,7 @@ tidy class ResourceManager : Component_ResourceManager {
 
 		for(uint i = 0; i < MoT_COUNT; ++i)
 			moneyTypes[i] = msg.readSignedSmall();
-		
+
 		welfareMode = msg.readLimited(WM_COUNT-1);
 	}
 };

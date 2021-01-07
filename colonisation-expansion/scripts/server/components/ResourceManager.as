@@ -267,19 +267,24 @@ tidy class ResourceManager : Component_ResourceManager, Savable {
 	}
 
 	//Energy
-	double get_EnergyIncome(Empire& emp) {
-		// [[ MODIFY BASE GAME START ]]
-		// Energy income is now reported after deducting energy use,
-		// and energy use is applied to the base energy income before
-		// the efficiency rate is applied. This prevents stockpiling
-		// energy having the very confusing result of stopping you from
-		// meeting energy use consumption. Energy Maintenance costs are
-		// now appplied to base energy income which will be much more
-		// predictable.
-		// The shadow version of this script doesn't factor in
-		// energy generation factor, so shouldn't need any modifications.
+	// [[ MODIFY BASE GAME START ]]
+	// Energy income is now reported after deducting energy use,
+	// and energy use is applied to the base energy income before
+	// the efficiency rate is applied.
+	double get_NetEnergyIncome(Empire& emp) {
+		double netEnergy = (Energy_Income - Energy_Use) * emp.EnergyGenerationFactor;
+		if(netEnergy > 0)
+			netEnergy *= emp.EnergyEfficiency;
+		return netEnergy;
+	}
+
+	double get_BaseNetEnergyIncome(Empire& emp) {
 		return (Energy_Income - Energy_Use) * emp.EnergyGenerationFactor;
-		// [[ MODIFY BASE GAME END ]]
+	}
+	// [[ MODIFY BASE GAME END ]]
+
+	double get_EnergyIncome(Empire& emp) {
+		return Energy_Income;
 	}
 
 	double get_EnergyStored() {

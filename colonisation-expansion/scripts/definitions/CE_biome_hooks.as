@@ -192,7 +192,7 @@ tidy final class IfHaveEnergyIncome : IfHook {
 
 #section server
 	bool condition(Object& obj) const override {
-		return (obj.owner.EnergyIncome / obj.owner.EnergyGenerationFactor) >= amount.decimal;
+		return (obj.owner.BaseNetEnergyIncome) >= amount.decimal;
 	}
 #section all
 };
