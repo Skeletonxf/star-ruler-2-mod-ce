@@ -5,13 +5,14 @@ AI_HOSTILE_DESC: <<
 
 GTT_ENERGY: <<
 	[font=Medium]Energy[/font]
-	[i]Energy is used to activate abilities on artifacts found across the galaxy. The more Energy you are currently storing above your free storage cap, the more your generation rate is reduced.[/i]
+	[color=#aaa][i]Energy is used to activate abilities on artifacts found across the galaxy. The more Energy you are currently storing above your free storage cap, the more your generation rate is reduced.[/i][/color]
 
-	Available Energy: [right]$1[/right]
-	Generation Rate: [right]$2[/right]
-	Free Storage: [right]$3[/right]
-	Storage Penalty: [right]$4[/right]
-	Base Generation Rate: [right]$5[/right]
+	[bbloc=#GTT_ALIGNED_STAT:Available Energy:$1/]
+	[bbloc=#GTT_ALIGNED_STAT:Generation Rate:$2/]
+	[bbloc=#GTT_ALIGNED_STAT:Free Storage:$3/]
+	[bbloc=#GTT_ALIGNED_STAT:Storage Penalty:$4/]
+	[bbloc=#GTT_ALIGNED_STAT:Base Generation Rate:$5/]
+
 >>
 
 AI_DRAGON: Dragon

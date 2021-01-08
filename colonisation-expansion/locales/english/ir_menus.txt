@@ -1,0 +1,69 @@
+GTT_ALIGNED_STAT: <<
+	$1: [vspace=-16/][right]$2[/right][hr=#333/][vspace=-16/]
+>>
+GTT_MONEY: <<
+	[font=Medium]Money[/font]
+	[color=#aaa][i]Every budget cycle of 3 minutes generates new money to spend. Any money not spent after the budget cycle ends is put into [img=$4;20/] welfare.[/i][/color]
+
+	[bbloc=#GTT_ALIGNED_STAT:Remaining Budget:$1/]
+	[bbloc=#GTT_ALIGNED_STAT:Time Remaining:$3/]
+	[bbloc=#GTT_ALIGNED_STAT:Upcoming Budget:$2/]
+>>
+GTT_INFLUENCE: <<
+	[font=Medium]Influence[/font]
+	[color=#aaa][i]Influence points are used to trigger diplomatic actions and win galactic senate votes. If storing more points than your optimal storage cap (based on your total generation), your generation rate will be decreased.[/i][/color]
+
+	[bbloc=#GTT_ALIGNED_STAT:Available Points:$1/]
+	[bbloc=#GTT_ALIGNED_STAT:Optimal Storage:$2/]
+	[bbloc=#GTT_ALIGNED_STAT:Generation Rate:$3/]
+
+	[bbloc=#GTT_ALIGNED_STAT:Influence Stake:$5/]
+	[bbloc=#GTT_ALIGNED_STAT:Galactic Stake Percentage:$4/]
+	[color=#aaa][i]Influence Stake is provided by influence buildings. The percentage of the total influence stake from all empires that you currently control determines your influence generation rate.[/i][/color]
+>>
+
+GTT_FTL: <<
+	[font=Medium]FTL Energy[/font]
+	[color=#aaa][i]FTL Energy is paid to engage the faster-than-light drives on your ships.[/i][/color]
+
+	[bbloc=#GTT_ALIGNED_STAT:Available FTL:$1/]
+	[bbloc=#GTT_ALIGNED_STAT:Maximum Storage:$2/]
+	[bbloc=#GTT_ALIGNED_STAT:Generation Rate:$3/]
+
+>>
+
+GTT_RESEARCH: <<
+	[font=Medium]Research[/font]
+	[color=#aaa][i]Research points can be spent to unlock various technologies in the research grid. Research generation goes down over time as you generate more points.[/i][/color]
+
+	[bbloc=#GTT_ALIGNED_STAT:Available Research Points:$1/]
+	[bbloc=#GTT_ALIGNED_STAT:Generation Rate:$2/]
+
+>>
+
+GTT_RESEARCH_TECH: <<
+	Currently Researching: [right][b][color=$3]$1[/color][/b] (ETA: $2)[/right]
+>>
+
+GTT_DEFENSE: <<
+	[font=Medium]Global Defense[/font]
+	[color=#aaa][i]Global defense automatically creates support ships on planets or systems you have indicated to use it. Right click a system's star to mark it for global defense use. Every point of defense counts as 2 labor for support ship spawning.[/i][/color]
+
+	[bbloc=#GTT_ALIGNED_STAT:Global Defense Rate:$1/]
+	[bbloc=#GTT_ALIGNED_STAT:Defense Reserve:$3 / $2/]
+	[color=#aaa][i]Defense reserve is filled up before ships are spawned automatically. If the defense reserve is full, it can be deployed at any planet to spawn defense ships. While full, global defense generation automatically spawns ships as usual.[/i][/color]
+>>
+GTT_BONUS_MONEY: <<|
+	[font=Subtitle][b]Special Funds:[/b] [vspace=-16/][right][color=#0f0]$1[/color][/right][/font][hr=#333/]
+	[color=#aaa][i]Special funds are collected from various one-time sources such as Profiteering cards or Anomalies, and will carry over between budgets if not spent.[/i][/color]
+>>
+
+GTT_DEBT_PENALTY: <<
+	[color=#f00][b]Debt Growth Penalty:[/b] [vspace=-16/][right]$1[/right][/color][hr=#333/]
+	[color=#aaa][i]Being in debt reduces population growth rate on all your planets.[/i][/color]
+>>
+
+GTT_FLEET_PENALTY: <<
+	[color=#f00][b]Debt Fleet Strength Penalty:[/b] [vspace=-16/][right]$1[/right][/color][hr=#333/]
+	[color=#aaa][i]Being in massive debt reduces the strength of all your fleets.[/i][/color]
+>>
