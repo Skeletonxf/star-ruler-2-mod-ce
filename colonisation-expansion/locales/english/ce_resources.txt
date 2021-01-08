@@ -119,3 +119,51 @@ CYLLIUM_REV_DESC: <<
 
 	[i][color=#aaa]This resource is a scalable resource and cannot be exported or used to level up. Its bonuses depend on the level of the planet.[/color][/i]
 >>
+HYPER_OATS_DESC: <<
+	Counts as two food resources for planet level requirements.
+
+	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
+
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>
+SALTS_DESC: <<
+	Can be used as food. Adds pressure to the production of all resources.
+
+	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
+
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>
+C_FORESTATION: Forestation
+C_FORESTATION_DESC: <<
+	Materials for greening planets, creating new food resources on their own automatically.
+
+	[i][color=#aaa]Biomass is really ill suited to space transport. Plants have no concern for weight limits! Forestation cargo takes up 10x as much storage space as other cargo[/color][/i]
+>>
+PSIONIC_REAGENTS_EFFECT: Protects Loyalty
+PSIONIC_REAGENTS_DESC: <<
+	Planets in the consuming system gain 10 loyalty.
+
+	Takes 3 minutes to enable in a new system.
+>>
+STATUS_PSIONIC_PROTECTED: Psionically Protected
+STATUS_PSIONIC_PROTECTED_DESC: This planet is less vulnurable to capture or annexation due to psionic reagents imported to one of the planets in this system.
+FTL_CRYSTALS_BLURB: <<
+	Generates [levels=$1;#00c0ff]0.1/0.5/1/2/5/12[/levels] [img=ResourceIcon::3;20/] FTL/s.
+	Gives special effects at [b]levels 4 and 5[/b].
+>>
+FTL_CRYSTALS_DESC: <<
+	Generates [levels=$1;#00c0ff]0.1/0.5/1/2/5/12[/levels] [img=ResourceIcon::3;20/] FTL per second.
+
+	[b]If this planet is Level 4 or higher:[/b]
+	[offset=30]Grants vision over all fleets currently in FTL anywhere.[/offset]
+
+	[b]If this planet is Level 5:[/b]
+	[offset=30]All FTL jumps leaving from this system are 75% cheaper.[/offset]
+
+	[i][color=#aaa]This resource is a scalable resource and cannot be exported or used to level up. Its bonuses depend on the level of the planet.[/color][/i]
+>>
+R_SYRUP_DESC: <<
+	Can be used as food. Increases Influence pressure by 30%.
+
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>
