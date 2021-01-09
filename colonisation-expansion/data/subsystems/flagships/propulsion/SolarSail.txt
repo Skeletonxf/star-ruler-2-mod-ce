@@ -22,7 +22,7 @@ Subsystem: SolarSail
 
 	Size := HexSize * Hexes
 	TurnThrust := 0
-	Hex.Mass := 0.1 * HexSize
+	Hex.Mass := 0.05 * HexSize
 
 	Hex.Resistance := 0.01
 	Hex.HP := 3 * HexSize
@@ -34,9 +34,9 @@ Subsystem: SolarSail
 	SolarThrustDeepSpace := 1
 	SolarThrustNormal := 1
 	SolarThrustMax := 1
-	MaxThrust := 6 * Hexes * HexSize^0.5
+	MaxThrust := 8 * Hexes * HexSize^0.5
 	Hex.MaintainCost := 0
-	SolarThrust := 5.0 * Hexes * HexSize^0.5
+	SolarThrust := 7.0 * Hexes * HexSize^0.5
 	SolarPower := 5.0 * Hexes * HexSize^0.5
 	Thrust := 1 * Hexes * HexSize^0.5
 	MaxTurnThrust := TurnThrust

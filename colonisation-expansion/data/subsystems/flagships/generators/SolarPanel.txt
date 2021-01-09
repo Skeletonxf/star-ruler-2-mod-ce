@@ -22,7 +22,7 @@ Subsystem: SolarPanel
 
 	Hex.Resistance := 0.01
 	Hex.HP := 10 * HexSize
-	Hex.Mass := 0.25 * HexSize
+	Hex.Mass := 0.15 * HexSize
 
 	Hex.LaborCost := 0.05 * HexSize
 	Hex.BuildCost := 0.5 * HexSize
