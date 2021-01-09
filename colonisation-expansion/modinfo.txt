@@ -9,7 +9,7 @@
 		[vspace=3/] [img=Revolutionaries;22]New gameplay changing traits[/img]
 		[vspace=3/] [img=ResourceIcon::8;22]Several small tweaks to Motherships to scale with size.[/img]
 		[vspace=3/] [img=PlanetType::14;22]New orbitals[/img]
-		[vspace=3/] [img=LeaderIcon;22]Longlasting new diplomacy content[/img]
+		[vspace=3/] [img=LeaderIcon;22]New Longlasting diplomacy events[/img]
 		[vspace=3/] [img=ResearchIcons::0;22]Subsystem and stat tweaks to prevent (ab)using edge cases and bring military strengths closer together[/img]
 		[vspace=3/] [img=StatusWar;22]Smarter AI[/img]
 		See README.md for more comprehensive list of changes and rationale
