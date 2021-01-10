@@ -57,6 +57,7 @@ class HabitatMission : Mission {
 	}
 
 	void tick(AI& ai, FleetAI& fleet, double time) override {
+		// TODO: Run away and abort mission if we end up in combat
 		if(move !is null) {
 			if(move.failed) {
 				ai.print("Movement failed");

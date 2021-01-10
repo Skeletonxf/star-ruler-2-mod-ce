@@ -16,9 +16,7 @@ class LinkBuild {
 }
 
 /**
- * TODO
- *
- * Will be responsible for letting the AI reconnect broken trade links and
+ * Responsible for letting the AI reconnect broken trade links and
  * expand through empty or occupied systems
  *
  * No more abusing the AI by boxing it in!
@@ -48,15 +46,11 @@ class RegionLinking {
 		@this.starTemple = getOrbitalModule("Temple");
 	}
 
-	// TODO: Check roughly every 20 seconds or so that we can connect trade lines
+	// Check roughly every 20 seconds or so that we can connect trade lines
 	// from a random subset of our planets
 	//
 	// If we can't, try to build an outpost or star temple to connect them, and
 	// restort to a commerce station if they're more than 3 hops disconnected
-	//
-	// TODO, we should also check if we've hit a system that we need to expand
-	// through to reach more planets but has nothing of value to colonise
-	// itself, in which case we should build an outpost/star temple in it.
 	void focusTick(AI& ai) {
 		if (lastCheckedRegionsLinked + 20 < gameTime) {
 			checkRegionsLinked(ai);
@@ -116,6 +110,8 @@ class RegionLinking {
 		}
 	}
 
+	// Potentially makes an outpost/temple to establish a trade link at a
+	// particular region on the border of the AI
 	void considerMakingLinkAt(Region@ region, Empire@ emp, bool force=false) {
 		if (alreadyMakingLinkAt(region, emp)) {
 			return;

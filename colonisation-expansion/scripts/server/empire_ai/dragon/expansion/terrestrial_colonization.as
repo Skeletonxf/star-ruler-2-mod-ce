@@ -9,22 +9,49 @@ interface ColonizeBudgeting {
 }
 
 class ColonizerPlanet : ColonizationSource {
-	PotentialSource@ colonizeFrom;
+	Planet@ planet;
 
 	ColonizerPlanet(PotentialSource@ source) {
-		@this.colonizeFrom = source;
+		@this.planet = source.pl;
+	}
+
+	ColonizerPlanet(Planet@ planet) {
+		@this.planet = planet;
 	}
 
 	vec3d getPosition() {
-		return colonizeFrom.pl.position;
+		return planet.position;
 	}
 
 	bool valid(AI& ai) {
-		return colonizeFrom.pl.owner is ai.empire;
+		return planet.owner is ai.empire;
 	}
 
 	string toString() {
-		return colonizeFrom.pl.name;
+		return planet.name;
+	}
+
+	// How useful this planet is for colonising others, (ie sufficient pop)
+	// can't change this, this is a copy of how PotentialSource is allocated
+	// weights
+	double weight(AI& ai) {
+		if(!valid(ai))
+			return 0.0;
+		if(planet.isColonizing)
+			return 0.0;
+		if(planet.level == 0)
+			return 0.0;
+		if(!planet.canSafelyColonize)
+			return 0.0;
+		double w = 1.0;
+		double pop = planet.population;
+		double maxPop = planet.maxPopulation;
+		if(pop < maxPop-0.1) {
+			if(planet.resourceLevel > 1 && pop/maxPop < 0.9)
+				return 0.0;
+			w *= 0.01 * (pop / maxPop);
+		}
+		return w;
 	}
 }
 
@@ -35,10 +62,12 @@ class TerrestrialColonization : ColonizationAbility {
 	// interfaces, tracks our planets that are populated enough to colonise with
 	array<ColonizationSource@> planetSources;
 	ColonizeBudgeting@ budgeting;
+	AI@ ai;
 
-	TerrestrialColonization(Planets@ planets, ColonizeBudgeting@ budgeting) {
+	TerrestrialColonization(Planets@ planets, ColonizeBudgeting@ budgeting, AI@ ai) {
 		@this.planets = planets;
 		@this.budgeting = budgeting;
+		@this.ai = ai;
 	}
 
 	void colonizeTick() {
@@ -81,7 +110,7 @@ class TerrestrialColonization : ColonizationAbility {
 		ColonizerPlanet@ closestSource;
 		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
 			ColonizerPlanet@ source = cast<ColonizerPlanet>(planetSources[i]);
-			double distance = source.colonizeFrom.pl.position.distanceTo(position);
+			double distance = source.planet.position.distanceTo(position);
 			if (shortestDistance == -1 || distance < shortestDistance) {
 				shortestDistance = distance;
 				@closestSource = source;
@@ -104,8 +133,8 @@ class TerrestrialColonization : ColonizationAbility {
 			ColonizerPlanet@ source = cast<ColonizerPlanet>(planetSources[i]);
 			// TODO: Might want to consider gates/slipstreams here?
 			// colonising from further away takes longer
-			double weight = source.colonizeFrom.weight;
-			weight /= colony.position.distanceTo(source.colonizeFrom.pl.position);
+			double weight = source.weight(ai);
+			weight /= colony.position.distanceTo(source.planet.position);
 			if (weight > colonizeFromWeight) {
 				colonizeFromWeight = weight;
 				@colonizeFrom = source;
@@ -116,7 +145,7 @@ class TerrestrialColonization : ColonizationAbility {
 
 	void orderColonization(ColonizeData& data, ColonizationSource@ isource) {
 		ColonizerPlanet@ source = cast<ColonizerPlanet>(isource);
-		@data.colonizeFrom = source.colonizeFrom.pl;
+		@data.colonizeFrom = source.planet;
 		ColonizeData2@ _data = cast<ColonizeData2>(data);
 		if (_data !is null) {
 			@_data.colonizeUnit = source;
@@ -124,7 +153,7 @@ class TerrestrialColonization : ColonizationAbility {
 		// Assuming the AI will never need to colonise multiple planets at
 		// once from a single planet
 		planetSources.remove(source);
-		source.colonizeFrom.pl.colonize(data.target);
+		source.planet.colonize(data.target);
 		budgeting.payColonize();
 	}
 
@@ -132,30 +161,17 @@ class TerrestrialColonization : ColonizationAbility {
 		if (source !is null) {
 			file.write1();
 			ColonizerPlanet@ source = cast<ColonizerPlanet>(source);
-			// just save the planet
-			file << source.colonizeFrom.pl; // FIXME: Why is this derefencing a null pointer
+			file << source.planet;
 		} else {
 			file.write0();
 		}
 	}
 
-	bool refreshOnReload = false;
 	ColonizationSource@ loadSource(SaveFile& file) {
-		if (!refreshOnReload) {
-			refreshOnReload = true;
-			refreshSources();
-		}
 		if (file.readBit()) {
-			// read back the planet
 			Planet@ planet;
 			file >> planet;
-			// look for the source that has this planet
-			for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
-				ColonizerPlanet@ source = cast<ColonizerPlanet>(planetSources[i]);
-				if (source.colonizeFrom.pl is planet) {
-					return source;
-				}
-			}
+			return ColonizerPlanet(planet);
 		}
 		return null;
 	}

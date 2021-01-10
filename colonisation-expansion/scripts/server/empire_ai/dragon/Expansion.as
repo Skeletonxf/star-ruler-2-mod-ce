@@ -760,7 +760,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@queue = ColonizeForest();
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
-		@colonyManagement = TerrestrialColonization(planets, this);
+		@colonyManagement = TerrestrialColonization(planets, this, ai);
 		@planetManagement = PlanetManagement(planets, budget, ai, log);
 		@regionLinking = RegionLinking(planets, construction, resources, systems, budget);
 

@@ -43,9 +43,10 @@ import AIComponent@ createFTLGeneric() from "empire_ai.weasel.ftl.generic";
 // [[ MODIFY BASE GAME END ]]
 
 import AIComponent@ createVerdant() from "empire_ai.weasel.race.Verdant";
-import AIComponent@ createMechanoid() from "empire_ai.weasel.race.Mechanoid";
-import AIComponent@ createStarChildren() from "empire_ai.weasel.race.StarChildren";
 // [[ MODIFY BASE GAME START ]]
+import AIComponent@ createMechanoid() from "empire_ai.weasel.race.Mechanoid";
+import AIComponent@ createMechanoid2() from "empire_ai.dragon.race.Mechanoid";
+import AIComponent@ createStarChildren() from "empire_ai.weasel.race.StarChildren";
 import AIComponent@ createStarChildren2() from "empire_ai.dragon.race.StarChildren";
 // [[ MODIFY BASE GAME END ]]
 import AIComponent@ createExtragalactic() from "empire_ai.weasel.race.Extragalactic";
