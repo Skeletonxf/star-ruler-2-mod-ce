@@ -26,6 +26,7 @@ This is primarily intended as a developer focused project planning list, rather 
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
   - Tweak tractor default design
+  - Add more details on major changes from vanilla to the README
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
   - Make seiging order work better on a moving target
   - Make a new order to follow a moving target (as move command needs to terminate when reaching target, so isn't suitable for this)
@@ -37,6 +38,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Rework the Flying trait downside so it is less severe
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Don't let random life assign a life that other traits the player took are incompatible with
+  - The ConsumeDistanceFTL should obey FTL discounts from FTL Crystals
   - Constructions for Gas Giants to make them more useful late game
   - Give stations orders to pick a planet to orbit
   - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little

@@ -20,6 +20,24 @@ import oddity_navigation;
 
 const double MAX_POP_BUILDTIME = 3.0 * 60.0;
 
+// Simplified mirror of transfer cost formula for use in Mechanoid AI
+double transferCost(Object@ obj, Empire@ emp, Object@ target) {
+	if (target is null || obj is null) {
+		return INFINITY;
+	}
+	double cost = 20;
+	double dist = getPathDistance(emp, target.position, obj.position);
+	cost += 0.002 * dist;
+	if (emp !is null) {
+		Region@ myReg = obj.region;
+		if (myReg !is null && myReg.FreeFTLMask & emp.mask != 0)
+			return 0.0;
+	}
+	return cost;
+}
+
+int colonizeAbilityID = -1;
+
 class ColonizerMechanoidPlanet : ColonizationSource {
 	Planet@ planet;
 
@@ -60,8 +78,29 @@ class ColonizerMechanoidPlanet : ColonizationSource {
 		}
 		return w;
 	}
+
+	bool transferPop(uint amount, Planet@ target, AI& ai) {
+		double ftlCost = transferCost(planet, ai.empire, target);
+		while (amount > 0) {
+			if (ftlCost <= ai.empire.FTLStored) {
+				if (true)
+					ai.print("Transfering population to "+target.name, planet);
+				planet.activateAbilityTypeFor(ai.empire, colonizeAbilityID, target);
+				amount -= 1;
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// Spare pop is pop exceeding max
+	double sparePop() {
+		return planet.population - planet.maxPopulation;
+	}
 }
 
+// Pop requests are made when a planet doesn't have enough pop to meet its resource level
 class PopulationRequest {
 	ColonizerMechanoidPlanet@ source;
 	double neededPopulation;
@@ -69,6 +108,10 @@ class PopulationRequest {
 	PopulationRequest(ColonizerMechanoidPlanet@ source, double neededPopulation) {
 		@this.source = source;
 		this.neededPopulation = neededPopulation;
+	}
+
+	bool valid(AI& ai) {
+		return neededPopulation > 0 && source.valid(ai);
 	}
 }
 
@@ -88,7 +131,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 	const ResourceClass@ scalableClass; */
 	const ConstructionType@ buildPop;
 
-	int colonizeAbl = -1;
+	//const AbilityType@ colonizeAbility = getAbilityType("MechanoidColonize");
 
 	/* array<Planet@> popRequests;
 	array<Planet@> popSources;
@@ -123,7 +166,8 @@ class Mechanoid2 : Race, ColonizationAbility {
 		@waterClass = getResourceClass("WaterType");
 		@scalableClass = getResourceClass("Scalable"); */
 
-		colonizeAbl = getAbilityID("MechanoidColonize");
+		colonizeAbilityID = getAbilityID("MechanoidColonize");
+
 		colonization.PerformColonization = false;
 
 		@buildPop = getConstructionType("MechanoidPopulation");
@@ -140,10 +184,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 			colonization.queueColonizeLowPriority(spec);
 		} */
-	}
-
-	double transferCost(double dist) {
-		return 20 + dist * 0.002;
 	}
 
 	bool canBuildPopulation(Planet& pl, double factor=1.0) {
@@ -205,9 +245,10 @@ class Mechanoid2 : Race, ColonizationAbility {
 			if (source is null) {
 				return;
 			}
-			// TODO: source should transfer as much pop as able to request
-			// TODO: decrement needPop by the same amount
-			// TODO: keep looping till meet request or run out of pop/FTL
+			bool success = source.transferPop(uint(min(source.sparePop(), request.neededPopulation)), request.source.planet, ai);
+			if (!success) {
+				return; // probably out of FTL
+			}
 		}
 	}
 
@@ -223,7 +264,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 		// try to meet requested population
 		for (uint i = 0, cnt = popRequests.length; i < cnt; ++i) {
-			if (!popRequests[i].source.valid(ai)) {
+			if (!popRequests[i].valid(ai)) {
 				popRequests.removeAt(i);
 				--i; --cnt;
 			} else {
@@ -274,14 +315,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 			}
 		}
 
-		//Find new planets to add to our lists
-		bool checkMorph = false;
-		Planet@ hw = ai.empire.Homeworld;
-		if(hw !is null && hw.valid && hw.owner is ai.empire && unobtanium !is null) {
-			if(hw.primaryResourceType == unobtanium.id)
-				checkMorph = true;
-		}
-
 		uint plCnt = planets.planets.length;
 		for(uint n = 0, cnt = min(15, plCnt); n < cnt; ++n) {
 			chkInd = (chkInd+1) % plCnt;
@@ -307,16 +340,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 			if(plAI.resources !is null && plAI.resources.length != 0) {
 				auto@ res = plAI.resources[0];
-
-				//Get rid of food and water we don't need
-				if(res.resource.cls is foodClass || res.resource.cls is waterClass) {
-					if(res.request is null) {
-						Region@ reg = res.obj.region;
-						if(reg !is null && reg.getPlanetCount(ai.empire) >= 2) {
-							plAI.obj.abandon();
-						}
-					}
-				}
 
 				//See if we have anything useful to morph our homeworld too
 				if(checkMorph) {
@@ -401,7 +424,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 			}
 		} */
 	}
-
+/*
 	Planet@ transferBest(Planet& dest, array<Planet@>& availSources) {
 		//Find closest source
 		Planet@ bestSource;
@@ -425,7 +448,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 			}
 		}
 		return null;
-	}
+	} */
 
 	void tick(double time) override {
 	}
