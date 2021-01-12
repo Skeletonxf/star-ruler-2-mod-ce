@@ -1,0 +1,17 @@
+Building: InterstellarTrade
+	Name: #INTERSTELLAR_TRADE
+	Description: #INTERSTELLAR_TRADE_DESC
+	Base Maintenance: 300
+	Tile Maintenance: 50
+	Build Time: 180
+	Size: 2x2
+	Base Cost: 1000
+	Tile Cost: 100
+	Sprite: Antenna
+	Category: Infrastructure
+	RequireUnlockTag(InterstellarTrade)
+	RequireBuilding(LightSystem)
+	ConflictBuilding(InterstellarTrade)
+	RequireNotTrait(Ancient)
+	RequireEither(RequireNotTrait(StarChildren), RequireNotStatus(StarHabitatsNoPlanetUseSingle))
+	AddStatus(InterstellarTrade)

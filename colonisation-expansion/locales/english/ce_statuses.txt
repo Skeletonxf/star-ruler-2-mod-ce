@@ -65,3 +65,9 @@ CREATING_NEBULA_DESC: <<
 	The planet cannot be moved during this process.
 >>
 STATUS_WELFARE: High Welfare
+INTERSTELLAR_TRADE_DESC: <<
+	Guides trade ships to allow this planet in deep space to import resources
+
+	[img=ResourceIcon::2;22]Drains 10 [b][color=#42b4bd]Energy[/color][/b] per second.[/img]
+>>
+INTERSTELLAR_TRADE: Interstellar Trade Beacon

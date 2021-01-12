@@ -28,6 +28,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Tweak tractor default design
   - Add more details on major changes from vanilla to the README
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
+  - Disable interstellar trade beacon when not in deep space
+    - Add better UI for when attempting to export/import resources and you can't
   - Make seiging order work better on a moving target
   - Make a new order to follow a moving target (as move command needs to terminate when reaching target, so isn't suitable for this)
     - Possibly chase/pursue commands for stay on top of target and stay within firing range of target respectively

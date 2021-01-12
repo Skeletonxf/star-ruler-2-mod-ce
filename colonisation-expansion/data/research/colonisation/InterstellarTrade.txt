@@ -1,0 +1,10 @@
+Technology: InterstellarTrade
+	Name: #R_UNLOCK_INTERSTELLAR_TRADE
+	Description: #R_UNLOCK_INTERSTELLAR_TRADE_DESC
+	Class: Unlock
+	Category: Colonisation
+	Point Cost: 500
+	Time Cost: 60
+	Icon: GuiOrbitalIcons::18 * ffffaa
+	Color: #fff849
+	UnlockTag(InterstellarTrade)

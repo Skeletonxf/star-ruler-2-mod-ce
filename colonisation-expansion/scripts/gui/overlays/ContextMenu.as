@@ -934,8 +934,11 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 				}
 			}
 		}
-		else if(selected.exportEnabled && clicked.importEnabled
-				&& (selected.region !is null && clicked.region !is null)) {
+		// [[ MODIFY BASE GAME START ]]
+		else if(selected.exportEnabled && clicked.importEnabled) {
+			// && (selected.region !is null && clicked.region !is null)
+			// Allow attempting or cancelling exports to deep space
+			// [[ MODIFY BASE GAME END ]]
 			for(uint i = 0; i < cnt; ++i) {
 				const ResourceType@ type = getResource(selected.nativeResourceType[i]);
 				if(!type.exportable)

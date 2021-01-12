@@ -119,3 +119,9 @@ R_UNLOCK_CREATE_WATER_DESC: <<
 
 	[bbloc=#CREATE_WATER_DESC/]
 >>
+R_UNLOCK_INTERSTELLAR_TRADE: Deep Space Navigation
+R_UNLOCK_INTERSTELLAR_TRADE_DESC: <<
+	[color=#aaa][i]Unlocks the Interstellar Trade Beacon building.[/i][/color]
+
+	[bbloc=#INTERSTELLAR_TRADE_DESC/]
+>>

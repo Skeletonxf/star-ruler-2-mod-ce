@@ -278,3 +278,6 @@ Grid: ColonisationExpansionGrid
 	InfiniteHealth: 3,-11
 	Gyroscope: 4,6
 	CreateWater: -8,-4
+	SupplyStorage: -1,-12
+	FTLHurdle: -2,-13
+	InterstellarTrade: -2,-14

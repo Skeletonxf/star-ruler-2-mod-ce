@@ -68,7 +68,9 @@ tidy class NativeResource : Resource {
 const ResourceClass@ foodCls;
 void init() {
 	@foodCls = getResourceClass("Food");
-	@scalableClass = getResourceClass("Scalable"); // [[ MODIFY BASE GAME ]]
+	// [[ MODIFY BASE GAME START ]]
+	@scalableClass = getResourceClass("Scalable");
+	// [[ MODIFY BASE GAME END ]]
 }
 
 tidy class ObjectResources : Component_Resources, Savable {
@@ -999,8 +1001,11 @@ tidy class ObjectResources : Component_Resources, Savable {
 			return;
 		if(index >= nativeResources.length)
 			return;
-		if(to !is null && (to.region is null || obj.region is null))
-			return;
+		// [[ MODIFY BASE GAME START ]]
+		//if(to !is null && (to.region is null || obj.region is null))
+		//  return
+		// Allow attempting to export/import to deep space
+		// [[ MODIFY BASE GAME END ]]
 
 		//If this is ordered by not our owner, we queue it
 		if(forEmpire !is obj.owner) {
@@ -1088,9 +1093,11 @@ tidy class ObjectResources : Component_Resources, Savable {
 			if(!to.valid)
 				return;
 			//Must export to things in regions
+			// [[ MODIFY BASE GAME START ]]
 			Region@ fromRegion = obj.region, toRegion = to.region;
-			if(fromRegion is null || toRegion is null)
-				return;
+			//if(fromRegion is null || toRegion is null)
+			//	return; */
+			// [[ MODIFY BASE GAME END ]]
 
 			to.addAvailableResource(obj, r.id, r.type.id, r.usable);
 			if(r.type.vanishMode != VM_Never)
@@ -1503,10 +1510,18 @@ tidy class ObjectResources : Component_Resources, Savable {
 			if(exporting) {
 				TradePath@ path = r.path;
 				bool usablePath = path.isUsablePath;
-				if(path.valid && !usablePath && prev)
+				// [[ MODIFY BASE GAME START ]]
+				// Allow export targets with the marker status to be exported to anyway
+				bool allowNoPath = false;
+				if (r.exportedTo !is null && r.exportedTo.isPlanet) {
+					Planet@ planet = cast<Planet>(r.exportedTo);
+					allowNoPath = planet.allowPathlessImport > 0;
+				}
+
+				if(path.valid && !(usablePath || allowNoPath) && prev)
 					clearLines(r, path, obj, r.exportedTo);
 				if(r.usable) {
-					if(!usablePath) {
+					if(!(usablePath || allowNoPath)) {
 						if(path.goal is null)
 							@path.goal = getSystem(r.exportedTo.region);
 						if(path.origin is null)
@@ -1518,9 +1533,10 @@ tidy class ObjectResources : Component_Resources, Savable {
 						if(path.isUsablePath)
 							updateLines(r, path, obj, r.exportedTo);
 					}
-					if(!path.valid)
+					if(!(path.valid || allowNoPath))
 						r.usable = false;
 				}
+				// [[ MODIFY BASE GAME END ]]
 			}
 
 			//Disable and enable

@@ -124,6 +124,7 @@ visible:
 	double MaxHealth = 1000000000
 	// [[ MODIFY BASE GAME START ]]
 	bool delayFTL = false
+	int allowPathlessImport = 0;
 	// [[ MODIFY BASE GAME END ]]
 
 	local safe uint get_moonCount() const;

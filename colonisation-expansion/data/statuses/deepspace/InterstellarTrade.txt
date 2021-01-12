@@ -1,0 +1,14 @@
+Status: InterstellarTrade
+	Name: #INTERSTELLAR_TRADE
+	Description: #INTERSTELLAR_TRADE_DESC
+	Visible To: Nobody
+	Icon: LightResourceClass
+	Color: #fff849
+	TriggerPeriodic(AddStatus(InterstellarTradeUp, Max Stacks = 1), Interval = 20, Trigger Immediate = True)
+Status: InterstellarTradeUp
+	Visible To: Owner
+	Description: #INTERSTELLAR_TRADE_DESC
+	Icon: GuiOrbitalIcons::18 * ffffaa
+	Name: #INTERSTELLAR_TRADE
+	CE_status_hooks::AllowPathlessImport()
+	EnergyMaintenance(Amount = 10)
