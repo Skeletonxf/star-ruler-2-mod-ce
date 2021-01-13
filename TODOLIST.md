@@ -9,13 +9,15 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Mechanoid and Ancient AI components and CP once sure fully working
   - Expansion AI Component
-    - Implement custom ColonizeAbility interface for Mechanoid and Ancient AI empires
+    - Implement custom ColonizeAbility interface Ancient AI empires
     - Refine Star Children ColonizeAbility code and reintroduce LaborMissions
       - Make sure star children motherships run away from danger while on habitat missions
+    - Refine Mechanoid ColonizeAbility to avoid building too many pops if going into debt
     - Teach AI to penalise conditions
       - Currently recording them, but not using the info
       - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
     - Reteach AI to colonise planets for non levelling purposes
+    - Port unobtanium code from Mechanoid component into Expansion component as a generic bit of knowledge for using with any unobtanium planet
       - Notably level 0 planets
     - Teach AI to pick and colonise high value planets to level up once it runs out of requests
     - Teach AI to use constructions to meet resource requests
@@ -30,6 +32,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
   - Disable interstellar trade beacon when not in deep space
     - Add better UI for when attempting to export/import resources and you can't
+    - Investigate what happens to civilian trade ships when target is in deep space
+    - Remove from battleworlder tech tree as they can't trade resources to use it
   - Make seiging order work better on a moving target
   - Make a new order to follow a moving target (as move command needs to terminate when reaching target, so isn't suitable for this)
     - Possibly chase/pursue commands for stay on top of target and stay within firing range of target respectively
@@ -61,10 +65,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Replace beams with lines?
 
 - Not planned for any time soon
-  - Work out how should implement deep space trading
-    - Lighting Systems need to create a mini region around their planet, with the location of the planet being regularly updated
-    - However the current region system assumes regions don't move, and has some bookkeeping that it does to make indexing for regions fast
-    - Either need a way to create mobile regions or allow planets with Lighting Systems to bypass region based trade logic
+  - Work out how to allow planets to always build orbitals/stations in their local gravity well even if they're in deep space
   - Colonisation ships similar to Motherships for other races
   - AI code to build orbitals like Stations
   - Teach AI to scuttle unneeded FTL income orbitals

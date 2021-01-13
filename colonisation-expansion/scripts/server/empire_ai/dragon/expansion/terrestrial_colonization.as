@@ -131,10 +131,9 @@ class TerrestrialColonization : ColonizationAbility {
 		double colonizeFromWeight = 0;
 		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
 			ColonizerPlanet@ source = cast<ColonizerPlanet>(planetSources[i]);
-			// TODO: Might want to consider gates/slipstreams here?
-			// colonising from further away takes longer
+			double dist = getPathDistance(ai.empire, source.planet.position, colony.position);
 			double weight = source.weight(ai);
-			weight /= colony.position.distanceTo(source.planet.position);
+			weight /= dist;
 			if (weight > colonizeFromWeight) {
 				colonizeFromWeight = weight;
 				@colonizeFrom = source;

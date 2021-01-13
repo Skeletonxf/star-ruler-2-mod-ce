@@ -37,6 +37,7 @@ double transferCost(Object@ obj, Empire@ emp, Object@ target) {
 }
 
 int colonizeAbilityID = -1;
+const ConstructionType@ buildPop;
 
 class ColonizerMechanoidPlanet : ColonizationSource {
 	Planet@ planet;
@@ -67,16 +68,12 @@ class ColonizerMechanoidPlanet : ColonizationSource {
 			return 0.0;
 		if(!planet.canSafelyColonize)
 			return 0.0;
-		double w = 1.0;
 		double pop = planet.population;
 		double maxPop = planet.maxPopulation;
-		// allow colonising from planets that are over their required pop
-		// even if that is quite far from the max pop, but penalise harsly
-		// for colonising whenever that will delevel the colonise source
-		if(pop <= getPlanetLevelRequiredPop(planet, planet.resourceLevel)) {
-			w *= 0.01 * (pop / maxPop);
+		if (pop <= maxPop) {
+			return 0.0;
 		}
-		return w;
+		return (pop / maxPop) - 1.0;
 	}
 
 	bool transferPop(uint amount, Planet@ target, AI& ai) {
@@ -97,6 +94,24 @@ class ColonizerMechanoidPlanet : ColonizationSource {
 	// Spare pop is pop exceeding max
 	double sparePop() {
 		return planet.population - planet.maxPopulation;
+	}
+
+	// Checks if a planet has good enough labor production that we want to
+	// build pop exceeding its max population to colonise with
+	bool isGoodForPopulationProduction(Construction@ construction) {
+		if(buildPop is null)
+			return false;
+		if(!buildPop.canBuild(planet, ignoreCost=true))
+			return false;
+		// primary factory should always be considered enough labor income
+		// (mostly useful in early game when we only have our homeworld)
+		auto@ primaryFactory = construction.primaryFactory;
+		if (primaryFactory !is null && planet is primaryFactory.obj)
+			return true;
+
+		double laborCost = buildPop.getLaborCost(planet);
+		double laborIncome = planet.laborIncome;
+		return laborCost < laborIncome * MAX_POP_BUILDTIME;
 	}
 }
 
@@ -129,7 +144,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 	/* const ResourceClass@ foodClass;
 	const ResourceClass@ waterClass;
 	const ResourceClass@ scalableClass; */
-	const ConstructionType@ buildPop;
 
 	//const AbilityType@ colonizeAbility = getAbilityType("MechanoidColonize");
 
@@ -148,6 +162,10 @@ class Mechanoid2 : Race, ColonizationAbility {
 	// introduce quite a bit of complexity with keeping the pointers valid on
 	// reload
 	array<PopulationRequest@> popRequests;
+
+	// colonise sources that have good labor income
+	array<ColonizerMechanoidPlanet@> factories;
+	double lastRefreshedFactories = -60;
 
 	void create() {
 		@colonization = cast<IColonization>(ai.colonization);
@@ -171,6 +189,10 @@ class Mechanoid2 : Race, ColonizationAbility {
 		colonization.PerformColonization = false;
 
 		@buildPop = getConstructionType("MechanoidPopulation");
+
+		// Register ourselves as overriding the colony management
+		auto@ expansion = cast<ColonizationAbilityOwner>(ai.colonization);
+		expansion.setColonyManagement(this);
 	}
 
 	void start() {
@@ -186,7 +208,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 		} */
 	}
 
-	bool canBuildPopulation(Planet& pl, double factor=1.0) {
+	/* bool canBuildPopulation(Planet& pl, double factor=1.0) {
 		if(buildPop is null)
 			return false;
 		if(!buildPop.canBuild(pl, ignoreCost=true))
@@ -198,7 +220,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 		double laborCost = buildPop.getLaborCost(pl);
 		double laborIncome = pl.laborIncome;
 		return laborCost < laborIncome * MAX_POP_BUILDTIME * factor;
-	}
+	} */
 
 	void removeInvalidSources() {
 		uint sourceCount = planetSources.length;
@@ -235,6 +257,12 @@ class Mechanoid2 : Race, ColonizationAbility {
 		double needPop = getPlanetLevelRequiredPop(source.planet, source.planet.resourceLevel);
 		if (pop < needPop) {
 			popRequests.insertLast(PopulationRequest(source, needPop - pop));
+			return;
+		} else {
+			// try to build population to get to max pop
+			if (pop < double(source.planet.maxPopulation)) {
+				buildPopAtIdle(source);
+			}
 		}
 	}
 
@@ -252,6 +280,83 @@ class Mechanoid2 : Race, ColonizationAbility {
 		}
 	}
 
+	void refreshFactories() {
+		if ((lastRefreshedFactories + 60) > gameTime) {
+			return;
+		}
+		factories.length = 0;
+		uint sourceCount = planetSources.length;
+		for (uint i = 0; i < sourceCount; ++i) {
+			auto@ source = cast<ColonizerMechanoidPlanet>(planetSources[i]);
+			if (source.isGoodForPopulationProduction(construction)) {
+				factories.insertLast(source);
+			}
+		}
+		lastRefreshedFactories = gameTime;
+	}
+
+	double desiredExcessPop() {
+		double total = 5 + (0.5 * planets.planets.length);
+		for (uint i = 0, cnt = popRequests.length; i < cnt; ++i) {
+			total += popRequests[i].neededPopulation;
+		}
+		return total;
+	}
+
+	// Returns how much pop over their max our factories have in total
+	// Note this may be negative if a lot of factories have gone under
+	double factoriesExcessPop() {
+		double excessPop = 0;
+		uint factoryCount = factories.length;
+		for (uint i = 0; i < factoryCount; ++i) {
+			ColonizerMechanoidPlanet@ source = factories[i];
+			excessPop += source.sparePop();
+		}
+		return excessPop;
+	}
+
+	void buildExcessPopAtFactories() {
+		double desired = desiredExcessPop();
+		double current = factoriesExcessPop();
+		// FIXME: We should probably be counting pop being built here too
+		if (current >= desired) {
+			return;
+		}
+
+		uint factoryCount = factories.length;
+		for (uint i = 0; i < factoryCount; ++i) {
+			if (current >= desired) {
+				return;
+			}
+			ColonizerMechanoidPlanet@ source = factories[i];
+			if (buildPopAtIdle(source)) {
+				current += 1;
+			}
+		}
+	}
+
+	bool buildPopAtIdle(ColonizerMechanoidPlanet@ source) {
+		// see if we're not building anything (this is a convenient way)
+		// to avoid building too many population as well
+		Factory@ factory = construction.get(source.planet);
+		if (factory is null || factory.active !is null) {
+			// no factory or busy
+			return false;
+		}
+		// FIXME: We should probably be checking how much income we have
+		// and capping how many pops we are willing to build in one turn
+		// while under debt
+		if (buildPop is null) {
+			return false;
+		}
+		auto@ build = construction.buildConstruction(buildPop);
+		construction.buildNow(build, factory);
+		if (log) {
+			ai.print("Building population", factory.obj);
+		}
+		return true;
+	}
+
 	void focusTick(double time) override {
 		removeInvalidSources();
 		checkForSources();
@@ -262,7 +367,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 			checkSources();
 		}
 
-		// try to meet requested population
+		// try to meet requested population by moving pop around
 		for (uint i = 0, cnt = popRequests.length; i < cnt; ++i) {
 			if (!popRequests[i].valid(ai)) {
 				popRequests.removeAt(i);
@@ -271,6 +376,9 @@ class Mechanoid2 : Race, ColonizationAbility {
 				meetPopRequests(popRequests[i]);
 			}
 		}
+
+		refreshFactories();
+		buildExcessPopAtFactories();
 
 		/* //Check existing lists
 		for(uint i = 0, cnt = popFactories.length; i < cnt; ++i) {
@@ -458,21 +566,63 @@ class Mechanoid2 : Race, ColonizationAbility {
 	}
 
 	ColonizationSource@ getClosestSource(vec3d position) {
-		// TODO
-		return null;
+		ColonizerMechanoidPlanet@ closestSource;
+		double shortestDistance = -1;
+		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
+			auto@ source = cast<ColonizerMechanoidPlanet>(planetSources[i]);
+			if (!(source.sparePop() >= 1)) {
+				continue;
+			}
+			double distance = source.planet.position.distanceTo(position);
+			if (shortestDistance == -1 || distance < shortestDistance) {
+				shortestDistance = distance;
+				@closestSource = source;
+			}
+		}
+		return closestSource;
 	}
 
+	// Finds the closest/therefore cheapest FTL wise source for the colony
+	//
+	// Note this may find a colonisation source that only has 1 spare pop,
+	// even if the colony needs more, we'll just deal with such issues
+	// on subsequent ticks
 	ColonizationSource@ getFastestSource(Planet@ colony) {
-		// TODO
-		return null;
+		ColonizerMechanoidPlanet@ colonizeFrom;
+		double colonizeFromWeight = 0;
+		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
+			auto@ source = cast<ColonizerMechanoidPlanet>(planetSources[i]);
+			if (!(source.sparePop() >= 1)) {
+				continue;
+			}
+			double ftlCost = transferCost(source.planet, ai.empire, colony);
+			if (ftlCost > ai.empire.FTLStored) {
+				continue;
+			}
+			double weight = source.weight(ai);
+			// FTL cost is proportional to distance anyway, and we actually want
+			// to minimise FTL costs instead of actual distance, so use it instead
+			weight /= ftlCost;
+			if (weight > colonizeFromWeight) {
+				colonizeFromWeight = weight;
+				@colonizeFrom = source;
+			}
+		}
+		return colonizeFrom;
 	}
 
 	void colonizeTick() {
 		// Don't need to do anything here
 	}
 
-	void orderColonization(ColonizeData& data, ColonizationSource@ source) {
-		// TODO
+	void orderColonization(ColonizeData& data, ColonizationSource@ isource) {
+		auto@ source = cast<ColonizerMechanoidPlanet>(isource);
+		@data.colonizeFrom = source.planet;
+		ColonizeData2@ _data = cast<ColonizeData2>(data);
+		if (_data !is null) {
+			@_data.colonizeUnit = source;
+		}
+		source.planet.activateAbilityTypeFor(ai.empire, colonizeAbilityID, data.target);
 	}
 
 	void saveSource(SaveFile& file, ColonizationSource@ source) {
