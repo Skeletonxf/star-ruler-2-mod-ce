@@ -10,6 +10,7 @@ from abilities import AbilityHook;
 import int getAbilityID(const string&) from "abilities";
 import int getUnlockTag(const string& ident, bool create = true) from "unlock_tags";
 from requirement_effects import Requirement;
+import util.design_export;
 #section server
 from objects.Oddity import createMiniWormhole;
 from objects.Oddity import createNebula;
@@ -574,6 +575,14 @@ enum FTLUnlock {
 	FTLU_Warpdrive,
 };
 
+void unlockDesign(string path, Empire@ emp, bool limitShipset=true, bool retryWithoutLimit=true) {
+	DesignSet designs;
+	designs.readDirectory("data/designs/"+path);
+	designs.limitShipset = limitShipset;
+	designs.softLimitRetry = retryWithoutLimit;
+	designs.createFor(emp);
+}
+
 // TODO: Add way to exclude the FTL about to be unlocked for all from the pool
 class UnlockRandomFTL : EmpireTrigger {
 	Document doc("Make the empire this is triggered on gain a random FTL it doesn't yet have.");
@@ -632,12 +641,20 @@ class UnlockRandomFTL : EmpireTrigger {
 		}
 		if (unlock == FTLU_Gate) {
 			emp.setUnlocked(gateSubsystem, true);
+			unlockDesign("gate", emp);
+			unlockDesign("verdant/gate", emp);
+			unlockDesign("devout/gate", emp);
+			unlockDesign("ancient/gate", emp);
 			if(emp.player is null)
 				return;
 			sendClientMessage(emp.player, "Gates unlocked", "You have unlocked Gates through a galactic senate vote");
 		}
 		if (unlock == FTLU_Slipstream) {
 			emp.setUnlocked(slipstreamSubsystem, true);
+			unlockDesign("slipstream", emp);
+			unlockDesign("verdant/slipstream", emp);
+			unlockDesign("devout/slipstream", emp);
+			unlockDesign("ancient/slipstream", emp);
 			if(emp.player is null)
 				return;
 			sendClientMessage(emp.player, "Slipstreams unlocked", "You have unlocked Slipstreams through a galactic senate vote");

@@ -17,6 +17,10 @@ Technology: SysSlipstream
 
 	UnlockSubsystem(Slipstream)
 	SkipOnUnlockedSubsystem(Slipstream)
+	CE_design_hooks::LoadDesigns(slipstream)
+	CE_design_hooks::LoadDesigns(verdant/slipstream)
+	CE_design_hooks::LoadDesigns(devout/slipstream)
+	CE_design_hooks::LoadDesigns(ancient/slipstream)
 
 	CE_biome_hooks::StartVoteIfAllAttributeLT(SlipstreamResearch, True, ResearchUnlockedSlipstream)
 	SecondaryFTLCost(1000)

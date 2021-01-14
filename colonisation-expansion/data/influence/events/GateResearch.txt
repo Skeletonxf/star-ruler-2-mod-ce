@@ -20,5 +20,10 @@ Effect: GateResearch
 	Dismissable: False
 	Icon: GuiOrbitalIcons::1
 	Color: #cf5fde
+
 	ModAttributeAll(ResearchUnlockedGate, Add, 1)
 	OnAllEmpires(CE_biome_hooks::UnlockSubsystem(GateModule))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(gate))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(verdant/gate))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(devout/gate))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(ancient/gate))

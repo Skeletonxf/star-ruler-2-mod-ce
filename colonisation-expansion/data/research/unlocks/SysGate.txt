@@ -17,6 +17,10 @@ Technology: SysGateModule
 
 	UnlockSubsystem(GateModule)
 	SkipOnUnlockedSubsystem(GateModule)
+	CE_design_hooks::LoadDesigns(gate)
+	CE_design_hooks::LoadDesigns(verdant/gate)
+	CE_design_hooks::LoadDesigns(devout/gate)
+	CE_design_hooks::LoadDesigns(ancient/gate)
 
 	CE_biome_hooks::StartVoteIfAllAttributeLT(GateResearch, True, ResearchUnlockedGate)
 	SecondaryFTLCost(1000)
