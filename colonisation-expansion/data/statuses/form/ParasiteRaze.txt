@@ -36,7 +36,8 @@ Status: ParasiteRaze
 	ForbidLaborExport()
 Status: ParasiteRazeDone
 	Visible To: Nobody
-	PlanetLevelIncomeMod(+85, -80, 0)
+	IfNotHaveTrait(Ancient, IfNotHaveTrait(Extragalactic, PlanetLevelIncomeMod(+80, -80, 0)))
+	PlanetLevelIncomeMod(+5, 0, 0)
 	AddMaxPopulation(1)
 Status: RazeWithoutAbandon
 	Visible To: Nobody
