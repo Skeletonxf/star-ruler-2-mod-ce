@@ -24,7 +24,6 @@ from statuses import getStatusID;
 // Make the AI not put command computers on motherships
 // Make sure AI will flee from remnants and abort if mothership takes heavy damage
 // Propagate failiures back to the Expansion component so we can choose a new colony
-// Blacklist uplifted planets from needing habitats once we get them to 8
 
 class HabitatMission : Mission {
 	Planet@ target;

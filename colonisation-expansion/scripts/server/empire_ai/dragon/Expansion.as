@@ -252,9 +252,12 @@ class ColonizeForest {
 
 	double lastOutpostExpandCheck = 0;
 
+	const ResourceType@ light;
+
 	ColonizeForest() {
 		@resourceValuator = ResourceValuator();
 		@build_moon_base = getConstructionType("MoonBase");
+		@light = getResource("Starlight");
 	}
 
 	void save(Expansion& expansion, SaveFile& file) {
@@ -510,10 +513,14 @@ class ColonizeForest {
 			queue.insertLast(ColonizeTree(newColony, request));
 			request.isColonizing = true;
 		} else {
-			// FIXME: This is being way too eager to make megafarms when we have food resources around us
-			// we should check that this resource isn't something we're already colonising for before we
-			// commit to a building we might not need in a few minutes
-
+			// If we're looking for any resources that we could find in the universe don't
+			// resort to buildings if we haven't even scouted the systems on our border yet.
+			if (!expansion.hasScoutedBorders()) {
+				bool canMeetArtificialOnly = request.spec.meets(light, fromObj=request.obj, toObj=request.obj);
+				if (!canMeetArtificialOnly) {
+					return;
+				}
+			}
 			// Perhaps check if the planet is a Gas Giant first, as we should make a moon
 			// base if we need to build on them
 
@@ -749,6 +756,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	const ResourceClass@ scalableClass;
 
+	bool bordersScouted = false;
+
 	void create() {
 		@resources = cast<Resources>(ai.resources);
 		@planets = cast<Planets>(ai.planets);
@@ -809,6 +818,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		planetManagement.save(file);
 		regionLinking.save(file);
+
+		file << bordersScouted;
 	}
 
 	void load(SaveFile& file) {
@@ -881,6 +892,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		planetManagement.load(file);
 		regionLinking.load(file);
+
+		file >> bordersScouted;
 	}
 
 	void tick(double time) override {
@@ -953,6 +966,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		// Keep our regions linked
 		regionLinking.focusTick(ai);
+
+		checkIfBordersScouted();
 	}
 
 	void drainQueue() {
@@ -1106,6 +1121,24 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			resources.dumpRequests();
 			resources.dumpAvailable();
 		}
+	}
+
+	// Checks we have obtained vision of all the systems 1 hop from our border
+	// ie, we know which planets are in the systems we can immediately expand
+	// into.
+	void checkIfBordersScouted() {
+		for (uint i = 0, cnt = systems.outsideBorder.length; i < cnt; ++i) {
+			SystemAI@ sys = systems.outsideBorder[i];
+			if (!sys.explored) {
+				bordersScouted = false;
+				return;
+			}
+		}
+		bordersScouted = true;
+	}
+
+	bool hasScoutedBorders() {
+		return bordersScouted;
 	}
 
 	bool isDevelopingIn(Region@ reg) {
