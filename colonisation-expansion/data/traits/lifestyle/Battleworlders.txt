@@ -9,6 +9,7 @@ Trait: Battleworlders
 	Unique: Lifestyle
 
 
+	ReplaceTechnologyNodes(InterstellarTrade, Energy)
 	ReplaceTechnologyNodeAt((-5, -8), CelestialStationMaintenance2)
 	TriggerHomeworld(SpawnBuilding(Factory, (6, 5)), Run Post = True)
 	TriggerHomeworld(SpawnBuilding(LightSystem, (6, 1)), Run Post = True)
