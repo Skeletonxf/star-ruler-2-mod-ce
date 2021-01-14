@@ -33,11 +33,27 @@ EXPLOSIVE_GASES: Explosive Gases
 HEAVY_GASES: Common Gases
 STELLAR_WATER: Water obtained from a comet
 BUILDING_WATER: Water obtained from a [bbloc=#BLD_HYDROGENATOR/].
-SOYLENT1_DESC: Food obtained from a [bbloc=#BLD_FARM/].
-SOYLENT2_DESC: Food cultivated by a beacon.
-SOYLENT4_DESC: This food is definitely not people.
+SOYLENT1_DESC: <<
+	Food obtained from a [bbloc=#BLD_FARM/].
+
+	[i][color=#aaa]This resource gradually forests planets at a greatly reduced rate, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>
+SOYLENT2_DESC: <<
+	Food cultivated by a beacon.
+
+	[i][color=#aaa]This resource gradually forests planets at a greatly reduced rate, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>
+SOYLENT4_DESC: <<
+	This food is definitely not people.
+
+	[i][color=#aaa]This resource gradually forests planets at a greatly reduced rate, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>
 FOOD: Food
-SOYLENT3_DESC: Food obtained from a [bbloc=#ORB_HYDROPONICS_SATELLITE/].
+SOYLENT3_DESC: <<
+	Food obtained from a [bbloc=#ORB_HYDROPONICS_SATELLITE/].
+
+	[i][color=#aaa]This resource gradually forests planets at a greatly reduced rate, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+>>
 FOOD_BLURB_FORESTRY: <<
 	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
 	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and new food resources.[/color][/i]
