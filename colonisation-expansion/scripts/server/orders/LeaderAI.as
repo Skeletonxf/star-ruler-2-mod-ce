@@ -846,14 +846,18 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 				}
 			}
 			else {
+				// [[ MODIFY BASE GAME START ]]
+				// engageBehave == EB_KeepDistance -> engageBehave != EB_KeepDistance
+				// if we're set to keep distance, then we shouldn't be setting closeIn to true
 				//Attack a particular target
 				if(autoMode == AM_AreaBound)
-					addAttackOrder(obj, target, initialPosition, autoArea, engageBehave == EB_KeepDistance, false);
+					addAttackOrder(obj, target, initialPosition, autoArea, engageBehave != EB_KeepDistance, false);
 				else if(autoMode == AM_RegionBound)
-					addAttackOrder(obj, target, false);
+					addAttackOrder(obj, target, false); // FIXME: I've broken this in trying to fix the context menu one
 				else
-					addAttackOrder(obj, target, vec3d(), 0, engageBehave == EB_KeepDistance, false);
+					addAttackOrder(obj, target, vec3d(), 0, engageBehave != EB_KeepDistance, false);
 				autoState = AS_Attacking;
+				// [[ MODIFY BASE GAME END ]]
 			}
 		}
 	}
@@ -1278,7 +1282,11 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		double range = engagementRange;
 		if(autoMode == AM_HoldFire)
 			setAutoMode(obj, AM_HoldPosition);
-		addOrder(obj, AttackOrder(target, range), append);
+		// [[ MODIFY BASE GAME START ]]
+		// Attack orders should always obey the closeIn/keepDistance setting
+		// held in engageBehave
+		addOrder(obj, AttackOrder(target, range, engageBehave != EB_KeepDistance), append);
+		// [[ MODIFY BASE GAME END ]]
 		obj.wake();
 	}
 
