@@ -16,9 +16,15 @@ tidy class AttackOrder : Order {
 	bool closeIn = false;
 	bool dodgeObstacle = false;
 
-	AttackOrder(Object& targ, double engagementRange) {
+	// graphical only, so not saved to file
+	vec3d moveDestination = vec3d();
+
+	// [[ MODIFY BASE GAME START ]]
+	AttackOrder(Object& targ, double engagementRange, bool closeIn) {
 		minRange = engagementRange;
 		@target = targ;
+		this.closeIn = closeIn;
+		moveDestination = target.position;
 	}
 
 	AttackOrder(Object& targ, double engagementRange, const vec3d bindPosition, double bindDistance, bool closeIn) {
@@ -28,14 +34,16 @@ tidy class AttackOrder : Order {
 		boundDistance = bindDistance;
 		isBound = true;
 		this.closeIn = closeIn;
+		moveDestination = target.position;
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	bool get_hasMovement() {
 		return true;
 	}
 
 	vec3d getMoveDestination(const Object& obj) {
-		return target.position;
+		return moveDestination;
 	}
 
 	AttackOrder(SaveFile& msg) {
@@ -142,7 +150,15 @@ tidy class AttackOrder : Order {
 		}
 		// [[ MODIFY BASE GAME END ]]
 
-		double distSQ = obj.position.distanceToSQ(target.position);
+		// [[ MODIFY BASE GAME START ]]
+		// set visual to target
+		moveDestination = target.position;
+		// head to where the target will be in 2 seconds
+		// has no effect if the target is stationary, but should help
+		// pursuing moving targets
+		vec3d targetHeaded = target.position + target.velocity * 2.0;
+		double distSQ = obj.position.distanceToSQ(targetHeaded);
+		// [[ MODIFY BASE GAME END ]]
 		if(distSQ > minRange * minRange) {
 			if(!movement)
 				return OS_COMPLETED;
@@ -152,6 +168,103 @@ tidy class AttackOrder : Order {
 				obj.setRotation(facing);
 			fleePos = vec3d();
 		}
+		// [[ MODIFY BASE GAME START ]]
+		else if((!closeIn) && distSQ < (minRange * 0.75) * (minRange * 0.75)) {
+			// get out of there
+			if(!movement)
+				return OS_COMPLETED;
+
+			// strafe in 2d because math is hard and no one uses the y dimension anyway
+			vec3d plane = target.position - obj.position;
+			plane.y = 0;
+
+			// in the extremely unlikely scenario of no x or z difference, add one in
+			if (plane.x == 0 && plane.z == 0)
+				plane.x += 1;
+
+			// compute the two orthogonal vectors to the line between us and the target
+			// in the 2d plane
+			vec3d left = vec3d();
+			left.x = plane.z * -1;
+			left.z = plane.x;
+			vec3d right = vec3d();
+			right.x = plane.z;
+			right.z = plane.x * -1;
+
+
+			left = left.normalize();
+			right = right.normalize();
+
+			// pick the evade direction that requires the least adjustment
+			vec3d evade = vec3d();
+			// use the plane as a fallback if we're stationary
+			// compute quaternions in evade directions
+			quaterniond leftRotation = quaterniond_fromVecToVec(vec3d_front(), left);
+			quaterniond rightRotation = quaterniond_fromVecToVec(vec3d_front(), right);
+			// check what percent out of 0 to 1 are we towards each direction
+			// and take the closest
+			double toLeft = obj.rotation.dot(leftRotation);
+			double toRight = obj.rotation.dot(rightRotation);
+			// FIXME: This doesn't seem quite right
+			// borrow this angle checking code from the mover component
+			// instead, it looks more like an actual angle calculation
+			/* double dot = targRot.dot(obj.rotation);
+			if(dot < 0.999) {
+				if(dot < -1.0)
+					dot = -1.0;
+				double angle = acos(dot); // we don't need to take acos for our comparison as acos is monotonic
+				double tickRot = rotSpeed * time;
+				if(angle > tickRot) {
+					obj.rotation = obj.rotation.slerp(targRot, tickRot / angle);
+				}
+				else {
+					obj.rotation = targRot;
+					rotating = false;
+				}
+			}
+			else {
+				if(dot != 1.0)
+					obj.rotation = targRot;
+				rotating = false;
+			} */
+			if (toLeft > toRight) {
+				evade.x = left.x;
+				evade.z = left.z;
+			} else {
+				evade.x = right.x;
+				evade.z = right.z;
+			}
+
+			// we need to pick a reasonable distance to evade by, now we have
+			// a direction. As we want to stay in attack range we'll evade by
+			// the difference.
+			double distance = sqrt(distSQ);
+			double evadeDistance = minRange - distance;
+
+			evade.x *= evadeDistance;
+			evade.z *= evadeDistance;
+
+			// convert evade from offset to a position
+			evade.x += obj.position.x;
+			evade.z += obj.position.z;
+			// reset the y to be in the same plane as we are currently
+			evade.y = obj.position.y;
+
+			if(moveId == -1)
+				facing = quaterniond_fromVecToVec(vec3d_front(), evade);
+
+			// set visual to evade position
+			moveDestination = evade;
+
+			// HACK: make sure the move actually happens
+			// Not quite sure why this is needed but it is
+			moveId = -1;
+			// move to evasion point
+			if(obj.moveTo(evade, moveId, doPathing=false, enterOrbit=false))
+				obj.setRotation(facing);
+			fleePos = vec3d();
+		}
+		// [[ MODIFY BASE GAME END ]]
 		else if(closeIn && distSQ < (minRange * 0.75) * (minRange * 0.75)) {
 			if(!movement)
 				return OS_COMPLETED;
@@ -164,14 +277,23 @@ tidy class AttackOrder : Order {
 					fleePos = vec3d();
 			}
 			else {
-				if(!isBound) {
+				// [[ MODIFY BASE GAME START ]]
+				// I do not understand why blind mind would want a ship that was ordered
+				// to close in on an enemy ever deciding it should not close in if that
+				// would leave its current region?
+				// perhaps it makes sense when vanilla wouldn't let you tell a ship to close in
+				// manually????
+				// we just use the constructor that makes ships bound when appropriate from
+				// LeaderAI now, so no need for this
+				/* if(!isBound) {
 					Region@ reg = obj.region;
 					if(reg !is null) {
 						boundPos = reg.position;
 						boundDistance = reg.radius;
 						isBound = true;
 					}
-				}
+				} */
+				// [[ MODIFY BASE GAME END ]]
 				if(isBound) {
 					vec3d offset = (obj.position - target.position).normalized(minRange);
 					vec3d destPos = target.position + offset;
@@ -184,8 +306,14 @@ tidy class AttackOrder : Order {
 					}
 				}
 
-				if(obj.moveTo(target, moveId, minRange, enterOrbit=false))
+				// [[ MODIFY BASE GAME START ]]
+				// If we're set to close in, and we're already closer than minRange,
+				// don't try to back off because that makes us run away which
+				// is the opposite of closing in
+				double desiredDistanceToTarget = min(minRange, sqrt(distSQ));
+				if(obj.moveTo(target, moveId, desiredDistanceToTarget, enterOrbit=false))
 					obj.setRotation(facing);
+				// [[ MODIFY BASE GAME END ]]
 			}
 		}
 		else if(dodgeObstacle) {

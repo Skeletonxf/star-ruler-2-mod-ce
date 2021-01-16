@@ -8,7 +8,7 @@ tidy class CaptureOrder : Order {
 	CaptureOrder(Planet& targ) {
 		@target = targ;
 		double radius = targ.OrbitSize - targ.radius;
-		vec2d pos = random2d(targ.radius + radius * 0.15, targ.radius + radius*0.85);
+		vec2d pos = random2d(targ.radius + radius * 0.15, targ.radius + radius*0.75); // [[ MODIFY BASE GAME ]] 0.85 -> 0.75
 		offset = vec3d(pos.x, 0, pos.y);
 		moveId = -1;
 	}
@@ -66,16 +66,19 @@ tidy class CaptureOrder : Order {
 				return OS_COMPLETED;
 			}
 		}
+		// [[ MODIFY BASE GAME START ]]
+		// if we're not in range, do not allow the movement order to finish
+		else {
+			moveId = -1;
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
-		// TODO: Can probably make capturing a moving planet work a lot better
-		// if we move to the position the planet is going to be at after x amount
-		// of time, just need to find some good heuristics for this
-		// Might also need to not use a moveTo order, as it tries to reach
-		// its destination at 0 velocity whereas we need to match the velocity
-		// of our target
+		// move to the position the planet is going to be at after 3 seconds
+		// so we chase planets trying to flee
+		vec3d targetHeaded = target.position + offset + target.velocity * 3;
+		obj.moveTo(targetHeaded, moveId);
 		// [[ MODIFY BASE GAME END ]]
-		obj.moveTo(target.position + offset, moveId);
 		return OS_BLOCKING;
 	}
 };
