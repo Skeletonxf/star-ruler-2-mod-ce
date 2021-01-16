@@ -1493,6 +1493,13 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 			const Design@ dsg = ship.blueprint.design;
 			if(dsg !is null && !dsg.hasTag(ST_Weapon) && dsg.total(SV_SupportCapacity) > 0)
 				engageType = ER_RaidingOnly;
+			// [[ MODIFY BASE GAME START ]]
+			// Apply auto keep distance if set on design
+			if (dsg !is null && dsg.hasTag(ST_KeepDistance)) {
+				engageBehave = EB_KeepDistance;
+				orderDelta = true;
+			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 		else {
 			needExperience = INFINITY;

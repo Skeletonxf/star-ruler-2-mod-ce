@@ -231,3 +231,11 @@ S_CONSTRUCTION_BAY_REV_DESC: <<
 
 	[img=$Labor;22]Provides labor to construct new ships and orbitals with.[/img]
 >>
+KEEP_DISTANCE: Keep Distance
+KEEP_DISTANCE_DESC: <<
+	The flagship will be automatically set to [img=ActionBarIcons::17;20/] [b]Keep Distance[/b] instead of [img=ActionBarIcons::16;20/] [b]Close In[/b] when built.
+
+	This setting can always be changed on a ship manually. Keep Distance will make the ship avoid getting too close to its attack target but still stay within its configured engagement range.
+
+	[img=MenuIcons::3;20][i][color=#aaa]Recommended for mobile ships with long range weapons that have missiles or wide firing arcs.[/color][/i][/img]
+>>

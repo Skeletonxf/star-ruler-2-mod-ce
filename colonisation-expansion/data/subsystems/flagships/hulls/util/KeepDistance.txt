@@ -1,0 +1,13 @@
+Subsystem: KeepDistance
+	Name: #KEEP_DISTANCE
+	Description: #KEEP_DISTANCE_DESC
+
+	Tags: Category:Hulls, Hull, Applied, NoCore, KeepDistance
+	Tags: DefaultUnlock, Flagship
+	Hull: Flagship
+	EvaluationOrder: -200
+	BaseColor: #92b4df
+
+	Module: Default
+		Sprite: ActionBarIcons::17
+		DrawMode: 3
