@@ -16,15 +16,16 @@ tidy class AttackOrder : Order {
 	bool closeIn = false;
 	bool dodgeObstacle = false;
 
-	vec3d _evade = vec3d();
+	// graphical only, so not saved to file
+	vec3d moveDestination = vec3d();
 
 	// [[ MODIFY BASE GAME START ]]
 	AttackOrder(Object& targ, double engagementRange, bool closeIn) {
 		minRange = engagementRange;
 		@target = targ;
 		this.closeIn = closeIn;
+		moveDestination = target.position;
 	}
-	// [[ MODIFY BASE GAME END ]]
 
 	AttackOrder(Object& targ, double engagementRange, const vec3d bindPosition, double bindDistance, bool closeIn) {
 		minRange = engagementRange;
@@ -33,16 +34,16 @@ tidy class AttackOrder : Order {
 		boundDistance = bindDistance;
 		isBound = true;
 		this.closeIn = closeIn;
+		moveDestination = target.position;
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	bool get_hasMovement() {
 		return true;
 	}
 
 	vec3d getMoveDestination(const Object& obj) {
-		if (!_evade.zero)
-			return _evade;
-		return target.position;
+		return moveDestination;
 	}
 
 	AttackOrder(SaveFile& msg) {
@@ -150,12 +151,13 @@ tidy class AttackOrder : Order {
 		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
+		// set visual to target
+		moveDestination = target.position;
 		// head to where the target will be in 2 seconds
 		// has no effect if the target is stationary, but should help
 		// pursuing moving targets
 		vec3d targetHeaded = target.position + target.velocity * 2.0;
 		double distSQ = obj.position.distanceToSQ(targetHeaded);
-		_evade = vec3d();
 		// [[ MODIFY BASE GAME END ]]
 		if(distSQ > minRange * minRange) {
 			if(!movement)
@@ -251,9 +253,8 @@ tidy class AttackOrder : Order {
 			if(moveId == -1)
 				facing = quaterniond_fromVecToVec(vec3d_front(), evade);
 
-			_evade.x = evade.x;
-			_evade.y = evade.y;
-			_evade.z = evade.z;
+			// set visual to evade position
+			moveDestination = evade;
 
 			// HACK: make sure the move actually happens
 			// Not quite sure why this is needed but it is
@@ -282,7 +283,8 @@ tidy class AttackOrder : Order {
 				// would leave its current region?
 				// perhaps it makes sense when vanilla wouldn't let you tell a ship to close in
 				// manually????
-				// TODO: Restore this for the automated attack order casts
+				// we just use the constructor that makes ships bound when appropriate from
+				// LeaderAI now, so no need for this
 				/* if(!isBound) {
 					Region@ reg = obj.region;
 					if(reg !is null) {
@@ -304,8 +306,14 @@ tidy class AttackOrder : Order {
 					}
 				}
 
-				if(obj.moveTo(target, moveId, minRange, enterOrbit=false))
+				// [[ MODIFY BASE GAME START ]]
+				// If we're set to close in, and we're already closer than minRange,
+				// don't try to back off because that makes us run away which
+				// is the opposite of closing in
+				double desiredDistanceToTarget = min(minRange, sqrt(distSQ));
+				if(obj.moveTo(target, moveId, desiredDistanceToTarget, enterOrbit=false))
 					obj.setRotation(facing);
+				// [[ MODIFY BASE GAME END ]]
 			}
 		}
 		else if(dodgeObstacle) {

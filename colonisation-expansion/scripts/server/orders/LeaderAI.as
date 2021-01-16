@@ -70,7 +70,10 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	Object@[] supports;
 	GroupData@[] groupData;
 
-	AutoMode autoMode = AM_AreaBound;
+	// [[ MODIFY BASE GAME START ]]
+	// with actual kiting and pursuit I think region bound is a better default
+	AutoMode autoMode = AM_RegionBound;
+	// [[ MODIFY BASE GAME END ]]
 	EngagementBehaviour engageBehave = EB_CloseIn;
 	EngagementRange engageType = ER_SupportMin;
 	double autoArea = 1000.0;
@@ -850,10 +853,10 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 				// engageBehave == EB_KeepDistance -> engageBehave != EB_KeepDistance
 				// if we're set to keep distance, then we shouldn't be setting closeIn to true
 				//Attack a particular target
-				if(autoMode == AM_AreaBound)
+				if(autoMode == AM_AreaBound || obj.region is null && autoMode == AM_RegionBound)
 					addAttackOrder(obj, target, initialPosition, autoArea, engageBehave != EB_KeepDistance, false);
-				else if(autoMode == AM_RegionBound)
-					addAttackOrder(obj, target, false); // FIXME: I've broken this in trying to fix the context menu one
+				else if(autoMode == AM_RegionBound && obj.region !is null)
+					addAttackOrder(obj, target, obj.region.position, obj.region.radius, engageBehave != EB_KeepDistance, false);
 				else
 					addAttackOrder(obj, target, vec3d(), 0, engageBehave != EB_KeepDistance, false);
 				autoState = AS_Attacking;

@@ -28,9 +28,7 @@ This is primarily intended as a developer focused project planning list, rather 
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
   - Attack order revamp
-    - Make AM_RegionBound auto attack order work again
-    - Add chase order which tries to stay literally on top of target (and backport to seige order)
-    - Make attack orders actually try to move to where the target is headed
+    - Add chase order which tries to stay literally on top of target
   - Tweak tractor default design
   - Add more details on major changes from vanilla to the README
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
