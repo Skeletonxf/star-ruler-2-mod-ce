@@ -817,7 +817,7 @@ tidy class Construction : Component_Construction, Savable {
 			return;
 
 		// [[ MODIFY BASE GAME START ]]
-		cons.totalLabor *= (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(path.pathSize) * penFact);
+		cons.totalLabor *= (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(path.pathSize - 1) * penFact);
 		// [[ MODIFY BASE GAME END ]]
 
 		if(queueConstructible(obj, cons)) {
@@ -869,7 +869,7 @@ tidy class Construction : Component_Construction, Savable {
 		if(orbFrame !is null)
 			penFact = orbFrame.getValue(OV_FRAME_LaborPenaltyFactor);
 		// [[ MODIFY BASE GAME START ]]
-		double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(path.pathSize) * penFact);
+		double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(path.pathSize - 1) * penFact);
 		// [[ MODIFY BASE GAME END ]]
 		StationConstructible cons(design, position, penalty);
 		cons.totalLabor *= obj.owner.OrbitalLaborCostFactor;

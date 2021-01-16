@@ -292,7 +292,7 @@ class BuildStation : AllocateConstruction {
 				int hops = cast<Systems>(ai.systems).tradeDistance(targReg, reg);
 				if(hops > 0) {
 					// [[ MODIFY BASE GAME START ]]
-					double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** double(hops + 1);
+					double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** double(hops);
 					// [[ MODIFY BASE GAME END ]]
 					baseLabor *= penalty;
 				}
@@ -405,7 +405,7 @@ class BuildOrbital : AllocateConstruction {
 				int hops = cast<Systems>(ai.systems).tradeDistance(targReg, reg);
 				if(hops > 0) {
 					// [[ MODIFY BASE GAME START ]]
-					double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** double(hops + 1);
+					double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** double(hops);
 					// [[ MODIFY BASE GAME END ]]
 					baseLabor *= penalty;
 				}
@@ -1124,7 +1124,7 @@ class Construction : AIComponent {
 				continue;
 			}
 			double l = factories[i].obj.laborIncome;
-			double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** double(hops + 1);
+			double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** double(hops);
 			l *= penalty;
 			if (l > bestLabor) {
 				bestLabor = l;

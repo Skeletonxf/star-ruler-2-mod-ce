@@ -1251,7 +1251,7 @@ class OrbitalTarget : PointTargeting {
 				return "";
 			path.generate(getSystem(obj.region), getSystem(target));
 			// [[ MODIFY BASE GAME START ]]
-			laborCost *= (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(path.pathSize) * penFact);
+			laborCost *= (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(path.pathSize - 1) * penFact);
 			// [[ MODIFY BASE GAME END ]]
 			return toString(laborCost,0)+" "+locale::RESOURCE_LABOR+", "+formatTime(laborCost / laborIncome);
 		}
