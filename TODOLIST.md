@@ -5,11 +5,11 @@ This is primarily intended as a developer focused project planning list, rather 
 - Bug list / issues to fix
   - Port mothership retrofitting exploit fix to mod pack
     - Will need to port a number of custom hooks that the fix relies on along with this, and should probably take the opportunity to move them out of CE_biome_hooks
-  - Port interdict movement fixes to mod pack
+  - Port interdict movement fixes to mod pack once stress tested in a few multiplayer games
   - Stress test teaching of dummy resources to the AI
-    - Can unhack Mechanoid and Ancient AI components and CP once sure fully working
+    - Can unhack Ancient AI components and CP once sure fully working
   - Expansion AI Component
-    - Implement custom ColonizeAbility interface Ancient AI empires
+    - Implement custom ColonizeAbility interface for Ancient AI empires
     - Refine Star Children ColonizeAbility code and reintroduce LaborMissions
       - Make sure star children motherships run away from danger while on habitat missions
     - Refine Mechanoid ColonizeAbility to avoid building too many pops if going into debt
@@ -27,17 +27,17 @@ This is primarily intended as a developer focused project planning list, rather 
     - General notes on AI issues to fix in rework
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
+  - Attack order revamp
+    - Add chase order which tries to stay literally on top of target
   - Tweak tractor default design
   - Add more details on major changes from vanilla to the README
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
   - Disable interstellar trade beacon when not in deep space
     - Add better UI for when attempting to export/import resources and you can't
     - Investigate what happens to civilian trade ships when target is in deep space
-    - Remove from battleworlder tech tree as they can't trade resources to use it
   - Make seiging order work better on a moving target
   - Make a new order to follow a moving target (as move command needs to terminate when reaching target, so isn't suitable for this)
     - Possibly chase/pursue commands for stay on top of target and stay within firing range of target respectively
-  - Maybe cap system loyalty bonuses so they don't scale past 6 or so planets in a system
   - Gravitron damage should have a ramp up time to reach 100% dps
   - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands
   - Stop players putting floating continents on dyson spheres
