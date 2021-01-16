@@ -56,6 +56,7 @@ Preset: Saar
 
 	Trait: Communism
 	Trait: Hyperdrive
+	Trait: Terrestial
 	Trait: Evangelical
 	Trait: Charismatic
 
