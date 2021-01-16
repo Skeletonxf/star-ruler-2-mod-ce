@@ -135,7 +135,7 @@ Preset: Locusto
 	Name: #RACE_LOCUSTO
 	Tagline: #RACE_LOCUSTO_TAGLINE
 	Lore: #RACE_LOCUSTO_LORE
-	Portrait: emp_portrait_oko
+	Portrait: emp_portrait_locusto
 	Shipset: Bromma
 
 	Trait: ParasiteTrait
