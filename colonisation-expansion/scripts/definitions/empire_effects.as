@@ -1414,7 +1414,7 @@ tidy final class TriggerPeriodic : EmpireEffect {
 		data.retrieve(@dat);
 
 		dat.timer -= tick;
-		if(dat.timer <= 0.0) {
+		while(dat.timer <= 0.0) {
 			if(max_triggers.integer < 0 || dat.count < uint(max_triggers.integer)) {
 				if(hook !is null)
 					hook.activate(obj, obj.owner);
@@ -1444,7 +1444,7 @@ tidy final class TriggerPeriodic : EmpireEffect {
 		data.retrieve(@dat);
 
 		dat.timer -= tick;
-		if(dat.timer <= 0.0) {
+		while(dat.timer <= 0.0) {
 			if(max_triggers.integer < 0 || dat.count < uint(max_triggers.integer)) {
 				if(hook !is null)
 					hook.activate(null, emp);
