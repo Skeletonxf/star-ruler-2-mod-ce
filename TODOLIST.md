@@ -3,6 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Port fix to make auto import order respect trade lines rather than repeatedly 'import' an unconnected resource when others are available
   - Port mothership retrofitting exploit fix to mod pack
     - Will need to port a number of custom hooks that the fix relies on along with this, and should probably take the opportunity to move them out of CE_biome_hooks
   - Port interdict movement fixes to mod pack once stress tested in a few multiplayer games
@@ -27,8 +28,15 @@ This is primarily intended as a developer focused project planning list, rather 
     - General notes on AI issues to fix in rework
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
+      - Add support for interstellar trade beacons to AI Resources component
   - Attack order revamp
     - Add chase order which tries to stay literally on top of target
+  - Make auto import refresh when resources on already colonised planets become available
+  - Make salts and supercritical water give max pressure cap equal to their pressure so level 1 planets don't go over
+  - More quickbar dots to stop so it doesn't get buried
+  - Make nebulae formation require fewer fractures
+  - Require 3 minutes out of combat for 1% repair to kick in
+  - Make water synthesis less prohibitvely expensive
   - Tweak tractor default design
   - Add more details on major changes from vanilla to the README
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
@@ -76,7 +84,6 @@ This is primarily intended as a developer focused project planning list, rather 
       - FTL Storage, Megacities
     - Maybe add a way to push planets around with motherships?
   - Make autoexplore continue to work after all systems have been visited once (will also split off into own mod or community patch)
-  - Make auto import refresh when resources on already colonised planets become available
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Get the AI to play invasion properly

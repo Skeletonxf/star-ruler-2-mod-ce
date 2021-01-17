@@ -4,6 +4,10 @@ import ftl;
 import planet_levels;
 import object_creation;
 import cargo;
+// [[ MODIFY BASE GAME START ]]
+import systems;
+import system_pathing;
+// [[ MODIFY BASE GAME END ]]
 
 tidy class ColonizationEvent : Savable, Serializable {
 	Object@ from;
@@ -1111,11 +1115,28 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		}
 	}
 
-	Object@ findFreeResource(Empire& emp, AutoImport@ imp, vec3d closeTo) {
+	// [[ MODIFY BASE GAME START ]]
+	Object@ findFreeResource(Empire& emp, AutoImport@ imp, Object& importing, bool tradeLinkOnly=false) {
+		// always favor resources that have a trade link
+		if (!tradeLinkOnly) {
+			Object@ found = findFreeResource(emp, imp, importing, tradeLinkOnly=true);
+			if (found !is null) {
+				return found;
+			}
+		}
+
 		double dist = INFINITY;
 		Object@ found;
 
 		ReadLock lock(plMutex);
+
+		TradePath tradePath;
+		@tradePath.forEmpire = emp;
+		bool allowNoPath = false;
+		if (importing.isPlanet) {
+			Planet@ planet = cast<Planet>(importing);
+			allowNoPath = planet.allowPathlessImport > 0;
+		}
 
 		//Find in currently colonized planets
 		for(uint i = 0, cnt = planets.length; i < cnt; ++i) {
@@ -1129,9 +1150,16 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 				continue;
 			if(!pl.nativeResourceUsable[0])
 				continue;
+			// skip over resources we can't actually import
+			if (tradeLinkOnly && !allowNoPath) {
+				tradePath.generate(getSystem(pl.region), getSystem(importing.region), keepCache=true);
+				if (!tradePath.isUsablePath) {
+					continue;
+				}
+			}
 			Object@ dest = pl.getNativeResourceDestination(emp, 0);
 			if(dest is null) {
-				double d = closeTo.distanceToSQ(pl.position);
+				double d = importing.position.distanceToSQ(pl.position);
 				if(pl.population < 1.0)
 					d *= 10000.0;
 				if(d < dist) {
@@ -1151,9 +1179,16 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 				continue;
 			if(!roid.nativeResourceUsable[0])
 				continue;
+			// skip over resources we can't actually import
+			if (tradeLinkOnly && !allowNoPath) {
+				tradePath.generate(getSystem(roid.region), getSystem(importing.region), keepCache=true);
+				if (!tradePath.isUsablePath) {
+					continue;
+				}
+			}
 			Object@ dest = roid.getNativeResourceDestination(emp, 0);
 			if(dest is null) {
-				double d = closeTo.distanceToSQ(roid.position);
+				double d = importing.position.distanceToSQ(roid.position);
 				if(d < dist) {
 					dist = d;
 					@found = roid;
@@ -1163,6 +1198,7 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 
 		return found;
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void autoImportResourceOfClass(Empire& emp, Object& into, uint resClsId) {
 		const ResourceClass@ cls = getResourceClass(resClsId);
@@ -1173,7 +1209,7 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		@imp.to = into;
 		@imp.cls = cls;
 
-		Object@ current = findFreeResource(emp, imp, into.position);
+		Object@ current = findFreeResource(emp, imp, into); // [[ MODIFY BASE GAME ]]
 		if(current !is null) {
 			current.exportResource(emp, 0, into);
 		}
@@ -1191,7 +1227,7 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		@imp.to = into;
 		imp.level = int(level);
 
-		Object@ current = findFreeResource(emp, imp, into.position);
+		Object@ current = findFreeResource(emp, imp, into); // [[ MODIFY BASE GAME ]]
 		if(current !is null) {
 			current.exportResource(emp, 0, into);
 		}
@@ -1211,7 +1247,7 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		if(imp.type is null)
 			return;
 
-		Object@ current = findFreeResource(emp, imp, into.position);
+		Object@ current = findFreeResource(emp, imp, into); // [[ MODIFY BASE GAME ]]
 		if(current !is null) {
 			current.exportResource(emp, 0, into);
 		}
@@ -1234,9 +1270,12 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 
 		array<int> remaining;
 
+		// [[ MODIFY BASE GAME START ]]
+		// get the resources for this object that needs to auto import
 		Resources available;
 		receive(into.getResourceAmounts(), available);
 
+		// get what is already imported on this object
 		array<Resource> resources;
 		resources.syncFrom(into.getQueuedImportsFor(emp));
 		for(uint i = 0, cnt = resources.length; i < cnt; ++i) {
@@ -1244,11 +1283,14 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 			available.modAmount(r.type, +1);
 		}
 
+		// abort if all requirements are already satisfied
 		if(reqs.satisfiedBy(available, null, true, remaining))
 			return;
 
+		// go through all remaining requirements
 		for(uint i = 0, cnt = reqs.reqs.length; i < cnt; ++i) {
 			auto@ req = reqs.reqs[i];
+			// try to auto import for each requirement
 			for(uint n = 0, ncnt = remaining[i]; n < ncnt; ++n) {
 				switch(req.type) {
 					case RRT_Resource:
@@ -1265,6 +1307,7 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 				}
 			}
 		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void getAutoImports() {
