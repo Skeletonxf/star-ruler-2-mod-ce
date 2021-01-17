@@ -47,6 +47,8 @@ Just because you have a 300 labor planet shouldn't mean you can build an outpost
 I found in many games of unmodded Star Ruler my ships were either orders of magnitude stronger than my opponent's or orders of magnitude weaker. Nerfing stat bonuses makes ships much closer in strength even if one empire is ahead in terms of eco/research. To get more powerful ships you actually have to have the economy to field larger ships rather than just stacking multipliers that turn ks of combat strength into Ms of combat strength for free.
 ### Rebalanced Carpet Bombs
 Carpet Bombs can now be directly countered by making certain buildings or orbitals which reduce the effectiveness, but more importantly it is not possible to abuse edge cases in the subsystem variable code to make extremely cheap ships that can delevel tier 2+ planets in seconds.
+### Rebalanced hulls
+The Titan and Collosus hulls are much more viable than vanilla, and the Destroyer hull is nerfed. Other hulls have slight tweaks to make them fit niches more strongly, and in particular the Carrier hull is the biggest beneficiary of the added local defense generation from support command subsystems.
 ### Diplomatic Victory
 You can snowball your diplomatic strength with Diplomatic Maneuvering if you play your cards right. Senatorial Palaces are now disabled if they leave your owned space. Planets in deep space can now be targeted for annex votes if you can obtain vision of them.
 ### Attitude tweaks
@@ -72,6 +74,11 @@ AI will build moon bases on Gas Giants unless it's playing as Star Children or A
 The AI will be much more eager to build military flagships when it has spare money than vanilla, and it will prepare designs in advance.
 #### Colonisation and Development
 Overhaul still work in progress, but the AI will now correctly detect dummy resources.
+### Improvements ported from other mods
+#### Non exclusive hulls from Rising Stars by Dalo Lorn
+#### Readable Global Toolbar tooltips from Industrial Revolution by scitor
+#### Lateral thrust from New Movement Physics by Darloth
+#### Some miscellaneous exploit fixes from Rising Stars by Dalo Lorn
 
 ## Copying and license info
 My own AngelScript code in this mod is licensed under the MIT license. Most of the AngelScript code in this repository comes from the source code of Star Ruler 2 by [Blind Mind Studios](https://github.com/BlindMindStudios/StarRuler2-Source) which is also MIT licensed. The assets in Star Ruler 2 were placed under the Creative Commons CC-BY-NC license, which permits free non commercial use. The art assets I've added in this mod are licensed under the Creative Commons [CC-BY license](https://creativecommons.org/licenses/by/4.0/) instead, which permits commercial use just as the MIT license does. I try not to accidently commit any of the CC-BY-NC SR2 assets or derivations of them into this repository. However this mod does include the CC-BY-NC Bromma and Farum shipsets (`data/shipsets/bromma` and `data/shipsets/farum` respectively) released as part of the open sourcing of SR2 as these are not present in the Steam version of the game and cause cross play issues if not modded in to ensure all clients have them.
