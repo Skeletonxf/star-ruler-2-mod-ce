@@ -1042,6 +1042,41 @@ tidy class Mover : Component_Mover, Savable {
 				}
 				else if(!vectorMovement) {
 					targRot = quaterniond_fromVecToVec(vec3d_front(), dest - obj.position, vec3d_up());
+					// [[ MODIFY BASE GAME START ]]
+					// Port lateral thrust from Darloth's New Movement Physics
+					// This does not port the drag from NMP (solar sails are designed
+					// arond no drag and it just feels wrong to me to apply drag
+					// in a vacuum)
+					// Added code to apply a little bit of thrust even when not rotated.
+					{
+						double dot = targRot.dot(obj.rotation);
+						if(dot < 0.999) {
+							if(dot < -1.0)
+								dot = -1.0;
+						}
+						else {
+							if(dot > 1.0)
+								dot = 1.0;
+						}
+
+						// dot is now in the range -1 to +1, where 0 is a rightangle between target rotation and current rotation.
+						// Therefore, if we take 35% of the acceleration and multiply that by the absolute value of dot
+						// we'll achieve the goal of slight off-axis acceleration, scaling up to 35% when it's almost parallel, and then the
+						// normal code will take over when rotating is false or vector movement is true, as this entire block is only executed as
+						// an else to the standard rotation/accel block.
+						double absdot = dot < 0 ? 0-dot : dot;
+						double ratio = absdot * 0.35; // 35% thrust scaled down to zero sideways.
+						double timeLeft = time;
+						do {
+							double take = 0;
+							obj.acceleration = accToGoal(a * ratio, take, dest - obj.position, destVel - obj.velocity);
+							take = min(timeLeft, max(take, 0.01));
+							obj.position += obj.acceleration * (take * take * 0.5);
+							obj.velocity += obj.acceleration * take;
+							timeLeft -= take;
+						} while(timeLeft > 0.0001);
+					}
+					// [[ MODIFY BASE GAME END ]]
 				}
 			}
 			else {

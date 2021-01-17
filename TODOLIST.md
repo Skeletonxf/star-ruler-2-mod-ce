@@ -60,7 +60,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
-  - Consider integrating Darloth's NMP into CE https://github.com/darloth/SR2-NewMovement (low priority as the mods are currently compatible minus gravitron adjust)
   - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
     - Replace beams with lines?
 

@@ -239,3 +239,13 @@ KEEP_DISTANCE_DESC: <<
 
 	[img=MenuIcons::3;20][i][color=#aaa]Recommended for mobile ships with long range weapons that have missiles or wide firing arcs.[/color][/i][/img]
 >>
+GRAVITYENGINE_DESC: <<
+	A dense artificial gravity wave allows seemingly reactionless engines to propel spacecraft.
+
+	[img=Plus]Can be placed internally.[/img]
+	[img=Plus]If only graviton engines are present on the ship, the ship will not need to rotate at all to move.[/img]
+	[img=Minus]Provides lower Thrust.[/img]
+	[img=Minus]Expensive to build.[/img]
+	[img=Minus]Has high power needs.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Not needing to rotate to move allows a ship to change direction much more easily, and face towards enemies while maneuvering in combat.[/color][/i][/img]
+>>
