@@ -26,7 +26,7 @@ class GiveAchievement : EmpireEffect, TriggerableGeneric {
 class GivePoints : EmpireEffect, TriggerableGeneric {
 	Document doc("When the effect is first activated, permanently increase the empire's points.");
 	Argument points(AT_Integer, doc="Amount of points.");
-	
+
 #section server
 	void enable(Empire& owner, any@ data) const override {
 		owner.points += arguments[0].integer;
@@ -37,12 +37,12 @@ class GivePoints : EmpireEffect, TriggerableGeneric {
 class AddDefenseReserve : EmpireEffect {
 	Document doc("Add to the maximum defense reserve amount.");
 	Argument amount(AT_Decimal, doc="Amount of defense reserve to add.");
-	
+
 #section server
 	void enable(Empire& owner, any@ data) const override {
 		owner.modDefenseStorage(amount.decimal);
 	}
-	
+
 	void disable(Empire& owner, any@ data) const override {
 		owner.modDefenseStorage(-amount.decimal);
 	}
@@ -52,12 +52,12 @@ class AddDefenseReserve : EmpireEffect {
 class MultBorrowPenalty : EmpireEffect {
 	Document doc("Multiply the penalty added to borrow money.");
 	Argument multiply(AT_Decimal, doc="Multiply by this amount.");
-	
+
 #section server
 	void enable(Empire& owner, any@ data) const override {
 		owner.multBorrowPenalty(multiply.decimal);
 	}
-	
+
 	void disable(Empire& owner, any@ data) const override {
 		if(multiply.decimal != 0)
 			owner.multBorrowPenalty(1.0 / multiply.decimal);
@@ -68,12 +68,12 @@ class MultBorrowPenalty : EmpireEffect {
 class WorthPoints : EmpireEffect {
 	Document doc("While this effect is active, the empire's points are increased.");
 	Argument points(AT_Integer, doc="Amount of points.");
-	
+
 #section server
 	void enable(Empire& owner, any@ data) const override {
 		owner.points += arguments[0].integer;
 	}
-	
+
 	void disable(Empire& owner, any@ data) const override {
 		owner.points -= arguments[0].integer;
 	}
@@ -101,7 +101,7 @@ class GiveGlobalTrade : EmpireEffect, TriggerableGeneric {
 	void tick(Empire& owner, any@ data, double time) const override {
 		owner.GlobalTrade = true;
 	}
-	
+
 	void disable(Empire& owner, any@ data) {
 		owner.GlobalTrade = false;
 	}
@@ -1414,7 +1414,7 @@ tidy final class TriggerPeriodic : EmpireEffect {
 		data.retrieve(@dat);
 
 		dat.timer -= tick;
-		while(dat.timer <= 0.0) {
+		while(dat.timer <= 0.0) { // [[ MODIFY BASE GAME ]]
 			if(max_triggers.integer < 0 || dat.count < uint(max_triggers.integer)) {
 				if(hook !is null)
 					hook.activate(obj, obj.owner);
@@ -1444,7 +1444,7 @@ tidy final class TriggerPeriodic : EmpireEffect {
 		data.retrieve(@dat);
 
 		dat.timer -= tick;
-		while(dat.timer <= 0.0) {
+		while(dat.timer <= 0.0) { // [[ MODIFY BASE GAME ]]
 			if(max_triggers.integer < 0 || dat.count < uint(max_triggers.integer)) {
 				if(hook !is null)
 					hook.activate(null, emp);
