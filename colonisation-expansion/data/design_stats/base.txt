@@ -13,7 +13,7 @@ GlobalStat: HP
 		Color: #aaa
 		Secondary: HP
 
-		RepairFormula:
+		RepairFormula: // [[ MODIFY BASE GAME: Custom formula for bonus repair ]]
 
 GlobalStat: DPS
 	Name: #S_DPS
@@ -34,24 +34,24 @@ GlobalStat: SupplyCap
 	Variable: SupplyCapacity
 
 	GlobalStat: SupplyRegen
-		 Name: #S_SUPPLYREGEN
-		 Description: #STT_SUPPLYREGEN
-		 Color: #aaa
-		 Secondary: SupplyCap
-		 Suffix: /s
-		 AlwaysShow: True
+		Name: #S_SUPPLYREGEN
+		Description: #STT_SUPPLYREGEN
+		Color: #aaa
+		Secondary: SupplyCap
+		Suffix: /s
+		AlwaysShow: True
 
-		 Variable: SupplyRate
+		Variable: SupplyRate
 
 	 GlobalStat: SupplyUse
-		  Name: #S_SUPPLYUSE
-		  Description: #STT_SUPPLYUSE
-		  Color: #aaa
-		  Secondary: SupplyCap
-		  Suffix: /s
-		  AlwaysShow: True
+		Name: #S_SUPPLYUSE
+		Description: #STT_SUPPLYUSE
+		Color: #aaa
+		Secondary: SupplyCap
+		Suffix: /s
+		AlwaysShow: True
 
-		  Variable: SupplyDrain
+		SupplyDrainFormula: // [[ MODIFY BASE GAME: Custom formula for supply drain based on bonus repair ]]
 
 GlobalStat: SupportSupplyCapacity
 	Name: #S_SUPPLYCAP_SUPPORT
@@ -62,15 +62,15 @@ GlobalStat: SupportSupplyCapacity
 	Variable: SupportSupplyCapacity
 
 GlobalStat: SupportSupplyUse
-	 Name: #S_SUPPLYUSE
-	 Description: #STT_SUPPLYUSE
-	 Icon: AttributeIcons::4
-	 Color: #fefc61
-	 Suffix: /s
+	Name: #S_SUPPLYUSE
+	Description: #STT_SUPPLYUSE
+	Icon: AttributeIcons::4
+	Color: #fefc61
+	Suffix: /s
 
-	 RequireTag: SupportHull
+	RequireTag: SupportHull
 
-	 Variable: SupplyDrain
+	SupplyDrainFormula: // [[ MODIFY BASE GAME: Custom formula for supply drain based on bonus repair ]]
 
 // [[ MODIFY BASE GAME START ]]
 // Use custom formula to consider Ancient Developer buildings

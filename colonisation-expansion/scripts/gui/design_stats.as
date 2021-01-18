@@ -28,6 +28,7 @@ int MASS_CUSTOM_VARIABLE = -2;
 int SUPPORT_CAPACITY_CUSTOM_VARIABLE = -3;
 int REPAIR_CUSTOM_VARIABLE = -4;
 int TOTAL_MAINT_DISCOUNT_VARIABLE = -5;
+int SUPPLY_DRAIN_CUSTOM_VARIABLE = -6;
 
 class DesignStat {
 	uint index = 0;
@@ -242,6 +243,13 @@ namespace design_stats {
 			// Honestly this one should be done in data files by extending the formula logic but this is less effort
 			return min(dsg.variable(ShV_RamjetDiscount) + dsg.variable(ShV_HullDiscount), 60.0);
 		}
+		else if ((type == SVT_CustomVariable) && (var == SUPPLY_DRAIN_CUSTOM_VARIABLE)) {
+			// Custom shipwide repair supply drain formula
+			if (playerEmpire !is null) {
+				return dsg.total(SV_SupplyDrain) * playerEmpire.EmpireRepairFactor;
+			}
+			return dsg.total(SV_SupplyDrain); // should never happen
+		}
 		// [[ MODIFY BASE GAME END ]]
 		return 0.0;
 	}
@@ -436,6 +444,10 @@ void loadStats(const string& filename) {
 		else if (key == "RepairFormula") {
 			stat.varType = SVT_CustomVariable;
 			stat.variable = REPAIR_CUSTOM_VARIABLE;
+		}
+		else if (key == "SupplyDrainFormula") {
+			stat.varType = SVT_CustomVariable;
+			stat.variable = SUPPLY_DRAIN_CUSTOM_VARIABLE;
 		}
 		else if (key == "TotalMaintDiscountFormula") {
 			stat.varType = SVT_CustomVariable;
