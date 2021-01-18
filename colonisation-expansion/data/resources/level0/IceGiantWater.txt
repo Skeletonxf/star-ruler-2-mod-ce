@@ -11,3 +11,4 @@ Resource: IceGiantWater
 	Native Biome: Ice
 	Gas Giant Frequency: 0.29
 	Ice Giant: True
+	AddPressureCap(3)

@@ -8,7 +8,11 @@ ICE: Ice
 AMMONIA: Ammonia
 ICE_GIANT_ICE: Ices
 ICE_GIANT_ICE_DESC: The ice found in Ice Giants is difficult to extract but contains many useful heavier elements.
-ICE_GIANT_WATER_DESC: The supercritical water found in Ice Giants is difficult to extract but contains many useful heavier elements.
+ICE_GIANT_WATER_DESC: <<
+	The supercritical water found in Ice Giants contains many useful heavier elements.
+
+	Increases pressure capacity by 3.
+>>
 LIGHT_GASES: Light Gases
 ARTIFICIAL_LIGHT_DESC: <<
 	Heat and light generated locally without depending on a star
@@ -92,6 +96,8 @@ FRACTURED_PLANET_DESC: <<
 >>
 SALTS_REV_DESC: <<
 	Can be used as food. Adds pressure to the production of several resources.
+
+	Increases pressure capacity by 3.
 
 	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
 
