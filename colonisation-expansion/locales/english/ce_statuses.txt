@@ -71,3 +71,12 @@ INTERSTELLAR_TRADE_DESC: <<
 	[img=ResourceIcon::2;22]Drains 10 [b][color=#42b4bd]Energy[/color][/b] per second.[/img]
 >>
 INTERSTELLAR_TRADE: Interstellar Trade Beacon
+STARFORGE_DESC: <<
+	A highly advanced construction yard that rips power and material straight from the outer layers of the star.
+
+	Generates 25 labor (plus Metallurgy bonuses) per minute at the cost of slowly damaging the star in the system it is in. Upgrades can be constructed on the star forge to multiply its labor generation by the upgrade count as well as the rate at which it damages the star.
+
+	All construction on a Star Forge has a 50% reduction in build cost compared to normal.
+
+	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Building a star forge or any of its upgrades requires large amounts of Ore mined from asteroids.[/color][/b][/img]
+>>
