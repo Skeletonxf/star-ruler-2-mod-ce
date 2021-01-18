@@ -15,7 +15,7 @@ Construction: CreateWater
 	RequireInSystem()
 	CE_biome_hooks::RequireNotHomeworld()
 	RequireUnlockTag(CreateWater)
-	ConsumeEnergy(2500)
+	ConsumeEnergy(2000)
 	TerraformTo(Water)
 	AddStatus(WaterBiome, Max Stacks = 1)
 
@@ -36,6 +36,6 @@ Construction: CreateWaterAquatic
 	RequireInSystem()
 	CE_biome_hooks::RequireNotHomeworld()
 	RequireUnlockTag(CreateWater)
-	ConsumeEnergy(2000)
+	ConsumeEnergy(1500)
 	TerraformTo(Water)
 	AddStatus(WaterBiome, Max Stacks = 1)

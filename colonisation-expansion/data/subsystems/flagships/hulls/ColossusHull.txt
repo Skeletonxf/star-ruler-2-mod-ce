@@ -16,7 +16,7 @@ Subsystem: ColossusHull
 	AddShipModifier: MassFactor(2.0)
 	AddShipModifier: ShieldCapacityFactor(3.0)
 	AddShipModifier: ShieldRegenFactor(2.0)
-	EnergyBuildCost := EnergyBuildCost + sqrt(ShipSize) * 40
+	EnergyBuildCost := EnergyBuildCost + sqrt(ShipSize) * 32
 	AddShipModifier: RepairFactor(2.0)
 	AddShipModifier: SupplyCostFactor(0.75)
 	Assert: Sum.Titan == 0
