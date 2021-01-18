@@ -199,6 +199,23 @@ class Quickbar : BaseGuiElement, Savable {
 		if(size.width != QUICKBAR_WIDTH)
 			size = vec2i(QUICKBAR_WIDTH, size.height);
 		int height = 4;
+		// [[ MODIFY BASE GAME START ]]
+		// Put menu for opening and closing at top
+		if(quickButton !is null) {
+			quickButton.rect = recti_area(size.width-32,height, 32,32);
+			if(height+32 > parent.size.height) {
+				for(uint i = 0, cnt = modes.length; i < cnt; ++i) {
+					if(!modes[i].closed && modes[i].show) {
+						quickButton.rect = recti_area(modes[i].position - vec2i(36,0), vec2i(32,32));
+						break;
+					}
+				}
+			}
+			if(helpButton !is null)
+				helpButton.rect = quickButton.rect - vec2i(36, 0);
+			height += quickButton.size.height + 4;
+		}
+		// now show all open modes
 		for(uint i = 0, cnt = modes.length; i < cnt; ++i) {
 			auto@ mode = modes[i];
 			bool visible = mode.show && !mode.closed;
@@ -221,22 +238,11 @@ class Quickbar : BaseGuiElement, Savable {
 				mode.moveTo(vec2i(max(0, size.width - mode.size.width), height));
 			height += mode.size.height + 4;
 		}
+		// now do update
 		if(height != size.height)
 			size = vec2i(QUICKBAR_WIDTH, height);
 		position = vec2i(parent.size.width-size.width, 0);
-		if(quickButton !is null) {
-			quickButton.rect = recti_area(size.width-32,height, 32,32);
-			if(height+32 > parent.size.height) {
-				for(uint i = 0, cnt = modes.length; i < cnt; ++i) {
-					if(!modes[i].closed && modes[i].show) {
-						quickButton.rect = recti_area(modes[i].position - vec2i(36,0), vec2i(32,32));
-						break;
-					}
-				}
-			}
-			if(helpButton !is null)
-				helpButton.rect = quickButton.rect - vec2i(36, 0);
-		}
+		// [[ MODIFY BASE GAME END ]]
 		BaseGuiElement::updateAbsolutePosition();
 	}
 
