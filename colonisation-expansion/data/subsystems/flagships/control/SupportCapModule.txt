@@ -16,7 +16,6 @@ Subsystem: SupportCapModule
 	Hex.HP := 18 * HexSize
 	Hex.Mass := HexSize
 
-	Hex.SupportCapacityMass := HexSize
 	Defense := SupportCapacity / 120
 	Hook: AddLocalDefense(Defense, Global Factor = 0.0, Owned Space Only = True)
 	Modifier: SupportCapacityFactor(factor)

@@ -29,7 +29,6 @@ Subsystem: AICore
 	AddShipModifier: BuildCostFactor(1.25)
 	AddShipModifier: LaborCostFactor(0.75)
 
-	Hex.RepairMass := 0.5 * HexSize
 	Assert: TagCount.Crewed == 0
 		Message: #ERROR_BRIDGE_AI
 		Unique: True

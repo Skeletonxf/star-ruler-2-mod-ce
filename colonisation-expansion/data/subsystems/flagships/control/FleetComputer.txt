@@ -26,7 +26,6 @@ Subsystem: FleetComputer
 
 	PowerUse := 5 * Size
 
-	Hex.RepairMass := 0.5 * HexSize
 	Requires:
 		Power = PowerUse
 

@@ -26,7 +26,6 @@ Subsystem: SupportAncientCore
 	Hex.LaborCost := 0.06 * HexSize
 	Hex.BuildCost := 1.0 * HexSize
 
-	Hex.RepairMass := HexSize
 	Effect: ControlCore
 
 	Provides:

@@ -1,0 +1,5 @@
+Template: hexVar/Mass, var/Repair
+	Hex.RepairMass := Hex.Mass
+
+Template: hexVar/Mass, var/SupportCapacity
+	Hex.SupportCapacityMass := Hex.Mass

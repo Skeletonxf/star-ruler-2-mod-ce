@@ -23,7 +23,6 @@ Subsystem: VerdantSinew
 
 	OnCheckErrors: designs::checkSinew
 
-	Hex.RepairMass := HexSize * 1.5
 	Provides:
 		Command = floor(Sum.HexLimit / 10)
 

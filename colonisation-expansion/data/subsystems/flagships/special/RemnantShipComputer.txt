@@ -23,7 +23,6 @@ Subsystem: RemnantShipComputer
 	Hex.HP := 18 * HexSize
 	Hex.Mass := HexSize
 
-	Hex.RepairMass := HexSize
 	Effect: ControlCore
 
 	Requires:

@@ -27,7 +27,6 @@ Subsystem: CrewDeck
 	Hex.LaborCost := 0.07 * HexSize
 	Hex.BuildCost := 0.75 * HexSize
 
-	Hex.RepairMass := HexSize
 	Effect: ControlCore
 
 	Provides:
