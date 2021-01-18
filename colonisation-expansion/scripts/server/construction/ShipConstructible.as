@@ -101,7 +101,7 @@ tidy class ShipConstructible : Constructible {
 		Ship@ ship = createShip(spawnFrom, design);
 		if(hpBonus != 0)
 			ship.modHPFactor(+hpBonus);
-		
+
 		for(uint i = 0, cnt = supports.length; i < cnt; ++i) {
 			GroupData@ d = supports[i];
 			const Design@ dsg = d.dsg.mostUpdated();
@@ -112,7 +112,7 @@ tidy class ShipConstructible : Constructible {
 					sup.modHPFactor(+hpBonus);
 			}
 		}
-		
+
 		spawnFrom.doRally(ship);
 
 		obj.owner.recordStatDelta(stat::ShipsBuilt, 1);
@@ -214,8 +214,13 @@ tidy class ShipConstructible : Constructible {
 		return false;
 	}
 
-	double getSupportSupplyFree() {
+	// [[ MODIFY BASE GAME START ]]
+	double getSupportSupplyFree(Object& obj) {
 		double supply = design.total(SV_SupportCapacity);
+		if (obj.owner !is null) {
+			supply *= obj.owner.EmpireSupportCapacityFactor;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		for(uint i = 0, cnt = supports.length; i < cnt; ++i) {
 			GroupData@ d = supports[i];
 			supply -= double(d.totalSize) * d.dsg.size;

@@ -986,7 +986,7 @@ tidy class Construction : Component_Construction, Savable {
 		if(cons is null)
 			return;
 
-		uint maxAmount = floor(cons.getSupportSupplyFree() / dsg.size);
+		uint maxAmount = floor(cons.getSupportSupplyFree(obj) / dsg.size);
 		amount = min(amount, maxAmount);
 		if(amount == 0)
 			return;

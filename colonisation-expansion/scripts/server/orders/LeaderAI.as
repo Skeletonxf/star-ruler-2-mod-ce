@@ -1491,9 +1491,14 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 			needExperience = ship.blueprint.design.size * config::EXPERIENCE_BASE_AMOUNT;
 
 			const Design@ dsg = ship.blueprint.design;
-			if(dsg !is null && !dsg.hasTag(ST_Weapon) && dsg.total(SV_SupportCapacity) > 0)
-				engageType = ER_RaidingOnly;
 			// [[ MODIFY BASE GAME START ]]
+			double supportCapacity = dsg.total(SV_SupportCapacity);
+			if (obj.owner !is null) {
+				supportCapacity *= obj.owner.EmpireSupportCapacityFactor;
+			}
+			if(dsg !is null && !dsg.hasTag(ST_Weapon) && supportCapacity > 0)
+				engageType = ER_RaidingOnly;
+
 			// Apply auto keep distance if set on design
 			if (dsg !is null && dsg.hasTag(ST_KeepDistance)) {
 				engageBehave = EB_KeepDistance;

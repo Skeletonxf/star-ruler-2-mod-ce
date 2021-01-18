@@ -5113,6 +5113,14 @@ class AddBonusShield : GenericEffect {
 #section all
 };
 
+// [[ MODIFY BASE GAME START ]]
+// Tracks design and empire support cap multiplier to stay in sync
+class SupportCapacityData {
+	double multiplier = 1;
+	any data;
+}
+// [[ MODIFY BASE GAME END ]]
+
 class AddBonusSupportCapPct : GenericEffect {
 	Document doc("Add a percentage bonus support capacity to this fleet.");
 	Argument percentage(AT_Decimal, "0", doc="Percentage of maximum support cap to add.");
@@ -5120,7 +5128,14 @@ class AddBonusSupportCapPct : GenericEffect {
 #section server
 	void enable(Object& obj, any@ data) const override {
 		const Design@ dsg = null;
-		data.store(@dsg);
+		// [[ MODIFY BASE GAME START ]]
+		SupportCapacityData info;
+		info.data.store(@dsg);
+		if (obj.owner !is null) {
+			info.multiplier = obj.owner.EmpireSupportCapacityFactor;
+		}
+		data.store(@info);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void tick(Object& obj, any@ data, double time) const override {
@@ -5128,22 +5143,49 @@ class AddBonusSupportCapPct : GenericEffect {
 		if(ship is null)
 			return;
 
+		// [[ MODIFY BAS GAME START ]]
+		SupportCapacityData@ info;
+
 		const Design@ newDesign = ship.blueprint.design;
 		const Design@ oldDesign;
-		data.retrieve(@oldDesign);
+		//data.retrieve(@oldDesign);
+		data.retrieve(@info);
+		info.data.retrieve(@oldDesign);
 
+		// Account for any support capacity changes before considering the design
+		if (obj.owner !is null) {
+			int given = 0;
+			int newGiven = 0;
+			if (info.multiplier != obj.owner.EmpireSupportCapacityFactor) {
+				// multiplier has changed
+				const Design@ dsg = oldDesign !is null ? oldDesign : newDesign;
+				given = dsg.total(SV_SupportCapacity) * percentage.decimal * info.multiplier;
+				newGiven = dsg.total(SV_SupportCapacity) * percentage.decimal * obj.owner.EmpireSupportCapacityFactor;
+
+				if(given != newGiven)
+					ship.modSupplyCapacity(newGiven - given);
+			}
+			// now update multiplier cache to current factor
+			info.multiplier = obj.owner.EmpireSupportCapacityFactor;
+		}
+
+		// Now consider design changes
 		if(oldDesign !is newDesign) {
 			int given = 0;
 			if(oldDesign !is null)
-				given = oldDesign.total(SV_SupportCapacity) * percentage.decimal;
+				given = oldDesign.total(SV_SupportCapacity) * percentage.decimal * obj.owner.EmpireSupportCapacityFactor;
 			int newGiven = 0;
 			if(newDesign !is null)
-				newGiven = newDesign.total(SV_SupportCapacity) * percentage.decimal;
+				newGiven = newDesign.total(SV_SupportCapacity) * percentage.decimal * obj.owner.EmpireSupportCapacityFactor;
 
 			if(given != newGiven)
 				ship.modSupplyCapacity(newGiven - given);
-			data.store(@newDesign);
+			// [[ MODIFY BASE GAME START ]]
+			//data.store(@newDesign);
+			info.data.store(@newDesign);
 		}
+		data.store(@info);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void disable(Object& obj, any@ data) const override {
@@ -5151,30 +5193,46 @@ class AddBonusSupportCapPct : GenericEffect {
 		if(ship is null)
 			return;
 
+		// [[ MODIFY BASE GAME START ]]
+		SupportCapacityData@ info;
 		const Design@ oldDesign;
-		data.retrieve(@oldDesign);
+		data.retrieve(@info);
+		info.data.retrieve(@oldDesign);
 
 		int given = 0;
 		if(oldDesign !is null)
-			given = oldDesign.total(SV_SupportCapacity) * percentage.decimal;
+			given = oldDesign.total(SV_SupportCapacity) * percentage.decimal * obj.owner.EmpireSupportCapacityFactor;
 		if(given != 0.0) {
 			ship.modSupplyCapacity(-given);
 
 			@oldDesign = null;
-			data.store(@oldDesign);
+			info.data.store(@oldDesign);
 		}
+		info.multiplier = 1;
+		data.store(@info);
+		// [[ MODIFY BASE GAME START ]]
 	}
 
 	void save(any@ data, SaveFile& file) const override {
+		// [[ MODIFY BASE GAME START ]]
+		SupportCapacityData@ info;
 		const Design@ dsg;
-		data.retrieve(@dsg);
+		data.retrieve(@info);
+		info.data.retrieve(@dsg);
 		file << dsg;
+		file << info.multiplier;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void load(any@ data, SaveFile& file) const override {
+		// [[ MODIFY BASE GAME START ]]
+		SupportCapacityData info;
 		const Design@ dsg;
 		file >> dsg;
-		data.store(@dsg);
+		info.data.store(@dsg);
+		file >> info.multiplier;
+		data.store(@info);
+		// [[ MODIFY BASE GAME END ]]
 	}
 #section all
 };
