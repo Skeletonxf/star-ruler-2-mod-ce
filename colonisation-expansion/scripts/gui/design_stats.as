@@ -246,7 +246,9 @@ namespace design_stats {
 		else if ((type == SVT_CustomVariable) && (var == SUPPLY_DRAIN_CUSTOM_VARIABLE)) {
 			// Custom shipwide repair supply drain formula
 			if (playerEmpire !is null) {
-				return dsg.total(SV_SupplyDrain) * playerEmpire.EmpireRepairFactor;
+				double nonRepairSupplyDrain = dsg.total(SV_SupplyDrain) - dsg.total(SV_RepairSupplyCost);
+				double repairSupplyDrain = dsg.total(SV_RepairSupplyCost) * playerEmpire.EmpireRepairFactor;
+				return nonRepairSupplyDrain + repairSupplyDrain;
 			}
 			return dsg.total(SV_SupplyDrain); // should never happen
 		}

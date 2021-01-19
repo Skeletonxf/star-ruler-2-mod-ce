@@ -5156,11 +5156,10 @@ class AddBonusSupportCapPct : GenericEffect {
 		if (obj.owner !is null) {
 			int given = 0;
 			int newGiven = 0;
-			if (info.multiplier != obj.owner.EmpireSupportCapacityFactor) {
+			if (info.multiplier != obj.owner.EmpireSupportCapacityFactor && oldDesign !is null) {
 				// multiplier has changed
-				const Design@ dsg = oldDesign !is null ? oldDesign : newDesign;
-				given = dsg.total(SV_SupportCapacity) * percentage.decimal * info.multiplier;
-				newGiven = dsg.total(SV_SupportCapacity) * percentage.decimal * obj.owner.EmpireSupportCapacityFactor;
+				given = oldDesign.total(SV_SupportCapacity) * percentage.decimal * info.multiplier;
+				newGiven = oldDesign.total(SV_SupportCapacity) * percentage.decimal * obj.owner.EmpireSupportCapacityFactor;
 
 				if(given != newGiven)
 					ship.modSupplyCapacity(newGiven - given);

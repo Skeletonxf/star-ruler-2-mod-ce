@@ -798,7 +798,7 @@ double getMassFor(Object& obj) {
 		case OT_Asteroid:
 			return config::ASTEROID_MASS;
 		case OT_Ship:
-			return cast<Ship>(obj).getBaseMass();
+			return cast<Ship>(obj).getBaseMass(); // [[ It is now very important that anything which can tractor has a base/bonus mass distinction! ]]
 		case OT_Orbital: {
 			auto@ mod = getOrbitalModule(cast<Orbital>(obj).coreModule);
 			if(mod !is null && mod.mass >= 0)
@@ -953,17 +953,13 @@ class TractorObject : AbilityHook {
 			// remove the mass we cached that we gained
 			if(abl.obj !is null && abl.obj.isShip)
 				cast<Ship>(abl.obj).modMass(td.tractorMass);
-			// update the cache
-			td.tractorMass = 0;
 		}
+		// update the cache
+		td.tractorMass = 0;
 		if(next !is null) {
 			// update the cache
 			td.tractorMass = getMassFor(next);
 			// add the mass we just cached
-			// yes this will allow a tractor to not gain more mass when the
-			// tractored object increases its mass while tractored, trying
-			// to syncronise the mass increase would lead to all sorts of
-			// problems if two objects tractor each other
 			if(abl.obj !is null && abl.obj.isShip)
 				cast<Ship>(abl.obj).modMass(td.tractorMass);
 		}
@@ -988,6 +984,19 @@ class TractorObject : AbilityHook {
 
 		TractorData@ td;
 		data.retrieve(@td);
+
+		// [[ MODIFY BASE GAME START ]]
+		double currentTargetBaseMass = getMassFor(target);
+		if (currentTargetBaseMass != td.tractorMass) {
+			// update our bonus mass to match the new difference
+			double diff = currentTargetBaseMass - td.tractorMass;
+			td.tractorMass += diff;
+			if(abl.obj !is null) {
+				if(abl.obj.isShip)
+					cast<Ship>(abl.obj).modMass(diff);
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		bool wasPortal = false;
 		if(allow_portal.boolean) {
