@@ -40,6 +40,13 @@ const float EXTINGUISH_CHANCE = 0.2f;
 //Fire damage-per-second per size
 const float FIRE_DPS = 0.25;
 
+// [[ MODIFY BASE GAME START ]]
+// How much time a ship needs to be out of combat for before we consider
+// it to not have recently been in combat, at which point we may enable
+// things like % hp based repair again.
+const float TIME_OUTSIDE_COMBAT_STILL_RECENT = 60;
+// [[ MODIFY BASE GAME END ]]
+
 tidy class ShipScript {
 	Object@ lastHitBy;
 	Empire@ killCredit;
@@ -66,6 +73,9 @@ tidy class ShipScript {
 	float movementAccel = 0;
 	float bonusShield = 0;
 	float supplyConsumeFactor = 1.f;
+	// [[ MODIFY BASE GAME START ]]
+	float recentlyInCombatTimer = 0.0;
+	// [[ MODIFY BASE GAME END ]]
 
 	ShipScript() {
 	}
@@ -160,6 +170,9 @@ tidy class ShipScript {
 		file << bonusShield;
 		file << supplyConsumeFactor;
 		file << bonusEffectiveness;
+		// [[ MODIFY BASE GAME START ]]
+		file << recentlyInCombatTimer;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void load(Ship& ship, SaveFile& file) {
@@ -265,6 +278,9 @@ tidy class ShipScript {
 
 		if(ship.hasSupportAI)
 			ship.supportPostLoad();
+		// [[ MODIFY BASE GAME START ]]
+		file >> recentlyInCombatTimer;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool get_isStation(Ship& ship) {
@@ -350,6 +366,8 @@ tidy class ShipScript {
 		// in the LeaderAI?
 		// The comment blind mind left just above this modification literally
 		// shows they know supply capacity is somehow Support Capacity??????
+		// Update: blind mind said this is what happens when you work on a game
+		// for 4 years, names for things change 🙃
 		int supply = ship.blueprint.getEfficiencySum(SV_SupportCapacity);
 		double supportCommandFactor = 1.0;
 		if (ship.owner !is null) {
@@ -1032,10 +1050,18 @@ tidy class ShipScript {
 		else
 			ship.blueprint.holdFire = false;
 
-		if(engaged)
-			combatTimer = 25.f; // [[ MODIFY BASE GAME START ]] 5 -> 25, even lasers struggle to maintain sub 5 seconds continual damage
-		else
+		// [[ MODIFY BASE GAME START ]]
+		if(engaged) {
+			// 5 -> 25, even lasers struggle to maintain sub 5 seconds continual damage
+			combatTimer = 25.f;
+			recentlyInCombatTimer = TIME_OUTSIDE_COMBAT_STILL_RECENT;
+		} else {
 			combatTimer -= time;
+			if (combatTimer <= 0.f) {
+				recentlyInCombatTimer -= time;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		{
 			bool nowCombat = combatTimer > 0.f;
@@ -1307,17 +1333,15 @@ tidy class ShipScript {
 				double repairAmt = currentRepair * repairFact * time;
 				double repairCost = currentRepairCost * repairFact * time;
 				// [[ MODIFY BASE GAME START ]]
-				// Follow all the other major mods in nerfing out of combat
-				// repair to prevent some less than ideal edge cases, by
-				// only allowing repair from out of combat in owned space
-				// The AI returns damaged fleets to owned space anyway, so will
-				// not be hurt by this change.
+				// Check if we're in owned space, or in or recently in combat
+				// in which case we need to repair by burning supplies.
 				bool ownedSpace = false;
 				Region@ region = ship.region;
 				if (region !is null && region.TradeMask & ship.owner.mask != 0) {
 					ownedSpace = true;
 				}
-				if(inCombat || !ownedSpace) {
+				bool recentlyInCombat = recentlyInCombatTimer > 0;
+				if(inCombat || !ownedSpace || recentlyInCombat) {
 					// [[ MODIFY BASE GAME END ]]
 					if(repairCost < 0) {
 						repairAmt = 0;
@@ -1339,7 +1363,17 @@ tidy class ShipScript {
 					}
 				}
 				else {
-					repairAmt = max(repairAmt, 0.01 * bp.design.totalHP * repairFact * time);
+					// heal 0.5% per second of max hp if we are really really out of combat
+					// and back home
+					// combined with combat timers of 25 seconds, and a 60 second out of combat
+					// timer, this takes 80 seconds longer than vanilla's 5 seconds to kick
+					// in, and is twice as slow, so whereas vanilla took 105 seconds for full
+					// repair anywhere after combat, we now take 285 seconds for full repair,
+					// and will only do it in owned space.
+					// This should still be more than adequate for the AI to station its
+					// fleets when they need repair, and for players to not have to think
+					// about repair too hard.
+					repairAmt = max(repairAmt, 0.005 * bp.design.totalHP * repairFact * time);
 				}
 				if(repairAmt != 0) {
 					if(wreckage > 0.f) {

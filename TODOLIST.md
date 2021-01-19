@@ -39,7 +39,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Add chase order which tries to stay literally on top of target
   - Make auto import refresh when resources on already colonised planets become available
   - Make all methods of griefing a planet with 'terraforming' not work while the planet is in combat. If you want to annex and trash a planet you should have to use Microcline or actually hold it for a reasonable amount of time.
-  - Require 3 minutes out of combat for 1% repair to kick in
   - Tweak tractor default design
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
   - Disable interstellar trade beacon when not in deep space
