@@ -29,23 +29,22 @@ This is primarily intended as a developer focused project planning list, rather 
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
       - Add support for interstellar trade beacons to AI Resources component
+  - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
+  - Move mass/repair/supply calaculations into a definitions file of helper functions
+    - LeaderAI getSlowestSupportAccel
+    - Support cap hook
+    - LeaderAI leaderInit
+    - Ship constructible support supply free
   - Attack order revamp
     - Add chase order which tries to stay literally on top of target
   - Make auto import refresh when resources on already colonised planets become available
-  - Make salts and supercritical water give max pressure cap equal to their pressure so level 1 planets don't go over
-  - More quickbar dots to stop so it doesn't get buried
-  - Make nebulae formation require fewer fractures
+  - Make all methods of griefing a planet with 'terraforming' not work while the planet is in combat. If you want to annex and trash a planet you should have to use Microcline or actually hold it for a reasonable amount of time.
   - Require 3 minutes out of combat for 1% repair to kick in
-  - Make water synthesis less prohibitvely expensive
   - Tweak tractor default design
-  - Add more details on major changes from vanilla to the README
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
   - Disable interstellar trade beacon when not in deep space
     - Add better UI for when attempting to export/import resources and you can't
     - Investigate what happens to civilian trade ships when target is in deep space
-  - Make seiging order work better on a moving target
-  - Make a new order to follow a moving target (as move command needs to terminate when reaching target, so isn't suitable for this)
-    - Possibly chase/pursue commands for stay on top of target and stay within firing range of target respectively
   - Gravitron damage should have a ramp up time to reach 100% dps
   - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands
   - Stop players putting floating continents on dyson spheres
@@ -70,6 +69,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Increase the resolution of the Helium 3 icon to make it clearer
   - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
     - Replace beams with lines?
+  - Make quickbar width configurable
+  - Create method to turn off forestry notifications in game
 
 - Not planned for any time soon
   - Work out how to allow planets to always build orbitals/stations in their local gravity well even if they're in deep space
