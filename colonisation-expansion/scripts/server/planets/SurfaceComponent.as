@@ -1299,12 +1299,15 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 
 	uint siegeMask = 0;
 	void updateLoyalty(Object& obj, double time) {
+		// [[ MODIFY BASE GAME START ]]
+		// Region gets null checked anyway, DO update loyalty in deep space
 		Region@ reg = obj.region;
-		if(obj.owner is null || !obj.owner.valid || reg is null) {
+		if(obj.owner is null || !obj.owner.valid) {
 			for(uint i = 0, cnt = LoyaltyEffect.length; i < cnt; ++i)
 				LoyaltyEffect[i] = 0;
 			return;
 		}
+		// [[ MODIFY BASE GAME END ]]
 
 		Empire@ owner = obj.owner;
 		bool contested = (reg !is null && reg.ContestedMask & owner.mask != 0) || obj.inCombat;

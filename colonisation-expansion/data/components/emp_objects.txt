@@ -1,6 +1,9 @@
 Empire.ObjectManager : components.ObjectManager::ObjectManager {
 restricted local:
 	Planet@[] getPlanets();
+	// [[ MODIFY BASE GAME START ]]
+	Planet@ getClosestPlanet(const vec3d& position);
+	// [[ MODIFY BASE GAME END ]]
 	Planet@[] getQueuedColonizations();
 	Asteroid@[] getAsteroids();
 	safe bool get_hasFlingBeacons();

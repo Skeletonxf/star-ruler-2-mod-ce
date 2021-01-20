@@ -65,6 +65,23 @@ tidy class ObjectManager : Component_ObjectManager {
 			yield(planets[i]);
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	Planet@ getClosestPlanet(const vec3d& position) {
+		ReadLock lock(plMutex);
+		Planet@ closest;
+		double closestDist = INFINITY;
+		for(uint i = 0, cnt = planets.length; i < cnt; ++i) {
+			Planet@ planet = planets[i];
+			double d = planet.position.distanceToSQ(position);
+			if(d < closestDist) {
+				closestDist = d;
+				@closest = planet;
+			}
+		}
+		return closest;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void getAutoImports() {
 		ReadLock lock(plMutex);
 		for(uint i = 0, cnt = autoImports.length; i < cnt; ++i) {

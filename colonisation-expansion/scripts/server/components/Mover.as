@@ -1105,10 +1105,31 @@ tidy class Mover : Component_Mover, Savable {
 
 	void checkOrbitObject(Object& obj, vec3d destPoint) {
 		Region@ reg = getRegion(destPoint);
-		if(reg is null)
-			return;
+		// [[ MODIFY BASE GAME START ]]
+		// Allow entering orbit outside regions, planets in deep space can't
+		// be seiged otherwise.
+		Object@ orbit;
 
-		Object@ orbit = reg.getOrbitObject(destPoint);
+		if(reg is null) {
+			double closestDist = INFINITY;
+			for(uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
+				Empire@ empire = getEmpire(i);
+				// don't filter out emp == empire, we want to track ally + self
+				if (empire.valid && empire.major) {
+					Planet@ closest = empire.getClosestPlanet(destPoint);
+					if (closest !is null) {
+						double distance = destPoint.distanceToSQ(closest.position);
+						if (distance < closestDist) {
+							closestDist = distance;
+							@orbit = closest;
+						}
+					}
+				}
+			}
+		} else {
+			@orbit = reg.getOrbitObject(destPoint);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		if(orbit is null)
 			return;
 
