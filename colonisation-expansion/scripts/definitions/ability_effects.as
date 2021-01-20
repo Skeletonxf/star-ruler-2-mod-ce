@@ -952,7 +952,7 @@ class TractorObject : AbilityHook {
 			}
 			// remove the mass we cached that we gained
 			if(abl.obj !is null && abl.obj.isShip)
-				cast<Ship>(abl.obj).modMass(td.tractorMass);
+				cast<Ship>(abl.obj).modMass(-td.tractorMass);
 		}
 		// update the cache
 		td.tractorMass = 0;
