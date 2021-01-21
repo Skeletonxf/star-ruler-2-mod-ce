@@ -6,6 +6,7 @@ import regions.regions;
 import systems;
 from statuses import getStatusID;
 
+// No longer in use
 tidy class ConsumePlanetOrder : Order {
 	Object@ target;
 	int moveId = -1;

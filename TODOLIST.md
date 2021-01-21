@@ -3,7 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Port fix to make auto import order respect trade lines rather than repeatedly 'import' an unconnected resource when others are available
   - Port mothership retrofitting exploit fix to mod pack
     - Will need to port a number of custom hooks that the fix relies on along with this, and should probably take the opportunity to move them out of CE_biome_hooks
   - Port interdict movement fixes to mod pack once stress tested in a few multiplayer games
@@ -30,13 +29,14 @@ This is primarily intended as a developer focused project planning list, rather 
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
       - Add support for interstellar trade beacons to AI Resources component
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
+  - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
   - Move mass/repair/supply calaculations into a definitions file of helper functions
     - LeaderAI getSlowestSupportAccel
     - Support cap hook
     - LeaderAI leaderInit
     - Ship constructible support supply free
   - Attack order revamp
-    - Add chase order which tries to stay literally on top of target
+    - Keep distance from multiple targets
   - Make auto import refresh when resources on already colonised planets become available
   - Make all methods of griefing a planet with 'terraforming' not work while the planet is in combat. If you want to annex and trash a planet you should have to use Microcline or actually hold it for a reasonable amount of time.
   - Tweak tractor default design

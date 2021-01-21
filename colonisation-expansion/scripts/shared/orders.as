@@ -17,6 +17,7 @@ enum OrderType {
 	// [[ MODIFY BASE GAME START ]]
 	OT_Cargo,
 	OT_AutoMine,
+	OT_Chase,
 	OT_ConsumePlanet,
 	// [[ MODIFY BASE GAME END ]]
 	OT_INVALID

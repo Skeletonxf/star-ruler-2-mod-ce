@@ -815,6 +815,15 @@ class AutoMine : SingleSelectionOption {
 	}
 }
 
+class Chase : SingleSelectionOption {
+	void call(Object@ obj) {
+		if(obj is null) {
+			return;
+		}
+		obj.addChaseOrder(clicked, shiftKey);
+	}
+}
+
 class ConsumePlanet : SingleSelectionOption {
 	void call(Object@ obj) {
 		if(obj is null || !obj.hasLeaderAI || !obj.owner.controlled) {
@@ -1204,6 +1213,13 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 			Object@ nameObj = clickedRegion is null ? @clicked : @clickedRegion;
 			addOption(menu, selected, clicked, format(locale::MOVE_TO_OBJ, formatObjectName(nameObj)), MoveTo(),
 					Sprite(spritesheet::ContextIcons, 0, Color(0xffcd00ff)));
+
+			// [[ MODIFY BASE GAME START ]]
+			// Chase order
+			if (clicked !is null && clicked.valid && clicked.hasMover && !clicked.hasSupportAI && !clicked.isStar && !clicked.isPlanet) {
+				addOption(menu, selected, clicked, format(locale::CHASE_ORDER, formatObjectName(nameObj)), Chase());
+			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 	}
 
