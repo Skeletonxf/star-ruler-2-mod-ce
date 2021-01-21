@@ -37,6 +37,9 @@ This is primarily intended as a developer focused project planning list, rather 
     - Ship constructible support supply free
   - Attack order revamp
     - Keep distance from multiple targets
+    - Chase with FTL order?
+  - Planetary shielding in some way
+  - Gravitron damage should give a notification
   - Make auto import refresh when resources on already colonised planets become available
   - Make all methods of griefing a planet with 'terraforming' not work while the planet is in combat. If you want to annex and trash a planet you should have to use Microcline or actually hold it for a reasonable amount of time.
   - Tweak tractor default design

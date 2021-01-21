@@ -1,0 +1,9 @@
+Trait: StartingRingworld
+	Name: #ABANDONED_RINGWORLD
+	Description: #ABANDONED_RINGWORLD_DESC
+	Costs Points: 5
+	Icon: PlanetType::14
+	Color: #4f5b62
+	Category: Foundation
+	Order: 10
+	TriggerHomeworld(SpawnPlanet(Ringworld, Owned = True, Add Status = Ringworld, Radius = 550, Physics = False))

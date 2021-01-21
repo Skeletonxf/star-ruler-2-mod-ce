@@ -10,6 +10,7 @@ Trait: PrivRingworld
 	Conflict: StarChildren
 	Conflict: Ancient
 	Conflict: Battleworlders
+	Conflict: StartingRingworld
 
 	TriggerHomeworld(SpawnPlanet(Ringworld, Owned = True, Add Status = PrivRingworld, Radius = 550, Physics = False, Set Homeworld = True))
 	TriggerHomeworld(DestroySystemPlanet(0, Quiet = True), Run Post = True)
