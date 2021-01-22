@@ -9,17 +9,18 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working
   - Expansion AI Component
+    - Teach AI to penalise conditions
+      - Currently recording them, but not using the info
+      - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
+    - Teach AI to pick and colonise high value planets to level up once it runs out of requests
+      - And actually make them development focuses
     - Implement custom ColonizeAbility interface for Ancient AI empires
     - Refine Star Children ColonizeAbility code and reintroduce LaborMissions
       - Make sure star children motherships run away from danger while on habitat missions
     - Refine Mechanoid ColonizeAbility to avoid building too many pops if going into debt
-    - Teach AI to penalise conditions
-      - Currently recording them, but not using the info
-      - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
     - Reteach AI to colonise planets for non levelling purposes
     - Port unobtanium code from Mechanoid component into Expansion component as a generic bit of knowledge for using with any unobtanium planet
       - Notably level 0 planets
-    - Teach AI to pick and colonise high value planets to level up once it runs out of requests
     - Teach AI to use constructions to meet resource requests
     - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
         - Teach AI to melt ice
@@ -40,6 +41,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Chase with FTL order?
   - Planetary shielding in some way
   - Gravitron damage should give a notification
+  - Some kind of message reel just below the tabs
   - Make auto import refresh when resources on already colonised planets become available
   - Make all methods of griefing a planet with 'terraforming' not work while the planet is in combat. If you want to annex and trash a planet you should have to use Microcline or actually hold it for a reasonable amount of time.
   - Tweak tractor default design

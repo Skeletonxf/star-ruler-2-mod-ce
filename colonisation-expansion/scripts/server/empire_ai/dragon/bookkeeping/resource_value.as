@@ -148,6 +148,22 @@ class PlanetValuables {
 		return false;
 	}
 
+	bool meets(ResourceSpec@ spec) {
+		for (uint i = 0, cnt = exportable.length; i < cnt; ++i) {
+			const ResourceType@ resource = exportable[i];
+			if (spec.meets(resource)) {
+				return true;
+			}
+		}
+		for (uint i = 0, cnt = unexportable.length; i < cnt; ++i) {
+			const ResourceType@ resource = unexportable[i];
+			if (spec.meets(resource)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Checks if any resources have any generic value, such as pressure of any
 	 * kind or a level/scalable resource. This notably excludes resources

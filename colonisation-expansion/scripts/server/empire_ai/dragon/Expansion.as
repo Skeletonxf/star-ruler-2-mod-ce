@@ -28,6 +28,7 @@ import empire_ai.dragon.expansion.expand_logic;
 import empire_ai.dragon.expansion.terrestrial_colonization;
 import empire_ai.dragon.expansion.planet_management;
 import empire_ai.dragon.expansion.region_linking;
+import empire_ai.dragon.expansion.development;
 
 from statuses import getStatusID;
 from traits import getTraitID;
@@ -113,6 +114,11 @@ class PotentialColonizeSource : PotentialColonize {
 	}
 
 	bool canMeet(ResourceSpec@ spec) {
+		// TODO: Should probably just check if the spec is met by this planet
+		// for all specs that aren't for import instead of special casing
+		if (spec.type == RST_Level_Minimum_Or_Class) {
+			return valuables.meets(spec);
+		}
 		return valuables.canExportToMeet(spec);
 	}
 }
@@ -706,7 +712,7 @@ class BuildTracker {
  * which doesn't sit on unused resources or colonise resources not needed for
  * levelling.
  */
-class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner {
+class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner, DevelopmentFocuses {
 	Resources@ resources;
 	Planets@ planets;
 	Systems@ systems;
@@ -758,6 +764,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	bool bordersScouted = false;
 
+	double lastLevelChainCheck = 0;
+
 	void create() {
 		@resources = cast<Resources>(ai.resources);
 		@planets = cast<Planets>(ai.planets);
@@ -770,7 +778,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
 		@colonyManagement = TerrestrialColonization(planets, this, ai);
-		@planetManagement = PlanetManagement(planets, budget, ai, log);
+		@planetManagement = PlanetManagement(planets, budget, this, ai, log);
 		@regionLinking = RegionLinking(planets, construction, resources, systems, budget);
 
 		@scalableClass = getResourceClass("Scalable");
@@ -820,6 +828,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		regionLinking.save(file);
 
 		file << bordersScouted;
+		file << lastLevelChainCheck;
 	}
 
 	void load(SaveFile& file) {
@@ -894,6 +903,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		regionLinking.load(file);
 
 		file >> bordersScouted;
+		file >> lastLevelChainCheck;
 	}
 
 	void tick(double time) override {
@@ -908,6 +918,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		// Colonize and Develop bookeeping
 		if (expandType == LevelingHomeworld) {
 			// No particular special logic here just yet
+			doLevelChaining();
 		}
 		if (expandType == LookingForHomeworld) {
 			// grab the first tier 1 we see
@@ -925,7 +936,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 		if (expandType == WaitingForHomeworld) {
 			// Level up 'homeworld' to level 3 to start
-			// TODO: Star Children should really pick the first appropraite scalable
+			// TODO: Star Children should really pick the first appropriate scalable
 			// as the main dev focus, this is just a temporary hack to see them colonise
 			if (ai.empire.planetCount > 0) {
 				for (uint i = 0, cnt = ai.empire.planetCount; i < cnt; ++i) {
@@ -1141,7 +1152,78 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		return bordersScouted;
 	}
 
+	void doLevelChaining() {
+		// only run this every 10 seconds as we don't need to be very responsive
+		// on level chain management compared to other things
+		if (gameTime < lastLevelChainCheck + 10) {
+			return;
+		}
+		lastLevelChainCheck = gameTime;
+
+		// development component tick essentially
+		uint unmet = getUnmetFocuses();
+		// TODO: If we have a lot of unmet focuses we should potentially
+		// cull our empire and reorganise to meet some of them
+
+		// if we have only one focus, get that to level 3
+		if (focuses.length == 1) {
+			if (focuses[0].targetLevel < 3) {
+				focuses[0].targetLevel = 3;
+			}
+			if (focuses[0].obj.resourceLevel >= 2) {
+				// now we need something else to do
+				array<PlanetAI@> possibleFocuses = planetManagement.getGoodNextFocuses();
+				if (possibleFocuses.length == 0) {
+					// check if we're colonising for any potentially good focuses
+					for (uint i = 0, cnt = colonizing.length; i < cnt; ++i) {
+						if (isGoodFocus(colonizing[i].target, ai)) {
+							return;
+						}
+					}
+					// check if we already queued a potentially good focus
+					for (uint i = 0, cnt = queue.queue.length; i < cnt; ++i) {
+						if (isGoodFocus(queue.queue[i].target, ai)) {
+							return;
+						}
+					}
+				}
+				if (possibleFocuses.length == 0) {
+					// now that we also know we're not colonising for any, we
+					// should pick one to colonise for
+					ResourceSpec spec;
+					spec.type = RST_Level_Minimum_Or_Class;
+					spec.level = 3;
+					@spec.cls = scalableClass;
+					spec.isLevelRequirement = false;
+					spec.isForImport = false;
+					queue.queueColonizeForResourceSpec(spec, this, ai);
+					return;
+				}
+				// TODO: Actually create a dev focus now
+			}
+		} else {
+			// We should pick which focus we most want to level up once
+		}
+	}
+
+	uint getUnmetFocuses() {
+		uint unmet = 0;
+		for(uint i = 0, cnt = focuses.length; i < cnt; ++i) {
+			if(focuses[i].obj.resourceLevel < uint(focuses[i].targetLevel)) {
+				unmet += 1;
+			}
+		}
+		return unmet;
+	}
+
 	bool isDevelopingIn(Region@ reg) {
+		if (reg is null) {
+			return false; // TODO
+		}
+		for(uint i = 0, cnt = focuses.length; i < cnt; ++i) {
+			if(focuses[i].obj.region is reg)
+				return true;
+		}
 		return false;
 	}
 
@@ -1242,6 +1324,10 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				return focuses[i];
 		}
 		return null;
+	}
+
+	array<DevelopmentFocus@> getFocuses() {
+		return focuses;
 	}
 
 	bool isFocus(Object@ obj) {

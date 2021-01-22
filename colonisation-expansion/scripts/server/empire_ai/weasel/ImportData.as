@@ -16,6 +16,9 @@ enum ResourceSpecType {
 	RST_Pressure_Type,
 	RST_Pressure_Level0,
 	RST_Class,
+	// [[ MODIFY BASE GAME START ]]
+	RST_Level_Minimum_Or_Class,
+	// [[ MODIFY BASE GAME END ]]
 };
 
 tidy final class ResourceSpec : Savable {
@@ -83,6 +86,10 @@ tidy final class ResourceSpec : Savable {
 				return other.pressureType == pressureType;
 			case RST_Class:
 				return other.cls is cls;
+			// [[ MODIFY BASE GAME START ]]
+			case RST_Level_Minimum_Or_Class:
+				return other.level == level && other.cls is cls;
+			// [[ MODIFY BASE GAME END ]]
 		}
 		return true;
 	}
@@ -97,6 +104,10 @@ tidy final class ResourceSpec : Savable {
 					case RST_Level_Specific:
 					case RST_Level_Minimum:
 						return level >= 2;
+					// [[ MODIFY BASE GAME START ]]
+					case RST_Level_Minimum_Or_Class:
+						return level >= 2;
+					// [[ MODIFY BASE GAME END ]]
 				}
 				return false;
 			}
@@ -118,6 +129,10 @@ tidy final class ResourceSpec : Savable {
 				return check.level == 0 && check.tilePressure[pressureType] >= max(check.totalPressure * 0.4, 1.0);
 			case RST_Class:
 				return check.cls is cls;
+			// [[ MODIFY BASE GAME START ]]
+			case RST_Level_Minimum_Or_Class:
+				return check.level >= level || check.cls is cls;
+			// [[ MODIFY BASE GAME END ]]
 		}
 		return false;
 	}
@@ -152,6 +167,10 @@ tidy final class ResourceSpec : Savable {
 				return "Level 0 "+getTileResourceIdent(pressureType);
 			case RST_Class:
 				return "Of "+cls.ident;
+			// [[ MODIFY BASE GAME START ]]
+			case RST_Level_Minimum_Or_Class:
+				return "Tier "+level+"+ Or Of "+cls.ident;
+			// [[ MODIFY BASE GAME END ]]
 		}
 		return "??";
 	}
@@ -170,6 +189,10 @@ tidy final class ResourceSpec : Savable {
 				return 0;
 			case RST_Class:
 				return 0;
+			// [[ MODIFY BASE GAME START ]]
+			case RST_Level_Minimum_Or_Class:
+				return 0;
+			// [[ MODIFY BASE GAME END ]]
 		}
 		return 0;
 	}

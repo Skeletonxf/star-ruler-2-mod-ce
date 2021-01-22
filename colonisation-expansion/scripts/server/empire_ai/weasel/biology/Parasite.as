@@ -139,10 +139,9 @@ class Parasite : AIComponent {
 				if (planetResourceType.level == 2) {
 					resourceValue -= 3.0;
 				}
-				// scalable resources are unlikely to be levelled all the way
-				// by normal levelling so good candidates for razing
+				// we use scalables for development focuses, so don't raze them
 				if (scalable) {
-					resourceValue += 2.0;
+					resourceValue -= 12.0;
 				}
 				// unexportable resources are less useful for leveling normally
 				if (planetResourceType.exportable == false) {

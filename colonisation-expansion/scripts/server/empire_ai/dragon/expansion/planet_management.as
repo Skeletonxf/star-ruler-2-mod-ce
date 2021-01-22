@@ -1,5 +1,7 @@
 import empire_ai.weasel.Planets;
 import empire_ai.weasel.Budget;
+import empire_ai.weasel.Resources;
+import empire_ai.dragon.expansion.development;
 
 import buildings;
 
@@ -9,6 +11,7 @@ from traits import getTraitID;
 class PlanetManagement {
 	Planets@ planets;
 	Budget@ budget;
+	DevelopmentFocuses@ focuses;
 	bool log;
 
 	uint nativeLifeStatus = 0;
@@ -16,13 +19,17 @@ class PlanetManagement {
 	const ConstructionType@ genocide_planet;
 	bool no_uplift = false;
 	double uplift_cost = 800;
+	const ResourceClass@ scalableClass;
 
 	uint planetCheckIndex = 0;
 
+	array<PlanetAI@> goodNextFocuses;
+
 	// TODO: Need focus management interface to call from here
-	PlanetManagement(Planets@ planets, Budget@ budget, AI& ai, bool log) {
+	PlanetManagement(Planets@ planets, Budget@ budget, DevelopmentFocuses@ focuses, AI& ai, bool log) {
 		@this.planets = planets;
 		@this.budget = budget;
+		@this.focuses = focuses;
 		this.log = log;
 
 		// cache lookups
@@ -39,6 +46,7 @@ class PlanetManagement {
 		if (uplift_planet !is null) {
 			uplift_cost = uplift_planet.buildCost;
 		}
+		@scalableClass = getResourceClass("Scalable");
 	}
 
 	/**
@@ -60,6 +68,7 @@ class PlanetManagement {
 		manageUplift(plAI, ai);
 		// TODO: Respond to primitive life statuses
 		// TODO: Long term this should all be generic hook based responses
+		checkNextFocus(plAI, ai);
 	}
 
 	// TODO: Track the construction requests we make in a ConstructionTracker
@@ -106,11 +115,43 @@ class PlanetManagement {
 		}
 	}
 
+	void checkNextFocus(PlanetAI@ plAI, AI& ai) {
+		if (focuses.isFocus(plAI.obj)) {
+			// we're tracking good next focuses, if a planet is already a
+			// focus we stop tracking it
+			goodNextFocuses.remove(plAI);
+			return;
+		}
+		if (goodNextFocuses.find(plAI) != -1) {
+			return;
+		}
+
+		if (isGoodFocus(plAI.obj, ai)) {
+			goodNextFocuses.insertLast(plAI);
+		}
+	}
+
+	/**
+	 * Planets we've found that we already own and might want to promote
+	 * to focuses
+	 */
+	array<PlanetAI@> getGoodNextFocuses() {
+		return goodNextFocuses;
+	}
+
 	void save(SaveFile& file) {
 		file << planetCheckIndex;
+		file << goodNextFocuses.length;
+		for (uint i = 0, cnt = goodNextFocuses.length; i < cnt; ++i) {
+			planets.saveAI(file, goodNextFocuses[i]);
+		}
 	}
 
 	void load(SaveFile& file) {
 		file >> planetCheckIndex;
+		file >> goodNextFocuses.length;
+		for (uint i = 0, cnt = goodNextFocuses.length; i < cnt; ++i) {
+			@goodNextFocuses[i] = planets.loadAI(file);
+		}
 	}
 }

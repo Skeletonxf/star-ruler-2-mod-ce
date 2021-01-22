@@ -312,8 +312,12 @@ final class PlanetAI {
 	double get_colonizeWeight() {
 		if(obj.isColonizing)
 			return 0.0;
-		if(obj.level == 0)
-			return 0.0;
+		// [[ MODIFY BASE GAME START ]]
+		// Level 0 is checked in canSafelyColonize anyway, and allowed in
+		// rare circumstances
+		/* if(obj.level == 0)
+			return 0.0; */
+		// [[ MODIFY BASE GAME END ]]
 		if(!obj.canSafelyColonize)
 			return 0.0;
 		double w = 1.0;
@@ -333,8 +337,10 @@ final class PlanetAI {
 	 * colonising
 	 */
 	double get_abstractColonizeWeight() {
-		if(obj.level == 0)
-			return 0.0;
+		// Level 0 is checked in canSafelyColonize anyway, and allowed in
+		// rare circumstances
+		/* if(obj.level == 0)
+			return 0.0; */
 		if(!obj.canSafelyColonize)
 			return 0.0;
 		double w = 1.0;
