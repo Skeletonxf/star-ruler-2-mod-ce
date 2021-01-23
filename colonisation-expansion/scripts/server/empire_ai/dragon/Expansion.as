@@ -204,13 +204,27 @@ class DevelopmentFocus2 : DevelopmentFocus {
 			managedPressure.insertLast(data);
 		}
 	}
+
+	// Rough heuristic for how far we want to level something
+	int maximumDesireableLevel(Expansion& expansion) {
+		const ResourceType@ resource = getResource(obj.primaryResourceType);
+		if (resource is null) {
+			return min(3, maximumLevel);
+		}
+		if (resource.cls is expansion.scalableClass) {
+			return maximumLevel;
+		}
+		return min(3, maximumLevel);
+	}
 }
 
+// This was originally intended as a tree of a particular planet we want to
+// colonise, and nodes for the other planets that we would then be colonising
+// to get this one up to its resource level (so if colonising this failed we
+// could cancel or reassign the children). The AI seems to colonise just fine
+// waiting for itself to claim a planet and then ordering colonisations for the
+// dependencies, so this will probably stay as a single node 'tree' for now.
 class ColonizeTree {
-	// TODO, want to track what planet we are colonizing resources for here
-	// so that if we lose the planet then we can stop colonizing all its
-	// children, or at the very least reconsider if we need them and
-	// move them to a different tree in the forest
 	Planet@ target;
 	// Nullable import data that might be associated with our node
 	ImportData@ request;
@@ -247,9 +261,9 @@ class ColonizeTree {
 	}
 }
 
+// A collection of ColonizeTrees, forming a queue of resources we are planning
+// to colonise in the short term, but haven't actually started to colonise yet.
 class ColonizeForest {
-	// TODO
-	//array<ColonizeTree@> urgent;
 	array<ColonizeTree@> queue;
 	double nextCheckForPotentialColonizeTargets = 0;
 
@@ -917,7 +931,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	void focusTick(double time) override {
 		// Colonize and Develop bookeeping
 		if (expandType == LevelingHomeworld) {
-			// No particular special logic here just yet
+			// level chaining starts when we have a homeworld
 			doLevelChaining();
 		}
 		if (expandType == LookingForHomeworld) {
@@ -1152,6 +1166,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		return bordersScouted;
 	}
 
+	// development component tick essentially
 	void doLevelChaining() {
 		// only run this every 10 seconds as we don't need to be very responsive
 		// on level chain management compared to other things
@@ -1159,11 +1174,6 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			return;
 		}
 		lastLevelChainCheck = gameTime;
-
-		// development component tick essentially
-		uint unmet = getUnmetFocuses();
-		// TODO: If we have a lot of unmet focuses we should potentially
-		// cull our empire and reorganise to meet some of them
 
 		// if we have only one focus, get that to level 3
 		if (focuses.length == 1) {
@@ -1197,23 +1207,55 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 					spec.isLevelRequirement = false;
 					spec.isForImport = false;
 					queue.queueColonizeForResourceSpec(spec, this, ai);
+
+					if (queue.queue.length > 0) {
+						return;
+					}
+
+					// we've had some bad luck, and have no bordering scalables
+					// or tier 3s, plus we ran out of planets to colonise for
+					// our only focus. Raise our focus's target by 1
+					if (focuses[0].maximumLevel > focuses[0].targetLevel) {
+						focuses[0].targetLevel += 1;
+					} else {
+						// TODO: we've had some REALLY bad luck, just pick a
+						// tier 2 as our next focus
+					}
+				} else {
+					// Create a new dev focus from the first in the list
+					// TODO: Should probably be choosing the best focus from
+					// this list
+					PlanetAI@ newFocus = possibleFocuses[0];
+					DevelopmentFocus@ focus = addFocus(newFocus);
+					focus.targetLevel = 3;
 					return;
 				}
-				// TODO: Actually create a dev focus now
-			}
-		} else {
-			// We should pick which focus we most want to level up once
-		}
-	}
-
-	uint getUnmetFocuses() {
-		uint unmet = 0;
-		for(uint i = 0, cnt = focuses.length; i < cnt; ++i) {
-			if(focuses[i].obj.resourceLevel < uint(focuses[i].targetLevel)) {
-				unmet += 1;
 			}
 		}
-		return unmet;
+		// We should pick which focus we most want to level up next
+		DevelopmentFocus@ priorityFocus;
+		uint levelsAway = 0;
+		for (uint i = 0, cnt = focuses.length; i < cnt; ++i) {
+			levelsAway += max(focuses[i].targetLevel - focuses[i].obj.resourceLevel, 0);
+		}
+		if (levelsAway > 5) {
+			// TODO: If we have a lot of unmet focuses we should potentially
+			// cull our empire and reorganise to meet some of them
+		}
+		// for now, try to bump up the target levels to keep us with something
+		// to do at all times, TODO: we should really be checking if the resources
+		// for the level chain we need to bump here are actually available
+		uint whenToStartNextTarget = 1 + uint(double(planets.planets.length) * 0.05);
+		while (levelsAway <= whenToStartNextTarget) {
+			for (uint i = 0, cnt = focuses.length; i < cnt; ++i) {
+				DevelopmentFocus2@ focus = cast<DevelopmentFocus2>(focuses[i]);
+				int desired = focus.maximumDesireableLevel(this);
+				if(focus.targetLevel >= desired)
+					continue;
+				whenToStartNextTarget -= 1;
+				focus.targetLevel += 1;
+			}
+		}
 	}
 
 	bool isDevelopingIn(Region@ reg) {

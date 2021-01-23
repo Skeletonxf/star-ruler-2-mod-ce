@@ -495,9 +495,16 @@ final class AI : AIController, Savable {
 		//Make racial component
 		if(empire.hasTrait(getTraitID("Verdant")))
 			@race = add(createVerdant());
-		else if(empire.hasTrait(getTraitID("Mechanoid")))
-			@race = add(createMechanoid());
-		else if(empire.hasTrait(getTraitID("StarChildren"))) {
+		else if(empire.hasTrait(getTraitID("Mechanoid"))) {
+			// [[ MODIFY BASE GAME START ]]
+			if (expansionComponent) {
+				print("Enabling Dragon Mechanoid component");
+				@race = add(createMechanoid2());
+			} else {
+				@race = add(createMechanoid());
+			}
+			// [[ MODIFY BASE GAME END ]]
+		} else if(empire.hasTrait(getTraitID("StarChildren"))) {
 			// [[ MODIFY BASE GAME START ]]
 			if (expansionComponent) {
 				print("Enabling Dragon Star Children component");

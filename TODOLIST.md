@@ -12,8 +12,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Teach AI to penalise conditions
       - Currently recording them, but not using the info
       - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
-    - Teach AI to pick and colonise high value planets to level up once it runs out of requests
-      - And actually make them development focuses
+    - Reteach the AI how to manage pressure, port from Development component
     - Implement custom ColonizeAbility interface for Ancient AI empires
     - Refine Star Children ColonizeAbility code and reintroduce LaborMissions
       - Make sure star children motherships run away from danger while on habitat missions

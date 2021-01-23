@@ -42,5 +42,6 @@ bool isGoodFocus(Planet& planet, AI& ai) {
 	if (resource.level >= 3 || resource.cls is scalableClass) {
 		return true;
 	}
+	// uplifted planets should be considered focuses too
 	return false;
 }

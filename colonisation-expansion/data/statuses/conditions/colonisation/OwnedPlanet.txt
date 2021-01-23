@@ -3,4 +3,4 @@ Status: OwnedPlanet
 
 	IfHaveStatus(NativeLife, OnEnable(NotifyOwner(Natives discovered at $3, Description = $3 has natives living on the planet., Icon = Campfire)))
 	GrantAbility(AbilityAbandon)
-	IfNotHaveTrait(Mechanoid, IfNotHaveTrait(Ancient, AddStatus(ForestablePlanet)))
+	IfNotHaveTrait(Ancient, AddStatus(ForestablePlanet))

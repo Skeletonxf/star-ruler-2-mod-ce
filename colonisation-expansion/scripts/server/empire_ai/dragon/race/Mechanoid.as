@@ -76,7 +76,8 @@ class ColonizerMechanoidPlanet : ColonizationSource {
 		return (pop / maxPop) - 1.0;
 	}
 
-	bool transferPop(uint amount, Planet@ target, AI& ai) {
+	bool transferPop(uint amount, PopulationRequest@ request, AI& ai) {
+		Planet@ target = request.source.planet;
 		double ftlCost = transferCost(planet, ai.empire, target);
 		while (amount > 0) {
 			if (ftlCost <= ai.empire.FTLStored) {
@@ -84,6 +85,7 @@ class ColonizerMechanoidPlanet : ColonizationSource {
 					ai.print("Transfering population to "+target.name, planet);
 				planet.activateAbilityTypeFor(ai.empire, colonizeAbilityID, target);
 				amount -= 1;
+				request.neededPopulation -= 1;
 			} else {
 				return false;
 			}
@@ -186,7 +188,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 		colonizeAbilityID = getAbilityID("MechanoidColonize");
 
-		colonization.PerformColonization = false;
+		//colonization.PerformColonization = false;
 
 		@buildPop = getConstructionType("MechanoidPopulation");
 
@@ -256,6 +258,11 @@ class Mechanoid2 : Race, ColonizationAbility {
 		double pop = source.planet.population;
 		double needPop = getPlanetLevelRequiredPop(source.planet, source.planet.resourceLevel);
 		if (pop < needPop) {
+			for (uint i = 0, cnt = popRequests.length; i < cnt; ++i) {
+				if (popRequests[i].source is source) {
+					return;
+				}
+			}
 			popRequests.insertLast(PopulationRequest(source, needPop - pop));
 			return;
 		} else {
@@ -268,12 +275,12 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 	void meetPopRequests(PopulationRequest@ request) {
 		ColonizerMechanoidPlanet@ source;
-		while (request.neededPopulation > 1) {
+		while (request.neededPopulation >= 1) {
 			auto@ source = cast<ColonizerMechanoidPlanet>(getFastestSource(request.source.planet));
 			if (source is null) {
 				return;
 			}
-			bool success = source.transferPop(uint(min(source.sparePop(), request.neededPopulation)), request.source.planet, ai);
+			bool success = source.transferPop(uint(min(source.sparePop(), request.neededPopulation)), request, ai);
 			if (!success) {
 				return; // probably out of FTL
 			}
