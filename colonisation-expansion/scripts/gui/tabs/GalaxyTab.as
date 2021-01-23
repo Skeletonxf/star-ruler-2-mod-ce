@@ -72,7 +72,7 @@ void setExtents(Camera@ cam) {
 		}
 		calcExtents = false;
 	}
-	
+
 	cam.setPositionBound(extentMin - vec3d(500.0), extentMax + vec3d(500.0));
 	cam.maxDistance = extentMin.distanceTo(extentMax) * 1.5;
 }
@@ -85,7 +85,7 @@ class PopupRoot : BaseGuiElement {
 	bool get_isRoot() const {
 		return true;
 	}
-	
+
 	IGuiElement@ elementFromPosition(const vec2i& pos) {
 		IGuiElement@ ele;
 		GalaxyTab@ tab = cast<GalaxyTab>(Parent);
@@ -253,6 +253,11 @@ class GalaxyTab : Tab {
 			file << obj;
 			vec2i pos = popups[i].position;
 			file << pos;
+			// [[ MODIFY BASE GAME START ]]
+			bool isFloating = popups[i].objLinked;
+			file << isFloating;
+			file << obj.valid;
+			// [[ MODIFY BASE GAME END ]]
 		}
 
 		file << quickbar;
@@ -269,9 +274,15 @@ class GalaxyTab : Tab {
 
 			vec2i pos;
 			file >> pos;
+			// [[ MODIFY BASE GAME START ]]
+			bool isFloating = false;
+			file >> isFloating;
+			bool valid = true;
+			file >> valid;
 
-			if(obj !is null) {
-				Popup@ pop = pinObject(obj);
+			if(obj !is null && obj.valid && valid) {
+				Popup@ pop = pinObject(obj, isFloating);
+				// [[ MODIFY BASE GAME END ]]
 				pop.position = pos;
 			}
 		}
@@ -286,7 +297,7 @@ class GalaxyTab : Tab {
 	Color get_inactiveColor() {
 		return Color(0xff9600ff);
 	}
-	
+
 	Color get_seperatorColor() {
 		return Color(0x8c642bff);
 	}
@@ -573,7 +584,7 @@ class GalaxyTab : Tab {
 			actTimer += 1.f;
 		}
 		actionBar.update(time);
-		
+
 		//Update infobar
 		updateInfoBar(selectedObject);
 		if(infoBar !is null)
@@ -658,7 +669,7 @@ class GalaxyTab : Tab {
 			if(hovPopup !is null)
 				hovPopup.visible = false;
 		}
-		
+
 		//Update other popups
 		for(uint i = 0, cnt = popups.length; i < cnt; ++i) {
 			if(popups[i].parent is null) {
@@ -805,7 +816,7 @@ class GalaxyTab : Tab {
 			}
 			return true;
 		}
-		
+
 		if(object.isAnomaly) {
 			AnomalyOverlay(this, cast<Anomaly>(object));
 			return true;
@@ -820,7 +831,7 @@ class GalaxyTab : Tab {
 		}
 		return false;
 	}
-	
+
 	bool objectInteraction(Object& object, uint mouseButton, bool doubleClicked) {
 		if(overlay !is null) {
 			if(overlay.objectInteraction(object, mouseButton, doubleClicked))
