@@ -17,6 +17,7 @@ Card: AllondiumGeneration
 
 	AI: PlayOnImportantPlanets(planet)
 
+	TargetFilterNotStatus(planet, DysonSphere)
 	TargetFilterResourceNot(planet, Allondium)
 	TargetFilterNotStatus(planet, GiveAllondium)
 Vote: AllondiumGeneration
