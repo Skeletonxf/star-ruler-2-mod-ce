@@ -24,7 +24,6 @@ DYSON_SPHERE_DESC: <<
 	Encases a star in photovoltic materials to absorb almost all of its light and convert it to vast quantities of energy
 
 	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Building a dyson sphere requires large amounts of Ore mined from asteroids.[/color][/b][/img]
-
 >>
 RESOURCE_CLASS_Photovoltics: Photovoltic cells
 LOW_ORBIT_DEFENSE_GRID: Reduces the population loss from planetary bombardment by 75%.
@@ -62,4 +61,15 @@ ORB_MAINFRAME_REV_DESC: <<
 	Mainframes have small ion thrusters that allow it to move slowly.
 
 	[i][color=#aaa]Range indicator is breakeven point, fleets inside will be stronger, fleets outside weaker.[/color][/i]
+>>
+ORB_SENATORIAL_PALACE_DESC: <<
+	A grand palace for galactic senate members to use for diplomatic business.
+
+	Can only be constructed if you are currently the Senate Leader.
+
+	All other empires gain vision over the system the Senatorial Palace is in.
+
+	You can use influence to purchase Election, Galactic Superpower and Galactic Utopia cards at the Senatorial Palace, which allow for an influence victory when played appropriately.
+
+	[i][color=#aaa]If the Palace leaves owned space any active Galactic Superpower or Galactic Utopia votes and effects will be cancelled.[/color][/i]
 >>

@@ -30,6 +30,8 @@ This is primarily intended as a developer focused project planning list, rather 
       - Add support for interstellar trade beacons to AI Resources component
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
   - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
+  - Make warheads manually fired
+  - Possibly make warheads and supports cheaper to buy
   - Move mass/repair/supply calaculations into a definitions file of helper functions
     - LeaderAI getSlowestSupportAccel
     - Support cap hook
@@ -41,6 +43,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Planetary shielding in some way
   - Gravitron damage should give a notification
   - Some kind of message reel just below the tabs
+    - Can move low importance notifications like forestry to be exclusively here once implemented
   - Make auto import refresh when resources on already colonised planets become available
   - Make all methods of griefing a planet with 'terraforming' not work while the planet is in combat. If you want to annex and trash a planet you should have to use Microcline or actually hold it for a reasonable amount of time.
   - Tweak tractor default design
@@ -50,7 +53,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Investigate what happens to civilian trade ships when target is in deep space
   - Gravitron damage should have a ramp up time to reach 100% dps
   - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands
-  - Stop players putting floating continents on dyson spheres
   - Rework the Flying trait downside so it is less severe
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Don't let random life assign a life that other traits the player took are incompatible with
@@ -73,7 +75,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
     - Replace beams with lines?
   - Make quickbar width configurable
-  - Create method to turn off forestry notifications in game
 
 - Not planned for any time soon
   - Work out how to allow planets to always build orbitals/stations in their local gravity well even if they're in deep space
