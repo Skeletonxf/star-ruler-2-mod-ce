@@ -14,16 +14,15 @@ import systems;
 
 import ai.consider;
 from ai.buildings import Buildings, BuildingAI, BuildingUse, AsCreatedResource;
-from ai.resources import AIResources, ResourceAI;
+from ai.resources import AIResources, ResourceAI, DistributeToImportantPlanet, DistributeToHighPopulationPlanet, DistributeToLaborUsing, DistributeAsLocalPressureBoost;
 
 // It is very important we don't just import the entire resources definition
 // because it defines a Resource class which conflicts with the Resources
 // class for the AI Resources component
+from resources import ResourceType;
 import empire_ai.dragon.expansion.colonization;
 import empire_ai.dragon.expansion.colony_data;
-from resources import ResourceType;
-import empire_ai.dragon.bookkeeping.resource_flows;
-from empire_ai.dragon.bookkeeping.resource_value import RaceResourceValuation, ResourceValuator, PlanetValuables;
+from empire_ai.dragon.expansion.resource_value import RaceResourceValuation, ResourceValuator, PlanetValuables;
 import empire_ai.dragon.expansion.expand_logic;
 import empire_ai.dragon.expansion.terrestrial_colonization;
 import empire_ai.dragon.expansion.planet_management;
@@ -170,7 +169,6 @@ class DevelopmentFocus2 : DevelopmentFocus {
 				dev.resources.breakImport(res);
 		}
 
-
 		//TODO: We should be able to bump managed pressure resources back to Development for
 		//redistribution if we run out of pressure capacity.
 	}
@@ -215,6 +213,32 @@ class DevelopmentFocus2 : DevelopmentFocus {
 			return maximumLevel;
 		}
 		return min(3, maximumLevel);
+	}
+
+	void takeManagedPressureResource(ExportData@ res, AI& ai, Expansion& expansion) {
+		if (res.obj !is obj) {
+			res.obj.exportResourceByID(res.resourceId, obj);
+		} else {
+			res.obj.exportResourceByID(res.resourceId, null);
+		}
+		@res.developUse = obj;
+
+		// Assign to us
+		managedPressure.insertLast(res);
+
+		if (true)
+			ai.print("Take "+res.resource.name+" from "+res.obj.name+" for pressure", obj);
+	}
+
+	// TODO: Use to yield pressure back to development if we go over pressure cap
+	void yieldManagedPressureResource(ExportData@ res, AI& ai, Expansion& expansion) {
+		@res.developUse = null;
+
+		// Assign to development
+		expansion.managedPressure.insertLast(res);
+
+		if (true)
+			ai.print("Yield "+res.resource.name+" from "+res.obj.name+" for pressure", obj);
 	}
 }
 
@@ -779,6 +803,12 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	bool bordersScouted = false;
 
 	double lastLevelChainCheck = 0;
+	double lastPressureCheck = 0;
+
+	// Pressure resources that aren't for levelling that we haven't assigned
+	// to a focus yet
+	array<ExportData@> managedPressure;
+	uint pressureIndex = 0;
 
 	void create() {
 		@resources = cast<Resources>(ai.resources);
@@ -843,6 +873,13 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		file << bordersScouted;
 		file << lastLevelChainCheck;
+		file << lastPressureCheck;
+
+		cnt = managedPressure.length;
+		file << cnt;
+		for(uint i = 0; i < cnt; ++i)
+			resources.saveExport(file, managedPressure[i]);
+		file << pressureIndex;
 	}
 
 	void load(SaveFile& file) {
@@ -918,6 +955,15 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		file >> bordersScouted;
 		file >> lastLevelChainCheck;
+		file >> lastPressureCheck;
+
+		file >> cnt;
+		for(uint i = 0; i < cnt; ++i) {
+			auto@ data = resources.loadExport(file);
+			if(data !is null)
+				managedPressure.insertLast(data);
+		}
+		file >> pressureIndex;
 	}
 
 	void tick(double time) override {
@@ -993,6 +1039,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		regionLinking.focusTick(ai);
 
 		checkIfBordersScouted();
+
+		managePressure();
 	}
 
 	void drainQueue() {
@@ -1173,7 +1221,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		if (gameTime < lastLevelChainCheck + 10) {
 			return;
 		}
-		lastLevelChainCheck = gameTime;
+		lastLevelChainCheck = gameTime + randomd(-0.5, 0.5);
 
 		// if we have only one focus, get that to level 3
 		if (focuses.length == 1) {
@@ -1256,6 +1304,180 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				focus.targetLevel += 1;
 			}
 		}
+	}
+
+	void managePressure() {
+		// Remove any resources we're managing that got used
+		for (uint i = 0, cnt = managedPressure.length; i < cnt; ++i) {
+			ExportData@ res = managedPressure[i];
+			bool invalid = res.request !is null || res.obj is null || !res.obj.valid || res.obj.owner !is ai.empire || !res.usable;
+			if (invalid) {
+				managedPressure.removeAt(i);
+				--i; --cnt;
+			}
+		}
+
+		// only run this every second or so as we don't need to be very
+		// responsive on pressure management compared to other things
+		if (gameTime < lastPressureCheck + 1) {
+			return;
+		}
+		lastPressureCheck = gameTime + randomd(-0.2, 0.2);
+
+		//Find new resources that we can put in our pressure manager
+		uint availableResources = resources.available.length;
+		if (availableResources != 0) {
+			uint index = randomi(0, availableResources-1);
+			uint checks = min(availableResources, 3);
+			for (uint i = 0; i < checks; ++i) {
+				// loop through a subset of the available resources, so we don't
+				// loop through too many in one tick but see them all eventually
+				uint resInd = (index + i) % availableResources;
+				ExportData@ res = resources.available[resInd];
+				if(res.usable && res.request is null && res.obj !is null && res.obj.valid && res.obj.owner is ai.empire && res.developUse is null) {
+					if (res.resource.ai.length != 0 || (res.resource.totalPressure > 0 && res.resource.exportable)) {
+						if(!isManaging(res))
+							managedPressure.insertLast(res);
+					}
+				}
+			}
+		}
+
+		// Distribute the next managed pressure resource
+		if(managedPressure.length != 0) {
+			pressureIndex = (pressureIndex+1) % managedPressure.length;
+			ExportData@ res = managedPressure[pressureIndex];
+
+			int pressure = res.resource.totalPressure;
+
+			DevelopmentFocus@ onFocus;
+			double bestWeight = 0;
+			/* bool havePressure = ai.empire.HasPressure != 0.0; */
+
+			bool favorPopulation = false;
+			bool restrictToFactoryPlanets = false;
+			bool restrictToMoneyPlanets = false;
+
+			// 'loop' through all hooks on this resource to adjust our heuristics,
+			// in practise there will most likely be zero or one.
+			for (uint i = 0, cnt = res.resource.ai.length; i < cnt; ++i) {
+				auto@ hook = cast<ResourceAI>(res.resource.ai[i]);
+				if (hook is null)
+					continue;
+
+				// try casting the hook type to see if it's one we know about
+				auto@ importantPlanet = cast<DistributeToImportantPlanet>(hook);
+				if (importantPlanet !is null) {
+					// no special consideration needed, important planets are our focuses
+				}
+				auto@ highPopulationPlanet = cast<DistributeToHighPopulationPlanet>(hook);
+				if (highPopulationPlanet !is null) {
+					favorPopulation = true;
+				}
+				auto@ factoryPlanet = cast<DistributeToLaborUsing>(hook);
+				if (factoryPlanet !is null) {
+					restrictToFactoryPlanets = true;
+				}
+				// this is a bit of a hack, but for now if our resource boosts local pressure
+				// assume we want to boost money pressure, we might want to allow for
+				// boosting research pressure in the future and base the decision on which
+				// resource we need more of
+				auto@ moneyPlanet = cast<DistributeAsLocalPressureBoost>(hook);
+				if (moneyPlanet !is null) {
+					restrictToMoneyPlanets = true;
+				}
+			}
+
+			bool restrictToPrimaryFactory = restrictToFactoryPlanets;
+			Factory@ factory = construction.primaryFactory;
+			// FIXME: Beacons should count as a planet for this
+			if (restrictToPrimaryFactory && (factory is null || factory.obj is null || !factory.obj.isPlanet)) {
+				restrictToPrimaryFactory = false;
+			}
+
+			for (uint i = 0, cnt = focuses.length; i < cnt; ++i) {
+				auto@ f = focuses[i];
+
+				int cap = f.obj.pressureCap;
+				/* if(!havePressure)
+					cap = 10000; */
+				int cur = f.obj.totalPressure;
+
+				if (cur + pressure > 2 * cap)
+					continue;
+
+				double w = 1.0;
+				if (cur + pressure > cap)
+					w *= 0.1;
+
+				if (restrictToPrimaryFactory) {
+					if (factory.obj is f.obj) {
+						// stack labor on the primary factory
+						w += 10;
+					} else {
+						w -= 10;
+					}
+				} else if (restrictToFactoryPlanets) {
+					if (f.obj.laborIncome > 0) {
+						// favor stacking labor on the current best source
+						w *= f.obj.laborIncome;
+					} else {
+						w -= 1;
+					}
+				}
+
+				if (favorPopulation) {
+					w *= f.obj.population;
+				}
+
+				if (restrictToMoneyPlanets) {
+					const ResourceType@ resource = getResource(f.obj.primaryResourceType);
+					if (resource.tilePressure[TR_Money] > 0) {
+						w += 5;
+					} else {
+						w -= 5;
+					}
+				}
+
+				if (w > bestWeight) {
+					bestWeight = w;
+					@onFocus = f;
+				}
+
+				// TODO: Favor the development focus with synergistic pressure
+				// multipliers and penalise the ones with antisynergistic pressure
+				// multipliers
+			}
+
+			if (onFocus !is null) {
+				managedPressure.removeAt(pressureIndex);
+				cast<DevelopmentFocus2>(onFocus).takeManagedPressureResource(res, ai, this);
+			}
+
+			// TODO: If restrictToMoneyPlanets is true and we didn't find a focus
+			// we should promote a non focus which has spare pressure cap and a
+			// money primary resource to be a focus
+		}
+	}
+
+	/**
+	 * Checks if we are managing the pressure of a resource in any way
+	 */
+	bool isManaging(ExportData@ res) {
+		for(uint i = 0, cnt = managedPressure.length; i < cnt; ++i) {
+			if(managedPressure[i] is res)
+				return true;
+		}
+		for(uint i = 0, cnt = focuses.length; i < cnt; ++i) {
+			DevelopmentFocus@ focus = focuses[i];
+			if(focus.obj is res.obj)
+				return true;
+			for(uint j = 0, jcnt = focus.managedPressure.length; j < jcnt; ++j) {
+				if(focus.managedPressure[j] is res)
+					return true;
+			}
+		}
+		return false;
 	}
 
 	bool isDevelopingIn(Region@ reg) {
