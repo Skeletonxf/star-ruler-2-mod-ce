@@ -2,6 +2,11 @@ import empire_ai.weasel.Colonization;
 
 interface ColonizationAbilityOwner {
 	void setColonyManagement(ColonizationAbility@ colonyManagement);
+
+	/**
+	 * A listener for when we fail to colonise a target.
+	 */
+	void onColonizeFailed(Planet@ target);
 }
 
 /**
@@ -34,7 +39,7 @@ interface ColonizationAbility {
 	 * Actually orders a colonisation command to colonise the planet
 	 * in the ColonizeData with the provided source.
 	 */
-	void orderColonization(ColonizeData& data, ColonizationSource@ source);
+	void orderColonization(ColonizeData@ data, ColonizationSource@ source);
 
 	/**
 	 * Saves a colonization source to the file.

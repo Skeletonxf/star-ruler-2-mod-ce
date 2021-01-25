@@ -622,7 +622,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 		// Don't need to do anything here
 	}
 
-	void orderColonization(ColonizeData& data, ColonizationSource@ isource) {
+	void orderColonization(ColonizeData@ data, ColonizationSource@ isource) {
 		auto@ source = cast<ColonizerMechanoidPlanet>(isource);
 		@data.colonizeFrom = source.planet;
 		ColonizeData2@ _data = cast<ColonizeData2>(data);

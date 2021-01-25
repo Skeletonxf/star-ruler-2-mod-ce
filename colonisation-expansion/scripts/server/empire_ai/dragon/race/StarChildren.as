@@ -13,6 +13,7 @@ import empire_ai.weasel.Planets;
 import empire_ai.weasel.Designs;
 import empire_ai.dragon.expansion.colonization;
 import empire_ai.dragon.expansion.colony_data;
+import empire_ai.dragon.expansion.resource_value;
 
 import oddity_navigation;
 from abilities import getAbilityID;
@@ -23,7 +24,6 @@ from statuses import getStatusID;
 // on explored neighbouring systems and requests are drying up
 // Make the AI not put command computers on motherships
 // Make sure AI will flee from remnants and abort if mothership takes heavy damage
-// Propagate failiures back to the Expansion component so we can choose a new colony
 
 class HabitatMission : Mission {
 	Planet@ target;
@@ -59,7 +59,9 @@ class HabitatMission : Mission {
 		// TODO: Run away and abort mission if we end up in combat
 		if(move !is null) {
 			if(move.failed) {
-				ai.print("Movement failed");
+				if (false) {
+					ai.print("Movement failed");
+				}
 				retries += 1;
 				@move = cast<Movement>(ai.movement).move(fleet.obj, target, priority);
 				if (retries > 2) {
@@ -87,6 +89,7 @@ class HabitatMission : Mission {
 					|| (target.owner !is ai.empire && target.owner.valid)
 					|| target.inCombat) {
 				canceled = true;
+				onCancel(ai);
 				return;
 			}
 
@@ -105,6 +108,7 @@ class HabitatMission : Mission {
 				if (retries > 6) {
 					// give up
 					canceled = true;
+					onCancel(ai);
 					return;
 				}
 				// try again, maybe we didn't have enough pop?
@@ -116,6 +120,15 @@ class HabitatMission : Mission {
 				}
 				targetPopAtLastRetry = curPop;
 			}
+		}
+	}
+
+	void onCancel(AI& ai) {
+		if (target !is null && target.valid && target.owner !is ai.empire) {
+			// if we cancel notify Expansion so it can respond immediately
+			// instead of it waiting for a timeout before it realises
+			auto@ expansion = cast<ColonizationAbilityOwner>(ai.colonization);
+			expansion.onColonizeFailed(target);
 		}
 	}
 };
@@ -198,7 +211,7 @@ class MothershipColonizer : ColonizationSource {
 	}
 }
 
-class StarChildren2 : Race, ColonizationAbility {
+class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	IColonization@ colonization;
 	Construction@ construction;
 	IDevelopment@ development;
@@ -274,8 +287,11 @@ class StarChildren2 : Race, ColonizationAbility {
 		habitatPopulationID = getStatusID("StarHabitats");
 
 		// Register ourselves as overriding the colony management
+		// and resource valuation
 		auto@ expansion = cast<ColonizationAbilityOwner>(ai.colonization);
 		expansion.setColonyManagement(this);
+		auto@ valuation = cast<ResourceValuationOwner>(ai.colonization);
+		valuation.setResourceValuation(this);
 	}
 
 	void start() override {
@@ -618,7 +634,7 @@ class StarChildren2 : Race, ColonizationAbility {
 		// Don't need to do anything here
 	}
 
-	void orderColonization(ColonizeData& data, ColonizationSource@ source) {
+	void orderColonization(ColonizeData@ data, ColonizationSource@ source) {
 		MothershipColonizer@ mothership = cast<MothershipColonizer>(source);
 		ColonizeData2@ _data = cast<ColonizeData2>(data);
 		if (_data !is null) {
@@ -785,6 +801,15 @@ class StarChildren2 : Race, ColonizationAbility {
 		}
 		return best;
 	} */
+
+	// Methods for RaceResourceValuation
+	double modifyValue(const ResourceType@ resource, double currentValue) {
+		return currentValue; // TODO: penalise resources like quartz and peklem
+	}
+
+	double devalueEnergyCosts(double energyCost, double currentValue) {
+		return currentValue; // star children don't pay ice giant energy upkeep
+	}
 };
 
 AIComponent@ createStarChildren2() {

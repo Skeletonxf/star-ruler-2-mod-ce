@@ -15,6 +15,11 @@ interface DevelopmentFocuses {
 	 * Gets the development focus of a planet, if we have one
 	 */
 	DevelopmentFocus@ getFocus(Planet& pl);
+
+	/**
+	 * Adds a focus for a planet
+	 */
+	DevelopmentFocus@ addFocus(PlanetAI@ plAI);
 }
 
 

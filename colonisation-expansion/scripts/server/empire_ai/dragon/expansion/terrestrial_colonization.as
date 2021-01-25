@@ -142,7 +142,7 @@ class TerrestrialColonization : ColonizationAbility {
 		return colonizeFrom;
 	}
 
-	void orderColonization(ColonizeData& data, ColonizationSource@ isource) {
+	void orderColonization(ColonizeData@ data, ColonizationSource@ isource) {
 		ColonizerPlanet@ source = cast<ColonizerPlanet>(isource);
 		@data.colonizeFrom = source.planet;
 		ColonizeData2@ _data = cast<ColonizeData2>(data);

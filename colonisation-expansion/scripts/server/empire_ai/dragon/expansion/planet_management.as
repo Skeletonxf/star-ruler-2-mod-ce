@@ -99,9 +99,9 @@ class PlanetManagement {
 				}
 				planets.requestConstruction(
 					plAI, plAI.obj, uplift_planet, priority=1, expire=gameTime + 600, moneyType=BT_Development);
-				//auto@ focus = addFocus(plAI);
-				//focus.targetLevel = 3;
-				//// we'll automatically seek to level it to 3 now
+				// register as a focus and set target to 3
+				DevelopmentFocus@ focus = focuses.addFocus(plAI);
+				focus.targetLevel = max(3, focus.targetLevel);
 			} else {
 				if (log) {
 					ai.print("can't afford uplift, taking over planet");

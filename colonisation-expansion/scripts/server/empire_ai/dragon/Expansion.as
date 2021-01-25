@@ -22,7 +22,7 @@ from ai.resources import AIResources, ResourceAI, DistributeToImportantPlanet, D
 from resources import ResourceType;
 import empire_ai.dragon.expansion.colonization;
 import empire_ai.dragon.expansion.colony_data;
-from empire_ai.dragon.expansion.resource_value import RaceResourceValuation, ResourceValuator, PlanetValuables;
+from empire_ai.dragon.expansion.resource_value import RaceResourceValuation, ResourceValuationOwner, DefaultRaceResourceValuation, ResourceValuator, PlanetValuables;
 import empire_ai.dragon.expansion.expand_logic;
 import empire_ai.dragon.expansion.terrestrial_colonization;
 import empire_ai.dragon.expansion.planet_management;
@@ -298,8 +298,8 @@ class ColonizeForest {
 
 	const ResourceType@ light;
 
-	ColonizeForest() {
-		@resourceValuator = ResourceValuator();
+	ColonizeForest(RaceResourceValuation@ race) {
+		@resourceValuator = ResourceValuator(race);
 		@build_moon_base = getConstructionType("MoonBase");
 		@light = getResource("Starlight");
 	}
@@ -750,7 +750,7 @@ class BuildTracker {
  * which doesn't sit on unused resources or colonise resources not needed for
  * levelling.
  */
-class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner, DevelopmentFocuses {
+class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner, DevelopmentFocuses, ResourceValuationOwner {
 	Resources@ resources;
 	Planets@ planets;
 	Systems@ systems;
@@ -818,7 +818,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@creeping = cast<Creeping>(ai.creeping);
 		@construction = cast<Construction>(ai.construction);
 
-		@queue = ColonizeForest();
+		@queue = ColonizeForest(DefaultRaceResourceValuation(ai));
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
 		@colonyManagement = TerrestrialColonization(planets, this, ai);
@@ -996,8 +996,6 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 		if (expandType == WaitingForHomeworld) {
 			// Level up 'homeworld' to level 3 to start
-			// TODO: Star Children should really pick the first appropriate scalable
-			// as the main dev focus, this is just a temporary hack to see them colonise
 			if (ai.empire.planetCount > 0) {
 				for (uint i = 0, cnt = ai.empire.planetCount; i < cnt; ++i) {
 					Planet@ planet = ai.empire.planetList[i];
@@ -1009,6 +1007,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 					}
 				}
 			}
+
 		}
 
 		// Look for resource requests made to resources that we can
@@ -1752,6 +1751,20 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 	}
 
+	/**
+	 * Responds to any colonisation failuires we get told about by aborting
+	 * the colonise.
+	 */
+	void onColonizeFailed(Planet@ target) {
+		for (uint i = 0, cnt = colonizing.length; i < cnt; ++i) {
+			if (colonizing[i].target is target) {
+				ColonizeData2@ data = cast<ColonizeData2>(colonizing[i]);
+				abortColonize(data);
+				return;
+			}
+		}
+	}
+
 	void finishColonize(ColonizeData2@ data) {
 		data.completed = true;
 		data.canceled = false;
@@ -1861,6 +1874,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// ColonyManagement interface hook
 	void setColonyManagement(ColonizationAbility@ colonyManagement) {
 		@this.colonyManagement = colonyManagement;
+	}
+
+	// Race resource valuation interface hook
+	void setResourceValuation(RaceResourceValuation@ race) {
+		@this.queue.resourceValuator.race = race;
 	}
 }
 

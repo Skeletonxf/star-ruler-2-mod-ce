@@ -1,15 +1,47 @@
 import resources;
 import empire_ai.weasel.ImportData;
+import empire_ai.weasel.WeaselAI;
 from resources import ResourceType;
 from resources import Resource;
 import statuses;
 from ai.statuses import StatusAI, NegativeEnergyIncome, ResearchIncome;
+
+interface ResourceValuationOwner {
+	void setResourceValuation(RaceResourceValuation@ race);
+}
 
 interface RaceResourceValuation {
 	/**
 	 * Updates a resource valuation to accomodate race specific factors.
 	 */
 	double modifyValue(const ResourceType@ resource, double currentValue);
+
+	/**
+	 * Updates a resource valuation to accomodate race specific energy upkeep
+	 * or lack of it.
+	 */
+	double devalueEnergyCosts(double energyCost, double currentValue);
+}
+
+class DefaultRaceResourceValuation : RaceResourceValuation {
+	AI@ ai;
+
+	DefaultRaceResourceValuation(AI@ ai) {
+		@this.ai = ai;
+	}
+
+	double modifyValue(const ResourceType@ resource, double currentValue) {
+		return currentValue;
+	}
+
+	double devalueEnergyCosts(double energyCost, double currentValue) {
+		// check if we have the income to support the energy cost
+		// and a bit leftover
+		if (ai.empire.EnergyIncome - ai.empire.EnergyUse > (energyCost + 5)) {
+			return -10;
+		}
+		return currentValue;
+	}
 }
 
 /**
@@ -22,8 +54,8 @@ class ResourceValuator {
 	const ResourceType@ altar;
 	const ResourceType@ razed;
 
-	ResourceValuator() {
-		// TODO: Race specific valuations
+	ResourceValuator(RaceResourceValuation@ race) {
+		@race = race;
 		@scalableClass = getResourceClass("Scalable");
 		@ftlCrystals = getResource("FTL");
 		@altar = getResource("Altar");
@@ -73,6 +105,13 @@ class ResourceValuator {
 			return -5;
 		return currentValue;
 	}
+
+	double devalueEnergyCosts(double energyCost, double currentValue) {
+		if (race !is null) {
+			return race.devalueEnergyCosts(energyCost, currentValue);
+		}
+		return currentValue;
+	}
 }
 
 /**
@@ -85,6 +124,7 @@ class PlanetValuables {
 	array<const ResourceType@> unexportable;
 	//array<?> dummy;
 	array<const StatusType@> conditions;
+	int lowestTierLevel = 0;
 
 	PlanetValuables(Planet@ planet) {
 		@this.planet = planet;
@@ -99,6 +139,7 @@ class PlanetValuables {
 		planetResources.syncFrom(planet.getNativeResources());
 		for (uint i = 0; i < planetResources.length; ++i) {
 			auto planetResourceType = planetResources[i].type;
+			lowestTierLevel = max(lowestTierLevel, planetResourceType.level);
 			if (planetResourceType.exportable) {
 				exportable.insertLast(planetResourceType);
 			} else {
@@ -129,12 +170,12 @@ class PlanetValuables {
 					if (energyMaint !is null) {
 						double energyCost = energyMaint.energy_maintenance.decimal;
 						int minLevel = energyMaint.min_level.integer;
-						bool terrestrialOnly = energyMaint.terrestrial_only.boolean;
-						// TODO: Adjust weight based on our ability to pay this upkeep
+						if (lowestTierLevel >= minLevel) {
+							weight = valuation.devalueEnergyCosts(energyCost, weight);
+						}
 					}
 					auto@ researchIncome = cast<ResearchIncome>(hook);
 					if (researchIncome !is null) {
-						//print("Found exotic atmosphere and applied weighting");
 						weight += 0.5;
 					}
 				}
