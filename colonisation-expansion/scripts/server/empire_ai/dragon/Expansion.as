@@ -565,7 +565,7 @@ class ColonizeForest {
 					return;
 				}
 			}
-			// Perhaps check if the planet is a Gas Giant first, as we should make a moon
+			// TODO: Perhaps check if the planet is a Gas Giant first, as we should make a moon
 			// base if we need to build on them
 
 			// Get the PlanetAI for the object making this request

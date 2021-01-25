@@ -9,15 +9,13 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working
   - Expansion AI Component
-    - Teach AI to penalise conditions
-      - Currently recording them, but not using the info
-      - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives and Gas Giants are low pressure and limited building
-    - Reteach the AI how to manage pressure, port from Development component
+    - Reteach AI to colonise planets for non levelling purposes
+    - Apply conditions AI hooks to all applicable statuses
+      - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives
     - Implement custom ColonizeAbility interface for Ancient AI empires
     - Refine Star Children ColonizeAbility code and reintroduce LaborMissions
       - Make sure star children motherships run away from danger while on habitat missions
     - Refine Mechanoid ColonizeAbility to avoid building too many pops if going into debt
-    - Reteach AI to colonise planets for non levelling purposes
     - Port unobtanium code from Mechanoid component into Expansion component as a generic bit of knowledge for using with any unobtanium planet
       - Notably level 0 planets
     - Teach AI to use constructions to meet resource requests
@@ -57,6 +55,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Don't let random life assign a life that other traits the player took are incompatible with
   - The ConsumeDistanceFTL should obey FTL discounts from FTL Crystals
+  - Planets should not path themselves through a gate in their own orbit
+  - Ships should not path themselves through a gate they are tractoring
   - Constructions for Gas Giants to make them more useful late game
   - Give stations orders to pick a planet to orbit
   - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little

@@ -33,6 +33,9 @@ tidy final class StatusType {
 	bool unique = false;
 	bool collapses = false;
 	array<IStatusHook@> hooks;
+	// [[ MODIFY BASE GAME START ]]
+	array<Hook@> ai;
+	// [[ MODIFY BASE GAME END ]]
 
 	string def_conditionType;
 	const PlanetType@ conditionType;
@@ -428,6 +431,16 @@ void loadStatus(const string& filename) {
 			else
 				file.error("Unknown status visibility: "+value);
 		}
+		// [[ MODIFY BASE GAME START ]]
+		// Status based AI hooks, modelled off the AI resource hooks
+		else if(key.equals_nocase("AI")) {
+			auto@ hook = parseHook(value, "ai.statuses::", instantiate=false, file=file);
+			if(hook !is null)
+				status.ai.insertLast(hook);
+			else
+				file.error("Could not find AI hook "+value);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		else {
 			string line = file.line;
 			parseLine(line, status, file);
@@ -456,5 +469,11 @@ void init() {
 			if(type.conditionType is null)
 				error("Error in Status "+type.ident+": could not find planet type "+type.def_conditionType);
 		}
+		// [[ MODIFY BASE GAME START ]]
+		for(uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
+			if(!type.ai[n].instantiate())
+				error("Could not instantiate AI hook: "+addrstr(type.ai[n])+" in status "+type.ident);
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 }

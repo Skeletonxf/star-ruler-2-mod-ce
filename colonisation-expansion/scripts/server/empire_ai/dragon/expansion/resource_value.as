@@ -3,6 +3,7 @@ import empire_ai.weasel.ImportData;
 from resources import ResourceType;
 from resources import Resource;
 import statuses;
+from ai.statuses import StatusAI, NegativeEnergyIncome, ResearchIncome;
 
 interface RaceResourceValuation {
 	/**
@@ -115,7 +116,31 @@ class PlanetValuables {
 	 * of the planet with a noxious atmosphere
 	 */
 	double getGenericValue(ResourceValuator& valuation) {
-		return 1; // NYI
+		double weight = 1;
+		for (uint i = 0, cnt = conditions.length; i < cnt; ++i) {
+			const StatusType@ type = conditions[i];
+			if (type.ai.length == 0) {
+				continue;
+			}
+			for (uint j = 0, jcnt = type.ai.length; j < jcnt; ++j) {
+				auto@ hook = cast<StatusAI>(type.ai[j]);
+				if (hook !is null) {
+					auto@ energyMaint = cast<NegativeEnergyIncome>(hook);
+					if (energyMaint !is null) {
+						double energyCost = energyMaint.energy_maintenance.decimal;
+						int minLevel = energyMaint.min_level.integer;
+						bool terrestrialOnly = energyMaint.terrestrial_only.boolean;
+						// TODO: Adjust weight based on our ability to pay this upkeep
+					}
+					auto@ researchIncome = cast<ResearchIncome>(hook);
+					if (researchIncome !is null) {
+						//print("Found exotic atmosphere and applied weighting");
+						weight += 0.5;
+					}
+				}
+			}
+		}
+		return weight;
 	}
 
 	/**
