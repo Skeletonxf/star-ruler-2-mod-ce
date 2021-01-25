@@ -1352,7 +1352,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 			DevelopmentFocus@ onFocus;
 			double bestWeight = 0;
-			/* bool havePressure = ai.empire.HasPressure != 0.0; */
+			bool havePressure = ai.empire.HasPressure != 0.0;
 
 			bool favorPopulation = false;
 			bool restrictToFactoryPlanets = false;
@@ -1399,8 +1399,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				auto@ f = focuses[i];
 
 				int cap = f.obj.pressureCap;
-				/* if(!havePressure)
-					cap = 10000; */
+				if (!havePressure)
+					cap = 10000;
 				int cur = f.obj.totalPressure;
 
 				if (cur + pressure > 2 * cap)
