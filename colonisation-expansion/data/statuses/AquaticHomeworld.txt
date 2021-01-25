@@ -1,0 +1,7 @@
+Status: AquaticHomeworld
+	Visible To: Nobody
+	Description: Sets biome
+	IsTriggerStatus()
+	CE_biome_hooks::SwapBiome(Volcanic, Oceanic)
+	CE_biome_hooks::SwapBiome(Desert, Oceanic)
+	CE_biome_hooks::SwapBiome(Forest, Oceanic)

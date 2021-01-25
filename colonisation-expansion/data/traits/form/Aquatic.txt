@@ -9,6 +9,7 @@ Trait: Aquatic
 	Conflict: StarChildren
 	Order: 1
 
+	TriggerHomeworld(AddStatus(AquaticHomeworld))
 	ReplaceTechnologyNodes(CreateWater, Energy)
 	UnlockTag(CreateWater)
 	EnableModifier(CrewDeck::MassFactor(1.75))
