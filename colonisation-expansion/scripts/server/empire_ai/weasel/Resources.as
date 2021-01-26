@@ -272,6 +272,15 @@ final class Resources : AIComponent {
 	}
 
 	bool canTradeBetween(Object& fromObj, Object& toObj) {
+		// [[ MODIFY BASE GAME START ]]
+		// Interstellar trade beacons permit trade in deep space
+		if (toObj.isPlanet) {
+			Planet@ planet = cast<Planet>(toObj);
+			if (planet.allowPathlessImport > 0) {
+				return true;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 		Region@ fromRegion = fromObj.region;
 		if(fromRegion is null)
 			return false;
