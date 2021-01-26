@@ -25,6 +25,7 @@ from statuses import getStatusID;
 // on explored neighbouring systems and requests are drying up
 // Make the AI not put command computers on motherships
 // Make sure AI will flee from remnants and abort if mothership takes heavy damage
+// Send idle motherships to planets with labor
 
 class HabitatMission : Mission {
 	Planet@ target;
@@ -134,60 +135,6 @@ class HabitatMission : Mission {
 	}
 };
 
-// TODO: Need to rework so the AI pools all labor onto a single planet and parks
-// a mothership there, rather than the vanilla code which tries to distribute mothership
-// labor collection
-/* class LaborMission : Mission {
-	Planet@ target;
-	MoveOrder@ move;
-	double timer = 0.0;
-
-	void save(Fleets& fleets, SaveFile& file) override {
-		file << target;
-		file << timer;
-		fleets.movement.saveMoveOrder(file, move);
-	}
-
-	void load(Fleets& fleets, SaveFile& file) override {
-		file >> target;
-		file >> timer;
-		@move = fleets.movement.loadMoveOrder(file);
-	}
-
-	void start(AI& ai, FleetAI& fleet) override {
-		@move = cast<Movement>(ai.movement).move(fleet.obj, target);
-	}
-
-	void tick(AI& ai, FleetAI& fleet, double time) override {
-		if(move !is null) {
-			if(move.failed) {
-				canceled = true;
-				return;
-			}
-			if(move.completed) {
-				@move = null;
-				timer = gameTime + 10.0;
-			}
-		}
-		else {
-			if(target is null || !target.valid || target.quarantined
-					|| target.owner !is ai.empire) {
-				canceled = true;
-				return;
-			}
-
-			if(gameTime >= timer) {
-				int mothershipPopulationID = cast<StarChildren2>(ai.race).mothershipPopulationID;
-				timer = gameTime + 10.0;
-				if(target.getStatusStackCountAny(mothershipPopulationID) >= 10) {
-					completed = true;
-					return;
-				}
-			}
-		}
-	}
-}; */
-
 class MothershipColonizer : ColonizationSource {
 	FleetAI@ mothership;
 
@@ -240,6 +187,13 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 
 	bool gotHomeworld = false;
 
+	// Weasel Star Children AI moved the motherships to labor sources
+	// and made itself colonise way too slowly
+	// Dragon Star Children AI moves the labor sources to the motherships ;)
+	array<ExportData@> laborMissionResources;
+	uint laborMissionResourcesIndex = 0;
+	double lastLaborMission = 0;
+
 	void save(SaveFile& file) override {
 		designs.saveDesign(file, mothershipDesign);
 		file << idleSince;
@@ -253,6 +207,13 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 			fleets.saveAI(file, mothership.mothership);
 		}
 		file << gotHomeworld;
+
+		cnt = laborMissionResources.length;
+		file << cnt;
+		for(uint i = 0; i < cnt; ++i)
+			resources.saveExport(file, laborMissionResources[i]);
+		file << laborMissionResourcesIndex;
+		file << lastLaborMission;
 	}
 
 	void load(SaveFile& file) override {
@@ -269,6 +230,14 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 				motherships.insertLast(MothershipColonizer(flAI));
 		}
 		file >> gotHomeworld;
+
+		file >> cnt;
+		for(uint i = 0; i < cnt; ++i) {
+			auto@ data = resources.loadExport(file);
+			laborMissionResources.insertLast(data);
+		}
+		file >> laborMissionResourcesIndex;
+		file >> lastLaborMission;
 	}
 
 	void create() override {
@@ -352,77 +321,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		checkOwnedPlanets();
 		addNeededPopulation();
 		checkGotHomeworld();
-
-		//Send motherships to do colonization
-		//uint totalCount = popRequests.length + colonization.AwaitingSource.length; // [[ MODIFY BASE GAME ]]
-		//uint motherCount = idleMothershipCount();
-
-		// [[ MODIFY BASE GAME START ]]
-		// Star Children can colonise with all available motherships at once
-		//ai.behavior.maxConcurrentColonizations = motherships.length;
-		// [[ MODIFY BASE GAME END ]]
-
-		/*if(motherCount > totalCount) {*/
-
-			// [[ MODIFY BASE GAME START ]]
-			/* for(uint i = 0, cnt = colonization.AwaitingSource.length; i < cnt; ++i) {
-				Planet@ dest = colonization.AwaitingSource[i].target;
-				// [[ MODIFY BASE GAME END ]]
-				if(isColonizing(dest))
-					continue;
-
-				colonizeBest(dest);
-			} */
-		/*}*/
-		/*else {*/
-		/*	for(uint i = 0, cnt = motherships.length; i < cnt; ++i) {*/
-		/*		auto@ flAI = motherships[i];*/
-		/*		if(flAI.mission !is null)*/
-		/*			continue;*/
-		/*		if(isBuildingWithLabor(flAI))*/
-		/*			continue;*/
-
-		/*		colonizeBest(flAI);*/
-		/*	}*/
-		/*}*/
-
-		/* if(totalCount != 0)
-			idleSince = gameTime; */
-
-		/* //Idle motherships should be sent to go collect labor from labor planets
-		if(laborPlanets.length != 0) {
-			for(uint i = 0, cnt = motherships.length; i < cnt; ++i) {
-				MothershipColonizer@ mothership = cast<MothershipColonizer>(motherships[i]);
-				auto@ flAI = mothership.mothership;
-				if(flAI.mission !is null)
-					continue;
-				if(isAtLaborPlanet(flAI))
-					continue;
-				if(i == 0 && idleSince < gameTime-60.0)
-					continue;
-
-				double bestDist = INFINITY;
-				Planet@ best;
-				for(uint n = 0, ncnt = laborPlanets.length; n < ncnt; ++n) {
-					Planet@ check = laborPlanets[n];
-					if(hasMothershipAt(check))
-						continue;
-
-					double d = movement.getPathDistance(flAI.obj.position, check.position);
-					if(d < bestDist) {
-						@best = check;
-						bestDist = d;
-					}
-				}
-
-				if(best !is null) {
-					LaborMission miss;
-					@miss.target = best;
-
-					fleets.performMission(flAI, miss);
-				}
-			}
-		} */
+		moveLaborToMotherships();
 	}
 
 	void checkMotherships() {
@@ -569,9 +468,9 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 					if (LOG) {
 						ai.print("Requesting labor pressure resources");
 					}
-					for (uint i = 0; i < 4; ++i) {
+					for (uint i = 0; i < 3; ++i) {
 						ResourceSpec spec;
-						spec.type = RST_Pressure_Type;
+						spec.type = RST_Pressure_Level0;
 						spec.level = 0;
 						spec.pressureType = TR_Labor;
 						spec.isForImport = false;
@@ -581,6 +480,97 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 					gotHomeworld = true;
 					return;
 				}
+			}
+		}
+	}
+
+	void moveLaborToMotherships() {
+		// only do this on hard difficulty
+		if (ai.difficulty < 2) {
+			return;
+		}
+
+		// Avoid doing this too many times a minute, it takes around a minute
+		// per mothership pop anyway, so 25 seconds is more than fast enough
+		// to catch our orbiting motherships.
+		// Plus this would be quite micro intensive for a player to do at
+		// any sort of high efficiency (though I only coded the AI to do this
+		// after trying it myself).
+		if (gameTime < lastLaborMission + 25) {
+			return;
+		}
+		lastLaborMission = gameTime;
+
+		// Steal level 0 labor pressure resources from the other components
+		uint availableResources = resources.available.length;
+		if (availableResources > 0) {
+			uint index = randomi(0, availableResources - 1);
+			ExportData@ res = resources.available[index];
+			if (res.usable && res.obj !is null && res.obj.valid && res.obj.owner is ai.empire) {
+				if (res.resource.level == 0 && res.resource.exportable && res.resource.tilePressure[TR_Labor] > 0) {
+					if (laborMissionResources.find(res) == -1) {
+						laborMissionResources.insertLast(res);
+						if (res.request !is null) {
+							resources.cancelRequest(res.request);
+						}
+					}
+				}
+			}
+		}
+		uint usedResources = resources.used.length;
+		if (usedResources > 0) {
+			uint index = randomi(0, usedResources - 1);
+			ExportData@ res = resources.used[index];
+			if (res.usable && res.obj !is null && res.obj.valid && res.obj.owner is ai.empire) {
+				if (res.resource.level == 0 && res.resource.exportable && res.resource.tilePressure[TR_Labor] > 0) {
+					if (laborMissionResources.find(res) == -1) {
+						laborMissionResources.insertLast(res);
+						if (res.request !is null) {
+							resources.cancelRequest(res.request);
+						}
+					}
+				}
+			}
+		}
+
+		if (laborMissionResources.length == 0) {
+			return;
+		}
+
+		// Pick one pressure resource to move per tick
+		laborMissionResourcesIndex = (laborMissionResourcesIndex + 1) % laborMissionResources.length;
+		ExportData@ res = laborMissionResources[laborMissionResourcesIndex];
+
+		// Remove the resource if it is no longer valid
+		if (res.request !is null || res.obj is null || !res.obj.valid || res.obj.owner !is ai.empire || !res.usable) {
+			laborMissionResources.removeAt(laborMissionResourcesIndex);
+			return;
+		}
+
+		for (uint i = 0, cnt = motherships.length; i < cnt; ++i) {
+			MothershipColonizer@ mothership = cast<MothershipColonizer>(motherships[i]);
+			Object@ obj = mothership.mothership.obj;
+			Factory@ f = construction.get(obj);
+			if (f is null || f.active is null)
+				continue;
+			// move level 0 labor resources to motherships in orbit that are
+			// building something
+			Object@ orbit;
+			if (obj.hasOrbit && obj.inOrbit)
+				@orbit = obj.getOrbitingAround();
+			if (orbit is null && obj.hasMover)
+				@orbit = obj.getAroundLockedOrbit();
+			if (orbit !is null && orbit.isPlanet) {
+				Planet@ orbiting = cast<Planet>(orbit);
+				if (LOG) {
+					ai.print("Move "+res.resource.name+" from "+res.obj.name, orbiting);
+				}
+				if (res.obj !is orbiting) {
+					res.obj.exportResourceByID(res.resourceId, orbiting);
+				} else {
+					res.obj.exportResourceByID(res.resourceId, null);
+				}
+				@res.developUse = orbiting;
 			}
 		}
 	}
@@ -618,9 +608,6 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 			if (flAI.mission !is null) {
 				continue;
 			}
-			/* if (isBuildingWithLabor(flAI)) {
-				continue;
-			} */
 
 			double travelTime = getApproximateETA(flAI.obj, position);
 			if (travelTime < bestTime) {
@@ -648,9 +635,6 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 			if (flAI.mission !is null) {
 				continue;
 			}
-			/* if (isBuildingWithLabor(flAI)) {
-				continue;
-			} */
 
 			double travelTime = getApproximateETA(flAI.obj, colony.position);
 
@@ -718,42 +702,6 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	void saveManager(SaveFile& file) {}
 	void loadManager(SaveFile& file) {}
 
-	/* bool isAtLaborPlanet(FleetAI& flAI) {
-		auto@ miss = cast<LaborMission>(flAI);
-		if(miss !is null)
-			return true;
-
-		for(uint i = 0, cnt = laborPlanets.length; i < cnt; ++i) {
-			if(flAI.obj.isLockedOrbit(laborPlanets[i]))
-				return true;
-		}
-		return false;
-	} */
-
-	/* bool isBuildingWithLabor(FleetAI& flAI) {
-		auto@ f = construction.get(flAI.obj);
-		if(f !is null && f.active !is null)
-			return false;
-		if(isAtLaborPlanet(flAI))
-			return true;
-		return false;
-	} */
-
-	/* bool hasMothershipAt(Planet& pl) {
-		for(uint i = 0, cnt = motherships.length; i < cnt; ++i) {
-			MothershipColonizer@ mothership = cast<MothershipColonizer>(motherships[i]);
-			auto@ flAI = mothership.mothership;
-
-			auto@ miss = cast<LaborMission>(flAI);
-			if(miss !is null && miss.target is pl)
-				return true;
-
-			if(flAI.obj.isLockedOrbit(pl))
-				return true;
-		}
-		return false;
-	} */
-
 	uint idleMothershipCount() {
 		uint count = 0;
 		for(uint i = 0, cnt = motherships.length; i < cnt; ++i) {
@@ -775,75 +723,6 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		}
 		return false;
 	}
-
-	/* Planet@ colonizeBest(FleetAI& flAI) {
-		Planet@ best;
-		double bestDist = INFINITY;
-		for(uint i = 0, cnt = popRequests.length; i < cnt; ++i) {
-			Planet@ dest = popRequests[i];
-			if(isColonizing(dest))
-				continue;
-			if(dest.inCombat)
-				continue;
-
-			double d = movement.getPathDistance(flAI.obj.position, dest.position);
-			if(d < bestDist) {
-				@best = dest;
-				bestDist = d;
-			}
-		}
-
-		if(best is null) {
-			// [[ MODIFY BASE GAME START ]]
-			for(uint i = 0, cnt = colonization.AwaitingSource.length; i < cnt; ++i) {
-				Planet@ dest = colonization.AwaitingSource[i].target;
-				// [[ MODIFY BASE GAME END ]]
-				if(isColonizing(dest))
-					continue;
-
-				double d = movement.getPathDistance(flAI.obj.position, dest.position);
-				if(d < bestDist) {
-					@best = dest;
-					bestDist = d;
-				}
-			}
-		}
-
-		if(best !is null) {
-			HabitatMission miss;
-			@miss.target = best;
-
-			fleets.performMission(flAI, miss);
-		}
-		return best;
-	} */
-
-	/* FleetAI@ colonizeBest(Planet& dest) {
-		FleetAI@ best;
-		double bestDist = INFINITY;
-		for(uint i = 0, cnt = motherships.length; i < cnt; ++i) {
-			MothershipColonizer@ mothership = cast<MothershipColonizer>(motherships[i]);
-			auto@ flAI = mothership.mothership;
-			if(flAI.mission !is null)
-				continue;
-			if(isBuildingWithLabor(flAI))
-				continue;
-
-			double d = movement.getPathDistance(flAI.obj.position, dest.position);
-			if(d < bestDist) {
-				@best = flAI;
-				bestDist = d;
-			}
-		}
-
-		if(best !is null) {
-			HabitatMission miss;
-			@miss.target = dest;
-
-			fleets.performMission(best, miss);
-		}
-		return best;
-	} */
 
 	// Methods for RaceResourceValuation
 	double modifyValue(const ResourceType@ resource, double currentValue) {

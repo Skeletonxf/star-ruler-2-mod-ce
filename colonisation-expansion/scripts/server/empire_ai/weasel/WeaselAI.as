@@ -443,7 +443,7 @@ final class AI : AIController, Savable {
 		@planets = add(createPlanets());
 		@resources = add(createResources());
 		// [[ MODIFY BASE GAME START ]]
-		bool expansionComponent = behavior.dragonComponents && empire.hasTrait(getTraitID("StarChildren"));
+		bool expansionComponent = behavior.dragonComponents && false; //empire.hasTrait(getTraitID("StarChildren"));
 		if (expansionComponent) {
 			print("Enabling Dragon Expansion component");
 			@colonization = add(createExpansion());

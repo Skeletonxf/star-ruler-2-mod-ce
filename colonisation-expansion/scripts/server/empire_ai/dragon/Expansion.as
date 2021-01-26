@@ -504,7 +504,9 @@ class ColonizeForest {
 	 * colonisiation).
 	 */
 	void queueColonizeForRequest(ImportData@ request, Expansion& expansion, AI& ai) {
-		ai.print("colonize for requested resource: "+request.spec.dump(), request.obj);
+		if (false) {
+			ai.print("colonize for requested resource: "+request.spec.dump(), request.obj);
+		}
 		ResourceSpec@ spec = request.spec;
 		//Object@ requestingObject = request.obj;
 
@@ -625,7 +627,9 @@ class ColonizeForest {
 					}
 				}
 			}
-			ai.print("failed to find target for requested resource: "+request.spec.dump());
+			if (false) {
+				ai.print("failed to find target for requested resource: "+request.spec.dump());
+			}
 		}
 	}
 
@@ -636,7 +640,9 @@ class ColonizeForest {
 	 * so does not try to meet the spec via any other means.
 	 */
 	ColonizeTree@ queueColonizeForResourceSpec(ResourceSpec@ spec, Expansion& expansion, AI& ai) {
-		ai.print("colonize for resource spec: "+spec.dump());
+		if (false) {
+			ai.print("colonize for resource spec: "+spec.dump());
+		}
 
 		Planet@ newColony;
 		double bestWeight = 0.0;
@@ -1300,6 +1306,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				focus.targetLevel += 1;
 			}
 		}
+		// TODO: We need to be able to pick new focuses
 	}
 
 	void managePressure() {
