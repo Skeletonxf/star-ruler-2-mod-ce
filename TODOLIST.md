@@ -17,6 +17,7 @@ This is primarily intended as a developer focused project planning list, rather 
       - Make sure star children motherships run away from danger while on habitat missions!
     - Allow the AI to leapfrog over one system that isn't in their border if they are struggling to find a resource
       - Should help them avoid making megafarms when they just need to expand into more food
+    - Prevent the AI making outposts in systems with hostiles in
     - Refine Mechanoid ColonizeAbility to avoid building too many pops if going into debt
     - Port unobtanium code from Mechanoid component into Expansion component as a generic bit of knowledge for using with any unobtanium planet
       - Notably level 0 planets

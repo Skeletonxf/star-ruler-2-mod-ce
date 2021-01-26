@@ -28,6 +28,7 @@ import empire_ai.dragon.expansion.terrestrial_colonization;
 import empire_ai.dragon.expansion.planet_management;
 import empire_ai.dragon.expansion.region_linking;
 import empire_ai.dragon.expansion.development;
+import empire_ai.dragon.logs;
 
 from statuses import getStatusID;
 from traits import getTraitID;
@@ -226,7 +227,7 @@ class DevelopmentFocus2 : DevelopmentFocus {
 		// Assign to us
 		managedPressure.insertLast(res);
 
-		if (true)
+		if (LOG)
 			ai.print("Take "+res.resource.name+" from "+res.obj.name+" for pressure", obj);
 	}
 
@@ -237,7 +238,7 @@ class DevelopmentFocus2 : DevelopmentFocus {
 		// Assign to development
 		expansion.managedPressure.insertLast(res);
 
-		if (true)
+		if (LOG)
 			ai.print("Yield "+res.resource.name+" from "+res.obj.name+" for pressure", obj);
 	}
 }
@@ -687,9 +688,6 @@ class ColonizeForest {
 
 	/**
 	 * Pops the oldest planet off the queue
-	 *
-	 * TODO: This should be much smarter once the queue is an actual forest
-	 * of trees instead of a FIFO queue
 	 */
 	ColonizeTree@ pop() {
 		if (queue.length == 0) {
@@ -1007,7 +1005,6 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 					}
 				}
 			}
-
 		}
 
 		// Look for resource requests made to resources that we can
@@ -1054,7 +1051,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			}
 			Planet@ planet = node.target;
 
-			if (true) {
+			if (LOG) {
 				// mark the planet as awaiting a source and in our colonising list
 				colonize(planet, node.request);
 			} else {
@@ -1077,7 +1074,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			ColonizeData2@ colonizeData = cast<ColonizeData2>(awaitingSource[i]);
 			ColonizationSource@ source = colonyManagement.getFastestSource(colonizeData.target);
 			if (source !is null) {
-				if (true)
+				if (LOG)
 					ai.print("start colonizing "+colonizeData.target.name+" from "+source.toString());
 				colonyManagement.orderColonization(colonizeData, source);
 				awaitingSource.remove(colonizeData);
@@ -1222,7 +1219,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 		lastLevelChainCheck = gameTime + randomd(-0.5, 0.5);
 
-		// if we have only one focus, get that to level 3
+		// if we have only one focus, get that to at least level 3
 		if (focuses.length == 1) {
 			if (focuses[0].targetLevel < 3) {
 				focuses[0].targetLevel = 3;

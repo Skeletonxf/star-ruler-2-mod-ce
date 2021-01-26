@@ -3,11 +3,6 @@ import empire_ai.weasel.Colonization;
 import empire_ai.dragon.expansion.colonization;
 import empire_ai.dragon.expansion.colony_data;
 
-interface ColonizeBudgeting {
-	void payColonize();
-	bool canAffordColonize();
-}
-
 class ColonizerPlanet : ColonizationSource {
 	Planet@ planet;
 

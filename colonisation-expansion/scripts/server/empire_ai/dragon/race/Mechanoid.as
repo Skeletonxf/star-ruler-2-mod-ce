@@ -10,6 +10,7 @@ import empire_ai.weasel.Budget;
 
 import empire_ai.dragon.expansion.colonization;
 import empire_ai.dragon.expansion.colony_data;
+import empire_ai.dragon.logs;
 
 import resources;
 import abilities;
@@ -81,7 +82,7 @@ class ColonizerMechanoidPlanet : ColonizationSource {
 		double ftlCost = transferCost(planet, ai.empire, target);
 		while (amount > 0) {
 			if (ftlCost <= ai.empire.FTLStored) {
-				if (true)
+				if (LOG)
 					ai.print("Transfering population to "+target.name, planet);
 				planet.activateAbilityTypeFor(ai.empire, colonizeAbilityID, target);
 				amount -= 1;
@@ -134,6 +135,7 @@ class PopulationRequest {
 
 class Mechanoid2 : Race, ColonizationAbility {
 	IColonization@ colonization;
+	ColonizeBudgeting@ budgeting;
 	Construction@ construction;
 	Movement@ movement;
 	Budget@ budget;
@@ -143,15 +145,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 	const ResourceType@ crystals;
 	int unobtaniumAbl = -1;
 
-	/* const ResourceClass@ foodClass;
-	const ResourceClass@ waterClass;
-	const ResourceClass@ scalableClass; */
-
 	//const AbilityType@ colonizeAbility = getAbilityType("MechanoidColonize");
-
-	/* array<Planet@> popRequests;
-	array<Planet@> popSources;
-	array<Planet@> popFactories; */
 
 	// wrapper around potential source to implement the colonisation ability
 	// interfaces, tracks our planets that are populated enough to colonise with
@@ -171,6 +165,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 	void create() {
 		@colonization = cast<IColonization>(ai.colonization);
+		@budgeting = cast<ColonizeBudgeting>(ai.colonization);
 		@construction = cast<Construction>(ai.construction);
 		@movement = cast<Movement>(ai.movement);
 		@planets = cast<Planets>(ai.planets);
@@ -181,10 +176,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 		@crystals = getResource("FTL");
 		@unobtanium = getResource("Unobtanium");
 		unobtaniumAbl = getAbilityID("UnobtaniumMorph");
-
-		/* @foodClass = getResourceClass("Food");
-		@waterClass = getResourceClass("WaterType");
-		@scalableClass = getResourceClass("Scalable"); */
 
 		colonizeAbilityID = getAbilityID("MechanoidColonize");
 
@@ -209,20 +200,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 			colonization.queueColonizeLowPriority(spec);
 		} */
 	}
-
-	/* bool canBuildPopulation(Planet& pl, double factor=1.0) {
-		if(buildPop is null)
-			return false;
-		if(!buildPop.canBuild(pl, ignoreCost=true))
-			return false;
-		auto@ primFact = construction.primaryFactory;
-		if(primFact !is null && pl is primFact.obj)
-			return true;
-
-		double laborCost = buildPop.getLaborCost(pl);
-		double laborIncome = pl.laborIncome;
-		return laborCost < laborIncome * MAX_POP_BUILDTIME * factor;
-	} */
 
 	void removeInvalidSources() {
 		uint sourceCount = planetSources.length;
@@ -387,71 +364,9 @@ class Mechanoid2 : Race, ColonizationAbility {
 		refreshFactories();
 		buildExcessPopAtFactories();
 
-		/* //Check existing lists
-		for(uint i = 0, cnt = popFactories.length; i < cnt; ++i) {
-			auto@ obj = popFactories[i];
-			if(obj is null || !obj.valid || obj.owner !is ai.empire) {
-				popFactories.removeAt(i);
-				--i; --cnt;
-				continue;
-			}
-			if(!canBuildPopulation(popFactories[i])) {
-				popFactories.removeAt(i);
-				--i; --cnt;
-				continue;
-			}
-		}
-
-		for(uint i = 0, cnt = popSources.length; i < cnt; ++i) {
-			auto@ obj = popSources[i];
-			if(obj is null || !obj.valid || obj.owner !is ai.empire) {
-				popSources.removeAt(i);
-				--i; --cnt;
-				continue;
-			}
-			if(!canSendPopulation(popSources[i])) {
-				popSources.removeAt(i);
-				--i; --cnt;
-				continue;
-			}
-		}
-
-		for(uint i = 0, cnt = popRequests.length; i < cnt; ++i) {
-			auto@ obj = popRequests[i];
-			if(obj is null || !obj.valid || obj.owner !is ai.empire) {
-				popRequests.removeAt(i);
-				--i; --cnt;
-				continue;
-			}
-			if(!requiresPopulation(popRequests[i])) {
-				popRequests.removeAt(i);
-				--i; --cnt;
-				continue;
-			}
-		}
-
+		/*
 		uint plCnt = planets.planets.length;
 		for(uint n = 0, cnt = min(15, plCnt); n < cnt; ++n) {
-			chkInd = (chkInd+1) % plCnt;
-			auto@ plAI = planets.planets[chkInd];
-
-			//Find planets that can build population reliably
-			if(canBuildPopulation(plAI.obj)) {
-				if(popFactories.find(plAI.obj) == -1)
-					popFactories.insertLast(plAI.obj);
-			}
-
-			//Find planets that need population
-			if(requiresPopulation(plAI.obj)) {
-				if(popRequests.find(plAI.obj) == -1)
-					popRequests.insertLast(plAI.obj);
-			}
-
-			//Find planets that have extra population
-			if(canSendPopulation(plAI.obj)) {
-				if(popSources.find(plAI.obj) == -1)
-					popSources.insertLast(plAI.obj);
-			}
 
 			if(plAI.resources !is null && plAI.resources.length != 0) {
 				auto@ res = plAI.resources[0];
@@ -477,93 +392,8 @@ class Mechanoid2 : Race, ColonizationAbility {
 					}
 				}
 			}
-		}
-
-		//See if we can find something to send population to
-		availSources = popSources;
-
-		for(uint i = 0, cnt = popRequests.length; i < cnt; ++i) {
-			Planet@ dest = popRequests[i];
-			if(canBuildPopulation(dest, factor=(availSources.length == 0 ? 2.5 : 1.5))) {
-				Factory@ f = construction.get(dest);
-				if(f !is null) {
-					if(f.active is null) {
-						auto@ build = construction.buildConstruction(buildPop);
-						construction.buildNow(build, f);
-						if(log)
-							ai.print("Build population", f.obj);
-						continue;
-					}
-					else {
-						auto@ cons = cast<BuildConstruction>(f.active);
-						if(cons !is null && cons.consType is buildPop) {
-							if(double(dest.maxPopulation) <= dest.population + 0.0)
-								continue;
-						}
-					}
-				}
-			}
-			transferBest(dest, availSources);
-		}
-
-		if(availSources.length != 0) {
-			//If we have any population left, do stuff from our colonization queue
-			 // [[ MODIFY BASE GAME START ]]
-			for(uint i = 0, cnt = colonization.AwaitingSource.length; i < cnt && availSources.length != 0; ++i) {
-				Planet@ dest = colonization.AwaitingSource[i].target;
-				Planet@ source = transferBest(dest, availSources);
-				if(source !is null) {
-					@colonization.AwaitingSource[i].colonizeFrom = source;
-					colonization.AwaitingSource.removeAt(i);
-					--i; --cnt;
-				}
-			}
-			 // [[ MODIFY BASE END ]]
-		}
-
-		//Build population on idle planets
-		if(budget.canSpend(BT_Development, 100)) {
-			for(int i = popFactories.length-1; i >= 0; --i) {
-				Planet@ dest = popFactories[i];
-				Factory@ f = construction.get(dest);
-				if(f is null || f.active !is null)
-					continue;
-				if(dest.population >= double(dest.maxPopulation) + 1.0)
-					continue;
-
-				auto@ build = construction.buildConstruction(buildPop);
-				construction.buildNow(build, f);
-				if(log)
-					ai.print("Build population for idle", f.obj);
-				break;
-			}
-		} */
+		}*/
 	}
-/*
-	Planet@ transferBest(Planet& dest, array<Planet@>& availSources) {
-		//Find closest source
-		Planet@ bestSource;
-		double bestDist = INFINITY;
-		for(uint j = 0, jcnt = availSources.length; j < jcnt; ++j) {
-			double d = movement.getPathDistance(availSources[j].position, dest.position);
-			if(d < bestDist) {
-				bestDist = d;
-				@bestSource = availSources[j];
-			}
-		}
-
-		if(bestSource !is null) {
-			double cost = transferCost(bestDist);
-			if(cost <= ai.empire.FTLStored) {
-				if(log)
-					ai.print("Transfering population to "+dest.name, bestSource);
-				availSources.remove(bestSource);
-				bestSource.activateAbilityTypeFor(ai.empire, colonizeAbl, dest);
-				return bestSource;
-			}
-		}
-		return null;
-	} */
 
 	void tick(double time) override {
 	}
@@ -573,6 +403,9 @@ class Mechanoid2 : Race, ColonizationAbility {
 	}
 
 	ColonizationSource@ getClosestSource(vec3d position) {
+		if (!budgeting.canAffordColonize()) {
+			return null;
+		}
 		ColonizerMechanoidPlanet@ closestSource;
 		double shortestDistance = -1;
 		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
@@ -595,6 +428,9 @@ class Mechanoid2 : Race, ColonizationAbility {
 	// even if the colony needs more, we'll just deal with such issues
 	// on subsequent ticks
 	ColonizationSource@ getFastestSource(Planet@ colony) {
+		if (!budgeting.canAffordColonize()) {
+			return null;
+		}
 		ColonizerMechanoidPlanet@ colonizeFrom;
 		double colonizeFromWeight = 0;
 		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {

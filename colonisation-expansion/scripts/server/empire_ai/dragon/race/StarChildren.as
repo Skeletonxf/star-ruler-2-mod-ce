@@ -14,6 +14,7 @@ import empire_ai.weasel.Designs;
 import empire_ai.dragon.expansion.colonization;
 import empire_ai.dragon.expansion.colony_data;
 import empire_ai.dragon.expansion.resource_value;
+import empire_ai.dragon.logs;
 
 import oddity_navigation;
 from abilities import getAbilityID;
@@ -213,12 +214,14 @@ class MothershipColonizer : ColonizationSource {
 
 class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	IColonization@ colonization;
+	ColonizeBudgeting@ budgeting;
 	Construction@ construction;
 	IDevelopment@ development;
 	Movement@ movement;
 	Planets@ planets;
 	Fleets@ fleets;
 	Designs@ designs;
+	Resources@ resources;
 
 	DesignTarget@ mothershipDesign;
 	double idleSince = 0;
@@ -235,6 +238,8 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	BuildFlagship@ mcBuild;
 	BuildOrbital@ yardBuild;
 
+	bool gotHomeworld = false;
+
 	void save(SaveFile& file) override {
 		designs.saveDesign(file, mothershipDesign);
 		file << idleSince;
@@ -247,6 +252,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 			MothershipColonizer@ mothership = cast<MothershipColonizer>(motherships[i]);
 			fleets.saveAI(file, mothership.mothership);
 		}
+		file << gotHomeworld;
 	}
 
 	void load(SaveFile& file) override {
@@ -262,22 +268,22 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 			if (flAI !is null)
 				motherships.insertLast(MothershipColonizer(flAI));
 		}
+		file >> gotHomeworld;
 	}
 
 	void create() override {
-		// [[ MODIFY BASE GAME START ]]
 		@colonization = cast<IColonization>(ai.colonization);
-
+		@budgeting = cast<ColonizeBudgeting>(ai.colonization);
+		@construction = cast<Construction>(ai.construction);
 		@development = cast<IDevelopment>(ai.development);
+		@movement = cast<Movement>(ai.movement);
+		@planets = cast<Planets>(ai.planets);
+		@fleets = cast<Fleets>(ai.fleets);
+		@designs = cast<Designs>(ai.designs);
+		@resources = cast<Resources>(ai.resources);
+
 		development.ManagePlanetPressure = false;
 		development.BuildBuildings = false;
-		// [[ MODIFY BASE GAME END ]]
-
-		@fleets = cast<Fleets>(ai.fleets);
-		@construction = cast<Construction>(ai.construction);
-		@planets = cast<Planets>(ai.planets);
-		@designs = cast<Designs>(ai.designs);
-		@movement = cast<Movement>(ai.movement);
 
 		@ai.defs.Factory = null;
 		@ai.defs.LaborStorage = null;
@@ -345,6 +351,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		checkMotherships();
 		checkOwnedPlanets();
 		addNeededPopulation();
+		checkGotHomeworld();
 
 		//Send motherships to do colonization
 		//uint totalCount = popRequests.length + colonization.AwaitingSource.length; // [[ MODIFY BASE GAME ]]
@@ -508,7 +515,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 			ColonizationSource@ source = getFastestSource(dest);
 			if (source !is null) {
 				MothershipColonizer@ mothership = cast<MothershipColonizer>(source);
-				if (true)
+				if (LOG)
 					ai.print("filling population at "+dest.name+" from "+source.toString());
 				HabitatMission miss;
 				@miss.target = dest;
@@ -549,6 +556,35 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		} */
 	}
 
+	void checkGotHomeworld() {
+		if (gotHomeworld) {
+			return;
+		}
+		// when we get our first planet, request 4 level 0 pressure
+		// resources so we can build motherships faster
+		if (ai.empire.planetCount > 0) {
+			for (uint i = 0, cnt = ai.empire.planetCount; i < cnt; ++i) {
+				Planet@ planet = ai.empire.planetList[i];
+				if (planet !is null && planet.valid) {
+					if (LOG) {
+						ai.print("Requesting labor pressure resources");
+					}
+					for (uint i = 0; i < 4; ++i) {
+						ResourceSpec spec;
+						spec.type = RST_Pressure_Type;
+						spec.level = 0;
+						spec.pressureType = TR_Labor;
+						spec.isForImport = false;
+						spec.isLevelRequirement = false;
+						resources.requestResource(planet, spec);
+					}
+					gotHomeworld = true;
+					return;
+				}
+			}
+		}
+	}
+
 	array<ColonizationSource@> getSources() {
 		return motherships;
 	}
@@ -569,6 +605,9 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	}
 
 	ColonizationSource@ getClosestSource(vec3d position) {
+		if (!budgeting.canAffordColonize()) {
+			return null;
+		}
 		MothershipColonizer@ fastest;
 		double bestTime = INFINITY;
 		for (uint i = 0, cnt = motherships.length; i < cnt; ++i) {
@@ -593,6 +632,9 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	}
 
 	ColonizationSource@ getFastestSource(Planet@ colony) {
+		if (!budgeting.canAffordColonize()) {
+			return null;
+		}
 		MothershipColonizer@ fastest;
 		double maxPop = max(double(colony.maxPopulation), double(getPlanetLevel(colony, colony.primaryResourceLevel).population));
 		double curPop = colony.population;
@@ -643,6 +685,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		HabitatMission miss;
 		@miss.target = data.target;
 		fleets.performMission(mothership.mothership, miss);
+		budgeting.payColonize();
 	}
 
 	void saveSource(SaveFile& file, ColonizationSource@ source) {

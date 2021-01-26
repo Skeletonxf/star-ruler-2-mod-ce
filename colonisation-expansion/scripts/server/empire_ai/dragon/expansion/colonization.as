@@ -10,6 +10,14 @@ interface ColonizationAbilityOwner {
 }
 
 /**
+ * Rate limits for colonising when not set to hard difficulty
+ */
+interface ColonizeBudgeting {
+	void payColonize();
+	bool canAffordColonize();
+}
+
+/**
  * The interface for the colonisation mechanism our race/empire uses.
  */
 interface ColonizationAbility {
