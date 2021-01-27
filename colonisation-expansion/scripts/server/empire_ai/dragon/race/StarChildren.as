@@ -130,6 +130,7 @@ class HabitatMission : Mission {
 			// if we cancel notify Expansion so it can respond immediately
 			// instead of it waiting for a timeout before it realises
 			auto@ expansion = cast<ColonizationAbilityOwner>(ai.colonization);
+			ai.print("Colonize failed at "+target.name);
 			expansion.onColonizeFailed(target);
 		}
 	}
@@ -459,7 +460,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		if (gotHomeworld) {
 			return;
 		}
-		// when we get our first planet, request 4 level 0 pressure
+		// when we get our first planet, request 3 level 0 pressure
 		// resources so we can build motherships faster
 		if (ai.empire.planetCount > 0) {
 			for (uint i = 0, cnt = ai.empire.planetCount; i < cnt; ++i) {

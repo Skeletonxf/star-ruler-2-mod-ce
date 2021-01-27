@@ -9,6 +9,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working
   - Expansion AI Component
+    - Fix lockup/freeze problem with expansion AI
+      - Not sure at this point if it's the new Star Children code or something in Expansion directly
     - Reteach AI to colonise planets for non levelling purposes
     - Apply conditions AI hooks to all applicable statuses
       - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives
@@ -39,7 +41,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - LeaderAI leaderInit
     - Ship constructible support supply free
   - Attack order revamp
-    - Keep distance from multiple targets
+    - Keep distance from multiple targets should probably continue after the target dies until the ship is out of combat
     - Chase with FTL order?
   - Planetary shielding in some way
   - Gravitron damage should give a notification
