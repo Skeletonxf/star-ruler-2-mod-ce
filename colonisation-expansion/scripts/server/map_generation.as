@@ -1038,6 +1038,11 @@ class MapGeneration {
 					destPos.z = -destPos.z;
 					destPos += data.position;
 
+					// [[ MODIFY BASE GAME START ]]
+					if (desc.object.planets[i] is null) {
+						continue;
+					}
+					// [[ MODIFY BASE GAME END ]]
 					Planet@ mirr = desc.object.planets[i];
 					mirr.orbitAround(destPos, data.position);
 					if(pl !is null && mirr !is null) {
