@@ -157,7 +157,37 @@ tidy class AttackOrder : Order {
 		// has no effect if the target is stationary, but should help
 		// pursuing moving targets
 		vec3d targetHeaded = target.position + target.velocity * 2.0;
+		vec3d targetPosition = target.position;
 		double distSQ = obj.position.distanceToSQ(targetHeaded);
+		if (!closeIn) {
+			// if set to keep distance, scan the nearby area for enemies
+			// this does scan a square instead of a circle but circles are
+			// expensive and I doubt anyone will notice
+			// TODO: We should probably *keep* keeping distance even if we
+			// take out the enemy target while we remain in combat
+			array<Object@>@ objs = findInBox(obj.position - minRange, obj.position + minRange, obj.owner.hostileMask);
+			for (uint i = 0, cnt = objs.length; i < cnt; ++i) {
+				Object@ enemy = objs[i];
+				if (!enemy.isShip && !enemy.isOrbital) {
+					continue;
+				}
+				if (enemy.hasSupportAI) {
+					continue;
+				}
+				if (!enemy.valid || !enemy.isVisibleTo(obj.owner)) {
+					continue;
+				}
+				double d = obj.position.distanceToSQ(enemy.position + enemy.velocity * 2.0);
+				if (d < distSQ) {
+					// this becomes the target we strafe for as long as they are
+					// too close to us
+					targetHeaded = enemy.position + enemy.velocity * 2.0;
+					targetPosition = enemy.position;
+					distSQ = d;
+				}
+			}
+		}
+
 		// [[ MODIFY BASE GAME END ]]
 		if(distSQ > minRange * minRange) {
 			if(!movement)
@@ -175,7 +205,7 @@ tidy class AttackOrder : Order {
 				return OS_COMPLETED;
 
 			// strafe in 2d because math is hard and no one uses the y dimension anyway
-			vec3d plane = target.position - obj.position;
+			vec3d plane = targetPosition - obj.position;
 			plane.y = 0;
 
 			// in the extremely unlikely scenario of no x or z difference, add one in
