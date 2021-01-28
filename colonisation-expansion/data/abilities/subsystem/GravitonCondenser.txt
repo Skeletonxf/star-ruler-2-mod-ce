@@ -6,7 +6,7 @@ Ability: GravitonCondenser
 	Range: 700
 
 	Target: targ = Object
-	Energy Cost: 500
+
 	Either(TargetFilterType(targ, Planet), TargetFilterType(targ, Star))
 	TargetFilterAttackable(targ)
 
@@ -16,4 +16,5 @@ Ability: GravitonCondenser
 
 	DealStellarDamageOverTime(targ, Sys.StellarDamage:7000000)
 
+	CE_ability_effects::NotifyTargetOwner(targ, Gravitron attack at $3, Description = $3 is taking damage from a Gravitron Condensor, Icon = TractorGun::0 * #e45500)
 	OffensiveToTarget(targ)
