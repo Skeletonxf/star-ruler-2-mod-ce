@@ -11,6 +11,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Expansion AI Component
     - Fix lockup/freeze problem with expansion AI
       - Not sure at this point if it's the new Star Children code or something in Expansion directly
+    - Move rate limits for colonising on non hard difficulties into Expansion directly
     - Reteach AI to colonise planets for non levelling purposes
     - Apply conditions AI hooks to all applicable statuses
       - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives
@@ -44,16 +45,14 @@ This is primarily intended as a developer focused project planning list, rather 
     - Keep distance from multiple targets should probably continue after the target dies until the ship is out of combat
     - Chase with FTL order?
   - Planetary shielding in some way
-  - Gravitron damage should give a notification
   - Some kind of message reel just below the tabs
     - Can move low importance notifications like forestry to be exclusively here once implemented
   - Make auto import refresh when resources on already colonised planets become available
   - Make all methods of griefing a planet with 'terraforming' not work while the planet is in combat. If you want to annex and trash a planet you should have to use Microcline or actually hold it for a reasonable amount of time.
   - Tweak tractor default design
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
-  - Disable interstellar trade beacon when not in deep space
-    - Add better UI for when attempting to export/import resources and you can't
-    - Investigate what happens to civilian trade ships when target is in deep space
+  - Add better UI for when attempting to export/import resources and you can't
+  - Investigate what happens to civilian trade ships when target is in deep space
   - Gravitron damage should have a ramp up time to reach 100% dps
   - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands
   - Rework the Flying trait downside so it is less severe
