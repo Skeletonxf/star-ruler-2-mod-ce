@@ -3,8 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Port mothership retrofitting exploit fix to mod pack
-    - Will need to port a number of custom hooks that the fix relies on along with this, and should probably take the opportunity to move them out of CE_biome_hooks
   - Port interdict movement fixes to mod pack once stress tested in a few multiplayer games
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working
