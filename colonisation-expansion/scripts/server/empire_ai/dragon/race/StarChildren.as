@@ -497,7 +497,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		// Plus this would be quite micro intensive for a player to do at
 		// any sort of high efficiency (though I only coded the AI to do this
 		// after trying it myself).
-		if (gameTime < lastLaborMission + 25) {
+		if (gameTime < lastLaborMission + 15) {
 			return;
 		}
 		lastLaborMission = gameTime;

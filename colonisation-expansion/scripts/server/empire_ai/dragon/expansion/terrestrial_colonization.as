@@ -155,6 +155,9 @@ class TerrestrialColonization : ColonizationAbility {
 		if (source !is null) {
 			file.write1();
 			ColonizerPlanet@ source = cast<ColonizerPlanet>(source);
+			if (source is null) {
+				print("source casted became null!");
+			}
 			file << source.planet;
 		} else {
 			file.write0();

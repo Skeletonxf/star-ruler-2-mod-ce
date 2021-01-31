@@ -7,6 +7,7 @@ enum ExpandType {
 	WaitingForHomeworld,
 	// We levelled up our homeworld (or something else) and now we want to
 	// seek out scalable and level 3 planets and level them up
+	// NOT IN USE YET
 	Expanding,
 };
 

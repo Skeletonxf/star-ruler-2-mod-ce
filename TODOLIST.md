@@ -7,8 +7,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working
   - Expansion AI Component
-    - Fix lockup/freeze problem with expansion AI
-      - Not sure at this point if it's the new Star Children code or something in Expansion directly
     - Move rate limits for colonising on non hard difficulties into Expansion directly
     - Reteach AI to colonise planets for non levelling purposes
     - Apply conditions AI hooks to all applicable statuses
@@ -29,7 +27,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - General notes on AI issues to fix in rework
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
-      - Add support for interstellar trade beacons to AI Resources component
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
   - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
   - Make warheads manually fired

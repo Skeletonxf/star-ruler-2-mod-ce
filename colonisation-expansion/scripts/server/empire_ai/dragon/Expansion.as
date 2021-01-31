@@ -985,6 +985,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			doLevelChaining();
 		}
 		if (expandType == LookingForHomeworld) {
+			// TODO: We should scout for a scalable and pick that as our first
+			// focus instead
+
 			// grab the first tier 1 we see
 			ResourceSpec spec;
 			spec.type = RST_Level_Specific;
@@ -1225,63 +1228,21 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 		lastLevelChainCheck = gameTime + randomd(-0.5, 0.5);
 
+		// if we lost all our focuses, pick a new one
+		if (focuses.length == 0) {
+			findNewFocus();
+		}
+
 		// if we have only one focus, get that to at least level 3
 		if (focuses.length == 1) {
 			if (focuses[0].targetLevel < 3) {
 				focuses[0].targetLevel = 3;
 			}
 			if (focuses[0].obj.resourceLevel >= 2) {
-				// now we need something else to do
-				array<PlanetAI@> possibleFocuses = planetManagement.getGoodNextFocuses();
-				if (possibleFocuses.length == 0) {
-					// check if we're colonising for any potentially good focuses
-					for (uint i = 0, cnt = colonizing.length; i < cnt; ++i) {
-						if (isGoodFocus(colonizing[i].target, ai)) {
-							return;
-						}
-					}
-					// check if we already queued a potentially good focus
-					for (uint i = 0, cnt = queue.queue.length; i < cnt; ++i) {
-						if (isGoodFocus(queue.queue[i].target, ai)) {
-							return;
-						}
-					}
-				}
-				if (possibleFocuses.length == 0) {
-					// now that we also know we're not colonising for any, we
-					// should pick one to colonise for
-					ResourceSpec spec;
-					spec.type = RST_Level_Minimum_Or_Class;
-					spec.level = 3;
-					@spec.cls = scalableClass;
-					spec.isLevelRequirement = false;
-					spec.isForImport = false;
-					queue.queueColonizeForResourceSpec(spec, this, ai);
-
-					if (queue.queue.length > 0) {
-						return;
-					}
-
-					// we've had some bad luck, and have no bordering scalables
-					// or tier 3s, plus we ran out of planets to colonise for
-					// our only focus. Raise our focus's target by 1
-					if (focuses[0].maximumLevel > focuses[0].targetLevel) {
-						focuses[0].targetLevel += 1;
-					} else {
-						// TODO: we've had some REALLY bad luck, just pick a
-						// tier 2 as our next focus
-					}
-				} else {
-					// Create a new dev focus from the first in the list
-					// TODO: Should probably be choosing the best focus from
-					// this list
-					PlanetAI@ newFocus = possibleFocuses[0];
-					DevelopmentFocus@ focus = addFocus(newFocus);
-					focus.targetLevel = 3;
-					return;
-				}
+				findNewFocus();
 			}
 		}
+
 		// We should pick which focus we most want to level up next
 		DevelopmentFocus@ priorityFocus;
 		uint levelsAway = 0;
@@ -1292,21 +1253,83 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			// TODO: If we have a lot of unmet focuses we should potentially
 			// cull our empire and reorganise to meet some of them
 		}
+
 		// for now, try to bump up the target levels to keep us with something
 		// to do at all times, TODO: we should really be checking if the resources
 		// for the level chain we need to bump here are actually available
-		uint whenToStartNextTarget = 1 + uint(double(planets.planets.length) * 0.05);
-		while (levelsAway <= whenToStartNextTarget) {
-			for (uint i = 0, cnt = focuses.length; i < cnt; ++i) {
-				DevelopmentFocus2@ focus = cast<DevelopmentFocus2>(focuses[i]);
-				int desired = focus.maximumDesireableLevel(this);
-				if(focus.targetLevel >= desired)
-					continue;
-				whenToStartNextTarget -= 1;
-				focus.targetLevel += 1;
+		uint parallelLevelling = 1 + uint(double(planets.planets.length) * 0.05);
+		for (uint i = 0, cnt = focuses.length; i < cnt; ++i) {
+			if (levelsAway > parallelLevelling) {
+				continue;
+			}
+			DevelopmentFocus2@ focus = cast<DevelopmentFocus2>(focuses[i]);
+			int desired = focus.maximumDesireableLevel(this);
+			if(focus.targetLevel >= desired)
+				continue;
+			parallelLevelling -= 1;
+			focus.targetLevel += 1;
+		}
+
+		// pick a new focus if we run out of existing focuses to raise the
+		// level for
+		if (levelsAway <= parallelLevelling) {
+			findNewFocus();
+		}
+	}
+
+	/**
+	 * Creates a new focus from a planet we already own or tries to colonise
+	 * for one if we aren't colonising for one already.
+	 */
+	void findNewFocus() {
+		// check if we're colonising for any potentially good focuses
+		for (uint i = 0, cnt = colonizing.length; i < cnt; ++i) {
+			if (isGoodFocus(colonizing[i].target, ai)) {
+				return;
 			}
 		}
-		// TODO: We need to be able to pick new focuses
+		// check if we already queued a potentially good focus
+		for (uint i = 0, cnt = queue.queue.length; i < cnt; ++i) {
+			if (isGoodFocus(queue.queue[i].target, ai)) {
+				return;
+			}
+		}
+
+		// now we need something else to do
+		array<PlanetAI@> possibleFocuses = planetManagement.getGoodNextFocuses();
+		if (possibleFocuses.length == 0) {
+			// now that we also know we're not colonising for any, we
+			// should pick one to colonise for
+			ResourceSpec spec;
+			spec.type = RST_Level_Minimum_Or_Class;
+			spec.level = 3;
+			@spec.cls = scalableClass;
+			spec.isLevelRequirement = false;
+			spec.isForImport = false;
+
+			if (queue.queueColonizeForResourceSpec(spec, this, ai) !is null) {
+				// found one
+				return;
+			}
+
+			// we've had some bad luck, and have no bordering scalables
+			// or tier 3s, plus we ran out of planets to colonise for
+			// our only focus. Raise our focus's target by 1
+			if (focuses[0].maximumLevel > focuses[0].targetLevel) {
+				focuses[0].targetLevel += 1;
+			} else {
+				// TODO: we've had some REALLY bad luck, just pick a
+				// tier 2 as our next focus
+			}
+		} else {
+			// Create a new dev focus from the first in the list
+			// TODO: Should probably be choosing the best focus from
+			// this list
+			PlanetAI@ newFocus = possibleFocuses[0];
+			DevelopmentFocus@ focus = addFocus(newFocus);
+			focus.targetLevel = 3;
+			return;
+		}
 	}
 
 	void managePressure() {
