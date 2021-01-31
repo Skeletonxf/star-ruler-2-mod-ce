@@ -14,6 +14,8 @@ class NotifyTargetOwner : AbilityHook {
 
 #section server
 	void changeTarget(Ability@ abl, any@ data, uint index, Target@ oldTarget, Target@ newTarget) const {
+		if(abl.obj is null)
+			return;
 		if (index != uint(objTarg.integer))
 			return;
 		if (newTarget.obj is null)
@@ -45,6 +47,25 @@ class NotifyTargetOwner : AbilityHook {
 				}
 			}
 		}
+	}
+#section all
+};
+
+class FlingToTarget : AbilityHook {
+	Document doc("Flings the ship/station to the target (without using a fling beacon).");
+	Argument object(TT_Object);
+
+#section server
+	void activate(Ability@ abl, any@ data, const Targets@ targs) const override {
+		Object@ target = object.fromConstTarget(targs).obj;
+		if(abl.obj is null || target is null)
+			return;
+
+		Ship@ ship = cast<Ship>(abl.obj);
+		if (ship is null)
+			return;
+
+		ship.addBeaconlessFlingOrder(target.position, append = true);
 	}
 #section all
 };

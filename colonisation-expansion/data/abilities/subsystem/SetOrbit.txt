@@ -1,0 +1,11 @@
+Ability: SetOrbit
+	Name: #SET_ORBIT
+	Description: #SET_ORBIT_DESC
+	Icon: PlanetType::2
+	Target: targ = Object
+	CE_ability_effects::FlingToTarget(targ)
+	DistanceEnergyCost(targ, Base Cost = 0.01, Square Cost = 0.005)
+	RequireNotInCombat()
+	TargetFilterNotInCombat(targ)
+	TargetFilterOwned(targ)
+	TargetFilterType(targ, Planet)

@@ -1443,6 +1443,15 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		obj.wake();
 	}
 
+	void addBeaconlessFlingOrder(Object& obj, vec3d pos, bool append) {
+		// [[ MODIFY BASE GAME START ]]
+		if(obj.owner is null)
+			return;
+		// [[ MODIFY BASE GAME END ]]
+		addOrder(obj, FlingOrder(pos), append);
+		obj.wake();
+	}
+
 	void addScanOrder(Object& obj, Anomaly& target, bool append) {
 		addOrder(obj, ScanOrder(target), append);
 		obj.wake();

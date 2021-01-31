@@ -65,6 +65,9 @@ restricted remote:
 	void addHyperdriveOrder(vec3d target, bool append = false);
 	void addJumpdriveOrder(vec3d target, bool append = false);
 	void addFlingOrder(Object& beacon, vec3d target, bool append = false);
+	// [[ MODIFY BASE GAME START ]]
+	void addBeaconlessFlingOrder(vec3d target, bool append = false);
+	// [[ MODIFY BASE GAME END ]]
 	void addScanOrder(Anomaly& target, bool append = false);
 	void addRefreshOrder(Object& target, bool append = false);
 	void addOddityGateOrder(Oddity& target, bool append = false);

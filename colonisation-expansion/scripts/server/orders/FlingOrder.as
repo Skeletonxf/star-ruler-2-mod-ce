@@ -11,11 +11,22 @@ tidy class FlingOrder : Order {
 	int cost = 0;
 	double speed = 0.0;
 	int moveId = -1;
+	// [[ MODIFY BASE GAME START ]]
+	bool withoutUsingBeacon = false;
+	// [[ MODIFY BASE GAME END ]]
 
 	FlingOrder(Object& beacon, vec3d pos) {
 		@this.beacon = beacon;
 		destination = pos;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	FlingOrder(vec3d pos) {
+		@this.beacon = null;
+		destination = pos;
+		withoutUsingBeacon = true;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	FlingOrder(SaveFile& msg) {
 		Order::load(msg);
@@ -26,6 +37,9 @@ tidy class FlingOrder : Order {
 		msg >> cost;
 		msg >> beacon;
 		msg >> speed;
+		// [[ MODIFY BASE GAME START ]]
+		msg >> withoutUsingBeacon;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void save(SaveFile& msg) override {
@@ -37,6 +51,9 @@ tidy class FlingOrder : Order {
 		msg << cost;
 		msg << beacon;
 		msg << speed;
+		// [[ MODIFY BASE GAME START ]]
+		msg << withoutUsingBeacon;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	OrderType get_type() override {
@@ -99,6 +116,12 @@ tidy class FlingOrder : Order {
 			cost = flingCost(obj, destination);
 			speed = flingSpeed(obj, destination);
 
+			// [[ MODIFY BASE GAME START ]]
+			if (withoutUsingBeacon) {
+				cost = 0;
+				speed = 1.25 * speed;
+			}
+			// [[ MODIFY BASE GAME END ]]
 			if(cost > 0) {
 				double consumed = obj.owner.consumeFTL(cost, false, record=false);
 				if(consumed < cost)
@@ -106,14 +129,18 @@ tidy class FlingOrder : Order {
 			}
 			charge = 0.001;
 
-			//Make sure we have a beacon in range
-			if(beacon is null || beacon.position.distanceToSQ(obj.position) > FLING_BEACON_RANGE_SQ) {
-				// [[ MODIFY BASE GAME START ]]
-				@beacon = obj.owner.getClosestFriendlyFlingBeacon(obj.position);
-				// [[ MODIFY BASE GAME END ]]
-				if(beacon is null || beacon.position.distanceToSQ(obj.position) > FLING_BEACON_RANGE_SQ)
+			// [[ MODIFY BASE GAME START ]]
+			if (!withoutUsingBeacon) {
+				//Make sure we have a beacon in range
+				if(beacon is null || beacon.position.distanceToSQ(obj.position) > FLING_BEACON_RANGE_SQ) {
+					// [[ MODIFY BASE GAME START ]]
+					@beacon = obj.owner.getClosestFriendlyFlingBeacon(obj.position);
+					// [[ MODIFY BASE GAME END ]]
+					if(beacon is null || beacon.position.distanceToSQ(obj.position) > FLING_BEACON_RANGE_SQ)
 					return OS_COMPLETED;
+				}
 			}
+			// [[ MODIFY BASE GAME END ]]
 
 			//Mark ship as FTLing
 			if(ship !is null)
