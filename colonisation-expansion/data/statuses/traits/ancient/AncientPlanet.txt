@@ -2,7 +2,7 @@ Status: AncientPlanet
 	Visible To: Nobody
 
 	NoNeedPopulationForLevel()
-	PlanetLevelIncomeMod(+80, -50, Step = -80)
+	PlanetLevelIncomeMod(+80, 0, -20)
 	AlwaysAtMaxPopulation()
 
 	AddDummyResource(Water, 20)
