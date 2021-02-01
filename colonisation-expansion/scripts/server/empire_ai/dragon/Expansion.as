@@ -930,7 +930,6 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			}
 		}
 
-		cnt = 0;
 		file >> cnt;
 		for(uint i = 0; i < cnt; ++i) {
 			auto@ focus = DevelopmentFocus2();

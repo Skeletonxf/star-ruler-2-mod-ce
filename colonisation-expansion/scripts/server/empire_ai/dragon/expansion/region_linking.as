@@ -192,8 +192,9 @@ class RegionLinking {
 
 	void save(SaveFile& file) {
 		file << lastCheckedRegionsLinked;
-		file << linkBuilds.length;
-		for (uint i = 0, cnt = linkBuilds.length; i < cnt; ++i) {
+		uint cnt = linkBuilds.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
 			construction.saveConstruction(file, linkBuilds[i].build);
 			file << linkBuilds[i].region;
 		}

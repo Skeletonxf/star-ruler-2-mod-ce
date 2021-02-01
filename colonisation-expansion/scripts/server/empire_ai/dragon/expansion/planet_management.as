@@ -141,17 +141,22 @@ class PlanetManagement {
 
 	void save(SaveFile& file) {
 		file << planetCheckIndex;
-		file << goodNextFocuses.length;
-		for (uint i = 0, cnt = goodNextFocuses.length; i < cnt; ++i) {
+		uint cnt = goodNextFocuses.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
 			planets.saveAI(file, goodNextFocuses[i]);
 		}
 	}
 
 	void load(SaveFile& file) {
 		file >> planetCheckIndex;
-		file >> goodNextFocuses.length;
-		for (uint i = 0, cnt = goodNextFocuses.length; i < cnt; ++i) {
-			@goodNextFocuses[i] = planets.loadAI(file);
+		uint cnt = 0;
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			PlanetAI plAI =  planets.loadAI(file);
+			if (plAI !is null) {
+				goodNextFocuses.insertLast(plAI);
+			}
 		}
 	}
 }
