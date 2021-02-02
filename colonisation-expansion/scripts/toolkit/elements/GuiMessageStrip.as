@@ -1,7 +1,7 @@
 #section game
 import elements.BaseGuiElement;
 import elements.GuiSprite;
-import elements.GuiText;
+import elements.GuiMarkupText;
 import elements.MarkupTooltip;
 import notifications;
 
@@ -25,7 +25,7 @@ class GuiMessageStrip : BaseGuiElement {
 	uint nextNotify = 0;
 	array<Notification@> unhandled;
 	array<Notification@> handled;
-	array<GuiText@> items;
+	array<GuiMarkupText@> items;
 	/* array<GuiSprite@> icons;
 	array<GuiText@> values; */
 
@@ -65,17 +65,18 @@ class GuiMessageStrip : BaseGuiElement {
 		items.length = newCnt;
 		//handled.length = newCnt;
 		for(uint i = oldCnt; i < newCnt; ++i) {
-			@items[i] = GuiText(this, recti());
+			@items[i] = GuiMarkupText(this, recti());
 		}
 
-		const Font@ ft = skin.getFont(FT_Normal);
 		int x = padding;
-		int s = size.height;
 		for (uint i = 0; i < newCnt; ++i) {
 			string label = getLabel(handled[i]);
-			int w = ft.getDimension(label).x + 3;
 			items[i].text = label;
-			items[i].rect = recti_area(x, 8, w, s+8);
+			items[i].flexHeight = false;
+			items[i].fitWidth = true;
+			items[i].updateAbsolutePosition();
+			int w = items[i].textWidth + 7;
+			items[i].rect = recti_area(x, 26, w, 46);
 			x += w + padding;
 		}
 	}
