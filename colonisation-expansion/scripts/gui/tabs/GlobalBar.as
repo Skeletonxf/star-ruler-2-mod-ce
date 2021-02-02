@@ -7,6 +7,9 @@ import elements.GuiMarkupText;
 import elements.GuiContextMenu;
 import elements.GuiProgressbar;
 import elements.MarkupTooltip;
+// [[ MODIFY BASE GAME START ]]
+import elements.GuiMessageStrip;
+// [[ MODIFY BASE GAME END ]]
 import targeting.ObjectTarget;
 import resources;
 import research;
@@ -526,6 +529,37 @@ class DefenseResource : ResourceDisplay {
 	}
 };
 
+// [[ MODIFY BASE GAME START ]]
+class MessageStrip : BaseGuiElement {
+	Color color;
+	GuiMessageStrip@ messageStrip;
+
+	MessageStrip(IGuiElement@ parent, Alignment@ align) {
+		super(parent, align);
+		color = colors::Black;
+		@messageStrip = GuiMessageStrip(this, Alignment());
+	}
+
+	void update() {
+		messageStrip.update(playerEmpire);
+	}
+
+	void draw() {
+		skin.draw(SS_PlainBox, SF_Normal, AbsolutePosition.padded(0,-2,0,1));
+
+		Color topColor = color;
+		topColor.a = 0x30;
+
+		Color botColor = color;
+		botColor.a = 0x10;
+
+		drawRectangle(AbsolutePosition, topColor, topColor, botColor, botColor);
+
+		BaseGuiElement::draw();
+	}
+}
+// [[ MODIFY BASE GAME END ]]
+
 class GlobalBar : BaseGuiElement {
 	BaseGuiElement@ container;
 	double updateTimer = -INFINITY;
@@ -537,12 +571,19 @@ class GlobalBar : BaseGuiElement {
 	ResourceDisplay@ influence;
 	ResourceDisplay@ research;
 	ResourceDisplay@ defense;
+	// [[ MODIFY BASE GAME START ]]
+	MessageStrip@ messageStrip;
+	// [[ MODIFY BASE GAME END ]]
 
 	GlobalBar() {
 		super(null, recti());
 
 		@container = BaseGuiElement(this, Alignment_Fill());
 		container.StrictBounds = true;
+
+		// [[ MODIFY BASE GAME START ]]
+		@messageStrip = MessageStrip(container, Alignment());
+		// [[ MODIFY BASE GAME END ]]
 
 		@budget = BudgetResource(container, Alignment());
 		sections.insertLast(budget);
@@ -566,11 +607,17 @@ class GlobalBar : BaseGuiElement {
 	}
 
 	void update() {
+		// [[ MODIFY BASE GAME START ]]
+		messageStrip.update();
+		// [[ MODIFY BASE GAME END ]]
 		for(uint i = 0, cnt = sections.length; i < cnt; ++i)
 			sections[i].update();
 	}
 
 	void updateSections(){
+		// [[ MODIFY BASE GAME START ]]
+		@messageStrip.alignment = Alignment(Left, Top+MESSAGE_STRIP_HEIGHT, Right, Bottom);
+		// [[ MODIFY BASE GAME END ]]
 		float x = 0.f;
 		for(uint i = 0, cnt = sections.length; i < cnt; ++i) {
 			float w;
@@ -581,7 +628,9 @@ class GlobalBar : BaseGuiElement {
 			else
 				w = (1.f - (1.f / 5.f)) / 5.f;
 
-			sections[i].alignment = Alignment(Left+x, Top, Left+x+w, Bottom);
+			// [[ MODIFY BASE GAME START ]]
+			sections[i].alignment = Alignment(Left+x, Top, Left+x+w, Bottom-MESSAGE_STRIP_HEIGHT);
+			// [[ MODIFY BASE GAME END ]]
 			x += w;
 		}
 		updateAbsolutePosition();

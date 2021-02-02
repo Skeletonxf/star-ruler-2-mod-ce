@@ -28,7 +28,10 @@ const int TAB_MIN_WIDTH = 45;
 const int TAB_HEIGHT = 26;
 const int TAB_SPACING = 8;
 const int TAB_SCRUNCH = -18;
-const int GLOBAL_BAR_HEIGHT = 50;
+// [[ MODIFY BASE GAME START ]]
+const int MESSAGE_STRIP_HEIGHT = 22;
+const int GLOBAL_BAR_HEIGHT = 50 + MESSAGE_STRIP_HEIGHT;
+// [[ MODIFY BASE GAME END ]]
 const vec2i TAB_ICON_OFFSET(16, 2);
 const vec2i TAB_ICON_SIZE(24, 24);
 const vec2i TAB_CLOSE_OFFSET(14, 7);
@@ -209,9 +212,9 @@ void closeTab(Tab@ tab) {
 			for(uint i = MAX_STORED_TABS; i < closedTabs.length; ++i)
 				closedTabs[i].remove();
 			closedTabs.length = MAX_STORED_TABS;
-		}	
+		}
 	}
-	
+
 	//Remove it and all previous tabs
 	Tab@ first = tab;
 	while(tab !is null) {
@@ -319,17 +322,17 @@ class GuiTabBar : BaseGuiElement {
 
 	GuiTabBar() {
 		super(null, Alignment(Left, Top, Right, Top+TAB_HEIGHT + 3));
-			
+
 		@homeButton = GuiButton(this, recti(0, 0, 30, 19));
 		homeButton.navigable = false;
 		homeButton.style = SS_HomeIcon;
 		homeButton.position = vec2i(3, 4);
-			
+
 		@goButton = GuiButton(this, recti(0, 0, 30, 19));
 		goButton.navigable = false;
 		goButton.style = SS_GoIcon;
 		goButton.position = vec2i(35, 4);
-			
+
 		@newButton = GuiButton(this, recti(0, 0, 30 + BUTTON_NEW_WIDTH, 19));
 		newButton.navigable = false;
 		newButton.style = SS_GameTabNew;
@@ -460,7 +463,7 @@ class GuiTabBar : BaseGuiElement {
 				return false;
 			}
 		}
-		
+
 		return BaseGuiElement::onGuiEvent(event);
 	}
 
@@ -471,7 +474,7 @@ class GuiTabBar : BaseGuiElement {
 		//Draw build version
 		//skin.getFont(FT_Normal).draw(pos=AbsolutePosition.padded(8, 0, 8, 3),
 		//		text=SCRIPT_VERSION, horizAlign=1.0, color=Color(0xaaaaaaff));
-			
+
 		//Find the active tab to draw on top
 		GuiTab@ active = null;
 		GuiTab@ dragging = null;
@@ -488,12 +491,12 @@ class GuiTabBar : BaseGuiElement {
 		}
 
 		BaseGuiElement::draw();
-		
+
 		//Draw the separator lines
 		drawRectangle(recti_area(
 			AbsolutePosition.topLeft + vec2i(0,24),
 			vec2i(size.width, 1)), Color(0x202020ff));
-		
+
 		drawRectangle(recti_area(
 			AbsolutePosition.topLeft + vec2i(0, 25),
 			vec2i(size.width, 2)), activeTab.seperatorColor);
@@ -501,7 +504,7 @@ class GuiTabBar : BaseGuiElement {
 		drawRectangle(recti_area(
 			AbsolutePosition.topLeft + vec2i(0,27),
 			vec2i(size.width, 1)), Color(0x202020ff));
-			
+
 		//Draw the active tab
 		if(active !is null) {
 			active.Visible = true;
@@ -541,7 +544,7 @@ class GuiTab : BaseGuiElement {
 		closeButton.navigable = false;
 		closeButton.style = SS_GameTabClose;
 		@closeButton.alignment = Alignment(Right-TAB_CLOSE_OFFSET.x-size.x, Top+TAB_CLOSE_OFFSET.y, Right-TAB_CLOSE_OFFSET.x, Top+TAB_CLOSE_OFFSET.y+size.y);
-			
+
 		updateAbsolutePosition();
 	}
 
@@ -716,7 +719,7 @@ class GuiTab : BaseGuiElement {
 			vec2i(size.width - TAB_CLOSE_OFFSET.x - TAB_PADDING.x - TAB_TEXT_OFFSET.x,
 				  size.height - TAB_PADDING.y - TAB_TEXT_OFFSET.y)), tab.title, ellipsis);
 	}
-	
+
 	void draw() {
 		closeButton.visible = !tab.locked;
 		if(Dragging) {
