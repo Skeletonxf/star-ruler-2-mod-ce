@@ -9,6 +9,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Expansion AI Component
     - Move rate limits for colonising on non hard difficulties into Expansion directly
     - Reteach AI to colonise planets for non levelling purposes
+    - Scuttle outposts which have ended up in a different region to where the AI created them
+      - Thanks Illyia
     - Apply conditions AI hooks to all applicable statuses
       - Should make the AI favor rock planets in early game as Ice Giants can drop energy income to negatives
     - Implement custom ColonizeAbility interface for Ancient AI empires
