@@ -4,20 +4,25 @@ import elements.GuiSprite;
 import elements.GuiMarkupText;
 import elements.MarkupTooltip;
 import notifications;
+import notifications.notifications;
 
 class GuiMessageStrip : BaseGuiElement {
 	uint nextNotify = 0;
 	array<Notification@> unhandled;
 	array<Notification@> handled;
 	array<GuiMarkupText@> items;
+	GuiMarkupText@ overflow;
 
 	int padding = 2;
-	int margin = 7;
+	int margin = 17;
 	double minGameTime = 0.0;
 
 	GuiMessageStrip(IGuiElement@ parent, Alignment@ align) {
 		super(parent, align);
 		minGameTime = gameTime;
+		@overflow = GuiMarkupText(this, recti());
+		overflow.flexHeight = false;
+		overflow.expandWidth = true;
 	}
 
 	void update(Empire& emp) {
@@ -65,26 +70,59 @@ class GuiMessageStrip : BaseGuiElement {
 			@items[i] = GuiMarkupText(this, recti());
 		}
 
-		// set positions of items
+		toggleOverflowIndicator(false);
+
+		// try to draw forwards, so everything is positioned nicely
+		bool overflow = false;
 		int x = padding;
 		for (uint i = 0; i < newCnt; ++i) {
 			string label = getLabel(handled[i]);
 			items[i].text = label;
 			items[i].flexHeight = false;
-			items[i].fitWidth = true;
+			items[i].expandWidth = true;
+			items[i].visible = true;
 			items[i].updateAbsolutePosition();
 			int w = items[i].textWidth + margin;
 			items[i].rect = recti_area(x, 26, w, 46);
 			x += w + padding;
-			// TODO: Do something about overflow
-			/* if (x > size.w) {
-				return;
-			} */
+			if (x > size.width) {
+				overflow = true;
+			}
+		}
+
+		if (overflow) {
+			// draw backwards so most recent stay visible
+			int x = size.width - padding;
+			for (uint index = newCnt; index > 0; --index) {
+				uint i = index - 1;
+				items[i].visible = true;
+				items[i].updateAbsolutePosition();
+				int w = items[i].textWidth + margin;
+				items[i].rect = recti_area(x - w, 26, x, 46);
+				x -= w + padding;
+				if (x < 0) {
+					items[i].visible = false;
+				}
+			}
+			toggleOverflowIndicator(true);
 		}
 	}
 
+	void toggleOverflowIndicator(bool show) {
+		if (show) {
+			overflow.text = "...";
+			overflow.visible = true;
+		} else {
+			overflow.text = "";
+			overflow.visible = false;
+		}
+		overflow.updateAbsolutePosition();
+		int w = overflow.textWidth + margin;
+		overflow.rect = recti_area(0, 26, w, 46);
+	}
+
 	void handle(Notification@ notification) {
-		if (n.time <= minGameTime)
+		if (notification.time <= minGameTime)
 			return;
 		if (getLabel(notification) != "") {
 			handled.insertLast(notification);
@@ -99,6 +137,8 @@ class GuiMessageStrip : BaseGuiElement {
 	int findMessage(int position) {
 		int x = padding;
 		for (uint i = 0, cnt = items.length; i < cnt; ++i) {
+			if (!items[i].visible)
+				continue;
 			int w = items[i].textWidth + margin;
 			if (position >= x && position <= x + w) {
 				return i;
@@ -108,10 +148,17 @@ class GuiMessageStrip : BaseGuiElement {
 		return -1;
 	}
 
-	void clearMessage(const MouseEvent& mevt) {
+	void clearMessage(const MouseEvent& mevt, bool goTo = false) {
 		int index = findMessage(mevt.x);
-		if (index >= 0 && uint(index) < handled.length) {
-			handled.removeAt(uint(index));
+		if (index < 0) {
+			return;
+		}
+		uint i = uint(index);
+		if (i < handled.length) {
+			if (goTo) {
+				gotoNotification(handled[i]);
+			}
+			handled.removeAt(i);
 			updateMessages();
 		}
 	}
@@ -122,8 +169,7 @@ class GuiMessageStrip : BaseGuiElement {
 		}
 		else if(mevt.type == MET_Button_Up) {
 			if (mevt.button == 0) {
-				// TODO: Left click should also jump camera to object
-				clearMessage(mevt);
+				clearMessage(mevt, goTo = true);
 			} else if(mevt.button == 1) {
 				clearMessage(mevt);
 			} else if(mevt.button == 2) {
