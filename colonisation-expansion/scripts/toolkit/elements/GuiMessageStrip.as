@@ -5,34 +5,19 @@ import elements.GuiMarkupText;
 import elements.MarkupTooltip;
 import notifications;
 
-/* class GuiMessageStripItem : BaseGuiElement {
-	GuiText@ text;
-
-	GuiMessageStripItem(Notification@ notification, IGuiElement@ parent, Alignment@ align) {
-		super(parent, align);
-		int padding = 2;
-		const Font@ ft = skin.getFont(FT_Normal);
-		int x = padding
-		int s = size.height-padding-padding;
-		int w = ft.getDimension("test").x + 3;
-		@text = GuiText(this, Alignment(), "test");
-		print("created item");
-		text.color = Color(0xddddddff);
-	}
-} */
-
 class GuiMessageStrip : BaseGuiElement {
 	uint nextNotify = 0;
 	array<Notification@> unhandled;
 	array<Notification@> handled;
 	array<GuiMarkupText@> items;
-	/* array<GuiSprite@> icons;
-	array<GuiText@> values; */
 
 	int padding = 2;
+	int margin = 7;
+	double minGameTime = 0.0;
 
 	GuiMessageStrip(IGuiElement@ parent, Alignment@ align) {
 		super(parent, align);
+		minGameTime = gameTime;
 	}
 
 	void update(Empire& emp) {
@@ -52,22 +37,35 @@ class GuiMessageStrip : BaseGuiElement {
 			unhandled.length = 0;
 		}
 
-		// TODO: Notification culling
 		uint newCnt = handled.length;
 
 		if (newCnt == oldCnt) {
 			return;
 		}
 
-		for(uint i = newCnt; i < oldCnt; ++i) {
+		updateMessages();
+	}
+
+	void updateMessages() {
+		// sync items.length to handled.length
+		uint oldCnt = items.length;
+		uint newCnt = handled.length;
+
+		if (newCnt == oldCnt) {
+			return;
+		}
+
+		// remove extra items
+		for (uint i = newCnt; i < oldCnt; ++i) {
 			items[i].remove();
 		}
 		items.length = newCnt;
-		//handled.length = newCnt;
-		for(uint i = oldCnt; i < newCnt; ++i) {
+		// fill in new ones
+		for (uint i = oldCnt; i < newCnt; ++i) {
 			@items[i] = GuiMarkupText(this, recti());
 		}
 
+		// set positions of items
 		int x = padding;
 		for (uint i = 0; i < newCnt; ++i) {
 			string label = getLabel(handled[i]);
@@ -75,29 +73,65 @@ class GuiMessageStrip : BaseGuiElement {
 			items[i].flexHeight = false;
 			items[i].fitWidth = true;
 			items[i].updateAbsolutePosition();
-			int w = items[i].textWidth + 7;
+			int w = items[i].textWidth + margin;
 			items[i].rect = recti_area(x, 26, w, 46);
 			x += w + padding;
+			// TODO: Do something about overflow
+			/* if (x > size.w) {
+				return;
+			} */
 		}
 	}
 
 	void handle(Notification@ notification) {
-		/* if(n.time <= 0) // minGameTime
-			return; */
+		if (n.time <= minGameTime)
+			return;
 		if (getLabel(notification) != "") {
 			handled.insertLast(notification);
 		}
 	}
 
 	string getLabel(Notification@ notification) {
-		// TODO: Only display notifications which are a custom class
+		// TODO: Only display a custom class of notifications
 		return notification.formatEvent();
-		/*
-		auto@ n = cast<GenericNotification>(notification);
-		if (n !is null) {
-			return n.desc;
+	}
+
+	int findMessage(int position) {
+		int x = padding;
+		for (uint i = 0, cnt = items.length; i < cnt; ++i) {
+			int w = items[i].textWidth + margin;
+			if (position >= x && position <= x + w) {
+				return i;
+			}
+			x += w + padding;
 		}
-		// TODO: case over the other types
-		return "TODO"; */
+		return -1;
+	}
+
+	void clearMessage(const MouseEvent& mevt) {
+		int index = findMessage(mevt.x);
+		if (index >= 0 && uint(index) < handled.length) {
+			handled.removeAt(uint(index));
+			updateMessages();
+		}
+	}
+
+	bool onMouseEvent(const MouseEvent& mevt, IGuiElement@ caller) override {
+		if(mevt.type == MET_Button_Down) {
+			return true;
+		}
+		else if(mevt.type == MET_Button_Up) {
+			if (mevt.button == 0) {
+				// TODO: Left click should also jump camera to object
+				clearMessage(mevt);
+			} else if(mevt.button == 1) {
+				clearMessage(mevt);
+			} else if(mevt.button == 2) {
+				clearMessage(mevt);
+			}
+			return true;
+		}
+
+		return BaseGuiElement::onMouseEvent(mevt, caller);
 	}
 };
