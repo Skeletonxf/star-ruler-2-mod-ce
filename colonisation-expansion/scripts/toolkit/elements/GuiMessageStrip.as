@@ -130,7 +130,8 @@ class GuiMessageStrip : BaseGuiElement {
 	}
 
 	string getLabel(Notification@ notification) {
-		// TODO: Only display a custom class of notifications
+		if(notification.get_type() != NT_Message)
+			return ""; // ignore other classes of notifications
 		return notification.formatEvent();
 	}
 

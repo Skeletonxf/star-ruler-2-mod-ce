@@ -12,6 +12,9 @@ export FlagshipBuiltNotification;
 export StructureBuiltNotification;
 export EmpireMetNotification;
 export GenericNotification;
+// [[ MODIFY BASE GAME START ]]
+export MessageNotification;
+// [[ MODIFY BASE GAME END ]]
 export TreatyEventNotification, TreatyEventType;
 export DonationNotification;
 
@@ -33,6 +36,9 @@ enum NotifyType {
 	NT_FlagshipBuilt,
 	NT_StructureBuilt,
 	NT_Generic,
+	// [[ MODIFY BASE GAME START ]]
+	NT_Message,
+	// [[ MODIFY BASE GAME END ]]
 	NT_MetEmpire,
 	NT_TreatyEvent,
 	NT_Donation,
@@ -66,7 +72,7 @@ class Notification : Serializable, Savable {
 	string formatEvent() const {
 		return "";
 	}
-	
+
 	//Notification sound to play when the notice appears
 	const SoundSource@ get_sound() const {
 		return sound::alert_generic;
@@ -332,7 +338,7 @@ class WarStatusNotification : Notification {
 	NotifyType get_type() const override {
 		return NT_WarStatus;
 	}
-	
+
 	const SoundSource@ get_sound() const {
 		if(statusType == WST_War)
 			return sound::alert_combat;
@@ -413,7 +419,7 @@ class WarEventNotification : Notification {
 	NotifyType get_type() const override {
 		return NT_WarEvent;
 	}
-	
+
 	const SoundSource@ get_sound() const {
 		if(eventType == WET_LostPlanet)
 			return sound::alert_lostasset;
@@ -427,7 +433,7 @@ class WarEventNotification : Notification {
 			return Sprite(spritesheet::Notifications, 2);
 	  }
 	  return Sprite(material::SystemUnderAttack);
-	}	
+	}
 
 	string formatClass() const override {
 		Region@ region = cast<Region>(obj);
@@ -505,7 +511,7 @@ class TreatyEventNotification : Notification {
 	NotifyType get_type() const override {
 		return NT_TreatyEvent;
 	}
-	
+
 	const SoundSource@ get_sound() const {
 		return sound::alert_generic;
 	}
@@ -514,7 +520,7 @@ class TreatyEventNotification : Notification {
 		if(eventType == TET_Subjugate)
 			return Sprite(material::LoyaltyIcon);
 		return Sprite(material::Propositions);
-	}	
+	}
 
 	string formatClass() const override {
 		return treaty.name;
@@ -811,6 +817,73 @@ class GenericNotification : Notification {
 	}
 };
 // }}}
+// [[ MODIFY BASE GAME START ]]
+class MessageNotification : Notification {
+	Object@ obj;
+	string text;
+
+	NotifyType get_type() const override {
+		return NT_Message;
+	}
+
+	NotifyTriggerMode get_triggerMode() const {
+		return NTM_KillClass;
+	}
+
+	array<string>@ getParts() {
+		array<string> parts;
+		if(obj !is null) {
+			parts.insertLast(obj.name);
+			parts.insertLast(toString(obj.owner.color));
+			parts.insertLast(formatEmpireName(obj.owner));
+		}
+		else {
+			parts.insertLast("--");
+			parts.insertLast("#ffffff");
+			parts.insertLast("--");
+		}
+		return parts;
+	}
+
+	string formatClass() const override {
+		return format(localize(text), getParts());
+	}
+
+	string formatEvent() const override {
+		return format(localize(text), getParts());
+	}
+
+	Object@ get_relatedObject() const override {
+		return obj;
+	}
+
+	//Networking
+	void write(Message& msg) override {
+		Notification::write(msg);
+		msg << obj;
+		msg << text;
+	}
+
+	void read(Message& msg) override {
+		Notification::read(msg);
+		msg >> obj;
+		msg >> text;
+	}
+
+	//Saving and loading
+	void save(SaveFile& file) override {
+		Notification::save(file);
+		file << obj;
+		file << text;
+	}
+
+	void load(SaveFile& file) override {
+		Notification::load(file);
+		file >> obj;
+		file >> text;
+	}
+};
+// [[ MODIFY BASE GAME END ]]
 // {{{ Flagship Built Notification
 class FlagshipBuiltNotification : Notification {
 	Object@ obj;
@@ -822,7 +895,7 @@ class FlagshipBuiltNotification : Notification {
 	string formatClass() const override {
 		return format(locale::BUILT_NOTIFICATION, obj.name);
 	}
-	
+
 	NotifyTriggerMode get_triggerMode() const {
 		return NTM_KillClass;
 	}
@@ -870,7 +943,7 @@ class StructureBuiltNotification : Notification {
 	string formatClass() const override {
 		return format(locale::BUILT_ON_NOTIFICATION, bldg.name, obj.name);
 	}
-	
+
 	NotifyTriggerMode get_triggerMode() const {
 		return NTM_KillClass;
 	}
@@ -902,7 +975,7 @@ class StructureBuiltNotification : Notification {
 
 	void load(SaveFile& file) override {
 		Notification::load(file);
-		file >> obj;	
+		file >> obj;
 		uint tid = file.readIdentifier(SI_Building);
 		@bldg = getBuildingType(tid);
 	}
@@ -931,7 +1004,7 @@ class EmpireMetNotification : Notification {
 			return "";
 		return format(locale::NOTIF_MET_EMPIRE_BONUS, formatEmpireName(metEmpire), region.name, toString(config::INFLUENCE_CONTACT_BONUS, 0));
 	}
-	
+
 	NotifyTriggerMode get_triggerMode() const {
 		return NTM_KillClass;
 	}
@@ -995,7 +1068,7 @@ class DonationNotification : Notification {
 			return false;
 		return notif.fromEmpire is fromEmpire;
 	}
-	
+
 	NotifyTriggerMode get_triggerMode() const override {
 		return NTM_KillTop;
 	}
@@ -1073,6 +1146,9 @@ Notification@ createNotification(uint type) {
 		case NT_StructureBuilt: return StructureBuiltNotification();
 		case NT_MetEmpire: return EmpireMetNotification();
 		case NT_Generic: return GenericNotification();
+		// [[ MODIFY BASE GAME START ]]
+		case NT_Message: return MessageNotification();
+		// [[ MODIFY BASE GAME END ]]
 		case NT_TreatyEvent: return TreatyEventNotification();
 		case NT_Donation: return DonationNotification();
 	}

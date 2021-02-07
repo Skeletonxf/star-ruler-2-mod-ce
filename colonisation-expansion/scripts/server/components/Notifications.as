@@ -81,6 +81,15 @@ tidy class Notifications : Component_Notifications, Savable, NotificationStore {
 		addNotification(emp, n);
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void notifyMessage(Empire& emp, string text, Object@ forObject = null) {
+		MessageNotification n;
+		@n.obj = forObject;
+		n.text = text;
+		addNotification(emp, n);
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void notifyWarStatus(Empire& emp, Empire@ withEmpire, uint type) {
 		WarStatusNotification n;
 		n.statusType = type;

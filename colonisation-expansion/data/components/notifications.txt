@@ -12,6 +12,9 @@ server:
 	void notifyStructure(Object@ atObject, uint type);
 	void notifyEmpireMet(Object@ atObject, Empire@ empire, bool gainsBonus = false);
 	void notifyGeneric(string title, string desc, string icon = "", Empire@ fromEmp = null, Object@ forObject = null);
+	// [[ MODIFY BASE GAME START ]]
+	void notifyMessage(string text, Object@ forObject = null);
+	// [[ MODIFY BASE GAME END ]]
 	void notifyTreaty(uint treatyId, uint eventType, Empire@ empOne = null, Empire@ empTwo = null);
 	void writeNotifications(Message& msg, bool delta);
 

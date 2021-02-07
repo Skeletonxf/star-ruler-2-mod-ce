@@ -1,0 +1,3 @@
+FORESTRY_NOTIFICATION_1: $3 forested its first food
+FORESTRY_NOTIFICATION_2: $3 forested its second food
+FORESTRY_NOTIFICATION_3: $3 forested its third food
