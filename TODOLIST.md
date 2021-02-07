@@ -42,8 +42,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Keep distance from multiple targets should probably continue after the target dies until the ship is out of combat
     - Chase with FTL order?
   - Planetary shielding in some way
-  - Some kind of message reel just below the tabs
-    - Can move low importance notifications like forestry to be exclusively here once implemented
   - Make auto import refresh when resources on already colonised planets become available
   - Make all methods of griefing a planet with 'terraforming' not work while the planet is in combat. If you want to annex and trash a planet you should have to use Microcline or actually hold it for a reasonable amount of time.
   - Tweak tractor default design
@@ -69,7 +67,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Consider creating orders to instruct a civillian ship to transfer a fixed quantity of cargo to another target for free (but with civillian ship transport risks and slowness)
   - Teach AI to not put comets on worlds being razed
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
-  - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
@@ -78,6 +75,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make quickbar width configurable
 
 - Not planned for any time soon
+  - Make First planets give a message strip notification if their buildings get disabled due to lack of base materials
+  - Work out how Mono can make use of the message strip
   - Work out how to allow planets to always build orbitals/stations in their local gravity well even if they're in deep space
   - Colonisation ships similar to Motherships for other races
   - AI code to build orbitals like Stations
@@ -99,6 +98,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix visual bug causing Drugs to appear to be filling the Light class requirement for planet levelling when they are not, probably related to dummy resources
     - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
   -  Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
+  - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
+
 
 - Long term plans
   - Improving the AI
