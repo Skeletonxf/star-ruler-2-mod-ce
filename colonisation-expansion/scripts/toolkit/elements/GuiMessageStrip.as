@@ -83,7 +83,7 @@ class GuiMessageStrip : BaseGuiElement {
 			items[i].visible = true;
 			items[i].updateAbsolutePosition();
 			int w = items[i].textWidth + margin;
-			items[i].rect = recti_area(x, 26, w, 46);
+			items[i].rect = recti_area(x, 27, w, 47);
 			x += w + padding;
 			if (x > size.width) {
 				overflow = true;
@@ -98,7 +98,7 @@ class GuiMessageStrip : BaseGuiElement {
 				items[i].visible = true;
 				items[i].updateAbsolutePosition();
 				int w = items[i].textWidth + margin;
-				items[i].rect = recti_area(x - w, 26, x, 46);
+				items[i].rect = recti_area(x - w, 27, x, 47);
 				x -= w + padding;
 				if (x < 0) {
 					items[i].visible = false;
@@ -118,7 +118,7 @@ class GuiMessageStrip : BaseGuiElement {
 		}
 		overflow.updateAbsolutePosition();
 		int w = overflow.textWidth + margin;
-		overflow.rect = recti_area(0, 26, w, 46);
+		overflow.rect = recti_area(0, 27, w, 47);
 	}
 
 	void handle(Notification@ notification) {

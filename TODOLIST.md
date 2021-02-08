@@ -31,7 +31,6 @@ This is primarily intended as a developer focused project planning list, rather 
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
   - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
-  - Make warheads manually fired
   - Possibly make warheads and supports cheaper to buy
   - Move mass/repair/supply calaculations into a definitions file of helper functions
     - LeaderAI getSlowestSupportAccel
@@ -75,8 +74,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make quickbar width configurable
 
 - Not planned for any time soon
-  - Make First planets give a message strip notification if their buildings get disabled due to lack of base materials
-  - Work out how Mono can make use of the message strip
   - Work out how to allow planets to always build orbitals/stations in their local gravity well even if they're in deep space
   - Colonisation ships similar to Motherships for other races
   - AI code to build orbitals like Stations
@@ -99,7 +96,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
   -  Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
-
+  - Make warheads manually fired (no clue how to do this)
 
 - Long term plans
   - Improving the AI

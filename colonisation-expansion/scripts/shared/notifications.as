@@ -835,7 +835,7 @@ class MessageNotification : Notification {
 		if(obj !is null) {
 			parts.insertLast(obj.name);
 			parts.insertLast(toString(obj.owner.color));
-			parts.insertLast(formatEmpireName(obj.owner));
+			parts.insertLast(formatObject(obj));
 		}
 		else {
 			parts.insertLast("--");

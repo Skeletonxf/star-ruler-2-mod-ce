@@ -80,3 +80,4 @@ STARFORGE_DESC: <<
 
 	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Building a star forge or any of its upgrades requires large amounts of Ore mined from asteroids.[/color][/b][/img]
 >>
+STATUS_BLOCKADED_DESC: Some of the civilian trade ships carrying this planet's imports were shot down. As a result, the planet produces 1 less of a random non money empire resource for each stack of "Blockaded!". 

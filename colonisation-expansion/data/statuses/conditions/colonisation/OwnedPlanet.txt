@@ -1,6 +1,6 @@
 Status: OwnedPlanet
 	Visible To: Nobody
 
-	IfHaveStatus(NativeLife, OnEnable(NotifyOwner(Natives discovered at $3, Description = $3 has natives living on the planet., Icon = Campfire)))
+	IfNotHaveTrait(Ancient, IfHaveStatus(NativeLife, OnEnable(NotifyOwner(Natives discovered at $3, Description = $3 has natives living on the planet., Icon = Campfire))))
 	GrantAbility(AbilityAbandon)
 	IfNotHaveTrait(Ancient, AddStatus(ForestablePlanet))
