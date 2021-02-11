@@ -162,7 +162,6 @@ class MothershipColonizer : ColonizationSource {
 
 class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	IColonization@ colonization;
-	ColonizeBudgeting@ budgeting;
 	Construction@ construction;
 	IDevelopment@ development;
 	Movement@ movement;
@@ -243,7 +242,6 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 
 	void create() override {
 		@colonization = cast<IColonization>(ai.colonization);
-		@budgeting = cast<ColonizeBudgeting>(ai.colonization);
 		@construction = cast<Construction>(ai.construction);
 		@development = cast<IDevelopment>(ai.development);
 		@movement = cast<Movement>(ai.movement);
@@ -596,9 +594,6 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	}
 
 	ColonizationSource@ getClosestSource(vec3d position) {
-		if (!budgeting.canAffordColonize()) {
-			return null;
-		}
 		MothershipColonizer@ fastest;
 		double bestTime = INFINITY;
 		for (uint i = 0, cnt = motherships.length; i < cnt; ++i) {
@@ -620,9 +615,6 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	}
 
 	ColonizationSource@ getFastestSource(Planet@ colony) {
-		if (!budgeting.canAffordColonize()) {
-			return null;
-		}
 		MothershipColonizer@ fastest;
 		double maxPop = max(double(colony.maxPopulation), double(getPlanetLevel(colony, colony.primaryResourceLevel).population));
 		double curPop = colony.population;
@@ -670,7 +662,6 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		HabitatMission miss;
 		@miss.target = data.target;
 		fleets.performMission(mothership.mothership, miss);
-		budgeting.payColonize();
 	}
 
 	void saveSource(SaveFile& file, ColonizationSource@ source) {

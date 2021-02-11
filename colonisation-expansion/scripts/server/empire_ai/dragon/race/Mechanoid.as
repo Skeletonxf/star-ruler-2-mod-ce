@@ -135,7 +135,6 @@ class PopulationRequest {
 
 class Mechanoid2 : Race, ColonizationAbility {
 	IColonization@ colonization;
-	ColonizeBudgeting@ budgeting;
 	Construction@ construction;
 	Movement@ movement;
 	Budget@ budget;
@@ -165,7 +164,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 	void create() {
 		@colonization = cast<IColonization>(ai.colonization);
-		@budgeting = cast<ColonizeBudgeting>(ai.colonization);
 		@construction = cast<Construction>(ai.construction);
 		@movement = cast<Movement>(ai.movement);
 		@planets = cast<Planets>(ai.planets);
@@ -403,9 +401,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 	}
 
 	ColonizationSource@ getClosestSource(vec3d position) {
-		if (!budgeting.canAffordColonize()) {
-			return null;
-		}
 		ColonizerMechanoidPlanet@ closestSource;
 		double shortestDistance = -1;
 		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
@@ -428,9 +423,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 	// even if the colony needs more, we'll just deal with such issues
 	// on subsequent ticks
 	ColonizationSource@ getFastestSource(Planet@ colony) {
-		if (!budgeting.canAffordColonize()) {
-			return null;
-		}
 		ColonizerMechanoidPlanet@ colonizeFrom;
 		double colonizeFromWeight = 0;
 		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
@@ -468,10 +460,10 @@ class Mechanoid2 : Race, ColonizationAbility {
 		source.planet.activateAbilityTypeFor(ai.empire, colonizeAbilityID, data.target);
 	}
 
-	void saveSource(SaveFile& file, ColonizationSource@ source) {
-		if (source !is null) {
+	void saveSource(SaveFile& file, ColonizationSource@ isource) {
+		if (isource !is null) {
 			file.write1();
-			auto@ source = cast<ColonizerMechanoidPlanet>(source);
+			auto@ source = cast<ColonizerMechanoidPlanet>(isource);
 			file << source.planet;
 		} else {
 			file.write0();

@@ -7,7 +7,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working
   - Expansion AI Component
-    - Move rate limits for colonising on non hard difficulties into Expansion directly
     - Reteach AI to colonise planets for non levelling purposes
     - Scuttle outposts which have ended up in a different region to where the AI created them
       - Thanks Illyia
@@ -56,8 +55,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Planets should not path themselves through a gate in their own orbit
   - Ships should not path themselves through a gate they are tractoring
   - Constructions for Gas Giants to make them more useful late game
-  - Give stations orders to pick a planet to orbit
-  - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little
   - battleworld QoL changes
     - finish port to CP
     - Fix bug with outposts getting repeat entries in the in-combat quickbar
@@ -72,6 +69,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
     - Replace beams with lines?
   - Make quickbar width configurable
+  - Fix bug with ships becoming unretroffitable if the source retrofitting them gets destroyed before finishing
 
 - Not planned for any time soon
   - Work out how to allow planets to always build orbitals/stations in their local gravity well even if they're in deep space
@@ -97,6 +95,7 @@ This is primarily intended as a developer focused project planning list, rather 
   -  Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
   - Make warheads manually fired (no clue how to do this)
+  - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little
 
 - Long term plans
   - Improving the AI

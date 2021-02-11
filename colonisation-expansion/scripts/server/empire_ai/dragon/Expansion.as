@@ -825,7 +825,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@queue = ColonizeForest(DefaultRaceResourceValuation(ai));
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
-		@colonyManagement = TerrestrialColonization(planets, this, ai);
+		@colonyManagement = TerrestrialColonization(planets, ai);
 		@planetManagement = PlanetManagement(planets, budget, this, ai, log);
 		@regionLinking = RegionLinking(planets, construction, resources, systems, budget);
 
@@ -1079,12 +1079,16 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		colonyManagement.colonizeTick();
 		// Try to move things out of awaiting source
 		for (uint i = 0, cnt = awaitingSource.length; i < cnt; ++i) {
+			if (!canAffordColonize()) {
+				return;
+			}
 			ColonizeData2@ colonizeData = cast<ColonizeData2>(awaitingSource[i]);
 			ColonizationSource@ source = colonyManagement.getFastestSource(colonizeData.target);
 			if (source !is null) {
 				if (LOG)
 					ai.print("start colonizing "+colonizeData.target.name+" from "+source.toString());
 				colonyManagement.orderColonization(colonizeData, source);
+				payColonize();
 				awaitingSource.remove(colonizeData);
 				colonizeData.startColonizeTime = gameTime;
 				--i; --cnt;

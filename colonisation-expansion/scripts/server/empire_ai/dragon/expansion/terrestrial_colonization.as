@@ -56,12 +56,10 @@ class TerrestrialColonization : ColonizationAbility {
 	// wrapper around potential source to implement the colonisation ability
 	// interfaces, tracks our planets that are populated enough to colonise with
 	array<ColonizationSource@> planetSources;
-	ColonizeBudgeting@ budgeting;
 	AI@ ai;
 
-	TerrestrialColonization(Planets@ planets, ColonizeBudgeting@ budgeting, AI@ ai) {
+	TerrestrialColonization(Planets@ planets, AI@ ai) {
 		@this.planets = planets;
-		@this.budgeting = budgeting;
 		@this.ai = ai;
 	}
 
@@ -98,9 +96,6 @@ class TerrestrialColonization : ColonizationAbility {
 	}
 
 	ColonizationSource@ getClosestSource(vec3d position) {
-		if (!budgeting.canAffordColonize()) {
-			return null;
-		}
 		double shortestDistance = -1;
 		ColonizerPlanet@ closestSource;
 		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
@@ -119,9 +114,6 @@ class TerrestrialColonization : ColonizationAbility {
 	 * assigns to each potential source.
 	 */
 	ColonizationSource@ getFastestSource(Planet@ colony) {
-		if (!budgeting.canAffordColonize()) {
-			return null;
-		}
 		ColonizerPlanet@ colonizeFrom;
 		double colonizeFromWeight = 0;
 		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
@@ -148,13 +140,12 @@ class TerrestrialColonization : ColonizationAbility {
 		// once from a single planet
 		planetSources.remove(source);
 		source.planet.colonize(data.target);
-		budgeting.payColonize();
 	}
 
-	void saveSource(SaveFile& file, ColonizationSource@ source) {
-		if (source !is null) {
+	void saveSource(SaveFile& file, ColonizationSource@ isource) {
+		if (isource !is null) {
 			file.write1();
-			ColonizerPlanet@ source = cast<ColonizerPlanet>(source);
+			ColonizerPlanet@ source = cast<ColonizerPlanet>(isource);
 			if (source is null) {
 				print("source casted became null!");
 			}
