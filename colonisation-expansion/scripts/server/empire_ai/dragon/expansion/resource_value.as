@@ -38,9 +38,9 @@ class DefaultRaceResourceValuation : RaceResourceValuation {
 		// check if we have the income to support the energy cost
 		// and a bit leftover
 		if (ai.empire.EnergyIncome - ai.empire.EnergyUse > (energyCost + 5)) {
-			return -10;
+			return currentValue;
 		}
-		return currentValue;
+		return -10;
 	}
 }
 
@@ -55,7 +55,7 @@ class ResourceValuator {
 	const ResourceType@ razed;
 
 	ResourceValuator(RaceResourceValuation@ race) {
-		@race = race;
+		@this.race = race;
 		@scalableClass = getResourceClass("Scalable");
 		@ftlCrystals = getResource("FTL");
 		@altar = getResource("Altar");
@@ -122,7 +122,6 @@ class PlanetValuables {
 	Planet@ planet;
 	array<const ResourceType@> exportable;
 	array<const ResourceType@> unexportable;
-	//array<?> dummy;
 	array<const StatusType@> conditions;
 	int lowestTierLevel = 0;
 
@@ -131,7 +130,7 @@ class PlanetValuables {
 		array<Status> planetStatuses;
 		planetStatuses.syncFrom(planet.getStatusEffects());
 		for (uint i = 0, cnt = planetStatuses.length; i < cnt; ++i) {
-			if (planetStatuses[i].type.conditionFrequency > 0) {
+			if (planetStatuses[i].type.conditionFrequency > 0 || planetStatuses[i].type.ai.length > 0) {
 				conditions.insertLast(planetStatuses[i].type);
 			}
 		}

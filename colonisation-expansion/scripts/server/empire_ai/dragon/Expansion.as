@@ -227,7 +227,7 @@ class DevelopmentFocus2 : DevelopmentFocus {
 		// Assign to us
 		managedPressure.insertLast(res);
 
-		if (LOG)
+		if (false)
 			ai.print("Take "+res.resource.name+" from "+res.obj.name+" for pressure", obj);
 	}
 
@@ -238,7 +238,7 @@ class DevelopmentFocus2 : DevelopmentFocus {
 		// Assign to development
 		expansion.managedPressure.insertLast(res);
 
-		if (LOG)
+		if (false)
 			ai.print("Yield "+res.resource.name+" from "+res.obj.name+" for pressure", obj);
 	}
 }
