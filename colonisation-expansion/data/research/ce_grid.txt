@@ -281,3 +281,4 @@ Grid: ColonisationExpansionGrid
 	SupplyStorage: -1,-12
 	FTLHurdle: -2,-13
 	InterstellarTrade: -2,-14
+	GravitronicsEnhancer: 6,9

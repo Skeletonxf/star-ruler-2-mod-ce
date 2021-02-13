@@ -250,3 +250,10 @@ GRAVITYENGINE_DESC: <<
 	[img=Minus]Has high power needs.[/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Not needing to rotate to move allows a ship to change direction much more easily, and face towards enemies while maneuvering in combat.[/color][/i][/img]
 >>
+S_GRAVITRONICS: Gravitronics Enhancer
+S_GRAVITRONICS_DESC: <<
+	Increases the damage of the condensor beam at the expense of increasing the time needed to reach 100% damage output.
+
+	[img=Plus]Increases [b][color=#ff8000]stellar damage[/color][/b] by 100%.[/img]
+	[img=Minus]Increases the [b][color=#e45500]ramp up time[/color][/b] by 150%.[/img]
+>>

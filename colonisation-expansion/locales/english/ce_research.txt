@@ -125,3 +125,9 @@ R_UNLOCK_INTERSTELLAR_TRADE_DESC: <<
 
 	[bbloc=#INTERSTELLAR_TRADE_DESC/]
 >>
+R_MOD_GRAVITRONICS_ENHANCER: Gravitronics Enhancer
+R_MOD_GRAVITRONICS_ENHANCER_DESC: <<
+	[color=#aaa][i]Unlocks the 'Gravitronics Enhancer' modifier for Gravitron Condensors.[/i][/color]
+
+	[bbloc=#S_GRAVITRONICS_DESC/]
+>>

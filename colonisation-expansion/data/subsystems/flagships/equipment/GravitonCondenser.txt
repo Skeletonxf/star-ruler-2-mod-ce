@@ -20,6 +20,12 @@ Subsystem: GravitonCondenser
 	PowerUse := 15 * Size
 
 	RampUpTime := 120
+	Module: GravitronicsEnhancer
+		Name: #S_GRAVITRONICS
+		Description: #S_GRAVITRONICS_DESC
+		Sprite: TechIcons::34
+		RampUpTime := RampUpTime + 180
+		StellarDamage := StellarDamage + 4000000 * (Size / 100)
 	Requires:
 		Command = 1
 		Power = PowerUse

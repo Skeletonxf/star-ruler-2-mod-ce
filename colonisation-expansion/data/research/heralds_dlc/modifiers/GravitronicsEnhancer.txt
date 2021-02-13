@@ -1,0 +1,14 @@
+Technology: GravitronicsEnhancer
+	Name: #R_MOD_GRAVITRONICS_ENHANCER
+	Description: #R_MOD_GRAVITRONICS_ENHANCER_DESC
+	Class: Unlock
+	Category: Modifiers
+
+	Point Cost: 1000
+	Time Cost: 120
+
+	Color: #e45500
+	Icon: TechIcons::34
+
+	UnlockModule(GravitronicsEnhancer)
+	SkipOnUnlockedModule(GravitronicsEnhancer)
