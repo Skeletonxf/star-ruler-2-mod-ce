@@ -30,7 +30,6 @@ This is primarily intended as a developer focused project planning list, rather 
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
   - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
-  - Possibly make warheads and supports cheaper to buy
   - Move mass/repair/supply calaculations into a definitions file of helper functions
     - LeaderAI getSlowestSupportAccel
     - Support cap hook
@@ -62,7 +61,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Consider adding ore maintenace costs for Dysons once this system is working
     - Consider creating orders to instruct a civillian ship to transfer a fixed quantity of cargo to another target for free (but with civillian ship transport risks and slowness)
   - Teach AI to not put comets on worlds being razed
-  - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
   - Increase the resolution of the Helium 3 icon to make it clearer
@@ -70,6 +68,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Replace beams with lines?
   - Make quickbar width configurable
   - Fix bug with ships becoming unretroffitable if the source retrofitting them gets destroyed before finishing
+  - Fix map generation bugs with galaxy mirroring and gas/ice giants
 
 - Not planned for any time soon
   - Work out how to allow planets to always build orbitals/stations in their local gravity well even if they're in deep space
@@ -96,6 +95,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
   - Make warheads manually fired (no clue how to do this)
   - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little
+  - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
 
 - Long term plans
   - Improving the AI
