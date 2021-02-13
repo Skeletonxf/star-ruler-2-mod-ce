@@ -69,3 +69,83 @@ class FlingToTarget : AbilityHook {
 	}
 #section all
 };
+
+tidy final class StellarDamageData {
+	double timeFiring = 0;
+}
+
+class DealStellarDamageOverTimeWithRampUp : AbilityHook {
+	Document doc("Deal damage to the stored target stellar object over time. Damages things like stars and planets.");
+	Argument objTarg(TT_Object);
+	Argument dmg_per_second(AT_SysVar, doc="Damage to deal per second.");
+	Argument ramp_up_time(AT_SysVar, doc="Time to 100% damage output (lerp the dps while below time period).");
+
+#section server
+	void create(Ability@ abl, any@ data) const override {
+		StellarDamageData damageData;
+		data.store(@damageData);
+	}
+
+	void changeTarget(Ability@ abl, any@ data, uint index, Target@ oldTarget, Target@ newTarget) const {
+		if(index != uint(objTarg.integer))
+			return;
+
+		Object@ prev = oldTarget.obj;
+		Object@ next = newTarget.obj;
+
+		if(prev is next)
+			return;
+
+		// [[ MODIFY BASE GAME START ]]
+		// Read tractor data sooner
+		StellarDamageData@ damageData;
+		data.retrieve(@damageData);
+		damageData.timeFiring = 0;
+	}
+
+	void tick(Ability@ abl, any@ data, double time) const {
+		if(abl.obj is null)
+			return;
+		Target@ storeTarg = objTarg.fromTarget(abl.targets);
+		if(storeTarg is null)
+			return;
+
+		Object@ obj = storeTarg.obj;
+		if(obj is null)
+			return;
+
+		StellarDamageData@ damageData;
+		data.retrieve(@damageData);
+
+		damageData.timeFiring += time;
+
+		double amt = dmg_per_second.fromSys(abl.subsystem, efficiencyObj=abl.obj) * time;
+
+		double rampUpFactor = 1.0;
+		double rampUpTime = ramp_up_time.fromSys(abl.subsystem);
+		if (rampUpTime != 0) {
+			rampUpFactor = damageData.timeFiring / rampUpTime;
+			if (rampUpFactor > 1) {
+				rampUpFactor = 1;
+			}
+		}
+
+		if(obj.isPlanet)
+			cast<Planet>(obj).dealPlanetDamage(amt * rampUpFactor);
+		else if(obj.isStar)
+			cast<Star>(obj).dealStarDamage(amt * rampUpFactor);
+	}
+
+	void save(Ability@ abl, any@ data, SaveFile& file) const override {
+		StellarDamageData@ damageData;
+		data.retrieve(@damageData);
+		file << damageData.timeFiring;
+	}
+
+	void load(Ability@ abl, any@ data, SaveFile& file) const override {
+		StellarDamageData damageData;
+		data.store(@damageData);
+		file >> damageData.timeFiring;
+	}
+#section all
+};

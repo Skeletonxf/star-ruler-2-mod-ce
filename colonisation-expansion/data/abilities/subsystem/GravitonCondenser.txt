@@ -14,7 +14,7 @@ Ability: GravitonCondenser
 	CooldownOnDeactivate(targ, 30)
 	PersistentBeamEffect(targ, #e45500, Tractor, Width = 8.0)
 
-	DealStellarDamageOverTime(targ, Sys.StellarDamage:7000000)
 
+	CE_ability_effects::DealStellarDamageOverTimeWithRampUp(targ, Sys.StellarDamage:7000000, Sys.RampUpTime:120)
 	CE_ability_effects::NotifyTargetOwner(targ, Gravitron attack at $3, Description = $3 is taking damage from a Gravitron Condensor, Icon = TractorGun::0 * #e45500)
 	OffensiveToTarget(targ)

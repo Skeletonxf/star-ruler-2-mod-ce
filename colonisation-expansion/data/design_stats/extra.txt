@@ -112,3 +112,10 @@ GlobalStat: Defense
 	Color: #ffbb35
 
 	Variable: Defense
+
+SubsystemStat: RampUpTime
+	Name: #S_RAMP_UP_TIME
+	Color: #e45500
+
+	Suffix: s
+	Variable: RampUpTime
