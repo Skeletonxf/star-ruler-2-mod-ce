@@ -671,7 +671,7 @@ class Military2 : AIComponent, IMilitary {
 	 * that are obsolete by the time of finishing, or from building something
 	 * that gets taken over long before completion.
 	 */
-	double flagshipBuildTimeFactor(Factory@ factory) {
+	double flagshipBuildTimeFactor(Factory& factory) {
 		return factory.laborIncome * (4 + max((3 * (fleets.fleets.length + constructionsInProgress.length)), 8)) * 60.0;
 	}
 
@@ -709,6 +709,12 @@ class Military2 : AIComponent, IMilitary {
 				ai.print("Money constrained");
 			} else {
 				ai.print("Labor constrained");
+				// request more labor income at the primary factory to make up
+				// the limitation
+				Factory@ factory = construction.primaryFactory;
+				if (factory !is null) {
+					factory.aimForLabor(factory.laborIncome * 1.25);
+				}
 			}
 		}
 		// if target size = money target size, leave money target size as
@@ -860,14 +866,19 @@ class Military2 : AIComponent, IMilitary {
 			}
 		}
 
-		// Make a new flagship if we have money, and don't have too many
-		// flagships that need to build up support capacity (as we would
-		// rather spent money at the end of the budget cycle filling them up).
-		// This might be a bit overkill in willingness to make new flagships
-		// as the only stopping condition here is running out of money
-		// it also might be better to allow parallel construction based
-		// on how many factories we have instead of income.
-		bool makeNewFlagship = (availableMoney > 500 || fleets.fleets.length == 0)
+		// Make a new flagship if we ran out, or if we have adequate money,
+		// with increasingly large reserves of spare cash that we want to
+		// hold back as we gain more flagships (otherwise we will keep)
+		// building while we have spare funds and never increase our funds
+		// to allow for building bigger ships). Also avoid building new
+		// flagships if we have too many ships that we need to provide
+		// support capacity for, as that is a sign that we should tend to
+		// our existing ships instead.
+		double targetSpareMoney = 500;
+		if (fleets.fleets.length > 2) {
+			targetSpareMoney += 250 * (fleets.fleets.length - 2);
+		}
+		bool makeNewFlagship = (availableMoney > targetSpareMoney || fleets.fleets.length == 0)
 			&& fleets.fleets.length < ai.behavior.maxActiveFleets
 			&& fleetsNeedingSupportCapacity <= 3;
 

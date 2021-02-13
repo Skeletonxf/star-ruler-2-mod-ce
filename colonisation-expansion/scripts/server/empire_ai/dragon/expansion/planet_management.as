@@ -2,8 +2,10 @@ import empire_ai.weasel.Planets;
 import empire_ai.weasel.Budget;
 import empire_ai.weasel.Resources;
 import empire_ai.dragon.expansion.development;
+import empire_ai.dragon.expansion.buildings;
 
 import buildings;
+from ai.buildings import Buildings, BuildingAI, BuildingUse, BuildForPressureCap;
 
 from statuses import getStatusID;
 from traits import getTraitID;
@@ -12,6 +14,7 @@ class PlanetManagement {
 	Planets@ planets;
 	Budget@ budget;
 	DevelopmentFocuses@ focuses;
+	BuildingTracker@ builds;
 	bool log;
 
 	uint nativeLifeStatus = 0;
@@ -25,11 +28,11 @@ class PlanetManagement {
 
 	array<PlanetAI@> goodNextFocuses;
 
-	// TODO: Need focus management interface to call from here
-	PlanetManagement(Planets@ planets, Budget@ budget, DevelopmentFocuses@ focuses, AI& ai, bool log) {
+	PlanetManagement(Planets@ planets, Budget@ budget, DevelopmentFocuses@ focuses, BuildingTracker@ builds, AI& ai, bool log) {
 		@this.planets = planets;
 		@this.budget = budget;
 		@this.focuses = focuses;
+		@this.builds = builds;
 		this.log = log;
 
 		// cache lookups
@@ -67,6 +70,9 @@ class PlanetManagement {
 
 		manageUplift(plAI, ai);
 		// TODO: Respond to primitive life statuses
+		managePressureCapacity(plAI, ai);
+		// TODO: AsFTLStorage support
+		
 		// TODO: Long term this should all be generic hook based responses
 		checkNextFocus(plAI, ai);
 	}
@@ -111,6 +117,58 @@ class PlanetManagement {
 				// cripple its resource chains which would be very bad.
 				planets.requestConstruction(
 					plAI, plAI.obj, genocide_planet, priority=3, expire=gameTime + 600, moneyType=BT_Development);
+			}
+		}
+	}
+
+	void managePressureCapacity(PlanetAI@ plAI, AI& ai) {
+		if (plAI.obj is null)
+			return;
+
+		bool havePressure = ai.empire.HasPressure != 0.0;
+		int cap = plAI.obj.pressureCap;
+		if (!havePressure)
+			cap = 10000;
+		bool needsPressureCap = plAI.obj.totalPressure > cap + 7;
+
+		if (!needsPressureCap)
+			return;
+
+		for (uint i = 0, cnt = getBuildingTypeCount(); i < cnt; ++i) {
+			auto@ type = getBuildingType(i);
+			if (type.ai.length == 0)
+				continue;
+
+			if (!type.canBuildOn(plAI.obj))
+				continue;
+
+			if (planets.isBuilding(plAI.obj, type)) {
+				// don't try to make two of the same type on the same planet at once
+				continue;
+			}
+
+			// Check we can actually afford this building
+			if (!budget.canSpend(BT_Development, type.baseBuildCost * 2, type.baseMaintainCost)) {
+				continue;
+			}
+
+			// check all the hooks on this building type
+			for (uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
+				auto@ hook = cast<BuildingAI>(type.ai[n]);
+				if (hook is null) {
+					continue;
+				}
+				auto@ pressureBuilding = cast<BuildForPressureCap>(hook);
+				if (pressureBuilding !is null) {
+					// TODO: Decide which pressure building to use
+					ai.print("building "+type.name+" to meet pressure cap");
+					auto@ req = planets.requestBuilding(plAI, type, priority=0.5, expire=ai.behavior.genericBuildExpire);
+					if (req !is null) {
+						auto@ tracker = BuildTracker(req);
+						builds.trackBuilding(tracker);
+					}
+					return;
+				}
 			}
 		}
 	}

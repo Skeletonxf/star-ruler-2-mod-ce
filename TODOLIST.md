@@ -8,7 +8,8 @@ This is primarily intended as a developer focused project planning list, rather 
     - Can unhack Ancient AI components and CP once sure fully working
   - Expansion AI Component
     - Reteach AI to colonise planets for non levelling purposes
-    - Reteach AI to make buildings following the existing hooks system
+    - Teach AI to make buildings following the existing hooks system for FTL capacity/income
+    - Teach AI how to deal with all of its focuses having requirements it can't meet
     - Scuttle outposts which have ended up in a different region to where the AI created them
       - Thanks Illyia
     - Apply conditions AI hooks to all applicable statuses

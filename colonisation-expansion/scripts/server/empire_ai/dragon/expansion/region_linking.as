@@ -21,6 +21,8 @@ class LinkBuild {
  *
  * No more abusing the AI by boxing it in!
  */
+// TODO: Create penalties for regions where we tried and failed to build an
+// outpost so we don't try again immediately
 class RegionLinking {
 	Planets@ planets;
 	Construction@ construction;

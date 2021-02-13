@@ -711,7 +711,7 @@ class Factory {
 			idleSince = gameTime;
 		if(active is null && curBuilding is null && plAI !is null && gameTime - idleSince > ai.behavior.laborStoreIdleTimer && ai.behavior.buildLaborStorage && (laborMaxStorage+50) < ai.behavior.laborStoreMaxFillTime * max(obj.baseLaborIncome, laborAim) && significantLabor) {
 			// [[ MODIFY BASE GAME START ]]
-			if (false) {
+			if (construction.log) {
 				ai.print("Planning to build labor storage at "+obj.name);
 				ai.print("Best labor source is "+construction.bestLabor);
 				ai.print("Planet has "+obj.baseLaborIncome+" labor income");

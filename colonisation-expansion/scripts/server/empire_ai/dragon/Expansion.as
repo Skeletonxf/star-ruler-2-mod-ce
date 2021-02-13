@@ -28,6 +28,7 @@ import empire_ai.dragon.expansion.terrestrial_colonization;
 import empire_ai.dragon.expansion.planet_management;
 import empire_ai.dragon.expansion.region_linking;
 import empire_ai.dragon.expansion.development;
+import empire_ai.dragon.expansion.buildings;
 import empire_ai.dragon.logs;
 
 from statuses import getStatusID;
@@ -619,7 +620,7 @@ class ColonizeForest {
 							if (req !is null) {
 								auto@ tracker = BuildTracker(req);
 								@tracker.importRequestReason = request;
-								expansion.genericBuilds.insertLast(tracker);
+								expansion.trackBuilding(tracker);
 							}
 							// all done here, met the resource
 							return;
@@ -706,55 +707,12 @@ class ColonizeForest {
 }
 
 /**
- * Tracks a BuildingRequest AND the reason we made it, so we can respond
- * appropriately if it gets cancelled.
- */
-class BuildTracker {
-	// Building request we are tracking
-	BuildingRequest@ buildingRequest;
-	// Nullable set of reasons we made the building request:
-	// - To meet an import data
-	ImportData@ importRequestReason;
-
-	BuildTracker(BuildingRequest@ buildingRequest) {
-		@this.buildingRequest = buildingRequest;
-	}
-
-	void save(Expansion& expansion, SaveFile& file) {
-		expansion.planets.saveBuildingRequest(file, buildingRequest);
-		if (importRequestReason !is null) {
-			file.write1();
-			expansion.resources.saveImport(file, importRequestReason);
-		} else {
-			file.write0();
-		}
-	}
-
-	// only for deserialisation
-	BuildTracker() {}
-
-	void load(Expansion& expansion, SaveFile& file) {
-		@this.buildingRequest = expansion.planets.loadBuildingRequest(file);
-		if (file.readBit()) {
-			@this.importRequestReason = expansion.resources.loadImport(file);
-		}
-	}
-
-	const BuildingType@ buildingType() {
-		if (buildingRequest is null) {
-			return null;
-		}
-		return buildingRequest.type;
-	}
-}
-
-/**
  * A combined and rewritten AIComponent which is responsible for colonization
  * and development, and as such will hopefully do the two together in a way
  * which doesn't sit on unused resources or colonise resources not needed for
  * levelling.
  */
-class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner, DevelopmentFocuses, ResourceValuationOwner {
+class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner, DevelopmentFocuses, ResourceValuationOwner, BuildingTracker {
 	Resources@ resources;
 	Planets@ planets;
 	Systems@ systems;
@@ -826,7 +784,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
 		@colonyManagement = TerrestrialColonization(planets, ai);
-		@planetManagement = PlanetManagement(planets, budget, this, ai, log);
+		@planetManagement = PlanetManagement(planets, budget, this, this, ai, log);
 		@regionLinking = RegionLinking(planets, construction, resources, systems, budget);
 
 		@scalableClass = getResourceClass("Scalable");
@@ -870,7 +828,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		cnt = genericBuilds.length;
 		file << cnt;
 		for (uint i = 0; i < cnt; ++i)
-			genericBuilds[i].save(this, file);
+			genericBuilds[i].save(planets, resources, file);
 
 		planetManagement.save(file);
 		regionLinking.save(file);
@@ -947,8 +905,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		file >> cnt;
 		for (uint i = 0; i < cnt; ++i) {
-			auto@ data = BuildTracker();
-			data.load(this, file);
+			auto@ data = BuildTracker(planets, resources, file);
 			if (data !is null)
 				genericBuilds.insertLast(data);
 		}
@@ -1609,6 +1566,10 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				return true;
 		}
 		return false;
+	}
+
+	void trackBuilding(BuildTracker@ tracker) {
+		genericBuilds.insertLast(tracker);
 	}
 
 	DevelopmentFocus@ getFocus(Planet& pl) {
