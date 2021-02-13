@@ -108,6 +108,9 @@ tidy class LeaderAI : Component_LeaderAI {
 					int fromCost = getBuildCost(from);
 					int toCost = getBuildCost(to);
 					cost += max(toCost - fromCost, int(ceil(toCost * RETROFIT_MIN_PCT)));
+					// [[ MODIFY BASE GAME START ]]
+					cost += max(to.total(SV_RetrofitCost), 0.0) * (RETROFIT_MIN_PCT);
+					// [[ MODIFY BASE GAME END ]]
 					have = true;
 				}
 			}
@@ -124,6 +127,9 @@ tidy class LeaderAI : Component_LeaderAI {
 				int fromCost = getBuildCost(from);
 				int toCost = getBuildCost(to);
 				cost += max(toCost - fromCost, int(ceil(toCost * RETROFIT_MIN_PCT))) * dat.amount;
+				// [[ MODIFY BASE GAME START ]]
+				cost += max(to.total(SV_RetrofitCost), 0.0) * (RETROFIT_MIN_PCT);
+				// [[ MODIFY BASE GAME END ]]
 				have = true;
 			}
 		}
@@ -147,6 +153,9 @@ tidy class LeaderAI : Component_LeaderAI {
 					double fromCost = getLaborCost(from);
 					double toCost = getLaborCost(to);
 					cost += max(toCost - fromCost, toCost * RETROFIT_MIN_PCT);
+					// [[ MODIFY BASE GAME START ]]
+					cost += max(to.total(SV_RetrofitLabor), 0.0) * (RETROFIT_MIN_PCT);
+					// [[ MODIFY BASE GAME END ]]
 					have = true;
 				}
 			}
@@ -163,6 +172,9 @@ tidy class LeaderAI : Component_LeaderAI {
 				double fromCost = getLaborCost(from);
 				double toCost = getLaborCost(to);
 				cost += max(toCost - fromCost, toCost * RETROFIT_MIN_PCT) * dat.amount;
+				// [[ MODIFY BASE GAME START ]]
+				cost += max(to.total(SV_RetrofitLabor), 0.0) * (RETROFIT_MIN_PCT);
+				// [[ MODIFY BASE GAME END ]]
 				have = true;
 			}
 		}

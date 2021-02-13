@@ -32,6 +32,8 @@ Subsystem: Warhead
 	Hook: LimitStatusStacks(Warhead, WarheadStorage)
 	Hook: //Hook:RefillStatusConstruction(Warhead, WarheadStorage, Warhead)
 
+	RetrofitCost := WarheadCost
+	RetrofitLabor := WarheadLabor
 	Modifier: AoERadiusFactor(Factor)
 		Radius := Radius * Factor
 
@@ -70,6 +72,8 @@ Subsystem: Warhead
 		Hex.BuildCost := Hex.BuildCost + WarheadCost
 		Hex.LaborCost := Hex.LaborCost + WarheadLabor
 
+		RetrofitCost := RetrofitCost + WarheadCost
+		RetrofitLabor := RetrofitLabor + WarheadLabor
 	Effector: Warhead
 		Range = Range
 		Damage = Damage
