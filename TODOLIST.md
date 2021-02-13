@@ -49,7 +49,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Rework the Flying trait downside so it is less severe
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Don't let random life assign a life that other traits the player took are incompatible with
-  - The ConsumeDistanceFTL should obey FTL discounts from FTL Crystals
   - Planets should not path themselves through a gate in their own orbit
   - Ships should not path themselves through a gate they are tractoring
   - Constructions for Gas Giants to make them more useful late game

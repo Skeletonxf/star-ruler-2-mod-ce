@@ -296,6 +296,10 @@ class ConsumeDistanceFTL : AbilityHook {
 			Region@ myReg = abl.obj.region;
 			if(myReg !is null && myReg.FreeFTLMask & abl.emp.mask != 0)
 				return 0.0;
+			// [[ MODIFY BASE GAME START ]]
+			if (myReg !is null && myReg.ReducedFTLMask & abl.emp.mask != 0)
+				cost *= 0.25;
+			// [[ MODIFY BASE GAME END ]]
 		}
 		return cost;
 	}

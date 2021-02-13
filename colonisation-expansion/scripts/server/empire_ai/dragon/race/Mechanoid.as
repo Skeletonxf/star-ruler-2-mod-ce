@@ -33,6 +33,8 @@ double transferCost(Object@ obj, Empire@ emp, Object@ target) {
 		Region@ myReg = obj.region;
 		if (myReg !is null && myReg.FreeFTLMask & emp.mask != 0)
 			return 0.0;
+		if (myReg !is null && myReg.ReducedFTLMask & emp.mask != 0)
+			cost *= 0.25;
 	}
 	return cost;
 }
