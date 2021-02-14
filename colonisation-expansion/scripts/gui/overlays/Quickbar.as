@@ -91,10 +91,14 @@ class Quickbar : BaseGuiElement, Savable {
 		// [[ MODIFY BASE GAME END ]]
 		if(exTrait !is null && playerEmpire.hasTrait(exTrait.id))
 			add(Beacons(this));
-		if(anTrait !is null && playerEmpire.hasTrait(anTrait.id))
+		// [[ MODIFY BASE GAME START ]]
+		if(anTrait !is null && playerEmpire.hasTrait(anTrait.id)) {
 			add(Replicators(this));
-		else
+			add(IdleReplicators(this));
+		} else {
 			add(FreeResources(this));
+		}
+		// [[ MODIFY BASE GAME END ]]
 		add(AutoImportMode(this));
 		add(DisabledResources(this));
 		if((scTrait is null || !playerEmpire.hasTrait(scTrait.id)) && (anTrait is null || !playerEmpire.hasTrait(anTrait.id)))
@@ -847,6 +851,57 @@ class Replicators : ObjectMode {
 		grid.truncate(index);
 	}
 };
+
+// [[ MODIFY BASE GAME START ]]
+class IdleReplicators : ObjectMode {
+	uint statusId = uint(-1);
+	uint orbId = uint(-1);
+
+	IdleReplicators(IGuiElement@ parent) {
+		super(parent);
+
+		auto@ status = getStatusType("AncientReplicator");
+		if(status !is null)
+			statusId = status.id;
+
+		orbId = getOrbitalModuleID("AncientReplicator");
+		color = Color(0x44ffbbff);
+	}
+
+	Sprite get_icon() override {
+		return Sprite(spritesheet::GuiOrbitalIcons, 20, Color(0x00ff00ff));
+	}
+
+	string get_name() override {
+		return locale::IDLE_REPLICATORS;
+	}
+
+	void longUpdate() override {
+		uint index = 0;
+
+		// Idle is the set of replicators that haven't been ordered to a target
+		// (and hence wouldn't show up in the normal replicator list) where
+		// those targets are also not building anything (ie, basically all the
+		// replicators the empire has that aren't in the main replicator list)
+		DataList@ objs = playerEmpire.getOrbitals();
+		Object@ obj;
+		while(receive(objs, obj)) {
+			Orbital@ orb = cast<Orbital>(obj);
+			if(orb !is null && uint(orb.coreModule) == orbId) {
+				if(!(!orb.inOrbit && !orb.hasLockedOrbit())) {
+					Object@ orbitTarget = orb.getLockedOrbit(requireLock = false);
+					if (orbitTarget is null || orbitTarget.constructionCount == 0) {
+						auto@ dat = cache(orb);
+						grid.set(index, dat);
+						++index;
+					}
+				}
+			}
+		}
+		grid.truncate(index);
+	}
+};
+// [[ MODIFY BASE GAME END ]]
 
 class NoPopResources : ObjectMode {
 	NoPopResources(IGuiElement@ parent) {
