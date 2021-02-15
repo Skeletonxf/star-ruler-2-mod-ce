@@ -19,6 +19,7 @@ from orders.CargoOrder import CargoOrder;
 from orders.AutoMineOrder import AutoMineOrder;
 from orders.ChaseOrder import ChaseOrder;
 from orders.ConsumePlanetOrder import ConsumePlanetOrder;
+from orders.LoopOrder import LoopOrder;
 from orders import OrderType;
 // [[ MODIFY BASE GAME END ]]
 from resources import getBuildCost, getMaintenanceCost, MoneyType, getLaborCost;
@@ -126,6 +127,19 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	array<Object@>@ addedSupports;
 
 	FleetPlaneNode@ node;
+
+	// [[ MODIFY BASE GAME START ]]
+	// Order looping code
+	bool isLooping = false;
+
+	void setLooping(bool isLoop = true) {
+		isLooping = isLoop;
+	}
+
+	bool isLoopingOrders() {
+		return isLooping;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	LeaderAI() {
 	}
@@ -264,6 +278,9 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 				case OT_ConsumePlanet:
 					@ord = ConsumePlanetOrder(msg);
 				break;
+				case OT_Loop:
+					@ord = LoopOrder(msg);
+				break;
 				// [[ MODIFY BASE GAME END ]]
 				case OT_Wait:
 					@ord = WaitOrder(msg);
@@ -295,6 +312,10 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 			msg >> FreeRaiding;
 			msg >> RaidRange;
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		msg >> isLooping;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	double get_GhostHP() const {
@@ -361,6 +382,10 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 
 		msg << FreeRaiding;
 		msg << RaidRange;
+
+		// [[ MODIFY BASE GAME START ]]
+		msg << isLooping;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	float getFleetEffectiveness() const {
@@ -787,9 +812,16 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 			}
 		}
 
+		// [[ MODIFY BASE GAME START ]]
+		// AngelScript doesn't let me declare variables in switch statements
+		Order@ finished;
+		Order@ enqueuedLoop;
+		bool allOrdersComplete = false;
+		// [[ MODIFY BASE GAME END ]]
+
 		//Do actions required for orders
 		Order@ ord = order;
-		while(ord !is null) {
+		while(ord !is null && !allOrdersComplete) { // [[ MODIFY BASE GAME ]]
 			switch(ord.tick(obj, time)) {
 				case OS_BLOCKING:
 					//Stop doing anything if the order blocked
@@ -800,6 +832,9 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 				break;
 				case OS_COMPLETED:
 					ord.destroy();
+					// [[ MODIFY BASE GAME START ]]
+					@finished = ord;
+					// [[ MODIFY BASE GAME END ]]
 					//Remove order from the list and continue
 					if(ord.prev is null) {
 						@ord = ord.next;
@@ -813,6 +848,26 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 							@next.prev = ord.prev;
 						@ord.prev.next = next;
 					}
+					// [[ MODIFY BASE GAME START ]]
+					// TODO: Should mark which orders are compatible with looping
+					if (isLooping && finished.type != OT_Loop) {
+						// add the order to the back of the queue
+						if (finished is enqueuedLoop) {
+							// we are about to enqueue the order that we first
+							// added onto our orders after it finished, hence
+							// every order we have in our loop must be
+							// OS_COMPLETED so we're done for this orderTick
+							allOrdersComplete = true;
+						}
+						@finished.next = null;
+						@finished.prev = null;
+						addOrder(obj, finished, true);
+						obj.wake();
+						if (enqueuedLoop is null) {
+							@enqueuedLoop = finished;
+						}
+					}
+					// [[ MODIFY BASE GAME END ]]
 					orderDelta = true;
 				break;
 			}
@@ -1507,6 +1562,11 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 
 	void addConsumePlanetOrder(Object& obj, Object& targ, bool append) {
 		addOrder(obj, ConsumePlanetOrder(targ), append);
+		obj.wake();
+	}
+
+	void addLoopOrder(Object& obj, bool append, bool isLoop) {
+		addOrder(obj, LoopOrder(isLoop), append);
 		obj.wake();
 	}
 	// [[ MODIFY BASE GAME END ]]
@@ -2762,6 +2822,9 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		msg.writeSmall(uint(engageType));
 		msg.writeSmall(uint(engageBehave));
 		msg << autoFill << autoBuy << AllowFillFrom;
+		// [[ MODIFY BASE GAME START ]]
+		msg << isLooping;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void writeLeaderData(Message& msg) {

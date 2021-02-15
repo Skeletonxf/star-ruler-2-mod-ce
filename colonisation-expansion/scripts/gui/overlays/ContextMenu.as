@@ -520,6 +520,25 @@ class SetDefending : Option {
 	}
 };
 
+// [[ MODIFY BASE GAME START ]]
+class SetLooping: Option {
+	Object@ obj;
+	bool loop;
+	SetLooping(Object@ obj, bool value) {
+		@this.obj = obj;
+		this.loop = value;
+	}
+
+	void call() {
+		if(obj is null || !obj.hasLeaderAI || !obj.owner.controlled) {
+			return;
+		}
+		//obj.setLooping(loop);
+		obj.addLoopOrder(shiftKey, loop);
+	}
+}
+// [[ MODIFY BASE GAME END ]]
+
 class ExportResource : Option {
 	Object@ from;
 	Object@ to;
@@ -1616,6 +1635,17 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 					automineAbility.icon
 				);
 			}
+		}
+	}
+
+	// LeaderAI order looping toggle
+	if(clicked.owner.controlled && clicked.hasLeaderAI) {
+		if (!clicked.isLoopingOrders()) {
+			addOption(menu, selected, clicked, locale::START_LOOP_ORDERS,
+					SetLooping(clicked, true));
+		} else {
+			addOption(menu, selected, clicked, locale::STOP_LOOP_ORDERS,
+					SetLooping(clicked, false));
 		}
 	}
 	// [[ MODIFY BASE GAME END ]]

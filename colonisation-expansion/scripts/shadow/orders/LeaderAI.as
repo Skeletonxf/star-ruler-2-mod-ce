@@ -28,6 +28,9 @@ tidy class LeaderAI : Component_LeaderAI {
 	bool autoBuy = false;
 	bool AllowFillFrom = false;
 	bool allowSatellites = false;
+	// [[ MODIFY BASE GAME START ]]
+	bool isLooping = false;
+	// [[ MODIFY BASE GAME END ]]
 
 	AutoMode autoMode = AM_AreaBound;
 	EngagementBehaviour engageBehave = EB_CloseIn;
@@ -527,6 +530,9 @@ tidy class LeaderAI : Component_LeaderAI {
 		engageType = EngagementRange(msg.readSmall());
 		engageBehave = EngagementBehaviour(msg.readSmall());
 		msg >> autoFill >> autoBuy >> AllowFillFrom;
+		// [[ MODIFY BASE GAME START ]]
+		msg >> isLooping;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool get_autoBuySupports() {
@@ -544,6 +550,12 @@ tidy class LeaderAI : Component_LeaderAI {
 	void set_autoFillSupports(bool value) {
 		autoFill = value;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	bool isLoopingOrders() {
+		return isLooping;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	bool get_allowFillFrom() {
 		return AllowFillFrom;

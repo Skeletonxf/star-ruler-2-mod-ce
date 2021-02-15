@@ -23,3 +23,5 @@ ABL_CONSUME_PLANET_ORDER: Consume Planet
 CHASE_ORDER: Chase $1
 SET_ORBIT: Set Orbit
 SET_ORBIT_DESC: Launch the station into orbit around the target, using vast amounts of energy to propel it through space.
+START_LOOP_ORDERS: Loop Subsequent Orders
+STOP_LOOP_ORDERS: Stop Looping Orders

@@ -50,6 +50,9 @@ restricted local:
 	safe bool get_autoBuySupports() const;
 	safe bool get_autoFillSupports() const;
 	safe bool get_allowFillFrom() const;
+	// [[ MODIFY BASE GAME START ]]
+	safe bool isLoopingOrders() const;
+	// [[ MODIFY BASE GAME END ]]
 
 restricted remote:
 	void addGotoOrder(Object& target, bool append = false);
@@ -78,6 +81,8 @@ restricted remote:
 	void addAutoMineOrder(Object& target, bool append = false);
 	void addChaseOrder(Object& target, bool append = false);
 	void addConsumePlanetOrder(Object& target, bool append = false);
+	void addLoopOrder(bool append = false, bool isLoop = true);
+	void setLooping(bool isLoop = true);
 	// [[ MODIFY BASE GAME END ]]
 
 	void addSecondaryToSlipstream(Object& other);
