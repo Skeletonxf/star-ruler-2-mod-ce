@@ -815,13 +815,22 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		// [[ MODIFY BASE GAME START ]]
 		// AngelScript doesn't let me declare variables in switch statements
 		Order@ finished;
-		Order@ enqueuedLoop;
-		bool allOrdersComplete = false;
+		// Count how many orders we have in our linked list, so we break out of
+		// the while loop below the moment we tick the number of orders we
+		// started with if we still have others we added back onto the list
+		// This prevents infinite loops when all orders are OS_COMPLETED
+		uint ordersTotal = 0;
+		Order@ o = order;
+		while(o !is null) {
+			@o = o.next;
+			ordersTotal += 1;
+		}
+		uint ordersTicked = 0;
 		// [[ MODIFY BASE GAME END ]]
 
 		//Do actions required for orders
 		Order@ ord = order;
-		while(ord !is null && !allOrdersComplete) { // [[ MODIFY BASE GAME ]]
+		while(ord !is null && ordersTicked < ordersTotal) { // [[ MODIFY BASE GAME ]]
 			switch(ord.tick(obj, time)) {
 				case OS_BLOCKING:
 					//Stop doing anything if the order blocked
@@ -852,25 +861,18 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 					// TODO: Should mark which orders are compatible with looping
 					if (isLooping && finished.type != OT_Loop) {
 						// add the order to the back of the queue
-						if (finished is enqueuedLoop) {
-							// we are about to enqueue the order that we first
-							// added onto our orders after it finished, hence
-							// every order we have in our loop must be
-							// OS_COMPLETED so we're done for this orderTick
-							allOrdersComplete = true;
-						}
 						@finished.next = null;
 						@finished.prev = null;
 						addOrder(obj, finished, true);
 						obj.wake();
-						if (enqueuedLoop is null) {
-							@enqueuedLoop = finished;
-						}
 					}
 					// [[ MODIFY BASE GAME END ]]
 					orderDelta = true;
 				break;
 			}
+			// [[ MODIFY BASE GAME START ]]
+			ordersTicked += 1;
+			// [[ MODIFY BASE GAME END ]]
 		}
 		if(order !is null)
 			firstOrder = order.type;
