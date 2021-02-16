@@ -1558,6 +1558,9 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	}
 
 	void addChaseOrder(Object& obj, Object& targ, bool append) {
+		if (obj is targ) {
+			return;
+		}
 		addOrder(obj, ChaseOrder(targ), append);
 		obj.wake();
 	}

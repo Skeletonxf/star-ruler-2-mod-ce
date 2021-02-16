@@ -1235,7 +1235,7 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 
 			// [[ MODIFY BASE GAME START ]]
 			// Chase order
-			if (clicked !is null && clicked.valid && clicked.hasMover && !clicked.hasSupportAI && !clicked.isStar && !clicked.isPlanet) {
+			if (clicked !is null && clicked.valid && clicked.hasMover && !clicked.hasSupportAI && !clicked.isStar && !clicked.isPlanet && clicked !is selected) {
 				addOption(menu, selected, clicked, format(locale::CHASE_ORDER, formatObjectName(nameObj)), Chase());
 			}
 			// [[ MODIFY BASE GAME END ]]
