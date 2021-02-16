@@ -94,7 +94,11 @@ tidy class AttackOrder : Order {
 			//Only complete the order if we're out
 			//of combat, so we don't mess up the
 			//combat positioning
-			if(obj.inCombat && flags & TF_Group != 0) {
+			// [[ MODIFY BASE GAME START ]]
+			// If keep distance, always return OS_COMPLETED so we can immediately pick
+			// a new target to continue evasion
+			if(obj.inCombat && flags & TF_Group != 0 && closeIn) {
+				// [[ MODIFY BASE GAME END ]]
 				if(moveId != -1) {
 					obj.stopMoving();
 					moveId = -1;
@@ -163,8 +167,6 @@ tidy class AttackOrder : Order {
 			// if set to keep distance, scan the nearby area for enemies
 			// this does scan a square instead of a circle but circles are
 			// expensive and I doubt anyone will notice
-			// TODO: We should probably *keep* keeping distance even if we
-			// take out the enemy target while we remain in combat
 			array<Object@>@ objs = findInBox(obj.position - minRange, obj.position + minRange, obj.owner.hostileMask);
 			for (uint i = 0, cnt = objs.length; i < cnt; ++i) {
 				Object@ enemy = objs[i];
@@ -231,32 +233,9 @@ tidy class AttackOrder : Order {
 			// compute quaternions in evade directions
 			quaterniond leftRotation = quaterniond_fromVecToVec(vec3d_front(), left);
 			quaterniond rightRotation = quaterniond_fromVecToVec(vec3d_front(), right);
-			// check what percent out of 0 to 1 are we towards each direction
-			// and take the closest
+			// check which rotation is less
 			double toLeft = obj.rotation.dot(leftRotation);
 			double toRight = obj.rotation.dot(rightRotation);
-			// FIXME: This doesn't seem quite right
-			// borrow this angle checking code from the mover component
-			// instead, it looks more like an actual angle calculation
-			/* double dot = targRot.dot(obj.rotation);
-			if(dot < 0.999) {
-				if(dot < -1.0)
-					dot = -1.0;
-				double angle = acos(dot); // we don't need to take acos for our comparison as acos is monotonic
-				double tickRot = rotSpeed * time;
-				if(angle > tickRot) {
-					obj.rotation = obj.rotation.slerp(targRot, tickRot / angle);
-				}
-				else {
-					obj.rotation = targRot;
-					rotating = false;
-				}
-			}
-			else {
-				if(dot != 1.0)
-					obj.rotation = targRot;
-				rotating = false;
-			} */
 			if (toLeft > toRight) {
 				evade.x = left.x;
 				evade.z = left.z;
