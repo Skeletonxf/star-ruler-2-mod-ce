@@ -114,7 +114,7 @@ tidy class AutoMineOrder : Order {
 	}
 
 	OrderStatus tick(Object& obj, double time) {
-		if (!obj.hasMover || !obj.hasCargo || dropoffTarget is null || !dropoffTarget.hasCargo || dropoffTarget.owner !is obj.owner) {
+		if (!obj.hasMover || !obj.hasCargo || dropoffTarget is null || !dropoffTarget.valid || !dropoffTarget.hasCargo || dropoffTarget.owner !is obj.owner) {
 			removeAppliedBeam(obj);
 			return OS_COMPLETED;
 		}
