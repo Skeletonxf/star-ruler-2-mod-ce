@@ -23,7 +23,7 @@ Module: DysonSphere
 	Can Fling: False
 
 	ConsumeCargo(Ore, 5000)
-	LimitOncePerSystem(Ringworld, Any Empire = True)
+	LimitOncePerSystem(RingworldFlag, Any Empire = True)
 	OnEnable(Destroy())
 	OnEnable(SpawnPlanet(DysonSphere, Owned = True, Add Status = DysonSphere, Radius = 300, Physics = False))
 	RequireCloseToStar()

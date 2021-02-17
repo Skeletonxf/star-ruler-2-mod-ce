@@ -12,7 +12,7 @@ Status: DysonSphere
 	GloballyVisible()
 	AddPlanetGfxFlag(DysonSphere)
 
-	SetSystemFlag(Ringworld)
+	SetSystemFlag(RingworldFlag)
 Status: DysonSphereUpgrade
 	Visible To: Nobody
 	Collapses: True
