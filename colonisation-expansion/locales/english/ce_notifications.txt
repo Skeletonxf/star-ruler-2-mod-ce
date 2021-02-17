@@ -4,3 +4,4 @@ FORESTRY_NOTIFICATION_3: $3 [color=#17c757]forested its third food[/color]
 MESSAGE_NEED_BASE_MATS: $3 [color=#ffaaaa]requires base materials[/color]
 MESSAGE_NATIVES_DISCOVERED: [color=#ffc83f]Natives discovered at[/color] $3
 MESSAGE_BLOCKADED: $3 [color=#ff9000]blockaded![/color]
+MESSAGE_NEED_ORE: $3 [color=#ffaaaa]requires ore[/color]

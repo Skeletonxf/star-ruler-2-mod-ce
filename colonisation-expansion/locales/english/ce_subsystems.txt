@@ -63,16 +63,17 @@ S_SOLARPANEL_DESC: <<
 >>
 S_MINING_HULL: Mining Hull
 S_MINING_HULL_DESC: <<
-	A hull specifically designed to field mining vessels.
+	A hull specifically designed to field mining and hauling vessels.
 
-	[img=Plus]Maintenence costs reduced by 66%.[/img]
+	[img=Plus]Maintenence costs reduced by 60%.[/img]
 	[img=Plus]Build and labor costs reduced by 66%.[/img]
 	[img=Plus]Mining rate increased by 20%.[/img]
+	[img=Plus]Cargo storage increased by 50%[/img]
 	[img=Minus]Cannot have any weapons or support comand on the ship.[/img]
 	[img=Minus]Ship is extremely fragile.[/img]
-	[img=MenuIcons::3;20][i][color=#aaa]Mining Hulls can only be used on ships with Mining Lasers.[/color][/i][/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Mining Hulls can only be used on ships with Mining Lasers or Cargo Storage.[/color][/i][/img]
 >>
-ERROR_MUST_HAVE_MINING_LASER: $1 must have a Mining Laser
+ERROR_MUST_HAVE_MINING_LASER: $1 must have a Mining Laser or Cargo Storage
 ERROR_MUST_HAVE_AT_LEAST_ONE_STACK_FOR_BOMBARDMENT: Carpet Bomb too small
 S_POWER_AMPLIFIER: Power Amplifier
 S_POWER_AMPLIFIER_DESC: <<

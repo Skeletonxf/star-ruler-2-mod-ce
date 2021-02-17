@@ -12,10 +12,23 @@ Status: DysonSphere
 	GloballyVisible()
 	AddPlanetGfxFlag(DysonSphere)
 
+	CE_cargo_hooks::SetCargoStorage(2000)
 	SetSystemFlag(RingworldFlag)
 Status: DysonSphereUpgrade
 	Visible To: Nobody
 	Collapses: True
 Status: DysonSphereEnergyProduction
 	Visible To: Nobody
-	ProduceNativePressurePct(Base = 1.0)
+	ProduceNativePressurePct(Base = 0.25)
+	WhileConsumingCargo(Ore, 3, 1, AddStatus(DysonSphereEnergyProduction2))
+	IfNotHaveStatus(DysonSphereEnergyProduction2, AddStatus(DysonSphereLowOre))
+Status: DysonSphereEnergyProduction2
+	Visible To: Nobody
+	ProduceNativePressurePct(Base = 0.75)
+Status: DysonSphereLowOre
+	Name: #LOW_ORE
+	Description: #LOW_ORE_DESC
+	Color: #ff0000
+	Collapses: True
+	Icon: ResourceIconsSmall::11;22 * #ffaaaa
+	OnEnable(CE_empire_effects::NotifyOwnerMessage(#MESSAGE_NEED_ORE))

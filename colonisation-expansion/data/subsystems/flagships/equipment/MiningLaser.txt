@@ -21,7 +21,7 @@ Subsystem: MiningLaser
 
 	Hex.LaborCost := 0.1 * HexSize
 	Hex.BuildCost := 1.1 * HexSize
-	Hex.MaintainCost := HexSize - (HexSize/ShipSize * 8 * ShipSize^0.5)
+	Hex.MaintainCost := 0.4 * (HexSize - (HexSize/ShipSize * 8 * ShipSize^0.5))
 
 	Hook: AddCargoStorage(CargoStorage)
 	Hook: AddPermanentStatus(CanGiveCargo)

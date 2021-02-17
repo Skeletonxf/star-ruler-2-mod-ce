@@ -15,3 +15,5 @@ Resource: Photovoltics
 	Pressure: 15 Energy
 	Frequency: 0
 	Mode: Non Requirement
+	CE_cargo_hooks::ConsumeCargo(Ore, 1)
+	AddCargoStorage(1000)

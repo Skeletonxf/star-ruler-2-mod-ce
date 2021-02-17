@@ -8,14 +8,15 @@ Subsystem: MiningHull
 	BaseColor: #a1692c
 
 	AddShipModifier: HpFactor(0.2)
-	AddShipModifier: MaintCostFactor(0.34)
+	AddShipModifier: MaintCostFactor(0.4)
 	AddShipModifier: ArmorResistFactor(0.5)
 	AddShipModifier: BuildCostFactor(0.34)
 	AddShipModifier: LaborCostFactor(0.34)
 	AddShipModifier: MiningRateFactor(1.2)
+	AddShipModifier: CargoStorageFactor(1.5)
 	Assert: Sum.StellarDamage == 0
 		Message: #ERROR_CANNOT_HAVE_WEAPONS
-	Assert: Sum.MiningLasers == 1
+	Assert: Sum.MiningLasers == 1 || Sum.CargoStorage > 0
 		Message: #ERROR_MUST_HAVE_MINING_LASER
 	Assert: Sum.SupportCapacity == 0
 		Message: #ERROR_CANNOT_HAVE_SUPPORT

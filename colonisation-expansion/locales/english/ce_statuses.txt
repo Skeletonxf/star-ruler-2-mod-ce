@@ -25,7 +25,7 @@ STATUS_MOTHERSHIP_POPULATION_DESC: <<
 DYSON_SPHERE_FULL_DESC: <<
 	Encases a star in photovoltic materials to absorb almost all of its light and convert it to vast quantities of energy
 
-	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Building a dyson sphere requires large amounts of Ore mined from asteroids.[/color][/b][/img]
+	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Building a dyson sphere requires large amounts of Ore mined from asteroids, and additional ore per second for full efficiency.[/color][/b][/img]
 	[color=#aaa]
 	[offset=10]I asked you to build me a Dyson [b]Sphere[/b], why did you build me a Dyson [b]Swarm[/b]?[/offset]
 	[offset=30]Sorry my leader, our enginners thought it best not to block out so much light that our planets became inhospitable. If you desire more energy you could always extend the Dyson Swarm to have more layers?[/offset]
@@ -81,3 +81,5 @@ STARFORGE_DESC: <<
 	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Building a star forge or any of its upgrades requires large amounts of Ore mined from asteroids.[/color][/b][/img]
 >>
 STATUS_BLOCKADED_DESC: Some of the civilian trade ships carrying this planet's imports were shot down. As a result, the planet produces 1 less of a random non money empire resource for each stack of "Blockaded!". 
+LOW_ORE: Requires Ore
+LOW_ORE_DESC: This planet requires ore in order for its production to be fully operational. Dysons Spheres only operate at 25% efficiency when lacking ore.

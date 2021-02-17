@@ -88,7 +88,13 @@ R_SYRUP_BLURB: Can be used as food. Increases Influence pressure by 30%.
 FORESTED_CROP: Forested Crop (Food)
 FORESTED_CROP_2: Forested Fruit (Food)
 FORESTED_CROP_3: Forested Grain (Food)
-PHOTOVOLTICS_DESC: Layers of photovoltic cells
+PHOTOVOLTICS_DESC: <<
+	Layers of photovoltic cells
+
+	[b][img=ResourceIconsSmall::65;20/] [color=#91692c]Ore Used:[/color][/b][offset=150]1 / second[/offset]
+
+	[color=#aaa][i]Adds 1000 ore storage capacity[/i][/color]
+>>
 FRACTURED_PLANET_DESC: <<
 	A planet broken into pieces. Has no native pressure but generates 1 ore per second.
 

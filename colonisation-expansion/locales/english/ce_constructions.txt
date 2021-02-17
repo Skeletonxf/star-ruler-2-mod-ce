@@ -13,7 +13,7 @@ CONS_MOON_BASE_DESC: <<
 DEVELOP_FOREST_FOOD: Develop forest
 CONS_DYSON_SPHERE_UPGRADE: Upgrade Dyson Sphere
 CONS_DYSON_SPHERE_UPGRADE_DESC: <<
-	Increase the rate at which the Dyson Sphere generates energy.
+	Increase the rate at which the Dyson Sphere generates energy and consumes ore.
 
 	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Requires large amounts of Ore mined from asteroids.[/color][/b][/img]
 >>

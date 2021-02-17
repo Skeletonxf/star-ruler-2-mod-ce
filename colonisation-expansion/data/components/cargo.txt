@@ -15,6 +15,9 @@ local:
 
 server:
 	void modCargoStorage(double amount);
+	// [[ MODIFY BASE GAME START ]]
+	void overrideCargoStorage(double amount);
+	// [[ MODIFY BASE GAME END ]]
 	void addCargo(uint type, double amount);
 	void removeCargo(uint type, double amount);
 	double consumeCargo(uint type, double amount, bool partial = false);

@@ -33,7 +33,7 @@ Resource: DysonSphere
 Level Chain: Photovoltics
 	Level: 0
 		Population: 1
-		BaseIncome: -150
+		BaseIncome: -90
 		BasePressure: 1000
 		RequiredPop: 1
 		BaseLoyalty: 1
