@@ -89,6 +89,12 @@ tidy final class Trait {
 				continue;
 			if(conflicts.find(other) != -1)
 				return true;
+			// [[ MODIFY BASE GAME START ]]
+			// Even if conflicts are only specified in one direction, they are
+			// bidirectional!
+			if(other.conflicts.find(this) != -1)
+				return true;
+			// [[ MODIFY BASE GAME END ]]
 			if(unique.length != 0 && unique == other.unique)
 				return true;
 		}

@@ -35,9 +35,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Support cap hook
     - LeaderAI leaderInit
     - Ship constructible support supply free
-  - Attack order revamp
-    - Keep distance from multiple targets should probably continue after the target dies until the ship is out of combat
-    - Chase with FTL order?
   - Planetary shielding in some way
   - Make auto import refresh when resources on already colonised planets become available
   - Make all methods of griefing a planet with 'terraforming' not work while the planet is in combat. If you want to annex and trash a planet you should have to use Microcline or actually hold it for a reasonable amount of time.
@@ -48,9 +45,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands
   - Rework the Flying trait downside so it is less severe
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
-  - Don't let random life assign a life that other traits the player took are incompatible with
-  - Planets should not path themselves through a gate in their own orbit
-  - Ships should not path themselves through a gate they are tractoring
   - Constructions for Gas Giants to make them more useful late game
   - battleworld QoL changes
     - finish port to CP
