@@ -1479,7 +1479,8 @@ class CombatFleets : ObjectMode {
 			}
 		}
 
-		{
+		// This is too buggy, outposts end up with duplicate entries
+		/* {
 			// Get all the outposts in combat
 			DataList@ objs = playerEmpire.getOrbitals();
 			Object@ obj;
@@ -1491,7 +1492,7 @@ class CombatFleets : ObjectMode {
 					++index;
 				}
 			}
-		}
+		} */
 
 		{
 			// Get all stations in combat

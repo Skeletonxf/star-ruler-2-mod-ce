@@ -2,6 +2,7 @@
 System: Avarita
 	Position: (0, 0, 0)
 	MakeStar(Temperature = 6890, Radius = 95)
+	ExpandSystem(500)
 	MakePlanet(Water, Conditions = False)
 	MakePlanet(Grain, Conditions = False)
 	MakePlanet(Oil, Conditions = False)
@@ -10,7 +11,7 @@ System: Avarita
 	MakePlanet(Salts, Conditions = False)
 	MakeAsteroidBelt(Count = 20, Cargo = Ore, Cargo Amount = 5:1000, Distribution Chance = 0.0)
 
-System: Lubidinis
+System: Divitiae
 	Position: (-400, 0, -9000)
 	MakeStar(Temperature = 3454, Radius = 65)
 	MakePlanet(Iron, Conditions = False)
@@ -20,18 +21,8 @@ System: Lubidinis
 	MakePlanet(NaturalGas, Conditions = False)
 	MakePlanet(Salts, Conditions = False)
 
-System: Venae
-	Position: (-3500, 0, 12000)
-	MakeStar(Temperature = 9345, Radius = 123)
-	MakePlanet(RareMetals, Conditions = False)
-	MakePlanet(Gems, Conditions = False)
-	MakePlanet(Iron, Conditions = False)
-	MakePlanet(Neutronium, Conditions = False)
-	MakePlanet(RareMetals, Conditions = False)
-	MakePlanet(NaturalGas, Conditions = False)
-
 System: Auri
-	Position: (8095, 0, 560)
+	Position: (8095, 0, 19560)
 	MakeStar(Temperature = 4564, Radius = 127)
 	MakePlanet(Titanium, Conditions = False)
 	MakePlanet(Uranium, Conditions = False)
@@ -39,19 +30,31 @@ System: Auri
 	MakePlanet(RareMetals, Conditions = False)
 	MakePlanet(Salts, Conditions = False)
 
-System: Aeris
-	Position: (3567, 0, 4534)
+System: Argentum
+	Position: (3567, 0, 29534)
 	MakeStar(Temperature = 5467, Radius = 89)
 	MakePlanet(NaturalGas, Conditions = False)
 	MakePlanet(Supercarbons, Conditions = False)
 	MakePlanet(RareMetals, Conditions = False)
 	MakePlanet(Syrup, Conditions = False)
 
-System: Vis
-	Position: (-3456, 0, -4545)
+System: Aerarius
+	Position: (-3456, 0, -17545)
 	MakeStar(Temperature = 2345, Radius = 45)
 	MakePlanet(Salts, Conditions = False)
 	MakePlanet(RareMetals, Conditions = False)
 	MakePlanet(Supercarbons, Conditions = False)
 	MakePlanet(Iron, Conditions = False)
 	MakePlanet(RareMetals, Conditions = False)
+	MakeAsteroidBelt(Count = 80, Cargo = Ore, Cargo Amount = 5:1000, Distribution Chance = 0.0, Count Modifier = -75:75)
+
+System: Copia
+	Position: (-1500, 0, 12000)
+	MakeStar(Temperature = 9345, Radius = 123)
+	MakePlanet(RareMetals, Conditions = False)
+	MakePlanet(Gems, Conditions = False)
+	MakePlanet(Iron, Conditions = False)
+	MakePlanet(Neutronium, Conditions = False)
+	MakePlanet(RareMetals, Conditions = False)
+	MakePlanet(NaturalGas, Conditions = False)
+	MakeAsteroidBelt(Count = 80, Cargo = Ore, Cargo Amount = 5:1000, Distribution Chance = 0.0, Count Modifier = -75:75)

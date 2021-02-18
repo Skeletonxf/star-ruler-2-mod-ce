@@ -12,6 +12,8 @@ import empire_ai.EmpireAI;
 import empire_ai.weasel.War;
 import victory;
 import settings.game_settings;
+import artifacts;
+from objects.Artifact import createArtifact;
 #section all
 
 #section server
@@ -83,6 +85,14 @@ class CampaignScenarioState {
 			return null;
 		}
 		return createOrbital(pos, definition, emp);
+	}
+
+	Artifact@ spawnArtifact(const vec3d& pos, const string& type = "") {
+		const ArtifactType@ definition = getArtifactType(type);
+		if (definition is null) {
+			return null;
+		}
+		return createArtifact(pos, definition);
 	}
 
 	void spawnBuilding(Planet@ planet, vec2i pos, const string& type = "", bool develop = true) {

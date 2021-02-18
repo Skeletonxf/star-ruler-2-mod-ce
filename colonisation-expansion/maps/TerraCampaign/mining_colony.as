@@ -51,12 +51,15 @@ class MiningColonyScenario : CampaignScenarioState {
 	Ship@ playerShip;
 	bool playerDead = false;
 	bool lostColonies = false;
+	bool suppliedDyson = false;
+	bool selectedMiner = false;
 	bool won = false;
 	double lastTickedMiningShips = -55;
 	// avoid computing some things when we immediately reopen a save because
 	// not everything is initialised instantly
 	double gameTimeAtLastSave = 0;
-	bool enemyLastEffort = false;
+	double enemyKickstarted = 0;
+	double enemyLastEffort = 0;
 
 	MiningColonyScenario() {
 		@player = getEmpire(0);
@@ -88,8 +91,8 @@ class MiningColonyScenario : CampaignScenarioState {
 				triggerDefeat();
 			}
 
-			if (getEmpireFleetCount(enemy) == 0) {
-				if (enemyLastEffort) {
+			if (getEmpireFleetCount(enemy) == 0 && enemyKickstarted != 0 && gameTime > enemyKickstarted + 10) {
+				if (enemyLastEffort != 0 && gameTime > enemyLastEffort + 10) {
 					completeCampaignScenario("MiningColony");
 					won = true;
 					triggerVictory();
@@ -116,8 +119,18 @@ class MiningColonyScenario : CampaignScenarioState {
 						triggerVictory();
 					} else {
 						spawnFleet(enemy, spawnPlanet.position + vec3d(60.0,0.0,60.0), "Armored Heavy Carrier", 300);
-						enemyLastEffort = true;
+						spawnFleet(enemy, spawnPlanet.position + vec3d(-60.0,0.0,-60.0), "Armored Heavy Carrier", 300);
+						spawnFleet(enemy, spawnPlanet.position + vec3d(60.0,0.0,-60.0), "Armored Heavy Carrier", 300);
+						enemyLastEffort = gameTime;
 					}
+				}
+			}
+
+			if (!suppliedDyson) {
+				auto@ ore = getCargoType("Ore");
+				Planet@ dyson = planet(0, 6);
+				if (dyson !is null && ore !is null) {
+					suppliedDyson = dyson.getCargoStored(ore.id) > 0;
 				}
 			}
 		}
@@ -153,6 +166,15 @@ class MiningColonyScenario : CampaignScenarioState {
 				}
 			}
 		}
+
+		if (enemyKickstarted == 0 && (suppliedDyson || gameTime > 3 * 60)) {
+			for (uint i = 0; i < 3; ++i) {
+				spawnFleet(enemy, planet(1,1).position + vec3d(-40.0,0.0,40.0), "Dreadnaught", 0);
+				spawnFleet(enemy, planet(2,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 0);
+				spawnFleet(enemy, planet(3,0).position + vec3d(80.0,0.0,0.0), "Dreadnaught", 0);
+			}
+			enemyKickstarted = gameTime;
+		}
 	}
 
 	/**
@@ -169,11 +191,18 @@ class MiningColonyScenario : CampaignScenarioState {
 			planet(0, 0).addCargo(ore.id, 5321);
 			planet(0, 1).addCargo(ore.id, 7819);
 			planet(0, 2).addCargo(ore.id, 3786);
+			planet(0, 3).addCargo(ore.id, 9355);
 		}
+		// spawn some comets for the player to use
+		spawnArtifact(planet(0,1).position + vec3d(randomd(-40, 40),0.0,randomd(-40, 40)), "Comet");
+		spawnArtifact(planet(0,0).position + vec3d(randomd(-40, 40),0.0,randomd(-40, 40)), "Comet");
+		spawnArtifact(planet(0,2).position + vec3d(randomd(-40, 40),0.0,randomd(-40, 40)), "Comet");
+		spawnArtifact(planet(0,3).position + vec3d(randomd(-40, 40),0.0,randomd(-40, 40)), "Comet");
+		spawnArtifact(planet(0,0).position + vec3d(randomd(-40, 40),0.0,randomd(-40, 40)), "Comet");
+		spawnArtifact(planet(0,1).position + vec3d(randomd(-40, 40),0.0,randomd(-40, 40)), "Comet");
 		spawnBuilding(planet(0, 2), vec2i(2, 3), "Factory");
 		spawnBuilding(planet(0, 2), vec2i(5, 4), "Factory");
 		populate(planet(0, 3), player, 3.0);
-		populate(planet(0, 4), enemy, 5.0);
 		populate(planet(0, 5), player, 1.0, exportTo=planet(0, 3));
 		spawnBuilding(planet(0, 3), vec2i(1, 1), "Hydrogenator");
 		spawnBuilding(planet(0, 3), vec2i(4, 1), "Factory");
@@ -183,75 +212,31 @@ class MiningColonyScenario : CampaignScenarioState {
 		if (forestation !is null) {
 			planet(0, 3).addCargo(forestation.id, 90);
 		}
-		for (uint i = 1; i < systems.length; i++) {
-			uint j = 0;
-			Planet@ pl = planet(i, j);
-			while (pl !is null) {
-				populate(pl, enemy, 3.0);
-				j += 1;
-				@pl = planet(i, j);
-			}
-		}
-
-		// setup some exports for vultri to get them going
-		// oil and titanium to uranium
-		planet(3, 0).exportResource(enemy, 0, planet(3, 1));
-		planet(1, 1).exportResource(enemy, 0, planet(3, 1));
-		populate(planet(3, 1), enemy, 5.0);
-		// natural gas and rate metals to supercarbons
-		planet(4, 0).exportResource(enemy, 0, planet(4, 1));
-		planet(4, 2).exportResource(enemy, 0, planet(4, 1));
-		populate(planet(4, 1), enemy, 5.0);
-		// get their hydroconductors to level 3
-		planet(1, 4).exportResource(enemy, 0, planet(1, 3));
-		planet(2, 4).exportResource(enemy, 0, planet(2, 3));
-		populate(planet(2, 3), enemy, 5.0);
-		planet(2, 3).exportResource(enemy, 0, planet(1, 3));
-		planet(3, 0).exportResource(enemy, 0, planet(1, 3));
-		populate(planet(1, 3), enemy, 7.0);
-		// for some reason the AI just doesn't setup exports
-		planet(3, 3).exportResource(enemy, 0, planet(3, 1));
-		planet(5, 1).exportResource(enemy, 0, planet(5, 2));
-		planet(5, 4).exportResource(enemy, 0, planet(5, 2));
-		planet(0, 4).exportResource(enemy, 0, planet(1, 3));
-		planet(2, 1).exportResource(enemy, 0, planet(1, 3));
-		planet(2, 2).exportResource(enemy, 0, planet(1, 3));
-		planet(5, 3).exportResource(enemy, 0, planet(1, 3));
-		planet(1, 0).exportResource(enemy, 0, planet(1, 3));
-		planet(1, 2).exportResource(enemy, 0, planet(1, 3));
-
-		// setup defense for some planets because the AI is
-		// quite slow to do this automatically
-		enemy.setDefending(planet(0, 4), true);
-		enemy.setDefending(planet(1, 3), true);
-		enemy.setDefending(planet(2, 3), true);
-		enemy.setDefending(planet(3, 1), true);
-		enemy.setDefending(planet(4, 0), true);
-		enemy.setDefending(planet(5, 4), true);
+		populate(planet(1, 3), enemy, 12.0);
+		spawnBuilding(planet(1, 3), vec2i(2, 3), "FTLStorage");
+		spawnBuilding(planet(1, 3), vec2i(6, 4), "FTLBreeder");
+		populate(planet(3, 1), enemy, 12.0);
+		spawnBuilding(planet(3, 1), vec2i(2, 3), "FTLStorage");
+		spawnBuilding(planet(3, 1), vec2i(5, 5), "FTLBreeder");
 
 		removeStartingIncomes();
 		for (uint i = 0; i < empires.length; i++) {
 			empires[i].modFTLStored(+250);
 			empires[i].modTotalBudget(+200);
 		}
-		// equipping the player with eco busting carpet bombs means the vultri's
-		// eco will take a big hit, so give the AI some leeway to stay able to
-		// buy countermeasures over time
-		empires[2].modTotalBudget(+500);
+		enemy.modFTLIncome(+0.1);
+		enemy.modTotalBudget(+500);
 
 		@playerShip = spawnFleet(player, planet(0,3).position + vec3d(180.0,0.0,0.0), "Heavy Carrier Bomber", 0);
 		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,40.0), "Heavy Carrier Bomber", 0);
-		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,40.0), "Heavy Carrier Bomber", 0);
-		spawnFleet(player, planet(0,3).position + vec3d(40.0,0.0,-40.0), "Heavy Carrier Bomber", 0);
-		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,-40.0), "Heavy Carrier Bomber", 0);
+		spawnFleet(player, vec3d(400.0,0.0,400.0), "Miner", 0);
+		spawnFleet(player, vec3d(400.0,0.0,-300.0), "Miner", 0);
+		spawnFleet(player, vec3d(-400.0,0.0,-400.0), "Miner", 0);
 		playerShip.addStatus(getStatusID("Leader"));
-		spawnOrbital(player, vec3d(440.0,0.0,440.0), "TradeOutpost");
+		spawnOrbital(player, vec3d(640.0,0.0,740.0), "TradeOutpost");
+		spawnOrbital(player, vec3d(0.0,0.0,0.0), "DysonSphere");
 
-		spawnFleet(enemy, planet(1,1).position + vec3d(-40.0,0.0,40.0), "Dreadnaught", 0);
-		spawnFleet(enemy, planet(2,1).position + vec3d(-40.0,0.0,-40.0), "Dreadnaught", 0);
-		spawnFleet(enemy, planet(3,0).position + vec3d(80.0,0.0,0.0), "Dreadnaught", 0);
-
-		spawnOrbital(ally, vec3d(-440.0,0.0,-440.0), "TradeOutpost");
+		spawnOrbital(ally, vec3d(-740.0,0.0,-840.0), "TradeOutpost");
 		spawnFleet(ally, planet(0,2).position + vec3d(120.0,0.0,-120.0), "Miner", 0);
 		spawnFleet(ally, planet(0,2).position + vec3d(-120.0,0.0,120.0), "Miner", 0);
 		spawnFleet(ally, planet(0,2).position + vec3d(-120.0,0.0,-120.0), "Miner", 0);
@@ -266,12 +251,16 @@ class MiningColonyScenario : CampaignScenarioState {
 		file << playerShip;
 		file << lastTickedMiningShips;
 		file << enemyLastEffort;
+		file << suppliedDyson;
+		file << enemyKickstarted;
 	}
 
 	void load(SaveFile& file) {
 		file >> playerShip;
 		file >> lastTickedMiningShips;
 		file >> enemyLastEffort;
+		file >> suppliedDyson;
+		file >> enemyKickstarted;
 	}
 }
 #section all
@@ -406,7 +395,12 @@ class Scenario : Map {
 	}
 
 	void initDialogue() {
-		// MINING_COLONY_INTRO -> MINING_COLONY_INTRO2
+		// MINING_COLONY_INTRO ->
+		// |
+		// |--> MINING_COLONY_INTRO2 when select mining ship
+		// |
+		// |--> MINING_COLONY_INTRO3 when follow instructions to supply dyson
+		// |---> MINING_COLONY_INTRO4 when click through
 		// |
 		// |--> MINING_COLONY_VICTORY if win game
 		// |
@@ -415,12 +409,16 @@ class Scenario : Map {
 		// |--> MINING_COLONY_PLAYER_DEAD if player dies
 		Dialogue("MINING_COLONY_INTRO")
 			.newObjective
-			// skippable means the player can click through this dialogue
-			// onto the next one before passing any of the checks which,
-			// combined with the objective passing skipping this dialogue
-			// automatically, creates divergent dialogue pathing
-			.checker(1, CheckVictory(this)._or_(CheckPlayerDead(this)._or_(CheckLostColonies(this))), skippable = true);
+			.checker(1, CheckVictory(this)._or_(CheckPlayerDead(this)._or_(CheckLostColonies(this)))._or_(CheckMiningShipSelected()));
 		Dialogue("MINING_COLONY_INTRO2")
+			.newObjective
+			.checker(1, CheckVictory(this)._or_(CheckPlayerDead(this)._or_(CheckLostColonies(this))._or_(CheckDysonSupplied(this))._or_(CheckMiningShipOrdered())));
+		// skippable means the player can click through this dialogue
+		// onto the next one before passing any of the checks which
+		Dialogue("MINING_COLONY_INTRO3")
+			.newObjective
+			.checker(1, CheckVictory(this)._or_(CheckPlayerDead(this)._or_(CheckLostColonies(this))), skippable = true);
+		Dialogue("MINING_COLONY_INTRO4")
 			.newObjective
 			.checker(1, CheckVictory(this)._or_(CheckPlayerDead(this)._or_(CheckLostColonies(this))));
 		Dialogue("MINING_COLONY_VICTORY")
@@ -430,17 +428,6 @@ class Scenario : Map {
 			.newObjective
 			.checker(1, CheckPlayerDead(this));
 		Dialogue("MINING_COLONY_PLAYER_DEAD");
-
-
-		/* Dialogue("TUT_DSG")
-			.checker(1, GUIChecker("Tutorial.Tutorial::CheckDesignEdit"))
-			.onPass(GUIAction("Tutorial.Tutorial::ShowDesigns"));
-		Dialogue("TUT_DSG2");
-		Dialogue("TUT_DSG3")
-			.checker(1, GUIChecker("Tutorial.Tutorial::CheckDesignArmor"));
-		Dialogue("TUT_DSG4")
-			.checker(1, GUIChecker("Tutorial.Tutorial::CheckDesignBulkhead"))
-			.checker(2, GUIChecker("Tutorial.Tutorial::CheckDesignSaved")); */
 	}
 
 #section all
@@ -480,6 +467,62 @@ class CheckVictory : CEObjectiveCheck {
 			return false;
 		}
 		return scenario.state.won;
+	}
+};
+
+class CheckDysonSupplied : CEObjectiveCheck {
+	Scenario@ scenario;
+	CheckDysonSupplied(Scenario@ scenario) { @this.scenario = scenario; }
+
+	bool check() {
+		if (scenario.state is null) {
+			return false;
+		}
+		return scenario.state.suppliedDyson;
+	}
+};
+
+class CheckMiningShipSelected : CEObjectiveCheck {
+	CheckMiningShipSelected() {}
+
+	bool check() {
+		for (uint i = 0, cnt = playerEmpire.fleetCount; i < cnt; ++i) {
+			if (playerEmpire.fleets[i].selected) {
+				Ship@ ship = cast<Ship>(playerEmpire.fleets[i]);
+				if (ship is null) {
+					continue;
+				}
+				const Design@ dsg = ship.blueprint.design;
+				if (dsg.name == "Miner") {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+};
+
+class CheckMiningShipOrdered : CEObjectiveCheck {
+	CheckMiningShipOrdered() {}
+
+	bool check() {
+		auto@ ore = getCargoType("Ore");
+		if (ore is null) {
+			return false;
+		}
+		for (uint i = 0, cnt = playerEmpire.fleetCount; i < cnt; ++i) {
+			Ship@ ship = cast<Ship>(playerEmpire.fleets[i]);
+			if (ship is null) {
+				continue;
+			}
+			const Design@ dsg = ship.blueprint.design;
+			if (dsg.name == "Miner") {
+				if (ship.isLoopingOrders() && ship.hasCargoPickupOrder(ore.id, checkQueued = true) && ship.hasAnyCargoDropoffOrder(checkQueued = true)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 };
 #section all

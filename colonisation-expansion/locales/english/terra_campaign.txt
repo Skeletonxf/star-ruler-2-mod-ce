@@ -66,56 +66,76 @@ MINING_COLONY_PLAYER_EMP: 5th Terra Expedition
 MINING_COLONY_ALLY_EMP: Terra Mining Colony
 MINING_COLONY_ENEMY_EMP: Vultri
 
-MINING_COLONY_NAME: Mining Colony Attack
+MINING_COLONY_NAME: Mining Colony
 MINING_COLONY_DESC: <<|
 	[b]2463 CE:[/b]
 
 	[i]The following message was received from the Terra mining colony directed
 	to the commander of the 5th Terra Expedition.[/i]
 
-	[offset=20][color=#ddd]Help! One shift we were directing some mining ships
-	remotely and the next half our fleet was gone and we've lost some of our
-	mining bases. Please get rid of these invaders.
+	[offset=20][color=#ddd]We heard you are leading the next expedition force.
+	Great! The mining colony you'll pass through on your way is in need of
+	attention.
 
-	They won't even communicate with us. We sent a message over radio waves
-	to ask what they wanted and all they replied with was "Vultri". We could
-	have saved ourselves a small fortune if we didn't bother taking a universal
-	translator.
+	Our miners don't really understand what they're doing, they're mining ore
+	but not sending it anywhere. Please stop by and sort things out for us.
 
-	If you don't come soon we'll have to evacuate and that will [b]not[/b]
-	go down well with your superiors. I don't care if you're supposed to be
-	leading some kind of expedition. You're the only commander willing to
-	travel through hyperspace and we don't have the time for a sublight
-	response.
+	Also there seems to be some kind of self replicating non organic activity
+	in the edges of the colony. You should probably check that out while you're
+	here.
 	[/color][/offset]
 >>
 
-MINING_COLONY_INTRO_TITLE: Mining Colony Rescue
+MINING_COLONY_INTRO_TITLE: Mining Colony
 MINING_COLONY_INTRO_TEXT: <<|
 	[i]General Nova:[/i]
 
-	You've been assigned 5 state of the art hyperdrive fleets to take back
-	control of the mining base. Losing a few more mining colonies in the
-	conflict is fine but if you lose all of them we'll be in serious trouble.
+	Look, I know fixing up some mismanaged mining colony might not be the most
+	glamorous start to your career, but we all have to start somewhere.
 
-	We travelled light to get here in time, you'll want to retrofit your
-	fleets to be more heavily armored. Starting with your own flagship, of
-	course. Can't run an expedition if you're dead after all.
+	The colonists seemed to forget that dyson swarms need continual ore
+	supplies to operate at full efficiency. You're been donated several mining
+	ships to fix up this colony with.
+
+	Start by selecting one of your mining ships near the dyson.
 >>
 
-MINING_COLONY_INTRO2_TITLE: Tips and tricks
+MINING_COLONY_INTRO2_TITLE: Dysons need ore
 MINING_COLONY_INTRO2_TEXT: <<|
 	[i]General Nova:[/i]
 
-	The colonists have informed us that the invaders are particularly
-	vulnerable to planetary bombardment, so each of your fleets are loaded
-	with the stuff. I recommend bombarding their tier 1 and 2 planets
-	immediately to delevel them and weaken the invaders' economy.
+	With a mining ship selected, right click it and tell it to 'Loop Subsequent
+	Orders'. Then right click Avarita IV, and tell it to 'Pickup Ore.
+	With the ship still selected, hold shift then right click Avarita VII and
+	tell it to 'Transfer All Ore'.
+>>
 
-	Keep in mind that while seiging a planet will [b]remove[/b] it from the
-	Vultri's economy entirely, capturing will consume more supplies than just
-	carpet bombing down to 1 population, as carpet bombs will keep firing
-	even while you capture.
+MINING_COLONY_INTRO3_TITLE: Exploration
+MINING_COLONY_INTRO3_TEXT: <<|
+	[i]General Nova:[/i]
+
+	Now your energy production is in full operation you may as well explore.
+	All that energy will be useful for getting water out of the comets lying
+	around.
+
+	If there are hostiles just get rid of them and try not to lose all our
+	planets. Mining ships are cheap enough to replace but if we lose all our
+	colonies we'll be set back tremendously.
+>>
+
+MINING_COLONY_INTRO4_TITLE: Hostiles
+MINING_COLONY_INTRO4_TEXT: <<|
+	[i]General Nova:[/i]
+
+	Before any combat you'll want to retrofit your fleets to be
+	more heavily armored. Starting with your own flagship, of course. Can't
+	run an expedition if you're dead after all
+
+	[i]Add more armor to the Heavy Carrier Bomber design in the design tab,
+	click save, select your flagship, and then right click Avarita IV and select
+	'Retrofit Fleet'. Do not move the flagship out of the system until the
+	retrofit is finished.
+	[/i]
 >>
 
 MINING_COLONY_LOST_TITLE: In retreat
