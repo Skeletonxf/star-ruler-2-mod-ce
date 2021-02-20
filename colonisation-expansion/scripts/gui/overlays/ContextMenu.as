@@ -1665,7 +1665,7 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 	}
 
 	// LeaderAI order looping toggle
-	if(selected.owner.controlled && selected.hasLeaderAI) {
+	if(selected !is null && selected.owner.controlled && selected.hasLeaderAI) {
 		if (!selected.isLoopingOrders()) {
 			addOption(menu, selected, clicked, locale::START_LOOP_ORDERS,
 					SetLooping(selected, true));
