@@ -1665,13 +1665,13 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 	}
 
 	// LeaderAI order looping toggle
-	if(clicked.owner.controlled && clicked.hasLeaderAI) {
-		if (!clicked.isLoopingOrders()) {
+	if(selected.owner.controlled && selected.hasLeaderAI) {
+		if (!selected.isLoopingOrders()) {
 			addOption(menu, selected, clicked, locale::START_LOOP_ORDERS,
-					SetLooping(clicked, true));
+					SetLooping(selected, true));
 		} else {
 			addOption(menu, selected, clicked, locale::STOP_LOOP_ORDERS,
-					SetLooping(clicked, false));
+					SetLooping(selected, false));
 		}
 	}
 	// [[ MODIFY BASE GAME END ]]
