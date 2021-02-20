@@ -12,8 +12,10 @@ Status: DysonSphere
 	GloballyVisible()
 	AddPlanetGfxFlag(DysonSphere)
 
+	CE_status_hooks::MarkRequiresOre()
 	CE_cargo_hooks::SetCargoStorage(2000)
 	SetSystemFlag(RingworldFlag)
+	ModEmpireAttribute(ActiveDysons, Add, 1)
 Status: DysonSphereUpgrade
 	Visible To: Nobody
 	Collapses: True

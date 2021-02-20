@@ -31,6 +31,9 @@ import bool switchToTab(TabCategory cat) from "tabs.tabbar";
 const Sprite EXPORT_ARROW(spritesheet::ContextIcons, 0);
 const Sprite COLONIZE_ICON(spritesheet::ContextIcons, 1);
 const Sprite IMPORT_ARROW(spritesheet::ContextIcons, 2);
+// [[ MODIFY BASE GAME START ]]
+const Sprite SUPPLY_DYSONS(spritesheet::PlanetType, 14);
+// [[ MODIFY BASE GAME END ]]
 TradePath pathCheck;
 
 #include "include/resource_constants.as"
@@ -834,6 +837,15 @@ class AutoMine : SingleSelectionOption {
 	}
 }
 
+class AutoSupply : SingleSelectionOption {
+	void call(Object@ obj) {
+		if(obj is null || !obj.hasCargo || !obj.hasLeaderAI || !obj.owner.controlled) {
+			return;
+		}
+		obj.addAutoSupplyOrder(clicked, shiftKey);
+	}
+}
+
 class Chase : SingleSelectionOption {
 	void call(Object@ obj) {
 		if(obj is null) {
@@ -1634,6 +1646,20 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 					AutoMine(),
 					automineAbility.icon
 				);
+			}
+
+			if (playerEmpire.ActiveDysons > 0 && selected.hasStatusEffect(canTakeCargoStatusID) && selected.hasStatusEffect(canGiveCargoStatusID)) {
+				const CargoType@ ore = getCargoType("Ore");
+				if (ore !is null && clicked.getCargoStored(ore.id) > 0) {
+					addOption(
+						menu,
+						selected,
+						clicked,
+						locale::AUTO_SUPPLY_ORDER,
+						AutoSupply(),
+						SUPPLY_DYSONS
+						);
+				}
 			}
 		}
 	}

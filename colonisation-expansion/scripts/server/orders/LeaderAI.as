@@ -17,6 +17,7 @@ from orders.WaitOrder import WaitOrder;
 // [[ MODIFY BASE GAME START ]]
 from orders.CargoOrder import CargoOrder;
 from orders.AutoMineOrder import AutoMineOrder;
+from orders.AutoSupplyOrder import AutoSupplyOrder;
 from orders.ChaseOrder import ChaseOrder;
 from orders.ConsumePlanetOrder import ConsumePlanetOrder;
 from orders.LoopOrder import LoopOrder;
@@ -271,6 +272,9 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 				break;
 				case OT_AutoMine:
 					@ord = AutoMineOrder(msg);
+				break;
+				case OT_AutoSupply:
+					@ord = AutoSupplyOrder(msg);
 				break;
 				case OT_Chase:
 					@ord = ChaseOrder(msg);
@@ -1554,6 +1558,14 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 			return;
 		}
 		addOrder(obj, AutoMineOrder(targ), append);
+		obj.wake();
+	}
+
+	void addAutoSupplyOrder(Object& obj, Object& targ, bool append) {
+		if (obj.owner !is targ.owner) {
+			return;
+		}
+		addOrder(obj, AutoSupplyOrder(targ), append);
 		obj.wake();
 	}
 

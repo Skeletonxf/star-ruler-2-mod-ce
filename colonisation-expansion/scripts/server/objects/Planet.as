@@ -80,6 +80,7 @@ tidy class PlanetScript {
 		// [[ MODIFY BASE GAME START ]]
 		file << planet.delayFTL;
 		file << planet.allowPathlessImport;
+		file << planet.requiresOre;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -164,6 +165,7 @@ tidy class PlanetScript {
 		// [[ MODIFY BASE GAME START ]]
 		file >> planet.delayFTL;
 		file >> planet.allowPathlessImport;
+		file >> planet.requiresOre;
 		// [[ MODIFY BASE GAME END ]]
 	}
 

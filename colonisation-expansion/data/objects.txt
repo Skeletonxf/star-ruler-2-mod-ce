@@ -123,8 +123,11 @@ visible:
 	double Health = 1000000000
 	double MaxHealth = 1000000000
 	// [[ MODIFY BASE GAME START ]]
+	// Note, these additions are server side only, the client doesn't get updates
+	// over netcode about these, because it doesn't need to know them
 	bool delayFTL = false
 	int allowPathlessImport = 0;
+	int requiresOre = 0;
 	// [[ MODIFY BASE GAME END ]]
 
 	local safe uint get_moonCount() const;

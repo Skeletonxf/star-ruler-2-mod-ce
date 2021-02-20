@@ -25,5 +25,5 @@ Module: DysonSphere
 	ConsumeCargo(Ore, 5000)
 	LimitOncePerSystem(RingworldFlag, Any Empire = True)
 	OnEnable(Destroy())
-	OnEnable(SpawnPlanet(DysonSphere, Owned = True, Add Status = DysonSphere, Radius = 300, Physics = False))
+	OnEnable(SpawnPlanet(DysonSphere, Owned = True, Add Status = DysonSphere, Radius = 200, Physics = False))
 	RequireCloseToStar()

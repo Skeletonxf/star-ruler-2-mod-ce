@@ -197,4 +197,8 @@ visible:
 	// variable for upgrading mothership pop bonus labor through research tech
 	attribute double MothershipPopBonusLabor = 1;
 	// [[ MODIFY BASE GAME END ]]
+	// [[ MODIFY BASE GAME START ]]
+	// dyson utilities
+	attribute double ActiveDysons = 0;
+	// [[ MODIFY BASE GAME END ]]
 }
