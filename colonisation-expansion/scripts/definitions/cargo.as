@@ -14,6 +14,9 @@ tidy final class CargoType {
 	string ident;
 	string name;
 	string description;
+	// [[ MODIFY BASE GAME START ]]
+	bool dropsOnDeath = false;
+	// [[ MODIFY BASE GAME END ]]
 	Sprite icon;
 	Color color;
 
@@ -352,15 +355,15 @@ void addCargoType(CargoType@ type) {
 
 void loadCargo(const string& filename) {
 	ReadFile file(filename, false);
-	
+
 	string key, value;
 	CargoType@ type;
-	
+
 	uint index = 0;
 	while(file++) {
 		key = file.key;
 		value = file.value;
-		
+
 		if(key.equals_nocase("Cargo")) {
 			@type = CargoType();
 			type.ident = value;
@@ -385,6 +388,11 @@ void loadCargo(const string& filename) {
 		else if(key.equals_nocase("Storage Size")) {
 			type.storageSize = toDouble(value);
 		}
+		// [[ MODIFY BASE GAME START ]]
+		else if(key.equals_nocase("Drops On Death")) {
+			type.dropsOnDeath = toBool(value);
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 }
 

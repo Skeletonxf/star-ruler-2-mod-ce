@@ -136,10 +136,10 @@ tidy class Cargo : CargoStorage, Component_Cargo {
 			double cargoStored = getCargoStored(i);
 			if (cargoStored > 0) {
 				const CargoType@ type = getCargoType(i);
-				if (type is null) {
+				if (type is null || !type.dropsOnDeath) {
 					continue;
 				}
-				Asteroid@ roid = createAsteroid(obj.position, delay=true);
+				Asteroid@ roid = createAsteroid(obj.position + vec3d(randomd(-20, 20), 0.0, randomd(-20, 20)), delay=true);
 				Region@ reg = obj.region;
 				if(reg !is null) {
 					roid.orbitAround(reg.position);

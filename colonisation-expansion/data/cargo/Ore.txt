@@ -1,0 +1,5 @@
+Cargo: Ore
+	Name: #C_ORE
+	Description: #C_ORE_DESC
+	Icon: ResourceIconsSmall::65
+	Drops On Death: True

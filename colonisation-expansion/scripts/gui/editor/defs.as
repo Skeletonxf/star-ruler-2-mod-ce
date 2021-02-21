@@ -942,6 +942,9 @@ class CargoFile : FileDef {
 			field("Icon", AT_Sprite, "", doc="Icon used to display the cargo.");
 			field("Color", AT_Color, "", doc="Color used to display the cargo.");
 			field("Storage Size", AT_Decimal, "1.0", doc="Size of one unit of this cargo in cargo storage.");
+			// [[ MODIFY BASE GAME START ]]
+			field("Drops On Death", AT_Boolean, "False", doc="Whether this cargo is dropped as an asteroid if the object carrying it is destroyed.");
+			// [[ MODIFY BASE GAME END ]]
 	}
 
 	void onChange() {
