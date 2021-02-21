@@ -49,8 +49,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - battleworld QoL changes
     - finish port to CP
     - Fix bug with outposts getting repeat entries in the in-combat quickbar
-  - Add special order to fill all the empire's dysons up with ore
-    - essentially just a special case for manually queueing loop, pickup, transfer to each but should make micro easier
   - Teach AI to not put comets on worlds being razed
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget

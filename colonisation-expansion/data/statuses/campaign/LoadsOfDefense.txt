@@ -1,3 +1,3 @@
 Status: LoadsOfDefense
 	Visible To: Nobody
-	AddLocalDefense(40)
+	AddLocalDefense(10, Owned Space Only = True)

@@ -226,6 +226,7 @@ class MiningColonyScenario : CampaignScenarioState {
 		}
 		enemy.modFTLIncome(+0.1);
 		enemy.modTotalBudget(+500);
+		player.modTotalBudget(+500);
 
 		@playerShip = spawnFleet(player, planet(0,3).position + vec3d(180.0,0.0,0.0), "Heavy Carrier Bomber", 0);
 		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,40.0), "Heavy Carrier Bomber", 0);
