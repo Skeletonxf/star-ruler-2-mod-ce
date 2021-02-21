@@ -157,7 +157,7 @@ tidy class OrbitalScript {
 				file >> cast<Savable>(obj.Cargo);
 			}
 		}
-		
+
 		if(file >= SV_0108)
 			file >> cast<Savable>(obj.Mover);
 		else
@@ -787,7 +787,7 @@ tidy class OrbitalScript {
 	void destroy(Orbital& obj) {
 		if(obj.inCombat && !game_ending)
 			playParticleSystem("ShipExplosion", obj.position, obj.rotation, obj.radius, obj.visibleMask);
-	
+
 		for(uint i = 0, cnt = sections.length; i < cnt; ++i) {
 			auto@ sec = sections[i];
 			if(sec.enabled)
@@ -805,6 +805,10 @@ tidy class OrbitalScript {
 		}
 		@node = null;
 
+		// [[ MODIFY BASE GAME START ]]
+		if(obj.hasCargo)
+			obj.destroyCargo();
+		// [[ MODIFY BASE GAME END ]]
 		leaveRegion(obj);
 		obj.destroyObjResources();
 		if(obj.hasConstruction)
@@ -876,7 +880,7 @@ tidy class OrbitalScript {
 			combatTimer = 20.f;
 		else
 			combatTimer -= 1.f;
-		
+
 		obj.inCombat = combatTimer > 0.f;
 		obj.engaged = false;
 
@@ -892,7 +896,7 @@ tidy class OrbitalScript {
 				prevFleet = rad;
 			}
 		}
-		
+
 		if(obj.hasLeaderAI)
 			obj.updateFleetStrength();
 
@@ -910,7 +914,7 @@ tidy class OrbitalScript {
 								@target = leader;
 						}
 					}
-					
+
 					//Order a random support to assist
 					uint cnt = obj.supportCount;
 					if(cnt > 0) {
@@ -1004,11 +1008,11 @@ tidy class OrbitalScript {
 				uint cnt = obj.supportCount;
 				if(cnt > 0) {
 					uint ind = randomi(0,cnt-1);
-					
+
 					Object@ sup = obj.supportShip[ind];
 					if(sup !is null)
 						sup.supportInterfere(lastHitBy, obj);
-					
+
 					if(cnt > 1) {
 						@sup = obj.supportShip[ind+1];
 						if(sup !is null)
@@ -1016,7 +1020,7 @@ tidy class OrbitalScript {
 					}
 				}
 			}
-			
+
 			@lastHitBy = evt.obj;
 		}
 
@@ -1085,7 +1089,7 @@ tidy class OrbitalScript {
 			double recover = time * ((MaxHealth + MaxArmor) / RECOVERY_TIME);
 			if(obj.inCombat)
 				recover *= COMBAT_RECOVER_RATE;
-			
+
 			if(Health < MaxHealth) {
 				double take = min(recover, MaxHealth - Health);
 				Health = clamp(Health + take, 0, MaxHealth);

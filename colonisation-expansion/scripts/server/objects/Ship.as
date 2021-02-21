@@ -832,6 +832,10 @@ tidy class ShipScript {
 				ship.owner.TotalFlagshipsActive -= 1;
 		}
 
+		// [[ MODIFY BASE GAME START ]]
+		if(ship.hasCargo)
+			ship.destroyCargo();
+		// [[ MODIFY BASE GAME END ]]
 		ship.blueprint.destroy(ship);
 		if(ship.hasStatuses)
 			ship.destroyStatus();

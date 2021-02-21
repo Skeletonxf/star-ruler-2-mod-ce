@@ -1,4 +1,7 @@
 import cargo;
+// [[ MODIFY BASE GAME START ]]
+from objects.Asteroid import createAsteroid;
+// [[ MODIFY BASE GAME END ]]
 
 tidy class Cargo : CargoStorage, Component_Cargo {
 	void getCargo() {
@@ -126,4 +129,26 @@ tidy class Cargo : CargoStorage, Component_Cargo {
 		delta = false;
 		return true;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void destroyCargo(Object& obj) {
+		for(uint i = 0; i < getCargoTypeCount(); i++) {
+			double cargoStored = getCargoStored(i);
+			if (cargoStored > 0) {
+				const CargoType@ type = getCargoType(i);
+				if (type is null) {
+					continue;
+				}
+				Asteroid@ roid = createAsteroid(obj.position, delay=true);
+				Region@ reg = obj.region;
+				if(reg !is null) {
+					roid.orbitAround(reg.position);
+					roid.orbitSpin(randomd(20.0, 60.0));
+				}
+				roid.addCargo(i, randomd(0.5, 1) * cargoStored);
+				roid.initMesh();
+			}
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
 };

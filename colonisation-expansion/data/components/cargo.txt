@@ -27,6 +27,9 @@ server:
 
 	void writeCargo(Message& msg) const;
 	bool writeCargoDelta(Message& msg) const;
+	// [[ MODIFY BASE GAME START ]]
+	void destroyCargo();
+	// [[ MODIFY BASE GAME END ]]
 
 shadow:
 	void readCargo(Message& msg);

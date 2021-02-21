@@ -221,6 +221,9 @@ tidy class PlanetScript {
 			}
 		}
 
+		// [[ MODIFY BASE GAME START ]]
+		planet.destroyCargo();
+		// [[ MODIFY BASE GAME END ]]
 		planet.destroyConstruction();
 		planet.destroyObjResources();
 		planet.destroySurface();
