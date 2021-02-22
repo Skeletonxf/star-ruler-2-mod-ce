@@ -3,5 +3,5 @@ Status: Leader
 	Description: #EXPEDITION_LEADER_DESC
 	Icon: LeaderIcon
 	Color: #bbf7ff
-	AddFleetEffectiveness(0.2)
+	AddFleetEffectiveness(0.4)
 	CountAsPlanet()

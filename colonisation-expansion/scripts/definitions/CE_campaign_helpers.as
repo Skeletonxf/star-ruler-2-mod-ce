@@ -148,7 +148,7 @@ class CampaignScenarioState {
 		Object@ obj;
 		while (receive(objs, obj)) {
 			Ship@ ship = cast<Ship>(obj);
-			if (ship !is null) {
+			if (ship !is null && ship.getFleetMaxStrength() > 5000.0) {
 				total += 1;
 			}
 		}
