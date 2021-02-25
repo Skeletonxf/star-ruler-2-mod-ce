@@ -37,7 +37,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Ship constructible support supply free
   - Planetary shielding in some way
   - Make auto import refresh when resources on already colonised planets become available
-  - Make all methods of griefing a planet with 'terraforming' not work while the planet is in combat. If you want to annex and trash a planet you should have to use Microcline or actually hold it for a reasonable amount of time.
+  - Make nebulae griefing not work while the planet is in combat.
   - Tweak tractor default design
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
   - Add better UI for when attempting to export/import resources and you can't
@@ -46,9 +46,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Rework the Flying trait downside so it is less severe
   - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Constructions for Gas Giants to make them more useful late game
-  - battleworld QoL changes
-    - finish port to CP
-    - Fix bug with outposts getting repeat entries in the in-combat quickbar
   - Teach AI to not put comets on worlds being razed
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget

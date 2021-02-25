@@ -2,10 +2,9 @@ Construction: Fracture
 	Name: Fracture Planet
 	Icon: ConditionIcons::2 * ffff00
 	Build Cost: 1500
-	Time Cost: 180
 	Description: #FRACTURE_PLANET_DESC
 	Category: Development
-	ModAttribute(PlanetsFractured, Add, 1)
+	Time Cost: 1
 	RequireNotStatus(MinimalDevelopment)
 	RequireNotStatus(ArtificialPlanetoid)
 	RequireNotStatus(Ringworld)
@@ -17,8 +16,14 @@ Construction: Fracture
 	OnStart(AddStatus(Fracturing))
 	RequirePlanetNotBiome(Floating)
 	RequirePlanetNotBiome(Photovoltics)
-	CE_biome_hooks::SpawnDamagedPlanet(Resource = FracturedPlanet, Owned = True, Add Status = FracturedPlanetSpawn)
 	ConsumeEnergy(750)
 	RequirePlanetNotBiome(Atmosphere)
-	Destroy(Quiet = True)
 	RequirePlanet()
+Construction: CancelFracture
+	Name: #CANCEL_FRACTURE
+	Description: #CANCEL_FRACTURE_DESC
+	Icon: ConditionIcons::2 * ff0000
+	Category: Emergency
+	RequirePlanet()
+	RemoveStatus(Fracturing)
+	RequireStatus(Fracturing)

@@ -1,10 +1,10 @@
 Construction: CreateWater
 	Name: #CREATE_WATER
 	Description: #CREATE_WATER_DESC
-	Time Cost: 240
 	Build Cost: 2000
 	Category: Terraforming
 	Icon: DesignationIcons::2 * ffaaff
+	Time Cost: 1
 	RequireNotTrait(Aquatic)
 	OnStart(AddStatus(CreatingWater))
 	OnCancel(RemoveStatus(CreatingWater))
@@ -16,13 +16,11 @@ Construction: CreateWater
 	CE_biome_hooks::RequireNotHomeworld()
 	RequireUnlockTag(CreateWater)
 	ConsumeEnergy(2000)
-	TerraformTo(Water)
-	AddStatus(WaterBiome, Max Stacks = 1)
 
 Construction: CreateWaterAquatic
 	Name: #CREATE_WATER
 	Description: #CREATE_WATER_DESC
-	Time Cost: 180
+	Time Cost: 1
 	Build Cost: 1500
 	Category: Terraforming
 	Icon: DesignationIcons::2 * ffaaff
@@ -37,5 +35,11 @@ Construction: CreateWaterAquatic
 	CE_biome_hooks::RequireNotHomeworld()
 	RequireUnlockTag(CreateWater)
 	ConsumeEnergy(1500)
-	TerraformTo(Water)
-	AddStatus(WaterBiome, Max Stacks = 1)
+Construction: CancelCreateWater
+	Name: #CANCEL_CREATE_WATER
+	Description: #CANCEL_CREATE_WATER_DESC
+	Icon: DesignationIcons::2 * ff0000
+	Category: Emergency
+	RemoveStatus(CreatingWater)
+	RequireStatus(CreatingWater)
+	RequirePlanet()

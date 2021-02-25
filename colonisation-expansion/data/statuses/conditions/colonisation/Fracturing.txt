@@ -1,2 +1,12 @@
 Status: Fracturing
+	Name: #FRACTURING
+	Description: #FRACTURING_DESC
+	Icon: ConditionIcons::2 * ffff00
+	Color: #fffa77
+	CE_if_hooks::IfTimeOutsideCombat(180, AddStatus(Fracture))
+Status: Fracture
 	Visible To: Nobody
+	OnEnable(Destroy(Quiet = True))
+	OnEnable(CE_biome_hooks::SpawnDamagedPlanet(Resource = FracturedPlanet, Owned = True, Add Status = FracturedPlanetSpawn))
+	OnEnable(ModAttribute(PlanetsFractured, Add, 1))
+	IsTriggerStatus()

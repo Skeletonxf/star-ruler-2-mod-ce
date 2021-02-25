@@ -1,2 +1,13 @@
 Status: CreatingWater
+	Name: #CREATING_WATER
+	Description: #CREATING_WATER_DESC
+	Icon: DesignationIcons::2 * ffaaff
+	Color: #a0e2ff
+	CE_if_hooks::IfTimeOutsideCombat(180, AddStatus(CreateWater))
+Status: CreateWater
 	Visible To: Nobody
+	OnEnable(CE_empire_effects::NotifyOwnerMessage(#CREATE_WATER_NOTIFICATION))
+	OnEnable(AddStatus(WaterBiome, Max Stacks = 1))
+	OnEnable(TerraformTo(Water))
+	OnEnable(RemoveStatus(CreatingWater))
+	IsTriggerStatus()

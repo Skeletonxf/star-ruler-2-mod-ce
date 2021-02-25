@@ -49,3 +49,15 @@ EXPOSE_CORE_DESC: <<
 EXPOSE_CORE: Expose Molten Core
 CREATE_WATER: Synthesise Water
 CREATE_WATER_DESC: Using a ludicrous amount of energy, hydrogen and oxygen we can create enough water for an entire planet, at the cost of the mostly controlled explosion [color=#f00]losing all the planet's existing resources.[/color]
+CANCEL_FRACTURE: Abort Fracture
+CANCEL_FRACTURE_DESC: <<
+	Cancels the fracturing process, preventing the planet from being fractured
+
+	Does not refund the cost.
+>>
+CANCEL_CREATE_WATER: Abort Water Synthesis
+CANCEL_CREATE_WATER_DESC: <<
+	Cancels the water synthesis process, preventing the planet from being terraformed.
+
+	Does not refund the cost.
+>>

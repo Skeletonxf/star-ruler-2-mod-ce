@@ -6,3 +6,5 @@ Status: CreatingNebulae
 	DelayFTL()
 Status: CreatingNebulaeInRegion
 	Visible To: Nobody
+Status: CreateNebulae
+	Visible To: Nobody

@@ -1,3 +1,4 @@
 Status: FracturedPlanetSpawn
 	Visible To: Nobody
 	AddPlanetResource(LocalAsteroidField)
+	OnEnable(CE_empire_effects::NotifyOwnerMessage(#FRACTURE_NOTIFICATION))
