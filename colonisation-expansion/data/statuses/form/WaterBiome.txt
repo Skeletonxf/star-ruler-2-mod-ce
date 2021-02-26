@@ -1,3 +1,3 @@
 Status: WaterBiome
-	Description: Added when a planet contains a water biome
+	Description: Added when a planet contains a water biome (managed by the SurfaceComponent)
 	Visible To: Nobody

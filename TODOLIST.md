@@ -44,7 +44,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Investigate what happens to civilian trade ships when target is in deep space
   - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands
   - Rework the Flying trait downside so it is less severe
-  - Add a conditions flag to SpawnPlanet hook to avoid spawning dyson spheres with conditions
   - Constructions for Gas Giants to make them more useful late game
   - Teach AI to not put comets on worlds being razed
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked

@@ -25,6 +25,7 @@ from objects.Anomaly import createAnomaly;
 from objects.Artifact import createArtifact;
 from objects.Oddity import createNebula;
 from empire import Creeps;
+import CE_biome_statuses;
 #section all
 
 //MakeStar(<Temperature>, <Radius> = 100, <Position> = (0, 0, 0), Suffix = "")
@@ -581,22 +582,22 @@ class MakePlanet : MapHook {
 		// check each of the three biomes instead to determine suitability
 		if (gas.boolean) {
 			if (ice_giant) {
-				planet.addStatus(getStatusID("FrozenIce"));
+				// Biome tied statuses are now managed by the surface component
+				/* planet.addStatus(getStatusID("FrozenIce")); */
 				planet.addStatus(getStatusID("IceGiant"));
 			} else {
 				planet.addStatus(getStatusID("GasGiant"));
 			}
 		} else {
-			// FIXME: these checks should not be ran on artificial planet
-			// spawns like dyson spheres
 			uint ice = getBiomeID("Ice");
 			uint ocean = getBiomeID("Oceanic");
-			if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean) {
+			// Biome tied statuses are now managed by the surface component
+			/* if (biome1.id == ocean || biome2.id == ocean || biome3.id == ocean) {
 				planet.addStatus(getStatusID("WaterBiome"));
 			}
 			if (biome1.id == ice || biome2.id == ice || biome3.id == ice) {
 				planet.addStatus(getStatusID("FrozenIce"));
-			}
+			} */
 			if (gameTime < 60 && conditions.boolean) {
 				// only apply native and primitive life to planets generated
 				// at game start, not later through artifacts or expeditions

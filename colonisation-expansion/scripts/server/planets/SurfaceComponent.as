@@ -17,6 +17,7 @@ from components.ObjectManager import getDefenseDesign;
 // [[ MODIFY BASE GAME START ]]
 from statuses import getStatusID;
 import CE_array_map;
+import CE_biome_statuses;
 // [[ MODIFY BASE GAME END ]]
 import bool getCheatsEverOn() from "cheats";
 const string TAG_SUPPORT("Support");
@@ -367,6 +368,10 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 
 		++SurfaceModId;
 		originalSurfaceSize = grid.size;
+
+		// [[ MODIFY BASE GAME START ]]
+		refreshBiomeStatuses(obj, biome0, biome1, biome2);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void addSurfaceArea(Object& obj, vec2i size, uint biome, uint voidBiome, bool separate, bool developed, bool vertical) {
@@ -389,6 +394,10 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		grid.addSurfaceArea(size, addBiomes, voidBiome, developed, vertical);
 
 		++SurfaceModId;
+
+		// [[ MODIFY BASE GAME START ]]
+		refreshBiomeStatuses(obj, biome0, biome1, biome2);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void regenSurface(Object& obj, int width, int height, uint biomeCount) {
@@ -413,6 +422,19 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 
 		++SurfaceModId;
 		originalSurfaceSize = grid.size;
+
+		// [[ MODIFY BASE GAME START ]]
+		// If regenning surface to fewer biomes, don't let the biome1 and biome2
+		// values end up as something they shouldn't be, clear them out to 0
+		// as this is what they should be set to on reload
+		if (biomeCount == 1) {
+			biome1 = 0;
+		}
+		if (biomeCount <= 2) {
+			biome2 = 0;
+		}
+		refreshBiomeStatuses(obj, biome0, biome1, biome2);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	uint get_Biome0() {
@@ -599,6 +621,10 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			biome1 = biomes[1].id;
 		if(biomes.length >= 3)
 			biome2 = biomes[2].id;
+
+		// [[ MODIFY BASE GAME START ]]
+		refreshBiomeStatuses(obj, biome0, biome1, biome2);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	// [[ MODIFY BASE GAME START ]]
@@ -638,8 +664,17 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			@grid.baseBiome = new_biome;
 		}
 
-		// Swap the biome
-		@biomes[index_change] = new_biome;
+		// Swap the biome(s)
+		//@biomes[index_change] = new_biome;
+		if (biome0 == old_id && biomes.length >= 1) {
+			@biomes[0] = new_biome;
+		}
+		if (biome1 == old_id && biomes.length >= 2) {
+			@biomes[1] = new_biome;
+		}
+		if (biome2 == old_id && biomes.length >= 3) {
+			@biomes[2] = new_biome;
+		}
 
 		// Update the grid of tiles
 		for (uint tile = 0, cnt = grid.biomes.length; tile < cnt; ++tile) {
@@ -657,6 +692,10 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			biome1 = biomes[1].id;
 		if(biomes.length >= 3)
 			biome2 = biomes[2].id;
+
+		// [[ MODIFY BASE GAME START ]]
+		refreshBiomeStatuses(obj, biome0, biome1, biome2);
+		// [[ MODIFY BASE GAME END ]]
 	}
 	// [[ MODIFY BASE GAME END ]]
 
@@ -684,6 +723,10 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			biome1 = biomes[1].id;
 		if(biomes.length >= 3)
 			biome2 = biomes[2].id;
+
+		// [[ MODIFY BASE GAME START ]]
+		refreshBiomeStatuses(obj, biome0, biome1, biome2);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void removeFinalSurfaceRows(Object& obj, uint rows = 1) {
@@ -706,6 +749,10 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		grid.tileBuildings.length = grid.size.x * grid.size.y;
 
 		++SurfaceModId;
+
+		// [[ MODIFY BASE GAME START ]]
+		refreshBiomeStatuses(obj, biome0, biome1, biome2);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void stealFinalSurfaceRowsFrom(Object& obj, Object& other, uint rows = 1, uint voidBiome = uint(-1)) {
@@ -784,6 +831,10 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		other.removeFinalSurfaceRows(rows);
 
 		++SurfaceModId;
+
+		// [[ MODIFY BASE GAME START ]]
+		refreshBiomeStatuses(obj, biome0, biome1, biome2);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void changeSurfaceTerritory(Territory@ prev, Territory@ terr) {

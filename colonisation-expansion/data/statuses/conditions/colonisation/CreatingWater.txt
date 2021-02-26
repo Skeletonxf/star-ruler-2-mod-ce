@@ -7,7 +7,7 @@ Status: CreatingWater
 Status: CreateWater
 	Visible To: Nobody
 	OnEnable(CE_empire_effects::NotifyOwnerMessage(#CREATE_WATER_NOTIFICATION))
-	OnEnable(AddStatus(WaterBiome, Max Stacks = 1))
+	//OnEnable(AddStatus(WaterBiome, Max Stacks = 1))
 	OnEnable(TerraformTo(Water))
 	OnEnable(RemoveStatus(CreatingWater))
 	IsTriggerStatus()

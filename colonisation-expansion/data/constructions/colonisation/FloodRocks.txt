@@ -11,7 +11,7 @@ Construction: FloodRocks
 	Category: Terraforming
 	RequireNotStatus(MinimalDevelopment)
 	RequireNotTrait(NoResourceUse)
-	AddStatus(WaterBiome, Max Stacks = 1)
+	//AddStatus(WaterBiome, Max Stacks = 1)
 	RequirePlanetBiome(Oceanic)
 	RequirePlanet()
 	ConsumeEnergy(250)
