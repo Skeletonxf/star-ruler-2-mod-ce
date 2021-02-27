@@ -158,7 +158,7 @@ final class AIBehavior {
 	//How many colonizations at most we can be doing at once
 	uint maxConcurrentColonizations = UINT_MAX;
 	//Whether this AI will colonize planets in systems owned by someone else
-	// TODO: This should be partially ignored for border systems, so it can try to aggressively expand into the border
+	// These are partially ignored for border systems, so it can try to aggressively expand into the border
 	bool colonizeEnemySystems = false;
 	bool colonizeNeutralOwnedSystems = false;
 	bool colonizeAllySystems = false;

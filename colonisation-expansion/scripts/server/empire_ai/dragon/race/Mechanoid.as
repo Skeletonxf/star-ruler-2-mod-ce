@@ -484,6 +484,23 @@ class Mechanoid2 : Race, ColonizationAbility {
 	// We save our state in our save and load methods
 	void saveManager(SaveFile& file) {}
 	void loadManager(SaveFile& file) {}
+
+	bool canSafelyColonize(SystemAI@ sys) {
+		// seenPresent is a cache of the PlanetsMask of this system
+		uint presentMask = sys.seenPresent;
+		bool isOwned = presentMask & ai.mask != 0;
+		if (isOwned) {
+			return true;
+		} else {
+			if(!ai.behavior.colonizeEnemySystems && (presentMask & ai.enemyMask) != 0)
+				return true; // FTLing pop is pretty safe
+			if(!ai.behavior.colonizeNeutralOwnedSystems && (presentMask & ai.neutralMask) != 0)
+				return true;
+			if(!ai.behavior.colonizeAllySystems && (presentMask & ai.allyMask) != 0)
+				return false; // lets be nice to our allies
+			return true;
+		}
+	}
 };
 
 AIComponent@ createMechanoid2() {

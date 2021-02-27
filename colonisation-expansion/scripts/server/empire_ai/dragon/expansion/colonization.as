@@ -60,6 +60,13 @@ interface ColonizationAbility {
 
 	void saveManager(SaveFile& file);
 	void loadManager(SaveFile& file);
+
+	/**
+	 * Returns whether the AI can safely colonise a system, used to consider
+	 * if we should expand into enemy territory (ie mono can always colonise
+	 * safely, but terrestrial empires might lose pop trying to do so).
+	 */
+	bool canSafelyColonize(SystemAI@ sys);
 }
 
 /**

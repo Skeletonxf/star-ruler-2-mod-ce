@@ -393,20 +393,11 @@ class ColonizeForest {
 		// seenPresent is a cache of the PlanetsMask of this system
 		uint presentMask = sys.seenPresent;
 		bool isOwned = presentMask & ai.mask != 0;
+		bool safeToColonize = expansion.colonyManagement.canSafelyColonize(sys);
 		// if we abort, return 1 because we don't want to bridge our way
 		// through this
-		if(!isOwned) {
-			// abort if not colonising enemy systems and we think the enemy
-			// has planets here
-			if(!ai.behavior.colonizeEnemySystems && (presentMask & ai.enemyMask) != 0)
-				return 1;
-			// abort if not colonising neutral systems and we think there are some???
-			if(!ai.behavior.colonizeNeutralOwnedSystems && (presentMask & ai.neutralMask) != 0)
-				return 1;
-			// abort if not colonising ally systems and an ally has planets here
-			// (this doesn't work for heralds obviously)
-			if(!ai.behavior.colonizeAllySystems && (presentMask & ai.allyMask) != 0)
-				return 1;
+		if(!safeToColonize) {
+			return 1;
 		}
 
 		// Add weighting to planets in systems we don't have any planets in,
@@ -473,7 +464,9 @@ class ColonizeForest {
 	void fillQueueFromRequests(Expansion& expansion, AI& ai) {
 		// look through the requests made to the Resources component
 		// and try to colonise to fill them
-		for(uint i = 0, cnt = expansion.resources.requested.length; i < cnt; ++i) {
+		// this loop can manipulate the list it loops through, so do NOT cache
+		// the length of the list
+		for(uint i = 0; i < expansion.resources.requested.length; ++i) {
 			ImportData@ req = expansion.resources.requested[i];
 			if(!req.isOpen)
 				continue;
@@ -509,7 +502,21 @@ class ColonizeForest {
 			ai.print("colonize for requested resource: "+request.spec.dump(), request.obj);
 		}
 		ResourceSpec@ spec = request.spec;
-		//Object@ requestingObject = request.obj;
+
+		// Get the PlanetAI for the object making this request
+		PlanetAI@ plAI = expansion.planets.getAI(cast<Planet>(request.obj));
+
+		if (plAI !is null) {
+			if (request.forLevel && plAI.targetLevel == plAI.requestedLevel && int(request.obj.level) == plAI.targetLevel) {
+				// looks like the planet acquired a dummy resource it hasn't
+				// properly factored in yet
+				if (LOG) {
+					ai.print("already met target level for requested resource: "+request.spec.dump(), request.obj);
+				}
+				expansion.resources.organizeImports(request.obj, plAI.targetLevel);
+				return;
+			}
+		}
 
 		Planet@ newColony;
 		double bestWeight = 0.0;
@@ -572,9 +579,6 @@ class ColonizeForest {
 			// TODO: Perhaps check if the planet is a Gas Giant first, as we should make a moon
 			// base if we need to build on them
 
-			// Get the PlanetAI for the object making this request
-			auto@ plAI = expansion.planets.getAI(cast<Planet>(request.obj));
-
 			if (plAI.obj is null)
 				return;
 
@@ -628,8 +632,8 @@ class ColonizeForest {
 					}
 				}
 			}
-			if (false) {
-				ai.print("failed to find target for requested resource: "+request.spec.dump());
+			if (LOG) {
+				ai.print("failed to find target for requested resource: "+request.spec.dump(), request.obj);
 			}
 		}
 	}

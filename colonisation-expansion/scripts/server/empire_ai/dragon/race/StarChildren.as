@@ -724,6 +724,23 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	double devalueEnergyCosts(double energyCost, double currentValue) {
 		return currentValue; // star children don't pay ice giant energy upkeep
 	}
+
+	bool canSafelyColonize(SystemAI@ sys) {
+		// seenPresent is a cache of the PlanetsMask of this system
+		uint presentMask = sys.seenPresent;
+		bool isOwned = presentMask & ai.mask != 0;
+		if (isOwned) {
+			return true;
+		} else {
+			if(!ai.behavior.colonizeEnemySystems && (presentMask & ai.enemyMask) != 0)
+				return ai.behavior.aggressive; // assume the worst, that this system is actually guarded
+			if(!ai.behavior.colonizeNeutralOwnedSystems && (presentMask & ai.neutralMask) != 0)
+				return ai.behavior.aggressive;
+			if(!ai.behavior.colonizeAllySystems && (presentMask & ai.allyMask) != 0)
+				return false; // lets be nice to our allies
+			return true;
+		}
+	}
 };
 
 AIComponent@ createStarChildren2() {

@@ -5,7 +5,7 @@ This is primarily intended as a developer focused project planning list, rather 
 - Bug list / issues to fix
   - Port interdict movement fixes to mod pack once stress tested in a few multiplayer games
   - Stress test teaching of dummy resources to the AI
-    - Can unhack Ancient AI components and CP once sure fully working
+    - Can unhack Ancient AI components and CP once sure fully working (right now it only mostly works for the happy path, the AI doesn't properly track dummy resources being added to objects it already owns)
   - Expansion AI Component
     - Reteach AI to colonise planets for non levelling purposes
     - Teach AI to make buildings following the existing hooks system for FTL capacity/income
@@ -60,7 +60,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Colonisation ships similar to Motherships for other races
   - AI code to build orbitals like Stations
   - Teach AI to scuttle unneeded FTL income orbitals
-  - Teach Mechanoid AI to use FTL Breeder Reactors
   - Consider what to do about the Star Children being locked out of a lot of things only available as buildings
     - Vanilla buildings that Star Children have no equivalents of
       - Megafarms, Hydrogenators, Research Complexes, Mueseums, Labor Storage, Space Elevator, Planetary Thruster

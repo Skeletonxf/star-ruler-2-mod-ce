@@ -541,8 +541,6 @@ final class Resources : AIComponent {
 			activeRequests.insertLast(req);
 		}
 
-		//TODO: This needs to be able to deal with dummy resources
-
 		//Match import requests with level requirements
 		array<ResourceSpec@> addSpecs;
 		const ResourceRequirements@ reqs = lvl.reqs;
