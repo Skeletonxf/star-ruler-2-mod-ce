@@ -74,6 +74,11 @@ class MiningColonyScenario : CampaignScenarioState {
 	}
 
 	void tick() {
+		if (gameTime <= gameTimeAtLastSave + 5) {
+			// things won't be reloaded in yet!
+			return;
+		}
+
 		if (gameTime > 5) {
 			if (getEmpirePlanetCount(enemy) == 0) {
 				completeCampaignScenario("MiningColony");
@@ -254,6 +259,7 @@ class MiningColonyScenario : CampaignScenarioState {
 		file << enemyLastEffort;
 		file << suppliedDyson;
 		file << enemyKickstarted;
+		file << gameTimeAtLastSave;
 	}
 
 	void load(SaveFile& file) {
@@ -262,6 +268,7 @@ class MiningColonyScenario : CampaignScenarioState {
 		file >> enemyLastEffort;
 		file >> suppliedDyson;
 		file >> enemyKickstarted;
+		file >> gameTimeAtLastSave;
 	}
 }
 #section all

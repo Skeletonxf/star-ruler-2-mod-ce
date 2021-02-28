@@ -213,6 +213,7 @@ final class PlanetAI {
 
 	// [[ MODIFY BASE GAME START ]]
 	bool underBombardment = false;
+	uint dummyResourceModID = 0;
 	// [[[ MODIFY BASE GAME END ]]]
 
 	void init(AI& ai, Planets& planets) {
@@ -227,6 +228,7 @@ final class PlanetAI {
 		// [[ MODIFY BASE GAME START ]]
 		file << failedToPlaceBuilding;
 		file << underBombardment;
+		file << dummyResourceModID;
 		// [[ MODIFY BASE GAME END ]]
 
 		uint cnt = 0;
@@ -246,6 +248,7 @@ final class PlanetAI {
 		// [[ MODIFY BASE GAME START ]]
 		file >> failedToPlaceBuilding;
 		file >> underBombardment;
+		file >> dummyResourceModID;
 		// [[ MODIFY BASE GAME END ]]
 		uint cnt = 0;
 		file >> cnt;
@@ -278,6 +281,17 @@ final class PlanetAI {
 		//Handle when the planet's native resources change
 		if(obj.nativeResourceCount != resources.length || (resources.length != 0 && obj.primaryResourceId != resources[0].resourceId))
 			planets.updateResourceList(obj, resources);
+
+		// [[ MODIFY BASE GAME START ]]
+		// Respond to gaining or losing dummy resources
+		if (dummyResourceModID != obj.dummyResourceModID) {
+			if (ai.log) {
+				ai.print("Found dummy resource change on "+obj.name);
+			}
+			dummyResourceModID = obj.dummyResourceModID;
+			planets.resources.organizeImports(obj, requestedLevel);
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		//Level up resources if we need them
 		if(resources.length != 0 && claimedChain is null) {

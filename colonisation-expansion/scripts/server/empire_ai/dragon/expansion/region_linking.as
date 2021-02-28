@@ -1,8 +1,8 @@
 import empire_ai.weasel.Planets;
 import empire_ai.weasel.Construction;
 import empire_ai.weasel.Resources;
+import empire_ai.dragon.expansion.colonization;
 import system_pathing;
-
 import orbitals;
 
 class LinkBuild {
@@ -29,6 +29,7 @@ class RegionLinking {
 	Resources@ resources;
 	Systems@ systems;
 	Budget@ budget;
+	ColonizationAbilityOwner@ colonization;
 
 	double lastCheckedRegionsLinked = 0;
 	const OrbitalModule@ outpost;
@@ -38,12 +39,13 @@ class RegionLinking {
 
 	array<LinkBuild@> linkBuilds;
 
-	RegionLinking(Planets@ planets, Construction@ construction, Resources@ resources, Systems@ systems, Budget@ budget) {
+	RegionLinking(Planets@ planets, Construction@ construction, Resources@ resources, Systems@ systems, Budget@ budget, ColonizationAbilityOwner@ colonization) {
 		@this.planets = planets;
 		@this.construction = construction;
 		@this.resources = resources;
 		@this.systems = systems;
 		@this.budget = budget;
+		@this.colonization = colonization;
 		@this.outpost = getOrbitalModule("TradeOutpost");
 		@this.starTemple = getOrbitalModule("Temple");
 	}
@@ -118,6 +120,10 @@ class RegionLinking {
 		if (alreadyMakingLinkAt(region, emp)) {
 			return;
 		}
+		bool colonizingForLink = colonization.requestColonyInRegion(region);
+		if (!force && colonizingForLink) {
+			return;
+		}
 		bool canAfford = force
 			|| (outpost !is null && budget.canSpend(BT_Development, outpost.buildCost, outpost.maintenance));
 		if (!canAfford) {
@@ -175,6 +181,7 @@ class RegionLinking {
 					|| (starTemple !is null && orbital.coreModule == starTemple.id))) {
 				totalOwnedOutpostsPresent += 1;
 			}
+			// TODO: Check outposts in the process of being built?
 		}
 
 		return totalOwnedOutpostsPresent > 0;

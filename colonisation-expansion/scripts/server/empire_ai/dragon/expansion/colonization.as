@@ -7,6 +7,17 @@ interface ColonizationAbilityOwner {
 	 * A listener for when we fail to colonise a target.
 	 */
 	void onColonizeFailed(Planet@ target);
+
+	/**
+	 * Asks the owner of the colonisation ability to colonise in a region
+	 * (used for requesting colonisations to establish trade links).
+	 *
+	 * Returns true if the region doesn't need a new colony, or one has already
+	 * been added to the queue. Returns false if the region does need a new
+	 * colony and one cannot be added to the queue (eg if there's no planets
+	 * to colonise either a target or colonise from).
+	 */
+	bool requestColonyInRegion(Region@ region);
 }
 
 /**

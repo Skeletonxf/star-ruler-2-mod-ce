@@ -461,6 +461,15 @@ class ColonizeForest {
 		return false;
 	}
 
+	// Checks if any planet in a region is in the queue
+	bool isQueuedForColonizing(Region& region) {
+		for(uint i = 0, cnt = queue.length; i < cnt; ++i) {
+			if(queue[i].target !is null && queue[i].target.region is region)
+				return true;
+		}
+		return false;
+	}
+
 	void fillQueueFromRequests(Expansion& expansion, AI& ai) {
 		// look through the requests made to the Resources component
 		// and try to colonise to fill them
@@ -502,21 +511,6 @@ class ColonizeForest {
 			ai.print("colonize for requested resource: "+request.spec.dump(), request.obj);
 		}
 		ResourceSpec@ spec = request.spec;
-
-		// Get the PlanetAI for the object making this request
-		PlanetAI@ plAI = expansion.planets.getAI(cast<Planet>(request.obj));
-
-		if (plAI !is null) {
-			if (request.forLevel && plAI.targetLevel == plAI.requestedLevel && int(request.obj.level) == plAI.targetLevel) {
-				// looks like the planet acquired a dummy resource it hasn't
-				// properly factored in yet
-				if (LOG) {
-					ai.print("already met target level for requested resource: "+request.spec.dump(), request.obj);
-				}
-				expansion.resources.organizeImports(request.obj, plAI.targetLevel);
-				return;
-			}
-		}
 
 		Planet@ newColony;
 		double bestWeight = 0.0;
@@ -578,6 +572,9 @@ class ColonizeForest {
 			}
 			// TODO: Perhaps check if the planet is a Gas Giant first, as we should make a moon
 			// base if we need to build on them
+
+			// Get the PlanetAI for the object making this request
+			PlanetAI@ plAI = expansion.planets.getAI(cast<Planet>(request.obj));
 
 			if (plAI.obj is null)
 				return;
@@ -698,6 +695,77 @@ class ColonizeForest {
 	}
 
 	/**
+	 * Colonizes to occupy a region, to allow for a trade link to be established
+	 *
+	 * Will always return null and not queue a colonize if the region already has
+	 * planets owned by the empire.
+	 */
+	ColonizeTree@ queueColonizeForOccupyRegion(Region@ region, Expansion& expansion, AI& ai) {
+		if (region is null) {
+			return null;
+		}
+
+		SystemAI@ sys = expansion.systems.getAI(region);
+		if (sys is null) {
+			return null;
+		}
+		if (!sys.explored) {
+			return null;
+		}
+		uint presentMask = sys.seenPresent;
+		bool isOwned = presentMask & ai.mask != 0;
+		bool safeToColonize = expansion.colonyManagement.canSafelyColonize(sys);
+		if (isOwned || !safeToColonize) {
+			return null;
+		}
+
+		array<PotentialColonizeSource@> potentialColonies;
+		uint plCnt = sys.planets.length;
+		for (uint n = 0; n < plCnt; ++n) {
+			Planet@ pl = sys.planets[n];
+			Empire@ visOwner = pl.visibleOwnerToEmp(ai.empire);
+			if(!pl.valid || visOwner.valid) {
+				if (visOwner is ai.empire) {
+					return null;
+				}
+				continue;
+			}
+			if (expansion.isColonizing(pl)) {
+				continue;
+			}
+			if(expansion.penaltySet.contains(pl.id)) // probably a remnant in the way
+				continue;
+			if(pl.quarantined)
+				continue;
+
+			PotentialColonizeSource@ p = PotentialColonizeSource(pl, resourceValuator);
+			potentialColonies.insertLast(p);
+		}
+
+		Planet@ newColony;
+		// for occupying a region, we are willing to colonise a planet that is
+		// otherwise worthless, but we still have a limit to how negative the
+		// weight may be.
+		double bestWeight = -1.0;
+
+		for (uint i = 0, cnt = potentialColonies.length; i < cnt; ++i) {
+			PotentialColonizeSource@ p = potentialColonies[i];
+			if (p.weight > bestWeight) {
+				@newColony = p.pl;
+				bestWeight = p.weight;
+			}
+		}
+
+		if (newColony !is null) {
+			ai.print("found colonize target for region: "+region.name, newColony);
+			ColonizeTree@ node = ColonizeTree(newColony);
+			queue.insertLast(node);
+			return node;
+		}
+		return null;
+	}
+
+	/**
 	 * Pops the oldest planet off the queue
 	 */
 	ColonizeTree@ pop() {
@@ -789,7 +857,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@race = cast<RaceColonization>(ai.race);
 		@colonyManagement = TerrestrialColonization(planets, ai);
 		@planetManagement = PlanetManagement(planets, budget, this, this, ai, log);
-		@regionLinking = RegionLinking(planets, construction, resources, systems, budget);
+		@regionLinking = RegionLinking(planets, construction, resources, systems, budget, this);
 
 		@scalableClass = getResourceClass("Scalable");
 	}
@@ -1163,6 +1231,24 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			resources.dumpRequests();
 			resources.dumpAvailable();
 		}
+	}
+
+	bool requestColonyInRegion(Region@ region) {
+		if (region is null)
+			return true;
+		SystemAI@ sys = systems.getAI(region);
+		if (sys is null || !sys.explored)
+			return true;
+		uint presentMask = sys.seenPresent;
+		bool isOwned = presentMask & ai.mask != 0;
+		if (isOwned)
+			return true;
+		if (isColonizing(region))
+			return true;
+		if (!colonyManagement.canSafelyColonize(sys))
+			return false;
+
+		return queue.queueColonizeForOccupyRegion(region, this, ai) !is null;
 	}
 
 	// Checks we have obtained vision of all the systems 1 hop from our border
@@ -1716,6 +1802,15 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				return true;
 		}
 		return queue.isQueuedForColonizing(pl);
+	}
+
+	// Checks if any planet in a region is being colonized or is in the queue
+	bool isColonizing(Region& region) {
+		for(uint i = 0, cnt = colonizing.length; i < cnt; ++i) {
+			if(colonizing[i].target !is null && colonizing[i].target.region is region)
+				return true;
+		}
+		return queue.isQueuedForColonizing(region);
 	}
 
 	void abortColonize(ColonizeData2@ data, bool avoidRetry=false) {

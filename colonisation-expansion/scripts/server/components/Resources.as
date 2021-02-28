@@ -116,6 +116,9 @@ tidy class ObjectResources : Component_Resources, Savable {
 	// Remove Transmuter before Terraforming
 	// Grain + Water --Transmuter-> Base Materials --Remove Transmuter-> Grain + Water
 	array<uint> rememberedResources;
+
+	// Add an explicit dummy resource mod counter for the AI to use
+	uint DummyResourceModId = 0;
 	// [[ MODIFY BASE GAME END ]]
 
 	ObjectResources() {}
@@ -177,6 +180,8 @@ tidy class ObjectResources : Component_Resources, Savable {
 		file << rememberedResources.length;
 		for(uint i = 0; i < rememberedResources.length; ++i)
 			file << rememberedResources[i];
+
+		file << DummyResourceModId;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -259,6 +264,8 @@ tidy class ObjectResources : Component_Resources, Savable {
 		rememberedResources.length = resourcesRemembered;
 		for(uint i = 0; i < rememberedResources.length; ++i)
 			file >> rememberedResources[i];
+
+		file >> DummyResourceModId;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -532,9 +539,18 @@ tidy class ObjectResources : Component_Resources, Savable {
 			return;
 		availableResources.modAmount(type, amount);
 		++ResourceModId;
+		// [[ MODIFY BASE GAME START ]]
+		++DummyResourceModId;
+		// [[ MODIFY BASE GAME END ]]
 		deltaRes = true;
 		checkResources(obj, manual);
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	uint get_dummyResourceModID() {
+		return DummyResourceModId;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void createResource(Object& obj, uint resource) {
 		addResource(obj, resource);

@@ -117,6 +117,10 @@ server:
 	safe double getCivilianTimer();
 	void setCivilianTimer(double time);
 
+	// [[ MODIFY BASE GAME START ]]
+	safe uint get_dummyResourceModID() const;
+	// [[ MODIFY BASE GAME END ]]
+
 shadow:
 	void readResourceDelta(Message& msg);
 	void readResources(Message& msg);

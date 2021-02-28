@@ -5,9 +5,10 @@ This is primarily intended as a developer focused project planning list, rather 
 - Bug list / issues to fix
   - Port interdict movement fixes to mod pack once stress tested in a few multiplayer games
   - Stress test teaching of dummy resources to the AI
-    - Can unhack Ancient AI components and CP once sure fully working (right now it only mostly works for the happy path, the AI doesn't properly track dummy resources being added to objects it already owns)
+    - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
   - Expansion AI Component
     - Reteach AI to colonise planets for non levelling purposes
+      - Getting there in terms of trade link establishing, but still need pressure based colony code
     - Teach AI to make buildings following the existing hooks system for FTL capacity/income
     - Teach AI how to deal with all of its focuses having requirements it can't meet
     - Scuttle outposts which have ended up in a different region to where the AI created them
