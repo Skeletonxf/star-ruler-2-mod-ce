@@ -5,6 +5,29 @@ import empire_ai.dragon.expansion.colonization;
 import system_pathing;
 import orbitals;
 
+class AvoidOutpostMarker {
+	Region@ region;
+	/**
+	 * Minimum game time to consider making outposts in this region again
+	 */
+	double until;
+
+	void save(SaveFile& file) {
+		file << region;
+		file << until;
+	}
+
+	AvoidOutpostMarker(Region@ region, double until) {
+		@this.region = region;
+		this.until = until;
+	}
+
+	AvoidOutpostMarker(SaveFile& file) {
+		file >> region;
+		file >> until;
+	}
+}
+
 class LinkBuild {
 	Region@ region;
 	AllocateConstruction@ build;
@@ -21,8 +44,8 @@ class LinkBuild {
  *
  * No more abusing the AI by boxing it in!
  */
-// TODO: Create penalties for regions where we tried and failed to build an
-// outpost so we don't try again immediately
+// TODO: We should actually keep track of the outposts we've made so we can respond
+// to them being attacked or tractored out of their position
 class RegionLinking {
 	Planets@ planets;
 	Construction@ construction;
@@ -38,6 +61,12 @@ class RegionLinking {
 	const OrbitalModule@ commerceStation; // TODO
 
 	array<LinkBuild@> linkBuilds;
+
+	// list of penalties that will stop us outposting regions we recently
+	// failed at doing so
+	array<AvoidOutpostMarker@> penalties;
+	// a set of the ids in penalties
+	set_int penaltySet;
 
 	RegionLinking(Planets@ planets, Construction@ construction, Resources@ resources, Systems@ systems, Budget@ budget, ColonizationAbilityOwner@ colonization) {
 		@this.planets = planets;
@@ -59,7 +88,8 @@ class RegionLinking {
 		if (lastCheckedRegionsLinked + 20 < gameTime) {
 			checkRegionsLinked(ai);
 		}
-		checkLinkBuilds();
+		checkLinkBuilds(ai);
+		updatePenalties();
 	}
 
 	void checkRegionsLinked(AI& ai) {
@@ -124,6 +154,9 @@ class RegionLinking {
 		if (!force && colonizingForLink) {
 			return;
 		}
+		if (penaltySet.contains(region.id)) {
+			return; // probably enemy ships guarding
+		}
 		bool canAfford = force
 			|| (outpost !is null && budget.canSpend(BT_Development, outpost.buildCost, outpost.maintenance));
 		if (!canAfford) {
@@ -172,6 +205,11 @@ class RegionLinking {
 
 		// the AI has an annoying habit of forgetting about things it actually
 		// enqueued previously, check we don't actually have an outpost here already
+		// TODO: Are outposts in the process of being built/activated not being noticed here?
+		return getOutposts(region, empire) > 0;
+	}
+
+	uint getOutposts(Region@ region, Empire@ empire) {
 		uint totalOrbitals = region.orbitalCount;
 		uint totalOwnedOutpostsPresent = 0;
 		for (uint i = 0; i < totalOrbitals; i++) {
@@ -181,19 +219,38 @@ class RegionLinking {
 					|| (starTemple !is null && orbital.coreModule == starTemple.id))) {
 				totalOwnedOutpostsPresent += 1;
 			}
-			// TODO: Check outposts in the process of being built?
 		}
-
-		return totalOwnedOutpostsPresent > 0;
+		return totalOwnedOutpostsPresent;
 	}
 
-	void checkLinkBuilds() {
+	void checkLinkBuilds(AI& ai) {
 		for (uint i = 0, cnt = linkBuilds.length; i < cnt; ++i) {
 			AllocateConstruction@ build = linkBuilds[i].build;
 			// TODO: We should probably manually timeout builds here as there
 			// doesn't seem to be any automatic timeout in Construction.as
 			if (build is null || build.completed) {
+				if (linkBuilds[i].region !is null && getOutposts(linkBuilds[i].region, ai.empire) == 0) {
+					// did it get shot down?
+					ai.print("Outpost missing in "+linkBuilds[i].region.name);
+					double nextAllowedOutpostTime = gameTime + ai.behavior.colonizePenalizeTime;
+					AvoidOutpostMarker@ penalty = AvoidOutpostMarker(linkBuilds[i].region, nextAllowedOutpostTime);
+					penalties.insertLast(penalty);
+					penaltySet.insert(penalty.region.id);
+				}
 				linkBuilds.removeAt(i);
+				--i; --cnt;
+			}
+		}
+	}
+
+	void updatePenalties() {
+		for (uint i = 0, cnt = penalties.length; i < cnt; ++i) {
+			AvoidOutpostMarker@ penalty = penalties[i];
+			if (penalty.region is null || gameTime > penalty.until) {
+				penalties.removeAt(i);
+				if (penalty.region !is null) {
+					penaltySet.erase(penalty.region.id);
+				}
 				--i; --cnt;
 			}
 		}
@@ -207,6 +264,11 @@ class RegionLinking {
 			construction.saveConstruction(file, linkBuilds[i].build);
 			file << linkBuilds[i].region;
 		}
+		cnt = penalties.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			penalties[i].save(file);
+		}
 	}
 
 	void load(SaveFile& file) {
@@ -219,6 +281,14 @@ class RegionLinking {
 			file >> region;
 			if (build !is null && region !is null) {
 				linkBuilds.insertLast(LinkBuild(build, region));
+			}
+		}
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			AvoidOutpostMarker@ penalty = AvoidOutpostMarker(file);
+			if (penalty.region !is null) {
+				penalties.insertLast(penalty);
+				penaltySet.insert(penalty.region.id);
 			}
 		}
 	}
