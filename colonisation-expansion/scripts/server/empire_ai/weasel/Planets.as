@@ -285,7 +285,7 @@ final class PlanetAI {
 		// [[ MODIFY BASE GAME START ]]
 		// Respond to gaining or losing dummy resources
 		if (dummyResourceModID != obj.dummyResourceModID) {
-			if (ai.log) {
+			if (false) {
 				ai.print("Found dummy resource change on "+obj.name);
 			}
 			dummyResourceModID = obj.dummyResourceModID;
