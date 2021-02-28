@@ -16,7 +16,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Apply conditions AI hooks to all applicable statuses
     - Implement custom ColonizeAbility interface for Ancient AI empires
     - Make sure star children motherships run away from danger while on habitat missions!
-    - Allow the AI to leapfrog over one system that isn't in their border if they are struggling to find a resource
+    - Allow the AI to leapfrog over systems that aren't in their border if they are struggling to find a resource
       - Should help them avoid making megafarms when they just need to expand into more food
     - Make AI consolidate labor at one shipyard, not multiple
     - Refine Mechanoid ColonizeAbility to avoid building too many pops if going into debt
