@@ -1328,8 +1328,12 @@ class BreakExcessFoodImports : BonusEffect {
 			return;
 		}
 		// consider the level of the planet as what is currently is, or
-		// its resource level, whichever is higher (assume players will
-		// want to level planets up to their resource level)
+		// its resource level, whichever is higher
+		// TODO: It would be nice if we could consider the level the planet
+		// would be at ignoring factors like population instead of reyling
+		// on just level and resourceLevel. There are edge cases here where a
+		// planet with all the imports to get to level 3 autounexports a third
+		// food resource beacuse it was only at level 2 due to population.
 		int level = max(planet.level, planet.resourceLevel);
 		if (level < 0) {
 			return;
@@ -1340,24 +1344,22 @@ class BreakExcessFoodImports : BonusEffect {
 		PlanetLevel@ currentLevel = chain.levels[level];
 		const ResourceClass@ foodClass = getResourceClass("Food");
 		uint foodNeededForCurrentLevel = 0;
-		// go through each level of the chain up to the current level of
-		// the planet
-		for (uint i = 0, metLevels = uint(level); i <= metLevels; ++i) {
-			PlanetLevel@ levelRow = chain.levels[i];
-			if (levelRow is null) {
-				continue;
-			}
-			// get requirements for this level
-			ResourceRequirements requirements = levelRow.reqs;
-			ResourceRequirement@[] reqs = requirements.reqs;
-			// go through each requirement
-			for (uint j = 0, jcnt = reqs.length; j < jcnt; ++j) {
-				ResourceRequirement@ requirement = reqs[j];
-				// not sure what the difference is between these two
-				if (requirement.type == RRT_Class || requirement.type == RRT_Class_Types) {
-					if (requirement.cls is foodClass) {
-						foodNeededForCurrentLevel += max(requirement.amount, 1);
-					}
+		// jump straight to the level chain for the desired level, because
+		// resource requirements are cummulative!
+		PlanetLevel levelRow = chain.levels[uint(level)];
+		if (levelRow is null) {
+			return;
+		}
+		// get requirements for this level
+		ResourceRequirements requirements = levelRow.reqs;
+		ResourceRequirement@[] reqs = requirements.reqs;
+		// go through each requirement
+		for (uint j = 0, jcnt = reqs.length; j < jcnt; ++j) {
+			ResourceRequirement@ requirement = reqs[j];
+			// not sure what the difference is between these two
+			if (requirement.type == RRT_Class || requirement.type == RRT_Class_Types) {
+				if (requirement.cls is foodClass) {
+					foodNeededForCurrentLevel = max(max(requirement.amount, 1), foodNeededForCurrentLevel);
 				}
 			}
 		}
