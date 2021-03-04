@@ -40,6 +40,9 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make auto import refresh when resources on already colonised planets become available
   - Make nebulae griefing not work while the planet is in combat.
   - Tweak tractor default design
+  - Fix chase/automine/autosupply commands not working with multiple selected units
+  - Refine loop order to only show when clicked is selected and move up in list
+  - Add Moons and Ore filters on planets tab
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
   - Add better UI for when attempting to export/import resources and you can't
   - Investigate what happens to civilian trade ships when target is in deep space
