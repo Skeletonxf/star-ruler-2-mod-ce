@@ -127,6 +127,11 @@ tidy final class InfluenceCardType {
 
 	void init() {
 		for(uint i = 0, cnt = hooks.length; i < cnt; ++i) {
+			// [[ MODIFY BASE GAME START ]]
+			if (i >= hooks.length) {
+				print("Concurrent modification crash impending for influence type "+string(name));
+			}
+			// [[ MODIFY BASE GAME END ]]
 			if(!hooks[i].instantiate())
 				error("Could not instantiate hook: "+addrstr(hooks[i])+" in "+ident);
 			hooks[i].initTargets(targets);
