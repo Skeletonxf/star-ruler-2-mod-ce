@@ -164,6 +164,15 @@ class Mechanoid2 : Race, ColonizationAbility {
 	array<ColonizerMechanoidPlanet@> factories;
 	double lastRefreshedFactories = -60;
 
+	// A counter of how many population constructions we've paid for this budget
+	// cycle. Mechanoid empires can always buy pop while in debt, in case they
+	// end up so broke they need to go into debt to colonise to get out of debt,
+	// but building pop while in debt is in general counter productive, because
+	// it slows down your pop build speed. We use this counter to stop building
+	// pop each turn if we have already built some and would go into or further
+	// into debt if we built more.
+	uint queuedPopulationPerBudget = 0;
+
 	void create() {
 		@colonization = cast<IColonization>(ai.colonization);
 		@construction = cast<Construction>(ai.construction);
@@ -199,6 +208,18 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 			colonization.queueColonizeLowPriority(spec);
 		} */
+	}
+
+	void save(SaveFile& file) override {
+		file << queuedPopulationPerBudget;
+	}
+
+	void load(SaveFile& file) override {
+		file >> queuedPopulationPerBudget;
+	}
+
+	void turn() {
+		queuedPopulationPerBudget = 0;
 	}
 
 	void removeInvalidSources() {
@@ -302,7 +323,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 	void buildExcessPopAtFactories() {
 		double desired = desiredExcessPop();
 		double current = factoriesExcessPop();
-		// FIXME: We should probably be counting pop being built here too
 		if (current >= desired) {
 			return;
 		}
@@ -327,10 +347,13 @@ class Mechanoid2 : Race, ColonizationAbility {
 			// no factory or busy
 			return false;
 		}
-		// FIXME: We should probably be checking how much income we have
-		// and capping how many pops we are willing to build in one turn
-		// while under debt
 		if (buildPop is null) {
+			return false;
+		}
+		if (queuedPopulationPerBudget >= 3 && ai.empire.RemainingBudget < buildPop.getBuildCost(source.planet)) {
+			// ABORT! We won't build pop any faster if we go into debt
+			// and we've already paid to build some this turn, so we won't get
+			// into a debt spiral if we give up now
 			return false;
 		}
 		auto@ build = construction.buildConstruction(buildPop);
@@ -338,6 +361,7 @@ class Mechanoid2 : Race, ColonizationAbility {
 		if (log) {
 			ai.print("Building population", factory.obj);
 		}
+		queuedPopulationPerBudget += 1;
 		return true;
 	}
 
