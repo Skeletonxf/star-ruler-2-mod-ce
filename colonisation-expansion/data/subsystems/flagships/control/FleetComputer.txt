@@ -19,8 +19,8 @@ Subsystem: FleetComputer
 	Hex.HP := 24 * HexSize
 	Hex.Mass := 0.5 * HexSize
 
-	RaidRange := 1000 + (Size / (ShipSize * 0.3)) * 5000
-	AddedRaidRange := RaidRange - 1000
+	RaidRange := 3000 + (Size / (ShipSize * 0.3)) * 5000
+	AddedRaidRange := RaidRange - 3000
 
 	Hook: AddRaidRange(AddedRaidRange)
 

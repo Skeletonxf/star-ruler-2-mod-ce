@@ -95,7 +95,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	bool allowSatellites = false;
 
 	bool FreeRaiding = false;
-	double RaidRange = 1000.0;
+	double RaidRange = 3000.0; // [[ MODIFY BASE GAME: 1000 -> 3000, to better accomodate other scaling changes ]]
 
 	//Whether to automaticall pluck supports of planets
 	bool autoFill = true;
