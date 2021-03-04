@@ -26,5 +26,6 @@ System: BaseArtifacts
 		MakeArtifact()
 
 System: GasGiants
-	RepeatChance(Chance = 0.85, Repeat Modifier = 0.85)
-		MakePlanet(Gas = True)
+	RepeatModified(1, $PLANET_FREQUENCY)
+		RepeatChance(Chance = 0.85, Repeat Modifier = 0.85)
+			MakePlanet(Gas = True)
