@@ -798,7 +798,7 @@ enum CargoTransfer {
 	CT_Dropoff
 };
 
-class TransferCargo : SingleSelectionOption {
+class TransferCargo : SelectionOption {
 	const CargoType@ type;
 	CargoTransfer transfer;
 
@@ -828,7 +828,7 @@ class TransferCargo : SingleSelectionOption {
 	}
 }
 
-class AutoMine : SingleSelectionOption {
+class AutoMine : SelectionOption {
 	void call(Object@ obj) {
 		if(obj is null || !obj.hasCargo || !obj.hasLeaderAI || !obj.owner.controlled) {
 			return;
@@ -837,7 +837,7 @@ class AutoMine : SingleSelectionOption {
 	}
 }
 
-class AutoSupply : SingleSelectionOption {
+class AutoSupply : SelectionOption {
 	void call(Object@ obj) {
 		if(obj is null || !obj.hasCargo || !obj.hasLeaderAI || !obj.owner.controlled) {
 			return;
@@ -846,7 +846,7 @@ class AutoSupply : SingleSelectionOption {
 	}
 }
 
-class Chase : SingleSelectionOption {
+class Chase : SelectionOption {
 	void call(Object@ obj) {
 		if(obj is null) {
 			return;
