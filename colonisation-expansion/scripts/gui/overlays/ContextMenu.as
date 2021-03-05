@@ -1462,6 +1462,18 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 		else if(selected.canBuildShips)
 			addOption(menu, selected, clicked, format(locale::RALLY_TO, clicked.name), Rally(), COLONIZE_ICON);
 
+	// LeaderAI order looping toggle
+	if(selected !is null && selected.owner.controlled && selected.hasLeaderAI && selected is clicked) {
+		if (!selected.isLoopingOrders()) {
+			addOption(menu, selected, clicked, locale::START_LOOP_ORDERS,
+					SetLooping(selected, true));
+		} else {
+			addOption(menu, selected, clicked, locale::STOP_LOOP_ORDERS,
+					SetLooping(selected, false));
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	//Scuttle options
 	if(clicked is selected && clicked.owner.controlled) {
 		if(clicked.isOrbital && !cast<Orbital>(clicked).isContested)
@@ -1663,18 +1675,6 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 			}
 		}
 	}
-
-	// LeaderAI order looping toggle
-	if(selected !is null && selected.owner.controlled && selected.hasLeaderAI) {
-		if (!selected.isLoopingOrders()) {
-			addOption(menu, selected, clicked, locale::START_LOOP_ORDERS,
-					SetLooping(selected, true));
-		} else {
-			addOption(menu, selected, clicked, locale::STOP_LOOP_ORDERS,
-					SetLooping(selected, false));
-		}
-	}
-	// [[ MODIFY BASE GAME END ]]
 
 	//Only show the menu if there are options
 	if(menu.list.itemCount == 0) {
