@@ -11,9 +11,8 @@ import resources;
  * native/imported resources
  */
 class ResourcesShim {
-	Resources availableResources;
-
 	array<ResourceSpec@> inferDummyResources(const Object& obj) {
+		Resources availableResources;
 		availableResources.clear();
 		receive(obj.getResourceAmounts(), availableResources);
 		array<Resource> resources;
