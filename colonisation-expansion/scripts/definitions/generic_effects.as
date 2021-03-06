@@ -2716,6 +2716,9 @@ tidy final class IfNotHaveTrait : IfHook {
 tidy final class ConsumeData {
 	bool enabled = false;
 	double timer = 0.0;
+	// [[ MODIFY BASE GAME START ]]
+	double gameTimeAtLastTick = 0;
+	// [[ MODIFY BASE GAME END ]]
 	any data;
 };
 class WhileConsumingCargo : GenericEffect {
@@ -2749,6 +2752,7 @@ class WhileConsumingCargo : GenericEffect {
 	void enable(Object& obj, any@ data) const override {
 		ConsumeData info;
 		info.enabled = false;
+		info.gameTimeAtLastTick = gameTime;
 		data.store(@info);
 
 		if(info.enabled)
@@ -2763,13 +2767,21 @@ class WhileConsumingCargo : GenericEffect {
 			hook.disable(obj, info.data);
 	}
 
-	void tick(Object& obj, any@ data, double time) const {
+	void tick(Object& obj, any@ data, double _time) const {
 		ConsumeData@ info;
 		data.retrieve(@info);
 
+		// [[ MODIFY BASE GAME START ]]
+		// For whatever reason, the time input to this function is just wrong
+		// Compute the actual time using gameTime so it is accurate
+		double currentGameTime = gameTime;
+		double tick = currentGameTime - info.gameTimeAtLastTick;
+		info.gameTimeAtLastTick = currentGameTime;
+
 		bool cond = info.enabled;
-		info.timer -= time;
-		if(info.timer <= 0) {
+		info.timer -= tick;
+		while(info.timer <= 0) { // Use while not if so we don't skip ticks
+			// [[ MODIFY BASE GAME END ]]
 			if(!obj.hasCargo) {
 				cond = false;
 				info.timer = randomd(1.0, 2.0);
@@ -2795,7 +2807,7 @@ class WhileConsumingCargo : GenericEffect {
 			info.enabled = cond;
 		}
 		if(info.enabled)
-			hook.tick(obj, info.data, time);
+			hook.tick(obj, info.data, tick);
 	}
 
 	void ownerChange(Object& obj, any@ data, Empire@ prevOwner, Empire@ newOwner) const {
@@ -2823,12 +2835,14 @@ class WhileConsumingCargo : GenericEffect {
 			file << enabled;
 			double timer = 0.0;
 			file << timer;
+			file << gameTime;
 		}
 		else {
 			file << info.enabled;
 			file << info.timer;
 			if(info.enabled)
 				hook.save(info.data, file);
+			file << info.gameTimeAtLastTick;
 		}
 	}
 
@@ -2840,6 +2854,7 @@ class WhileConsumingCargo : GenericEffect {
 		file >> info.timer;
 		if(info.enabled)
 			hook.load(info.data, file);
+		file >> info.gameTimeAtLastTick;
 	}
 #section all
 };

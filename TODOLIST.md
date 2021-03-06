@@ -29,6 +29,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - General notes on AI issues to fix in rework
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
+  - Auto researching an FTL unlock should not trigger the vote for the FTL unlock
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
   - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
   - Move mass/repair/supply calaculations into a definitions file of helper functions
@@ -38,10 +39,10 @@ This is primarily intended as a developer focused project planning list, rather 
     - Ship constructible support supply free
   - Planetary shielding in some way
   - Make auto import refresh when resources on already colonised planets become available
+  - If the empire receives an identical message to one already in the message strip, the older one should be deleted
+    - The message strip spam is easily triggered with DysonSpheres only receiving two strip mine imports.
   - Make nebulae griefing not work while the planet is in combat.
   - Tweak tractor default design
-  - Fix chase/automine/autosupply commands not working with multiple selected units
-  - Refine loop order to only show when clicked is selected and move up in list
   - Add Moons and Ore filters on planets tab
   - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
   - Add better UI for when attempting to export/import resources and you can't
