@@ -33,19 +33,17 @@ class GuiMessageStrip : BaseGuiElement {
 			nextNotify = latest;
 		}
 
-		uint oldCnt = handled.length;
+		bool needsUpdate = unhandled.length != 0;
+
+		if (!needsUpdate) {
+			return;
+		}
 
 		// Handle all unhandled
 		if (unhandled.length > 0) {
 			for (uint i = 0, cnt = unhandled.length; i < cnt; ++i)
 				handle(unhandled[i]);
 			unhandled.length = 0;
-		}
-
-		uint newCnt = handled.length;
-
-		if (newCnt == oldCnt) {
-			return;
 		}
 
 		updateMessages();
@@ -125,6 +123,16 @@ class GuiMessageStrip : BaseGuiElement {
 		if (notification.time <= minGameTime)
 			return;
 		if (getLabel(notification) != "") {
+			string newLabel = getLabel(notification);
+			for (uint i = 0, cnt = handled.length; i < cnt; ++i) {
+				if (getLabel(handled[i]) == newLabel) {
+					// we already had this notification from earlier, remove
+					// the old one
+					handled.removeAt(i);
+					updateMessages();
+					break;
+				}
+			}
 			handled.insertLast(notification);
 		}
 	}

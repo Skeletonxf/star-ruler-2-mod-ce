@@ -39,8 +39,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Ship constructible support supply free
   - Planetary shielding in some way
   - Make auto import refresh when resources on already colonised planets become available
-  - If the empire receives an identical message to one already in the message strip, the older one should be deleted
-    - The message strip spam is easily triggered with DysonSpheres only receiving two strip mine imports.
   - Make nebulae griefing not work while the planet is in combat.
   - Tweak tractor default design
   - Add Moons and Ore filters on planets tab
