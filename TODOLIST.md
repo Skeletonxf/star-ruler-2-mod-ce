@@ -7,28 +7,23 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
   - Expansion AI Component
-    - Reteach AI to colonise planets for non levelling purposes
-      - Getting there in terms of trade link establishing, but still need pressure based colony code
     - Teach AI to make buildings following the existing hooks system for FTL capacity/income
     - Teach AI how to deal with all of its focuses having requirements it can't meet
     - Scuttle outposts which have ended up in a different region to where the AI created them
       - Thanks Illyia
     - Apply conditions AI hooks to all applicable statuses
-    - Implement custom ColonizeAbility interface for Ancient AI empires
+    - Implement custom ColonizeAbility interface for Extragalactic and Ancient AI empires
     - Make sure star children motherships run away from danger while on habitat missions!
-    - Allow the AI to leapfrog over systems that aren't in their border if they are struggling to find a resource
-      - Should help them avoid making megafarms when they just need to expand into more food
     - Make AI consolidate labor at one shipyard, not multiple
-    - Refine Mechanoid ColonizeAbility to avoid building too many pops if going into debt
     - Port unobtanium code from Mechanoid component into Expansion component as a generic bit of knowledge for using with any unobtanium planet
-      - Notably level 0 planets
-    - Teach AI to use constructions to meet resource requests
     - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
         - Teach AI to melt ice
         - Teach AI to make most of the constructions by extending the building hint code
     - General notes on AI issues to fix in rework
       - To fix in refactor of colonization and development code
         - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
+    - Possibly teach the AI to recognise useless planets and either terraform them or replace them with outposts / better colonies in the same system
+      - Particularly relevant for a Mechanoid empire that never finds Cremlin Firns or Nitrous Oxide, as claiming useless food/water planets to expand borders is great early/mid game, but costs 50k per system to not replace with outposts late game.
   - Auto researching an FTL unlock should not trigger the vote for the FTL unlock
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
   - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
@@ -69,7 +64,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Buildings that Star Children already don't need or have alternatives to
       - FTL Storage, Megacities
     - Maybe add a way to push planets around with motherships?
-  - Make autoexplore continue to work after all systems have been visited once (will also split off into own mod or community patch)
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Get the AI to play invasion properly
@@ -97,6 +91,5 @@ This is primarily intended as a developer focused project planning list, rather 
       - Use slipstreams to speed up colony ships
       - Attack enemy territory that doesn't border AI's owned systems
       - Carpet bomb enemy planets (especially useful vs Mechanoid)
-      - Use the tractor beam on Motherships to drag around an Outpost - hey presto my mothership can always fire its weapons and if the outpost gets shot down the labor cost to build a new one is low enough to queue up immediately
       - Use gates to coordinate surprise attacks on an enemy (the AI is already good at doing rapid attacks with Hyperdrives/Jumpdrives/Fling but gates and slipstreams aren't used as well here)
       - Immediately seek to destroy a player's Senatorial Palace if they start one of the Galatic votes that can achieve the influence victory

@@ -36,6 +36,10 @@ final class SystemAI {
 
 	double nextDetailed = 0;
 
+	// [[ MODIFY BASE GAME START ]]
+	double timeSpentOutsideBorder = 0;
+	// [[ MODIFY BASE GAME END ]]
+
 	SystemAI() {
 	}
 
@@ -84,6 +88,9 @@ final class SystemAI {
 		file << seenPresent;
 		file << enemyStrength;
 		file << lastStrengthCheck;
+		// [[ MODIFY BASE GAME START ]]
+		file << timeSpentOutsideBorder;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void load(SaveFile& file) {
@@ -133,6 +140,9 @@ final class SystemAI {
 		file >> seenPresent;
 		file >> enemyStrength;
 		file >> lastStrengthCheck;
+		// [[ MODIFY BASE GAME START ]]
+		file >> timeSpentOutsideBorder;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool visibleNow(AI& ai) {
@@ -227,6 +237,9 @@ final class SystemAI {
 		//Check if we should be outsideBorder
 		bool shouldOutsideBorder = !owned && hopDistance == 1;
 		if(outsideBorder != shouldOutsideBorder) {
+			// [[ MODIFY BASE GAME START ]]
+			timeSpentOutsideBorder = 0.0;
+			// [[ MODIFY BASE GAME END ]]
 			if(shouldOutsideBorder) {
 				systems.outsideBorder.insertLast(this);
 			}
@@ -250,6 +263,12 @@ final class SystemAI {
 
 			explored = true;
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (shouldOutsideBorder && explored) {
+			timeSpentOutsideBorder += time;
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		//Deal with recording new data on this system
 		if(explored) {

@@ -214,6 +214,12 @@ class DevelopmentFocus2 : DevelopmentFocus {
 		if (resource.cls is expansion.scalableClass) {
 			return maximumLevel;
 		}
+		if (resource.limitlessLevel) {
+			// Pretty much anything which is not scalable, but still limitlessLevel
+			// is likely to have some reason the AI wants to develop it as this
+			// is mainly Ringworlds, and Unobtanium
+			return max(3, maximumLevel);
+		}
 		return min(3, maximumLevel);
 	}
 
@@ -1052,7 +1058,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			// We tick the Resources component first to ensure it has matched
 			// all match open requests to planets we already have, so this
 			// should only colonise for things we actually don't have available
-			resources.focusTick(time);
+			resources.focusTick(0.0);
 			queue.fillQueueFromRequests(this, ai);
 			// Pull planets off the queue for colonising
 			drainQueue();
@@ -1297,7 +1303,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		DevelopmentFocus@ priorityFocus;
 		uint levelsAway = 0;
 		for (uint i = 0, cnt = focuses.length; i < cnt; ++i) {
-			levelsAway += max(focuses[i].targetLevel - focuses[i].obj.resourceLevel, 0);
+			levelsAway += max(focuses[i].targetLevel - focuses[i].obj.level, 0);
 		}
 		if (levelsAway > 5) {
 			// TODO: If we have a lot of unmet focuses we should potentially
@@ -1325,6 +1331,10 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		if (levelsAway <= parallelLevelling) {
 			findNewFocus();
 		}
+
+		// As a way to recover from getting stuck and also make use of tier 0 planets,
+		// always look to see if we have any borders we could/should expand into
+		expandBorders();
 	}
 
 	/**
@@ -1362,15 +1372,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				return;
 			}
 
-			// we've had some bad luck, and have no bordering scalables
+			// TODO: we've had some bad luck, and have no bordering scalables
 			// or tier 3s, plus we ran out of planets to colonise for
-			// our only focus. Raise our focus's target by 1
-			if (focuses[0].maximumLevel > focuses[0].targetLevel) {
-				focuses[0].targetLevel += 1;
-			} else {
-				// TODO: we've had some REALLY bad luck, just pick a
-				// tier 2 as our next focus
-			}
+			// our only focus.
 		} else {
 			// Create a new dev focus from the first in the list
 			// TODO: Should probably be choosing the best focus from
@@ -1379,6 +1383,32 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			DevelopmentFocus@ focus = addFocus(newFocus);
 			focus.targetLevel = 3;
 			return;
+		}
+	}
+
+	/**
+	 * Tries to expand over our borders when we have capacity for colonising but
+	 * not requests to fill.
+	 */
+	void expandBorders() {
+		if (!actions.performColonization) {
+			return;
+		}
+		if (!canAffordColonize()) {
+			return;
+		}
+		if (awaitingSource.length > 2) {
+			return;
+		}
+		if (colonizing.length > 2) {
+			return;
+		}
+		if (systems.outsideBorder.length > 0) {
+			SystemAI@ sys = systems.outsideBorder[randomi(0, systems.outsideBorder.length-1)];
+			if (sys.obj !is null && sys.timeSpentOutsideBorder > 4 * 60) {
+				ai.print("Trying to expand border to "+sys.obj.name+" to find requests");
+				regionLinking.considerMakingLinkAt(sys.obj, ai.empire);
+			}
 		}
 	}
 

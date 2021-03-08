@@ -150,6 +150,12 @@ class RegionLinking {
 		if (alreadyMakingLinkAt(region, emp)) {
 			return;
 		}
+		// TODO: We should dynamically change our priorities as our eco grows
+		// outposts are cheaper to claim a system than a planet is, but a colony
+		// is much easier to make than an outpost in the early game
+		// Since even a useless planet takes some effort to destroy, for now
+		// just always try colonising first, since this is at least more robust
+		// than outpost first.
 		bool colonizingForLink = colonization.requestColonyInRegion(region);
 		if (!force && colonizingForLink) {
 			return;
