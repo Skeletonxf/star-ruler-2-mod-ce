@@ -875,8 +875,8 @@ class Military2 : AIComponent, IMilitary {
 		// support capacity for, as that is a sign that we should tend to
 		// our existing ships instead.
 		double targetSpareMoney = 500;
-		if (fleets.fleets.length > 2) {
-			targetSpareMoney += 250 * (fleets.fleets.length - 2);
+		if (fleets.fleets.length > 1) {
+			targetSpareMoney += 350 * (fleets.fleets.length - 1);
 		}
 		bool makeNewFlagship = (availableMoney > targetSpareMoney || fleets.fleets.length == 0)
 			&& fleets.fleets.length < ai.behavior.maxActiveFleets
