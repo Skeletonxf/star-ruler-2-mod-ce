@@ -84,7 +84,7 @@ class ColonizerMechanoidPlanet : ColonizationSource {
 		double ftlCost = transferCost(planet, ai.empire, target);
 		while (amount > 0) {
 			if (ftlCost <= ai.empire.FTLStored) {
-				if (LOG)
+				if (false)
 					ai.print("Transfering population to "+target.name, planet);
 				planet.activateAbilityTypeFor(ai.empire, colonizeAbilityID, target);
 				amount -= 1;

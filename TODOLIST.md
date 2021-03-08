@@ -8,6 +8,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
   - Expansion AI Component
     - Teach AI to make buildings following the existing hooks system for FTL capacity/income
+      - And to colonise FTL crystals on sight
     - Teach AI how to deal with all of its focuses having requirements it can't meet
     - Scuttle outposts which have ended up in a different region to where the AI created them
       - Thanks Illyia
