@@ -111,6 +111,14 @@ tidy class PlanetScript {
 					plNode.addMoon(dat.size, dat.style);
 			}
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (msg.readBit()) {
+			planet.allowPathlessImport = 1;
+		} else {
+			planet.allowPathlessImport = 0;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void syncDelta(Planet& planet, Message& msg, double tDiff) {
@@ -144,6 +152,14 @@ tidy class PlanetScript {
 		}
 		if(msg.readBit())
 			planet.readOrbitDelta(msg);
+
+		// [[ MODIFY BASE GAME START ]]
+		if (msg.readBit()) {
+			planet.allowPathlessImport = 1;
+		} else {
+			planet.allowPathlessImport = 0;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void syncDetailed(Planet& planet, Message& msg, double tDiff) {
@@ -166,6 +182,14 @@ tidy class PlanetScript {
 				planet.activateMover();
 			planet.readMover(msg);
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (msg.readBit()) {
+			planet.allowPathlessImport = 1;
+		} else {
+			planet.allowPathlessImport = 0;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	uint get_moonCount() {

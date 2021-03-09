@@ -439,6 +439,14 @@ tidy class PlanetScript {
 		else {
 			msg.write0();
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (planet.allowPathlessImport > 0) {
+			msg.write1();
+		} else {
+			msg.write0();
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool syncDelta(const Planet& planet, Message& msg) {
@@ -498,6 +506,14 @@ tidy class PlanetScript {
 		else
 			msg.write0();
 
+		// [[ MODIFY BASE GAME START ]]
+		if (planet.allowPathlessImport > 0) {
+			msg.write1();
+		} else {
+			msg.write0();
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		return used;
 	}
 
@@ -521,6 +537,14 @@ tidy class PlanetScript {
 		else {
 			msg.write0();
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (planet.allowPathlessImport > 0) {
+			msg.write1();
+		} else {
+			msg.write0();
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void dealPlanetDamage(Planet& planet, double amount) {

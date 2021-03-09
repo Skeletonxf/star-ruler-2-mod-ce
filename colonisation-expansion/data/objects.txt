@@ -123,10 +123,13 @@ visible:
 	double Health = 1000000000
 	double MaxHealth = 1000000000
 	// [[ MODIFY BASE GAME START ]]
-	// Note, these additions are server side only, the client doesn't get updates
-	// over netcode about these, because it doesn't need to know them
-	bool delayFTL = false
+	// the client only gets this as 0 or 1, so if it is 2 server side the client
+	// will still just see 1, as this saves lots of bits for netcode
 	int allowPathlessImport = 0;
+	// Note, these additions are server side only (except allowPathlessImport),
+	// the client doesn't get updates over netcode about these, because it
+	// doesn't need to know them
+	bool delayFTL = false
 	int requiresOre = 0;
 	// [[ MODIFY BASE GAME END ]]
 
