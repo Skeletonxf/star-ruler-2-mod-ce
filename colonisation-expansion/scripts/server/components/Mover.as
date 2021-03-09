@@ -2,6 +2,9 @@ import oddity_navigation;
 from regions.regions import getRegion;
 import saving;
 import ftl;
+// [[ MODIFY BASE GAME START ]]
+import CE_deep_space;
+// [[ MODIFY BASE GAME END ]]
 
 const double straighDot = 0.99999;
 
@@ -1111,21 +1114,7 @@ tidy class Mover : Component_Mover, Savable {
 		Object@ orbit;
 
 		if(reg is null) {
-			double closestDist = INFINITY;
-			for(uint i = 0, cnt = getEmpireCount(); i < cnt; ++i) {
-				Empire@ empire = getEmpire(i);
-				// don't filter out emp == empire, we want to track ally + self
-				if (empire.valid && empire.major) {
-					Planet@ closest = empire.getClosestPlanet(destPoint);
-					if (closest !is null) {
-						double distance = destPoint.distanceToSQ(closest.position);
-						if (distance < closestDist) {
-							closestDist = distance;
-							@orbit = closest;
-						}
-					}
-				}
-			}
+			@orbit = getOrbitObjectInDeepSpace(destPoint);
 		} else {
 			@orbit = reg.getOrbitObject(destPoint);
 		}

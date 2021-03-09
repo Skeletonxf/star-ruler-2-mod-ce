@@ -1245,17 +1245,27 @@ class OrbitalTarget : PointTargeting {
 				penFact = orbFrame.getValue(OV_FRAME_LaborPenaltyFactor);
 			}
 
-			TradePath path(obj.owner);
-			Region@ target = getRegion(pos);
-			if(target is null)
-				return "";
-			path.generate(getSystem(obj.region), getSystem(target));
 			// [[ MODIFY BASE GAME START ]]
-			laborCost *= (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(path.pathSize - 1) * penFact);
+			Region@ target = getRegion(pos);
+			int pathSize = 0;
+			if (target is null) {
+				pathSize = 0;
+			} else {
+				TradePath path(obj.owner);
+				path.generate(getSystem(obj.region), getSystem(target));
+				pathSize = path.pathSize - 1;
+			}
+			// [[ MODIFY BASE GAME END ]]
+			// [[ MODIFY BASE GAME START ]]
+			laborCost *= (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(pathSize) * penFact);
 			// [[ MODIFY BASE GAME END ]]
 			return toString(laborCost,0)+" "+locale::RESOURCE_LABOR+", "+formatTime(laborCost / laborIncome);
 		}
 		Region@ reg = getRegion(pos);
+		// [[ MODIFY BASE GAME START ]]
+		if (reg is null && canBuildInDeepSpace(obj, pos))
+			return locale::OERR_SYSTEM_NO_DEEP_SPACE;
+		// [[ MODIFY BASE GAME END ]]
 		if(reg is null)
 			return locale::OERR_SYSTEM;
 		if(reg.MemoryMask & obj.owner.mask == 0 && reg.VisionMask & obj.owner.visionMask == 0)

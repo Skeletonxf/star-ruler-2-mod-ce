@@ -1,10 +1,14 @@
+// [[ MODIFY BASE GAME START ]]
+import CE_deep_space;
+// [[ MODIFY BASE GAME END ]]
+
 const double orbitSpeedFactor = 2.0;
 
 tidy class Orbit : Component_Orbit, Savable {
 	Object@ center_obj;
 	vec3d center_pos;
 	double radius;
-	
+
 	double yearPos;
 	double yearLen;
 
@@ -16,24 +20,24 @@ tidy class Orbit : Component_Orbit, Savable {
 		dayLen = 0;
 		yearLen = 0;
 	}
-	
+
 	void load(SaveFile& data) {
 		data >> center_obj;
 		if(center_obj is null)
 			data >> center_pos;
-		
+
 		data >> radius;
 		data >> yearPos;
 		data >> yearLen;
 		data >> dayPos;
 		data >> dayLen;
 	}
-	
+
 	void save(SaveFile& data) {
 		data << center_obj;
 		if(center_obj is null)
 			data << center_pos;
-		
+
 		data << radius;
 		data << yearPos;
 		data << yearLen;
@@ -45,10 +49,10 @@ tidy class Orbit : Component_Orbit, Savable {
 		if(yearLen != 0) {
 			yearPos = (yearPos + time) % yearLen;
 			vec3d position;
-			
+
 			quaterniond rotation = quaterniond_fromAxisAngle(vec3d_up(), yearPos / yearLen * twopi);
 			position = rotation * vec3d_front(radius);
-			
+
 			if(center_obj is null) {
 				position += center_pos;
 			}
@@ -57,7 +61,7 @@ tidy class Orbit : Component_Orbit, Savable {
 					return;
 				position += center_obj.position;
 			}
-			
+
 			if(time > 0.01) {
 				vec3d newVel = (position - obj.position) / time;
 				obj.acceleration = (newVel - obj.velocity) / time;
@@ -112,7 +116,7 @@ tidy class Orbit : Component_Orbit, Savable {
 	void stopOrbit() {
 		yearLen = 0;
 	}
-	
+
 	bool get_inOrbit() {
 		return yearLen != 0;
 	}
@@ -120,19 +124,31 @@ tidy class Orbit : Component_Orbit, Savable {
 	void remakeStandardOrbit(Object& obj, bool orbitPlanets = true) {
 		Region@ reg = obj.region;
 		yearLen = 0;
-		if(reg is null)
+		// [[ MODIFY BASE GAME START ]]
+		/* if(reg is null)
 			return;
 		if(reg.starCount == 0)
-			return;
-		if(obj.position.distanceTo(reg.position) < obj.radius)
+			return; */
+		if(reg !is null && obj.position.distanceTo(reg.position) < obj.radius)
 			return;
 		Object@ orbObj;
-		if(orbitPlanets && !obj.isPlanet)
-			@orbObj = reg.getOrbitObject(obj.position);
+		if (orbitPlanets && !obj.isPlanet) {
+			if (reg !is null) {
+				@orbObj = reg.getOrbitObject(obj.position);
+			} else {
+				@orbObj = getOrbitObjectInDeepSpace(obj.position);
+			}
+		}
+		if (reg !is null && reg.starCount == 0)
+			return;
 		if(orbObj !is null)
 			obj.orbitAround(orbObj);
-		else
-			obj.orbitAround(200, reg.position);
+		else {
+			if (reg !is null) {
+				obj.orbitAround(200, reg.position);
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	Object@ getOrbitingAround() {
@@ -153,7 +169,7 @@ tidy class Orbit : Component_Orbit, Savable {
 		obj.position = position;
 		orbitAround(obj, origin);
 	}
-	
+
 	void orbitAround_minRad(Object& obj, vec3d point, double minRadius = 0) {
 		vec3d offset = (obj.position - point);
 		center_pos = point;
@@ -167,7 +183,7 @@ tidy class Orbit : Component_Orbit, Savable {
 		orbitTick(obj, 0);
 		delta = true;
 	}
-	
+
 	void orbitAround(Object& obj, vec3d point, double orbRadius) {
 		center_pos = point;
 		@center_obj = null;
@@ -180,7 +196,7 @@ tidy class Orbit : Component_Orbit, Savable {
 		orbitTick(obj, 0);
 		delta = true;
 	}
-	
+
 	void orbitAround(Object& obj, Object& around, double orbRadius, double angle) {
 		@center_obj = around;
 		radius = orbRadius;
@@ -189,7 +205,7 @@ tidy class Orbit : Component_Orbit, Savable {
 		orbitTick(obj, 0);
 		delta = true;
 	}
-	
+
 	void orbitAround(Object& obj, Object& around, double orbRadius) {
 		@center_obj = around;
 		radius = orbRadius;
@@ -213,7 +229,7 @@ tidy class Orbit : Component_Orbit, Savable {
 		orbitTick(obj, 0);
 		delta = true;
 	}
-	
+
 	void orbitSpin(Object& obj, double dayLength, bool staticPos) {
 		dayLen = dayLength;
 		if(staticPos && dayLen > 0)

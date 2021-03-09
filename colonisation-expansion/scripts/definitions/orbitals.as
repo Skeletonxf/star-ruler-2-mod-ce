@@ -13,6 +13,9 @@ export OrbitalModule, OrbitalSection;
 export getOrbitalModule, getOrbitalModuleCount;
 export OrbitalRequirements;
 export OrbitalValues, canBuildOrbital;
+// [[ MODIFY BASE GAME START ]]
+export canBuildInDeepSpace;
+// [[ MODIFY BASE GAME END ]]
 
 array<OrbitalModule@> modules;
 dictionary idents;
@@ -34,11 +37,41 @@ enum OrbitalValues {
 	OV_FRAME_Target,
 };
 
+// [[ MODIFY BASE GAME START ]]
+// Allow building orbitals in deep space at the building object's gravity well
+// (but not anywhere else)
+bool canBuildInDeepSpace(Object@ obj, const vec3d& pos) {
+	if (obj.isPlanet) {
+		Planet@ planet = cast<Planet>(obj);
+		return planet !is null
+			//&& planet.allowPathlessImport > 0
+			&& pos.distanceToSQ(obj.position) < (planet.OrbitSize * planet.OrbitSize);
+	}
+	if (obj.isShip) {
+		double gravityWellRadius = 0;
+		if (obj.hasLeaderAI) {
+			gravityWellRadius = obj.getFormationRadius();
+		} else {
+			gravityWellRadius = obj.radius * 10.0 + 20.0; // compute what it would be
+		}
+		return pos.distanceToSQ(obj.position) < (gravityWellRadius * gravityWellRadius);
+	}
+	return false;
+}
+// [[ MODIFY BASE GAME END ]]
+
 bool canBuildOrbital(Object@ obj, const vec3d& pos, bool initial = true) {
 	//Find target system
 	Region@ target = getRegion(pos);
-	if(target is null)
-		return false;
+
+	// [[ MODIFY BASE GAME END ]]
+	if (target is null) {
+		if (!initial) {
+			return true;
+		}
+		return canBuildInDeepSpace(obj, pos);
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	//Cannot build without vision
 	if(initial && target.MemoryMask & obj.owner.mask == 0 && target.VisionMask & obj.owner.visionMask == 0)
@@ -567,15 +600,15 @@ string getOrbitalModuleIdent(int id) {
 
 void loadOrbitalModules(const string& filename) {
 	ReadFile file(filename, true);
-	
+
 	string key, value;
 	OrbitalModule@ mod;
-	
+
 	uint index = 0;
 	while(file++) {
 		key = file.key;
 		value = file.value;
-		
+
 		if(file.fullLine) {
 			string line = file.line;
 			parseLine(line, mod, file);
@@ -697,7 +730,7 @@ void loadOrbitalModules(const string& filename) {
 			parseLine(line, mod, file);
 		}
 	}
-	
+
 	if(mod !is null)
 		addOrbitalModule(mod);
 }

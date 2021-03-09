@@ -4,6 +4,9 @@ import object_creation;
 import orbitals;
 import saving;
 import util.target_search;
+// [[ MODIFY BASE GAME START ]]
+import CE_deep_space;
+// [[ MODIFY BASE GAME END ]]
 
 const int STRATEGIC_RING = -1;
 const double RECOVERY_TIME = 3.0 * 60.0;
@@ -227,6 +230,15 @@ tidy class OrbitalScript {
 				obj.orbitAround(reg.starRadius + obj.radius, reg.position);
 			deltaOrbit = true;
 		}
+		// [[ MODIFY BASE GAME START ]]
+		else {
+			Object@ orbObj = getOrbitObjectInDeepSpace(obj.position);
+			if (orbObj !is null) {
+				obj.orbitAround(orbObj);
+				deltaOrbit = true;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void postLoad(Orbital& obj) {

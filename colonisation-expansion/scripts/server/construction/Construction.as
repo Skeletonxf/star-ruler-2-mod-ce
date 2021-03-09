@@ -810,14 +810,26 @@ tidy class Construction : Component_Construction, Savable {
 			penFact = orbFrame.getValue(OV_FRAME_LaborPenaltyFactor);
 		}
 
-		TradePath path(obj.owner);
+		// [[ MODIFY BASE GAME START ]]
 		Region@ target = getRegion(position);
-		path.generate(getSystem(pathFrom.region), getSystem(target));
-		if(!path.isUsablePath)
-			return;
+		int pathSize = 0;
+		if (target is null) {
+			if (canBuildInDeepSpace(pathFrom, position)) {
+				pathSize = 0;
+			} else {
+				return;
+			}
+		} else {
+			TradePath path(obj.owner);
+			path.generate(getSystem(pathFrom.region), getSystem(target));
+			if(!path.isUsablePath)
+				return;
+			pathSize = path.pathSize - 1;
+		}
+		// [[ MODFIY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
-		cons.totalLabor *= (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(path.pathSize - 1) * penFact);
+		cons.totalLabor *= (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(pathSize) * penFact);
 		// [[ MODIFY BASE GAME END ]]
 
 		if(queueConstructible(obj, cons)) {
@@ -854,22 +866,33 @@ tidy class Construction : Component_Construction, Savable {
 		Region@ target = getRegion(position);
 
 		Region@ reg = pathFrom.region;
-		if(reg is null)
-			return;
-		auto@ fromSys = getSystem(reg);
-		auto@ toSys = getSystem(target);
-		if(fromSys is null || toSys is null)
-			return;
+		// [[ MODIFY BASE GAME START ]]
+		int pathSize = 0;
+		if (reg is null) {
+			if (canBuildInDeepSpace(pathFrom, position)) {
+				pathSize = 0;
+			} else {
+				return;
+			}
+		} else {
+			auto@ fromSys = getSystem(reg);
+			auto@ toSys = getSystem(target);
+			if(fromSys is null || toSys is null)
+				return;
 
-		path.generate(fromSys, toSys);
-		if(!path.isUsablePath)
-			return;
+			path.generate(fromSys, toSys);
+			if(!path.isUsablePath)
+				return;
+
+			pathSize = path.pathSize - 1;
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		double penFact = 1.0;
 		if(orbFrame !is null)
 			penFact = orbFrame.getValue(OV_FRAME_LaborPenaltyFactor);
 		// [[ MODIFY BASE GAME START ]]
-		double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(path.pathSize - 1) * penFact);
+		double penalty = (1.0 + config::ORBITAL_LABOR_COST_STEP) ** (double(pathSize) * penFact);
 		// [[ MODIFY BASE GAME END ]]
 		StationConstructible cons(design, position, penalty);
 		cons.totalLabor *= obj.owner.OrbitalLaborCostFactor;

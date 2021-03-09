@@ -53,9 +53,12 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make quickbar width configurable
   - Fix bug with ships becoming unretroffitable if the source retrofitting them gets destroyed before finishing
   - Fix map generation bugs with galaxy mirroring and gas/ice giants
+  - Give orbitals which currently require a region for their effects also localised effects around their position (and prevent the rest being built in deep space, as Outposts already prohibit so)
+    - FTL Jammer
+    - Supply Depot
+    - others?
 
 - Not planned for any time soon
-  - Work out how to allow planets to always build orbitals/stations in their local gravity well even if they're in deep space
   - Colonisation ships similar to Motherships for other races
   - AI code to build orbitals like Stations
   - Teach AI to scuttle unneeded FTL income orbitals
@@ -78,6 +81,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make warheads manually fired (no clue how to do this)
   - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
+  - Retest if WhileConsumingCargo still needs to use gameTime directly now that the status tick time bug has been fixed
 
 - Long term plans
   - Improving the AI

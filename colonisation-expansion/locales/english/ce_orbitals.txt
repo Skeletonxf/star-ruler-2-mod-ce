@@ -1,3 +1,5 @@
+OERR_SYSTEM: Cannot build orbitals outside systems except on self.
+OERR_SYSTEM_NO_DEEP_SPACE: Cannot build this orbital outside systems on self
 BATTLEWORLD_ORBITAL: Coordinate Satellite
 BATTLEWORLD_ORBITAL_DESC: Fleets fight at 60% effectiveness when nearby owned planets, and down to 10% when far away.
 FTL_EXTRACTOR: FTL Hyperfield Extractor
