@@ -5,6 +5,9 @@ import traits;
 from orbitals import OrbitalEffect;
 import requirement_effects;
 import consume_effects;
+// [[ MODIFY BASE GAME START ]]
+import CE_deep_space;
+// [[ MODIFY BASE GAME END ]]
 
 #section server-side
 from regions.regions import getRegion;
@@ -370,7 +373,7 @@ class FTLMaintenance : OrbitalEffect {
 // Disables the module if ftl is blocked in the region.
 class DisableOnFTLBlock : OrbitalEffect {
 	Document doc("Disables this orbital if FTL jamming is affecting its region.");
-	
+
 #section server
 	bool shouldDisable(Orbital& obj, any@ data) const override {
 		if(obj.owner is null || !obj.owner.valid)
@@ -400,7 +403,7 @@ class DisableOnFTLBlock : OrbitalEffect {
 // Module cannot be built manually.
 class CannotBuildManually : OrbitalEffect {
 	Document doc("Prevents this orbital from being manually contructed.");
-	
+
 	bool canBuildBy(Object@ obj, bool ignoreCost) const override {
 		return false;
 	}
@@ -444,6 +447,19 @@ class RequireCloseToStar : OrbitalEffect {
 	}
 };
 
+// [[ MODIFY BASE GAME START ]]
+class RequireInASystem : OrbitalEffect {
+	Document doc("This orbital can only be constructed in systems.");
+
+	bool canBuildAt(Object@ obj, const vec3d& pos) const {
+		Region@ target = getRegion(pos);
+		if(target is null)
+			return false;
+		return true;
+	}
+};
+// [[ MODIFY BASE GAME END ]]
+
 class LimitInOrbitStatus : OrbitalEffect {
 	Document doc("This orbital must be constructed in orbit of a planet, and can only be constructed if there is a limited amount of a status present.");
 	Argument status(AT_Status, doc="Status type to check for.");
@@ -452,9 +468,14 @@ class LimitInOrbitStatus : OrbitalEffect {
 
 	string getBuildError(Object@ obj, const vec3d& pos) const {
 		Region@ target = getRegion(pos);
-		if(target is null)
-			return locale::OERR_PLANET_ORBIT;
-		Object@ orbit = target.getOrbitObject(pos);
+		// [[ MODIFY BASE GAME START ]]
+		Object@ orbit;
+		if (target is null) {
+			@orbit = getOrbitObjectInDeepSpace(pos);
+		} else {
+			@orbit = target.getOrbitObject(pos);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		if(orbit is null || obj is null || orbit.owner !is obj.owner)
 			return locale::OERR_PLANET_ORBIT;
 		if(orbit.position.distanceTo(pos) < orbit.radius + min_distance.decimal)
@@ -464,10 +485,14 @@ class LimitInOrbitStatus : OrbitalEffect {
 
 	bool canBuildAt(Object@ obj, const vec3d& pos) const {
 		Region@ target = getRegion(pos);
-		if(target is null)
-			return false;
-
-		Object@ orbit = target.getOrbitObject(pos);
+		// [[ MODIFY BASE GAME START ]]
+		Object@ orbit;
+		if (target is null) {
+			@orbit = getOrbitObjectInDeepSpace(pos);
+		} else {
+			@orbit = target.getOrbitObject(pos);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		if(orbit is null || obj is null || obj.owner !is orbit.owner)
 			return false;
 
@@ -484,12 +509,14 @@ class LimitInOrbitStatus : OrbitalEffect {
 #section server
 	void onEnable(Orbital& obj, any@ data) const override {
 		Region@ target = getRegion(obj.position);
-		if(target is null) {
-			obj.destroy();
-			return;
+		// [[ MODIFY BASE GAME START ]]
+		Object@ orbit;
+		if (target is null) {
+			@orbit = getOrbitObjectInDeepSpace(obj.position);
+		} else {
+			@orbit = target.getOrbitObject(obj.position);
 		}
-
-		Object@ orbit = target.getOrbitObject(obj.position);
+		// [[ MODIFY BASE GAME END ]]
 		if(orbit is null) {
 			obj.destroy();
 			return;
@@ -544,7 +571,7 @@ tidy final class DryDockStatus {
 
 class DryDockConstruction : OrbitalEffect {
 	Document doc("Allows this orbital to act as a drydock.");
-	
+
 #section server-side
 	void write(any@ data, Message& msg) const {
 		DryDockStatus@ status;
@@ -991,7 +1018,7 @@ class LimitOncePerSystem : OrbitalEffect {
 			return false;
 		return !check(obj, system);
 	}
-	
+
 	bool check(Object& obj, Region@ system) {
 		if(any_empire.boolean)
 			return system.getSystemFlagAny(flag.integer);
@@ -1086,7 +1113,7 @@ class FrameConstruction : OrbitalEffect {
 	Argument cost_factor(AT_Decimal, "1.0", doc="Factor to build cost of orbitals built on this frame.");
 	Argument labor_factor(AT_Decimal, "1.0", doc="Factor to labor cost of orbitals built on this frame.");
 	Argument labor_penalty_factor(AT_Decimal, "1.0", doc="Factor to labor cost penalty of orbitals built on this frame.");
-	
+
 #section server
 	bool sendObject(Player& pl, Orbital& obj, any@ data, uint index, Object@ value) const {
 		if(index == OV_FRAME_Target) {

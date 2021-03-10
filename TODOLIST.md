@@ -53,10 +53,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make quickbar width configurable
   - Fix bug with ships becoming unretroffitable if the source retrofitting them gets destroyed before finishing
   - Fix map generation bugs with galaxy mirroring and gas/ice giants
-  - Give orbitals which currently require a region for their effects also localised effects around their position (and prevent the rest being built in deep space, as Outposts already prohibit so)
-    - FTL Jammer
-    - Supply Depot
-    - others?
 
 - Not planned for any time soon
   - Colonisation ships similar to Motherships for other races
