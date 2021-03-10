@@ -38,7 +38,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make nebulae griefing not work while the planet is in combat.
   - Tweak tractor default design
   - Add Moons and Ore filters on planets tab
-  - Fix vision bug where planets moving in deep space while unseen aren't losing their memories, even though the memory loss is working correctly for exiting a region unseen
   - Add better UI for when attempting to export/import resources and you can't
   - Investigate what happens to civilian trade ships when target is in deep space
   - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands

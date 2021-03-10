@@ -180,8 +180,8 @@ bool updateRegion(Object& obj, bool takeVision = true) {
 	bool hasMemory = obj.memoryMask != 0 && obj.memoryMask != visionMask;
 	bool leftRegionOrInDeepSpace = prevRegion !is null
 		|| (prevRegion is null && newRegion is null);
-	// don't adjust memory of supports or flagships, they don't need adjusting
-	bool exclude = obj.isShip; // && obj.hasSupportAI;
+	// don't adjust memory of civs, supports or flagships, they don't need adjusting
+	bool exclude = obj.isShip || obj.isColonyShip || obj.isCivilian;
 	if (hasMemory && !exclude && leftRegionOrInDeepSpace) {
 		bool changedRegion = prevRegion !is newRegion;
 		bool movingAroundInDeepSpace = newRegion is null

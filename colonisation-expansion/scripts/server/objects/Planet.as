@@ -350,11 +350,8 @@ tidy class PlanetScript {
 		if (prevRegion !is null) {
 			planet.donatedVision |= prevRegion.DonateVisionMask;
 		} else {
-			// planet.donatedVision |= ~0;
-			// Do **not** make planets in deep space globally visible
-			//planet.donatedVision &= 0;
-			// Planets should only become visible to anything that can see them
-			planet.donatedVision |= planet.visibleMask;
+			// DO NOTHING!
+			// Let the C++ code manage who we become visible to
 		}
 		// [[ MODIFY BASE GAME END ]]
 
