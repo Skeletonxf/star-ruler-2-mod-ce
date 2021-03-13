@@ -19,6 +19,9 @@ from overlays.ContextMenu import openContextMenu;
 from obj_selection import selectObject, selectedObject, selectedObjects;
 import void zoomTo(Object@ obj) from "tabs.GalaxyTab";
 import void openOverlay(Object@ obj) from "tabs.GalaxyTab";
+// [[ MODIFY BASE GAME START ]]
+import cargo;
+// [[ MODIFY BASE GAME END ]]
 
 const int ICON_SIZE = 46;
 
@@ -33,7 +36,11 @@ enum PlanetModes {
 	PM_PRODUCTION,
 	PM_REQUIREMENTS,
 	PM_TILES,
-	PM_PRESSURE
+	PM_PRESSURE,
+	// [[ MODIFY BASE GAME START ]]
+	PM_MOONS,
+	PM_ORE
+	// [[ MODIFY BASE GAME END ]]
 };
 
 class PlanetElement {
@@ -134,6 +141,16 @@ class PlanetElement {
 				income = obj.income;
 				moneyText = formatMoney(income);
 			}
+			// [[ MODIFY BASE GAME START ]]
+			else if (mode == PM_ORE && hasSurface) {
+				auto@ ore = getCargoType("Ore");
+				income = 0;
+				if (ore !is null) {
+					income = obj.getCargoStored(ore.id);
+				}
+				moneyText = standardize(income);
+			}
+			// [[ MODIFY BASE GAME END ]]
 			else {
 				income = 0;
 			}
@@ -193,6 +210,15 @@ class PlanetElement {
 				numTotal = obj.pressureCap;
 				numUsed = obj.totalPressure;
 			}
+			// [[ MODIFY BASE GAME STAR ]]
+			else if (mode == PM_MOONS && obj.isPlanet && hasSurface) {
+				Planet@ pl = cast<Planet>(obj);
+				if (pl !is null) {
+					numTotal = pl.moonCount;
+					numUsed = pl.getStatusStackCountAny(getStatusID("MoonBase"));
+				}
+			}
+			// [[ MODIFY BASE GAME END ]]
 			else {
 				numTotal = -1;
 				numUsed = -1;
@@ -409,6 +435,20 @@ class PlanetElement {
 				ft.draw(pos=area+vec2i(1,1), text=moneyText, color=colors::Black, horizAlign=0.5);
 				ft.draw(pos=area, text=moneyText, color=color, horizAlign=0.5);
 			}
+			// [[ MODIFY BASE GAME START ]]
+			if(mode == PM_ORE && income != 0) {
+				const Font@ ft = font::DroidSans_11_Bold;
+				recti area = recti_area(vec2i(startPos.x, iconPos.topLeft.y - 8), vec2i(width, 20));
+				Color color = Color(0xaaaaaaff);
+				if(income > 0)
+					color = colors::Green;
+				ft.draw(pos=area+vec2i(-1,-1), text=moneyText, color=colors::Black, horizAlign=0.5);
+				ft.draw(pos=area+vec2i(1,-1), text=moneyText, color=colors::Black, horizAlign=0.5);
+				ft.draw(pos=area+vec2i(-1,1), text=moneyText, color=colors::Black, horizAlign=0.5);
+				ft.draw(pos=area+vec2i(1,1), text=moneyText, color=colors::Black, horizAlign=0.5);
+				ft.draw(pos=area, text=moneyText, color=color, horizAlign=0.5);
+			}
+			// [[ MODIFY BASE GAME END ]]
 			if(production !is null) {
 				int tot = 0;
 				for(uint i = 0; i < TR_COUNT; ++i) {
@@ -455,15 +495,30 @@ class PlanetElement {
 					else
 						baseColor = colors::Green;
 				}
+				// [[ MODIFY BASE GAME START ]]
+				else if (mode == PM_MOONS) {
+					if(numUsed < numTotal)
+						baseColor = colors::Orange;
+					else
+						baseColor = colors::Green;
+				}
+				// [[ MODIFY BASE GAME END ]]
 				else {
 					if(numUsed < numTotal)
 						baseColor = colors::Green;
 					else
-						baseColor = colors::Red;
+						baseColor = colors::Orange;
 				}
 				Color color;
-				if(numTotal != 0)
-					color = baseColor.interpolate(colors::Orange, float(numUsed) / float(numTotal));
+				// [[ MODIFY BASE GAME START ]]
+				if(numTotal != 0) {
+					if (mode == PM_MOONS) {
+						color = baseColor.interpolate(colors::Green, float(numUsed) / float(numTotal));
+					} else {
+						color = baseColor.interpolate(colors::Orange, float(numUsed) / float(numTotal));
+					}
+				}
+				// [[ MODIFY BASE GAME END ]]
 				ft.draw(pos=area, text=txt, color=color, horizAlign=0.5, stroke=colors::Black);
 			}
 		}
@@ -582,7 +637,7 @@ class PlanetTree : BaseGuiElement {
 		@tip = MarkupTooltip("", width=400, delay=0.f);
 		tip.wrapAroundElement = false;
 	}
-	
+
 	void remove() {
 		if(popup !is null) {
 			popup.visible = false;
@@ -595,7 +650,7 @@ class PlanetTree : BaseGuiElement {
 		BaseGuiElement::remove();
 	}
 
-	bool shouldShow(PlanetElement@ elem){ 
+	bool shouldShow(PlanetElement@ elem){
 		if(focusObject !is null && elem.obj !is focusObject) {
 			if(showExcess && elem.excess)
 				return true;
@@ -1058,6 +1113,10 @@ class PlanetsTab : Tab {
 	GuiButton@ reqsMode;
 	GuiButton@ tilesMode;
 	GuiButton@ pressureMode;
+	// [[ MODIFY BASE GAME START ]]
+	GuiButton@ moonsMode;
+	GuiButton@ oreMode;
+	// [[ MODIFY BASE GAME END ]]
 
 	GuiButton@ bgButton;
 
@@ -1073,7 +1132,7 @@ class PlanetsTab : Tab {
 		@bar = GuiSkinElement(this, Alignment(Left-4, Bottom-42, Right+4, Bottom+4), SS_PlanetBar);
 
 		int w = 160;
-		int c = 6;
+		int c = 8; // [[ MODIFY BASE GAME: 6 -> 8 ]]
 		int off = (c * w) / 2;
 		@normalMode = GuiButton(bar, Alignment(Left+0.5f-off, Top+4, Width=w, Height=34), locale::PLANETS_MODE_NORMAL);
 		normalMode.buttonIcon = Sprite(spritesheet::MenuIcons, 0);
@@ -1112,6 +1171,20 @@ class PlanetsTab : Tab {
 		tilesMode.pressed = false;
 		off -= w;
 
+		// [[ MODIFY BASE GAME START ]]
+		@moonsMode = GuiButton(bar, Alignment(Left+0.5f-off, Top+4, Width=w, Height=34), locale::PLANETS_MODE_MOONS);
+		moonsMode.buttonIcon = Sprite(spritesheet::PlanetType, 4);
+		moonsMode.toggleButton = true;
+		moonsMode.pressed = false;
+		off -= w;
+
+		@oreMode = GuiButton(bar, Alignment(Left+0.5f-off, Top+4, Width=w, Height=34), locale::PLANETS_MODE_ORE);
+		oreMode.buttonIcon = Sprite(spritesheet::ResourceIconsSmall, 65);
+		oreMode.toggleButton = true;
+		oreMode.pressed = false;
+		off -= w;
+		// [[ MODIFY BASE GAME END ]]
+
 		@bgButton = GuiButton(bar, Alignment(Right-38, Top+4, Width=34, Height=34));
 		GuiSprite sprt(bgButton, Alignment().padded(4), Sprite(spritesheet::PlanetType, 2));
 		bgButton.toggleButton = true;
@@ -1136,7 +1209,7 @@ class PlanetsTab : Tab {
 	Color get_inactiveColor() {
 		return Color(0xccff00ff);
 	}
-	
+
 	Color get_seperatorColor() {
 		return Color(0x798c2bff);
 	}
@@ -1176,6 +1249,10 @@ class PlanetsTab : Tab {
 		reqsMode.pressed = mode == PM_REQUIREMENTS;
 		tilesMode.pressed = mode == PM_TILES;
 		pressureMode.pressed = mode == PM_PRESSURE;
+		// [[ MODIFY BASE GAME START ]]
+		moonsMode.pressed = mode == PM_MOONS;
+		oreMode.pressed = mode == PM_ORE;
+		// [[ MODIFY BASE GAME END ]]
 		if(tree.mode != mode) {
 			tree.mode = mode;
 			tree.update();
@@ -1208,6 +1285,16 @@ class PlanetsTab : Tab {
 				switchMode(PM_PRESSURE);
 				return true;
 			}
+			// [[ MODIFY BASE GAME START ]]
+			if(event.caller is moonsMode) {
+				switchMode(PM_MOONS);
+				return true;
+			}
+			if(event.caller is oreMode) {
+				switchMode(PM_ORE);
+				return true;
+			}
+			// [[ MODIFY BASE GAME END ]]
 			if(event.caller is bgButton) {
 				SHOW_PLANETS = bgButton.pressed;
 				return true;

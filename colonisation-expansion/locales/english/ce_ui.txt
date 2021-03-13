@@ -2,3 +2,5 @@ IDLE_PLANETS: Idle Planets
 UNDERPOPULATED_PLANETS: Underpopulated Planets
 OVERPOPULATED_PLANETS: Overpopulated Planets
 IDLE_REPLICATORS: Idle Replicators
+PLANETS_MODE_ORE: Ore
+PLANETS_MODE_MOONS: Moons
