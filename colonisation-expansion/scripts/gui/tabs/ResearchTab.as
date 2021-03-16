@@ -468,7 +468,7 @@ class TechTooltip : BaseGuiElement {
 
 	GuiButton@ secondaryButton;
 	GuiMarkupText@ secondaryText;
-	
+
 	TechTooltip(IGuiElement@ parent) {
 		super(parent, recti());
 
@@ -669,7 +669,7 @@ class ResearchTab : Tab {
 		update();
 		Tab::show();
 	}
-	
+
 	Color get_activeColor() {
 		return Color(0xd482ffff);
 	}
@@ -680,7 +680,7 @@ class ResearchTab : Tab {
 
 	Color get_seperatorColor() {
 		return Color(0x75488dff);
-	}	
+	}
 
 	TabCategory get_category() {
 		return TC_Research;
@@ -903,6 +903,10 @@ class ResearchEditor : ResearchTab {
 		type.icon = compl.icon;
 		type.color = compl.color;
 		type.cls = getResearchClass(compl.cls);
+		// [[ MODIFY BASE GAME START ]]
+		type.timeCost = compl.timeCost;
+		type.pointCost = compl.pointCost;
+		// [[ MODIFY BASE GAME END ]]
 		return type;
 	}
 
@@ -978,7 +982,10 @@ class ResearchEditor : ResearchTab {
 				relPos.x -= T_SIZE.x / 2;
 			hovered.x = floor(double(relPos.x) / double(T_SIZE.x));
 		}
-		return BaseGuiElement::onMouseEvent(event, source);
+		// [[ MODIFY BASE GAME START ]]
+		// TODO: Make the highlight/placement work with zoom levels
+		return ResearchTab::onMouseEvent(event, source);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void save() {
