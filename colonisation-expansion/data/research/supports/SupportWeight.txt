@@ -1,0 +1,10 @@
+Technology: SupportWeight
+	Name: #R_SUPPORT_WEIGHT
+	Description: #R_SUPPORT_WEIGHT_DESC
+	Icon: techConstruction * #8ca2ff
+	Symbol: ActionBarIcons::2
+	Color: #8ca2ff
+	Category: Basic Upgrades
+	Point Cost: 600
+	Time Cost: 60
+	AddModifier(SupportHull::MassFactor(0.95))

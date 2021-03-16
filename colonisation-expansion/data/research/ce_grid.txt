@@ -21,12 +21,12 @@ Grid: ColonisationExpansionGrid
 	Thrust: 1,3
 	FactoryLabor: -1,-2
 	FactoryLabor: -2,-2
-	Megacity: -4,0
+	Construction: -4,0
 	Population: -4,-1
 	AntimatterGen: -3,3
 	FactoryLabor: -3,-4
 	FactoryLabor: -4,-5
-	Prosperity: -5,-1
+	Wealth: -5,-1
 	FlagHealth: 0,-2
 	ArmorHealth: 3,-4
 	FactoryLabor: -1,0
@@ -38,7 +38,7 @@ Grid: ColonisationExpansionGrid
 	HydroponicsSatellite: -3,-1
 	Ramjet: 2,7
 	Thrust: 0,3
-	Wealth: -5,0
+	SupportCap: -5,0
 	Energy: -4,3
 	DefenseSatellite: 1,1
 	Damage: 3,0
@@ -56,11 +56,10 @@ Grid: ColonisationExpansionGrid
 	FactoryLabor: -6,-9
 	Damage: 4,0
 	SupportCap: -3,0
-	SupportCap: -5,1
 	SupportCap: -6,0
 	SupportCap: -8,0
 	SupportCap: -9,0
-	SupportCap: -3,-3
+	ImpCivConstructionRate: -3,-3
 	PlanetSupport2: -4,-6
 	Energy: -6,3
 	Range: 5,1
@@ -111,7 +110,7 @@ Grid: ColonisationExpansionGrid
 	Disruptor: -7,6
 	EnergyHurdle: -5,3
 	IonCannon: -6,2
-	SupportCap2: -7,-1
+	Construction: -7,-1
 	EnergyHurdle: 3,-9
 	Population: -6,-3
 	ImpDecaySpeed: -1,-5
@@ -193,9 +192,9 @@ Grid: ColonisationExpansionGrid
 	Damage2: 8,0
 	HighEnergyHurdle: 9,0
 	FleetComputer: -8,-2
-	Construction: -7,0
-	Construction: -9,-1
-	Construction: -2,0
+	SupportCap2: -7,0
+	SupportWeight: -9,-1
+	SupportCap: -2,0
 	BldSpire: -7,-2
 	HyperLaser: 5,-1
 	Defense: 6,-1
@@ -232,7 +231,7 @@ Grid: ColonisationExpansionGrid
 	Obedience: -6,-1
 	CarrierHull: -4,-2
 	Population: -5,-2
-	ImpCivConstructionRate: -3,1
+	Megacity: -3,1
 	Laboratories: -5,-4
 	InfluenceHurdle: -7,-5
 	Obedience: -7,-6
@@ -282,3 +281,7 @@ Grid: ColonisationExpansionGrid
 	FTLHurdle: -2,-13
 	InterstellarTrade: -2,-14
 	GravitronicsEnhancer: 6,9
+	Prosperity: -5,1
+	SupportWeight: -9,-2
+	SupportWeight: -10,-3
+	Construction: -4,1

@@ -131,3 +131,5 @@ R_MOD_GRAVITRONICS_ENHANCER_DESC: <<
 
 	[bbloc=#S_GRAVITRONICS_DESC/]
 >>
+R_SUPPORT_WEIGHT_DESC: Reduces the mass of all your support ship designs by 5%.
+R_SUPPORT_WEIGHT: Compact Construction

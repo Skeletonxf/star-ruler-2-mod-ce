@@ -12,7 +12,7 @@ Technology: InfiniteHealth
 	Point Cost: 500
 	Time Cost: 60
 
-	AddPointCostAttribute(InfiniteHealthTaken, 300)
+	AddPointCostAttribute(InfiniteHealthTaken, 250)
 	AddTimeCostAttribute(InfiniteHealthTaken, 15)
 
 	ResetWhenUnlocked()

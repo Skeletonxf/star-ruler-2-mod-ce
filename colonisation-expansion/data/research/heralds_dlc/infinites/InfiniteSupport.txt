@@ -12,7 +12,7 @@ Technology: InfiniteSupport
 	Point Cost: 500
 	Time Cost: 50
 
-	AddPointCostAttribute(InfiniteSupportTaken, 300)
+	AddPointCostAttribute(InfiniteSupportTaken, 250)
 	AddTimeCostAttribute(InfiniteSupportTaken, 15)
 
 	ResetWhenUnlocked()

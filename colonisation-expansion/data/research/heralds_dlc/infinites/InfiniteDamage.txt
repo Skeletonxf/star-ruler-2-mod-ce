@@ -12,7 +12,7 @@ Technology: InfiniteDamage
 	Point Cost: 700
 	Time Cost: 90
 
-	AddPointCostAttribute(InfiniteDamageTaken, 350)
+	AddPointCostAttribute(InfiniteDamageTaken, 300)
 	AddTimeCostAttribute(InfiniteDamageTaken, 15)
 
 	ResetWhenUnlocked()

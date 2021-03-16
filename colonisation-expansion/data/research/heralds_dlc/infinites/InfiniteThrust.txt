@@ -12,7 +12,7 @@ Technology: InfiniteThrust
 	Point Cost: 400
 	Time Cost: 50
 
-	AddPointCostAttribute(InfiniteThrustTaken, 300)
+	AddPointCostAttribute(InfiniteThrustTaken, 250)
 	AddTimeCostAttribute(InfiniteThrustTaken, 10)
 
 	ResetWhenUnlocked()

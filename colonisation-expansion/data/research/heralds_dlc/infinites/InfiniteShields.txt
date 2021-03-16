@@ -12,7 +12,7 @@ Technology: InfiniteShields
 	Point Cost: 400
 	Time Cost: 40
 
-	AddPointCostAttribute(InfiniteShieldsTaken, 200)
+	AddPointCostAttribute(InfiniteShieldsTaken, 150)
 	AddTimeCostAttribute(InfiniteShieldsTaken, 10)
 
 	ResetWhenUnlocked()

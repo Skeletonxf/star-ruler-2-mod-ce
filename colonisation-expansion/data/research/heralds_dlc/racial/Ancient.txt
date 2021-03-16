@@ -7,7 +7,7 @@ Technology: FoundryLabor
 	Class: Boost
 
 	Point Cost: 500
-	Time Cost: 60
+	Time Cost: 40
 
 	ModAttribute(FactoryLaborMod, Add, 2)
 
@@ -19,6 +19,6 @@ Technology: FoundryLabor2
 	Color: #b1b4b6
 
 	Point Cost: 700
-	Time Cost: 80
+	Time Cost: 60
 
 	ModAttribute(FactoryLaborMod, Add, 4)

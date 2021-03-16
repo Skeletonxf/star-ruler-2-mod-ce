@@ -6,8 +6,8 @@ Technology: HabitatUpgrade
 	Icon: ResourceIcon::8
 	Color: #ca6700
 
-	Point Cost: 600
-	Time Cost: 90
+	Point Cost: 400
+	Time Cost: 40
 
 	ModAttribute(HabitatUpgrade, Multiply, 1.5)
 	ModAttribute(StaticDamageFactor, Multiply, 1.09)
@@ -22,7 +22,7 @@ Technology: MothershipLabor
 	Class: Boost
 
 	Point Cost: 500
-	Time Cost: 60
+	Time Cost: 40
 
 	ModAttribute(FactoryLaborMod, Add, 1)
 
@@ -38,7 +38,7 @@ Technology: MothershipLabor2
 	Color: #b1b4b6
 
 	Point Cost: 700
-	Time Cost: 80
+	Time Cost: 60
 
 	ModAttribute(FactoryLaborMod, Add, 2)
 
