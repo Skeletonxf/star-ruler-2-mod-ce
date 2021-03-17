@@ -46,13 +46,17 @@ class Improvement : AIComponent {
 	bool no_build_moon_bases = false;
 
 	const OrbitalModule@ ftlExtractor;
-	bool ftlExtractorsUnlocked = false;
 	bool immuneToCarpetBombs = false;
 	bool isMechanoid = false;
 	// an index for checking planets in need of carpet bomb protection
 	uint carpetBombCheck = 0;
+	bool hasFTLBreeders = false;
+
+	const OrbitalModule@ ftlStorage; // Star Children's special alternative orbital
+	bool hasFTLStorageBuilding = true;
 
 	AllocateConstruction@ extractorBuild = null;
+	AllocateConstruction@ ftlStorageBuild = null;
 
 	const BuildingType@ defenseGrid;
 	const BuildingType@ largeDefenseGrid;
@@ -79,7 +83,6 @@ class Improvement : AIComponent {
 		@build_moon_base = getConstructionType("MoonBase");
 		no_build_moon_bases = ai.empire.hasTrait(getTraitID("Ancient")) || ai.empire.hasTrait(getTraitID("StarChildren"));
 		@ftlExtractor = getOrbitalModule("FTLExtractor");
-		ftlExtractorsUnlocked = ai.empire.FTLExtractorsUnlocked >= 1;
 
 		immuneToCarpetBombs = ai.empire.hasTrait(getTraitID("Ancient")) || ai.empire.hasTrait(getTraitID("StarChildren"));
 		@defenseGrid = getBuildingType("DefenseGrid");
@@ -88,16 +91,25 @@ class Improvement : AIComponent {
 		artificialPlanetoidStatusID = getStatusID("ArtificialPlanetoid");
 		isMechanoid = ai.empire.hasTrait(getTraitID("Mechanoid"));
 		hasDefensesStatusID = getStatusID("HasDefenses");
+
+		// TODO: Is there some way we can check which buildings/orbitals we have unlocked without
+		// needing to consider a specific planet?
+		hasFTLBreeders = isMechanoid;
+		hasFTLStorageBuilding = !ai.empire.hasTrait(getTraitID("StarChildren"));
+
+		@ftlStorage = getOrbitalModule("FTLStorage");
 	}
 
 	void save(SaveFile& file) {
 		construction.saveConstruction(file, extractorBuild);
+		construction.saveConstruction(file, ftlStorageBuild);
 		file << carpetBombCheck;
 		file << nonCombatDefensesOrdered;
 	}
 
 	void load(SaveFile& file) {
 		@extractorBuild = construction.loadConstruction(file);
+		@ftlStorageBuild = construction.loadConstruction(file);
 		file >> carpetBombCheck;
 		file >> nonCombatDefensesOrdered;
 	}
@@ -109,9 +121,8 @@ class Improvement : AIComponent {
 	void focusTick(double time) override {
 		lookToBuildMoonBases();
 
-		// check again to see if we unlocked FTL Extractors
-		ftlExtractorsUnlocked = ai.empire.FTLExtractorsUnlocked >= 1;
 		lookToBuildFTLExtractors();
+		lookToBuildFTLStorage();
 
 		lookToBuildDefenses();
 	}
@@ -191,6 +202,10 @@ class Improvement : AIComponent {
 	}
 
 	void lookToBuildFTLExtractors() {
+		if (hasFTLBreeders) {
+			return;
+		}
+
 		if (ftlExtractor is null) {
 			return;
 		}
@@ -199,7 +214,7 @@ class Improvement : AIComponent {
 			return;
 		}
 
-		if (!ftlExtractorsUnlocked) {
+		if (!(ai.empire.FTLExtractorsUnlocked >= 1)) {
 			// TODO: Queue up the research for Extractors
 			return;
 		}
@@ -208,6 +223,7 @@ class Improvement : AIComponent {
 			// Don't try to build a second extractor while first is in progress
 			return;
 		}
+
 		if (!budget.canSpend(BT_Military, ftlExtractor.buildCost, ftlExtractor.maintenance)) {
 			return;
 		}
@@ -220,16 +236,8 @@ class Improvement : AIComponent {
 				continue;
 			}
 
-			auto@ factory = construction.getFactory(base.region);
-			if (factory is null) {
-				continue;
-			}
-
-			if (factory.busy) {
-				continue;
-			}
-
-			if (!factory.obj.canBuildOrbitals) {
+			auto@ factory = construction.getClosestFactory(base.region);
+			if (factory is null || factory.busy || !factory.obj.canBuildOrbitals) {
 				continue;
 			}
 
@@ -237,6 +245,52 @@ class Improvement : AIComponent {
 			@extractorBuild = construction.buildNow(buildPlan, factory);
 			if (log) {
 				ai.print("Creating FTL Extractor", base.region);
+			}
+			return;
+		}
+	}
+
+	void lookToBuildFTLStorage() {
+		if (hasFTLStorageBuilding) {
+			return;
+		}
+
+		if (ftlStorage is null) {
+			return;
+		}
+
+		if (!development.requestsFTLStorage()) {
+			return;
+		}
+
+		if (ftlStorageBuild !is null) {
+			// Don't try to build a second while first is in progress
+			return;
+		}
+		if (!budget.canSpend(BT_Military, ftlStorage.buildCost, ftlStorage.maintenance)) {
+			return;
+		}
+
+		// Try to find a staging base to build this orbital at as they are
+		// easily shot down if not protected
+		for (uint i = 0, cnt = military.StagingBases.length; i < cnt; ++i) {
+			auto@ base = military.StagingBases[i];
+			if (base.occupiedTime < FTL_EXTRACTOR_MIN_HELD_BASE_TIMER) {
+				continue;
+			}
+
+			auto@ factory = construction.getClosestFactory(base.region);
+			if (factory is null || factory.busy || !factory.obj.canBuildOrbitals) {
+				continue;
+			}
+			if (!ftlStorage.canBuild(factory.obj, factory.obj.position)) {
+				continue;
+			}
+
+			BuildOrbital@ buildPlan = construction.buildLocalOrbital(ftlStorage);
+			@ftlStorageBuild = construction.buildNow(buildPlan, factory);
+			if (log) {
+				ai.print("Creating FTL Storage", base.region);
 			}
 			return;
 		}

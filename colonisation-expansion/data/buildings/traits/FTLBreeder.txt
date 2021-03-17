@@ -17,3 +17,5 @@ Building: FTLBreeder
 	TriggerConstructed(LosePopulation(1))
 
 	ShowFTLValue(0.35, Suffix = #PER_SECOND)
+
+	AI: AsFTLIncome()

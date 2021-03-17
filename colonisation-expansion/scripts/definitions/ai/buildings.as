@@ -169,3 +169,13 @@ class AsFTLStorage : BuildingAI {
 	}
 #section all
 };
+
+// [[ MODIFY BASE GAME START ]]
+class AsFTLIncome : BuildingAI {
+	Document doc("This building is built whenever more ftl income is requested.");
+
+	// We're a marker type that the Expansion code will consider when it determines
+	// that FTL income is needed, so there's no methods/implementation here
+	// as this won't use the Consider hook system.
+}
+// [[ MODIFY BASE GAME END ]]

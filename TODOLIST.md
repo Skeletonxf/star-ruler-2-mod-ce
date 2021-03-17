@@ -7,8 +7,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
   - Expansion AI Component
-    - Teach AI to make buildings following the existing hooks system for FTL capacity/income
-      - And to colonise FTL crystals on sight
+    - Teach AI to colonise FTL crystals on sight
+    - Investigate issues with Mechanoid AI being able to build gates
     - Teach AI how to deal with all of its focuses having requirements it can't meet
     - Scuttle outposts which have ended up in a different region to where the AI created them
       - Thanks Illyia
@@ -34,6 +34,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - LeaderAI leaderInit
     - Ship constructible support supply free
   - Planetary shielding in some way
+  - Make message strip clear notifications when swapping empires
   - Make auto import refresh when resources on already colonised planets become available
   - Make nebulae griefing not work while the planet is in combat.
   - Tweak tractor default design
@@ -45,6 +46,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to not put comets on worlds being razed
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
+    - Or if they have FTL breeders already unlocked
   - Increase the resolution of the Helium 3 icon to make it clearer
   - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
     - Replace beams with lines?

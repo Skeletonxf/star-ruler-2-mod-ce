@@ -29,16 +29,11 @@ import empire_ai.dragon.expansion.planet_management;
 import empire_ai.dragon.expansion.region_linking;
 import empire_ai.dragon.expansion.development;
 import empire_ai.dragon.expansion.buildings;
+import empire_ai.dragon.expansion.ftl;
 import empire_ai.dragon.logs;
 
 from statuses import getStatusID;
 from traits import getTraitID;
-
-// Data class for incomes that we are aiming for.
-class ResourceIncomes {
-	double FTLIncome = 1.0;
-	double FTLStorage = 0.0;
-}
 
 // Data class for what actions development and colonization can take, ie
 // if we can do certain things or not due to our race.
@@ -635,7 +630,7 @@ class ColonizeForest {
 					}
 				}
 			}
-			if (LOG) {
+			if (false && LOG && request.spec.isForImport) {
 				ai.print("failed to find target for requested resource: "+request.spec.dump(), request.obj);
 			}
 		}
@@ -790,7 +785,7 @@ class ColonizeForest {
  * which doesn't sit on unused resources or colonise resources not needed for
  * levelling.
  */
-class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner, DevelopmentFocuses, ResourceValuationOwner, BuildingTracker {
+class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner, DevelopmentFocuses, ResourceValuationOwner, BuildingTracker, FTLRequirements {
 	Resources@ resources;
 	Planets@ planets;
 	Systems@ systems;
@@ -805,7 +800,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	const BuildingType@ filterType;
 
 	Actions actions;
-	ResourceIncomes incomes;
+	FTLResourceIncomes ftlIncomeTargets;
 	Limits limits;
 
 	// Colonization state
@@ -862,7 +857,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
 		@colonyManagement = TerrestrialColonization(planets, ai);
-		@planetManagement = PlanetManagement(planets, budget, this, this, ai, log);
+		@planetManagement = PlanetManagement(planets, budget, this, this, this, ai, log);
 		@regionLinking = RegionLinking(planets, construction, resources, systems, budget, this);
 
 		@scalableClass = getResourceClass("Scalable");
@@ -920,6 +915,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		for(uint i = 0; i < cnt; ++i)
 			resources.saveExport(file, managedPressure[i]);
 		file << pressureIndex;
+
+		ftlIncomeTargets.save(file);
 	}
 
 	void load(SaveFile& file) {
@@ -1002,6 +999,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				managedPressure.insertLast(data);
 		}
 		file >> pressureIndex;
+
+		ftlIncomeTargets.load(file);
 	}
 
 	void tick(double time) override {
@@ -1669,11 +1668,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	}
 
 	bool requestsFTLStorage() {
-		return false;
+		return ftlIncomeTargets.requestsFTLStorage(ai);
 	}
 
 	bool requestsFTLIncome() {
-		return false;
+		return ftlIncomeTargets.requestsFTLIncome(ai);
 	}
 
 	Empire@ get_empire() {
@@ -1967,10 +1966,10 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	array<DevelopmentFocus@> get_Focuses() { return focuses; }
 
-	double get_AimFTLStorage() { return incomes.FTLStorage; }
-	void set_AimFTLStorage(double value) { incomes.FTLStorage = value; }
-	double get_AimFTLIncome() { return incomes.FTLIncome; }
-	void set_AimFTLIncome(double value) { incomes.FTLIncome = value; }
+	double get_AimFTLStorage() { return ftlIncomeTargets.FTLStorage; }
+	void set_AimFTLStorage(double value) { ftlIncomeTargets.FTLStorage = value; }
+	double get_AimFTLIncome() { return ftlIncomeTargets.FTLIncome; }
+	void set_AimFTLIncome(double value) { ftlIncomeTargets.FTLIncome = value; }
 	bool get_ManagePlanetPressure() { return actions.managePressure; }
 	void set_ManagePlanetPressure(bool value) { actions.managePressure = value; }
 	bool get_BuildBuildings() { return true; }

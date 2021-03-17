@@ -15,6 +15,7 @@ import empire_ai.weasel.Fleets;
  * TODO: Use slipstreams to improve colonisation speed
  * TODO: Fling/tug stations to offensively attack other empires's eco
  * TODO: Use slipstreams to move asteroids/orbitals/stations
+ * TODO: Skip drive support
  */
 
 // Fling data
@@ -1016,8 +1017,8 @@ class FTLGeneric : FTL {
 				continue;
 
 			double baseCost = obj.blueprint.design.average(SV_SlipstreamCost);
-			double duration = obj.blueprint.design.average(SV_SlipstreamDuration);
-			mostSSCost += baseCost / duration;
+			//double duration = obj.blueprint.design.average(SV_SlipstreamDuration);
+			mostSSCost += baseCost; // / duration;
 		}
 		development.AimFTLStorage = max(
 			highestCost / (1.0 - ai.behavior.ftlReservePctCritical - ai.behavior.ftlReservePctNormal),

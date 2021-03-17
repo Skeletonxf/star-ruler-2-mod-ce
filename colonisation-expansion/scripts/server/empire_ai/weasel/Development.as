@@ -311,8 +311,6 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 	 * Mirror the requestsFTLStorage method except this will primarily
 	 * be acted on by Improvement.as rather than buildings.as as only Mechanoid
 	 * has an FTL income building
-	 * TODO: Make Mechanoid AI act on this with Breeder Reactors instead of
-	 * orbitals
 	 */
 	bool requestsFTLIncome() {
 		// TODO: Check we actually have an FTL method

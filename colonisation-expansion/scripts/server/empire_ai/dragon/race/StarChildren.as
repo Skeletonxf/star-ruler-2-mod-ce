@@ -25,7 +25,6 @@ from statuses import getStatusID;
 // on explored neighbouring systems and requests are drying up
 // Make the AI not put command computers on motherships
 // Make sure AI will flee from remnants and abort if mothership takes heavy damage
-// Send idle motherships to planets with labor
 
 class HabitatMission : Mission {
 	Planet@ target;
