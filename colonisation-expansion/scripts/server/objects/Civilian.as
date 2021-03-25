@@ -4,6 +4,11 @@ import systems;
 import resources;
 import civilians;
 import statuses;
+// [[ MODIFY BASE GAME START ]]
+// Civilian scipt navigation improvements from Industrial Navigation
+import oddity_navigation;
+from traits import getTraitID;
+// [[ MODIFY BASE GAME END ]]
 
 const double ACC_SYSTEM = 2.0;
 const double ACC_INTERSYSTEM = 65.0;
@@ -11,7 +16,13 @@ const int GOODS_WORTH = 8;
 const double CIV_HEALTH = 25.0;
 const double CIV_REPAIR = 1.0;
 const double BLOCKADE_TIMER = 3.0 * 60.0;
-const double DEST_RANGE = 4.0;
+// [[ MODIFY BASE GAME START ]]
+const double DEST_RANGE = 20.0;
+
+// Cache system defs to check things are unlocked
+const SubsystemDef@ hyperdriveSubsystem = getSubsystemDef("Hyperdrive");
+const SubsystemDef@ jumpdriveSubsystem = getSubsystemDef("Jumpdrive");
+// [[ MODIFY BASE GAME END ]]
 
 tidy class CivilianScript {
 	uint type = 0;
@@ -22,6 +33,9 @@ tidy class CivilianScript {
 	Region@ nextRegion;
 	int moveId = -1;
 	bool leavingRegion = false, awaitingIntermediate = false;
+	// [[ MODIFY BASE GAME START ]]
+	bool awaitingGateJump = false;
+	// [[ MODIFY BASE GAME END ]]
 	bool pickedUp = false;
 	double Health = CIV_HEALTH;
 	int stepCount = 0;
@@ -260,14 +274,14 @@ tidy class CivilianScript {
 		if(engaged && obj.region !is null)
 			obj.region.EngagedMask |= obj.owner.mask;
 	}
-	
+
 	void gotoTradeStation(Civilian@ station) {
 		if(!awaitingIntermediate)
 			return;
 		awaitingIntermediate = false;
 		@intermediate = station;
 	}
-	
+
 	void gotoTradePlanet(Planet@ planet) {
 		if(!awaitingIntermediate)
 			return;
@@ -294,9 +308,11 @@ tidy class CivilianScript {
 			Health = min(Health + (CIV_REPAIR * time * obj.radius), maxHP);
 			delta = true;
 		}
-		
-		if(awaitingIntermediate)
+
+		// [[ MODIFY BASE GAME START ]]
+		if(awaitingIntermediate || !awaitingGateJump && obj.isMoving && obj.region !is nextRegion)
 			return 0.25;
+		// [[ MODIFY BASE GAME END ]]
 
 		//Update pathing
 		Region@ curRegion = obj.region;
@@ -317,7 +333,9 @@ tidy class CivilianScript {
 			Region@ destRegion;
 			if(pathTarget.isRegion)
 				@destRegion = cast<Region>(pathTarget);
-			else
+			// [[ MODIFY BASE GAME START ]]
+			else if(pathTarget.owner !is null && pathTarget.owner is obj.owner)
+			// [[ MODIFY BASE GAME END ]]
 				@destRegion = pathTarget.region;
 			if(nextRegion is null) {
 				if(curRegion is null)
@@ -330,21 +348,35 @@ tidy class CivilianScript {
 				return 0.4;
 			}
 			if(leavingRegion) {
-				vec3d enterDest;
-				if(nextRegion !is destRegion || destRegion is pathTarget || getSystem(prevRegion).isSpatialAdjacent(getSystem(nextRegion)))  {
-					enterDest = nextRegion.position + (prevRegion.position - nextRegion.position).normalized(nextRegion.radius * 0.85);
-					enterDest += random3d(0.0, DEST_RANGE);
+				// [[ MODIFY BASE GAME START ]]
+				vec3d enterDest = nextRegion.position;
+				bool arrived = false;
+				if(!awaitingGateJump) {
+					obj.maxAcceleration = ACC_INTERSYSTEM;
+					if(prevRegion !is null && hasGateToNextRegion(prevRegion, obj.owner)) {
+						enterDest = nextRegion.position + random3d(nextRegion.radius/5);
+						awaitingGateJump = true; // we have a gate, move with normal speed and await jump
+						obj.maxAcceleration = ACC_SYSTEM;
+					} else {
+						enterDest = nextRegion.position;
+						enterDest += quaterniond_fromAxisAngle(vec3d_up(), pi * 0.01)
+							* (prevRegion.position - nextRegion.position).normalized(nextRegion.radius * 0.85);
+						enterDest +=  random3d(0, DEST_RANGE);
+					}
+					enterDest.y = nextRegion.position.y;
+				} else if (curRegion is nextRegion) {
+					arrived = true;
 				}
-				else {
-					enterDest = pathTarget.position + vec3d(0,0,pathTarget.radius+10.0);
+
+				if(arrived || arriveWithEmpirePropulsionTechnology(obj, enterDest)) {
+					if(cargoType == CT_Resource)
+						prevRegion.bumpTradeCounter(obj.owner);
+					moveId = -1;
+					leavingRegion = false;
+					awaitingGateJump = false;
 				}
-				obj.maxAcceleration = ACC_INTERSYSTEM;
-				if(!obj.moveTo(enterDest, moveId, enterOrbit=false))
-					return 0.2;
-				if(cargoType == CT_Resource)
-					prevRegion.bumpTradeCounter(obj.owner);
-				moveId = -1;
-				leavingRegion = false;
+				return 0.2;
+				// [[ MODIFY BASE GAME END ]]
 			}
 			if(curRegion is null || (nextRegion !is null && nextRegion is curRegion)) {
 				if(nextRegion is destRegion) {
@@ -367,9 +399,13 @@ tidy class CivilianScript {
 				}
 				else if(curRegion is null) {
 					//Move to closest region
-					vec3d pos = nextRegion.position + (nextRegion.position - obj.position).normalized(nextRegion.radius * 0.85);
+					// [[ MODIFY BASE GAME START ]]
+					vec3d pos = nextRegion.position;
+					pos += (nextRegion.position - obj.position).normalized(nextRegion.radius * 0.85);
+					pos.y = nextRegion.position.y;
 					obj.maxAcceleration = ACC_INTERSYSTEM;
-					if(obj.moveTo(pos, moveId, enterOrbit=false)) {
+					if(arriveWithEmpirePropulsionTechnology(obj, pos)) {
+						// [[ MODIFY BASE GAME END ]]
 						moveId = -1;
 						return 0.4;
 					}
@@ -402,6 +438,9 @@ tidy class CivilianScript {
 				}
 			}
 			if(!leavingRegion) {
+				// [[ MODIFY BASE GAME START ]]
+				obj.maxAcceleration = ACC_SYSTEM;
+				// [[ MODIFY BASE GAME END ]]
 				if(intermediate !is null) {
 					if(obj.moveTo(intermediate, moveId, distance=10.0, enterOrbit=false)) {
 						moveId = -1;
@@ -413,17 +452,26 @@ tidy class CivilianScript {
 					}
 				}
 				else {
-					if(moveId == -1 && !getSystem(prevRegion).isSpatialAdjacent(getSystem(nextRegion)))  {
+					// [[ MODIFY BASE GAME START ]]
+					if(moveId == -1 && hasGateToNextRegion(prevRegion, obj.owner)) {
+						// [[ MODIFY BASE GAME END ]]
 						leavingRegion = true;
 						return 0.5;
 					}
 					vec3d leaveDest;
 					if(prevRegion is null)
 						leaveDest = obj.position;
-					else
-						leaveDest = prevRegion.position + (nextRegion.position - prevRegion.position).normalized(prevRegion.radius * 0.85) + random3d(0, DEST_RANGE);
-					obj.maxAcceleration = ACC_SYSTEM;
-					if(obj.moveTo(leaveDest, moveId, enterOrbit=false)) {
+					// [[ MODIFY BASE GAME START ]]
+					else {
+						leaveDest = prevRegion.position;
+						leaveDest += quaterniond_fromAxisAngle(vec3d_up(), -pi * 0.01)
+							* (nextRegion.position - prevRegion.position).normalized(prevRegion.radius * 0.85);
+						leaveDest +=  random3d(0, DEST_RANGE);
+						leaveDest.y = prevRegion.position.y;
+					}
+					if(obj.moveTo(leaveDest, moveId, enterOrbit=false)
+						|| leaveDest.distanceToSQ(obj.position) < DEST_RANGE * DEST_RANGE) {
+						// [[ MODIFY BASE GAME END ]]
 						moveId = -1;
 						leavingRegion = true;
 						return 0.5;
@@ -433,6 +481,52 @@ tidy class CivilianScript {
 		}
 		return 0.2;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	bool arriveWithEmpirePropulsionTechnology(Civilian& obj, vec3d enterDest) {
+		if(awaitingGateJump)
+			return obj.moveTo(enterDest, moveId, enterOrbit=false);
+
+		bool allowedCivilianFTL = obj.owner.HasCivilianFTL >= 1;
+		bool hasHyperdrives = allowedCivilianFTL && obj.owner.isUnlocked(hyperdriveSubsystem);
+		bool hasJumpdrives = allowedCivilianFTL && obj.owner.isUnlocked(jumpdriveSubsystem);
+
+		if(hasJumpdrives) {
+			playParticleSystem("GateFlash", obj.position, obj.rotation, obj.radius, obj.visibleMask);
+			awaitingGateJump = true;
+			obj.position = enterDest;
+			obj.clearMovement();
+			playParticleSystem("GateFlash", enterDest, obj.rotation, obj.radius, obj.visibleMask);
+			return true;
+		}
+		if(hasHyperdrives) {
+			if(!obj.inFTL)
+				playParticleSystem("GateFlash", obj.position, obj.rotation, obj.radius, obj.visibleMask);
+			if(enterDest.distanceToSQ(obj.position) < DEST_RANGE * DEST_RANGE ||
+				obj.FTLTo(enterDest, ACC_INTERSYSTEM * 4, moveId)
+			) {
+				obj.FTLDrop();
+				playParticleSystem("GateFlash", obj.position, obj.rotation, obj.radius, obj.visibleMask);
+				return true;
+			}
+			return false;
+		}
+		return obj.moveTo(enterDest, moveId, enterOrbit=false);
+	}
+
+	bool hasGateToNextRegion(Region& curRegion, Empire& owner) {
+		if(hasOddityLink(curRegion, nextRegion))
+			return true;
+
+		if(owner.hasStargates()) {
+			Object@ thisGate = owner.getFriendlyStargate(curRegion.position);
+			Object@ otherGate = owner.getFriendlyStargate(nextRegion.position);
+			return thisGate !is null && thisGate.region is curRegion
+				&& otherGate !is null && otherGate.region is nextRegion;
+		}
+		return false;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void setOrigin(Object@ origin) {
 		@this.origin = origin;

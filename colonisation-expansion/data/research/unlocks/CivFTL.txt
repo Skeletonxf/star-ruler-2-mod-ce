@@ -1,0 +1,13 @@
+Technology: CivFTL
+	Name: #CIVILIAN_FTL
+	Description: #CIVILIAN_FTL_DESC
+	Class: Unlock
+	Category: Civilian
+	Point Cost: 500
+	Time Cost: 60
+	Icon: FtlIcon * ffaaff
+	Color: #ffbdd8
+
+	CE_technology_hooks::RequireEither(CE_technology_hooks::RequireSubsystemUnlocked(Hyperdrive), CE_technology_hooks::RequireSubsystemUnlocked(Jumpdrive))
+	SecondaryFTLCost(1000)
+	ModAttribute(HasCivilianFTL, Add, 1)

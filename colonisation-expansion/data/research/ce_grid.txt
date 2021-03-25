@@ -233,12 +233,12 @@ Grid: ColonisationExpansionGrid
 	Population: -5,-2
 	Megacity: -3,1
 	Laboratories: -5,-4
-	InfluenceHurdle: -7,-5
+	Wealth: -7,-5
 	Obedience: -7,-6
 	Laboratories: -8,-1
 	InfiniteSupport: -11,0
 	SupportCap2: -10,0
-	Wealth: -7,-4
+	InfluenceHurdle: -7,-4
 	InfluenceHurdle: -8,-6
 	Obedience: -9,-7
 	Wealth: -9,-6
@@ -276,7 +276,6 @@ Grid: ColonisationExpansionGrid
 	ColossusHull: 2,-10
 	InfiniteHealth: 3,-11
 	Gyroscope: 4,6
-	CreateWater: -8,-4
 	SupplyStorage: -1,-12
 	FTLHurdle: -2,-13
 	InterstellarTrade: -2,-14
@@ -285,3 +284,5 @@ Grid: ColonisationExpansionGrid
 	SupportWeight: -9,-2
 	SupportWeight: -10,-3
 	Construction: -4,1
+	CreateWater: -5,-9
+	CivFTL: -8,-4

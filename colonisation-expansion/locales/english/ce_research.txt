@@ -133,3 +133,9 @@ R_MOD_GRAVITRONICS_ENHANCER_DESC: <<
 >>
 R_SUPPORT_WEIGHT_DESC: Reduces the mass of all your support ship designs by 5%.
 R_SUPPORT_WEIGHT: Compact Construction
+CIVILIAN_FTL: Civilian FTL Grants
+CIVILIAN_FTL_DESC: <<
+	Establish a special FTL fund which is ringfenced and protected from daily empire wide FTL needs.
+
+	[color=#aaa][i]Allows Civilian ships to use Hyperdrives and Jumpdrives for travel.[/i][/color]
+>>

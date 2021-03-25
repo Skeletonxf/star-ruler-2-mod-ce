@@ -104,6 +104,7 @@ visible:
 	attribute double HasFlux = 0
 	// [[ MODIFY BASE GAME START ]]
 	attribute double HasFling = 0
+	attribute double HasCivilianFTL = 0;
 	// [[ MODIFY BASE GAME END ]]
 	attribute double ForbidDeepSpace = 0
 	attribute double HyperdriveStartCostMod = 0
