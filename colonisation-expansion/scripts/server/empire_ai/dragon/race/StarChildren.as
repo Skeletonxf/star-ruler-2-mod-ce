@@ -24,7 +24,9 @@ from statuses import getStatusID;
 // Should use idle motherships for scouting, especially when we run low
 // on explored neighbouring systems and requests are drying up
 // Make the AI not put command computers on motherships
-// Make sure AI will flee from remnants and abort if mothership takes heavy damage
+
+double HEALTH_ABORT_THRESHOLD = 0.9;
+double HEALTH_MISSION_THRESHOLD = 0.95;
 
 class HabitatMission : Mission {
 	Planet@ target;
@@ -57,6 +59,12 @@ class HabitatMission : Mission {
 	}
 
 	void tick(AI& ai, FleetAI& fleet, double time) override {
+		if (fleet.flagshipHealth < HEALTH_ABORT_THRESHOLD) {
+			ai.print("Aborted habitat mission, took too much damage", fleet.obj);
+			onCancel(ai);
+			cast<Fleets>(ai.fleets).returnToBase(fleet, MP_Critical);
+			return;
+		}
 		// TODO: Run away and abort mission if we end up in combat
 		if(move !is null) {
 			if(move.failed) {
@@ -89,7 +97,6 @@ class HabitatMission : Mission {
 			if(target is null || !target.valid || target.quarantined
 					|| (target.owner !is ai.empire && target.owner.valid)
 					|| target.inCombat) {
-				canceled = true;
 				onCancel(ai);
 				return;
 			}
@@ -108,7 +115,6 @@ class HabitatMission : Mission {
 				bool makingProgress = curPop > targetPopAtLastRetry;
 				if (retries > 6) {
 					// give up
-					canceled = true;
 					onCancel(ai);
 					return;
 				}
@@ -125,6 +131,7 @@ class HabitatMission : Mission {
 	}
 
 	void onCancel(AI& ai) {
+		canceled = true;
 		if (target !is null && target.valid && target.owner !is ai.empire) {
 			// if we cancel notify Expansion so it can respond immediately
 			// instead of it waiting for a timeout before it realises
@@ -156,6 +163,10 @@ class MothershipColonizer : ColonizationSource {
 
 	bool idle() {
 		return mothership.mission is null;
+	}
+
+	bool inGoodHealth() {
+		return mothership.flagshipHealth > HEALTH_MISSION_THRESHOLD;
 	}
 }
 
@@ -463,7 +474,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 			for (uint i = 0, cnt = ai.empire.planetCount; i < cnt; ++i) {
 				Planet@ planet = ai.empire.planetList[i];
 				if (planet !is null && planet.valid) {
-					if (LOG) {
+					if (log) {
 						ai.print("Requesting labor pressure resources");
 					}
 					for (uint i = 0; i < 3; ++i) {
@@ -603,6 +614,9 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 			if (flAI.mission !is null) {
 				continue;
 			}
+			if (!mothership.inGoodHealth()) {
+				continue;
+			}
 
 			double travelTime = getApproximateETA(flAI.obj, position);
 			if (travelTime < bestTime) {
@@ -625,6 +639,9 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 			// FIXME: We really need to be able to queue missions to maximise our usage
 			// of our motherships
 			if (flAI.mission !is null) {
+				continue;
+			}
+			if (!mothership.inGoodHealth()) {
 				continue;
 			}
 
