@@ -13,6 +13,8 @@ from abilities import getAbilityID;
 from statuses import getStatusID;
 from traits import getTraitID;
 
+import empire_ai.dragon.logs;
+
 class PlanetManagement {
 	Planets@ planets;
 	Budget@ budget;
@@ -232,7 +234,8 @@ class PlanetManagement {
 				}
 
 				if (shouldBuild) {
-					ai.print("building "+type.name+" to meet FTL request at", plAI.obj);
+					if (LOG)
+						ai.print("building "+type.name+" to meet FTL request at", plAI.obj);
 					auto@ req = planets.requestBuilding(plAI, type, priority=0.5, expire=ai.behavior.genericBuildExpire);
 					if (req !is null) {
 						auto@ tracker = BuildTracker(req);
@@ -301,7 +304,7 @@ class PlanetManagement {
 			const ResourceType@ res = getResource(choice.obj.primaryResourceType);
 			if (res is null)
 				return;
-			if (true)
+			if (LOG)
 				ai.print("Morph planet to "+res.name+" from "+choice.obj.name, plAI.obj);
 			plAI.obj.activateAbilityTypeFor(ai.empire, unobtaniumAbility, choice.obj);
 			return;

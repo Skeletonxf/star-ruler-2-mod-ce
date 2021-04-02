@@ -5,6 +5,8 @@ import empire_ai.dragon.expansion.colonization;
 import system_pathing;
 import orbitals;
 
+import empire_ai.dragon.logs;
+
 class AvoidOutpostMarker {
 	Region@ region;
 	/**
@@ -121,7 +123,8 @@ class RegionLinking {
 				continue;
 			}
 			if (!resources.canTradeBetween(planet_i.obj.region, planet_j.obj.region)) {
-				ai.print("No trade connection found between "+planet_i.obj.name+" and "+planet_j.obj.name);
+				if (LOG)
+					ai.print("No trade connection found between "+planet_i.obj.name+" and "+planet_j.obj.name);
 				tryToConnectTrade(planet_i.obj.region, planet_j.obj.region, ai.empire);
 			}
 		}
@@ -193,7 +196,8 @@ class RegionLinking {
 							AllocateConstruction@ allocation = construction.buildNow(buildPlan, factory);
 							if (allocation !is null) {
 								linkBuilds.insertLast(LinkBuild(allocation, region));
-								print("Making outpost for trade connection at "+region.name);
+								if (LOG)
+									print("Making outpost for trade connection at "+region.name);
 							}
 						}
 					}
@@ -237,7 +241,8 @@ class RegionLinking {
 			if (build is null || build.completed) {
 				if (linkBuilds[i].region !is null && getOutposts(linkBuilds[i].region, ai.empire) == 0) {
 					// did it get shot down?
-					ai.print("Outpost missing in "+linkBuilds[i].region.name);
+					if (LOG)
+						ai.print("Outpost missing in "+linkBuilds[i].region.name);
 					double nextAllowedOutpostTime = gameTime + ai.behavior.colonizePenalizeTime;
 					AvoidOutpostMarker@ penalty = AvoidOutpostMarker(linkBuilds[i].region, nextAllowedOutpostTime);
 					penalties.insertLast(penalty);

@@ -559,7 +559,8 @@ class ColonizeForest {
 		}
 
 		if (newColony !is null) {
-			ai.print("found colonize target for requested resource: "+request.spec.dump(), newColony);
+			if (LOG)
+				ai.print("found colonize target for requested resource: "+request.spec.dump(), newColony);
 			queue.insertLast(ColonizeTree(newColony, request));
 			request.isColonizing = true;
 		} else {
@@ -616,7 +617,8 @@ class ColonizeForest {
 						// the only way to meet a resource, so this is intended hackery)
 						if (request.spec.meets(getResource(resourceBuilding.resource.integer), fromObj=request.obj, toObj=request.obj)) {
 							// got match, close request
-							ai.print("building "+type.name+" to meet requested resource: "+request.spec.dump());
+							if (LOG)
+								ai.print("building "+type.name+" to meet requested resource: "+request.spec.dump());
 							request.buildingFor = true;
 							auto@ req = expansion.planets.requestBuilding(plAI, type, priority=2, expire=ai.behavior.genericBuildExpire);
 							if (req !is null) {
@@ -687,7 +689,8 @@ class ColonizeForest {
 		}
 
 		if (newColony !is null) {
-			ai.print("found colonize target for spec: "+spec.dump(), newColony);
+			if (LOG)
+				ai.print("found colonize target for spec: "+spec.dump(), newColony);
 			ColonizeTree@ node = ColonizeTree(newColony);
 			queue.insertLast(node);
 			return node;
@@ -758,7 +761,8 @@ class ColonizeForest {
 		}
 
 		if (newColony !is null) {
-			ai.print("found colonize target for region: "+region.name, newColony);
+			if (LOG)
+				ai.print("found colonize target for region: "+region.name, newColony);
 			ColonizeTree@ node = ColonizeTree(newColony);
 			queue.insertLast(node);
 			return node;
@@ -1093,12 +1097,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			}
 			Planet@ planet = node.target;
 
-			if (LOG) {
-				// mark the planet as awaiting a source and in our colonising list
-				colonize(planet, node.request);
-			} else {
-				ai.print("Decided to not bother colonising "+planet.name);
-			}
+			// mark the planet as awaiting a source and in our colonising list
+			colonize(planet, node.request);
 		}
 	}
 
@@ -1195,7 +1195,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 							&& plAI.abstractColonizeWeight >= 0;
 					}
 					if (!stillValid) {
-						ai.print("aborting colonise, source invalid");
+						if (LOG)
+							ai.print("aborting colonise, source invalid");
 						// did we lose our source planet?
 						abortColonize(colonizeData, avoidRetry=false);
 						--i; --cnt;
@@ -1405,7 +1406,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		if (systems.outsideBorder.length > 0) {
 			SystemAI@ sys = systems.outsideBorder[randomi(0, systems.outsideBorder.length-1)];
 			if (sys.obj !is null && sys.timeSpentOutsideBorder > 4 * 60) {
-				ai.print("Trying to expand border to "+sys.obj.name+" to find requests");
+				if (LOG)
+					ai.print("Trying to expand border to "+sys.obj.name+" to find requests");
 				regionLinking.considerMakingLinkAt(sys.obj, ai.empire);
 			}
 		}

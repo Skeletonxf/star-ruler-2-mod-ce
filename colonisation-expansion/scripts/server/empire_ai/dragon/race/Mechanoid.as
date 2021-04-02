@@ -19,6 +19,8 @@ from constructions import getConstructionType, ConstructionType;
 from abilities import getAbilityID;
 import oddity_navigation;
 
+import empire_ai.dragon.logs;
+
 const double MAX_POP_BUILDTIME = 3.0 * 60.0;
 
 // Simplified mirror of transfer cost formula for use in Mechanoid AI
