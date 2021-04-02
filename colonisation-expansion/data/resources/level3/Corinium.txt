@@ -12,3 +12,5 @@ Resource: Corinium
 	Pressure: 16 Money
 
 	ModPressureCapMult(+1.0)
+
+	AI: MorphUnobtaniumTo(3)

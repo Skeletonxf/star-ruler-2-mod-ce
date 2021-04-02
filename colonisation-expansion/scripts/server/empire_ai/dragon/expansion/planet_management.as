@@ -7,7 +7,9 @@ import empire_ai.dragon.expansion.ftl;
 
 import buildings;
 from ai.buildings import Buildings, BuildingAI, BuildingUse, BuildForPressureCap, AsFTLIncome, AsFTLStorage;
+from ai.resources import AIResources, ResourceAI, MorphUnobtaniumTo;
 
+from abilities import getAbilityID;
 from statuses import getStatusID;
 from traits import getTraitID;
 
@@ -29,6 +31,10 @@ class PlanetManagement {
 	uint planetCheckIndex = 0;
 
 	array<PlanetAI@> goodNextFocuses;
+
+	int unobtaniumAbility = -1;
+	const ResourceType@ unobtanium;
+	array<PlanetAI@> unobtaniumCandidatePlanets;
 
 	PlanetManagement(Planets@ planets, Budget@ budget, DevelopmentFocuses@ focuses, BuildingTracker@ builds, FTLRequirements@ ftlRequirements, AI& ai, bool log) {
 		@this.planets = planets;
@@ -53,6 +59,8 @@ class PlanetManagement {
 			uplift_cost = uplift_planet.buildCost;
 		}
 		@scalableClass = getResourceClass("Scalable");
+		unobtaniumAbility = getAbilityID("UnobtaniumMorph");
+		@unobtanium = getResource("Unobtanium");
 	}
 
 	/**
@@ -75,6 +83,7 @@ class PlanetManagement {
 		// TODO: Respond to primitive life statuses
 		managePressureCapacity(plAI, ai);
 		manageFTLBuildings(plAI, ai);
+		considerUnobtaniumMorph(plAI, ai);
 		// TODO: Long term this should all be generic hook based responses
 		checkNextFocus(plAI, ai);
 	}
@@ -82,7 +91,6 @@ class PlanetManagement {
 	// TODO: Track the construction requests we make in a ConstructionTracker
 	// so we can prompt other parts of the AI to do things when they complete
 	// or fail.
-	// Should add uplifted planets as dev focus when the uplift finishes
 	// Should also open a new colonise to makeup for lost resource
 	// this would ideally be done by unsetting the import request the planet
 	// was matched to but this info isn't tracked yet
@@ -224,7 +232,7 @@ class PlanetManagement {
 				}
 
 				if (shouldBuild) {
-					ai.print("building "+type.name+" to meet FTL request");
+					ai.print("building "+type.name+" to meet FTL request at", plAI.obj);
 					auto@ req = planets.requestBuilding(plAI, type, priority=0.5, expire=ai.behavior.genericBuildExpire);
 					if (req !is null) {
 						auto@ tracker = BuildTracker(req);
@@ -233,6 +241,70 @@ class PlanetManagement {
 					return;
 				}
 			}
+		}
+	}
+
+	double unobtaniumMorphWeight(const ResourceType@ resource) {
+		if (resource is null)
+			return -1.0;
+		for (uint i = 0, cnt = resource.ai.length; i < cnt; ++i) {
+			auto@ hook = cast<ResourceAI>(resource.ai[i]);
+			if (hook is null)
+				continue;
+			auto@ unobtaniumCandidate = cast<MorphUnobtaniumTo>(hook);
+			if (unobtaniumCandidate !is null) {
+				return unobtaniumCandidate.weight.decimal;
+			}
+		}
+		return 0.0;
+	}
+
+	void considerUnobtaniumMorph(PlanetAI@ plAI, AI& ai) {
+		if (plAI.obj is null)
+			return;
+
+		if (unobtaniumCandidatePlanets.find(plAI) != -1)
+			return;
+
+		// Check to see if this planet is a candidate for morphing unobtanium to
+		const ResourceType@ resource = getResource(plAI.obj.primaryResourceType);
+		if (unobtaniumMorphWeight(resource) > 0.0) {
+			unobtaniumCandidatePlanets.insertLast(plAI);
+		}
+
+		// Check to see if this planet has unobtanium
+		for (uint r = 0, rcnt = plAI.resources.length; r < rcnt; ++r) {
+			if (plAI.resources[r].resource is null || plAI.resources[r].resource.id != unobtanium.id) {
+				continue;
+			}
+
+			PlanetAI@ choice;
+			// use roulette wheel selection so we can often choose the highest weight
+			// but don't get stuck only choosing it
+			double totalWeights = 0;
+			for (uint i = 0, cnt = unobtaniumCandidatePlanets.length; i < cnt; ++i) {
+				PlanetAI@ candidate = unobtaniumCandidatePlanets[i];
+				double weight = unobtaniumMorphWeight(getResource(candidate.obj.primaryResourceType));
+				if (candidate is null || candidate.obj is null || !candidate.obj.valid || candidate.obj.owner !is ai.empire || weight <= 0.0) {
+					unobtaniumCandidatePlanets.removeAt(i);
+					--i; --cnt;
+					continue;
+				}
+				totalWeights += weight;
+				if (randomd() < weight / totalWeights) {
+					@choice = candidate;
+				}
+			}
+			if (choice is null)
+				return;
+
+			const ResourceType@ res = getResource(choice.obj.primaryResourceType);
+			if (res is null)
+				return;
+			if (true)
+				ai.print("Morph planet to "+res.name+" from "+choice.obj.name, plAI.obj);
+			plAI.obj.activateAbilityTypeFor(ai.empire, unobtaniumAbility, choice.obj);
+			return;
 		}
 	}
 
@@ -267,6 +339,11 @@ class PlanetManagement {
 		for (uint i = 0; i < cnt; ++i) {
 			planets.saveAI(file, goodNextFocuses[i]);
 		}
+		cnt = unobtaniumCandidatePlanets.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			planets.saveAI(file, unobtaniumCandidatePlanets[i]);
+		}
 	}
 
 	void load(SaveFile& file) {
@@ -277,6 +354,13 @@ class PlanetManagement {
 			PlanetAI plAI =  planets.loadAI(file);
 			if (plAI !is null) {
 				goodNextFocuses.insertLast(plAI);
+			}
+		}
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			PlanetAI plAI = planets.loadAI(file);
+			if (plAI !is null) {
+				unobtaniumCandidatePlanets.insertLast(plAI);
 			}
 		}
 	}

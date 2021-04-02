@@ -116,3 +116,10 @@ class DistributeAsLocalPressureBoost : ResourceAI {
 	}
 #section all
 };
+
+// [[ MODIFY BASE GAME START ]]
+class MorphUnobtaniumTo : ResourceAI {
+	Document doc("This resource is a candidate for the AI to convert unobtanium worlds to.");
+	Argument weight(AT_Decimal, doc="How valuable this candidate is.");
+};
+// [[ MODIFY BASE GAME END ]]

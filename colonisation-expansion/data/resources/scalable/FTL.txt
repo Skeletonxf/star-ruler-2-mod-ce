@@ -29,3 +29,5 @@ Resource: FTL
 	IfLevel(4, GrantAllFleetVision(System Space = False, Deep Space = False, In FTL = True)) #version>=107
 	IfLevel(4, GrantAllFleetVision(Flagships = False, Stations = True, Require Status = GateUnpacked)) #version>=125
 	IfLevel(4, GrantAllOddityGateVision()) #version>=125
+
+	AI: MorphUnobtaniumTo(100)

@@ -7,6 +7,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
   - Expansion AI Component
+    - Make AI consolidate labor at one shipyard, not multiple
     - Teach AI to colonise FTL crystals on sight
     - Investigate issues with Mechanoid AI being able to build gates
     - Teach AI how to deal with all of its focuses having requirements it can't meet
@@ -14,9 +15,6 @@ This is primarily intended as a developer focused project planning list, rather 
       - Thanks Illyia
     - Apply conditions AI hooks to all applicable statuses
     - Implement custom ColonizeAbility interface for Extragalactic and Ancient AI empires
-    - Make sure star children motherships run away from danger while on habitat missions!
-    - Make AI consolidate labor at one shipyard, not multiple
-    - Port unobtanium code from Mechanoid component into Expansion component as a generic bit of knowledge for using with any unobtanium planet
     - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
         - Teach AI to melt ice
         - Teach AI to make most of the constructions by extending the building hint code

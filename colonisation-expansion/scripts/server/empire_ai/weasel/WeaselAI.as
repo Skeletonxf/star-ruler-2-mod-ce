@@ -443,11 +443,6 @@ final class AI : AIController, Savable {
 		@planets = add(createPlanets());
 		@resources = add(createResources());
 		// [[ MODIFY BASE GAME START ]]
-		// Stil lacking proper tier 0 colony code, but vanilla Star
-		// Children is essentially at greater than feature parity due to no
-		// building in vanilla anyway, and Mechanoid lacks knowing
-		// how to use unobtanium, but the vanilla colonise code breaks so badly
-		// the current feature set of dragon colony code is still an improvement.
 		bool expansionRaceSupported = empire.hasTrait(getTraitID("StarChildren")) || empire.hasTrait(getTraitID("Mechanoid"));
 		bool expansionComponent = behavior.dragonComponents && expansionRaceSupported;
 		if (expansionComponent) {

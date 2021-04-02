@@ -387,36 +387,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 		refreshFactories();
 		buildExcessPopAtFactories();
-
-		/*
-		uint plCnt = planets.planets.length;
-		for(uint n = 0, cnt = min(15, plCnt); n < cnt; ++n) {
-
-			if(plAI.resources !is null && plAI.resources.length != 0) {
-				auto@ res = plAI.resources[0];
-
-				//See if we have anything useful to morph our homeworld too
-				if(checkMorph) {
-					bool morph = false;
-					if(res.resource is crystals)
-						morph = true;
-					else if(res.resource.level >= 2 && res.resource.tilePressure[TR_Labor] >= 5)
-						morph = true;
-					else if(res.resource.level >= 3 && res.resource.totalPressure > 10)
-						morph = true;
-					else if(res.resource.cls is scalableClass && gameTime > 30.0 * 60.0)
-						morph = true;
-					else if(res.resource.level >= 2 && res.resource.totalPressure >= 5 && gameTime > 60.0 * 60.0)
-						morph = true;
-
-					if(morph) {
-						if(log)
-							ai.print("Morph homeworld to "+res.resource.name+" from "+res.obj.name, hw);
-						hw.activateAbilityTypeFor(ai.empire, unobtaniumAbl, plAI.obj);
-					}
-				}
-			}
-		}*/
 	}
 
 	void tick(double time) override {

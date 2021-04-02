@@ -214,7 +214,7 @@ final class PlanetAI {
 	// [[ MODIFY BASE GAME START ]]
 	bool underBombardment = false;
 	uint dummyResourceModID = 0;
-	// [[[ MODIFY BASE GAME END ]]]
+	// [[ MODIFY BASE GAME END ]]
 
 	void init(AI& ai, Planets& planets) {
 		@resources = planets.resources.availableResource(obj);
