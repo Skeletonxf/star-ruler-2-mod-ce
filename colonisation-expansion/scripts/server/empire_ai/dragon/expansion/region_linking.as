@@ -46,8 +46,9 @@ class LinkBuild {
  *
  * No more abusing the AI by boxing it in!
  */
-// TODO: We should actually keep track of the outposts we've made so we can respond
-// to them being attacked or tractored out of their position
+// TODO: We should hook into the Orbitals AI component as it tracks orbitals
+// we've made, as we should scuttle outposts that get removed from the region
+// we built them in
 class RegionLinking {
 	Planets@ planets;
 	Construction@ construction;

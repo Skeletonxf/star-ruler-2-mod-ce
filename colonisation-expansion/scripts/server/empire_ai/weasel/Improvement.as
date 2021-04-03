@@ -19,6 +19,8 @@ from orbitals import getOrbitalModuleID;
 from statuses import getStatusID;
 from buildings import getBuildingType, BuildingType;
 
+from ai.orbitals import OrbitalAIHook, IsEmpireWideSingleUse;
+
 const double FTL_EXTRACTOR_MIN_HELD_BASE_TIMER = 3 * 60.0;
 
 /**
@@ -65,6 +67,8 @@ class Improvement : AIComponent {
 	int hasDefensesStatusID = -1;
 	int nonCombatDefensesOrdered = 0;
 
+	uint orbitalTypeIndex = 0;
+
 	void create() {
 		@planets = cast<Planets>(ai.planets);
 		@resources = cast<Resources>(ai.resources);
@@ -105,6 +109,7 @@ class Improvement : AIComponent {
 		construction.saveConstruction(file, ftlStorageBuild);
 		file << carpetBombCheck;
 		file << nonCombatDefensesOrdered;
+		file << orbitalTypeIndex;
 	}
 
 	void load(SaveFile& file) {
@@ -112,6 +117,7 @@ class Improvement : AIComponent {
 		@ftlStorageBuild = construction.loadConstruction(file);
 		file >> carpetBombCheck;
 		file >> nonCombatDefensesOrdered;
+		file >> orbitalTypeIndex;
 	}
 
 	void start() {
@@ -125,6 +131,8 @@ class Improvement : AIComponent {
 		lookToBuildFTLStorage();
 
 		lookToBuildDefenses();
+
+		lookToBuildSingleUseOrbitals();
 	}
 
 	/**
@@ -232,7 +240,7 @@ class Improvement : AIComponent {
 		// easily shot down if not protected
 		for (uint i = 0, cnt = military.StagingBases.length; i < cnt; ++i) {
 			auto@ base = military.StagingBases[i];
-			if (base.occupiedTime < FTL_EXTRACTOR_MIN_HELD_BASE_TIMER) {
+			if (base.occupiedTime < FTL_EXTRACTOR_MIN_HELD_BASE_TIMER || base.isUnderAttack) {
 				continue;
 			}
 
@@ -275,7 +283,7 @@ class Improvement : AIComponent {
 		// easily shot down if not protected
 		for (uint i = 0, cnt = military.StagingBases.length; i < cnt; ++i) {
 			auto@ base = military.StagingBases[i];
-			if (base.occupiedTime < FTL_EXTRACTOR_MIN_HELD_BASE_TIMER) {
+			if (base.occupiedTime < FTL_EXTRACTOR_MIN_HELD_BASE_TIMER || base.isUnderAttack) {
 				continue;
 			}
 
@@ -396,6 +404,51 @@ class Improvement : AIComponent {
 			}
 		} else {
 			carpetBombCheck = 0;
+		}
+	}
+
+	void lookToBuildSingleUseOrbitals() {
+		orbitalTypeIndex = (orbitalTypeIndex + 1) % getOrbitalModuleCount();
+		const OrbitalModule@ type = getOrbitalModule(orbitalTypeIndex);
+		for(uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
+			auto@ hook = cast<OrbitalAIHook>(type.ai[n]);
+			if (hook is null) {
+				continue;
+			}
+			auto@ singleUse = cast<IsEmpireWideSingleUse>(hook);
+			if (singleUse !is null) {
+				if (orbitals.haveInEmpire(type))
+					return;
+				if (!budget.canSpend(BT_Development, type.buildCost, type.maintenance))
+					return;
+				array<StagingBase@> stagingBases = military.get_StagingBases();
+				if (stagingBases.length == 0)
+					return;
+				StagingBase@ mainBase = stagingBases[0];
+				if (mainBase is null)
+					return;
+				Region@ region = mainBase.region;
+				// don't use primaryFactory because if it's a shipyard it can't build orbitals
+				auto@ factory = construction.getClosestFactory(region);
+				if (factory is null || factory.obj is null)
+					return;
+				vec3d position;
+				vec2d offset = random2d(factory.obj.radius * 0.1, factory.obj.radius * 0.5);
+				position.x = factory.obj.position.x + offset.x;
+				position.y = factory.obj.position.y;
+				position.z = factory.obj.position.z + offset.y;
+				if (!type.canBuild(factory.obj, position))
+					return;
+				BuildOrbital@ buildPlan = construction.buildOrbital(type, position, force=false, moneyType=BT_Development);
+				if (buildPlan !is null) {
+					AllocateConstruction@ allocation = construction.buildNow(buildPlan, factory);
+					if (allocation !is null) {
+						//genericOrbitalBuilds.insertLast(GenericOrbitalBuild(allocation, region))
+						if (log)
+							ai.print("Making "+type.name+" at "+region.name);
+					}
+				}
+			}
 		}
 	}
 

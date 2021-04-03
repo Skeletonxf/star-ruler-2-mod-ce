@@ -8,6 +8,8 @@ This is primarily intended as a developer focused project planning list, rather 
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
   - Expansion AI Component
     - Make AI consolidate labor at one shipyard, not multiple
+      - The AI can build shipyards for both labor consolidation and staging bases, need to ensure it doesn't build two in the same region
+      - May want to make the AI build supply depots instead of shipyards at staging bases too
     - Teach AI to colonise FTL crystals on sight
     - Investigate issues with Mechanoid AI being able to build gates
     - Teach AI how to deal with all of its focuses having requirements it can't meet

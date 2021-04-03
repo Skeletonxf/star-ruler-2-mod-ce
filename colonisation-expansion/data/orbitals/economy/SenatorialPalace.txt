@@ -33,3 +33,5 @@ Module: SenatorialPalace
 	GrantAbility(BuyElection)
 	GrantAbility(BuyGalacticUtopia)
 	GrantAbility(BuyGalacticSuperpower)
+
+	AI:IsEmpireWideSingleUse()
