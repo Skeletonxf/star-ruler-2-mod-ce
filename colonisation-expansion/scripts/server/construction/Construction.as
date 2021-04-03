@@ -772,6 +772,21 @@ tidy class Construction : Component_Construction, Savable {
 		deltaConstruction = true;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	bool get_isConstructingConstructible(Object& obj, uint id) {
+		for (uint i = 0, cnt = queue.length; i < cnt; ++i) {
+			if (queue[i].type != CT_Construction) {
+				continue;
+			}
+			auto@ c = cast<ConstructionConstructible>(queue[i]);
+			if (c !is null && c.cons !is null && c.cons.type !is null && c.cons.type.id == id) {
+				return true;
+			}
+		}
+		return false;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void buildOrbital(Object& obj, int type, vec3d position, Object@ frame = null, Object@ constructFrom = null) {
 		if(capabilities & CC_Orbital == 0)
 			return;

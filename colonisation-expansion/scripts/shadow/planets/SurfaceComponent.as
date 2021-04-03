@@ -689,6 +689,10 @@ tidy class SurfaceComponent : Component_SurfaceComponent {
 	bool get_hasUndevelopedSurfaceTiles() const {
 		return grid.usableTiles < grid.size.width * grid.size.height;
 	}
+
+	uint get_developedSurfaceTiles() const {
+		return grid.usableTiles;
+	}
 	// [[ MODIFY BASE GAME END ]]
 
 	void destroySurface(Object& obj) {

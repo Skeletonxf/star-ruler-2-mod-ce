@@ -33,7 +33,7 @@ restricted local:
 	const Design@ get_constructionDesign() const;
 	Constructible@[] getConstructionQueue();
 	Constructible@[] getConstructionQueue(uint limit);
-	
+
 	Object@ get_rallyObject() const;
 
 restricted remote:
@@ -50,7 +50,7 @@ restricted remote:
 	void removeSupportShipConstruction(int id, const Design@ dsg, uint amount);
 	void exportLaborTo(Object@ other);
 	void moveConstruction(int id, int beforeId = -1);
-	
+
 	void clearRally();
 	void rallyTo(Object@ dest);
 	void rallyTo(vec3d position);
@@ -60,7 +60,7 @@ server:
 	safe uint get_constructionType() const;
 	int get_constructionID(uint num) const;
 	double get_distributedLabor() const;
-	
+
 	safe bool get_isUsingLabor() const;
 	safe double get_baseLaborIncome() const;
 	safe double get_laborFactor() const;
@@ -92,7 +92,7 @@ server:
 	void buildSupport(uint id, const Design@ design, Object@ buildFor);
 	void transferBuildSupport(uint id, Object@ buildFor);
 	void cancelBuildSupport(uint id);
-	
+
 	void doRally(Object@ orderObj);
 
 	void set_canBuildShips(bool value);
@@ -108,6 +108,10 @@ server:
 
 	bool writeConstructionDelta(Message& msg) const;
 	void writeConstruction(Message& msg) const;
+
+	// [[ MODIFY BASE GAME START ]]
+	bool get_isConstructingConstructible(uint id);
+	// [[ MODIFY BASE GAME END ]]
 
 shadow:
 	void readConstructionDelta(Message& msg);

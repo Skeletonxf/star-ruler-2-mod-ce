@@ -17,6 +17,13 @@ import oddity_navigation;
 
 const double MAX_POP_BUILDTIME = 3.0 * 60.0;
 
+// [[ MODIFY BASE GAME START ]]
+// Warning
+// This is dead code now! The Mechanoid AIs always use the dragon Mechanoid
+// component instead of this one. This code remains in the mod to ensure code
+// still compiles, but it is no longer in use.
+// [[ MODIFY BASE GAME END ]]
+
 class Mechanoid : Race, RaceResources, RaceColonization {
 	IColonization@ colonization;  // [[ MODIFY BASE GAME START ]]
 	Construction@ construction;

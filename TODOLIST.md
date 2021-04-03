@@ -10,6 +10,9 @@ This is primarily intended as a developer focused project planning list, rather 
     - Make AI consolidate labor at one shipyard, not multiple
       - The AI can build shipyards for both labor consolidation and staging bases, need to ensure it doesn't build two in the same region
       - May want to make the AI build supply depots instead of shipyards at staging bases too
+    - Make AI destroy buildings it no longer needs
+      - Particularly Megafarms and Hydrogenators
+    - Add a proper isBuilding method that also checks if the AI is in the process of building a building instead of just if its in the request queue and fix everywhere I called this thinking that's what isBuilding already does
     - Teach AI to colonise FTL crystals on sight
     - Investigate issues with Mechanoid AI being able to build gates
     - Teach AI how to deal with all of its focuses having requirements it can't meet

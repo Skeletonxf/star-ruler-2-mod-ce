@@ -1310,6 +1310,10 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 	bool get_hasUndevelopedSurfaceTiles() const {
 		return grid.usableTiles < grid.size.width * grid.size.height;
 	}
+
+	uint get_developedSurfaceTiles() const {
+		return grid.usableTiles;
+	}
 	// [[ MODIFY BASE GAME END ]]
 
 	vec2i get_surfaceGridSize() {

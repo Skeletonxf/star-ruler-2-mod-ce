@@ -192,6 +192,19 @@ final class ConstructionRequest {
 // [[ MODIFY BASE GAME END ]]
 
 // [[ MODIFY BASE GAME START ]]
+/**
+ * An interface for other components to register themselves as listeners onto
+ * the Planets component so they can respond to constructions without having
+ * to go though all the effort of tracking each construction they care about
+ * along its entire lifetime.
+ */
+interface PlanetRequestListener {
+	void onConstructionRequestActioned(ConstructionRequest@ request);
+	// Extend with onBuildingEnd if ever need it
+}
+// [[ MODIFY BASE GAME END ]]
+
+// [[ MODIFY BASE GAME START ]]
 // only set to stop the AI doing silly things like building Megafarms and
 // Hydrogenerators on Gas Giants on atmosphere biomes
 // Most penalties from a quick playthough are 0-10, the first atmosphere
@@ -565,6 +578,10 @@ class Planets : AIComponent {
 	int nextConstructionRequestId = 0;
 	// [[ MODIFY BASE GAME END ]]
 
+	// [[ MODIFY BASE GAME START ]]
+	array<PlanetRequestListener@> listeners;
+	// [[ MODIFY BASE GAME END ]]
+
 	void create() {
 		@resources = cast<Resources>(ai.resources);
 		@budget = cast<Budget>(ai.budget);
@@ -767,6 +784,12 @@ class Planets : AIComponent {
 		//Make any constructions we are waiting on
 		for(uint i = 0, cnt = constructing.length; i < cnt; ++i) {
 			if(!constructing[i].tick(ai, this, time)) {
+				// [[ MODIFY BASE GAME START ]]
+				// Tell everything that is listening
+				for (uint j = 0, cnt = listeners.length; j < cnt; ++j) {
+					listeners[i].onConstructionRequestActioned(constructing[i]);
+				}
+				// [[ MODIFY BASE GAME END ]]
 				constructing.removeAt(i);
 				--i; --cnt;
 				break;
@@ -889,6 +912,12 @@ class Planets : AIComponent {
 		return req;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	// TODO: Modify this so a building that is actually in the process of being
+	// made counts as isBuilding
+	// The only place this gets used in vanilla is for Oko stalks and changing
+	// its meaning there won't introduce bugs.
+	// [[ MODIFY BASE GAME END ]]
 	bool isBuilding(Planet@ planet, const BuildingType@ type) {
 		for(uint i = 0, cnt = building.length; i < cnt; ++i) {
 			if(building[i].type is type && building[i].plAI.obj is planet)
@@ -897,6 +926,7 @@ class Planets : AIComponent {
 		return false;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
 	ConstructionRequest@ requestConstruction(PlanetAI@ plAI, Object@ buildAt, const ConstructionType@ type, double priority = 1.0, double expire = INFINITY, uint moneyType = BT_Development) {
 		if(plAI is null)
 			return null;
@@ -913,13 +943,20 @@ class Planets : AIComponent {
 		return req;
 	}
 
+	/**
+	 * Returns true if we have a request to make this, or we are actually in the
+	 * process of making it.
+	 */
 	bool isConstructing(Planet@ planet, const ConstructionType@ type) {
+		if (planet is null || type is null)
+			return false;
 		for(uint i = 0, cnt = constructing.length; i < cnt; ++i) {
 			if(constructing[i].type is type && constructing[i].plAI.obj is planet)
 				return true;
 		}
-		return false;
+		return planet.get_isConstructingConstructible(type.id);
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void getColonizeSources(array<PotentialSource@>& sources) {
 		sources.length = 0;

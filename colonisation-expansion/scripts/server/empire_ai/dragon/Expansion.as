@@ -582,8 +582,8 @@ class ColonizeForest {
 				return;
 
 			bool alreadyConstructingMoonBase = expansion.planets.isConstructing(plAI.obj, build_moon_base);
-			if (alreadyConstructingMoonBase && plAI.failedToPlaceBuilding) {
-				// we're working on it, no point trying a third time
+			if (alreadyConstructingMoonBase || plAI.failedToPlaceBuilding) {
+				// we're working on it, no point trying again
 				return;
 			}
 
@@ -597,6 +597,8 @@ class ColonizeForest {
 				if (!type.canBuildOn(plAI.obj))
 					continue;
 
+				// FIXME: This only checks if we have queued a desire to make a building
+				// This will return false while the building is actually being built
 				if (expansion.planets.isBuilding(plAI.obj, type)) {
 					// don't try to make two of the same type on the same planet at once
 					continue;
@@ -616,12 +618,12 @@ class ColonizeForest {
 						// also stop the AI waiting for chunks of time when a building is
 						// the only way to meet a resource, so this is intended hackery)
 						if (request.spec.meets(getResource(resourceBuilding.resource.integer), fromObj=request.obj, toObj=request.obj)) {
-							// got match, close request
-							if (LOG)
-								ai.print("building "+type.name+" to meet requested resource: "+request.spec.dump());
-							request.buildingFor = true;
 							auto@ req = expansion.planets.requestBuilding(plAI, type, priority=2, expire=ai.behavior.genericBuildExpire);
 							if (req !is null) {
+								// got match, close request
+								if (LOG)
+									ai.print("building "+type.name+" to meet requested resource: "+request.spec.dump(), plAI.obj);
+								request.buildingFor = true;
 								auto@ tracker = BuildTracker(req);
 								@tracker.importRequestReason = request;
 								expansion.trackBuilding(tracker);
@@ -1624,7 +1626,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			if (aborted) {
 				if (genericBuilds[i].importRequestReason !is null) {
 					if (genericBuilds[i].importRequestReason.obj !is null)
-						if (log) {
+						if (LOG) {
 							ai.print("Failed build on "+genericBuilds[i].importRequestReason.obj.name);
 						}
 					// reset buildingFor flag so we try to meet this resource
@@ -1639,7 +1641,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				// base with here. Set a flag so we can consider building another
 				// moon base on this planet from the Improvement.as focus phase
 				if (build.couldNotFindLocation) {
-					if (log) {
+					if (LOG) {
 						ai.print("Marking as failed place on "+build.plAI.obj.name);
 					}
 					build.plAI.failedToPlaceBuilding = true;

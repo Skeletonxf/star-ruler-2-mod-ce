@@ -194,7 +194,8 @@ class Research : AIComponent {
 					return;
 				}
 			}
-			ai.print("researching FTL income orbital because need FTL income");
+			if (log)
+				ai.print("researching FTL income orbital because need FTL income");
 			// insert into the front of the list due to the priority
 			immediateQueue.insertAt(0, ftlOrbital);
 		}

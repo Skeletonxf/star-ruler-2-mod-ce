@@ -30,7 +30,7 @@ const double FTL_EXTRACTOR_MIN_HELD_BASE_TIMER = 3 * 60.0;
  * Mostly reactive actions in response to problems that occur from other
  * components.
  */
-class Improvement : AIComponent {
+class Improvement : AIComponent, PlanetRequestListener {
 	Planets@ planets;
 	Resources@ resources;
 	IDevelopment@ development;
@@ -102,6 +102,8 @@ class Improvement : AIComponent {
 		hasFTLStorageBuilding = !ai.empire.hasTrait(getTraitID("StarChildren"));
 
 		@ftlStorage = getOrbitalModule("FTLStorage");
+
+		planets.listeners.insertLast(this);
 	}
 
 	void save(SaveFile& file) {
@@ -136,11 +138,41 @@ class Improvement : AIComponent {
 	}
 
 	/**
+	 * Listens to events created by the Planets component, so we can clear the
+	 * flags that we use for moon base construction if the moon base was paid
+	 * for successfully.
+	 */
+	void onConstructionRequestActioned(ConstructionRequest@ request) {
+		if (request is null)
+			return;
+
+		if (request.type !is build_moon_base)
+			return;
+
+		PlanetAI@ plAI = request.plAI;
+
+		if (plAI is null || plAI.obj is null) {
+			return;
+		}
+
+		if (request.built && !request.canceled) {
+			if (log)
+				ai.print("Enqueued moon base", plAI.obj);
+			// clear the flag, we started the moon base
+			plAI.failedToPlaceBuilding = false;
+		}
+	}
+
+	/**
 	 * Tries to place moon bases on planets we logged as failing to build on
 	 * in Development/Expansion. Mostly aimed at building a moon base for
 	 * Gas Giants that need space for a Megafarm/Hydrogenator but may also
 	 * help with AI with development focuses running out of room.
 	 */
+	// TODO: Moon bases are also generically useful as they are one of very few
+	// things that creates net income. We should generically build such
+	// constructions, but that should be handled in planet_management and
+	// based on AI hooks instead of here
 	void lookToBuildMoonBases() {
 		// don't build moon bases as Star Children or Ancient
 		// star children don't need them as they don't build
@@ -155,6 +187,7 @@ class Improvement : AIComponent {
 			for(uint i = 0, cnt = planets.planets.length; i < cnt; ++i) {
 				auto@ plAI = planets.planets[i];
 				auto@ planet = plAI.obj;
+
 				if (planet.moonCount == 0) {
 					continue;
 				}
@@ -175,35 +208,24 @@ class Improvement : AIComponent {
 					// can't build more moon bases
 					continue;
 				}
+
 				bool alreadyConstructingMoonBase = planets.isConstructing(planet, build_moon_base);
 				if (!alreadyConstructingMoonBase) {
-					// TODO: Check for how many spare tiles we have on the planet
-					// so we can allow building multiple moon bases but ensure the
-					// AI doesn't waste money on moon bases for buildings its already
-					// making
-					if (true && planet.getStatusStackCountAny(moon_base) > 0) {
-						//ai.print("Building additional moon base at " + planet.name);
-						// FIXME: Why does the AI think it needs to make 2 moon
-						// bases the moment a build request fails when we are
-						// clearly checking that we've not already queued one
-						// and why does the AI think it needs to make a third moon
-						// base once we actually finish building the first two, all
-						// for a single megafarm?
-						return;
+					if (log && planet.getStatusStackCountAny(moon_base) > 0) {
+						ai.print("Building additional moon base at " + planet.name);
 					}
 					if (log && planet.getStatusStackCountAny(moon_base) == 0) {
 						ai.print("Building moon base at " + planet.name);
 					}
-					// Set the flag back
-					plAI.failedToPlaceBuilding = false;
 					// This is always highish priority because we only try
 					// to make a moon base after finding out a building failed
 					// to be placed.
 					planets.requestConstruction(
-						plAI, planet, build_moon_base, priority=2, expire=gameTime + 600, moneyType=BT_Development);
-						// only build max of one moon base thing each tick so the empire
-						// does other things than improvements
-						return;
+						plAI, planet, build_moon_base, priority=2, expire=gameTime + 600, moneyType=BT_Development
+					);
+					// only build max of one moon base thing each tick so the empire
+					// does other things than improvements
+					return;
 				}
 			}
 		}
