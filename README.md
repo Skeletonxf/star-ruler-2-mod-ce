@@ -30,11 +30,11 @@ Ice Giants and Gas Giants are intended to be more difficult to colonise than roc
 ### Additional subsystems/hulls for low maintence exploration and mining ships
 Scouting and mining cost much less in maintence.
 #### Mining logistics improvements
-Ships ordered to mine can now mine cross systems, and will only stop if you deplete all asteroids known to your empire. Mining asteroid belts is a lot more efficient than in vanilla. You can also queue transfer and dropoff cargo orders if you'll meet the requirements by the time the ship would execute the order. (ie you can order an ore pickup and immediately queue the ore dropoff because you'll have ore to dropoff by the time you need it). Cargo pickups and dropoffs can now be done per cargo type.
+Ships ordered to mine can now mine cross systems, and will only stop if you deplete all asteroids known to your empire. Mining asteroid belts is a lot more efficient than in vanilla. You can also queue transfer and dropoff cargo orders if you'll meet the requirements by the time the ship would execute the order. (ie you can order an ore pickup and immediately queue the ore dropoff because you'll have ore to dropoff by the time you need it). Cargo pickups and dropoffs can now be done per cargo type. Orders can also be setup to infinitely loop, so you can automate hauling of ore with ease (or attack the supply lines of another player).
 ### Support ship shields
 You can now put shields on supports, and Devout can unlock shrines for supports.
 ### Tweaks to motherships
-Mothership max population scales with ship size and provides labor. Motherships can also use an ability on planets to deal damage to them and gain additional max pop. Note that the max pop for any ship design still avoids creating net positive income as with vanilla for balancing, so to get to net positive income you'll need to consume planets which aren't an infinite resource.
+Mothership max population scales with ship size and provides labor. Note that the max pop for any ship design still avoids creating net positive income as with vanilla for balancing, however carefully designed large motherships can become very cost effective.
 ### Dilemma conditions that appear on planets and force you to make hard decisions
 There's several of these, and the AI handles the main one. I don't want to spoil them for your first playthough :)
 ### Completely reworked research grid with similar research grouped together
@@ -50,7 +50,7 @@ The Titan and Collosus hulls are much more viable than vanilla, and the Destroye
 ### Diplomatic Victory
 You can snowball your diplomatic strength with Diplomatic Maneuvering if you play your cards right. Senatorial Palaces are now disabled if they leave your owned space. Planets in deep space can now be targeted for annex votes if you can obtain vision of them.
 ### Attitude tweaks
-Attitudes which require maintaining x can no longer go into the negatives (as they will now count progress you made before starting the attitude). Xenophobic no longer requires you put the Outposts in border systems.
+Attitudes which require maintaining x of something can no longer go into the negatives (as they will now count progress you made before starting the attitude). Xenophobic no longer requires you put the Outposts in border systems.
 ### Secret Project overhaul
 Secret projects are no longer secret, you will be able to unlock any of them if you meet the unlock requirements as in vanilla. Artifical Moons require building moon bases instead of ring habitats. The Innovation card now grants you random unlocks on the reserach grid, which can let you leapfrog into unexplored areas of the tech tree. Ironically Innovation will never give you a Secret Project anymore.
 ### Ability to unlock all types of FTL and FTL income orbital from the research grid
@@ -59,6 +59,14 @@ For balancing this is a costly research path to go down and provides few other b
 Jumpdrives can be unlocked for Stations
 ### FTL Sharing
 New treaty clause that shares access of Gates and Fling beacons between signatories.
+### Colonise interstellar space
+A number of tweaks to planets in deep space make it much more viable to hide away a few key worlds from prying eyes deep into the unlit cosmos. You'd better ensure you have enough energy production to keep the lights on!
+### UI and Usability tweaks
+You now get notifications from hostile actions like someone trying to gravitron condensor your planets. Some new notifications also go to a message strip which provides key low urgency information.
+Ships can be ordered to keep distance from their targets, which allows for mobile salvo type designs to excel at combat.
+Ships can also chase a target, which can be used to hunt down enemies or fly your own ships together in a formation.
+Ships can also loop their orders infinitely which makes scouting more automatable.
+A number of tweaks have also been made to the Quickbar and Planets Tab to expose more useful information to players. First players can now keep better track of all their Replicators. Nylli and Mono players can keep much better track of their population. Players can also now easily check which planets they can still make moon bases at and where their ore is.
 ### Biology traits such as Aquatic or Flying
 These traits have positive and negative factors together. New races featuring these traits:
 #### Parasite
@@ -67,14 +75,24 @@ This trait makes you get only half of the pressure from planetary resources, but
 The battleworlders lifestyle makes every planet a battleworld, and lets your empire conquer the galaxy from the comfort of its own planets. No AI support at this time. Inspired by Philip Reeve's Mortal Engines series and Darloth's / Dalo Lorn's Ringworlders. Balancing far from final.
 A number of Quality of Life changes to mobile planets in general have also been made, including: planets no longer grant everyone vision of them if they go into deep space, memory of objects are now lost if they leave regions or move around in deep space, and planets can be ordered to attack.
 ### Improved AI
-AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to. AI can handle having multiple FTL abilities unlocked at once. AI will build FTL income orbitals if it needs more FTL income. AI will seek to counter carpet bombing if it sees an opponent with them (AIs cannot do carpet bombing raids themselves yet). Reworked and improved AI colonising and planet leveling are in progress.
+AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to. AI can make use of multiple FTL abilities unlocked at once. AI will build FTL income and storage buildings/orbitals if it needs more FTL. AI will seek to counter carpet bombing if it sees an opponent with them (AIs cannot do carpet bombing raids themselves yet).
 #### Military
 The AI will be much more eager to build military flagships when it has spare money than vanilla, and it will prepare designs in advance.
 #### Colonisation and Development
-Overhaul still work in progress, but the AI will now correctly detect dummy resources.
+What's stronger than a weasel? A dragon!
+
+The gradually being released Dragon AI features completely overhauled colonisation and development code. It is much less prone to colonising itself into debt, uses non Terrestial colonisation methods better, and makes smarter decisions about acquiring resources to level planets. It is much harder for it to get boxed in, and it makes use of outposts to expand through systems that the weasel AI would get stuck at.
+##### Race specific improvements
+###### Mechanoid
+Non Mechanoid dragon AIs also can now use Unobtanium
+###### Star Children
+The colonisation logic for dragon Star Children AIs was overhauled and should now show off the true speed a skilled Star Children player can colonise at.
+#### Diplomacy
+The AI can now make a Senatorial Palace if it becomes Senate Leader.
 ### Improvements ported from other mods
 #### Non exclusive hulls from Rising Stars by Dalo Lorn
 #### Readable Global Toolbar tooltips from Industrial Revolution by scitor
+#### Civilian ship navigation improvements from Industrial Revolution by scitor
 #### Lateral thrust from New Movement Physics by Darloth
 #### Some miscellaneous exploit fixes from Rising Stars by Dalo Lorn
 
