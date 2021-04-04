@@ -149,3 +149,145 @@ class DealStellarDamageOverTimeWithRampUp : AbilityHook {
 	}
 #section all
 };
+
+
+// TODO: Break and remake orbits on targets better, released asteroids go flying!
+// TODO: Visuals for this effect
+// TODO: Make this more chaotic, it should pull stuff in instead of just suspending objects
+
+class TractorNearby : AbilityHook {
+	Document doc("The objects in the nearby range are tractored continually.");
+	Argument max_distance(AT_Decimal, "400", doc="Maximum distance to tractor.");
+
+#section server
+	void create(Ability@ abl, any@ data) const {
+		bool enabled = false;
+		data.store(enabled);
+	}
+
+	void activate(Ability@ abl, any@ data, const Targets@ targs) const override {
+		bool enabled = false;
+		data.retrieve(enabled);
+
+		if (!enabled) {
+			enabled = true;
+			data.store(enabled);
+		} else {
+			enabled = false;
+			data.store(enabled);
+		}
+	}
+
+	void tick(Ability@ abl, any@ data, double time) const {
+		if(abl.obj is null || abl.obj.owner is null)
+			return;
+
+		bool enabled = false;
+		data.retrieve(enabled);
+
+		if (!enabled)
+			return;
+
+		if (abl.obj.inFTL) {
+			disable(abl, data);
+			return;
+		}
+
+		double radius = max_distance.decimal;
+		vec3d center = abl.obj.position;
+
+		// As per SR2 docs, Bit 1 filters for objects not owned by a player.
+		// TractorNearby applies to owned and unowned only, not enemy players
+		uint mask = abl.obj.owner.mask & 1;
+		array<Object@>@ objs = findInBox(center - vec3d(radius), center + vec3d(radius), mask);
+
+		for (uint i = 0, cnt = objs.length; i < cnt; ++i) {
+			Object@ target = objs[i];
+
+			// Hilarious yes, but balanced no
+			if (target.isStar)
+				continue;
+
+			vec3d off = target.position - center;
+			double dist = off.length - target.radius;
+			if (dist > radius)
+				continue;
+
+			target.donatedVision |= abl.obj.visibleMask;
+
+			if (target.hasOrbit) {
+				if (target.inOrbit) {
+					target.stopOrbit();
+				}
+			}
+
+			if (target.hasOrbit) {
+				// Use the same interpolation formula as the tractor beam, except
+				// sqrt both radius factors so it's a lot easier to tug stuff with
+				// some radius differences
+				double interp = 1.0 - pow(0.2, time * sqrt(abl.obj.radius) / sqrt(target.radius));
+				target.velocity = target.velocity.interpolate(abl.obj.velocity, interp);
+				target.acceleration = target.acceleration.interpolate(abl.obj.acceleration, interp);
+			} else if (target.hasMover) {
+				vec3d dir = target.position - abl.obj.position;
+				double tracForce = 0.0;
+				if (abl.obj.hasMover)
+					tracForce = 2 * abl.obj.maxAcceleration * time * sqrt(abl.obj.radius) / sqrt(target.radius);
+
+				vec3d force = dir.normalized(min(tracForce, dir.length));
+				target.impulse(force);
+			}
+		}
+	}
+
+	void destroy(Ability@ abl, any@ data) const {
+		disable(abl, data);
+	}
+
+	void disable(Ability@ abl, any@ data) const {
+		bool enabled = false;
+		data.retrieve(enabled);
+
+		if (enabled) {
+			enabled = false;
+			data.store(enabled);
+
+			double radius = max_distance.decimal + 5.0;
+			vec3d center = abl.obj.position;
+
+			uint mask = abl.obj.owner.mask & 1;
+			array<Object@>@ objs = findInBox(center - vec3d(radius), center + vec3d(radius), mask);
+
+			for (uint i = 0, cnt = objs.length; i < cnt; ++i) {
+				Object@ target = objs[i];
+
+				if (target.isStar)
+					continue;
+
+				vec3d off = target.position - center;
+				double dist = off.length - target.radius;
+				if (dist > radius)
+					continue;
+
+				if (target.hasOrbit) {
+					target.velocity = vec3d();
+					target.acceleration = vec3d();
+					target.remakeStandardOrbit();
+				}
+			}
+		}
+	}
+
+	void save(Ability@ abl, any@ data, SaveFile& file) const override {
+		bool enabled = false;
+		data.retrieve(enabled);
+		file << enabled;
+	}
+
+	void load(Ability@ abl, any@ data, SaveFile& file) const override {
+		bool enabled = false;
+		file >> enabled;
+		data.store(enabled);
+	}
+#section all
+};

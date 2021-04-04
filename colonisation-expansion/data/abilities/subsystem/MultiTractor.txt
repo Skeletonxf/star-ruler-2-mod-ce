@@ -1,0 +1,9 @@
+Ability: MultiTractor
+	Name: #ABL_MULTI_TRACTOR_BEAM
+	Description: #ABL_MULTI_TRACTOR_BEAM_DESC
+	Icon: TractorGun::0 * aaddff
+
+	Range: 400
+
+
+	CE_ability_effects::TractorNearby()

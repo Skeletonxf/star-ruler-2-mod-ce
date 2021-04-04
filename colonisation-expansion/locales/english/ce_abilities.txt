@@ -26,3 +26,5 @@ SET_ORBIT_DESC: Launch the station into orbit around the target, using vast amou
 START_LOOP_ORDERS: Loop Subsequent Orders
 STOP_LOOP_ORDERS: Stop Looping Orders
 AUTO_SUPPLY_ORDER: Supply Dysons from here
+ABL_MULTI_TRACTOR_BEAM_DESC: Turn the ship's gravity well on or off.
+ABL_MULTI_TRACTOR_BEAM: Toggle Gravity Well

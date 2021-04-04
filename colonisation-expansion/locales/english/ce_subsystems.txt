@@ -258,3 +258,11 @@ S_GRAVITRONICS_DESC: <<
 	[img=Plus]Increases [b][color=#ff8000]stellar damage[/color][/b] by 100%.[/img]
 	[img=Minus]Increases the [b][color=#e45500]ramp up time[/color][/b] by 150%.[/img]
 >>
+S_MULTI_TRACTOR_BEAM: Gravity Well Multi Tractor
+S_MULTI_TRACTOR_BEAM_DESC: <<
+	Abandoning any pretense of careful control, a large number of nearby objects can be manipulated simultaneously by powerful gravitronics. The objects are not suspended as carefully, but moving many objects at once along with a ship has its own uses.
+
+	[img=MenuIcons::3;20][color=#aaa]Can use gravity well on artifacts, asteroids, orbitals and other ships.[/color][/img]
+	[img=MenuIcons::3;20][color=#aaa]Enemy objects are not affected.[/color][/img]
+	[img=ResourceIcon::3;20;#f00][color=#aaa]Tractoring ship cannot use FTL while the gravity well is active.[/color][/img]
+>>
