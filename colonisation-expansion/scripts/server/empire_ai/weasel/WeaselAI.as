@@ -443,7 +443,16 @@ final class AI : AIController, Savable {
 		@planets = add(createPlanets());
 		@resources = add(createResources());
 		// [[ MODIFY BASE GAME START ]]
-		bool expansionRaceSupported = empire.hasTrait(getTraitID("StarChildren")) || empire.hasTrait(getTraitID("Terrestial"));
+		bool expansionRaceSupported = empire.hasTrait(getTraitID("Terrestial"))
+			|| empire.hasTrait(getTraitID("Verdant"))
+			|| empire.hasTrait(getTraitID("Linked"))
+			|| empire.hasTrait(getTraitID("Devout"))
+			|| empire.hasTrait(getTraitID("Evangelical"))
+			|| empire.hasTrait(getTraitID("StarChildren"))
+			// TODO || empire.hasTrait(getTraitID("Extragalactic"))
+			// TODO || empire.hasTrait(getTraitID("Ancient"))
+			// TODO || empire.hasTrait(getTraitID("Battleworlders"))
+		;
 		bool expansionRaceReleaseSupport = empire.hasTrait(getTraitID("Mechanoid"));
 		bool expansionComponent = expansionRaceReleaseSupport || (behavior.dragonComponents && expansionRaceSupported);
 		if (expansionComponent) {
