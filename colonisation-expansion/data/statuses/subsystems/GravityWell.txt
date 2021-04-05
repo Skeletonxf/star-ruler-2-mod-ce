@@ -1,0 +1,3 @@
+Status: GravityWell
+	Visible To: Nobody
+	PersistentParticles(GateWormhole, Fleet Scale = True)

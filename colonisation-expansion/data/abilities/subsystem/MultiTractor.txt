@@ -4,6 +4,8 @@ Ability: MultiTractor
 	Icon: TractorGun::0 * aaddff
 
 	Range: 400
+	Cooldown: 30
 
 
+	IsStatusToggle(GravityWell)
 	CE_ability_effects::TractorNearby()

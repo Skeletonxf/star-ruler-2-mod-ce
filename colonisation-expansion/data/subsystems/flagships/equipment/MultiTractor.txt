@@ -22,6 +22,7 @@ Subsystem: MultiTractor
 	Requires:
 		Command = 1
 
+		Power = PowerUse
 	Module: Default
 		Hex.BuildCost := 3.0 * Hex.BuildCost
 

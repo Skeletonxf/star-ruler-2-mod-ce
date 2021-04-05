@@ -4,6 +4,7 @@ import generic_effects;
 import repeat_hooks;
 import abilities;
 from abilities import AbilityHook;
+from ability_effects import getMassFor;
 
 class NotifyTargetOwner : AbilityHook {
 	Document doc("Notify the target empire of an event.");
@@ -151,9 +152,13 @@ class DealStellarDamageOverTimeWithRampUp : AbilityHook {
 };
 
 
-// TODO: Break and remake orbits on targets better, released asteroids go flying!
-// TODO: Visuals for this effect
-// TODO: Make this more chaotic, it should pull stuff in instead of just suspending objects
+// TODO: Accumulate mass from all manipulated objects
+// TODO: Make planets get moved less easily by small tractors
+
+final class TractorData {
+	bool enabled;
+	array<Object@> manipulated;
+}
 
 class TractorNearby : AbilityHook {
 	Document doc("The objects in the nearby range are tractored continually.");
@@ -161,20 +166,21 @@ class TractorNearby : AbilityHook {
 
 #section server
 	void create(Ability@ abl, any@ data) const {
-		bool enabled = false;
-		data.store(enabled);
+		TractorData info;
+		info.enabled = false;
+		data.store(info);
 	}
 
 	void activate(Ability@ abl, any@ data, const Targets@ targs) const override {
-		bool enabled = false;
-		data.retrieve(enabled);
+		TractorData info;
+		data.retrieve(info);
 
-		if (!enabled) {
-			enabled = true;
-			data.store(enabled);
+		if (!info.enabled) {
+			info.enabled = true;
+			info.manipulated.length = 0;
+			data.store(info);
 		} else {
-			enabled = false;
-			data.store(enabled);
+			disable(abl, data);
 		}
 	}
 
@@ -182,10 +188,10 @@ class TractorNearby : AbilityHook {
 		if(abl.obj is null || abl.obj.owner is null)
 			return;
 
-		bool enabled = false;
-		data.retrieve(enabled);
+		TractorData info;
+		data.retrieve(info);
 
-		if (!enabled)
+		if (!info.enabled)
 			return;
 
 		if (abl.obj.inFTL) {
@@ -201,6 +207,12 @@ class TractorNearby : AbilityHook {
 		uint mask = abl.obj.owner.mask & 1;
 		array<Object@>@ objs = findInBox(center - vec3d(radius), center + vec3d(radius), mask);
 
+		array<Object@> manipulatedNew;
+		array<Object@> manipulatedLast;
+		for (uint i = 0, cnt = info.manipulated.length; i < cnt; ++i) {
+			manipulatedLast.insertLast(info.manipulated[i]);
+		}
+
 		for (uint i = 0, cnt = objs.length; i < cnt; ++i) {
 			Object@ target = objs[i];
 
@@ -213,6 +225,14 @@ class TractorNearby : AbilityHook {
 			if (dist > radius)
 				continue;
 
+			manipulatedNew.insertLast(target);
+			{
+				int index = manipulatedLast.find(target);
+				if (index != -1) {
+					manipulatedLast.removeAt(index);
+				}
+			}
+
 			target.donatedVision |= abl.obj.visibleMask;
 
 			if (target.hasOrbit) {
@@ -221,23 +241,31 @@ class TractorNearby : AbilityHook {
 				}
 			}
 
-			if (target.hasOrbit) {
-				// Use the same interpolation formula as the tractor beam, except
-				// sqrt both radius factors so it's a lot easier to tug stuff with
-				// some radius differences
-				double interp = 1.0 - pow(0.2, time * sqrt(abl.obj.radius) / sqrt(target.radius));
-				target.velocity = target.velocity.interpolate(abl.obj.velocity, interp);
-				target.acceleration = target.acceleration.interpolate(abl.obj.acceleration, interp);
-			} else if (target.hasMover) {
-				vec3d dir = target.position - abl.obj.position;
-				double tracForce = 0.0;
-				if (abl.obj.hasMover)
-					tracForce = 2 * abl.obj.maxAcceleration * time * sqrt(abl.obj.radius) / sqrt(target.radius);
+			vec3d dir = (abl.obj.position - target.position).normalized(1);
+			double interp = 1.0 - pow(0.2, time * getMassFor(abl.obj) / getMassFor(target));
 
-				vec3d force = dir.normalized(min(tracForce, dir.length));
-				target.impulse(force);
+			if (target.hasOrbit) {
+				target.velocity = target.velocity.interpolate(abl.obj.velocity + dir, interp);
+				target.position = target.position.interpolate(target.position + target.velocity, interp);
+				target.acceleration = target.acceleration.interpolate(abl.obj.acceleration, interp);
 			}
 		}
+
+		// Zero out the movement of anything we manipulated and lost control over
+		for (uint i = 0, cnt = manipulatedLast.length; i < cnt; ++i) {
+			Object@ target = manipulatedLast[i];
+			target.velocity = vec3d();
+			target.acceleration = vec3d();
+			if (target.hasOrbit) {
+				target.remakeStandardOrbit();
+			}
+		}
+
+		info.manipulated.length = 0;
+		for (uint i = 0, cnt = manipulatedNew.length; i < cnt; ++i) {
+			info.manipulated.insertLast(manipulatedNew[i]);
+		}
+		data.store(info);
 	}
 
 	void destroy(Ability@ abl, any@ data) const {
@@ -245,49 +273,52 @@ class TractorNearby : AbilityHook {
 	}
 
 	void disable(Ability@ abl, any@ data) const {
-		bool enabled = false;
-		data.retrieve(enabled);
+		TractorData info;
+		data.retrieve(info);
 
-		if (enabled) {
-			enabled = false;
-			data.store(enabled);
+		if (info.enabled) {
+			info.enabled = false;
 
-			double radius = max_distance.decimal + 5.0;
-			vec3d center = abl.obj.position;
+			for (uint i = 0, cnt = info.manipulated.length; i < cnt; ++i) {
+				Object@ target = info.manipulated[i];
 
-			uint mask = abl.obj.owner.mask & 1;
-			array<Object@>@ objs = findInBox(center - vec3d(radius), center + vec3d(radius), mask);
-
-			for (uint i = 0, cnt = objs.length; i < cnt; ++i) {
-				Object@ target = objs[i];
-
-				if (target.isStar)
-					continue;
-
-				vec3d off = target.position - center;
-				double dist = off.length - target.radius;
-				if (dist > radius)
-					continue;
-
+				target.velocity = vec3d();
+				target.acceleration = vec3d();
 				if (target.hasOrbit) {
-					target.velocity = vec3d();
-					target.acceleration = vec3d();
 					target.remakeStandardOrbit();
 				}
 			}
+
+			info.manipulated.length = 0;
+
+			data.store(info);
 		}
 	}
 
 	void save(Ability@ abl, any@ data, SaveFile& file) const override {
-		bool enabled = false;
-		data.retrieve(enabled);
-		file << enabled;
+		TractorData info;
+		data.retrieve(info);
+		file << info.enabled;
+		uint cnt = info.manipulated.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			file << info.manipulated[i];
+		}
 	}
 
 	void load(Ability@ abl, any@ data, SaveFile& file) const override {
-		bool enabled = false;
-		file >> enabled;
-		data.store(enabled);
+		TractorData info;
+		file >> info.enabled;
+		uint cnt = 0;
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			Object@ obj;
+			file >> obj;
+			if (obj !is null) {
+				info.manipulated.insertLast(obj);
+			}
+		}
+		data.store(info);
 	}
 #section all
 };

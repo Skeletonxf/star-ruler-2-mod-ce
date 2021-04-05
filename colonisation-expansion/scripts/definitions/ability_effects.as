@@ -808,6 +808,11 @@ double getMassFor(Object& obj) {
 			if(mod !is null && mod.mass >= 0)
 				return mod.mass;
 		}
+		// [[ MODIFY BASE GAME START ]]
+		// Mirror the 'mass' calculation FTL fling costs use with another 0 for balancing
+		case OT_Planet:
+			return 300 * obj.radius;
+		// [[ MODIFY BASE GAME END ]]
 	}
 #section all
 	return 20 * sqr(obj.radius);
