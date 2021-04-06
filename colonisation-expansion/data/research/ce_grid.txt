@@ -36,7 +36,6 @@ Grid: ColonisationExpansionGrid
 	Repair: -1,3
 	OrbitalConstruction: -2,-6
 	HydroponicsSatellite: -3,-1
-	Ramjet: 2,7
 	Thrust: 0,3
 	SupportCap: -5,0
 	Energy: -4,3
@@ -152,7 +151,7 @@ Grid: ColonisationExpansionGrid
 	TroopPods: 7,-3
 	BoosterEngine: 1,4
 	Thrust: 2,5
-	PlanetaryEngine: 2,6
+	Ramjet: 2,6
 	EnergyHurdle: -4,9
 	DevFTL: -4,10
 	FTLHurdle: -5,10
@@ -221,11 +220,9 @@ Grid: ColonisationExpansionGrid
 	AugmentDamage: 7,4
 	FlakBattery: 2,1
 	ShockMissiles: 0,6
-	KeyEmergencyShields: 1,9
 	ShieldReg2: 0,11
 	ShieldCap2: 1,11
 	ShieldReg2: 1,12
-	EnergyHurdle: 2,8
 	Thrust: 3,6
 	RingHabitat: -8,1
 	Obedience: -6,-1
@@ -286,3 +283,8 @@ Grid: ColonisationExpansionGrid
 	Construction: -4,1
 	CreateWater: -5,-9
 	CivFTL: -8,-4
+	SysMultiTractor: 2,9
+	EnergyHurdle: 1,7
+	KeyEmergencyShields: 1,8
+	PlanetaryEngine: 2,7
+	Thrust: 3,8

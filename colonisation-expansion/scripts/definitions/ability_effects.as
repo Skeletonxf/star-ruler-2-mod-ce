@@ -809,9 +809,9 @@ double getMassFor(Object& obj) {
 				return mod.mass;
 		}
 		// [[ MODIFY BASE GAME START ]]
-		// Mirror the 'mass' calculation FTL fling costs use with another 0 for balancing
+		// Mirror the 'mass' calculation FTL fling costs use with a few more 0s for balancing
 		case OT_Planet:
-			return 300 * obj.radius;
+			return 30000 * obj.radius;
 		// [[ MODIFY BASE GAME END ]]
 	}
 #section all

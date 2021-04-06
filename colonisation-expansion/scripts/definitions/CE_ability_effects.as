@@ -151,18 +151,15 @@ class DealStellarDamageOverTimeWithRampUp : AbilityHook {
 #section all
 };
 
-
-// TODO: Accumulate mass from all manipulated objects
-// TODO: Make planets get moved less easily by small tractors
-
 final class TractorData {
 	bool enabled;
 	array<Object@> manipulated;
+	double tractorMass = 0;
 }
 
 class TractorNearby : AbilityHook {
 	Document doc("The objects in the nearby range are tractored continually.");
-	Argument max_distance(AT_Decimal, "400", doc="Maximum distance to tractor.");
+	Argument max_distance(AT_Decimal, "100", doc="Maximum distance to tractor.");
 
 #section server
 	void create(Ability@ abl, any@ data) const {
@@ -178,6 +175,7 @@ class TractorNearby : AbilityHook {
 		if (!info.enabled) {
 			info.enabled = true;
 			info.manipulated.length = 0;
+			info.tractorMass = 0;
 			data.store(info);
 		} else {
 			disable(abl, data);
@@ -212,6 +210,8 @@ class TractorNearby : AbilityHook {
 		for (uint i = 0, cnt = info.manipulated.length; i < cnt; ++i) {
 			manipulatedLast.insertLast(info.manipulated[i]);
 		}
+
+		double newTractorMass = 0;
 
 		for (uint i = 0, cnt = objs.length; i < cnt; ++i) {
 			Object@ target = objs[i];
@@ -249,6 +249,8 @@ class TractorNearby : AbilityHook {
 				target.position = target.position.interpolate(target.position + target.velocity, interp);
 				target.acceleration = target.acceleration.interpolate(abl.obj.acceleration, interp);
 			}
+
+			newTractorMass += getMassFor(target);
 		}
 
 		// Zero out the movement of anything we manipulated and lost control over
@@ -265,6 +267,14 @@ class TractorNearby : AbilityHook {
 		for (uint i = 0, cnt = manipulatedNew.length; i < cnt; ++i) {
 			info.manipulated.insertLast(manipulatedNew[i]);
 		}
+
+		// Gain mass based on what we're tractoring
+		double massDiff = newTractorMass - info.tractorMass;
+		info.tractorMass += massDiff;
+		if (abl.obj !is null && abl.obj.isShip) {
+			cast<Ship>(abl.obj).modMass(massDiff);
+		}
+
 		data.store(info);
 	}
 
@@ -290,15 +300,22 @@ class TractorNearby : AbilityHook {
 			}
 
 			info.manipulated.length = 0;
-
-			data.store(info);
 		}
+
+		// remove the bonus mass we gaind from tractoring
+		if (abl.obj !is null && abl.obj.isShip) {
+			cast<Ship>(abl.obj).modMass(-info.tractorMass);
+			info.tractorMass = 0;
+		}
+
+		data.store(info);
 	}
 
 	void save(Ability@ abl, any@ data, SaveFile& file) const override {
 		TractorData info;
 		data.retrieve(info);
 		file << info.enabled;
+		file << info.tractorMass;
 		uint cnt = info.manipulated.length;
 		file << cnt;
 		for (uint i = 0; i < cnt; ++i) {
@@ -309,6 +326,7 @@ class TractorNearby : AbilityHook {
 	void load(Ability@ abl, any@ data, SaveFile& file) const override {
 		TractorData info;
 		file >> info.enabled;
+		file >> info.tractorMass;
 		uint cnt = 0;
 		file >> cnt;
 		for (uint i = 0; i < cnt; ++i) {

@@ -139,3 +139,9 @@ CIVILIAN_FTL_DESC: <<
 
 	[color=#aaa][i]Allows Civilian ships to use Hyperdrives and Jumpdrives for travel.[/i][/color]
 >>
+R_SYS_MULTI_TRACTOR_DESC: <<
+	[color=#aaa][i]Unlocks the Gravity Well Multi Tractor subsystem.[/i][/color]
+
+	[bbloc=#S_MULTI_TRACTOR_BEAM_DESC/]
+>>
+R_SYS_MULTI_TRACTOR: Gravity Well Engineering

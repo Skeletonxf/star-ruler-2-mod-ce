@@ -3,8 +3,8 @@ Ability: MultiTractor
 	Description: #ABL_MULTI_TRACTOR_BEAM_DESC
 	Icon: TractorGun::0 * aaddff
 
-	Range: 400
-	Cooldown: 30
+	Range: 100
+	Cooldown: 15
 
 
 	IsStatusToggle(GravityWell)

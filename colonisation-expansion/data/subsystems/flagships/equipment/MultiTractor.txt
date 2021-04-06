@@ -15,7 +15,7 @@ Subsystem: MultiTractor
 	Hex.Resistance := 0.2
 	Hex.HP := 18 * HexSize
 
-	PowerUse := 10 * Size
+	PowerUse := 13 * Size
 	Assert: Size / ShipSize > 0.33
 		Message: #ERROR_TOO_SMALL
 
@@ -28,5 +28,5 @@ Subsystem: MultiTractor
 
 	Module: Core
 		Hex.BuildCost := 3.0 * Hex.BuildCost
-		Sprite: TractorGun::0 * #8bb800
+		Sprite: TractorGun::0 * aaddff
 		DrawMode: 1

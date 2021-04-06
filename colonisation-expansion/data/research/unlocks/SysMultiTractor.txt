@@ -1,0 +1,16 @@
+Technology: SysMultiTractor
+	Name: #R_SYS_MULTI_TRACTOR
+	Description: #R_SYS_MULTI_TRACTOR_DESC
+	Class: Unlock
+
+	Point Cost: 1000
+	Time Cost: 90
+
+	Icon: TractorGun::0 * #e45500
+	Color: #b803ab
+	Category: Subsystems
+
+	UnlockSubsystem(MultiTractor)
+	SkipOnUnlockedSubsystem(MultiTractor)
+
+	SecondaryEnergyCost(1500)
