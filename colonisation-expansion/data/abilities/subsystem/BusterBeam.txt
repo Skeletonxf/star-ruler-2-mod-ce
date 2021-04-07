@@ -1,0 +1,19 @@
+Ability: BusterBeam
+	Name: #ABL_BUSTER_BEAM
+	Description: #ABL_BUSTER_BEAM_DESC
+	Icon: HexagonSubsystems::6 * #e900ff
+
+	Range: 200
+
+	Target: targ = Object
+	TargetFilterType(targ, Planet)
+	TargetFilterAttackable(targ)
+
+	IsToggleTarget(targ, Range Margin = 1.5)
+	CooldownOnDeactivate(targ, 300)
+	PersistentBeamEffect(targ, #e900ff, Tractor, Width = 3.0)
+
+	DealPlanetDamageOverTime(targ, 7000000)
+
+	CE_ability_effects::NotifyTargetOwner(targ, Buster Beam attack at $3, Description = $3 is taking damage from a Buster Beam, Icon = HexagonSubsystems::6 * #e900ff)
+	OffensiveToTarget(targ)

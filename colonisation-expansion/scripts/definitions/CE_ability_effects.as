@@ -28,7 +28,9 @@ class NotifyTargetOwner : AbilityHook {
 		if (oldTarget.obj is newTarget.obj)
 			return;
 		Empire@ emp = newTarget.obj.owner;
-		emp.notifyGeneric(title.str, desc.str, icon.str, emp, newTarget.obj);
+		if (emp !is null) {
+			emp.notifyGeneric(title.str, desc.str, icon.str, emp, newTarget.obj);
+		}
 		if (newTarget.obj.isStar) {
 			Region@ region = newTarget.obj.region;
 			array<int> notified;
