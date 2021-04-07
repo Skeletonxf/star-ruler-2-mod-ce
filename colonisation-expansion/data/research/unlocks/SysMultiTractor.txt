@@ -13,4 +13,5 @@ Technology: SysMultiTractor
 	UnlockSubsystem(MultiTractor)
 	SkipOnUnlockedSubsystem(MultiTractor)
 
+		CE_design_hooks::LoadDesigns(researchable/multitractor)
 	SecondaryEnergyCost(1500)
