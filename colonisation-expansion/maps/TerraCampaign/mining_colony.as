@@ -29,10 +29,6 @@ from abilities import getAbilityID;
 
 // TODO: Disable artifact spawning
 // TOOD: Add pressure capacity to AI's and player's main planets
-// TODO: Either fix the Mechanoid AI wasting all its money on Labor storage
-// on planets that don't need to build anything, or hack it a way to keep
-// it producing ships and/or money income at least before its eco gets
-// destroyed by economy attacks via the player
 // TODO: Give player starting ships 3 times the supply storage and no supply
 // leakage so they don't run out of resources way too fast to see the effects
 // of bombing
@@ -57,7 +53,7 @@ class MiningColonyScenario : CampaignScenarioState {
 	double lastTickedMiningShips = -55;
 	// avoid computing some things when we immediately reopen a save because
 	// not everything is initialised instantly
-	double gameTimeAtLastSave = 0;
+	double gameTimeAtLastSave = -1;
 	double enemyKickstarted = 0;
 	double enemyLastEffort = 0;
 
@@ -74,6 +70,10 @@ class MiningColonyScenario : CampaignScenarioState {
 	}
 
 	void tick() {
+		if (gameTimeAtLastSave == -1) {
+			// not loaded or postInit yet
+			return;
+		}
 		if (gameTime <= gameTimeAtLastSave + 5) {
 			// things won't be reloaded in yet!
 			return;
@@ -247,6 +247,7 @@ class MiningColonyScenario : CampaignScenarioState {
 		spawnFleet(ally, planet(0,2).position + vec3d(-120.0,0.0,120.0), "Miner", 0);
 		spawnFleet(ally, planet(0,2).position + vec3d(-120.0,0.0,-120.0), "Miner", 0);
 		spawnFleet(ally, planet(0,2).position + vec3d(120.0,0.0,120.0), "Miner", 0);
+		gameTimeAtLastSave = 0;
 	}
 
 	void triggerDefeat() {
@@ -259,6 +260,7 @@ class MiningColonyScenario : CampaignScenarioState {
 		file << enemyLastEffort;
 		file << suppliedDyson;
 		file << enemyKickstarted;
+		gameTimeAtLastSave = gameTime;
 		file << gameTimeAtLastSave;
 	}
 
