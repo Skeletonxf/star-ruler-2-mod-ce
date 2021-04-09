@@ -1,0 +1,7 @@
+Subsystem: OmegaHull
+	Name: #OMEGA
+	Description: #OMEGA_DESC
+	Tags: Applied:HullDefense, Category:Defense, NoCore, DefaultUnlock, IsOnlySpawnPlanets, IsOmegaDefense
+	Hull: Support, Satellite
+	EvaluationOrder: -200
+	BaseColor: #b979c3

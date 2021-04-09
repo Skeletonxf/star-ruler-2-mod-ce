@@ -267,3 +267,27 @@ S_MULTI_TRACTOR_BEAM_DESC: <<
 	[img=MenuIcons::3;20][color=#aaa]All nearby objects captured in the gravity well weigh down the tractoring ship.[/color][/img]
 	[img=ResourceIcon::3;20;#f00][color=#aaa]Tractoring ship cannot use FTL while the gravity well is active.[/color][/img]
 >>
+ALPHA: Alpha
+ALPHA_DESC: <<
+	Generate Alpha local defense only.
+
+	[i][color=#aaa]Flagships and Stations with an Alpha hull and local defense generation will only spawn Alpha support ships and satellites. Alpha support ships and satellites will only spawn at Flagships and Stations with an Alpha hull[/color][/i]
+>>
+BETA_DESC: <<
+	Generate Beta local defense only.
+
+	[i][color=#aaa]Flagships and Stations with a Beta hull and local defense generation will only spawn Beta support ships and satellites. Beta support ships and satellites will only spawn at Flagships and Stations with a Beta hull[/color][/i]
+>>
+CHARLIE: Charlie
+GAMMA: Gamma
+GAMMA_DESC: <<
+	Generate Gamma local defense only.
+
+	[i][color=#aaa]Flagships and Stations with a Gamma hull and local defense generation will only spawn Gamma support ships and satellites. Gamma support ships and satellites will only spawn at Flagships and Stations with a Gamma hull[/color][/i]
+>>
+OMEGA: Omega
+OMEGA_DESC: <<
+	Generate Omega local defense only.
+
+	[i][color=#aaa]Omega support ships and satellites will only spawn at planets[/color][/i]
+>>
