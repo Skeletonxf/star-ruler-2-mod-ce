@@ -1,7 +1,14 @@
 Subsystem: AlphaHull
 	Name: #ALPHA
 	Description: #ALPHA_DESC
+	Tags: Applied, HullDefense, Category:Spawning, NoCore, DefaultUnlock, IsNotSpawnPlanets, IsAlphaDefense
+	Hull: Flagship, Station
+	EvaluationOrder: -200
+	BaseColor: #93eff4
+Subsystem: AlphaHullSupport
+	Name: #ALPHA
+	Description: #ALPHA_DESC_SUPPORT
 	Tags: Applied:HullDefense, Category:Spawning, NoCore, DefaultUnlock, IsNotSpawnPlanets, IsAlphaDefense
-	Hull: Flagship, Station, Support, Satellite
+	Hull: Support, Satellite
 	EvaluationOrder: -200
 	BaseColor: #93eff4

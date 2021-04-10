@@ -68,7 +68,7 @@ GlobalStat: SupportSupplyUse
 	Color: #fefc61
 	Suffix: /s
 
-	RequireTag: SupportShipHull // [[ MODIFY BASE GAME: Ignore support applicable hulls added in to the game and instead check for tag only on the SupportHull itself ]]
+	RequireTag: SupportHull
 
 	SupplyDrainFormula: // [[ MODIFY BASE GAME: Custom formula for supply drain based on bonus repair ]]
 

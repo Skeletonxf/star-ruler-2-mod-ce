@@ -1,7 +1,14 @@
 Subsystem: BetaHull
 	Name: #BETA
 	Description: #BETA_DESC
+	Tags: Applied, HullDefense, Category:Spawning, NoCore, DefaultUnlock, IsNotSpawnPlanets, IsBetaDefense
+	Hull: Flagship, Station
+	EvaluationOrder: -200
+	BaseColor: #9ffa92
+Subsystem: BetaHullSupport
+	Name: #BETA
+	Description: #BETA_DESC_SUPPORT
 	Tags: Applied:HullDefense, Category:Spawning, NoCore, DefaultUnlock, IsNotSpawnPlanets, IsBetaDefense
-	Hull: Flagship, Station, Support, Satellite
+	Hull: Support, Satellite
 	EvaluationOrder: -200
 	BaseColor: #9ffa92

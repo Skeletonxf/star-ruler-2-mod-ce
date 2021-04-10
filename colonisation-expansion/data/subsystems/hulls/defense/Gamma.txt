@@ -1,7 +1,14 @@
 Subsystem: GammaHull
 	Name: #GAMMA
 	Description: #GAMMA_DESC
+	Tags: Applied, HullDefense, Category:Spawning, NoCore, DefaultUnlock, IsNotSpawnPlanets, IsGammaDefense
+	Hull: Flagship, Station
+	EvaluationOrder: -200
+	BaseColor: #d8f450
+Subsystem: GammaHullSupport
+	Name: #GAMMA
+	Description: #GAMMA_DESC_SUPPORT
 	Tags: Applied:HullDefense, Category:Spawning, NoCore, DefaultUnlock, IsNotSpawnPlanets, IsGammaDefense
-	Hull: Flagship, Station, Support, Satellite
+	Hull: Support, Satellite
 	EvaluationOrder: -200
 	BaseColor: #d8f450

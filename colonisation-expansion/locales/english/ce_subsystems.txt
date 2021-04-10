@@ -270,21 +270,27 @@ S_MULTI_TRACTOR_BEAM_DESC: <<
 SC_Spawning: [hspace=4/][vspace=-3][img=AffinityIcons::3;32x32/][/vspace][hspace=6/]  [color=#b979c3]Spawning[/color]
 ALPHA: Alpha
 ALPHA_DESC: <<
-	Generate Alpha local defense only.
+	Generate Alpha local defense.
 
-	[i][color=#aaa]Flagships and Stations with an Alpha hull and local defense generation will only spawn Alpha support ships and satellites. Alpha support ships and satellites will only spawn at Flagships and Stations with an Alpha hull[/color][/i]
+	[i][color=#aaa]Flagships and stations with an Alpha hull and local defense generation will spawn Alpha support ships and satellites instead of supports and satellites without a Spawning hull.[/color][/i]
+
+	[i][color=#aaa]If the flagship has multiple Spawning hulls applied, it will spawn support ships with any matching hulls.[/color][/i]
 >>
 BETA_DESC: <<
-	Generate Beta local defense only.
+	Generate Beta local defense.
 
-	[i][color=#aaa]Flagships and Stations with a Beta hull and local defense generation will only spawn Beta support ships and satellites. Beta support ships and satellites will only spawn at Flagships and Stations with a Beta hull[/color][/i]
+	[i][color=#aaa]Flagships and stations with a Beta hull and local defense generation will spawn Beta support ships and satellites instead of supports and satellites without a Spawning hull.[/color][/i]
+
+	[i][color=#aaa]If the flagship has multiple Spawning hulls applied, it will spawn support ships with any matching hulls.[/color][/i]
 >>
 CHARLIE: Charlie
 GAMMA: Gamma
 GAMMA_DESC: <<
-	Generate Gamma local defense only.
+	Generate Gamma local defense.
 
-	[i][color=#aaa]Flagships and Stations with a Gamma hull and local defense generation will only spawn Gamma support ships and satellites. Gamma support ships and satellites will only spawn at Flagships and Stations with a Gamma hull[/color][/i]
+	[i][color=#aaa]Flagships and stations with a Gamma hull and local defense generation will spawn Gamma support ships and satellites instead of supports and satellites without a Spawning hull.[/color][/i]
+
+	[i][color=#aaa]If the flagship has multiple Spawning hulls applied, it will spawn support ships with any matching hulls.[/color][/i]
 >>
 OMEGA: Omega
 OMEGA_DESC: <<
@@ -293,3 +299,23 @@ OMEGA_DESC: <<
 	[i][color=#aaa]Omega support ships and satellites will only spawn at planets[/color][/i]
 >>
 BETA: Beta
+ALPHA_DESC_SUPPORT: <<
+	Spawn at Alpha local defense.
+
+	[i][color=#aaa]Alpha support ships and satellites will only spawn at flagships and stations with an Alpha hull.[/color][/i]
+>>
+BETA_DESC_SUPPORT: <<
+	Spawn at Beta local defense.
+
+	[i][color=#aaa]Beta support ships and satellites will only spawn at flagships and stations with a Beta hull.[/color][/i]
+>>
+GAMMA_DESC_SUPPORT: <<
+	Spawn at Gamma local defense.
+
+	[i][color=#aaa]Gamma support ships and satellites will only spawn at flagships and stations with a Gamma hull.[/color][/i]
+>>
+OMEGA_DESC_SUPPORT: <<
+	Spawn at planets.
+
+	[i][color=#aaa]Omega support ships and satellites will only spawn at planets.[/color][/i]
+>>

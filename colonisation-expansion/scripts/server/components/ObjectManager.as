@@ -69,12 +69,19 @@ const Design@ getDefenseDesign(Empire& owner, double defenseRate, double toleran
 			continue;
 		if (flagshipDefenseGen && dsg.hasTag(ST_IsOnlySpawnPlanets))
 			continue;
-		if (alphaDefenseGen && !dsg.hasTag(ST_IsAlphaDefense))
-			continue;
-		if (betaDefenseGen && !dsg.hasTag(ST_IsBetaDefense))
-			continue;
-		if (gammaDefenseGen && !dsg.hasTag(ST_IsGammaDefense))
-			continue;
+		bool coloredCheck = alphaDefenseGen || betaDefenseGen || gammaDefenseGen;
+		if (coloredCheck) {
+			// accept supports which meet any of the (up to) three color checks
+			// the spawning object applies
+			// (if supports had to meet all checks this would always fail for
+			// more than one color set on the spawning object)
+			bool met = (alphaDefenseGen && dsg.hasTag(ST_IsAlphaDefense))
+				|| (betaDefenseGen && dsg.hasTag(ST_IsBetaDefense))
+				|| (gammaDefenseGen && dsg.hasTag(ST_IsGammaDefense));
+			if (!met) {
+				continue;
+			}
+		}
 		// [[ MODIFY BASE GAME END ]]
 		if(hasDesignCosts(dsg))
 			continue;

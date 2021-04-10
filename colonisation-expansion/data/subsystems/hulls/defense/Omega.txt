@@ -1,6 +1,6 @@
-Subsystem: OmegaHull
+Subsystem: OmegaHullSupport
 	Name: #OMEGA
-	Description: #OMEGA_DESC
+	Description: #OMEGA_DESC_SUPPORT
 	Tags: Applied:HullDefense, Category:Spawning, NoCore, DefaultUnlock, IsOnlySpawnPlanets, IsOmegaDefense
 	Hull: Support, Satellite
 	EvaluationOrder: -200
