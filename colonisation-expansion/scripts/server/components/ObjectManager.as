@@ -34,7 +34,9 @@ tidy class ColonizationEvent : Savable, Serializable {
 	}
 };
 
-const Design@ getDefenseDesign(Empire& owner, double defenseRate, double tolerance = 1.0, bool satellite = false, int maxSize = -1) {
+// [[ MODIFY BASE GAME START ]]
+const Design@ getDefenseDesign(Empire& owner, double defenseRate, double tolerance = 1.0, bool satellite = false, int maxSize = -1, bool planetDefenseGen = false, bool flagshipDefenseGen = false, bool alphaDefenseGen = false, bool betaDefenseGen = false, bool gammaDefenseGen = false) {
+	// [[ MODIFY BASE GAME END ]]
 	const Design@ defenseDesign;
 
 	double laborV = defenseRate * 60.0;
@@ -62,6 +64,18 @@ const Design@ getDefenseDesign(Empire& owner, double defenseRate, double toleran
 			continue;
 		if(dsg.hasTag(ST_HasMaintenanceCost))
 			continue;
+		// [[ MODIFY BASE GAME START ]]
+		if (planetDefenseGen && dsg.hasTag(ST_IsNotSpawnPlanets))
+			continue;
+		if (flagshipDefenseGen && dsg.hasTag(ST_IsOnlySpawnPlanets))
+			continue;
+		if (alphaDefenseGen && !dsg.hasTag(ST_IsAlphaDefense))
+			continue;
+		if (betaDefenseGen && !dsg.hasTag(ST_IsBetaDefense))
+			continue;
+		if (gammaDefenseGen && !dsg.hasTag(ST_IsGammaDefense))
+			continue;
+		// [[ MODIFY BASE GAME END ]]
 		if(hasDesignCosts(dsg))
 			continue;
 
@@ -963,9 +977,28 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		const Design@ dsg;
 		double labor = 0;
 
+		// [[ MODIFY BASE GAME START ]]
+		bool planetDefense = spawnAt.isPlanet || spawnAt.isRegion;
+		bool flagshipDefense = spawnAt.isShip;
+		bool alphaDefense = false;
+		bool betaDefense = false;
+		bool gammaDefense = false;
+		if (flagshipDefense) {
+			Ship@ ship = cast<Ship>(spawnAt);
+			if (ship !is null) {
+				const Design@ dsg = ship.blueprint.design;
+				alphaDefense = dsg.hasTag(ST_IsAlphaDefense);
+				betaDefense = dsg.hasTag(ST_IsBetaDefense);
+				gammaDefense = dsg.hasTag(ST_IsGammaDefense);
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		while(defense > 0) {
 			if(dsg is null) {
-				@dsg = getDefenseDesign(owner, defense / 60.0);
+				// [[ MODIFY BASE GAME START ]]
+				@dsg = getDefenseDesign(owner, defense / 60.0, planetDefenseGen = planetDefense, flagshipDefenseGen = flagshipDefense, alphaDefenseGen = alphaDefense, betaDefenseGen = betaDefense, gammaDefenseGen = gammaDefense);
+				// [[ MODIFY BASE GAME END ]]
 				if(dsg is null)
 					return;
 				labor = getLaborCost(dsg, 1);
@@ -1065,7 +1098,9 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		WriteLock lck(defenseMtx);
 		while(defense > 0) {
 			if(defenseDesign is null) {
-				@defenseDesign = getDefenseDesign(owner, max(defenseRate, defense / 60.0));
+				// [[ MODIFY BASE GAME START ]]
+				@defenseDesign = getDefenseDesign(owner, max(defenseRate, defense / 60.0), planetDefenseGen = true);
+				// [[ MODIFY BASE GAME END ]]
 				if(defenseDesign is null)
 					return;
 				defenseLabor = getLaborCost(defenseDesign, 1);

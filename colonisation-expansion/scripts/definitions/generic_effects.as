@@ -3757,6 +3757,23 @@ class AddLocalDefense : GenericEffect {
 		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
+		bool planetDefense = obj.isPlanet;
+		bool flagshipDefense = obj.isShip;
+		bool alphaDefense = false;
+		bool betaDefense = false;
+		bool gammaDefense = false;
+		if (flagshipDefense) {
+			Ship@ ship = cast<Ship>(obj);
+			if (ship !is null) {
+				const Design@ dsg = ship.blueprint.design;
+				alphaDefense = dsg.hasTag(ST_IsAlphaDefense);
+				betaDefense = dsg.hasTag(ST_IsBetaDefense);
+				gammaDefense = dsg.hasTag(ST_IsGammaDefense);
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
+
+		// [[ MODIFY BASE GAME START ]]
 		// Loop while have defense for this tick to build with
 		// Fixes vanilla issue blowing all labor on the first support
 		// even when labor would be leftover
@@ -3775,7 +3792,9 @@ class AddLocalDefense : GenericEffect {
 					return;
 				}
 
-				@dat.design = getDefenseDesign(obj.owner, secondDefense, satellite=build_satellites.boolean, maxSize=maxSize);
+				// [[ MODIFY BASE GAME START ]]
+				@dat.design = getDefenseDesign(obj.owner, secondDefense, satellite=build_satellites.boolean, maxSize=maxSize, planetDefenseGen = planetDefense, flagshipDefenseGen = flagshipDefense, alphaDefenseGen = alphaDefense, betaDefenseGen = betaDefense, gammaDefenseGen = gammaDefense);
+				// [[ MODIFY BASE GAME END ]]
 				if (dat.design !is null) {
 					dat.labor = getLaborCost(dat.design, 1);
 				}
@@ -3901,8 +3920,27 @@ class AddLocalDefenseAdjacentFlags : GenericEffect {
 		if(disable_in_combat.boolean && obj.inCombat)
 			tickDefense = 0;
 
+		// [[ MODIFY BASE GAME START ]]
+		bool planetDefense = obj.isPlanet;
+		bool flagshipDefense = obj.isShip;
+		bool alphaDefense = false;
+		bool betaDefense = false;
+		bool gammaDefense = false;
+		if (flagshipDefense) {
+			Ship@ ship = cast<Ship>(obj);
+			if (ship !is null) {
+				const Design@ dsg = ship.blueprint.design;
+				alphaDefense = dsg.hasTag(ST_IsAlphaDefense);
+				betaDefense = dsg.hasTag(ST_IsBetaDefense);
+				gammaDefense = dsg.hasTag(ST_IsGammaDefense);
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		if(dat.design is null) {
-			@dat.design = getDefenseDesign(obj.owner, secondDefense);
+			// [[ MODIFY BASE GAME START ]]
+			@dat.design = getDefenseDesign(obj.owner, secondDefense, planetDefenseGen = planetDefense, flagshipDefenseGen = flagshipDefense, alphaDefenseGen = alphaDefense, betaDefenseGen = betaDefense, gammaDefenseGen = gammaDefense);
+			// [[ MODIFY BASE GAME END ]]
 			if(dat.design !is null)
 				dat.labor = getLaborCost(dat.design, 1);
 		}

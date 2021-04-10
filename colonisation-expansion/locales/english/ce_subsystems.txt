@@ -267,6 +267,7 @@ S_MULTI_TRACTOR_BEAM_DESC: <<
 	[img=MenuIcons::3;20][color=#aaa]All nearby objects captured in the gravity well weigh down the tractoring ship.[/color][/img]
 	[img=ResourceIcon::3;20;#f00][color=#aaa]Tractoring ship cannot use FTL while the gravity well is active.[/color][/img]
 >>
+SC_Spawning: [hspace=4/][vspace=-3][img=AffinityIcons::3;32x32/][/vspace][hspace=6/]  [color=#b979c3]Spawning[/color]
 ALPHA: Alpha
 ALPHA_DESC: <<
 	Generate Alpha local defense only.
@@ -291,3 +292,4 @@ OMEGA_DESC: <<
 
 	[i][color=#aaa]Omega support ships and satellites will only spawn at planets[/color][/i]
 >>
+BETA: Beta

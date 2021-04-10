@@ -2147,7 +2147,9 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 		}
 
 		if(defenseDesign is null) {
-			@defenseDesign = getDefenseDesign(obj.owner, defense);
+			// [[ MODIFY BASE GAME START ]]
+			@defenseDesign = getDefenseDesign(obj.owner, defense, planetDefenseGen = true);
+			// [[ MODIFY BASE GAME END ]]
 			if(defenseDesign is null)
 				return;
 		}
@@ -2185,6 +2187,10 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 					continue;
 				if(dsg.hasTag(ST_HasMaintenanceCost))
 					continue;
+				// [[ MODIFY BASE GAME START ]]
+				if (dsg.hasTag(ST_IsNotSpawnPlanets))
+					continue;
+				// [[ MODIFY BASE GAME END ]]
 				@dsg = dsg.newest();
 				if(chosenDesigns.contains(dsg.id))
 					continue;
