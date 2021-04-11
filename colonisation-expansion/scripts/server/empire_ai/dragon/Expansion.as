@@ -1358,7 +1358,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 
 		// now we need something else to do
-		array<PlanetAI@> possibleFocuses = planetManagement.getGoodNextFocuses();
+		array<PlanetAI@> possibleFocuses = planetManagement.getGoodNextFocuses(ai);
 		if (possibleFocuses.length == 0) {
 			// now that we also know we're not colonising for any, we
 			// should pick one to colonise for
@@ -1916,7 +1916,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	// Check how recently we colonized something matching the spec
 	double timeSinceMatchingColonize(ResourceSpec& spec) {
-		return 181.0; // TODO
+		return 181.0; // This is no longer used
 	}
 
 	// Methods for ColonizeBudgeting

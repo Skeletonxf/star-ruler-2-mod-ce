@@ -7,6 +7,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
   - Expansion AI Component
+    - Actually reimplement queueColonize methods on Expansion component so dragon Parasite AI works
     - Make AI consolidate labor at one shipyard, not multiple
       - The AI can build shipyards for both labor consolidation and staging bases, need to ensure it doesn't build two in the same region
       - May want to make the AI build supply depots instead of shipyards at staging bases too
@@ -20,14 +21,14 @@ This is primarily intended as a developer focused project planning list, rather 
       - Thanks Illyia
     - Apply conditions AI hooks to all applicable statuses
     - Implement custom ColonizeAbility interface for Extragalactic and Ancient AI empires
+      - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
     - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
         - Teach AI to melt ice
         - Teach AI to make most of the constructions by extending the building hint code
-    - General notes on AI issues to fix in rework
-      - To fix in refactor of colonization and development code
-        - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
     - Possibly teach the AI to recognise useless planets and either terraform them or replace them with outposts / better colonies in the same system
       - Particularly relevant for a Mechanoid empire that never finds Cremlin Firns or Nitrous Oxide, as claiming useless food/water planets to expand borders is great early/mid game, but costs 50k per system to not replace with outposts late game.
+  - Make AI able to use the abilties on senatorial palaces and allondium worlds
+    - Introduce ability AI hooks
   - Auto researching an FTL unlock should not trigger the vote for the FTL unlock
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
   - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
@@ -58,7 +59,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix bug with ships becoming unretroffitable if the source retrofitting them gets destroyed before finishing
   - Fix map generation bugs with galaxy mirroring and gas/ice giants
   - Make AI respond to flare bomb and gravitron condensor attacks
-  - Make AI able to use the abilties on senatorial palaces and allondium worlds
 
 - Not planned for any time soon
   - Colonisation ships similar to Motherships for other races
@@ -91,7 +91,6 @@ This is primarily intended as a developer focused project planning list, rather 
       - Create stations at all
       - Attempt to achieve the influence victory themselves
       - Fling battle stations
-      - Use Motherships well
       - Mine asteroids for ore
       - Move asteroids and other resources around with tractor beams
       - Create battleworlds

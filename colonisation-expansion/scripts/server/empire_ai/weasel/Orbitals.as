@@ -31,8 +31,11 @@ final class OrbitalAI {
 	}
 
 	void tick(AI& ai, Orbitals& orbitals, double time) {
-		//Deal with losing planet ownership
+		//Deal with losing orbital ownership
 		if(obj is null || !obj.valid || obj.owner !is ai.empire) {
+			// [[ MODIFY BASE GAME START ]]
+			orbitals.removedOrbitalAI(this);
+			// [[ MODIFY BASE GAME END ]]
 			orbitals.remove(this);
 			return;
 		}
@@ -49,12 +52,30 @@ final class OrbitalAI {
 	}
 };
 
+// [[ MODIFY BASE GAME START ]]
+/**
+ * An interface for other components to register themselves as listeners onto
+ * the Orbitals component so they can respond to events without having to
+ * track the lifetimes of everything themselves.
+ */
+interface OrbitalEventListener {
+	/**
+	 * A PlanetAI that was previously tracked is no longer valid for tracking
+	 */
+	void onRemovedOrbitalAI(OrbitalAI@ orbAI);
+}
+// [[ MODIFY BASE GAME END ]]
+
 class Orbitals : AIComponent, AIOrbitals {
 	Budget@ budget;
 	Systems@ systems;
 
 	array<OrbitalAI@> orbitals;
 	uint orbIdx = 0;
+
+	// [[ MODIFY BASE GAME START ]]
+	array<OrbitalEventListener@> listeners;
+	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
 		@budget = cast<Budget>(ai.budget);
@@ -244,6 +265,15 @@ class Orbitals : AIComponent, AIOrbitals {
 		data.remove(ai, this);
 		orbitals.remove(data);
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void removedOrbitalAI(OrbitalAI@ orbAI) {
+		// Tell everything that is listening
+		for (uint i = 0, cnt = listeners.length; i < cnt; ++i) {
+			listeners[i].onRemovedOrbitalAI(orbAI);
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
 };
 
 AIComponent@ createOrbitals() {

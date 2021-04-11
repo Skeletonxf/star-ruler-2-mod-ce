@@ -30,7 +30,7 @@ const double FTL_EXTRACTOR_MIN_HELD_BASE_TIMER = 3 * 60.0;
  * Mostly reactive actions in response to problems that occur from other
  * components.
  */
-class Improvement : AIComponent, PlanetRequestListener {
+class Improvement : AIComponent, PlanetEventListener {
 	Planets@ planets;
 	Resources@ resources;
 	IDevelopment@ development;
@@ -162,6 +162,8 @@ class Improvement : AIComponent, PlanetRequestListener {
 			plAI.failedToPlaceBuilding = false;
 		}
 	}
+
+	void onRemovedPlanetAI(PlanetAI@ plAI) {}
 
 	/**
 	 * Tries to place moon bases on planets we logged as failing to build on

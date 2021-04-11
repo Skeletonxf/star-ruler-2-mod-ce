@@ -198,9 +198,14 @@ final class ConstructionRequest {
  * to go though all the effort of tracking each construction they care about
  * along its entire lifetime.
  */
-interface PlanetRequestListener {
+interface PlanetEventListener {
 	void onConstructionRequestActioned(ConstructionRequest@ request);
 	// Extend with onBuildingEnd if ever need it
+
+	/**
+	 * A PlanetAI that was previously tracked is no longer valid for tracking
+	 */
+	void onRemovedPlanetAI(PlanetAI@ plAI);
 }
 // [[ MODIFY BASE GAME END ]]
 
@@ -287,6 +292,9 @@ final class PlanetAI {
 		if(obj is null || !obj.valid || obj.owner !is ai.empire) {
 			if(obj.owner !is ai.empire)
 				relationRecordLost(ai, obj.owner, obj);
+			// [[ MODIFY BASE GAME START ]]
+			planets.removedPlanetAI(this);
+			// [[ MODIFY BASE GAME END ]]
 			planets.remove(this);
 			return;
 		}
@@ -579,7 +587,7 @@ class Planets : AIComponent {
 	// [[ MODIFY BASE GAME END ]]
 
 	// [[ MODIFY BASE GAME START ]]
-	array<PlanetRequestListener@> listeners;
+	array<PlanetEventListener@> listeners;
 	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
@@ -1032,6 +1040,15 @@ class Planets : AIComponent {
 		for(uint i = 0, cnt = newResources.length; i < cnt; ++i)
 			resources.checkReplaceCurrent(newResources[i]);
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void removedPlanetAI(PlanetAI@ plAI) {
+		// Tell everything that is listening
+		for (uint i = 0, cnt = listeners.length; i < cnt; ++i) {
+			listeners[i].onRemovedPlanetAI(plAI);
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
 };
 
 AIComponent@ createPlanets() {

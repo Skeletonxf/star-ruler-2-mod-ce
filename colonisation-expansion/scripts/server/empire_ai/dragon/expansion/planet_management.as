@@ -15,7 +15,7 @@ from traits import getTraitID;
 
 import empire_ai.dragon.logs;
 
-class PlanetManagement {
+class PlanetManagement: PlanetEventListener {
 	Planets@ planets;
 	Budget@ budget;
 	DevelopmentFocuses@ focuses;
@@ -37,6 +37,22 @@ class PlanetManagement {
 	int unobtaniumAbility = -1;
 	const ResourceType@ unobtanium;
 	array<PlanetAI@> unobtaniumCandidatePlanets;
+
+	void onConstructionRequestActioned(ConstructionRequest@ request) {}
+	void onRemovedPlanetAI(PlanetAI@ plAI) {
+		for (uint i = 0, cnt = goodNextFocuses.length; i < cnt; ++i) {
+			if (goodNextFocuses[i] is plAI) {
+				goodNextFocuses.removeAt(i);
+				--i; --cnt;
+			}
+		}
+		for (uint i = 0, cnt = unobtaniumCandidatePlanets.length; i < cnt; ++i) {
+			if (unobtaniumCandidatePlanets[i] is plAI) {
+				unobtaniumCandidatePlanets.removeAt(i);
+				--i; --cnt;
+			}
+		}
+	}
 
 	PlanetManagement(Planets@ planets, Budget@ budget, DevelopmentFocuses@ focuses, BuildingTracker@ builds, FTLRequirements@ ftlRequirements, AI& ai, bool log) {
 		@this.planets = planets;
@@ -63,6 +79,8 @@ class PlanetManagement {
 		@scalableClass = getResourceClass("Scalable");
 		unobtaniumAbility = getAbilityID("UnobtaniumMorph");
 		@unobtanium = getResource("Unobtanium");
+
+		planets.listeners.insertLast(this);
 	}
 
 	/**
@@ -331,7 +349,14 @@ class PlanetManagement {
 	 * Planets we've found that we already own and might want to promote
 	 * to focuses
 	 */
-	array<PlanetAI@> getGoodNextFocuses() {
+	array<PlanetAI@> getGoodNextFocuses(AI& ai) {
+		// Cull the list to ensure we only return valid focuses
+		for (uint i = 0, cnt = goodNextFocuses.length; i < cnt; ++i) {
+			if (goodNextFocuses[i] is null || goodNextFocuses[i].obj is null || !goodNextFocuses[i].obj.valid || goodNextFocuses[i].obj.owner !is ai.empire) {
+				goodNextFocuses.removeAt(i);
+				--i; --cnt;
+			}
+		}
 		return goodNextFocuses;
 	}
 
