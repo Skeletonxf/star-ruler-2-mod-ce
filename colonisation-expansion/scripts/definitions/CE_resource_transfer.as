@@ -28,9 +28,9 @@ class RequireHasTransferAbilities : AbilityHook {
 
 	bool canActivate(const Ability@ abl, const Targets@ targs, bool ignoreCost) const override {
 		if (abl.obj is null)
-			return true;
-		if (!abl.obj.isPlanet)
-			return true;
+			return false;
+		if (!abl.obj.isPlanet || !abl.obj.hasAbilities)
+			return false;
 
 		array<Ability> abilities;
 		abilities.syncFrom(abl.obj.getAbilities());

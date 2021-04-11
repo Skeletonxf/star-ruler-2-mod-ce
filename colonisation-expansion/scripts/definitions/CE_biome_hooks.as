@@ -646,7 +646,7 @@ class TransferAllResourcesAndAbandon : AbilityHook {
 		if(targ is null || targ.obj is null)
 			return;
 
-		if (!abl.obj.isPlanet)
+		if (!abl.obj.isPlanet || !abl.obj.hasAbilities)
 		 	return;
 
 		Planet@ planet = cast<Planet>(abl.obj);
