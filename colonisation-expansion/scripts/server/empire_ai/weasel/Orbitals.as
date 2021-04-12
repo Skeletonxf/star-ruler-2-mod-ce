@@ -28,14 +28,14 @@ final class OrbitalAI {
 	}
 
 	void remove(AI& ai, Orbitals& orbitals) {
+		// [[ MODIFY BASE GAME START ]]
+		orbitals.removedOrbitalAI(this);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void tick(AI& ai, Orbitals& orbitals, double time) {
 		//Deal with losing orbital ownership
 		if(obj is null || !obj.valid || obj.owner !is ai.empire) {
-			// [[ MODIFY BASE GAME START ]]
-			orbitals.removedOrbitalAI(this);
-			// [[ MODIFY BASE GAME END ]]
 			orbitals.remove(this);
 			return;
 		}

@@ -28,7 +28,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Possibly teach the AI to recognise useless planets and either terraform them or replace them with outposts / better colonies in the same system
       - Particularly relevant for a Mechanoid empire that never finds Cremlin Firns or Nitrous Oxide, as claiming useless food/water planets to expand borders is great early/mid game, but costs 50k per system to not replace with outposts late game.
   - Make AI able to use the abilties on senatorial palaces and allondium worlds
-    - Introduce ability AI hooks
+    - Use the introduced ability AI hooks
   - Auto researching an FTL unlock should not trigger the vote for the FTL unlock
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
   - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet

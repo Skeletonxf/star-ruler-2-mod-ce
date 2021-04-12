@@ -26,6 +26,8 @@ import IAIComponent@ createDiplomacy() from "empire_ai.weasel.Diplomacy";
 import AIComponent@ createConsider() from "empire_ai.weasel.Consider";
 import AIComponent@ createOrbitals() from "empire_ai.weasel.Orbitals";
 // [[ MODIFY BASE GAME START ]]
+// ability tracking component
+import AIComponent@ createAbilities() from "empire_ai.weasel.Abilities";
 // create new component to add moon bases, orbitals, melt water
 import AIComponent@ createImprovement() from "empire_ai.weasel.Improvement";
 // also create a component for handling the parasite trait
@@ -381,9 +383,6 @@ final class AIDefs {
 	const BuildingType@ Factory;
 	const BuildingType@ LaborStorage;
 	const OrbitalModule@ Shipyard;
-	// [[ MODIFY BASE GAME START ]]
-	// need to add ability to make outposts
-	// [[ MODIFY BASE GAME END ]]
 };
 
 final class AI : AIController, Savable {
@@ -429,6 +428,7 @@ final class AI : AIController, Savable {
 	// [[ MODIFY BASE GAME START ]]
 	IAIComponent@ improvement;
 	IAIComponent@ parasite;
+	IAIComponent@ abilities;
 	// [[ MODIFY BASE GAME END ]]
 
 	IAIComponent@ ftl;
@@ -495,6 +495,7 @@ final class AI : AIController, Savable {
 		@consider = add(createConsider());
 		@orbitals = add(createOrbitals());
 		// [[ MODIFY BASE GAME START ]]
+		@abilities = add(createAbilities());
 		@improvement = add(createImprovement());
 		// [[ MODIFY BASE GAME END ]]
 

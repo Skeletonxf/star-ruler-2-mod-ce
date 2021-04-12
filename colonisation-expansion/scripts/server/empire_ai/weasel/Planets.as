@@ -280,6 +280,9 @@ final class PlanetAI {
 	}
 
 	void remove(AI& ai, Planets& planets) {
+		// [[ MODIFY BASE GAME START ]]
+		planets.removedPlanetAI(this);
+		// [[ MODIFY BASE GAME END ]]
 		if(claimedChain !is null) {
 			claimedChain.claimedFor = false;
 			@claimedChain = null;
@@ -292,9 +295,6 @@ final class PlanetAI {
 		if(obj is null || !obj.valid || obj.owner !is ai.empire) {
 			if(obj.owner !is ai.empire)
 				relationRecordLost(ai, obj.owner, obj);
-			// [[ MODIFY BASE GAME START ]]
-			planets.removedPlanetAI(this);
-			// [[ MODIFY BASE GAME END ]]
 			planets.remove(this);
 			return;
 		}

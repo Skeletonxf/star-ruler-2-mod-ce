@@ -1,0 +1,14 @@
+Ability: BuyNameFlagship
+	Name: #ABL_BUY_NAME_FLAGSHIP
+	Description: #ABL_BUY_NAME_FLAGSHIP_DESC
+	Icon: CardIcons::18
+
+	Cooldown: 60
+
+	ShareCooldown(BuyAnnexPlanet)
+
+	ConsumeInfluence(5)
+	ShowInfluenceValue(5, #COST)
+
+	AI:AsCreatedCard(NameFlagship)
+	GainInfluenceCard(NameFlagship)

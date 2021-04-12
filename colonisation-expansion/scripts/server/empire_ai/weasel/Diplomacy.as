@@ -13,7 +13,7 @@ import empire_ai.weasel.Resources;
 import empire_ai.weasel.War;
 import empire_ai.weasel.Intelligence;
 // [[ MODIFY BASE GAME START ]]
-import empire_ai.weasel.Orbitals;
+import empire_ai.weasel.Abilities;
 // [[ MODIFY BASE GAME END ]]
 
 import influence;
@@ -21,11 +21,12 @@ from empire_ai.DiplomacyAI import DiplomacyAI, VoteData, CardAI, VoteState;
 // [[ MODIFY BASE GAME START ]]
 import influence_global;
 import abilities;
+from ai.abilities import AbilitiesAI, AsCreatedCard;
 // [[ MODIFY BASE GAME END ]]
 
 import systems;
 
-class Diplomacy : DiplomacyAI, IAIComponent, PlanetEventListener, OrbitalEventListener {
+class Diplomacy : DiplomacyAI, IAIComponent, AbilitiesEventListener {
 	Systems@ systems;
 	Fleets@ fleets;
 	Planets@ planets;
@@ -36,11 +37,9 @@ class Diplomacy : DiplomacyAI, IAIComponent, PlanetEventListener, OrbitalEventLi
 	Intelligence@ intelligence;
 
 	// [[ MODIFY BASE GAME START ]]
-	Orbitals@ orbitals;
-	uint planetCardCheckIndex = 0;
-	uint orbitalCardCheckIndex = 0;
-	array<PlanetAI@> cardAbilityPlanets;
-	array<OrbitalAI@> cardAbilityOrbitals;
+	AbilitiesComponent@ abilities;
+	array<AbilityAI@> cardAbilityObjects;
+	uint abilityCheckIndex = 0;
 	// [[ MODIFY BASE GAME END ]]
 
 	//Adapt to AI component
@@ -81,16 +80,14 @@ class Diplomacy : DiplomacyAI, IAIComponent, PlanetEventListener, OrbitalEventLi
 		@war = cast<War>(ai.war);
 		@intelligence = cast<Intelligence>(ai.intelligence);
 		// [[ MODIFY BASE GAME START ]]
-		@orbitals = cast<Orbitals>(ai.orbitals);
-		planets.listeners.insertLast(this);
-		orbitals.listeners.insertLast(this);
+		@abilities = cast<AbilitiesComponent>(ai.abilities);
 		// [[ MODIFY BASE GAME END ]]
 	}
 
 	//IMPLEMENTED BY DiplomacyAI
 	// [[ MODIFY BASE GAME START ]]
 	// Now extended by CE
-	void load(SaveFile& file) {
+	void load(SaveFile& file) override {
 		uint cnt = 0;
 		file >> cnt;
 		votes.length = cnt;
@@ -101,26 +98,18 @@ class Diplomacy : DiplomacyAI, IAIComponent, PlanetEventListener, OrbitalEventLi
 
 		file >> prevVotes;
 		// [[ MODIFY BASE GAME START ]]
-		file >> planetCardCheckIndex;
+		file >> abilityCheckIndex;
 		file >> cnt;
 		for (uint i = 0; i < cnt; ++i) {
-			PlanetAI@ plAI = planets.loadAI(file);
-			if (plAI !is null) {
-				cardAbilityPlanets.insertLast(plAI);
-			}
-		}
-		file >> orbitalCardCheckIndex;
-		file >> cnt;
-		for (uint i = 0; i < cnt; ++i) {
-			OrbitalAI@ orbAI = orbitals.loadAI(file);
-			if (orbAI !is null) {
-				cardAbilityOrbitals.insertLast(orbAI);
+			AbilityAI@ abilityAI = abilities.loadAI(file);
+			if (abilityAI !is null) {
+				cardAbilityObjects.insertLast(abilityAI);
 			}
 		}
 		// [[ MODIFY BASE GAME END ]]
 	}
 
-	void save(SaveFile& file) {
+	void save(SaveFile& file) override {
 		uint cnt = votes.length;
 		file << cnt;
 		for(uint i = 0; i < cnt; ++i)
@@ -128,17 +117,11 @@ class Diplomacy : DiplomacyAI, IAIComponent, PlanetEventListener, OrbitalEventLi
 
 		file << prevVotes;
 		// [[ MODIFY BASE GAME START ]]
-		file << planetCardCheckIndex;
-		cnt = cardAbilityPlanets.length;
+		file << abilityCheckIndex;
+		cnt = cardAbilityObjects.length;
 		file << cnt;
 		for (uint i = 0; i < cnt; ++i) {
-			planets.saveAI(file, cardAbilityPlanets[i]);
-		}
-		file << orbitalCardCheckIndex;
-		cnt = cardAbilityOrbitals.length;
-		file << cnt;
-		for (uint i = 0; i < cnt; ++i) {
-			orbitals.saveAI(file, cardAbilityOrbitals[i]);
+			abilities.saveAI(file, cardAbilityObjects[i]);
 		}
 		// [[ MODIFY BASE GAME END ]]
 	}
@@ -478,7 +461,7 @@ class Diplomacy : DiplomacyAI, IAIComponent, PlanetEventListener, OrbitalEventLi
 	}
 
 	// [[ MODIFY BASE GAME START ]]
-	void buyCards() {
+	void buyCards() override {
 		//See if we can buy something
 		if(freeInfluence <= 0)
 			return;
@@ -497,34 +480,11 @@ class Diplomacy : DiplomacyAI, IAIComponent, PlanetEventListener, OrbitalEventLi
 				@buyCard = cardStack[i];
 		}
 
-		// Look at the next planet and orbital for something we can buy cards
-		// from
-		uint planetCount = planets.planets.length;
-		if (planetCount != 0) {
-			planetCardCheckIndex = (planetCardCheckIndex + 1) % planetCount;
-			PlanetAI@ plAI = planets.planets[planetCardCheckIndex];
-			if (plAI !is null && plAI.obj !is null && plAI.obj.hasAbilities) {
-				array<Ability> abilities;
-				abilities.syncFrom(plAI.obj.getAbilities());
-
-				for (uint i = 0, cnt = abilities.length; i < cnt; ++i) {
-					// TODO: Look for ability AI hooks
-				}
-			}
-		}
-
-		uint orbitalCount = orbitals.orbitals.length;
-		if (orbitalCount != 0) {
-			orbitalCardCheckIndex = (orbitalCardCheckIndex + 1) % orbitalCount;
-			OrbitalAI@ orbitalAI = orbitals.orbitals[orbitalCardCheckIndex];
-			if (orbitalAI !is null && orbitalAI.obj !is null && orbitalAI.obj.hasAbilities) {
-				array<Ability> abilities;
-				abilities.syncFrom(orbitalAI.obj.getAbilities());
-
-				for (uint i = 0, cnt = abilities.length; i < cnt; ++i) {
-					// TODO: Look for ability AI hooks
-				}
-			}
+		// abilities
+		if (abilities.abilityObjects.length != 0) {
+			abilityCheckIndex = (abilityCheckIndex + 1) % abilities.abilityObjects.length;
+			AbilityAI@ abilityAI = abilities.abilityObjects[abilityCheckIndex];
+			// TODO
 		}
 
 		// TODO: Consider buying a card from one of our orbitals or planets
@@ -537,19 +497,10 @@ class Diplomacy : DiplomacyAI, IAIComponent, PlanetEventListener, OrbitalEventLi
 		}
 	}
 
-	void onConstructionRequestActioned(ConstructionRequest@ request) {}
-	void onRemovedPlanetAI(PlanetAI@ plAI) {
-		for (uint i = 0, cnt = cardAbilityPlanets.length; i < cnt; ++i) {
-			if (cardAbilityPlanets[i] is plAI) {
-				cardAbilityPlanets.removeAt(i);
-				--i; --cnt;
-			}
-		}
-	}
-	void onRemovedOrbitalAI(OrbitalAI@ orbAI) {
-		for (uint i = 0, cnt = cardAbilityOrbitals.length; i < cnt; ++i) {
-			if (cardAbilityOrbitals[i] is orbAI) {
-				cardAbilityOrbitals.removeAt(i);
+	void onRemovedAbilityAI(AbilityAI@ abilityAI) {
+		for (uint i = 0, cnt = cardAbilityObjects.length; i < cnt; ++i) {
+			if (cardAbilityObjects[i] is abilityAI) {
+				cardAbilityObjects.removeAt(i);
 				--i; --cnt;
 			}
 		}

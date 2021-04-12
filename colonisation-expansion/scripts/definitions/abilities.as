@@ -33,6 +33,9 @@ tidy final class AbilityType {
 	// [[ MODIFY BASE GAME END ]]
 
 	array<IAbilityHook@> hooks;
+	// [[ MODIFY BASE GAME START ]]
+	array<Hook@> ai;
+	// [[ MODIFY BASE GAME END ]]
 };
 
 interface IAbilityHook {
@@ -539,6 +542,14 @@ void loadAbilities(const string& filename) {
 				file.error("Invalid resource '"+value+"'.");
 			}
 		}
+		// Status based AI hooks, modelled off the AI resource hooks
+		else if(key.equals_nocase("AI")) {
+			auto@ hook = parseHook(value, "ai.abilities::", instantiate=false, file=file);
+			if(hook !is null)
+				type.ai.insertLast(hook);
+			else
+				file.error("Could not find AI hook "+value);
+		}
 		// [[ MODIFY BASE GAME END ]]
 		else {
 			string line = file.line;
@@ -565,5 +576,11 @@ void init() {
 			else
 				cast<Hook>(type.hooks[n]).initTargets(type.targets);
 		}
+		// [[ MODIFY BASE GAME START ]]
+		for(uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
+			if(!type.ai[n].instantiate())
+				error("Could not instantiate AI hook: "+addrstr(type.ai[n])+" in ability "+type.ident);
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 }
