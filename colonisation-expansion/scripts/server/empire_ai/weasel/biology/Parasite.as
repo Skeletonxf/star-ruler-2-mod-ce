@@ -73,7 +73,7 @@ class Parasite : AIComponent {
 	 * The approx relative value of razing down a particular planet.
 	 *
 	 * In general food and water resources are nearly useless, but
-	 * planets we've already build up have the least value to raze,
+	 * planets we've already built up have the least value to raze,
 	 * whereas planets we're planing to build up but haven't yet
 	 * are good candidates for razing.
 	 */
@@ -158,8 +158,7 @@ class Parasite : AIComponent {
 				int resource = planetResourceType.id;
 				if (resource == ftlType) {
 					// razing ftl crystals don't help in the sense that you
-					// can't go above your FTL storage limit, and the AI doesn't
-					// build that much FTL storage
+					// can't go above your FTL storage limit
 					resourceValue = -35.0;
 				}
 				// labor resources also don't stockpile

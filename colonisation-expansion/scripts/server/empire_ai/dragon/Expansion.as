@@ -815,7 +815,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// Things we might want to colonize to expand (ie, within 1 hop to the border)
 	// Used by the Ancient component, at least for now.
 	// Long term would like to make this flexible enough to play Ancient well
-	array<PotentialColonize@> potentialColonizations; // TODO: Move this into the queue
+	array<PotentialColonize@> potentialColonizations;
 
 	// Things in the queue for colonizing
 	ColonizeForest@ queue;
@@ -850,6 +850,17 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// to a focus yet
 	array<ExportData@> managedPressure;
 	uint pressureIndex = 0;
+
+	// A secondary 'queue' of resource specs we will persistently try to
+	// colonise for. This is not targeted at level chaining, or colonising, but
+	// instead for ad hoc 'please colonise this type of planet' requests that
+	// other AI components may make.
+	array<ResourceSpec@> extraRequests;
+
+	// A very special queue of resource specs we will always attempt to meet,
+	// no matter how many times we have met already. Use with extreme caution,
+	// this is intended for high value high scarcity resources like FTL Crystals.
+	array<ResourceSpec@> colonizeOnSight;
 
 	void create() {
 		@resources = cast<Resources>(ai.resources);
@@ -923,6 +934,18 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		file << pressureIndex;
 
 		ftlIncomeTargets.save(file);
+
+		cnt = extraRequests.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			extraRequests[i].save(file);
+		}
+
+		cnt = colonizeOnSight.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			colonizeOnSight[i].save(file);
+		}
 	}
 
 	void load(SaveFile& file) {
@@ -1007,6 +1030,20 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		file >> pressureIndex;
 
 		ftlIncomeTargets.load(file);
+
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			ResourceSpec@ spec = ResourceSpec();
+			spec.load(file);
+			extraRequests.insertLast(spec);
+		}
+
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			ResourceSpec@ spec = ResourceSpec();
+			spec.load(file);
+			colonizeOnSight.insertLast(spec);
+		}
 	}
 
 	void tick(double time) override {
@@ -1065,6 +1102,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			// should only colonise for things we actually don't have available
 			resources.focusTick(0.0);
 			queue.fillQueueFromRequests(this, ai);
+			fillQueueFromExtraRequests();
 			// Pull planets off the queue for colonising
 			drainQueue();
 		}
@@ -1085,6 +1123,29 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		checkIfBordersScouted();
 
 		managePressure();
+	}
+
+	/**
+	 * In rare circumstances we also need to maintain a secondary queue of
+	 * resource specs that we should colonise (primarily for the Parasite AI).
+	 * Unlike in Weasel's Colonisation code, our primary queue doesn't rememeber
+	 * things we ask it to colonise for unless it finds a valid target, so we
+	 * need to maintain a seperate list and keep trying to match the items in it
+	 * till they are found, at which point it's as if the request was like any
+	 * normal one.
+	 */
+	void fillQueueFromExtraRequests() {
+		for (uint i = 0; i < extraRequests.length; ++i) {
+			ResourceSpec@ spec = extraRequests[i];
+			if (queue.queueColonizeForResourceSpec(spec, this, ai) !is null) {
+				extraRequests.removeAt(i);
+				--i; // --cnt;
+			}
+		}
+		for (uint i = 0; i < colonizeOnSight.length; ++i) {
+			ResourceSpec@ spec = colonizeOnSight[i];
+			queue.queueColonizeForResourceSpec(spec, this, ai);
+		}
 	}
 
 	void drainQueue() {
@@ -1227,6 +1288,22 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			expandType = LookingForHomeworld;
 		}
 		// TODO: Ancient should skip to Expanding
+
+		// Hardcode AI to always grab FTL Crystals on sight.
+		// Even if the AI is sublight, grabbing FTL Crystals prevents another
+		// empire from getting them easily.
+		{
+			const ResourceType@ crystals = getResource("FTL");
+			ResourceSpec spec;
+			if (crystals !is null) {
+				spec.type = RST_Specific;
+				@spec.resource = crystals;
+				spec.isLevelRequirement = false;
+				spec.isForImport = false;
+				spec.allowUniversal = false;
+				colonizeOnSight.insertLast(spec);
+			}
+		}
 	}
 
 	void turn() {
@@ -1743,24 +1820,12 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	// Puts a resource spec into the colonise queue
 	void queueColonizeLowPriority(ResourceSpec& spec, bool place = true) {
-		//ColonizeQueue q;
-		//@q.spec = spec;
-
-		//if(place)
-		//	queue.insertLast(q);
-		//return q;
+		extraRequests.insertLast(spec);
 	}
 
 	// Places a resource spec into the colonize queue
 	void queueColonizeHighPriority(ResourceSpec& spec, bool place = true) {
-		//ColonizeQueue q;
-		//@q.spec = spec;
-
-		//if (place) {
-		//	// insertAt pushes other elements down the array
-		//	queue.insertAt(0, q);
-		//}
-		//return q;
+		extraRequests.insertAt(0, spec);
 	}
 
 	// Loads colonize data from a file
@@ -1824,7 +1889,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	// Colonizes the best planet in the potentials matching the resource spec
 	ColonizeData@ colonize(ResourceSpec@ spec) {
-		// TODO: Pick best planet meeting this spec
+		// Not used in Expansion, only used by replaced Development component
 		return null;
 	}
 

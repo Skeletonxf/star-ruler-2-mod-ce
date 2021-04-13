@@ -145,7 +145,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 	Planets@ planets;
 
 	const ResourceType@ unobtanium;
-	const ResourceType@ crystals;
 	int unobtaniumAbl = -1;
 
 	//const AbilityType@ colonizeAbility = getAbilityType("MechanoidColonize");
@@ -184,7 +183,6 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 		@ai.defs.Shipyard = null;
 
-		@crystals = getResource("FTL");
 		@unobtanium = getResource("Unobtanium");
 		unobtaniumAbl = getAbilityID("UnobtaniumMorph");
 
@@ -200,16 +198,8 @@ class Mechanoid2 : Race, ColonizationAbility {
 	}
 
 	void start() {
-		/* //Oh yes please can we have some ftl crystals sir
-		if(crystals !is null) {
-			ResourceSpec spec;
-			spec.type = RST_Specific;
-			@spec.resource = crystals;
-			spec.isLevelRequirement = false;
-			spec.isForImport = false;
-
-			colonization.queueColonizeLowPriority(spec);
-		} */
+		//Oh yes please can we have some ftl crystals sir
+		// Don't you worry Mono, Expansion AI has you covered
 	}
 
 	void save(SaveFile& file) override {

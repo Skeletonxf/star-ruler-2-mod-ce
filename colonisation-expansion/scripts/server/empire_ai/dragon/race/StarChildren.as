@@ -449,8 +449,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		if (wantMC > haveMC && mcBuild is null)
 			@mcBuild = construction.buildFlagship(mothershipDesign, force=true);
 
-		// FIXME: First, pooling labor at a shipyard shouldn't only be for star children
-		// Secondly, why does this never rebuild a shipyard after 180 seconds????
+		// TODO: The AI already knows how to make shipyards, we should just make that code work for us
 		/* if (yardBuild is null && haveMC > 0 && gameTime > 60 && gameTime < 180 && ai.defs.Shipyard !is null) {
 			Region@ reg = motherships[0].obj.region;
 			if (reg !is null) {
