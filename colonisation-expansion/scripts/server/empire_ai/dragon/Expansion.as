@@ -576,9 +576,12 @@ class ColonizeForest {
 			// base if we need to build on them
 
 			// Get the PlanetAI for the object making this request
-			PlanetAI@ plAI = expansion.planets.getAI(cast<Planet>(request.obj));
+			Planet@ planet = cast<Planet>(request.obj);
+			if (planet is null)
+				return;
+			PlanetAI@ plAI = expansion.planets.getAI(planet);
 
-			if (plAI.obj is null)
+			if (plAI is null || plAI.obj is null)
 				return;
 
 			bool alreadyConstructingMoonBase = expansion.planets.isConstructing(plAI.obj, build_moon_base);
@@ -1107,6 +1110,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			drainQueue();
 		}
 
+		clearAlreadyMetColonizations();
+
 		// Try to colonise any planets we are waiting on a source for
 		doColonizations();
 
@@ -1162,6 +1167,29 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 			// mark the planet as awaiting a source and in our colonising list
 			colonize(planet, node.request);
+		}
+	}
+
+	void clearAlreadyMetColonizations() {
+		for (uint i = 0, cnt = awaitingSource.length; i < cnt; ++i) {
+			ColonizeData2@ colonizeData = cast<ColonizeData2>(awaitingSource[i]);
+			if (colonizeData.target is null) {
+				continue;
+			}
+			if (colonizeData.target.owner is ai.empire) {
+				// are we playing heralds?
+				// Looks like we colonised this without ever ordering it
+				double population = colonizeData.target.population;
+				if (population >= 1.0) {
+					if (log) {
+						ai.print("Unordered awaiting colonisation detected", colonizeData.target);
+					}
+					// finished colonising successfully
+					finishColonize(colonizeData);
+					--i; --cnt;
+					continue;
+				}
+			}
 		}
 	}
 
@@ -2027,6 +2055,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	}
 
 	// This flag is set to false when the heralds race component is present
+	// We don't use it, but weasel colonisation does
 	void set_QueueColonization(bool value) { actions.queueColonization = value; }
 	// This is used to modify the weight of potential colonisations based on
 	// distance, except it quickly becomes useless once Star Children have

@@ -52,6 +52,7 @@ import AIComponent@ createStarChildren() from "empire_ai.weasel.race.StarChildre
 import AIComponent@ createStarChildren2() from "empire_ai.dragon.race.StarChildren";
 // [[ MODIFY BASE GAME END ]]
 import AIComponent@ createExtragalactic() from "empire_ai.weasel.race.Extragalactic";
+import AIComponent@ createExtragalactic2() from "empire_ai.dragon.race.Extragalactic";
 import AIComponent@ createLinked() from "empire_ai.weasel.race.Linked";
 import AIComponent@ createDevout() from "empire_ai.weasel.race.Devout";
 import AIComponent@ createAncient() from "empire_ai.weasel.race.Ancient";
@@ -449,7 +450,7 @@ final class AI : AIController, Savable {
 			|| empire.hasTrait(getTraitID("Devout"))
 			|| empire.hasTrait(getTraitID("Evangelical"))
 			|| empire.hasTrait(getTraitID("StarChildren"))
-			// TODO || empire.hasTrait(getTraitID("Extragalactic"))
+			|| empire.hasTrait(getTraitID("Extragalactic"))
 			// TODO || empire.hasTrait(getTraitID("Ancient"))
 			// TODO || empire.hasTrait(getTraitID("Battleworlders"))
 		;
@@ -524,9 +525,15 @@ final class AI : AIController, Savable {
 			} else {
 				@race = add(createStarChildren());
 			}
-			// [[ MODIFY BASE GAME END ]]
-		} else if(empire.hasTrait(getTraitID("Extragalactic")))
-			@race = add(createExtragalactic());
+		} else if(empire.hasTrait(getTraitID("Extragalactic"))) {
+			if (expansionComponent) {
+				print("Enabling Dragon Extragalactic component");
+				@race = add(createExtragalactic2());
+			} else {
+				@race = add(createExtragalactic());
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 		else if(empire.hasTrait(getTraitID("Linked")))
 			@race = add(createLinked());
 		else if(empire.hasTrait(getTraitID("Devout")))
@@ -544,11 +551,13 @@ final class AI : AIController, Savable {
 		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
-		// Star Children and Ancient empires have no intrinsic colonisation
-		// costs and shouldn't avoid clonising just beacuse they don't have
-		// 80 credits or two thirds of the budget cycle are gone.
-		if(empire.hasTrait(getTraitID("Ancient")) || empire.hasTrait(getTraitID("StarChildren"))) {
-			behavior.guaranteeColonizations += 1;
+		// Some empire types have no intrinsic colonisation costs and so the AI
+		// shouldn't avoid clonising just beacuse they don't have 80 credits or
+		// two thirds of the budget cycle are gone.
+		if(empire.hasTrait(getTraitID("Ancient")) || empire.hasTrait(getTraitID("StarChildren")) || empire.hasTrait(getTraitID("Extragalactic"))) {
+			if (empire.hasTrait(getTraitID("Ancient")) || empire.hasTrait(getTraitID("StarChildren"))) {
+				behavior.guaranteeColonizations += 1;
+			}
 			behavior.colonizeBudgetCost = 0;
 			behavior.colonizeMaxBudgetProgress = 1.01;
 		}

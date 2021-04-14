@@ -627,6 +627,9 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 	}
 
 	ColonizationSource@ getFastestSource(Planet@ colony) {
+		if (colony is null) {
+			return null;
+		}
 		MothershipColonizer@ fastest;
 		double maxPop = max(double(colony.maxPopulation), double(getPlanetLevel(colony, colony.primaryResourceLevel).population));
 		double curPop = colony.population;
@@ -694,12 +697,8 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		if (file.readBit()) {
 			// read back the fleet
 			auto@ flAI = fleets.loadAI(file);
-			// look for the mothership that has this fleet
-			for (uint i = 0, cnt = motherships.length; i < cnt; ++i) {
-				MothershipColonizer@ mothership = cast<MothershipColonizer>(motherships[i]);
-				if (mothership.mothership is flAI) {
-					return mothership;
-				}
+			if (flAI !is null) {
+				return MothershipColonizer(flAI);
 			}
 		}
 		return null;

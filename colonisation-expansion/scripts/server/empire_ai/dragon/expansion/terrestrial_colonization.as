@@ -114,6 +114,9 @@ class TerrestrialColonization : ColonizationAbility {
 	 * assigns to each potential source.
 	 */
 	ColonizationSource@ getFastestSource(Planet@ colony) {
+		if (colony is null) {
+			return null;
+		}
 		ColonizerPlanet@ colonizeFrom;
 		double colonizeFromWeight = 0;
 		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
@@ -159,7 +162,9 @@ class TerrestrialColonization : ColonizationAbility {
 		if (file.readBit()) {
 			Planet@ planet;
 			file >> planet;
-			return ColonizerPlanet(planet);
+			if (planet !is null) {
+				return ColonizerPlanet(planet);
+			}
 		}
 		return null;
 	}

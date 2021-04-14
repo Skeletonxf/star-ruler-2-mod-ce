@@ -411,6 +411,9 @@ class Mechanoid2 : Race, ColonizationAbility {
 	// even if the colony needs more, we'll just deal with such issues
 	// on subsequent ticks
 	ColonizationSource@ getFastestSource(Planet@ colony) {
+		if (colony is null) {
+			return null;
+		}
 		ColonizerMechanoidPlanet@ colonizeFrom;
 		double colonizeFromWeight = 0;
 		for (uint i = 0, cnt = planetSources.length; i < cnt; ++i) {
