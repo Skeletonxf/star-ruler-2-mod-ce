@@ -10,8 +10,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Make AI consolidate labor at one shipyard, not multiple
       - The AI can build shipyards for both labor consolidation and staging bases, need to ensure it doesn't build two in the same region
       - May want to make the AI build supply depots instead of shipyards at staging bases too
-    - Get Parasite AIs to abandon level chaining for razed worlds
-      - PlanetAI may be raising the target level back up after razing ends?
     - Make AI destroy buildings it no longer needs
       - Particularly Megafarms and Hydrogenators
     - Add a proper isBuilding method that also checks if the AI is in the process of building a building instead of just if its in the request queue and fix everywhere I called this thinking that's what isBuilding already does
@@ -19,7 +17,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Scuttle outposts which have ended up in a different region to where the AI created them
       - Thanks Illyia
     - Apply conditions AI hooks to all applicable statuses
-    - Implement custom ColonizeAbility interface for Extragalactic and Ancient AI empires
+    - Implement custom ColonizeAbility interface for Ancient AI empires
       - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
     - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
         - Teach AI to melt ice

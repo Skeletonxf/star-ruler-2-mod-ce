@@ -245,11 +245,15 @@ class Parasite : AIComponent {
 				goodRazeTargets += 1;
 			}
 		}
-		if (bestRazeValue > 1.0 && bestRazeTarget !is null) {
+		if (bestRazeValue > 1.0 && bestRazeTarget !is null && bestRazeTarget.obj !is null) {
 			bestRazeTarget.obj.activateAbilityTypeFor(ai.empire, razeAbility);
 			// mark the planet as no longer worth leveling
 			bestRazeTarget.targetLevel = 0;
 			bestRazeTarget.requestedLevel = 0;
+			// drop all imports
+			// (it seems like Resources is shadowed here because omitting the planets. prefix causes
+			// compile errors???)
+			planets.resources.organizeImports(bestRazeTarget.obj, bestRazeTarget.requestedLevel);
 			for (int i = development.Focuses.length - 1; i >= 0; --i) {
 				if (development.Focuses[i].plAI is bestRazeTarget) {
 					development.Focuses.remove(development.Focuses[i]);
@@ -268,11 +272,6 @@ class Parasite : AIComponent {
 					colonization.queueColonizeHighPriority(spec);
 				}
 			}
-			// TODO: Remove imports/exports from this planet
-			// The Resources code seems to dumb to notice that the razing
-			// planet can't accept imports
-			// This might be fixed generically in the Expansion component
-			// refactor
 		}
 		if (goodRazeTargets < 3) {
 			// queue up a level 1 resource each turn we lack good raze targets
