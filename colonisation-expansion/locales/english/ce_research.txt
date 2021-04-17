@@ -87,6 +87,8 @@ R_SUPPORT_SHRINE_DESC: <<
 	[color=#aaa][i]Unlocks the Shrine subsystem for supports.[/i][/color]
 
 	[bbloc=#S_SHRINE_DESC/]
+
+	[color=#aaa][i]Also increases shield capacity by 2.5%, as if this node was still Phase Containment.[/i][/color]
 >>
 R_SUPPORT_SHRINE_DUMMY: Compact Prayer (Dummy)
 R_UNLOCK_MAKE_NEBULA_DESC: <<
