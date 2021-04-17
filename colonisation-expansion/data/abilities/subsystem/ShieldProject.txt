@@ -1,0 +1,17 @@
+Ability: ShieldProject
+	Name: #ABL_SHIELD_PROJECT
+	Description: #ABL_SHIELD_PROJECT_DESC
+	Icon: FissionReactor * #00f7ff
+
+	Range: 1500
+
+	Target: targ = Object
+	TargetFilterAllied(targ, Allow Null = True)
+
+	IsToggleTarget(targ, Range Margin = 1.0, Channels = False)
+	PersistentBeamEffect(targ, #ffffff, Tractor)
+
+	AutoCastNearby(targ, Prioritize Combat = True, Prioritize Strongest = True, Prioritize Low Supply = True, Require Priority = True)
+
+	TargetFilterFlagship(targ, Allow Null = True)
+	CE_ability_effects::AddBonusShieldProjected(targ, Sys.ProjShieldRegen:0, Sys.ProjShieldCapacity:0, Max Distance = 1500)

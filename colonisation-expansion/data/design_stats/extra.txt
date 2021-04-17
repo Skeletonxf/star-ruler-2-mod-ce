@@ -119,3 +119,38 @@ SubsystemStat: RampUpTime
 
 	Suffix: s
 	Variable: RampUpTime
+
+
+
+GlobalStat: ProjectedShield
+	Name: #S_Projected_Shield
+	Description: #STT_Projected_Shield
+	Icon: AttributeIcons::6
+	Color: #00aeff
+
+	Variable: ProjShieldCapacity
+
+	GlobalStat: ProjectedShieldRegen
+		Name: #S_Projected_ShieldRegen
+		Description: #STT_Projected_ShieldRegen
+		Icon: AttributeIcons::6
+		Color: #00aeff
+		Secondary: ProjectedShield
+
+		Variable: ProjShieldRegen
+
+SubsystemStat: ProjectedShield
+	Name: #S_Shield
+	Description: #STT_Projected_Shield
+	Icon: AttributeIcons::6
+	Color: #00aeff
+
+	Variable: ProjShieldCapacity
+
+SubsystemStat: ProjectedShieldRegen
+	Name: #S_ShieldRegen
+	Description: #STT_Projected_ShieldRegen
+	Icon: AttributeIcons::6
+	Color: #00aeff
+
+	Variable: ProjShieldRegen

@@ -147,3 +147,9 @@ R_SYS_MULTI_TRACTOR_DESC: <<
 	[bbloc=#S_MULTI_TRACTOR_BEAM_DESC/]
 >>
 R_SYS_MULTI_TRACTOR: Gravity Well Engineering
+R_SYS_SHIELDPROJECTOR: Shield Projector
+R_SYS_SHIELDPROJECTOR_DESC: <<
+	[color=#aaa][i]Unlocks the Shield Projector subsystem.[/i][/color]
+
+	[bbloc=#SHIELDPROJECTOR_DESC/]
+>>

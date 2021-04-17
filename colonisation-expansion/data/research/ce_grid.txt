@@ -288,3 +288,4 @@ Grid: ColonisationExpansionGrid
 	KeyEmergencyShields: 1,8
 	PlanetaryEngine: 2,7
 	Thrust: 3,8
+	SysShieldProjector: -2,9

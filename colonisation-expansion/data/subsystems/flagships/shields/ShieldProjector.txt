@@ -1,0 +1,29 @@
+Subsystem: ShieldProjector
+	Name: #SHIELDPROJECTOR
+	Description: #SHIELDPROJECTOR_DESC
+	BaseColor: #00aeff
+	Elevation: 1
+
+	DamageOrder: -100
+
+	Tags: BaseCost
+	Tags: IsShield, Category:Defense, HasInternals
+	Tags: HighPowerUse, ExteriorCore, Ability:ShieldProject
+	Hull: Flagship, Station
+
+	Size := HexSize * Hexes
+	ProjShieldCapacity := Size * 90
+	ProjShieldRegen := Size * 0.8
+	PowerUse := 10 * Size
+
+	Hex.Resistance := 0.5
+	Hex.HP := 12 * HexSize
+	Hex.Mass := 2.5 * HexSize
+
+	Requires:
+		Command = 1
+		Power = PowerUse
+
+	Module: Core
+		Sprite: FissionReactor * #00f7ff
+		Hex.BuildCost := 2 * Hex.BuildCost

@@ -319,3 +319,17 @@ OMEGA_DESC_SUPPORT: <<
 
 	[i][color=#aaa]Omega support ships and satellites will only spawn at planets.[/color][/i]
 >>
+SHIELDPROJECTOR: Shield Projector
+SHIELDPROJECTOR_DESC: <<
+	Creates a shield around another target, blocking some incoming damage.
+
+	[img=Plus]Creates regenerating barrier against damage.[/img]
+	[img=Minus]Weakened shields allow some damage through.[/img]
+	[img=Minus]Does not protect the vessel.[/img]
+	[img=MenuIcons::3;20]Can protect allies.[/img]
+>>
+S_Projected_Shield: Projected Shield Capacity
+STT_Projected_Shield: Maximum hitpoints of the Projected shield.
+
+S_Projected_ShieldRegen: Projected Shield Regen
+STT_Projected_ShieldRegen: Projected shield hitpoints regenerated per second.

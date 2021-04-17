@@ -342,3 +342,76 @@ class TractorNearby : AbilityHook {
 	}
 #section all
 };
+
+class AddBonusShieldProjected : AbilityHook {
+	Document doc("Add a shield to a target while this effect is active.");
+	Argument objTarg(TT_Object);
+	Argument shield_regen(AT_SysVar, doc="Shield regeneration per second.");
+	Argument max_shield(AT_SysVar, doc="Maximum shield capacity.");
+	Argument max_distance(AT_Decimal, "500", doc="Maximum distance to project.");
+
+#section server
+	void create(Ability@ abl, any@ data) const override {
+	}
+
+	void changeTarget(Ability@ abl, any@ data, uint index, Target@ oldTarget, Target@ newTarget) const {
+		if (index != uint(objTarg.integer))
+			return;
+
+		Object@ prev = oldTarget.obj;
+		Object@ next = newTarget.obj;
+
+		if (prev is next)
+			return;
+
+		float regen = shield_regen.fromSys(abl.subsystem);
+		float capacity = max_shield.fromSys(abl.subsystem);
+		// Clear effect on old target
+		if (prev !is null) {
+			if (prev.isShip) {
+				Ship@ ship = cast<Ship>(prev);
+				if (ship !is null) {
+					ship.modProjectedShield(-regen, -capacity);
+				}
+			}
+			//prev.modProjectedShield(-regen, -capacity);
+		}
+
+		if (next !is null) {
+			if (next.isShip) {
+				Ship@ ship = cast<Ship>(next);
+				if (ship !is null) {
+					ship.modProjectedShield(regen, capacity);
+				}
+			}
+			//next.modProjectedShield(regen, capacity);
+		}
+	}
+
+	void tick(Ability@ abl, any@ data, double time) const {
+		if (abl.obj is null)
+			return;
+		Target@ storeTarg = objTarg.fromTarget(abl.targets);
+		if (storeTarg is null)
+			return;
+
+		Object@ obj = storeTarg.obj;
+		if (obj is null)
+			return;
+
+		double dist = obj.position.distanceTo(abl.obj.position);
+		if (dist > max_distance.decimal) {
+			Target newTarg = storeTarg;
+			@newTarg.obj = null;
+			abl.changeTarget(objTarg, newTarg);
+			return;
+		}
+	}
+
+	void save(Ability@ abl, any@ data, SaveFile& file) const override {
+	}
+
+	void load(Ability@ abl, any@ data, SaveFile& file) const override {
+	}
+#section all
+};

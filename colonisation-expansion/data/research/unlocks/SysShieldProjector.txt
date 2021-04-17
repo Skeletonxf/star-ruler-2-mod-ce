@@ -1,0 +1,17 @@
+Technology: SysShieldProjector
+	Name: #R_SYS_SHIELDPROJECTOR
+	Description: #R_SYS_SHIELDPROJECTOR_DESC
+
+	Class: Unlock
+	Category: Subsystems
+
+	Point Cost: 500
+	Time Cost: 90
+
+	Icon: FissionReactor * #00f7ff
+	Color: #00aeff
+
+	UnlockSubsystem(ShieldProjector)
+	SkipOnUnlockedSubsystem(ShieldProjector)
+
+	SecondaryInfluenceCost(10)

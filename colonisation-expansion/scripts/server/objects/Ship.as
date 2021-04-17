@@ -75,6 +75,9 @@ tidy class ShipScript {
 	float supplyConsumeFactor = 1.f;
 	// [[ MODIFY BASE GAME START ]]
 	float recentlyInCombatTimer = 0.0;
+
+	float projectedShieldRegen = 0;
+	float projectedShieldCapacity = 0;
 	// [[ MODIFY BASE GAME END ]]
 
 	ShipScript() {
@@ -172,6 +175,8 @@ tidy class ShipScript {
 		file << bonusEffectiveness;
 		// [[ MODIFY BASE GAME START ]]
 		file << recentlyInCombatTimer;
+		file << projectedShieldRegen;
+		file << projectedShieldCapacity;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -280,6 +285,8 @@ tidy class ShipScript {
 			ship.supportPostLoad();
 		// [[ MODIFY BASE GAME START ]]
 		file >> recentlyInCombatTimer;
+		file >> projectedShieldRegen;
+		file >> projectedShieldCapacity;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -404,6 +411,14 @@ tidy class ShipScript {
 		bonusShield += mod;
 		ship.blueprint.statusID++;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void modProjectedShield(Ship& ship, float regen, float capacity) {
+		projectedShieldRegen += regen;
+		projectedShieldCapacity += capacity;
+		ship.blueprint.statusID++;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void shieldDamage(Ship& ship, double amount) {
 		ship.Shield = clamp(ship.Shield - amount, 0.0, max(ship.MaxShield, ship.Shield));
@@ -641,6 +656,9 @@ tidy class ShipScript {
 		double maxShield = ship.blueprint.getEfficiencySum(SV_ShieldCapacity);
 		if(maxShield > 0)
 			maxShield += bonusShield;
+		// [[ MODIFY BASE GAME START ]]
+		maxShield += projectedShieldCapacity;
+		// [[ MODIFY BASE GAME END ]]
 		if(maxShield != ship.MaxShield) {
 			if(maxShield == 0) {
 				ship.Shield = 0;
@@ -651,10 +669,16 @@ tidy class ShipScript {
 				ship.Shield = maxShield * (ship.Shield / ship.MaxShield);
 				ship.MaxShield = maxShield;
 				shieldRegen = ship.blueprint.getEfficiencySum(SV_ShieldRegen);
+				// [[ MODIFY BASE GAME START ]]
+				shieldRegen += projectedShieldRegen;
+				// [[ MODIFY BASE GAME END ]]
 			}
 			else {
 				ship.MaxShield = maxShield;
 				shieldRegen = ship.blueprint.getEfficiencySum(SV_ShieldRegen);
+				// [[ MODIFY BASE GAME START ]]
+				shieldRegen += projectedShieldRegen;
+				// [[ MODIFY BASE GAME END ]]
 			}
 			shieldDelta = true;
 		}

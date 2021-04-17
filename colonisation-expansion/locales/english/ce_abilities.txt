@@ -28,3 +28,5 @@ STOP_LOOP_ORDERS: Stop Looping Orders
 AUTO_SUPPLY_ORDER: Supply Dysons from here
 ABL_MULTI_TRACTOR_BEAM_DESC: Turn the ship's gravity well on or off.
 ABL_MULTI_TRACTOR_BEAM: Toggle Gravity Well
+ABL_SHIELD_PROJECT: Project Shield
+ABL_SHIELD_PROJECT_DESC: Protect the target with the vessel's Shield Projector.
