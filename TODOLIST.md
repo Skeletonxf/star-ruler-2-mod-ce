@@ -36,7 +36,9 @@ This is primarily intended as a developer focused project planning list, rather 
     - Support cap hook
     - LeaderAI leaderInit
     - Ship constructible support supply free
-  - Expand the shield projector to work on planets, stars, and orbitals
+  - Expand the shield projector to work on planets and stars
+    - Make sure shield projector scales with shield techs
+  - Fix PersistentBeamEffect not working with game restarts
   - Make message strip clear notifications when swapping empires
   - Make auto import refresh when resources on already colonised planets become available
   - Make nebulae griefing not work while the planet is in combat.

@@ -26,6 +26,9 @@ tidy class OrbitalScript {
 
 	bool delta = false;
 	bool deltaHP = false;
+	// [[ MODIFY BASE GAME START ]]
+	bool deltaShields = false;
+	// [[ MODIFY BASE GAME END ]]
 	bool deltaOrbit = false;
 	bool disabled = false;
 
@@ -35,6 +38,11 @@ tidy class OrbitalScript {
 	double MaxArmor = 0;
 	double DR = 2.5;
 	double DPS = 0;
+	// [[ MODIFY BASE GAME START ]]
+	double Shield = 0;
+	double MaxShield = 0;
+	double ShieldRegen = 0;
+	// [[ MODIFY BASE GAME END ]]
 
 	Orbital@ master;
 
@@ -58,6 +66,11 @@ tidy class OrbitalScript {
 		file << obj.usingLabor;
 		file << isFree;
 		file << master;
+		// [[ MODIFY BASE GAME START ]]
+		file << Shield;
+		file << MaxShield;
+		file << ShieldRegen;
+		// [[ MODIFY BASE GAME END ]]
 
 		file << cast<Savable>(obj.Resources);
 		file << cast<Savable>(obj.Orbit);
@@ -127,6 +140,12 @@ tidy class OrbitalScript {
 			file >> isFree;
 		if(file >= SV_0149)
 			file >> master;
+
+		// [[ MODIFY BASE GAME START ]]
+		file >> Shield;
+		file >> MaxShield;
+		file >> ShieldRegen;
+		// [[ MODIFY BASE GAME END ]]
 
 		file >> cast<Savable>(obj.Resources);
 		file >> cast<Savable>(obj.Orbit);
@@ -299,9 +318,25 @@ tidy class OrbitalScript {
 		msg << DPS;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void _writeShields(const Orbital& obj, Message& msg) {
+		if (MaxShield > 0) {
+			msg.write1();
+			msg << MaxShield;
+			msg.writeFixed(Shield, 0.f, MaxShield, 16);
+		}
+		else {
+			msg.write0();
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void syncInitial(const Orbital& obj, Message& msg) {
 		_write(obj, msg);
 		_writeHP(obj, msg);
+		// [[ MODIFY BASE GAME START ]]
+		_writeShields(obj, msg);
+		// [[ MODIFY BASE GAME END ]]
 		obj.writeResources(msg);
 		obj.writeOrbit(msg);
 		obj.writeStatuses(msg);
@@ -358,6 +393,16 @@ tidy class OrbitalScript {
 		}
 		else
 			msg.write0();
+		// [[ MODIFY BASE GAME START ]]
+		if(deltaShields) {
+			used = true;
+			deltaShields = false;
+			msg.write1();
+			_writeShields(obj, msg);
+		}
+		else
+			msg.write0();
+		// [[ MODIFY BASE GAME END ]]
 		if(deltaOrbit) {
 			used = true;
 			deltaOrbit = false;
@@ -413,6 +458,9 @@ tidy class OrbitalScript {
 	void syncDetailed(const Orbital& obj, Message& msg) {
 		_write(obj, msg);
 		_writeHP(obj, msg);
+		// [[ MODIFY BASE GAME START ]]
+		_writeShields(obj, msg);
+		// [[ MODIFY BASE GAME END ]]
 		obj.writeResources(msg);
 		obj.writeOrbit(msg);
 		obj.writeStatuses(msg);
@@ -467,6 +515,14 @@ tidy class OrbitalScript {
 		DR += value;
 		deltaHP = true;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void modProjectedShield(Orbital& orbital, float regen, float capacity) {
+		ShieldRegen += regen;
+		MaxShield += capacity;
+		deltaShields = true;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	double getValue(Player& pl, Orbital& obj, uint id) {
 		double value = 0.0;
@@ -571,6 +627,17 @@ tidy class OrbitalScript {
 			v *= owner.OrbitalHealthMod;
 		return v;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	double get_shield(Orbital& orb) {
+		double v = Shield;
+		return Shield;
+	}
+
+	double get_maxShield(Orbital& orb) {
+		return MaxShield;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	double get_armor(Orbital& orb) {
 		double v = Armor;
@@ -983,6 +1050,10 @@ tidy class OrbitalScript {
 
 		double armorMod = 1.0, healthMod = 1.0;
 		double armor = Armor, health = Health;
+		// [[ MODIFY BASE GAME START ]]
+		double shield = Shield;
+		double maxShield = MaxShield;
+		// [[ MODIFY BASE GAME END ]]
 		if(obj.owner !is null) {
 			armorMod = obj.owner.OrbitalArmorMod;
 			healthMod = obj.owner.OrbitalHealthMod;
@@ -992,6 +1063,18 @@ tidy class OrbitalScript {
 		}
 
 		obj.engaged = true;
+
+		// [[ MODIFY BASE GAME START ]]
+		double shieldBlock;
+		if (maxShield > 0)
+			shieldBlock = min(shield * min(shield / maxShield, 1.0), evt.damage);
+		else
+			shieldBlock = min(shield, evt.damage);
+
+		shield -= shieldBlock;
+		evt.damage -= shieldBlock;
+		// [[ MODIFY BASE GAME END ]]
+
 		if(armor > 0) {
 			evt.damage = max(0.2 * evt.damage, evt.damage - DR);
 			double dealArmor = min(evt.damage, armor);
@@ -1041,6 +1124,12 @@ tidy class OrbitalScript {
 
 		Armor = armor / armorMod;
 		Health = health / healthMod;
+		// [[ MODIFY BASE GAME START ]]
+		if (shield != Shield) {
+			Shield = shield;
+			deltaShields = true;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void setBuildPct(Orbital& obj, double pct) {
@@ -1113,6 +1202,22 @@ tidy class OrbitalScript {
 				deltaHP = true;
 			}
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		// Shields tick
+		if (MaxShield > 0) {
+			if (Shield < MaxShield) {
+				Shield = min(Shield + ShieldRegen * time, MaxShield);
+				deltaShields = true;
+			}
+		} else {
+			if (Shield != 0 || ShieldRegen != 0) {
+				Shield = 0;
+				ShieldRegen = 0;
+				deltaShields = true;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		return delay;
 	}

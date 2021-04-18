@@ -5,6 +5,7 @@ import repeat_hooks;
 import abilities;
 from abilities import AbilityHook;
 from ability_effects import getMassFor;
+import target_filters;
 
 class NotifyTargetOwner : AbilityHook {
 	Document doc("Notify the target empire of an event.");
@@ -373,8 +374,12 @@ class AddBonusShieldProjected : AbilityHook {
 				if (ship !is null) {
 					ship.modProjectedShield(-regen, -capacity);
 				}
+			} else if (prev.isOrbital) {
+				Orbital@ orb = cast<Orbital>(prev);
+				if (orb !is null) {
+					orb.modProjectedShield(-regen, -capacity);
+				}
 			}
-			//prev.modProjectedShield(-regen, -capacity);
 		}
 
 		if (next !is null) {
@@ -383,8 +388,12 @@ class AddBonusShieldProjected : AbilityHook {
 				if (ship !is null) {
 					ship.modProjectedShield(regen, capacity);
 				}
+			} else if (next.isOrbital) {
+				Orbital@ orb = cast<Orbital>(next);
+				if (orb !is null) {
+					orb.modProjectedShield(regen, capacity);
+				}
 			}
-			//next.modProjectedShield(regen, capacity);
 		}
 	}
 
@@ -414,4 +423,24 @@ class AddBonusShieldProjected : AbilityHook {
 	void load(Ability@ abl, any@ data, SaveFile& file) const override {
 	}
 #section all
+};
+
+class TargetFilterOrbitalAny : TargetFilter {
+	Document doc("Restricts target to orbitals.");
+	Argument allow_null(AT_Boolean, "True", doc="Whether to allow the ability to be triggered on nulls (for example, for toggle deactivates.)");
+
+	string getFailReason(Empire@ emp, uint index, const Target@ targ) const override {
+		return locale::NTRG_ORBITAL;
+	}
+
+	bool isValidTarget(Empire@ emp, uint index, const Target@ targ) const override {
+		if(index != uint(arguments[0].integer))
+			return true;
+		if(targ.obj is null)
+		 	return allow_null.boolean;
+		Orbital@ orb = cast<Orbital>(targ.obj);
+		if(orb is null)
+			return false;
+		return true;
+	}
 };

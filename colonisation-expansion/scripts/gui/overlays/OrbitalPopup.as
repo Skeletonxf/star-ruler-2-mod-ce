@@ -24,6 +24,10 @@ class OrbitalPopup : Popup {
 
 	GuiProgressbar@ health;
 	GuiProgressbar@ strength;
+	// [[ MODIFY BASE GAME START ]]
+	GuiSprite@ shieldIcon;
+	GuiProgressbar@ shield;
+	// [[ MODIFY BASE GAME END ]]
 
 	GuiCargoDisplay@ cargo;
 
@@ -43,7 +47,22 @@ class OrbitalPopup : Popup {
 		@health = GuiProgressbar(this, Alignment(Left+3, Bottom-56, Right-4, Bottom-30));
 		health.tooltip = locale::HEALTH;
 
-		GuiSprite healthIcon(health, Alignment(Left+2, Top+1, Width=24, Height=24), icons::Health);
+		// [[ MODIFY BASE GAME START ]]
+		@shield = GuiProgressbar(this, Alignment(Left+3, Bottom-39, Right-4, Bottom-30));
+		shield.noClip = true;
+		shield.tooltip = locale::SHIELD_STRENGTH;
+		shield.textHorizAlign = 0.83;
+		shield.textVertAlign = 1.35;
+		shield.visible = false;
+		shield.frontColor = Color(0x429cffff);
+		shield.backColor = Color(0x59a8ff20);
+
+		GuiSprite healthIcon(this, Alignment(Left+3, Bottom-56+1, Width=24, Height=24), icons::Health);
+		healthIcon.noClip = true;
+
+		@shieldIcon = GuiSprite(health, Alignment(Right-24, Top+1, Width=24, Height=24), icons::Shield);
+		shieldIcon.visible = false;
+		// [[ MODIFY BASE GAME END ]]
 
 		@strength = GuiProgressbar(this, Alignment(Left+3, Bottom-30, Right-4, Bottom-4));
 		strength.tooltip = locale::FLEET_STRENGTH;
@@ -70,6 +89,20 @@ class OrbitalPopup : Popup {
 		@obj = cast<Orbital>(Obj);
 		@objView.object = Obj;
 		lastUpdate = -INFINITY;
+		// [[ MODIFY BASE GAME START ]]
+		if(obj.maxShield > 0) {
+			shield.visible = true;
+			shieldIcon.visible = true;
+			health.textHorizAlign = 0.3;
+			health.textVertAlign = 0.25;
+		}
+		else {
+			shield.visible = false;
+			shieldIcon.visible = false;
+			health.textHorizAlign = 0.5;
+			health.textVertAlign = 0.5;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		statusUpdate = 0.f;
 	}
 
@@ -218,6 +251,27 @@ class OrbitalPopup : Popup {
 
 		defIcon.visible = playerEmpire.isDefending(obj);
 
+		// [[ MODIFY BASE GAME START ]]
+		float curshield = obj.shield;
+		float maxshield = max(obj.maxShield, 0.00);
+
+		if(maxshield > 0) {
+			shield.visible = true;
+			shieldIcon.visible = true;
+			health.textHorizAlign = 0.3;
+			health.textVertAlign = 0.25;
+		}
+		else {
+			shield.visible = false;
+			shieldIcon.visible = false;
+			health.textHorizAlign = 0.5;
+			health.textVertAlign = 0.5;
+		}
+
+		if(shield.visible)
+			health.text = standardize(curHP);
+		// [[ MODIFY BASE GAME END ]]
+
 		updateStrengthBar();
 
 		//Find master obj
@@ -276,6 +330,15 @@ class OrbitalPopup : Popup {
 			}
 			statusUpdate += 1.f;
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		//Update shield display
+		if(shield.visible) {
+			shield.progress = min(curshield / maxshield, 1.0);
+			shield.text = standardize(curshield, true);
+			shield.tooltip = locale::SHIELD_STRENGTH+": "+standardize(curshield)+" / "+standardize(maxshield);
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		Popup::update();
 		Popup::updatePosition(obj);

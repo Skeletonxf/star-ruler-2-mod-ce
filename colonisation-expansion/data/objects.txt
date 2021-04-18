@@ -175,6 +175,10 @@ local visible:
 	bool hasModule(uint typeId);
 	safe double get_health();
 	safe double get_maxHealth();
+	// [[ MODIFY BASE GAME START ]]
+	safe double get_shield();
+	safe double get_maxShield();
+	// [[ MODIFY BASE GAME END ]]
 	safe double get_armor();
 	safe double get_maxArmor();
 	safe double get_dps();
@@ -207,6 +211,9 @@ server:
 	void triggerDelta();
 	void makeFree();
 	void repairOrbital(double amount);
+	// [[ MODIFY BASE GAME START ]]
+	void modProjectedShield(float regen, float capacity);
+	// [[ MODIFY BASE GAME END ]]
 }
 
 Region : regions.Region::RegionScript {

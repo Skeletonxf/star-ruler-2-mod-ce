@@ -23,6 +23,10 @@ tidy class OrbitalScript {
 	double MaxArmor = 0;
 	double DR = 2.5;
 	double DPS = 0;
+	// [[ MODIFY BASE GAME START ]]
+	double Shield = 0;
+	double MaxShield = 0;
+	// [[ MODIFY BASE GAME END ]]
 
 	Orbital@ getMaster() {
 		return master;
@@ -51,6 +55,17 @@ tidy class OrbitalScript {
 			v *= owner.OrbitalHealthMod;
 		return v;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	double get_shield(Orbital& orb) {
+		double v = Shield;
+		return Shield;
+	}
+
+	double get_maxShield(Orbital& orb) {
+		return MaxShield;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	double get_armor(Orbital& orb) {
 		double v = Armor;
@@ -201,7 +216,7 @@ tidy class OrbitalScript {
 				prevFleet = rad;
 			}
 		}
-		
+
 		if(obj.hasLeaderAI)
 			obj.updateFleetStrength();
 	}
@@ -247,7 +262,7 @@ tidy class OrbitalScript {
 				@sections[i] = OrbitalSection();
 			msg >> sections[i];
 		}
-		
+
 		if(core is null && sections.length != 0) {
 			@core = sections[0];
 
@@ -280,9 +295,24 @@ tidy class OrbitalScript {
 		msg >> DPS;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void _readShields(Orbital& obj, Message& msg) {
+		if (msg.readBit()) {
+			msg >> MaxShield;
+			Shield = msg.readFixed(0.f, MaxShield, 16);
+		} else {
+			Shield = 0;
+			MaxShield = 0;
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void syncInitial(Orbital& obj, Message& msg) {
 		_read(obj, msg);
 		_readHP(obj, msg);
+		// [[ MODIFY BASE GAME START ]]
+		_readShields(obj, msg);
+		// [[ MODIFY BASE GAME END ]]
 		obj.readResources(msg);
 		obj.readOrbit(msg);
 		obj.readStatuses(msg);
@@ -315,6 +345,10 @@ tidy class OrbitalScript {
 			_read(obj, msg);
 		if(msg.readBit())
 			_readHP(obj, msg);
+		// [[ MODIFY BASE GAME START ]]
+		if(msg.readBit())
+			_readShields(obj, msg);
+		// [[ MODIFY BASE GAME END ]]
 		if(msg.readBit())
 			obj.readOrbit(msg);
 		if(msg.readBit())
@@ -350,6 +384,9 @@ tidy class OrbitalScript {
 	void syncDetailed(Orbital& obj, Message& msg, double tDiff) {
 		_read(obj, msg);
 		_readHP(obj, msg);
+		// [[ MODIFY BASE GAME START ]]
+		_readShields(obj, msg);
+		// [[ MODIFY BASE GAME END ]]
 		obj.readResources(msg);
 		obj.readOrbit(msg);
 		obj.readStatuses(msg);
