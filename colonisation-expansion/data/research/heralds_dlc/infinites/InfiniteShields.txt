@@ -20,4 +20,6 @@ Technology: InfiniteShields
 	AddModifier(ShieldCapacityFactor(1.02))
 	AddModifier(ShieldRegenFactor(1.02))
 
+	AddModifier(ProjShieldRegenFactor(1.02))
+	AddModifier(ProjShieldCapacityFactor(1.02))
 	ModAttribute(InfiniteShieldsTaken, Add, 1)
