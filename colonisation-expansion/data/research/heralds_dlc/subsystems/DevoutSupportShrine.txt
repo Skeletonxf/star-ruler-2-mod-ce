@@ -13,6 +13,7 @@ Technology: DevoutSupportShrine
 
 	SkipOnUnlockedSubsystem(SupportDevoutShrine)
 
+	AddModifier(ProjShieldCapacityFactor(1.025))
 	AddModifier( ShieldHarmonizer::BonusShieldFactor(1.025) )
 	AddModifier( ShieldCapacityFactor(1.025) )
 	SecondaryInfluenceCost(10)

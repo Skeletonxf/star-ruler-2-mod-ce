@@ -37,7 +37,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - LeaderAI leaderInit
     - Ship constructible support supply free
   - Expand the shield projector to work on planets and stars
-    - Make sure shield projector scales with shield techs
+    - Add some extra techs for making the shield projector effective at protecting planets and stars
   - Fix PersistentBeamEffect not working with game restarts
   - Make message strip clear notifications when swapping empires
   - Make auto import refresh when resources on already colonised planets become available
