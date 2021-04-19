@@ -202,4 +202,8 @@ visible:
 	// dyson utilities
 	attribute double ActiveDysons = 0;
 	// [[ MODIFY BASE GAME END ]]
+	// [[ MODIFY BASE GAME START ]]
+	attribute double PlanetShieldProjectorFactor = 10;
+	attribute double StarShieldProjectorFactor = 10;
+	// [[ MODIFY BASE GAME END ]]
 }

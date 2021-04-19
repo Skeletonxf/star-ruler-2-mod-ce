@@ -47,6 +47,7 @@ Technology: ShieldReg
 
 	Point Cost: 500
 	Time Cost: 70
+	Class: Boost
 
 	AddModifier(ShieldRegenFactor(1.025))
 

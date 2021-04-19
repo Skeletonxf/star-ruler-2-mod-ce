@@ -1,0 +1,23 @@
+Technology: Projection
+	Name: #R_IMP_PROJECTION
+	Blurb: #R_IMP_PROJECTION_BLURB:100%
+	Description: #R_IMP_PROJECTION_DESC:100%
+	Icon: techPhaseContainment * #1099ff
+	Color: #00aeff
+	Category: Basic Upgrades
+	Class: Boost
+	Point Cost: 250
+	Time Cost: 40
+	CE_technology_hooks::RequireSubsystemUnlocked(ShieldProjector)
+	ModAttribute(PlanetShieldProjectorFactor, Add, 10)
+Technology: Projection2
+	Name: #R_IMP_PROJECTION2
+	Blurb: #R_IMP_PROJECTION_BLURB:200%
+	Description: #R_IMP_PROJECTION_DESC:200%
+	Icon: techPhaseContainment * #1049ff
+	Color: #00aeff
+	Category: Basic Upgrades
+	Point Cost: 350
+	Time Cost: 80
+	ModAttribute(PlanetShieldProjectorFactor, Add, 20)
+	CE_technology_hooks::RequireSubsystemUnlocked(ShieldProjector)

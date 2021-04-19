@@ -139,7 +139,6 @@ Grid: ColonisationExpansionGrid
 	EnergyStorage: -7,5
 	Energy: -9,6
 	FTL: -3,9
-	FTL: -4,8
 	DevFTL: -3,8
 	SysWarpdrive: -5,7
 	Energy: -3,6
@@ -154,24 +153,6 @@ Grid: ColonisationExpansionGrid
 	Ramjet: 2,6
 	EnergyHurdle: -4,9
 	DevFTL: -4,10
-	FTLHurdle: -5,10
-	FTLHurdle: -4,11
-	SysSlipstream: -1,12
-	FTL: -2,12
-	SysFling: -3,14
-	DevFTL: -4,13
-	EnergyHurdle: -6,11
-	EnergyHurdle: -3,12
-	FTL: -7,11
-	SysHyperdrive: -7,12
-	HyperfieldSequencing: -8,12
-	SysJumpdrive: -7,10
-	SoftFTLHurdle: -5,12
-	FTLHurdle: -5,13
-	SysGateModule: -6,13
-	HighEnergyHurdle: -6,14
-	FTL2: -6,15
-	FTLCost: -7,15
 	ShieldCap: -2,8
 	Thrust: 2,4
 	MuonCannon: 3,-1
@@ -289,3 +270,28 @@ Grid: ColonisationExpansionGrid
 	PlanetaryEngine: 2,7
 	Thrust: 3,8
 	SysShieldProjector: -2,9
+	FTLHurdle: -6,13
+	FTL: -5,13
+	EnergyHurdle: -4,12
+	SysJumpdrive: -8,9
+	HyperfieldSequencing: -8,12
+	SysHyperdrive: -8,11
+	FTL: -7,10
+	EnergyHurdle: -6,10
+	SoftFTLHurdle: -7,11
+	SysFling: -5,14
+	FTL: -5,9
+	FTLHurdle: -5,11
+	FTLHurdle: -5,10
+	SysSlipstream: -4,14
+	FTLCost: -8,15
+	HighEnergyHurdle: -7,14
+	SysGateModule: -7,13
+	DevFTL: -6,12
+	FTL2: -7,15
+	Projection: -2,10
+	Projection: -3,11
+	Projection: -2,12
+	Projection2: -2,13
+	Projection: -2,11
+	Projection2: -1,12
