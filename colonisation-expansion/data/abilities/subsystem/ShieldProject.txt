@@ -9,7 +9,7 @@ Ability: ShieldProject
 	TargetFilterAllied(targ, Allow Null = True)
 
 	IsToggleTarget(targ, Range Margin = 1.0, Channels = False)
-	PersistentBeamEffect(targ, #ffffff, Tractor)
+	PersistentBeamEffect(targ, Color = #18ff2f, Material = Tractor, Width = 2)
 
 	AutoCastNearby(targ, Prioritize Combat = True, Prioritize Strongest = True, Prioritize Low Supply = True, Require Priority = True)
 

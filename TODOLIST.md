@@ -37,8 +37,9 @@ This is primarily intended as a developer focused project planning list, rather 
     - LeaderAI leaderInit
     - Ship constructible support supply free
   - Expand the shield projector to work on planets and stars
-    - Add some extra techs for making the shield projector effective at protecting planets and stars
+    - Add some extra techs for making the shield projector effective at protecting stars
   - Fix PersistentBeamEffect not working with game restarts
+  - Make some analog to the SupportStation artifact player designable/buildable
   - Make message strip clear notifications when swapping empires
   - Make auto import refresh when resources on already colonised planets become available
   - Make nebulae griefing not work while the planet is in combat.
