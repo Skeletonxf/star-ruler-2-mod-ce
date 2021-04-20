@@ -126,6 +126,14 @@ visible:
 	double Health = 1000000000
 	double MaxHealth = 1000000000
 	// [[ MODIFY BASE GAME START ]]
+	// Use the methods for getting shield values, they include the planet's
+	// projected shield scale factor. The fields are the raw shields coming
+	// from shield projectors only.
+	double Shield = 0;
+	double MaxShield = 0;
+	local safe double get_shield() const;
+	local safe double get_maxShield() const;
+
 	// the client only gets this as 0 or 1, so if it is 2 server side the client
 	// will still just see 1, as this saves lots of bits for netcode
 	int allowPathlessImport = 0;
@@ -144,6 +152,9 @@ server:
 	void setRing(uint ring);
 	void destroyQuiet();
 	void addMoon(float size = 0, uint style = 0);
+	// [[ MODIFY BASE GAME START ]]
+	void modProjectedShield(float regen, float capacity);
+	// [[ MODIFY BASE GAME END ]]
 }
 
 ColonyShip : objects.ColonyShip::ColonyShipScript {

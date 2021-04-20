@@ -379,6 +379,11 @@ class AddBonusShieldProjected : AbilityHook {
 				if (orb !is null) {
 					orb.modProjectedShield(-regen, -capacity);
 				}
+			} else if (prev.isPlanet) {
+				Planet@ planet = cast<Planet>(prev);
+				if (planet !is null) {
+					planet.modProjectedShield(-regen, -capacity);
+				}
 			}
 		}
 
@@ -392,6 +397,11 @@ class AddBonusShieldProjected : AbilityHook {
 				Orbital@ orb = cast<Orbital>(next);
 				if (orb !is null) {
 					orb.modProjectedShield(regen, capacity);
+				}
+			} else if (next.isPlanet) {
+				Planet@ planet = cast<Planet>(next);
+				if (planet !is null) {
+					planet.modProjectedShield(regen, capacity);
 				}
 			}
 		}
@@ -438,9 +448,23 @@ class TargetFilterOrbitalAny : TargetFilter {
 			return true;
 		if(targ.obj is null)
 		 	return allow_null.boolean;
-		Orbital@ orb = cast<Orbital>(targ.obj);
-		if(orb is null)
-			return false;
-		return true;
+		return targ.obj.isOrbital;
+	}
+};
+
+class TargetFilterPlanet : TargetFilter {
+	Document doc("Restricts target to planets.");
+	Argument allow_null(AT_Boolean, "True", doc="Whether to allow the ability to be triggered on nulls (for example, for toggle deactivates.)");
+
+	string getFailReason(Empire@ emp, uint index, const Target@ targ) const override {
+		return locale::NTRG_ORBITAL;
+	}
+
+	bool isValidTarget(Empire@ emp, uint index, const Target@ targ) const override {
+		if(index != uint(arguments[0].integer))
+			return true;
+		if(targ.obj is null)
+		 	return allow_null.boolean;
+		return targ.obj.isPlanet;
 	}
 };

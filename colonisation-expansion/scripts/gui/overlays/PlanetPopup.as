@@ -49,6 +49,8 @@ class PlanetPopup : Popup {
 	GuiProgressbar@ health;
 	// [[ MODIFY BASE GAME START ]]
 	GuiProgressbar@ strength;
+	GuiSprite@ shieldIcon;
+	GuiProgressbar@ shield;
 	// [[ MODIFY BASE GAME END ]]
 
 	GuiCargoDisplay@ cargo;
@@ -115,8 +117,20 @@ class PlanetPopup : Popup {
 		// [[ MODIFY BASE GAME START ]]
 		@health = GuiProgressbar(this, Alignment(Left+3, Bottom-61-26, Right-4, Bottom-35-26));
 
+		@shield = GuiProgressbar(health, Alignment(Left, Bottom-9, Right, Bottom));
+		shield.noClip = true;
+		shield.tooltip = locale::SHIELD_STRENGTH;
+		shield.textHorizAlign = 0.83;
+		shield.textVertAlign = 1.45;
+		shield.visible = false;
+		shield.frontColor = Color(0x429cffff);
+		shield.backColor = Color(0x59a8ff20);
+
 		auto@ healthIcon = GuiSprite(health, Alignment(Left+2, Top+1, Width=24, Height=24), icons::Health);
 		healthIcon.noClip = true;
+
+		@shieldIcon = GuiSprite(health, Alignment(Right-24, Top+1, Width=24, Height=24), icons::Shield);
+		shieldIcon.visible = false;
 		// [[ MODIFY BASE GAME END ]]
 
 		updateAbsolutePosition();
@@ -130,6 +144,20 @@ class PlanetPopup : Popup {
 		@pl = cast<Planet>(obj);
 		@objView.object = obj;
 		@resources.drawFrom = obj;
+		// [[ MODIFY BASE GAME START ]]
+		if (pl.maxShield > 0) {
+			shield.visible = true;
+			shieldIcon.visible = true;
+			health.textHorizAlign = 0.3;
+			health.textVertAlign = 0.25;
+		}
+		else {
+			shield.visible = false;
+			shieldIcon.visible = false;
+			health.textHorizAlign = 0.5;
+			health.textVertAlign = 0.5;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		lastUpdate = -INFINITY;
 	}
 
@@ -298,6 +326,25 @@ class PlanetPopup : Popup {
 		health.progress = pl.Health / pl.MaxHealth;
 		health.frontColor = colors::Red.interpolate(colors::Green, health.progress);
 		health.text = standardize(pl.Health)+" / "+standardize(pl.MaxHealth);
+
+		float curshield = pl.shield;
+		float maxshield = max(pl.maxShield, 0.00);
+
+		if (maxshield > 0) {
+			shield.visible = true;
+			shieldIcon.visible = true;
+			health.textHorizAlign = 0.3;
+			health.textVertAlign = 0.25;
+		}
+		else {
+			shield.visible = false;
+			shieldIcon.visible = false;
+			health.textHorizAlign = 0.5;
+			health.textVertAlign = 0.5;
+		}
+
+		if(shield.visible)
+			health.text = standardize(pl.Health);
 		// [[ MODIFY BASE GAME END ]]
 
 		//Update resources
@@ -341,6 +388,13 @@ class PlanetPopup : Popup {
 
 		// [[ MODIFY BASE GAME START ]]
 		updateStrengthBar();
+
+		//Update shield display
+		if (shield.visible) {
+			shield.progress = min(curshield / maxshield, 1.0);
+			shield.text = standardize(curshield, true);
+			shield.tooltip = locale::SHIELD_STRENGTH+": "+standardize(curshield)+" / "+standardize(maxshield);
+		}
 		// [[ MODIFY BASE GAME END ]]
 
 		//Update construction

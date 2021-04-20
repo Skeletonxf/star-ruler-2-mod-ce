@@ -1065,7 +1065,7 @@ tidy class OrbitalScript {
 		obj.engaged = true;
 
 		// [[ MODIFY BASE GAME START ]]
-		double shieldBlock;
+		double shieldBlock = 0;
 		if (maxShield > 0)
 			shieldBlock = min(shield * min(shield / maxShield, 1.0), evt.damage);
 		else

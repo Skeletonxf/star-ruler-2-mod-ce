@@ -51,10 +51,25 @@ tidy class PlanetScript {
 		return 0.2;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void syncShields(Planet& planet, Message& msg) {
+		if (msg.readBit()) {
+			planet.Shield = msg.read_float();
+			planet.MaxShield = msg.read_float();
+		} else {
+			planet.Shield = 0;
+			planet.MaxShield = 0;
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void syncInitial(Planet& planet, Message& msg) {
 		//Read planet data
 		planet.Health = msg.read_float();
 		planet.MaxHealth = msg.read_float();
+		// [[ MODIFY BASE GAME START ]]
+		syncShields(planet, msg);
+		// [[ MODIFY BASE GAME END ]]
 		planet.PlanetType = msg.readSmall();
 		msg >> planet.renamed;
 		msg >> planet.OrbitSize;
@@ -145,6 +160,11 @@ tidy class PlanetScript {
 			planet.Health = msg.read_float();
 			planet.MaxHealth = msg.read_float();
 		}
+		// [[ MODIFY BASE GAME START ]]
+		if(msg.readBit()) {
+			syncShields(planet, msg);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		if(msg.readBit()) {
 			if(!planet.hasMover)
 				planet.activateMover();
@@ -165,6 +185,9 @@ tidy class PlanetScript {
 	void syncDetailed(Planet& planet, Message& msg, double tDiff) {
 		planet.Health = msg.read_float();
 		planet.MaxHealth = msg.read_float();
+		// [[ MODIFY BASE GAME START ]]
+		syncShields(planet, msg);
+		// [[ MODIFY BASE GAME END ]]
 		planet.readResources(msg);
 		planet.readSurface(msg);
 		planet.readConstruction(msg);
@@ -191,6 +214,26 @@ tidy class PlanetScript {
 		}
 		// [[ MODIFY BASE GAME END ]]
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	double get_shield(Planet& planet) {
+		double value = planet.Shield;
+		if (planet.owner !is null) {
+			return value * planet.owner.PlanetShieldProjectorFactor;
+		} else {
+			return value;
+		}
+	}
+
+	double get_maxShield(Planet& planet) {
+		double value = planet.MaxShield;
+		if (planet.owner !is null) {
+			return value * planet.owner.PlanetShieldProjectorFactor;
+		} else {
+			return value;
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	uint get_moonCount() {
 		if(moons is null)

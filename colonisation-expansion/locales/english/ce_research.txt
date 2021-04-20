@@ -154,6 +154,6 @@ R_SYS_SHIELDPROJECTOR_DESC: <<
 	[bbloc=#SHIELDPROJECTOR_DESC/]
 >>
 R_IMP_PROJECTION: Large Scale Projection
-R_IMP_PROJECTION_BLURB: Projected Shield HP on Planets +$1
-R_IMP_PROJECTION_DESC: Increases projected shield capacity on planets by $1.
+R_IMP_PROJECTION_BLURB: Projected Shield on Planets +$1
+R_IMP_PROJECTION_DESC: Increases projected shield capacity and regeneration on planets by $1.
 R_IMP_PROJECTION2: Large Scale Projection 2

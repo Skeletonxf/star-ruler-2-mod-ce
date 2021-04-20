@@ -16,6 +16,10 @@ tidy class PlanetScript {
 	float bonusSupply = 0.0;
 	float bonusPop = 0.0;
 	bool hpDelta = false;
+	// [[ MODIFY BASE GAME START ]]
+	double shieldRegen = 0.0;
+	bool shieldDelta = false;
+	// [[ MODIFY BASE GAME END ]]
 	uint ringStyle = 0;
 	array<MoonData@>@ moons;
 
@@ -50,6 +54,11 @@ tidy class PlanetScript {
 		file << planet.renamed;
 		file << bonusSupply << bonusPop;
 		file << planet.Health << planet.MaxHealth;
+		// [[ MODIFY BASE GAME START ]]
+		file << planet.Shield;
+		file << planet.MaxShield;
+		file << shieldRegen;
+		// [[ MODIFY BASE GAME END ]]
 		file << ringStyle;
 		file.writeIdentifier(SI_PlanetType, planet.PlanetType);
 
@@ -113,6 +122,11 @@ tidy class PlanetScript {
 				planet.MaxHealth = maxhp;
 			}
 		}
+		// [[ MODIFY BASE GAME START ]]
+		file >> planet.Shield;
+		file >> planet.MaxShield;
+		file >> shieldRegen;
+		// [[ MODIFY BASE GAME END ]]
 		if(file >= SV_0086)
 			file >> ringStyle;
 		planet.PlanetType = file.readIdentifier(SI_PlanetType);
@@ -383,6 +397,22 @@ tidy class PlanetScript {
 		//Update biome population
 		planet.Population = planet.population;
 
+		// [[ MODIFY BASE GAME START ]]
+		// Shields tick
+		if (planet.MaxShield > 0) {
+			if (planet.Shield < planet.MaxShield) {
+				planet.Shield = min(planet.Shield + shieldRegen * time, planet.MaxShield);
+				shieldDelta = true;
+			}
+		} else {
+			if (planet.Shield != 0 || shieldRegen != 0) {
+				planet.Shield = 0;
+				shieldRegen = 0;
+				shieldDelta = true;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		Empire@ owner = planet.owner;
 		if(owner !is null && owner.valid) {
 			planet.constructionTick(time);
@@ -396,9 +426,24 @@ tidy class PlanetScript {
 		}
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void syncShields(const Planet& planet, Message& msg) {
+		if (planet.MaxShield > 0) {
+			msg.write1();
+			msg << float(planet.Shield);
+			msg << float(planet.MaxShield);
+		} else {
+			msg.write0();
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void syncInitial(const Planet& planet, Message& msg) {
 		msg << float(planet.Health);
 		msg << float(planet.MaxHealth);
+		// [[ MODIFY BASE GAME START ]]
+		syncShields(planet, msg);
+		// [[ MODIFY BASE GAME END ]]
 		msg.writeSmall(planet.PlanetType);
 		msg << planet.renamed;
 		msg << planet.OrbitSize;
@@ -493,6 +538,15 @@ tidy class PlanetScript {
 		else
 			msg.write0();
 
+		// [[ MODIFY BASE GAME START ]]
+		if (shieldDelta) {
+			used = true;
+			shieldDelta = false;
+			msg.write1();
+			syncShields(planet, msg);
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		if(planet.writeMoverDelta(msg))
 			used = true;
 		else
@@ -517,6 +571,9 @@ tidy class PlanetScript {
 	void syncDetailed(const Planet& planet, Message& msg) {
 		msg << float(planet.Health);
 		msg << float(planet.MaxHealth);
+		// [[ MODIFY BASE GAME START ]]
+		syncShields(planet, msg);
+		// [[ MODIFY BASE GAME END ]]
 		planet.writeResources(msg);
 		planet.writeSurface(msg);
 		planet.writeConstruction(msg);
@@ -544,16 +601,59 @@ tidy class PlanetScript {
 		// [[ MODIFY BASE GAME END ]]
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void modProjectedShield(Planet& planet, float regen, float capacity) {
+		shieldRegen += regen;
+		planet.MaxShield += capacity;
+		shieldDelta = true;
+	}
+
+	double get_shield(const Planet& planet) {
+		double value = planet.Shield;
+		if (planet.owner !is null) {
+			return value * planet.owner.PlanetShieldProjectorFactor;
+		} else {
+			return value;
+		}
+	}
+
+	double get_maxShield(const Planet& planet) {
+		double value = planet.MaxShield;
+		if (planet.owner !is null) {
+			return value * planet.owner.PlanetShieldProjectorFactor;
+		} else {
+			return value;
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void dealPlanetDamage(Planet& planet, double amount) {
-		double curPop = planet.population;
+		// [[ MODIFY BASE GAME START ]]
+		double hpDmg = amount;
 
-		double hpDmg = 0;
-		if(curPop > 1.0)
-			hpDmg = amount * pow(0.4, curPop/5.0);
+		// Shields will protect the population as well as the hp
+		double shieldFactor = 1;
+		if (planet.owner !is null) {
+			shieldFactor = planet.owner.PlanetShieldProjectorFactor;
+		}
+		double shield = planet.Shield * shieldFactor;
+		double maxShield = planet.MaxShield * shieldFactor;
+		double shieldBlock = 0;
+		if (maxShield > 0)
+			shieldBlock = min(shield * min(shield / maxShield, 1.0), hpDmg);
 		else
-			hpDmg = amount;
-		double popDmg = amount - hpDmg;
+			shieldBlock = min(shield, hpDmg);
 
+		shield -= shieldBlock;
+		hpDmg -= shieldBlock;
+
+		double curPop = planet.population;
+		if(curPop > 1.0)
+			hpDmg = hpDmg * pow(0.4, curPop/5.0);
+
+		double popDmg = amount - shieldBlock - hpDmg;
+
+		// [[ MODIFY BASE GAME END ]]
 		if(hpDmg > 0) {
 			hpDelta = true;
 			planet.Health -= hpDmg;
@@ -569,6 +669,13 @@ tidy class PlanetScript {
 			double popLost = popDmg / planet.MaxHealth * 3.0 * planet.maxPopulation;
 			planet.removePopulation(popLost, 1.0);
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (shieldBlock > 0) {
+			planet.Shield = shield / shieldFactor;
+			shieldDelta = true;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void giveHistoricMemory(Planet& planet, Empire@ emp) {
