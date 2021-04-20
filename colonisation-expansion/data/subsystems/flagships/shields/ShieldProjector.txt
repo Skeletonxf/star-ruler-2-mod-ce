@@ -20,6 +20,7 @@ Subsystem: ShieldProjector
 	Hex.HP := 12 * HexSize
 	Hex.Mass := 2.5 * HexSize
 
+	Projectors := Projectors + 1
 	Requires:
 		Command = 1
 		Power = PowerUse

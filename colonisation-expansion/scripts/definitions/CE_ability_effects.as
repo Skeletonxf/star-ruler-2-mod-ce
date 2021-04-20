@@ -349,6 +349,7 @@ class AddBonusShieldProjected : AbilityHook {
 	Argument objTarg(TT_Object);
 	Argument shield_regen(AT_SysVar, doc="Shield regeneration per second.");
 	Argument max_shield(AT_SysVar, doc="Maximum shield capacity.");
+	Argument divide_by(AT_SysVar, doc="Divide the actual shield efficacy by this factor");
 	Argument max_distance(AT_Decimal, "500", doc="Maximum distance to project.");
 
 #section server
@@ -367,6 +368,10 @@ class AddBonusShieldProjected : AbilityHook {
 
 		float regen = shield_regen.fromSys(abl.subsystem);
 		float capacity = max_shield.fromSys(abl.subsystem);
+		float projectors = divide_by.fromSys(abl.subsystem);
+		regen /= projectors;
+		capacity /= projectors;
+
 		// Clear effect on old target
 		if (prev !is null) {
 			if (prev.isShip) {

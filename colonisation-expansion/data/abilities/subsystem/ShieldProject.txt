@@ -14,4 +14,4 @@ Ability: ShieldProject
 	AutoCastNearby(targ, Prioritize Combat = True, Prioritize Strongest = True, Prioritize Low Supply = True, Require Priority = True)
 
 	Either(TargetFilterFlagship(targ, Allow Null = True), Either(CE_ability_effects::TargetFilterOrbitalAny(), CE_ability_effects::TargetFilterPlanet()))
-	CE_ability_effects::AddBonusShieldProjected(targ, Sys.ProjShieldRegen:0, Sys.ProjShieldCapacity:0, Max Distance = 1500)
+	CE_ability_effects::AddBonusShieldProjected(targ, Sys.ProjShieldRegen:0, Sys.ProjShieldCapacity:0, Sys.Projectors:1, Max Distance = 1500)
