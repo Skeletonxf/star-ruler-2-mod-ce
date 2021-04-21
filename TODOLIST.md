@@ -40,12 +40,14 @@ This is primarily intended as a developer focused project planning list, rather 
     - Add some extra techs for making the shield projector effective at protecting stars
   - Fix PersistentBeamEffect not working with game restarts
   - Make some analog to the SupportStation artifact player designable/buildable
+  - Make planet shields protect against carpet bombs, possibly remove the old building/orbital carpet bomb effectiveness counters as they'd get outclassed pretty fast and wouldn't want the AI using suboptimal strategies
   - Make message strip clear notifications when swapping empires
   - Make auto import refresh when resources on already colonised planets become available
   - Make nebulae griefing not work while the planet is in combat.
   - Add better UI for when attempting to export/import resources and you can't
   - Investigate what happens to civilian trade ships when target is in deep space
   - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands
+    - This seems to be a more general vanilla bug with casting an ability on something which is already casting the same ability, can also reproduce with two shield projector ships
   - Rework the Flying trait downside so it is less severe
   - Constructions for Gas Giants to make them more useful late game
   - Teach AI to not put comets on worlds being razed
