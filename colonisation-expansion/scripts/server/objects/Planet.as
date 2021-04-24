@@ -544,6 +544,8 @@ tidy class PlanetScript {
 			shieldDelta = false;
 			msg.write1();
 			syncShields(planet, msg);
+		} else {
+			msg.write0();
 		}
 		// [[ MODIFY BASE GAME END ]]
 
