@@ -655,7 +655,13 @@ tidy class PlanetScript {
 
 		double popDmg = amount - shieldBlock - hpDmg;
 
+		// [[ MODIFY BASE GAME START ]]
+		if (shieldBlock > 0) {
+			planet.Shield = shield / shieldFactor;
+			shieldDelta = true;
+		}
 		// [[ MODIFY BASE GAME END ]]
+
 		if(hpDmg > 0) {
 			hpDelta = true;
 			planet.Health -= hpDmg;
@@ -671,13 +677,6 @@ tidy class PlanetScript {
 			double popLost = popDmg / planet.MaxHealth * 3.0 * planet.maxPopulation;
 			planet.removePopulation(popLost, 1.0);
 		}
-
-		// [[ MODIFY BASE GAME START ]]
-		if (shieldBlock > 0) {
-			planet.Shield = shield / shieldFactor;
-			shieldDelta = true;
-		}
-		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void giveHistoricMemory(Planet& planet, Empire@ emp) {

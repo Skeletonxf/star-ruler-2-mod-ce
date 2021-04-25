@@ -31,3 +31,5 @@ ABL_MULTI_TRACTOR_BEAM: Toggle Gravity Well
 ABL_SHIELD_PROJECT: Project Shield
 ABL_SHIELD_PROJECT_DESC: Protect the target with the vessel's Shield Projector.
 NTRG_ORBITAL: Must target orbital.
+NTRG_PLANET: Must target planet.
+NTRG_STAR: Must target star.

@@ -17,6 +17,10 @@ class StarPopup : Popup {
 	GuiSprite@ defIcon;
 
 	GuiProgressbar@ health;
+	// [[ MODIFY BASE GAME START ]]
+	GuiSprite@ shieldIcon;
+	GuiProgressbar@ shield;
+	// [[ MODIFY BASE GAME END ]]
 
 	StarPopup(BaseGuiElement@ parent) {
 		super(parent);
@@ -32,13 +36,26 @@ class StarPopup : Popup {
 		setMarkupTooltip(defIcon, locale::TT_IS_DEFENDING);
 		defIcon.visible = false;
 
+		// [[ MODIFY BASE GAME START ]]
 		@health = GuiProgressbar(this, Alignment(Left+8, Top+28, Right-8, Top+50));
-		// [[ MODIFY BASE GAME START ]]
 		health.visible = true;
-		// [[ MODIFY BASE GAME START ]]
+
+		@shield = GuiProgressbar(health, Alignment(Left, Bottom-7, Right, Bottom));
+		shield.noClip = true;
+		shield.tooltip = locale::SHIELD_STRENGTH;
+		shield.textHorizAlign = 0.78;
+		shield.textVertAlign = 1.55;
+		shield.visible = false;
+		shield.frontColor = Color(0x429cffff);
+		shield.backColor = Color(0x59a8ff20);
+		shield.font = FT_Small;
 
 		auto@ healthIcon = GuiSprite(health, Alignment(Left-8, Top-9, Left+24, Bottom-8), icons::Health);
 		healthIcon.noClip = true;
+
+		@shieldIcon = GuiSprite(health, Alignment(Right-22, Top, Width=22, Height=22), icons::Shield);
+		shieldIcon.visible = false;
+		// [[ MODIFY BASE GAME END ]]
 
 		updateAbsolutePosition();
 	}
@@ -50,6 +67,20 @@ class StarPopup : Popup {
 	void set(Object@ Obj) {
 		@obj = cast<Star>(Obj);
 		@objView.object = Obj;
+		// [[ MODIFY BASE GAME START ]]
+		if (obj.maxShield > 0) {
+			shield.visible = true;
+			shieldIcon.visible = true;
+			health.textHorizAlign = 0.3;
+			health.textVertAlign = 0.25;
+		}
+		else {
+			shield.visible = false;
+			shieldIcon.visible = false;
+			health.textHorizAlign = 0.5;
+			health.textVertAlign = 0.5;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		lastUpdate = -INFINITY;
 	}
 
@@ -128,11 +159,39 @@ class StarPopup : Popup {
 			name.font = FT_Normal;
 
 		// [[ MODIFY BASE GAME START ]]
+		// [[ MODIFY BASE GAME START ]]
 		//Update health
 		health.progress = obj.Health / obj.MaxHealth;
 		health.frontColor = colors::Red.interpolate(colors::Green, health.progress);
 		health.text = standardize(obj.Health)+" / "+standardize(obj.MaxHealth);
 		health.visible = true;
+
+		float curshield = obj.shield;
+		float maxshield = max(obj.maxShield, 0.00);
+
+		if (maxshield > 0) {
+			shield.visible = true;
+			shieldIcon.visible = true;
+			health.textHorizAlign = 0.3;
+			health.textVertAlign = 0.25;
+		}
+		else {
+			shield.visible = false;
+			shieldIcon.visible = false;
+			health.textHorizAlign = 0.5;
+			health.textVertAlign = 0.5;
+		}
+
+		if(shield.visible)
+			health.text = standardize(obj.Health);
+		// [[ MODIFY BASE GAME END ]]
+
+		//Update shield display
+		if (shield.visible) {
+			shield.progress = min(curshield / maxshield, 1.0);
+			shield.text = standardize(curshield, true);
+			shield.tooltip = locale::SHIELD_STRENGTH+": "+standardize(curshield)+" / "+standardize(maxshield);
+		}
 		// [[ MODIFY BASE GAME END ]]
 
 		Popup::update();

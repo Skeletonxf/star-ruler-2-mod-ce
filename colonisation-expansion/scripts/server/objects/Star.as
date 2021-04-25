@@ -10,10 +10,17 @@ LightDesc lightDesc;
 
 tidy class StarScript {
 	bool hpDelta = false;
+	// [[ MODIFY BASE GAME START ]]
+	double shieldRegen = 0.0;
+	bool shieldDelta = false;
+	// [[ MODIFY BASE GAME END ]]
 
 	void syncInitial(const Star& star, Message& msg) {
 		msg << float(star.temperature);
 		star.writeOrbit(msg);
+		// [[ MODIFY BASE GAME START ]]
+		syncShields(star, msg);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void save(Star& star, SaveFile& file) {
@@ -22,6 +29,11 @@ tidy class StarScript {
 		file << cast<Savable>(star.Orbit);
 		file << star.Health;
 		file << star.MaxHealth;
+		// [[ MODIFY BASE GAME START ]]
+		file << star.Shield;
+		file << star.MaxShield;
+		file << shieldRegen;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void load(Star& star, SaveFile& file) {
@@ -68,21 +80,59 @@ tidy class StarScript {
 			makeLight(lightDesc, node);
 		else
 			makeLight(lightDesc);
+
+		// [[ MODIFY BASE GAME START ]]
+		file >> star.Shield;
+		file >> star.MaxShield;
+		file >> shieldRegen;
+		// [[ MODIFY BASE GAME END ]]
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void syncShields(const Star& star, Message& msg) {
+		if (star.MaxShield > 0) {
+			msg.write1();
+			msg << float(star.Shield);
+			msg << float(star.MaxShield);
+		} else {
+			msg.write0();
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void syncDetailed(const Star& star, Message& msg) {
 		msg << float(star.Health);
 		msg << float(star.MaxHealth);
+		// [[ MODIFY BASE GAME START ]]
+		syncShields(star, msg);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool syncDelta(const Star& star, Message& msg) {
-		if(!hpDelta)
-			return false;
+		// [[ MODIFY BASE GAME START ]]
+		bool used = false;
 
-		msg << float(star.Health);
-		msg << float(star.MaxHealth);
-		hpDelta = false;
-		return true;
+		if (hpDelta) {
+			msg.write1();
+			used = true;
+			hpDelta = false;
+			msg << float(star.Health);
+			msg << float(star.MaxHealth);
+		} else {
+			msg.write0();
+		}
+
+		if (shieldDelta) {
+			used = true;
+			shieldDelta = false;
+			msg.write1();
+			syncShields(star, msg);
+		} else {
+			msg.write0();
+		}
+
+		return used;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void postLoad(Star& star) {
@@ -99,13 +149,64 @@ tidy class StarScript {
 		addAmbientSource(CURRENT_PLAYER, "star_rumble", star.id, star.position, soundRadius);
 	}
 
-	void dealStarDamage(Star& star, double amount) {
-		hpDelta = true;
-		star.Health -= amount;
-		if(star.Health <= 0) {
-			star.Health = 0;
-			star.destroy();
+	// [[ MODIFY BASE GAME START ]]
+	void modProjectedShield(Star& star, float regen, float capacity) {
+		shieldRegen += regen;
+		star.MaxShield += capacity;
+		shieldDelta = true;
+	}
+
+	double get_shield(const Star& star) {
+		double value = star.Shield;
+		if (star.owner !is null) {
+			return value * star.owner.StarShieldProjectorFactor;
+		} else {
+			return value;
 		}
+	}
+
+	double get_maxShield(const Star& star) {
+		double value = star.MaxShield;
+		if (star.owner !is null) {
+			return value * star.owner.StarShieldProjectorFactor;
+		} else {
+			return value;
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
+
+	void dealStarDamage(Star& star, double amount) {
+		// [[ MODIFY BASE GAME START ]]
+		double shieldFactor = 1;
+		if (star.owner !is null) {
+			shieldFactor = star.owner.StarShieldProjectorFactor;
+		}
+		double shield = star.Shield * shieldFactor;
+		double maxShield = star.MaxShield * shieldFactor;
+		double shieldBlock = 0;
+		if (maxShield > 0)
+			shieldBlock = min(shield * min(shield / maxShield, 1.0), amount);
+		else
+			shieldBlock = min(shield, amount);
+
+		shield -= shieldBlock;
+		amount -= shieldBlock;
+
+		// [[ MODIFY BASE GAME START ]]
+		if (shieldBlock > 0) {
+			star.Shield = shield / shieldFactor;
+			shieldDelta = true;
+		}
+
+		if (amount > 0) {
+			hpDelta = true;
+			star.Health -= amount;
+			if(star.Health <= 0) {
+				star.Health = 0;
+				star.destroy();
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void destroy(Star& star) {
@@ -183,6 +284,22 @@ tidy class StarScript {
 		if(reg !is null && obj.temperature > 0)
 			mask = reg.ExploredMask.value;
 		obj.donatedVision = mask;
+
+		// [[ MODIFY BASE GAME START ]]
+		// Shields tick
+		if (obj.MaxShield > 0) {
+			if (obj.Shield < obj.MaxShield) {
+				obj.Shield = min(obj.Shield + shieldRegen * time, obj.MaxShield);
+				shieldDelta = true;
+			}
+		} else {
+			if (obj.Shield != 0 || shieldRegen != 0) {
+				obj.Shield = 0;
+				shieldRegen = 0;
+				shieldDelta = true;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		return 1.0;
 	}

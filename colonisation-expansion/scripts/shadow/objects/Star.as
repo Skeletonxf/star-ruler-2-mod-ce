@@ -3,11 +3,23 @@ import regions.regions;
 LightDesc lightDesc;
 
 tidy class StarScript {
+	// [[ MODIFY BASE GAME START ]]
+	void syncShields(Star& star, Message& msg) {
+		if (msg.readBit()) {
+			star.Shield = msg.read_float();
+			star.MaxShield = msg.read_float();
+		} else {
+			star.Shield = 0;
+			star.MaxShield = 0;
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void syncInitial(Star& star, Message& msg) {
 		star.temperature = msg.read_float();
 
 		lightDesc.att_quadratic = 1.f/(2000.f*2000.f);
-		
+
 		double temp = star.temperature;
 		Node@ node;
 		double soundRadius = star.radius;
@@ -21,12 +33,12 @@ tidy class StarScript {
 			cast<BlackholeNode>(node).establish(star);
 			soundRadius *= 10.0;
 		}
-		
+
 		if(node !is null)
 			node.hintParentObject(star.region);
 
 		star.readOrbit(msg);
-		
+
 		lightDesc.position = vec3f(star.position);
 		lightDesc.diffuse = node.color * 1.0f;
 		lightDesc.specular = lightDesc.diffuse;
@@ -36,8 +48,12 @@ tidy class StarScript {
 			makeLight(lightDesc, node);
 		else
 			makeLight(lightDesc);
-		
+
 		addAmbientSource("star_rumble", star.id, star.position, soundRadius);
+
+		// [[ MODIFY BASE GAME START ]]
+		syncShields(star, msg);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void destroy(Star& obj) {
@@ -48,11 +64,22 @@ tidy class StarScript {
 	void syncDetailed(Star& star, Message& msg, double tDiff) {
 		star.Health = msg.read_float();
 		star.MaxHealth = msg.read_float();
+		// [[ MODIFY BASE GAME START ]]
+		syncShields(star, msg);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void syncDelta(Star& star, Message& msg, double tDiff) {
-		star.Health = msg.read_float();
-		star.MaxHealth = msg.read_float();
+		// [[ MODIFY BASE GAME START ]]
+		if (msg.readBit()) {
+			star.Health = msg.read_float();
+			star.MaxHealth = msg.read_float();
+		}
+
+		if (msg.readBit()) {
+			syncShields(star, msg);
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	double tick(Star& star, double time) {
@@ -65,4 +92,24 @@ tidy class StarScript {
 
 		return 1.0;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	double get_shield(const Star& star) {
+		double value = star.Shield;
+		if (star.owner !is null) {
+			return value * star.owner.StarShieldProjectorFactor;
+		} else {
+			return value;
+		}
+	}
+
+	double get_maxShield(const Star& star) {
+		double value = star.MaxShield;
+		if (star.owner !is null) {
+			return value * star.owner.StarShieldProjectorFactor;
+		} else {
+			return value;
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
 };

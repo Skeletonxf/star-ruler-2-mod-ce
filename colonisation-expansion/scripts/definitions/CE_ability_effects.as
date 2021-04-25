@@ -385,6 +385,11 @@ class AddBonusShieldProjected : AbilityHook {
 				if (planet !is null) {
 					planet.modProjectedShield(-regen, -capacity);
 				}
+			} else if (prev.isStar) {
+				Star@ star = cast<Star>(prev);
+				if (star !is null) {
+					star.modProjectedShield(-regen, -capacity);
+				}
 			}
 		}
 
@@ -403,6 +408,11 @@ class AddBonusShieldProjected : AbilityHook {
 				Planet@ planet = cast<Planet>(next);
 				if (planet !is null) {
 					planet.modProjectedShield(regen, capacity);
+				}
+			} else if (next.isStar) {
+				Star@ star = cast<Star>(next);
+				if (star !is null) {
+					star.modProjectedShield(regen, capacity);
 				}
 			}
 		}
@@ -458,7 +468,7 @@ class TargetFilterPlanet : TargetFilter {
 	Argument allow_null(AT_Boolean, "True", doc="Whether to allow the ability to be triggered on nulls (for example, for toggle deactivates.)");
 
 	string getFailReason(Empire@ emp, uint index, const Target@ targ) const override {
-		return locale::NTRG_ORBITAL;
+		return locale::NTRG_PLANET;
 	}
 
 	bool isValidTarget(Empire@ emp, uint index, const Target@ targ) const override {
@@ -467,5 +477,22 @@ class TargetFilterPlanet : TargetFilter {
 		if(targ.obj is null)
 		 	return allow_null.boolean;
 		return targ.obj.isPlanet;
+	}
+};
+
+class TargetFilterStar : TargetFilter {
+	Document doc("Restricts target to stars.");
+	Argument allow_null(AT_Boolean, "True", doc="Whether to allow the ability to be triggered on nulls (for example, for toggle deactivates.)");
+
+	string getFailReason(Empire@ emp, uint index, const Target@ targ) const override {
+		return locale::NTRG_STAR;
+	}
+
+	bool isValidTarget(Empire@ emp, uint index, const Target@ targ) const override {
+		if(index != uint(arguments[0].integer))
+			return true;
+		if(targ.obj is null)
+		 	return allow_null.boolean;
+		return targ.obj.isStar;
 	}
 };

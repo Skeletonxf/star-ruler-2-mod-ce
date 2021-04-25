@@ -216,7 +216,7 @@ tidy class PlanetScript {
 	}
 
 	// [[ MODIFY BASE GAME START ]]
-	double get_shield(Planet& planet) {
+	double get_shield(const Planet& planet) {
 		double value = planet.Shield;
 		if (planet.owner !is null) {
 			return value * planet.owner.PlanetShieldProjectorFactor;
@@ -225,7 +225,7 @@ tidy class PlanetScript {
 		}
 	}
 
-	double get_maxShield(Planet& planet) {
+	double get_maxShield(const Planet& planet) {
 		double value = planet.MaxShield;
 		if (planet.owner !is null) {
 			return value * planet.owner.PlanetShieldProjectorFactor;

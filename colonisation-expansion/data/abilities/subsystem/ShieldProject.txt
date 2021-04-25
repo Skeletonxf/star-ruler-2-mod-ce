@@ -6,7 +6,7 @@ Ability: ShieldProject
 	Range: 1500
 
 	Target: targ = Object
-	TargetFilterAllied(targ, Allow Null = True)
+	Either(TargetFilterAllied(targ, Allow Null = True), CE_ability_effects::TargetFilterStar())
 
 	IsToggleTarget(targ, Range Margin = 1.0, Channels = False)
 	PersistentBeamEffect(targ, Color = #18ff2f, Material = Tractor, Width = 2)
@@ -15,5 +15,5 @@ Ability: ShieldProject
 
 	ShowSubsystemVariable(Sys.ProjShieldCapacity, #S_Projected_Shield, Icon = AttributeIcons::6, Color = #00aeff)
 	ShowSubsystemVariable(Sys.ProjShieldRegen, #S_Projected_ShieldRegen, Icon = AttributeIcons::6, Color = #00aeff)
-	Either(TargetFilterFlagship(targ, Allow Null = True), Either(CE_ability_effects::TargetFilterOrbitalAny(), CE_ability_effects::TargetFilterPlanet()))
+	Either(Either(TargetFilterFlagship(targ, Allow Null = True), CE_ability_effects::TargetFilterStar()), Either(CE_ability_effects::TargetFilterOrbitalAny(), CE_ability_effects::TargetFilterPlanet()))
 	CE_ability_effects::AddBonusShieldProjected(targ, Sys.ProjShieldRegen:0, Sys.ProjShieldCapacity:0, Max Distance = 1500)

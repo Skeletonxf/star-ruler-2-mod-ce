@@ -102,9 +102,21 @@ visible:
 	double temperature
 	double Health = 20000000000
 	double MaxHealth = 20000000000
+	// [[ MODIFY BASE GAME START ]]
+	// Use the methods for getting shield values, they include the planet's
+	// projected shield scale factor. The fields are the raw shields coming
+	// from shield projectors only.
+	double Shield = 0;
+	double MaxShield = 0;
+	local safe double get_shield() const;
+	local safe double get_maxShield() const;
+	// [[ MODIFY BASE GAME END ]]
 
 server:
 	void dealStarDamage(double amount);
+	// [[ MODIFY BASE GAME START ]]
+	void modProjectedShield(float regen, float capacity);
+	// [[ MODIFY BASE GAME END ]]
 }
 
 Planet : objects.Planet::PlanetScript {
