@@ -404,6 +404,10 @@ tidy class PlanetScript {
 				planet.Shield = min(planet.Shield + shieldRegen * time, planet.MaxShield);
 				shieldDelta = true;
 			}
+			if (planet.Shield > planet.MaxShield) {
+				planet.Shield = planet.MaxShield;
+				shieldDelta = true;
+			}
 		} else {
 			if (planet.Shield != 0 || shieldRegen != 0) {
 				planet.Shield = 0;

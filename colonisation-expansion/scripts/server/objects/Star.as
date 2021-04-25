@@ -292,6 +292,10 @@ tidy class StarScript {
 				obj.Shield = min(obj.Shield + shieldRegen * time, obj.MaxShield);
 				shieldDelta = true;
 			}
+			if (obj.Shield > obj.MaxShield) {
+				obj.Shield = obj.MaxShield;
+				shieldDelta = true;
+			}
 		} else {
 			if (obj.Shield != 0 || shieldRegen != 0) {
 				obj.Shield = 0;

@@ -1210,6 +1210,10 @@ tidy class OrbitalScript {
 				Shield = min(Shield + ShieldRegen * time, MaxShield);
 				deltaShields = true;
 			}
+			if (Shield > MaxShield) {
+				Shield = MaxShield;
+				deltaShields = true;
+			}
 		} else {
 			if (Shield != 0 || ShieldRegen != 0) {
 				Shield = 0;
