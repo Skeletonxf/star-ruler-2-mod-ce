@@ -344,6 +344,11 @@ class TractorNearby : AbilityHook {
 #section all
 };
 
+tidy final class ProjectionData {
+	float regen = 0;
+	float capacity = 0;
+}
+
 class AddBonusShieldProjected : AbilityHook {
 	Document doc("Add a shield to a target while this effect is active.");
 	Argument objTarg(TT_Object);
@@ -353,6 +358,8 @@ class AddBonusShieldProjected : AbilityHook {
 
 #section server
 	void create(Ability@ abl, any@ data) const override {
+		ProjectionData pd;
+		data.store(@pd);
 	}
 
 	void changeTarget(Ability@ abl, any@ data, uint index, Target@ oldTarget, Target@ newTarget) const {
@@ -365,54 +372,60 @@ class AddBonusShieldProjected : AbilityHook {
 		if (prev is next)
 			return;
 
-		float regen = shield_regen.fromSys(abl.subsystem);
-		float capacity = max_shield.fromSys(abl.subsystem);
+		ProjectionData@ pd;
+		data.retrieve(@pd);
 
 		// Clear effect on old target
 		if (prev !is null) {
 			if (prev.isShip) {
 				Ship@ ship = cast<Ship>(prev);
 				if (ship !is null) {
-					ship.modProjectedShield(-regen, -capacity);
+					ship.modProjectedShield(-pd.regen, -pd.capacity);
 				}
 			} else if (prev.isOrbital) {
 				Orbital@ orb = cast<Orbital>(prev);
 				if (orb !is null) {
-					orb.modProjectedShield(-regen, -capacity);
+					orb.modProjectedShield(-pd.regen, -pd.capacity);
 				}
 			} else if (prev.isPlanet) {
 				Planet@ planet = cast<Planet>(prev);
 				if (planet !is null) {
-					planet.modProjectedShield(-regen, -capacity);
+					planet.modProjectedShield(-pd.regen, -pd.capacity);
 				}
 			} else if (prev.isStar) {
 				Star@ star = cast<Star>(prev);
 				if (star !is null) {
-					star.modProjectedShield(-regen, -capacity);
+					star.modProjectedShield(-pd.regen, -pd.capacity);
 				}
 			}
 		}
+
+		float regen = shield_regen.fromSys(abl.subsystem);
+		float capacity = max_shield.fromSys(abl.subsystem);
+
+		pd.regen = regen;
+		pd.capacity = capacity;
 
 		if (next !is null) {
 			if (next.isShip) {
 				Ship@ ship = cast<Ship>(next);
 				if (ship !is null) {
-					ship.modProjectedShield(regen, capacity);
+					ship.modProjectedShield(pd.regen, pd.capacity);
 				}
 			} else if (next.isOrbital) {
 				Orbital@ orb = cast<Orbital>(next);
 				if (orb !is null) {
-					orb.modProjectedShield(regen, capacity);
+					orb.modProjectedShield(pd.regen, pd.capacity);
 				}
 			} else if (next.isPlanet) {
 				Planet@ planet = cast<Planet>(next);
 				if (planet !is null) {
-					planet.modProjectedShield(regen, capacity);
+					planet.modProjectedShield(pd.regen, pd.capacity);
 				}
 			} else if (next.isStar) {
 				Star@ star = cast<Star>(next);
 				if (star !is null) {
-					star.modProjectedShield(regen, capacity);
+					star.modProjectedShield(pd.regen, pd.capacity);
 				}
 			}
 		}
@@ -429,6 +442,40 @@ class AddBonusShieldProjected : AbilityHook {
 		if (obj is null)
 			return;
 
+		ProjectionData@ pd;
+		data.retrieve(@pd);
+
+		float regen = shield_regen.fromSys(abl.subsystem);
+		float capacity = max_shield.fromSys(abl.subsystem);
+
+		if (pd.regen != regen || pd.capacity != capacity) {
+			double regenDiff = regen - pd.regen;
+			pd.regen += regenDiff;
+			double capacityDiff = capacity - pd.capacity;
+			pd.capacity += capacityDiff;
+			if (obj.isShip) {
+				Ship@ ship = cast<Ship>(obj);
+				if (ship !is null) {
+					ship.modProjectedShield(regenDiff, capacityDiff);
+				}
+			} else if (obj.isOrbital) {
+				Orbital@ orb = cast<Orbital>(obj);
+				if (orb !is null) {
+					orb.modProjectedShield(regenDiff, capacityDiff);
+				}
+			} else if (obj.isPlanet) {
+				Planet@ planet = cast<Planet>(obj);
+				if (planet !is null) {
+					planet.modProjectedShield(regenDiff, capacityDiff);
+				}
+			} else if (obj.isStar) {
+				Star@ star = cast<Star>(obj);
+				if (star !is null) {
+					star.modProjectedShield(regenDiff, capacityDiff);
+				}
+			}
+		}
+
 		double dist = obj.position.distanceTo(abl.obj.position);
 		if (dist > max_distance.decimal) {
 			Target newTarg = storeTarg;
@@ -439,9 +486,19 @@ class AddBonusShieldProjected : AbilityHook {
 	}
 
 	void save(Ability@ abl, any@ data, SaveFile& file) const override {
+		ProjectionData@ pd;
+		data.retrieve(@pd);
+
+		file << pd.regen;
+		file << pd.capacity;
 	}
 
 	void load(Ability@ abl, any@ data, SaveFile& file) const override {
+		ProjectionData pd;
+		data.store(@pd);
+
+		file >> pd.regen;
+		file >> pd.capacity;
 	}
 #section all
 };
