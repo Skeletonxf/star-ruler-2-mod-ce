@@ -842,6 +842,14 @@ class TargetFilterAllowTractor : TargetFilter {
 	}
 };
 
+// [[ MODIFY BASE GAME START ]]
+tidy final class ApplicationData {
+	bool applied = false;
+	uint appliedIndex = 0;
+	bool needToReapply = false;
+}
+// [[ MODIFY BASE GAME END ]]
+
 class PersistentBeamEffect : AbilityHook {
 	Document doc("Display a beam effect towards a stored target.");
 	Argument objTarg(TT_Object);
@@ -861,6 +869,7 @@ class PersistentBeamEffect : AbilityHook {
 	void changeTarget(Ability@ abl, any@ data, uint index, Target@ oldTarget, Target@ newTarget) const {
 		if(index != uint(objTarg.integer))
 			return;
+
 		if(oldTarget.obj is newTarget.obj)
 			return;
 		if(abl.obj is null)
@@ -875,7 +884,68 @@ class PersistentBeamEffect : AbilityHook {
 			makeBeamEffect(ALL_PLAYERS, effId, abl.obj, newTarget.obj, bColor.color, bWidth, material.str, -1.0);
 		else if(oldTarget.obj !is null)
 			removeGfxEffect(ALL_PLAYERS, effId);
+
+		// [[ MODIFY BASE GAME START ]]
+		ApplicationData@ ad;
+		data.retrieve(@ad);
+		ad.appliedIndex = index;
+		if (newTarget.obj is null) {
+			ad.applied = false;
+		} else {
+			ad.applied = true;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void create(Ability@ abl, any@ data) const override {
+		ApplicationData ad;
+		data.store(@ad);
+	}
+
+	void save(Ability@ abl, any@ data, SaveFile& file) const override {
+		ApplicationData@ ad;
+		data.retrieve(@ad);
+
+		file << ad.applied;
+		file << ad.applied; // we lose the beam on restart!
+		file << ad.appliedIndex;
+	}
+
+	void load(Ability@ abl, any@ data, SaveFile& file) const override {
+		ApplicationData ad;
+		data.store(@ad);
+
+		file >> ad.applied;
+		file >> ad.needToReapply;
+		file >> ad.appliedIndex;
+	}
+
+	void tick(Ability@ abl, any@ data, double time) const {
+		if (abl.obj is null)
+			return;
+		Target@ storeTarg = objTarg.fromTarget(abl.targets);
+		if (storeTarg is null)
+			return;
+
+		Object@ obj = storeTarg.obj;
+		if (obj is null)
+			return;
+
+		ApplicationData@ ad;
+		data.retrieve(@ad);
+
+		if (ad.needToReapply) {
+			uint index = ad.appliedIndex;
+			int64 effId = abl.obj.id << 32 | 0x1 << 24 | abl.id << 8 | index;
+			double bWidth = width.decimal;
+			if (modified_width.boolean)
+				bWidth *= abl.obj.radius;
+			makeBeamEffect(ALL_PLAYERS, effId, abl.obj, obj, bColor.color, bWidth, material.str, -1.0);
+			ad.needToReapply = false;
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
 #section all
 };
 
