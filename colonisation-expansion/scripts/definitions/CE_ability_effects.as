@@ -200,6 +200,8 @@ class TractorNearby : AbilityHook {
 			return;
 		}
 
+		double ourMass = getMassFor(abl.obj); // ignores our bonus mass
+
 		double radius = max_distance.decimal;
 		vec3d center = abl.obj.position;
 
@@ -246,14 +248,22 @@ class TractorNearby : AbilityHook {
 
 			vec3d dir = (abl.obj.position - target.position).normalized(1);
 			double interp = 1.0 - pow(0.2, time * getMassFor(abl.obj) / getMassFor(target));
+			double targetMass = getMassFor(target);
 
 			if (target.hasOrbit) {
 				target.velocity = target.velocity.interpolate(abl.obj.velocity + dir, interp);
 				target.position = target.position.interpolate(target.position + target.velocity, interp);
 				target.acceleration = target.acceleration.interpolate(abl.obj.acceleration, interp);
+			} else if (target.hasMover) {
+				// This follows the same logic as the tweaks to TractorObject
+				double scaleFactor = ourMass / (ourMass + targetMass);
+				double ourThrust = ourMass * abl.obj.maxAcceleration;
+				double tracForce = time * ourThrust * scaleFactor;
+				vec3d force = dir.normalized(min(tracForce, dir.length));
+				target.impulse(force);
 			}
 
-			newTractorMass += getMassFor(target);
+			newTractorMass += targetMass;
 		}
 
 		// Zero out the movement of anything we manipulated and lost control over

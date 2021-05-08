@@ -29,8 +29,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Auto researching an FTL unlock should not trigger the vote for the FTL unlock
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
   - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
-  - Fix the implementation for how Tractor beams move objects which have a Mover component not scaling properly
-    - Also apply the fix to the gravity well tractor
   - Move mass/repair/supply calaculations into a definitions file of helper functions
     - LeaderAI getSlowestSupportAccel
     - Support cap hook
