@@ -29,9 +29,12 @@ Material: IceAtmosphere
 	Texture: data/images/atmosphere_thin.png
 
 Material: GasAtmosphere
-	Shader: Lighting
-	Texture: data/images/planets/gas.png
-	Texture2: data/images/planets/gas_normal.png
+	WrapVertical: ClampEdge
+	Blend: Alpha
+	Shader: IceAtmosphere
+	Shininess: 1.5
+	//Texture2: data/images/planets/gas.png
+	Texture: data/images/planets/gas_normal.png
 
 Material: VulcanicAtmosphere
 	WrapVertical: ClampEdge

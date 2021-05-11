@@ -19,7 +19,7 @@ Resource: LocalAsteroidField
 Resource: LocalAsteroidFieldGasGiant
 	Name: #LOCAL_ASTEROID_FIELD
 	Description: #LOCAL_ASTEROID_FIELD_DESC
-	Native Biome: Atmosphere
+	Native Biome: Atmosphere3
 
 	Icon: ResourceIcons::28
 	Small Icon: ResourceIconsSmall::28

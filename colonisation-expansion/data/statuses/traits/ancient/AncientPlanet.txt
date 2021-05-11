@@ -30,7 +30,11 @@ Status: AncientPlanet
 	IfLevel(3, AddFleetCommand(-350), Exact = True, Limit = False)
 Status: AncientGasGiantOwned
 	Visible To: Nobody
-	CE_biome_hooks::SwapBiome(Atmosphere, AncientAtmosphere)
+	CE_biome_hooks::SwapBiome(Atmosphere1, AncientAtmosphere1)
+	CE_biome_hooks::SwapBiome(Atmosphere2, AncientAtmosphere2)
+	CE_biome_hooks::SwapBiome(Atmosphere3, AncientAtmosphere3)
 Status: AncientGasGiantLoss
 	Visible To: Nobody
-	CE_biome_hooks::SwapBiome(AncientAtmosphere, Atmosphere)
+	CE_biome_hooks::SwapBiome(AncientAtmosphere1, Atmosphere1)
+	CE_biome_hooks::SwapBiome(AncientAtmosphere2, Atmosphere2)
+	CE_biome_hooks::SwapBiome(AncientAtmosphere3, Atmosphere3)

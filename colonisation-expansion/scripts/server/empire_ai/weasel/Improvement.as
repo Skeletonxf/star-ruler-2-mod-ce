@@ -42,7 +42,6 @@ class Improvement : AIComponent, PlanetEventListener {
 	Intelligence@ intelligence;
 	Relations@ relations;
 
-	uint atmosphere = 0;
 	int moon_base = -1;
 	const ConstructionType@ build_moon_base;
 	bool no_build_moon_bases = false;
@@ -82,7 +81,6 @@ class Improvement : AIComponent, PlanetEventListener {
 		@relations = cast<Relations>(ai.relations);
 
 		// cache lookups
-		atmosphere = getBiomeID("Atmosphere");
 		moon_base = getStatusID("MoonBase");
 		@build_moon_base = getConstructionType("MoonBase");
 		no_build_moon_bases = ai.empire.hasTrait(getTraitID("Ancient")) || ai.empire.hasTrait(getTraitID("StarChildren"));
@@ -201,11 +199,6 @@ class Improvement : AIComponent, PlanetEventListener {
 				if (!plAI.failedToPlaceBuilding) {
 					continue;
 				}
-				// Loosening up restrictions so the AI can consider building
-				// moons on non gas giants if it runs out of space there too
-				/* if (planet.get_Biome0() != atmosphere) {
-					continue;
-				} */
 				if (planet.getStatusStackCountAny(moon_base) >= planet.moonCount) {
 					// can't build more moon bases
 					continue;

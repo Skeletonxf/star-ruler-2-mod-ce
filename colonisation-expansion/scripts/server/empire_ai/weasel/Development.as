@@ -133,7 +133,9 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 	const ConstructionType@ uplift_planet;
 	const ConstructionType@ genocide_planet;
 	bool no_uplift = false;
-	uint atmosphere = 0;
+	uint atmosphere1 = 0;
+	uint atmosphere2 = 0;
+	uint atmosphere3 = 0;
 	double uplift_cost = 800;
 	uint currentlyStarlitStatusID = 0;
 	uint razingStatusID = 0;
@@ -177,7 +179,9 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 		if (uplift_planet !is null) {
 			uplift_cost = uplift_planet.buildCost;
 		}
-		atmosphere = getBiomeID("Atmosphere");
+		atmosphere1 = getBiomeID("Atmosphere1");
+		atmosphere2 = getBiomeID("Atmosphere2");
+		atmosphere3 = getBiomeID("Atmosphere3");
 		currentlyStarlitStatusID = getStatusID("CurrentlyStarlit");
 		razingStatusID = getStatusID("ParasiteRaze");
 		@foodClass = getResourceClass("Food");
@@ -727,7 +731,11 @@ class Development : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelo
 				genericBuilds.removeAt(i);
 				--i; --cnt;
 				// [[ MODIFY BASE GAME START ]]
-				if (build.plAI.obj.get_Biome0() == atmosphere) {
+				if (
+					build.plAI.obj.get_Biome0() == atmosphere1
+					|| build.plAI.obj.get_Biome0() == atmosphere2
+					|| build.plAI.obj.get_Biome0() == atmosphere3
+				) {
 					// our build failed on this gas giant,
 					// probably because we ran out of space
 					// and there are probably moons we can still start

@@ -1,1 +1,3 @@
 PHOTOVOLTICS: Photovoltic cells
+BIOME_ATMOPSHERE: Atmosphere
+BIOME_ATMOPSHERE_DESC: Not quite space, not quite land, just gases

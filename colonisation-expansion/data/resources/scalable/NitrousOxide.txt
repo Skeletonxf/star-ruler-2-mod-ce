@@ -10,7 +10,7 @@ Resource: NitrousOxide
 	Pressure: 1 Money
 	Pressure: 1 Influence
 	Small Icon: Gases4
-	Native Biome: Atmosphere
+	Native Biome: Atmosphere3
 	Gas Giant Frequency: 0.02
 	Frequency: 0
 

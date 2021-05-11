@@ -1,6 +1,6 @@
 Resource: HeavyGases
 	Name: #LIGHT_GASES
-	Native Biome: Atmosphere
+	Native Biome: Atmosphere2
 
 	Icon: Gases1
 	Small Icon: Gases1

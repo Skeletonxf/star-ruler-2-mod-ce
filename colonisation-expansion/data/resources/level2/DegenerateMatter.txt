@@ -17,7 +17,7 @@ Resource: DegenerateMatter
 Resource: DegenerateMatterGasGiant
 	Name: #DEGENERATE_MATTER
 	Description: #DEGENERATE_MATTER_DESC
-	Native Biome: Atmosphere
+	Native Biome: Atmosphere2
 
 	Icon: ResourceIcons::42
 	Small Icon: ResourceIconsSmall::42

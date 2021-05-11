@@ -1,16 +1,39 @@
-Biome: AncientAtmosphere
-	Name: Atmosphere
-
+Biome: AncientAtmosphere1
+	Name: #BIOME_ATMOPSHERE
+	Description: #BIOME_ATMOPSHERE_DESC
 	Buildable: True
-
 	Temperature: 0.1
 	Humidity: 0.3
-
-	UseWeight: 0.01
-	BuildTime: 12
-	Frequency: 0
-
 	Color: #80e1ff
 	Picks: 0.5, 0.5
 	Lookup Range: 0.99
-	Description: Not quite space, not quite land, just gases
+	UseWeight: 0.01
+	Frequency: 0
+	BuildTime: 12
+
+
+Biome: AncientAtmosphere2
+	Name: #BIOME_ATMOPSHERE
+	Description: #BIOME_ATMOPSHERE_DESC
+	Buildable: True
+	Temperature: 0.4
+	Humidity: 0.6
+	Color: #ffd44a
+	Picks: 0.5, 0.5
+	Lookup Range: 0.91
+	UseWeight: 0.01
+	Frequency: 0
+	BuildTime: 12
+
+Biome: AncientAtmosphere3
+	Name: #BIOME_ATMOPSHERE
+	Description: #BIOME_ATMOPSHERE_DESC
+	Buildable: True
+	Temperature: 0.8
+	Humidity: 0.8
+	Color: #06ffb0
+	Picks: 0.5, 0.5
+	Lookup Range: 0.95
+	UseWeight: 0.01
+	Frequency: 0
+	BuildTime: 12

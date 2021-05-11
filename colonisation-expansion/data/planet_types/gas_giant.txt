@@ -4,4 +4,6 @@ PlanetType: GasGiant
 	Atmosphere: GasAtmosphere
 
 	BiomeWeights:
-		Atmosphere: 10000
+		Atmosphere1: 10000
+		Atmosphere2: 9000
+		Atmosphere3: 8000

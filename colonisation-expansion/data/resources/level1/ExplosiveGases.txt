@@ -1,6 +1,6 @@
 Resource: ExplosiveGases
 	Name: #EXPLOSIVE_GASES
-	Native Biome: Atmosphere
+	Native Biome: Atmosphere1
 
 	Icon: Gases3
 	Small Icon: Gases3
