@@ -223,3 +223,39 @@ class IfTimeOutsideCombat : IfHookWithTimeAndData {
 
 #section all
 };
+
+tidy final class RandomIfElse : BonusEffect {
+	Document doc("Trigger one of two hooks based on a particular chance.");
+	Argument chance(AT_Range, doc="Chance between 0.0 and 1.0 to trigger the first hook, otherwise the second will trigger.");
+	Argument hook_1(AT_Hook, "bonus_effects::BonusEffect");
+	Argument hook_2(AT_Hook, "bonus_effects::BonusEffect");
+
+	BonusEffect@ hook1;
+	BonusEffect@ hook2;
+
+	bool instantiate() override {
+		@hook1 = cast<BonusEffect>(parseHook(hook_1.str, "bonus_effects::", required=false));
+		if(hook1 is null) {
+			error("RandomIfElse(): could not find inner hook: "+escape(hook_1.str));
+			return false;
+		}
+		@hook2 = cast<BonusEffect>(parseHook(hook_2.str, "bonus_effects::", required=false));
+		if(hook2 is null) {
+			error("RandomIfElse(): could not find inner hook: "+escape(hook_2.str));
+			return false;
+		}
+		return BonusEffect::instantiate();
+	}
+
+#section server
+	void activate(Object@ obj, Empire@ emp) const override {
+		if(hook1 is null || hook2 is null)
+			return;
+		if (randomd() < chance.fromRange()) {
+			hook1.activate(obj, emp);
+		} else {
+			hook2.activate(obj, emp);
+		}
+	}
+#section all
+};
