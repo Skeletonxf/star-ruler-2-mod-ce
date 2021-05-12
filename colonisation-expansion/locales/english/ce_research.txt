@@ -155,7 +155,11 @@ R_SYS_SHIELDPROJECTOR_DESC: <<
 >>
 R_IMP_PROJECTION: Large Scale Projection
 R_IMP_PROJECTION_BLURB: Projected Shield on Planets and Stars +$1
-R_IMP_PROJECTION_DESC: Increases projected shield capacity and regeneration on planets and stars by $1.
+R_IMP_PROJECTION_DESC: <<
+	Increases projected shield capacity and regeneration on planets and stars by $1.
+
+	[i][color=#aaa]Unlike all other research upgrades, this is additive instead of multiplicative. Projected sheilds are 10x as effective on planets and stars by default and this factor is increased additively with research.[/color][/i]
+>>
 R_IMP_PROJECTION2: Large Scale Projection 2
 R_MOD_PROJECTILE_IMPULSE_DESC: <<
 	[color=#aaa][i]Unlocks the 'Projectile Impulse' modifier.[/i][/color]

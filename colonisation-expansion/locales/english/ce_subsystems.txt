@@ -262,7 +262,7 @@ S_MULTI_TRACTOR_BEAM: Gravity Well Multi Tractor
 S_MULTI_TRACTOR_BEAM_DESC: <<
 	Abandoning any pretense of careful control, a large number of nearby objects can be manipulated simultaneously by powerful gravitronics. The objects are not suspended as carefully, but moving many objects at once along with a ship has its own uses.
 
-	[img=MenuIcons::3;20][color=#aaa]Can use gravity well on artifacts, asteroids, orbitals and planets.[/color][/img]
+	[img=MenuIcons::3;20][color=#aaa]Can use gravity well on artifacts, asteroids, orbitals, planets and ships.[/color][/img]
 	[img=MenuIcons::3;20][color=#aaa]Enemy objects are not affected.[/color][/img]
 	[img=MenuIcons::3;20][color=#aaa]All nearby objects captured in the gravity well weigh down the tractoring ship.[/color][/img]
 	[img=ResourceIcon::3;20;#f00][color=#aaa]Tractoring ship cannot use FTL while the gravity well is active.[/color][/img]
