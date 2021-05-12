@@ -1,0 +1,14 @@
+Technology: ProjectileImpulse
+	Name: #R_KEY_RAILGUN_KNOCKBACK
+	Description: #R_MOD_PROJECTILE_IMPULSE_DESC
+	Class: Unlock
+	Category: Modifiers
+
+	Point Cost: 750
+	Time Cost: 60
+
+	Color: #238f59
+	Icon: Railgun::2
+
+	UnlockModule(ProjectileImpulse)
+	SkipOnUnlockedModule(ProjectileImpulse)

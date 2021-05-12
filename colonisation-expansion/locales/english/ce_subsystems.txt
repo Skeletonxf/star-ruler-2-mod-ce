@@ -326,10 +326,15 @@ SHIELDPROJECTOR_DESC: <<
 	[img=Plus]Creates regenerating barrier against damage.[/img]
 	[img=Minus]Weakened shields allow some damage through.[/img]
 	[img=Minus]Does not protect the vessel.[/img]
-	[img=MenuIcons::3;20]Can protect other ships, orbitals and planets, including allies.[/img]
+	[img=MenuIcons::3;20]Can protect other ships, orbitals, planets, and stars, including allies.[/img]
 >>
 S_Projected_Shield: Projected Shield Capacity
 STT_Projected_Shield: Maximum hitpoints of the Projected shield.
 
 S_Projected_ShieldRegen: Projected Shield Regen
 STT_Projected_ShieldRegen: Projected shield hitpoints regenerated per second.
+S_RAILGUN_KNOCKBACK_DESC: <<
+	Adds a significant knockback effect to flagship railgun batteries. Ships hit by the projectiles will receive a jolt of impulse in the opposite direction.
+
+	Increases the accuracy of the railgun, but removes all hexagon pierce from its impacts.
+>>

@@ -115,8 +115,6 @@ Grid: ColonisationExpansionGrid
 	ImpDecaySpeed: -1,-5
 	ImpDecaySpeed: -3,-7
 	ImpDecaySpeed2: -4,-8
-	MoneyHurdle: 6,-4
-	KeyRailgunKnockback: 6,-5
 	ImpDecaySpeed2: -7,-9
 	HighEnergyHurdle: -8,5
 	MoneyHurdle: -8,6
@@ -295,3 +293,4 @@ Grid: ColonisationExpansionGrid
 	Projection2: -2,13
 	Projection: -2,11
 	Projection2: -1,12
+	ProjectileImpulse: 6,-4

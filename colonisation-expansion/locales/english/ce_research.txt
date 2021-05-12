@@ -157,3 +157,8 @@ R_IMP_PROJECTION: Large Scale Projection
 R_IMP_PROJECTION_BLURB: Projected Shield on Planets and Stars +$1
 R_IMP_PROJECTION_DESC: Increases projected shield capacity and regeneration on planets and stars by $1.
 R_IMP_PROJECTION2: Large Scale Projection 2
+R_MOD_PROJECTILE_IMPULSE_DESC: <<
+	[color=#aaa][i]Unlocks the 'Projectile Impulse' modifier.[/i][/color]
+
+	[bbloc=#S_RAILGUN_KNOCKBACK_DESC/]
+>>

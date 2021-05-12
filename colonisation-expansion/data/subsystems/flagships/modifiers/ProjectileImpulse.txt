@@ -1,0 +1,12 @@
+Template: tag/IsRailgunBattery
+	Module: ProjectileImpulse
+		Name: #R_KEY_RAILGUN_KNOCKBACK
+		Description: #S_RAILGUN_KNOCKBACK_DESC
+		Color: #238f59
+		Sprite: TechIcons::57
+		Hex.HP := 3.0 * Hex.HP
+		Hex.BuildCost := 0
+		Unique: True
+		AddModifier: optional SpreadFactor(0.5)
+		AddModifier: optional PierceFactor(0.0)
+		AddModifier: AddRailgunKnockback(30)
