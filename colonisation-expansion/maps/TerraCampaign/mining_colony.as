@@ -29,9 +29,6 @@ from abilities import getAbilityID;
 
 // TODO: Disable artifact spawning
 // TOOD: Add pressure capacity to AI's and player's main planets
-// TODO: Give player starting ships 3 times the supply storage and no supply
-// leakage so they don't run out of resources way too fast to see the effects
-// of bombing
 
 #section server
 
@@ -101,7 +98,7 @@ class MiningColonyScenario : CampaignScenarioState {
 					completeCampaignScenario("MiningColony");
 					won = true;
 					triggerVictory();
-				} else {
+				} else if (enemyLastEffort == 0) {
 					// spawn in an armored heavy carrier as a 'last ditch effort'
 					// onto any tier 2 or 3 world of the AI's so the player doesn't
 					// autowin after taking out the Dreadnaughts.
