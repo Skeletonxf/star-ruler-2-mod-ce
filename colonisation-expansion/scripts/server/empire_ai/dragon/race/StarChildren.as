@@ -60,17 +60,15 @@ class HabitatMission : Mission {
 
 	void tick(AI& ai, FleetAI& fleet, double time) override {
 		if (fleet.flagshipHealth < HEALTH_ABORT_THRESHOLD) {
-			ai.print("Aborted habitat mission, took too much damage", fleet.obj);
+			if (LOG) {
+				ai.print("Aborted habitat mission, took too much damage", fleet.obj);
+			}
 			onCancel(ai);
 			cast<Fleets>(ai.fleets).returnToBase(fleet, MP_Critical);
 			return;
 		}
-		// TODO: Run away and abort mission if we end up in combat
 		if(move !is null) {
 			if(move.failed) {
-				if (false) {
-					ai.print("Movement failed");
-				}
 				retries += 1;
 				@move = cast<Movement>(ai.movement).move(fleet.obj, target, priority);
 				if (retries > 2) {
@@ -136,7 +134,9 @@ class HabitatMission : Mission {
 			// if we cancel notify Expansion so it can respond immediately
 			// instead of it waiting for a timeout before it realises
 			auto@ expansion = cast<ColonizationAbilityOwner>(ai.colonization);
-			ai.print("Colonize failed at "+target.name);
+			if (LOG) {
+				ai.print("Colonize failed at "+target.name);
+			}
 			expansion.onColonizeFailed(target);
 		}
 	}
@@ -423,8 +423,9 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 			ColonizationSource@ source = getFastestSource(dest);
 			if (source !is null) {
 				MothershipColonizer@ mothership = cast<MothershipColonizer>(source);
-				if (LOG)
+				if (LOG) {
 					ai.print("filling population at "+dest.name+" from "+source.toString());
+				}
 				HabitatMission miss;
 				@miss.target = dest;
 				fleets.performMission(mothership.mothership, miss);
