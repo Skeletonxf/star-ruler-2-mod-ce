@@ -11,9 +11,54 @@ from ai.abilities import AbilitiesAI, AsCreatedCard;
  * TODO: Fleets can have abilities too!
  */
 
+/**
+ * Stateless closed superclass of AbilityTypes
+ *
+ * There is not much in common between different abilities, so this mainly
+ * serves as an interface to try to cast to subtypes.
+ */
+class AbilityTypeAI {
+	const Ability@ type;
+}
+
+/**
+ * Constructs the AbilityTypeAI for an Ability. Will return null if the Ability
+ * has no recognised AI hooks.
+ */
+AbilityTypeAI@ abilityTypeAIFactory(const Ability@ type) {
+	if (type is null)
+		continue;
+
+	if (type.ai.length == 0)
+		continue;
+
+	for (uint i = 0, cnt = type.ai.length; i < cnt; ++i) {
+		auto@ hook = cast<AbilitiesAI>(type.ai[i]);
+		if (hook !is null) {
+			auto@ buyCard = cast<AsCreatedCard>(hook);
+			if (buyCard !is null) {
+				return AsCreatedCardAbility(type, buyCard);
+			}
+		}
+	}
+	return null;
+}
+
+/**
+ * TODO: AI helpers to actually buy the card
+ * TODO: Call this from Diplomacy.as
+ */
+class AsCreatedCardAbility : AbilityTypeAI {
+	AsCreatedCard@ buyCard;
+	AsCreatedCardAbility(const Ability@ type, AsCreatedCard@ buyCard) {
+		@this.type = type;
+		@this.buyCard = buyCard;
+	}
+}
+
 class AbilityAI {
 	Object@ obj;
-	array<const AbilityType@> abilities;
+	array<AbilityTypeAI@> abilities;
 
 	bool init(AI& ai, AbilitiesComponent& abilitiesComponent) {
 		return checkAbilities();
@@ -38,23 +83,11 @@ class AbilityAI {
 				Ability@ ability = abilities[i];
 				const AbilityType@ type = ability.type;
 
-				if (type is null)
+				AbilityTypeAI@ abilityTypeAI = abilityTypeAIFactory(type);
+				if (abilityTypeAI is null)
 					continue;
 
-				if (type.ai.length == 0)
-					continue;
-
-				this.abilities.insertLast(type);
-
-				for (uint j = 0, jcnt = type.ai.length; j < jcnt; ++j) {
-					auto@ hook = cast<AbilitiesAI>(type.ai[j]);
-					if (hook !is null) {
-						auto@ buyCard = cast<AsCreatedCard>(hook);
-						if (buyCard !is null) {
-							// TODO
-						}
-					}
-				}
+				this.abilities.insertLast(abilityTypeAI);
 			}
 		}
 
