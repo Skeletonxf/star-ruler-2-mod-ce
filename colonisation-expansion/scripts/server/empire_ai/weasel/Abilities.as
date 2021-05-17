@@ -25,19 +25,20 @@ class AbilityTypeAI {
  * Constructs the AbilityTypeAI for an Ability. Will return null if the Ability
  * has no recognised AI hooks.
  */
-AbilityTypeAI@ abilityTypeAIFactory(const Ability@ type) {
+AbilityTypeAI@ abilityTypeAIFactory(const Ability@ ability) {
+	const AbilityType@ type = ability.type;
 	if (type is null)
-		continue;
+		return null;
 
 	if (type.ai.length == 0)
-		continue;
+		return null;
 
 	for (uint i = 0, cnt = type.ai.length; i < cnt; ++i) {
 		auto@ hook = cast<AbilitiesAI>(type.ai[i]);
 		if (hook !is null) {
 			auto@ buyCard = cast<AsCreatedCard>(hook);
 			if (buyCard !is null) {
-				return AsCreatedCardAbility(type, buyCard);
+				return AsCreatedCardAbility(ability, buyCard);
 			}
 		}
 	}
@@ -83,7 +84,7 @@ class AbilityAI {
 				Ability@ ability = abilities[i];
 				const AbilityType@ type = ability.type;
 
-				AbilityTypeAI@ abilityTypeAI = abilityTypeAIFactory(type);
+				AbilityTypeAI@ abilityTypeAI = abilityTypeAIFactory(ability);
 				if (abilityTypeAI is null)
 					continue;
 
