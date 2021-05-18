@@ -225,7 +225,10 @@ class Battle {
 					else if(ourStrength < enemyStrength * 0.75)
 						shouldRetreat = true;
 				}
-				if(miss.fleet.fleetHealth < 0.25) {
+				// [[ MODIFY BASE GAME START ]]
+				// 25% -> 55%, a 25% fleet can probably not even move anymore
+				if(miss.fleet.fleetHealth < 0.55) {
+					// [[ MODIFY BASE GAME END ]]
 					if(ourStrength < enemyStrength * 0.5)
 						shouldRetreat = true;
 				}
