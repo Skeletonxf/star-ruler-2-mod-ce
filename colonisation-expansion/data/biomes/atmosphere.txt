@@ -11,6 +11,7 @@ Biome: Atmosphere1
 	Frequency: 0
 	BuildTime: 12
 	BuildCost: 12
+	Exclusively Comaptible: Atmosphere1, Atmosphere1, Atmosphere2, Atmosphere3 
 
 Biome: Atmosphere2
 	Name: #BIOME_ATMOPSHERE
@@ -25,6 +26,7 @@ Biome: Atmosphere2
 	Frequency: 0
 	BuildTime: 12
 	BuildCost: 12
+	Exclusively Comaptible: Atmosphere2, Atmosphere2, Atmosphere1, Atmosphere3 
 
 Biome: Atmosphere3
 	Name: #BIOME_ATMOPSHERE
@@ -39,3 +41,4 @@ Biome: Atmosphere3
 	Frequency: 0
 	BuildTime: 12
 	BuildCost: 12
+	Exclusively Comaptible: Atmosphere3, Atmosphere3, Atmosphere1, Atmosphere3 

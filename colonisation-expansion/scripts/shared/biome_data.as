@@ -3,15 +3,15 @@ import biomes;
 
 void loadBiomes(const string& filename) {
 	ReadFile file(filename);
-	
+
 	string key, value;
-	
+
 	Biome@ biome;
-	
+
 	while(file++) {
 		key = file.key;
 		value = file.value;
-		
+
 		if(key == "Biome") {
 			if(biome !is null)
 				addBiome(biome);
@@ -86,18 +86,34 @@ void loadBiomes(const string& filename) {
 			if(split.length >= 2)
 				biome.lookupRange.y = toFloat(split[1]);
 		}
+		// [[ MODIFY BASE GAME START ]]
+		else if (key == "Exclusively Comaptible") {
+			array<string>@ split = value.split(",");
+			for (uint i = 0, cnt = split.length; i < cnt; ++i) {
+				string ident = split[i].trimmed();
+				biome._exclusivelyCompatible.insertLast(ident);
+			}
+		}
+		else if(key == "Exclusive Only As Gas Giant") {
+			biome.exclusiveOnlyAsGasGiant = toBool(value);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		else {
 			error("Unrecognized line in biome " + biome.ident + ": " + key + ": " + value);
 		}
 	}
-	
+
 	if(biome !is null)
 		addBiome(biome);
 }
 
 void preInit() {
 	FileList list("data/biomes", "*.txt");
-	
+
 	for(uint i = 0, cnt = list.length; i < cnt; ++i)
 		loadBiomes(list.path[i]);
+
+	// [[ MODIFY BASE GAME START ]]
+	postInitBiomes();
+	// [[ MODIFY BASE GAME END ]]
 }

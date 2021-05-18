@@ -562,6 +562,10 @@ class BiomeFile : FileDef {
 			field("Buildable", AT_Boolean, "False", doc="Whether this can have buildings on it.");
 			field("Picks", AT_Custom, "", doc="Special UV values for biomes using the procedural planet shader.");
 			field("Lookup Range", AT_Custom, "", doc="Special UV values for biomes using the procedural planet shader.");
+			// [[ MODIFY BASE GAME START ]]
+			field("Exclusively Comaptible", AT_Custom, "", doc="List of comma seperated biome identifiers. If present, any planet with this as the primary biome will only select from the list of biomes for secondary and third biomes when spawning.");
+			field("Exclusive Only As Gas Giant", AT_Boolean, "False", doc="If set to true, the exclusively compatible list only applies to biome selection for spawning gas giants.");
+			// [[ MODIFY BASE GAME END ]]
 	}
 
 	void onChange() {

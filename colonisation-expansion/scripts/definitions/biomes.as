@@ -24,6 +24,12 @@ final class Biome {
 
 	vec4f picks(0.f, 0.f, 0.f, -0.025f);
 	vec2f lookupRange(0.f, 0.f);
+
+	// [[ MODIFY BASE GAME START ]]
+	array<string> _exclusivelyCompatible;
+	array<const Biome@> exclusivelyCompatible;
+	bool exclusiveOnlyAsGasGiant = false;
+	// [[ MODIFY BASE GAME END ]]
 };
 
 final class ColonizationOrder : Serializable, Savable {
@@ -126,3 +132,32 @@ void saveIdentifiers(SaveFile& file) {
 		file.addIdentifier(SI_Biome, type.id, type.ident);
 	}
 }
+
+// [[ MODIFY BASE GAME START ]]
+void postInitBiomes() {
+	for (uint i = 0, cnt = biomes::biomes.length; i < cnt; ++i) {
+		Biome@ biome = biomes::biomes[i];
+		for (uint j = 0, jcnt = biome._exclusivelyCompatible.length; j < jcnt; ++j) {
+			string ident = biome._exclusivelyCompatible[j];
+			const Biome@ b = getBiome(ident);
+			if (b is null) {
+				print("Unrecognised biome identifier: "+ident+" while initialising "+biome.ident);
+				continue;
+			}
+			biome.exclusivelyCompatible.insertLast(b);
+		}
+	}
+}
+
+const Biome@ getDistributedSecondaryBiome(const Biome@ primary, bool gasGiant = false) {
+	if (primary.exclusiveOnlyAsGasGiant && !gasGiant) {
+		return getDistributedBiome();
+	}
+	array<const Biome@> compatible = primary.exclusivelyCompatible;
+	if (compatible.length == 0) {
+		return getDistributedBiome();
+	}
+	uint roll = randomi(0, compatible.length - 1);
+	return compatible[roll];
+}
+// [[ MODIFY BASE GAME END ]]

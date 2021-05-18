@@ -154,6 +154,9 @@ DRYDOCK_BUILDCOST_FACTOR: 1.25
 
 //Chance of a planet having an extra moon
 PLANET_MOON_CHANCE: 0.3
+// [[ MODIFY BASE GAME START ]]
+GAS_GIANT_MOON_CHANCE: 0.4
+// [[ MODIFY BASE GAME END ]]
 
 //Whether to hide empire relations to each other
 HIDE_EMPIRE_RELATIONS: 0

@@ -478,15 +478,9 @@ class MakePlanet : MapHook {
 				@biome1 = getDistributedBiome();
 			}
 		}
-		const Biome@ biome2 = getDistributedBiome();
-		const Biome@ biome3 = getDistributedBiome();
-
 		// [[ MODIFY BASE GAME START ]]
-		if (gas.boolean) {
-			// enforce all biomes as the base biome on gas giants
-			@biome2 = biome1;
-			@biome3 = biome1;
-		}
+		const Biome@ biome2 = getDistributedSecondaryBiome(biome1, gas.boolean);
+		const Biome@ biome3 = getDistributedSecondaryBiome(biome1, gas.boolean);
 		// [[ MODIFY BASE GAME END ]]
 
 		//Figure out planet size
@@ -529,7 +523,7 @@ class MakePlanet : MapHook {
 		plNode.planetType = planet.PlanetType;
 		// [[ MODIFY BASE GAME START ]]
 		// make gas giants have rings often even if `rings` is not set to true
-		if((rings.boolean && randomi(0,9) == 0) || (gas.boolean && randomi(0,9) > 1)) {
+		if((rings.boolean && randomi(0,9) == 0) || (gas.boolean && randomi(0,9) > 4)) {
 			// [[ MODIFY BASE GAME END ]]
 			uint style = randomi();
 			plNode.addRing(style);
@@ -565,11 +559,7 @@ class MakePlanet : MapHook {
 			// add lots of moons to gas giants
 			planet.addMoon();
 			planet.addStatus(getStatusID("Moon"));
-			planet.addMoon();
-			planet.addStatus(getStatusID("Moon"));
-			planet.addMoon();
-			planet.addStatus(getStatusID("Moon"));
-			while (randomd() < 0.5) {
+			while (randomd() < config::GAS_GIANT_MOON_CHANCE) {
 				planet.addMoon();
 				planet.addStatus(getStatusID("Moon"));
 			}
