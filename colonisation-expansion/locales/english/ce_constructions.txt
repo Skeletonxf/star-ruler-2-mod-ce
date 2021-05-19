@@ -1,6 +1,6 @@
 FRACTURED_MOON_BASE: Moon Base
 CONS_FRACTURED_MOON_BASE_DESC: <<
-	Moon bases can be built infinitely on fractured planets but do not increase maximum population and further damage the planet.
+	Smaller moon bases can be built infinitely on fractured planets but do not increase maximum population and further damage the planet.
 
 	Keeping a moon base running on an unstable planet is not straightforward, and costs 25k in maintenance.
 >>

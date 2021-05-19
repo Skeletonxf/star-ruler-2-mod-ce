@@ -9,7 +9,7 @@ Biome: AncientAtmosphere1
 	Lookup Range: 0.99
 	UseWeight: 0.01
 	Frequency: 0
-	BuildTime: 12
+	BuildTime: 5
 
 
 Biome: AncientAtmosphere2
@@ -23,7 +23,7 @@ Biome: AncientAtmosphere2
 	Lookup Range: 0.91
 	UseWeight: 0.01
 	Frequency: 0
-	BuildTime: 12
+	BuildTime: 5
 
 Biome: AncientAtmosphere3
 	Name: #BIOME_ATMOPSHERE
@@ -36,4 +36,4 @@ Biome: AncientAtmosphere3
 	Lookup Range: 0.95
 	UseWeight: 0.01
 	Frequency: 0
-	BuildTime: 12
+	BuildTime: 5

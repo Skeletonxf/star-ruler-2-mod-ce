@@ -87,3 +87,8 @@ FRACTURING: Fracturing
 FRACTURING_DESC: Explosives are being planted and detonated on this planet. It will be fractured into many tiny pieces after 3 minutes out of combat.
 CREATING_WATER: Synthesising Water
 CREATING_WATER_DESC: A mostly controlled explosion is being prepared to create enough water for an entire planet. The planet will be terraformed into water after 3 minutes out of combat.
+GAS_GIANT_DESC: <<
+	This planet is made of gases and has no solid surface. Building is still possible with floating constructions but much more expensive. It is better to make moon bases instead.
+
+	[i][color=#aaa]Maximum population reduced by 1. Income reduced by §80k at level 1 and higher. Max population and income can be increased via moon bases.[/color][/i]
+>>

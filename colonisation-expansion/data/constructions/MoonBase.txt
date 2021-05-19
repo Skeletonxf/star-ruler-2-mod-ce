@@ -14,5 +14,5 @@ Construction: MoonBase
 	OnCancel(RemoveStatusInstance(MoonBase))
 
 	ModAttribute(MoonBasesBuilt, Add, 1)
-	AddSurfaceArea(Moon, (5, 5))
+	AddSurfaceArea(Moon, (6, 6))
 	TriggerGeneric(AddMaxPopulation(2))
