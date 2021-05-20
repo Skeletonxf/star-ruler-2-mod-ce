@@ -56,3 +56,9 @@ TRAIT_TECHNOCRATIC: Technocratic
 TRAIT_TECHNOCRATIC_DESC: [vspace=6/][b][color=#0087c7]Extra Starting Cards:[/color][/b] [offset=140]2x Innovation.[/offset]
 ABANDONED_RINGWORLD: Abandoned Ringworld
 ABANDONED_RINGWORLD_DESC: This abandoned relic has long puzzled our scientists. Now, we shall settle in it and make it ours. Start with a ringworld.
+FLYING_DESC: <<
+	[color=#aaa][i]Free as a bird[/i][/color]
+	A race capable of flight, taking great pride in exploring every inch of every planet, even those with no solid surface.
+	[vspace=6/][img=ConditionIcons::1 * 33ff55;22;#ffff00]Can build on Gas Giant biomes with no cost increase. Gas Giant maintence and population penalties no longer apply.[/img][vspace=6/][img=PlateArmor;22;#FF0000]No matter how much you insist that Plate Armor would be a really good idea, you can't convince our engineers to put something so heavy on our space ships.[/img]
+
+>>

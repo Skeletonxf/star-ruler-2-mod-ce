@@ -1,8 +1,5 @@
 Status: Flying
 	Name: Flying
 	Visible To: Nobody
-	CE_biome_hooks::SwapBiome(Atmosphere1, Floating)
-	CE_biome_hooks::SwapBiome(Atmosphere2, Floating)
-	CE_biome_hooks::SwapBiome(Atmosphere3, Floating)
-	ModTileDevelopRate(0.5)
-	AddPressureCap(-5)
+	OnDisable(AddStatus(AncientGasGiantLoss, Duration = 1))
+	OnEnable(AddStatus(AncientGasGiantOwned, Duration = 1))

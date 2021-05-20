@@ -1,10 +1,22 @@
 Trait: Flying
 	Name: Flying
-	Description: Tile development rate increased by 50%. All colonised Gas Giant biomes are converted to Floating Cities, removing the tile development penalty and massively reducing the build cost and time penalties. Pressure capacity on all planets is reduced by 5.
+	Description: #FLYING_DESC
 	Icon: Flying
 	Color: #c2fffd
 	Category: Biology
 	Conflict: StarChildren
 	Conflict: Ancient
 	Order: 2
+	UnlockSubsystem(FlockDriveSupport)
+	UnlockSubsystem(FlockDrive)
+	ForbidSubsystem(SupportPlateArmor)
+	ForbidSubsystem(PlateArmor)
 	AddStatusOwnedPlanets(Flying)
+Trait: FlockDriveTmp
+	Name: Gives flock drive
+	AI Support: False
+	Category: Biology
+	Order: 50
+	Available: False
+	UnlockSubsystem(FlockDriveSupport)
+	UnlockSubsystem(FlockDrive)
