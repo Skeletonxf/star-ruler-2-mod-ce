@@ -186,8 +186,13 @@ namespace design_stats {
 			}
 		}
 		else if(type == SVT_SubsystemVariable) {
+			// [[ MODIFY BASE GAME START ]]
+			double factor = 1.0;
+			if ((SubsystemVariable(var) == SV_Repair) || (SubsystemVariable(var) == SV_RepairSupplyCost)) {
+				factor = playerEmpire.EmpireRepairFactor;
+			}
 			if(sys !is null) {
-				return dsg.variable(sys, SubsystemVariable(var));
+				return factor * dsg.variable(sys, SubsystemVariable(var));
 			}
 			else {
 				double val = 0.0;
@@ -201,7 +206,8 @@ namespace design_stats {
 						}
 					}
 				}
-				return val;
+				return factor * val;
+				// [[ MODIFY BASE GAME END ]]
 			}
 		}
 		else if(type == SVT_ShipVariable) {

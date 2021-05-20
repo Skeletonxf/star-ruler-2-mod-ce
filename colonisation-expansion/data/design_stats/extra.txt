@@ -154,3 +154,19 @@ SubsystemStat: ProjectedShieldRegen
 	Color: #00aeff
 
 	Variable: ProjShieldRegen
+
+SubsystemStat: Repair
+	Name: #S_REPAIR_STAT
+	Description: #STT_REPAIR
+	Color: #89df89
+	Suffix: s
+
+	Variable: Repair // Script applies empire repair factor
+
+SubsystemStat: RepairSupplyDrain
+	Name: #S_REPAIR_SUPPLY_COST
+	Description: #STT_REPAIR_SUPPLY_COST
+	Color: #f0ea8a
+	Suffix: /s
+
+	Variable: RepairSupplyCost  // Script applies empire repair factor
