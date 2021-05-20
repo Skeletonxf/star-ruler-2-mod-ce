@@ -7,11 +7,10 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
   - Expansion AI Component
-    - Make AI consolidate labor at one shipyard, not multiple
-      - The AI can build shipyards for both labor consolidation and staging bases, need to ensure it doesn't build two in the same region
-      - May want to make the AI build supply depots instead of shipyards at staging bases too
-    - Make AI destroy buildings it no longer needs
-      - Particularly Megafarms and Hydrogenators
+    - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
+      - Teach AI to make moon bases for the purpose of population income
+      - Teach AI to melt ice
+      - Teach AI to make most of the constructions by extending the building hint code
     - Add a proper isBuilding method that also checks if the AI is in the process of building a building instead of just if its in the request queue and fix everywhere I called this thinking that's what isBuilding already does
     - Teach AI how to deal with all of its focuses having requirements it can't meet
     - Scuttle outposts which have ended up in a different region to where the AI created them
@@ -19,13 +18,17 @@ This is primarily intended as a developer focused project planning list, rather 
     - Apply conditions AI hooks to all applicable statuses
     - Implement custom ColonizeAbility interface for Ancient AI empires
       - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
-    - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
-        - Teach AI to melt ice
-        - Teach AI to make most of the constructions by extending the building hint code
+    - Make AI destroy buildings it no longer needs
+      - Particularly Megafarms and Hydrogenators
     - Possibly teach the AI to recognise useless planets and either terraform them or replace them with outposts / better colonies in the same system
       - Particularly relevant for a Mechanoid empire that never finds Cremlin Firns or Nitrous Oxide, as claiming useless food/water planets to expand borders is great early/mid game, but costs 50k per system to not replace with outposts late game.
+  - Teach the AI to make designs with Flock Drives and Fleet Computers if they are available
+  - Make AI consolidate labor at one shipyard, not multiple
+    - The AI can build shipyards for both labor consolidation and staging bases, need to ensure it doesn't build two in the same region
+    - May want to make the AI build supply depots instead of shipyards at staging bases too      
   - Make AI able to use the abilties on senatorial palaces and allondium worlds
     - Use the introduced ability AI hooks
+  - Make War.as AI detect when a system is protected due to an Outpost/Temple and make it only commit one ship to take out the orbital instead of all of its seiging ships (since at the moment they all give up on the capture and then all detect the enemy orbital via findEnemy)
   - Auto researching an FTL unlock should not trigger the vote for the FTL unlock
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design
   - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
@@ -34,6 +37,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Support cap hook
     - LeaderAI leaderInit
     - Ship constructible support supply free
+  - Shock Missiles don't work on shielded orbitals
   - Make some analog to the SupportStation artifact player designable/buildable
   - Make planet shields protect against carpet bombs, possibly remove the old building/orbital carpet bomb effectiveness counters as they'd get outclassed pretty fast and wouldn't want the AI using suboptimal strategies
   - Make message strip clear notifications when swapping empires
@@ -43,8 +47,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Investigate what happens to civilian trade ships when target is in deep space
   - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands
     - This seems to be a more general vanilla bug with casting an ability on something which is already casting the same ability, can also reproduce with two shield projector ships
-  - Rework the Flying trait downside so it is less severe
-  - Constructions for Gas Giants to make them more useful late game
   - Teach AI to not put comets on worlds being razed
   - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
     - This hurts the First AI's budget
@@ -57,6 +59,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix map generation bugs with galaxy mirroring and gas/ice giants
   - Make AI respond to flare bomb and gravitron condensor attacks
   - Investigate issues with Mechanoid AI being able to build gates
+  - Make the AI's search for things to colonise when it has no systems more robust - Star Children should still be able to recover while they have Motherships but the current code will attempt to recolonise its home system or just give up.
 
 - Not planned for any time soon
   - Colonisation ships similar to Motherships for other races
