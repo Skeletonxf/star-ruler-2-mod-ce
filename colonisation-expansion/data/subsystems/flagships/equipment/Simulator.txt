@@ -5,7 +5,7 @@ Subsystem: Simulator
 	TypeColor: #f17757
 	Elevation: 3
 
-	Tags: BaseCost, Category:Equipment, HasInternals
+	Tags: BaseCost, Category:Equipment, HasInternals, CombatUtility
 	Tags: HeraldsDLC
 	Hull: Flagship
 
@@ -21,7 +21,7 @@ Subsystem: Simulator
 
 	Hook: ExperienceOverTime(Rate, True)
 
-	Ship.SimulatorSize := Ship.SimulatorSize + Hexes 
+	Ship.SimulatorSize := Ship.SimulatorSize + Hexes
 	Requires:
 		Command = 3
 

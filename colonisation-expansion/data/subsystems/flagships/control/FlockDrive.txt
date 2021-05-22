@@ -4,7 +4,7 @@ Subsystem: FlockDrive
 	BaseColor: #c2fffd
 	Elevation: 4
 
-	Tags: BaseCost, Category:Control, BadFiller
+	Tags: BaseCost, Category:Control, BadFiller, CombatUtility, GeneralUtility, ForbidRemnant, SingleHexSubsystem
 	Tags: HasInternals
 	Tags: NoBulkhead, Important
 	Hull: Flagship
@@ -45,7 +45,7 @@ Subsystem: FlockDriveSupport
 	BaseColor: #c2fffd
 	Elevation: 4
 
-	Tags: BaseCost, Category:Control, BadFiller
+	Tags: BaseCost, Category:Control, BadFiller, ForbidRemnant, SingleHexSubsystem
 	Tags: HasInternals
 	Tags: NoBulkhead, Important
 	Hull: Support

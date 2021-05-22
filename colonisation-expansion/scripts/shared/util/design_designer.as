@@ -917,18 +917,18 @@ class Designer {
 
 			uint index = randomi(0,hyperTypes.length-1);
 
-			print("Got to selecting hyperengine");
+			//print("Got to selecting hyperengine");
 			if (hyperTypesIncludesHyperdrive && hyperTypesIncludesJumpdrive) {
-				print("Checking random hyperengine choice");
+				//print("Checking random hyperengine choice");
 				while (hyperTypes[index].name == "Hyperdrive" && favorJumpdriveOverHyperdrive) {
 					// reroll till get a non hyperdrive FTL hyperengine
 					index = randomi(0,hyperTypes.length-1);
-					print("Rerolled hyperengine to get not hyperdrive");
+					//print("Rerolled hyperengine to get not hyperdrive");
 				}
 				while (hyperTypes[index].name == "Jumpdrive" && !favorJumpdriveOverHyperdrive) {
 					// reroll till get a non jumpdrive FTL hyperengine
 					index = randomi(0,hyperTypes.length-1);
-					print("Rerolled hyperengine to get not jumpdrive");
+					//print("Rerolled hyperengine to get not jumpdrive");
 				}
 			}
 			// [[ MODIFY BASE GAME END ]]

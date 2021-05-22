@@ -5,7 +5,7 @@ Subsystem: FleetComputer
 	Elevation: 2
 
 	Tags: HeraldsDLC
-	Tags: BaseCost, Category:Control, BadFiller
+	Tags: BaseCost, Category:Control, BadFiller, SupportUtility
 	Tags: HasInternals
 	Hull: Flagship, Station
 

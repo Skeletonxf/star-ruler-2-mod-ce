@@ -145,7 +145,9 @@ tidy class Designer {
 		composition.insertLast(ArmorLayer(tag("PrimaryArmor"), HM_ALL, 1, 2));
 	}
 
-	void composeFlagship(bool haveSupport = true, bool tryFTL = true, bool supply = true, bool weapons = true, bool power = true, bool clear = true) {
+	// [[ MODIFY BASE GAME START ]]
+	void composeFlagship(bool haveSupport = true, bool tryFTL = true, bool supply = true, bool weapons = true, bool power = true, bool clear = true, bool isRemnant = false) {
+		// [[ MODIFY BASE GAME END ]]
 		if(clear)
 			composition.length = 0;
 
@@ -204,6 +206,23 @@ tidy class Designer {
 		if(haveSupport)
 			composition.insertLast(Filler(subsystem("SupportCapModule"), 0.04, 0.14));
 
+		// [[ MODIFY BASE GAME START ]]
+		// Utility stuff like Fleet Computers
+		if (isRemnant) {
+			if (haveSupport) {
+				composition.insertLast(Internal(tag("SupportUtility") & notTag("ForbidRemnant"), 0.025, 0.10));
+			}
+			composition.insertLast(Internal(tag("CombatUtility") & notTag("ForbidRemnant"), 0.025, 0.10));
+			composition.insertLast(Chance(0.5, Internal(tag("CombatUtility") & notTag("ForbidRemnant") & notTag("SingleHexSubsystem"), 0.025, 0.10)));
+		} else {
+			if (haveSupport) {
+				composition.insertLast(Internal(tag("SupportUtility"), 0.025, 0.10));
+			}
+			composition.insertLast(Internal(tag("CombatUtility"), 0.025, 0.10));
+			composition.insertLast(Chance(0.5, Internal(tag("CombatUtility") & notTag("SingleHexSubsystem"), 0.025, 0.10)));
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		//Armor
 		composition.insertLast(ArmorLayer(tag("PrimaryArmor"), HM_DownLeft | HM_UpLeft | HM_Down | HM_Up, 1, 1));
 		for(int i = 0; i < 1 + size / 400 && i < 4; ++i)
@@ -238,6 +257,13 @@ tidy class Designer {
 
 		composition.insertLast(Chance(1.0, Internal(tag("SecondaryDefense"), 0.075, 0.15)));
 		composition.insertLast(Filler(subsystem("SupplyModule"), 0.09, 0.13));
+
+		// [[ MODIFY BASE GAME START ]]
+		// Utility stuff like Fleet Computers
+		composition.insertLast(Internal(tag("SupportUtility"), 0.025, 0.10));
+		composition.insertLast(Internal(tag("CombatUtility"), 0.025, 0.10));
+		composition.insertLast(Chance(0.5, Internal(tag("CombatUtility") & notTag("SingleHexSubsystem"), 0.025, 0.10)));
+		// [[ MODIFY BASE GAME END ]]
 
 		composition.insertLast(ArmorLayer(tag("PrimaryArmor"), HM_ALL, 1, 1));
 		for(int i = 0; i < 1 + size / 400 && i < 4; ++i)
@@ -285,9 +311,9 @@ tidy class Designer {
 		// [[ MODIFY BASE GAME START ]]
 		// Scouts should use the exploration hull
 		composition.insertLast(Applied(tag("ExplorationHull")));
-		// [[ MODIFY BASE GAME END ]]
 
-		composition.insertLast(Exhaust(tag("Engine") & tag("GivesThrust"), 0.80, 0.80));
+		// 0.8 -> 1.5, engine should be by far the biggest part of a scout
+		composition.insertLast(Exhaust(tag("Engine") & tag("GivesThrust"), 1.50, 1.50));
 		composition.insertLast(Internal(tag("ControlCore"), 0.05, 0.05));
 		// [[ MODIFY BASE GAME START ]]
 		composition.insertLast(Internal(hyperengine(), 0.50, 0.50));
@@ -296,6 +322,12 @@ tidy class Designer {
 		//Shrine if needed
 		if(owner.hasTrait(getTraitID("Devout")))
 			composition.insertLast(Internal(tag("Prayer"), 0.15, 0.20));
+
+		// [[ MODIFY BASE GAME START ]]
+		// Utility stuff like Fleet Computers (except not combat stuff)
+		composition.insertLast(Internal(tag("GeneralUtility"), 0.025, 0.10));
+		composition.insertLast(Chance(0.5, Internal(tag("GeneralUtility") & notTag("SingleHexSubsystem"), 0.025, 0.10)));
+		// [[ MODIFY BASE GAME END ]]
 
 		composition.insertLast(ArmorLayer(tag("PrimaryArmor"), HM_DownLeft | HM_UpLeft | HM_Down | HM_Up, 1, 1));
 	}
@@ -1675,12 +1707,16 @@ tidy class Internal : Distributor {
 
 	double minFreq = 0;
 	double maxFreq = 0;
+	// [[ MODIFY BASE GAME START ]]
+	int maxHexes = 0;
 
-	Internal(Filter@ filter, double minFreq, double maxFreq) {
+	Internal(Filter@ filter, double minFreq, double maxFreq, int maxHexes = 0) {
 		@this.filter = filter;
 		this.minFreq = minFreq;
 		this.maxFreq = maxFreq;
+		this.maxHexes = maxHexes;
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void prime() override {
 		if(def !is null)
@@ -1690,6 +1726,14 @@ tidy class Internal : Distributor {
 		frequency = randomd(minFreq, maxFreq);
 		if(type is null)
 			frequency = 0.0;
+		// [[ MODIFY BASE GAME START ]]
+		// This is only to save cpu cycles. There's no point generating designs
+		// which use this subsystem in multiple hexes if the subsystem doesn't
+		// allow designs to.
+		if (type !is null && type.hasTag(ST_SingleHexSubsystem)) {
+			maxHexes = 1;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void distribute(Designer& dsg) override {
@@ -1698,6 +1742,11 @@ tidy class Internal : Distributor {
 
 		double pct = frequency / dsg.totalFrequency;
 		int hexes = pct * double(dsg.hexLimit);
+		// [[ MODIFY BASE GAME START ]]
+		if (maxHexes != 0) {
+			hexes = min(hexes, maxHexes - 1);
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		auto@ subsys = dsg.addSubsystem(type);
 		subsys.core = dsg.markedInternal();
