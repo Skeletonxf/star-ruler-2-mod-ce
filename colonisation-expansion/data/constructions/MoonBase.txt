@@ -16,3 +16,5 @@ Construction: MoonBase
 	ModAttribute(MoonBasesBuilt, Add, 1)
 	AddSurfaceArea(Moon, (6, 6))
 	TriggerGeneric(AddMaxPopulation(2))
+
+	AI: AsCreatedPopulationIncome(2)

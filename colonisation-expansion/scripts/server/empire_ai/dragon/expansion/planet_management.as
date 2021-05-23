@@ -6,8 +6,11 @@ import empire_ai.dragon.expansion.buildings;
 import empire_ai.dragon.expansion.ftl;
 
 import buildings;
+// cannot import constructions because the Construction class name clashes
+from constructions import ConstructionType, getConstructionTypeCount, getConstructionType;
 from ai.buildings import Buildings, BuildingAI, BuildingUse, BuildForPressureCap, AsFTLIncome, AsFTLStorage;
 from ai.resources import AIResources, ResourceAI, MorphUnobtaniumTo;
+from ai.constructions import ConstructionAI, AsCreatedPopulationIncome;
 
 from abilities import getAbilityID;
 from statuses import getStatusID;
@@ -37,6 +40,9 @@ class PlanetManagement: PlanetEventListener {
 	int unobtaniumAbility = -1;
 	const ResourceType@ unobtanium;
 	array<PlanetAI@> unobtaniumCandidatePlanets;
+
+	int razing = -1;
+	int razed = -1;
 
 	void onConstructionRequestActioned(ConstructionRequest@ request) {}
 	void onRemovedPlanetAI(PlanetAI@ plAI) {
@@ -79,6 +85,8 @@ class PlanetManagement: PlanetEventListener {
 		@scalableClass = getResourceClass("Scalable");
 		unobtaniumAbility = getAbilityID("UnobtaniumMorph");
 		@unobtanium = getResource("Unobtanium");
+		razing = getStatusID("ParasiteRaze");
+		razed = getStatusID("ParasiteRazeDone");
 
 		planets.listeners.insertLast(this);
 	}
@@ -105,6 +113,7 @@ class PlanetManagement: PlanetEventListener {
 		manageFTLBuildings(plAI, ai);
 		considerUnobtaniumMorph(plAI, ai);
 		// TODO: Long term this should all be generic hook based responses
+		considerPopulationIncomeConstruction(plAI, ai);
 		checkNextFocus(plAI, ai);
 	}
 
@@ -153,6 +162,9 @@ class PlanetManagement: PlanetEventListener {
 
 	void managePressureCapacity(PlanetAI@ plAI, AI& ai) {
 		if (plAI.obj is null)
+			return;
+
+		if (plAI.obj.hasStatusEffect(razing) || plAI.obj.hasStatusEffect(razed))
 			return;
 
 		bool havePressure = ai.empire.HasPressure != 0.0;
@@ -326,6 +338,56 @@ class PlanetManagement: PlanetEventListener {
 				ai.print("Morph planet to "+res.name+" from "+choice.obj.name, plAI.obj);
 			plAI.obj.activateAbilityTypeFor(ai.empire, unobtaniumAbility, choice.obj);
 			return;
+		}
+	}
+
+	void considerPopulationIncomeConstruction(PlanetAI@ plAI, AI& ai) {
+		if (plAI.obj is null)
+			return;
+
+		if (plAI.obj.hasStatusEffect(razing) || plAI.obj.hasStatusEffect(razed))
+			return;
+
+		for (uint i = 0, cnt = getConstructionTypeCount(); i < cnt; ++i) {
+			const ConstructionType@ type = getConstructionType(i);
+			if (type.ai.length == 0) {
+				continue;
+			}
+			if (!type.canBuild(plAI.obj, ignoreCost=true)) {
+				continue;
+			}
+
+			// don't try to make two of the same thing on the same planet at once
+			if (planets.isConstructing(plAI.obj, type)) {
+				continue;
+			}
+			// Check we can actually afford this
+			if (!budget.canSpend(BT_Development, type.buildCost * 2, type.maintainCost)) {
+				continue;
+			}
+
+			for (uint j = 0, jcnt = type.ai.length; j < jcnt; ++j) {
+				auto@ hook = cast<ConstructionAI>(type.ai[j]);
+				if (hook is null) {
+					continue;
+				}
+				auto@ populationIncome = cast<AsCreatedPopulationIncome>(hook);
+				if (populationIncome !is null) {
+					// check we're already level 1 as a heuristic for if adding
+					// max pop will actually increase our income (since it
+					// doesn't if a planet is net negative due to level)
+					if (plAI.obj.level < 1) {
+						continue;
+					}
+
+					if (LOG)
+						ai.print("building "+type.name+" to improve income at", plAI.obj);
+					auto@ req = planets.requestConstruction(plAI, plAI.obj, type, priority=0.5, expire=ai.behavior.genericBuildExpire);
+					// we don't particularly need to respond to cancellations so
+					// not going to save this request anywhere
+					return;
+				}
+			}
 		}
 	}
 

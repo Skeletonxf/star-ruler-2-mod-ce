@@ -7,10 +7,9 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
   - Expansion AI Component
-    - Extend the hooks to Constructions and do the same as for Buildings where the AI considers AsCreatedResources directly
-      - Teach AI to make moon bases for the purpose of population income
+    - Add to AI hooks for Constructions
       - Teach AI to melt ice
-      - Teach AI to make most of the constructions by extending the building hint code
+      - Teach AI to act on primitive life
     - Add a proper isBuilding method that also checks if the AI is in the process of building a building instead of just if its in the request queue and fix everywhere I called this thinking that's what isBuilding already does
     - Teach AI how to deal with all of its focuses having requirements it can't meet
     - Scuttle outposts which have ended up in a different region to where the AI created them
@@ -22,7 +21,6 @@ This is primarily intended as a developer focused project planning list, rather 
       - Particularly Megafarms and Hydrogenators
     - Possibly teach the AI to recognise useless planets and either terraform them or replace them with outposts / better colonies in the same system
       - Particularly relevant for a Mechanoid empire that never finds Cremlin Firns or Nitrous Oxide, as claiming useless food/water planets to expand borders is great early/mid game, but costs 50k per system to not replace with outposts late game.
-  - Teach the AI to make designs with Flock Drives and Fleet Computers if they are available
   - Make AI consolidate labor at one shipyard, not multiple
     - The AI can build shipyards for both labor consolidation and staging bases, need to ensure it doesn't build two in the same region
     - May want to make the AI build supply depots instead of shipyards at staging bases too      
