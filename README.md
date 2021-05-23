@@ -6,7 +6,7 @@ This is a mod for Star Ruler 2. It is now growing into a mod that provides many 
 
 ## Status
 
-I consider this mod at playable status now. There's still some rough edges but it should be stable and balanced enough to play with.
+I consider this mod at playable status now. It should be stable and balanced enough to play with.
 
 ## Installation
 
@@ -17,7 +17,7 @@ Alternatively you can use [Star Ruler 2 Mod Manager](https://github.com/DaloLorn
 ## Features
 
 ### A singleplayer campaign!
-Still a work in progress, but there is one puzzle available and more scenarios are in the works.
+Still a work in progress, but there are two scenarios available and more scenarios are in the works.
 ### Several biome based planet constructions and 'terraforming' options
 I'm aiming for a creating a comprehensive set of constructions to terraform planets based on what is already there in terms of biomes and statuses as a replacement to the default game's Terraforming mechanic. 'Terraforming' won't let you turn any planet into anything you like, but it will mostly be additive instead of replacing existing resources. Currently features conversion of less useful biomes into better ones for buildings to be on, creating a tier 2 resource on certain rock planets, creating a tier 1 resource on rock planets, and blowing up a planet into pieces to obtain an ore resource. You can also melt ice to obtain water, and set your homeworld.
 ### Food system reworked
@@ -45,6 +45,10 @@ Just because you have a 300 labor planet shouldn't mean you can build an outpost
 I found in many games of unmodded Star Ruler my ships were either orders of magnitude stronger than my opponent's or orders of magnitude weaker. Nerfing stat bonuses makes ships much closer in strength even if one empire is ahead in terms of eco/research. To get more powerful ships you actually have to have the economy to field larger ships rather than just stacking multipliers that turn ks of combat strength into Ms of combat strength for free.
 ### Rebalanced Carpet Bombs
 Carpet Bombs can now be directly countered by making certain buildings or orbitals which reduce the effectiveness, but more importantly it is not possible to abuse edge cases in the subsystem variable code to make extremely cheap ships that can delevel tier 2+ planets in seconds.
+### Counters to Gravitron Condensors
+Gravitron Condensors now have a ramp up time which caues them to deal less than 100% damage when they start firing at a new target. Players can also unlock Shield Projectors to project a shield onto stars and planets to protect them from Gravitron attacks.
+### Railgun Impulse
+The keystone of vanilla that removed pierce from Railguns and replaced it with impulses is now a modifier, so can be applied to only the ships you want it on. Among other uses, these can be used to punch a shield projector away from its target to break the sheild so you can get back to blowing up the opponent's star.
 ### Rebalanced hulls
 The Titan and Collosus hulls are much more viable than vanilla, and the Destroyer hull is nerfed. Other hulls have slight tweaks to make them fit niches more strongly, and in particular the Carrier hull is the biggest beneficiary of the added local defense generation from support command subsystems.
 ### Diplomatic Victory
@@ -53,6 +57,8 @@ You can snowball your diplomatic strength with Diplomatic Maneuvering if you pla
 Attitudes which require maintaining x of something can no longer go into the negatives (as they will now count progress you made before starting the attitude). Xenophobic no longer requires you put the Outposts in border systems.
 ### Secret Project overhaul
 Secret projects are no longer secret, you will be able to unlock any of them if you meet the unlock requirements as in vanilla. Artifical Moons require building moon bases instead of ring habitats. The Innovation card now grants you random unlocks on the reserach grid, which can let you leapfrog into unexplored areas of the tech tree. Ironically Innovation will never give you a Secret Project anymore.
+### Designable Flare Bombs
+The Flare Bomb is a player designable subsystem now, so you can field flare bomb ships that are sufficiently armoured.
 ### Ability to unlock all types of FTL and FTL income orbital from the research grid
 For balancing this is a costly research path to go down and provides few other benefits. Each unlock also starts a vote to give the technology to all empires. This makes getting extra FTL technology a tradeoff as you might not keep it exclusive to just you, and then your research points have been wasted on something your opponents got for free.
 #### Supplementary new FTL
@@ -73,20 +79,22 @@ These traits have positive and negative factors together. New races featuring th
 This trait makes you get only half of the pressure from planetary resources, but allows you to raze planets down to nothing, gaining massively increased resource production while doing so. Includes dedicated AI support.
 ### Battleworlders
 The battleworlders lifestyle makes every planet a battleworld, and lets your empire conquer the galaxy from the comfort of its own planets. No AI support at this time. Inspired by Philip Reeve's Mortal Engines series and Darloth's / Dalo Lorn's Ringworlders. Balancing far from final.
-A number of Quality of Life changes to mobile planets in general have also been made, including: planets no longer grant everyone vision of them if they go into deep space, memory of objects are now lost if they leave regions or move around in deep space, and planets can be ordered to attack.
+A number of Quality of Life changes to mobile planets in general have also been made, including: planets no longer grant everyone vision of them if they go into deep space, memory of objects are now lost if they leave regions or move around in deep space, planets can be ordered to attack, and planets in deep space can be seiged or annexed.
 ### Improved AI
-AI will build moon bases on Gas Giants unless it's playing as Star Children or Ancient and thus doesn't need to. AI can make use of multiple FTL abilities unlocked at once. AI will build FTL income and storage buildings/orbitals if it needs more FTL. AI will seek to counter carpet bombing if it sees an opponent with them (AIs cannot do carpet bombing raids themselves yet).
+The AI can build moon bases, and all FTL income/storage buildings. The AI can make use of multiple FTL abilities unlocked at once. It will seek to counter carpet bombing if it sees an opponent with them (AIs cannot do carpet bombing raids themselves yet).
 #### Military
-The AI will be much more eager to build military flagships when it has spare money than vanilla, and it will prepare designs in advance.
+The AI will be much more eager to build military flagships when it has spare money than vanilla, and it will prepare designs in advance. It makes use of more subsystems in its designs when it unlocks them such as Fleet Computers and Simulators.
 #### Colonisation and Development
 What's stronger than a weasel? A dragon!
 
-The gradually being released Dragon AI features completely overhauled colonisation and development code. It is much less prone to colonising itself into debt, uses non Terrestial colonisation methods better, and makes smarter decisions about acquiring resources to level planets. It is much harder for it to get boxed in, and it makes use of outposts to expand through systems that the weasel AI would get stuck at.
+The gradually being released Dragon AI features completely overhauled colonisation and development code. It is much less prone to colonising itself into debt, uses non Terrestial colonisation methods better, and makes smarter decisions about acquiring resources to level planets. It is much harder for it to get boxed in, as it makes use of outposts to expand through systems that the weasel AI would get stuck at.
 ##### Race specific improvements
 ###### Mechanoid
-Non Mechanoid dragon AIs also can now use Unobtanium
+Non Mechanoid dragon AIs also can now use Unobtanium. The dragon Mechanoid AI also actually works.
 ###### Star Children
 The colonisation logic for dragon Star Children AIs was overhauled and should now show off the true speed a skilled Star Children player can colonise at.
+###### Extragalactic
+Heralds AIs will make good use of Expedite Relocation to colonise faster.
 #### Diplomacy
 The AI can now make a Senatorial Palace if it becomes Senate Leader.
 ### Improvements ported from other mods
