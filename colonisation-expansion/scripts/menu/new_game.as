@@ -699,8 +699,42 @@ class NewGame : BaseGuiElement {
 		Message msg;
 		settings.write(msg);
 
+		// [[ MODIFY BASE GAME START ]]
+		Message _msg;
+		settings.write(_msg);
+		writeToConfigFile(_msg);
+		// [[ MODIFY BASE GAME END ]]
+
 		startNewGame(msg);
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void writeToConfigFile(Message& msg) {
+		WriteFile file(path_join(modProfile, "lobby"));
+		uint size = msg.size;
+		for (uint i = 0; i < size; ++i) {
+			if (msg.readBit()) {
+				file.writeLine("1");
+			} else {
+				file.writeLine("0");
+			}
+		}
+	}
+
+	Message readFromConfigFile() {
+		ReadFile file(path_join(modProfile, "lobby"), true);
+		Message msg;
+		while (file++) {
+			string bit = file.line;
+			if (bit == "1") {
+				msg.write1();
+			} else {
+				msg.write0();
+			}
+		}
+		return msg;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void switchPage(uint page) {
 		mapsButton.pressed = page == 0;
