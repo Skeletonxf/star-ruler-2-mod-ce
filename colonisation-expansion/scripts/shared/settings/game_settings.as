@@ -23,6 +23,14 @@ enum AIFlags {
 const string DEFAULT_SHIPSET = "Volkur";
 const int STARTING_TRAIT_POINTS = 1;
 
+// [[ MODIFY BASE GAME START ]]
+// This version id MUST be incremented whenever making save incompatible changes
+// to any of the game settings classes to prevent corrupted reads of the
+// settings when starting a new game.
+const string LOBBY_SETTINGS_FILEPATH = "lobby.ce.txt";
+const string LOBBY_SETTINGS_VERSION = "Colonisation Expansion Lobby V1";
+// [[ MODIFY BASE GAME END ]]
+
 class EmpireSettings : Serializable {
 	uint index = 0;
 	uint type;

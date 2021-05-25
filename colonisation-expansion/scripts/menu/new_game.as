@@ -32,17 +32,6 @@ from maps import Map, maps, mapCount, getMap;
 import settings.game_settings;
 import util.game_options;
 
-// [[ MODIFY BASE GAME START ]]
-// Hack to make this file compile, this flag is set in game_settings.as
-// under the AIFlags enum definition, but for some reason star ruler compiles
-// the non modded file first, then this file, then the modified version, so
-// when compiling this file doesn't have it defined yet. This flag value
-// must be kept in sync with the definition in game_settings.as or bugs could
-// creep in.
-int AIF_Hostile = 0x8;
-int AIF_Dragon = 0x10; // 0x10 is 16 or x10000 in binary
-// [[ MODIFY BASE GAME END ]]
-
 const int EMPIRE_SETUP_HEIGHT = 96;
 const int GALAXY_SETUP_HEIGHT = 200;
 
@@ -78,6 +67,9 @@ class NewGame : BaseGuiElement {
 	GuiButton@ backButton;
 	GuiButton@ inviteButton;
 	GuiButton@ playButton;
+	// [[ MODIFY BASE GAME START ]]
+	GuiButton@ usePreviousButton;
+	// [[ MODIFY BASE GAME END ]]
 
 	EmpirePortraitCreation portraits;
 
@@ -223,6 +215,14 @@ class NewGame : BaseGuiElement {
 		inviteButton.buttonIcon = Sprite(spritesheet::MenuIcons, 13);
 		inviteButton.visible = cloud::inLobby;
 
+		// [[ MODFIY BASE GAME START ]]
+		@usePreviousButton = GuiButton(this, Alignment(
+			Left+0.05f+416, Bottom-0.1f+6, Width=200, Height=46),
+			locale::PREVIOUS_LOBBY);
+		usePreviousButton.buttonIcon = Sprite(spritesheet::MenuIcons, 12);
+		usePreviousButton.visible = false;
+		// [[ MODIFY BASE GAME END ]]
+
 		updateAbsolutePosition();
 	}
 
@@ -255,6 +255,7 @@ class NewGame : BaseGuiElement {
 
 		portraits.reset();
 		clearEmpires();
+
 		addEmpire(true, getRacePreset(0));
 		if(!mpServer && !fromMP) {
 			addEmpire(false);
@@ -289,6 +290,11 @@ class NewGame : BaseGuiElement {
 			playButton.text = locale::START_GAME;
 			playButton.color = colors::White;
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		Message msg = readFromConfigFile();
+		usePreviousButton.visible = !(fromMP || mpServer) && msg.size > 0;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void addChat(const string& str) {
@@ -700,9 +706,11 @@ class NewGame : BaseGuiElement {
 		settings.write(msg);
 
 		// [[ MODIFY BASE GAME START ]]
-		Message _msg;
-		settings.write(_msg);
-		writeToConfigFile(_msg);
+		if (!(fromMP || mpServer)) {
+			Message _msg;
+			settings.write(_msg);
+			writeToConfigFile(_msg);
+		}
 		// [[ MODIFY BASE GAME END ]]
 
 		startNewGame(msg);
@@ -710,8 +718,11 @@ class NewGame : BaseGuiElement {
 
 	// [[ MODIFY BASE GAME START ]]
 	void writeToConfigFile(Message& msg) {
-		WriteFile file(path_join(modProfile, "lobby"));
-		uint size = msg.size;
+		WriteFile file(path_join(modProfile, LOBBY_SETTINGS_FILEPATH));
+		file.writeLine(LOBBY_SETTINGS_VERSION);
+		// Message#size is in bytes, but we write/read bits since I can't find
+		// a method that is unambiguosuly for writing a byte.
+		uint size = msg.size * 8;
 		for (uint i = 0; i < size; ++i) {
 			if (msg.readBit()) {
 				file.writeLine("1");
@@ -722,10 +733,19 @@ class NewGame : BaseGuiElement {
 	}
 
 	Message readFromConfigFile() {
-		ReadFile file(path_join(modProfile, "lobby"), true);
+		ReadFile file(path_join(modProfile, LOBBY_SETTINGS_FILEPATH), true);
 		Message msg;
+		bool readHeader = false;
 		while (file++) {
 			string bit = file.line;
+			if (!readHeader) {
+				if (bit == LOBBY_SETTINGS_VERSION) {
+					readHeader = true;
+					continue;
+				} else {
+					return msg;
+				}
+			}
 			if (bit == "1") {
 				msg.write1();
 			} else {
@@ -733,6 +753,24 @@ class NewGame : BaseGuiElement {
 			}
 		}
 		return msg;
+	}
+
+	void loadPreviousLobby() {
+		if (!(fromMP || mpServer)) {
+			Message msg = readFromConfigFile();
+			GameSettings lobbyDefaultSettings;
+			if (msg.size != 0) {
+				print("| Applying settings from previous lobby");
+				print("| If everything breaks for you immediately after seeing this log, delete any lobby* files from your Star Ruler 2 profile");
+				print("| On Linux these are typically at ~/.starruler2/base/");
+				print("| On Windows these are typically at My Documents\\My Games\\Star Ruler 2\\base\\");
+				lobbyDefaultSettings.read(msg);
+				reset(lobbyDefaultSettings);
+				mapPanel.visible = false;
+				galaxyPanel.visible = true;
+				choosingMap = false;
+			}
+		}
 	}
 	// [[ MODIFY BASE GAME END ]]
 
@@ -819,6 +857,12 @@ class NewGame : BaseGuiElement {
 					cloud::inviteFriend();
 					return true;
 				}
+				// [[ MODIFY BASE GAME START ]]
+				else if(event.caller is usePreviousButton) {
+					loadPreviousLobby();
+					return true;
+				}
+				// [[ MODIFY BASE GAME END ]]
 				else if(event.caller is addAIButton) {
 					addEmpire();
 					return true;
@@ -1722,6 +1766,9 @@ class EmpireSetup : BaseGuiElement, IGuiCallback {
 			if(defaultName == name.text)
 				resetName();
 		}
+		// [[ MODIFY BASE GAME START ]]
+		update();
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void resetName() {
