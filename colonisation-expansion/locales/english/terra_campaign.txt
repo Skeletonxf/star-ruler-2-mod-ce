@@ -131,7 +131,7 @@ MINING_COLONY_INTRO4_TEXT: <<|
 	more heavily armored. Starting with your own flagship, of course. Can't
 	run an expedition if you're dead after all
 
-	[i]Add more armor to the Heavy Carrier Bomber design in the design tab,
+	[i]Add more armor to the Heavy Carrier design in the design tab,
 	click save, select your flagship, and then right click Avarita IV and select
 	'Retrofit Fleet'. Do not move the flagship out of the system until the
 	retrofit is finished.

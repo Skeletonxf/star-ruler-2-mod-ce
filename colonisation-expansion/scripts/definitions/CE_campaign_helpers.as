@@ -154,6 +154,10 @@ class CampaignScenarioState {
 		}
 		return total;
 	}
+
+	AI@ getAI(Empire@ emp) {
+		return cast<AI>(cast<EmpireAI>(emp.EmpireAI).ctrl);
+	}
 }
 
 class OrObjectiveCheck : CEObjectiveCheck {

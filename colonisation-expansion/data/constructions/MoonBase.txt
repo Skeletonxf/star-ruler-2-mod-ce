@@ -17,4 +17,5 @@ Construction: MoonBase
 	AddSurfaceArea(Moon, (6, 6))
 	TriggerGeneric(AddMaxPopulation(2))
 
-	AI: AsCreatedPopulationIncome(2)
+	RequireNotStatus(MinimalDevelopment)
+	AI:AsCreatedPopulationIncome(2)

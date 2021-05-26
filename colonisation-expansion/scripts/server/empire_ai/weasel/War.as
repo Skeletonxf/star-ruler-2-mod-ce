@@ -223,11 +223,11 @@ class Battle {
 					if(isCapturingAny && eliminate is null)
 						shouldRetreat = true;
 					else if(ourStrength < enemyStrength * 0.75)
-						shouldRetreat = true;
+						shouldRetreat = ai.behavior.allowRetreatingLostBattles; // [[ MODIFY BASE GAME ]]
 				}
 				// [[ MODIFY BASE GAME START ]]
 				// 25% -> 55%, a 25% fleet can probably not even move anymore
-				if(miss.fleet.fleetHealth < 0.55) {
+				if(miss.fleet.fleetHealth < ai.behavior.retreatThreshold) {
 					// [[ MODIFY BASE GAME END ]]
 					if(ourStrength < enemyStrength * 0.5)
 						shouldRetreat = true;

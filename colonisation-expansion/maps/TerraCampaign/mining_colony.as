@@ -64,6 +64,15 @@ class MiningColonyScenario : CampaignScenarioState {
 			getSystem(3), getSystem(4), getSystem(5)
 		};
 		super(systems, empires);
+		AI@ enemyAI = getAI(enemy);
+		// don't hold back one fleet
+		enemyAI.behavior.battleReserveFleets = 0;
+		// attack even if we're going to lose
+		enemyAI.behavior.attackStrengthOverkill = 0;
+		// always try to be in an aggressive war with the player
+		enemyAI.behavior.aggressiveWarOverkill = 0;
+		// be a little more sluggish at retreating than by default
+		enemyAI.behavior.retreatThreshold = 0.35;
 	}
 
 	void tick() {
@@ -230,8 +239,8 @@ class MiningColonyScenario : CampaignScenarioState {
 		enemy.modTotalBudget(+500);
 		player.modTotalBudget(+500);
 
-		@playerShip = spawnFleet(player, planet(0,3).position + vec3d(180.0,0.0,0.0), "Heavy Carrier Bomber", 0);
-		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,40.0), "Heavy Carrier Bomber", 0);
+		@playerShip = spawnFleet(player, planet(0,3).position + vec3d(180.0,0.0,0.0), "Heavy Carrier", 0);
+		spawnFleet(player, planet(0,3).position + vec3d(-40.0,0.0,40.0), "Heavy Carrier", 0);
 		spawnFleet(player, vec3d(400.0,0.0,400.0), "Miner", 0);
 		spawnFleet(player, vec3d(400.0,0.0,-300.0), "Miner", 0);
 		spawnFleet(player, vec3d(-400.0,0.0,-400.0), "Miner", 0);

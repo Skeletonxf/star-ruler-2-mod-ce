@@ -4,7 +4,7 @@ Trait: MiningColony
 	Available: False
 	LoadDesigns(campaign/miningcolony)
 
-	EnableModifier(CarpetBomb::BombardCostFactor(0.1))
+	//EnableModifier(CarpetBomb::BombardCostFactor(0.1))
 	AddStatusOwnedPlanets(MinimalDevelopment)
 	AddStatusOwnedPlanets(NoInfluenceGen)
 	ModAttribute(FactoryLaborMod, Add, 20)

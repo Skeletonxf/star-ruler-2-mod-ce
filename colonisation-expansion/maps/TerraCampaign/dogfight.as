@@ -42,6 +42,10 @@ class DogfightScenario : CampaignScenarioState {
 		@this.player = player;
 		@this.enemy = enemy;
 		@this.simulationSystem = simulationSystem;
+		AI@ enemyAI = getAI(enemy);
+		// never retreat from taking damage or this scenario becomes impossible
+		enemyAI.behavior.retreatThreshold = 0.0;
+		enemyAI.behavior.allowRetreatingLostBattles = false;
 	}
 
 	void tick() {
@@ -201,6 +205,10 @@ class Scenario : Map {
 			.newObjective.checker(1, CheckDestroyAllFleets());
 		Dialogue("DOGFIGHT_TRAINING_COMPLETE")
 			.onStart(EndCinematic(this)); // doesn't work?????
+	}
+
+	void alterAISettings() {
+
 	}
 
 #section all

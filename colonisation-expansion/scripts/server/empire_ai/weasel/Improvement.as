@@ -169,10 +169,6 @@ class Improvement : AIComponent, PlanetEventListener {
 	 * Gas Giants that need space for a Megafarm/Hydrogenator but may also
 	 * help with AI with development focuses running out of room.
 	 */
-	// TODO: Moon bases are also generically useful as they are one of very few
-	// things that creates net income. We should generically build such
-	// constructions, but that should be handled in planet_management and
-	// based on AI hooks instead of here
 	void lookToBuildMoonBases() {
 		// don't build moon bases as Star Children or Ancient
 		// star children don't need them as they don't build
@@ -191,6 +187,8 @@ class Improvement : AIComponent, PlanetEventListener {
 				if (planet.moonCount == 0) {
 					continue;
 				}
+				// FIXME: Check the planet isn't getting razed
+
 				// We could try to check here if the planet actually needs a moon base.
 				// There's a high chance we get the gas giant to level 1 via importing
 				// food and water, in which case we shouldn't waste money on a moon base

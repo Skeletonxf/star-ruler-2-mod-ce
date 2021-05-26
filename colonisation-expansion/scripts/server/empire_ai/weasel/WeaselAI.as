@@ -311,6 +311,13 @@ final class AIBehavior {
 	double acceptSurrenderRatio = 0.75;
 	double offerSurrenderRatio = 0.5;
 
+	// [[ MODIFY BASE GAME START ]]
+	// What % of our HP has to be left for us to decide to retreat.
+	// (25% in vanilla (and vanilla ships never retreat))
+	double retreatThreshold = 0.55;
+	bool allowRetreatingLostBattles = true;
+	// [[ MODIFY BASE GAME END ]]
+
 	void setDifficulty(int diff, uint flags) {
 		//This changes the behavior values based on difficulty and flags
 		if(flags & AIF_Aggressive != 0)
