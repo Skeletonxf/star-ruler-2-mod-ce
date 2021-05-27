@@ -508,6 +508,26 @@ class NewGame : BaseGuiElement {
 		}
 		emp.defaultName = emp.name.text;
 		addAIButton.position = vec2i((empirePanel.size.width - addAIButton.size.width)/2, y + EMPIRE_SETUP_HEIGHT + 4);
+		// [[ MODIFY BASE GAME START ]]
+		if (!player && empires.length > 1) {
+			uint i = empires.length - 1;
+			EmpireSetup@ baseAISettingsOff;
+			// first player is always a human
+			while (i > 0) {
+				EmpireSetup@ previous = empires[i];
+				if (!previous.player) {
+					// found the previous AI
+					@baseAISettingsOff = previous;
+					break;
+				}
+				i -= 1;
+			}
+			if (baseAISettingsOff !is null) {
+				// copy AI settings from the previous entry
+				emp.settings.copyAISettingsFrom(baseAISettingsOff.settings);
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 		emp.update();
 		empires.insertLast(emp);
 		empirePanel.updateAbsolutePosition();

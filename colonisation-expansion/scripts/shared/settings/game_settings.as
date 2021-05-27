@@ -183,6 +183,16 @@ class EmpireSettings : Serializable {
 		traits = other.traits;
 		effectorSkin = other.effectorSkin;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void copyAISettingsFrom(const EmpireSettings& other) {
+		difficulty = other.difficulty;
+		aiFlags = other.aiFlags;
+		cheatWealth = other.cheatWealth;
+		cheatStrength = other.cheatStrength;
+		cheatAbundance = other.cheatAbundance;
+	}
+	// [[ MODIFY BASE GAME END ]]
 };
 
 class SettingsContainer : Savable {
