@@ -48,6 +48,66 @@ const array<Sprite> QDIFF_ICONS = {Sprite(spritesheet::AIDifficulty, 0), Sprite(
 NameGenerator empireNames;
 bool empireNamesInitialized = false;
 
+// [[ MODIFY BASE GAME START ]]
+// Generates a hopefully unique header of data related to the mods installed,
+// that 99% of the time should mean that a match with the header in a lobby
+// save means we can load that lobby save.
+// This header should detect breaking changes to all the data that a specific
+// empire can be selected automatically. However, LOBBY_SETTINGS_VERSION from
+// game settings must still be incremented if making changes to GameSettings.
+array<string> getLobbySettingsHeader() {
+	array<string> header;
+	header.insertLast(LOBBY_SETTINGS_VERSION);
+
+	// Include trait count first as this is the most likely source of
+	// incompatibility so we should check it early to bail out of more expensive
+	// checks.
+	header.insertLast("Traits: "+string(getTraitCount()));
+
+	string portraits = "Portraits:";
+	for (uint i = 0, cnt = getEmpirePortraitCount(); i < cnt; ++i) {
+		auto@ img = getEmpirePortrait(i);
+		portraits = portraits + " " + img.ident;
+	}
+	header.insertLast(portraits);
+
+	string shipsets = "Shipsets:";
+	for (uint i = 0, cnt = getShipsetCount(); i < cnt; ++i) {
+		auto@ ss = getShipset(i);
+		if (ss.available && (ss.dlc.length == 0 || hasDLC(ss.dlc)))
+		shipsets = shipsets + " " + ss.ident;
+	}
+	header.insertLast(shipsets);
+
+	string weaponSkins = "Weapon Skins:";
+	for (uint i = 0, cnt = getEmpireWeaponSkinCount(); i < cnt; ++i) {
+		auto@ skin = getEmpireWeaponSkin(i);
+		weaponSkins = weaponSkins + " " + skin.ident;
+	}
+	header.insertLast(weaponSkins);
+
+	string maps = "Maps:";
+	for (uint i = 0, cnt = mapCount; i < cnt; ++i) {
+		auto@ mp = getMap(i);
+		if (mp.isListed && !mp.isScenario && (mp.dlc.length == 0 || hasDLC(mp.dlc)))
+			maps = maps + " " + mp.id;
+	}
+	header.insertLast(maps);
+
+	string traits = "Available Traits:";
+	for (uint n = 0, ncnt = getTraitCount(); n < ncnt; ++n) {
+		auto@ trait = getTrait(n);
+		if (trait.available && trait.hasDLC) {
+			traits = traits + " " + trait.ident;
+		}
+	}
+	header.insertLast(traits);
+
+	header.insertLast("Payload:");
+	return header;
+}
+// [[ MODIFY BASE GAME END ]]
+
 class ConfirmStart : QuestionDialogCallback {
 	void questionCallback(QuestionDialog@ dialog, int answer) {
 		if(answer == QA_Yes) {
@@ -292,8 +352,12 @@ class NewGame : BaseGuiElement {
 		}
 
 		// [[ MODIFY BASE GAME START ]]
-		Message msg = readFromConfigFile();
-		usePreviousButton.visible = !(fromMP || mpServer) && msg.size > 0;
+		if (!(fromMP || mpServer)) {
+			Message msg = readFromConfigFile();
+			usePreviousButton.visible = msg.size > 0;
+		} else {
+			usePreviousButton.visible = false;
+		}
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -739,7 +803,11 @@ class NewGame : BaseGuiElement {
 	// [[ MODIFY BASE GAME START ]]
 	void writeToConfigFile(Message& msg) {
 		WriteFile file(path_join(modProfile, LOBBY_SETTINGS_FILEPATH));
-		file.writeLine(LOBBY_SETTINGS_VERSION);
+		array<string> header = getLobbySettingsHeader();
+		uint headerLines = header.length;
+		for (uint i = 0; i < headerLines; ++i) {
+			file.writeLine(header[i]);
+		}
 		// Message#size is in bytes, but we write/read bits since I can't find
 		// a method that is unambiguosuly for writing a byte.
 		uint size = msg.size * 8;
@@ -755,22 +823,23 @@ class NewGame : BaseGuiElement {
 	Message readFromConfigFile() {
 		ReadFile file(path_join(modProfile, LOBBY_SETTINGS_FILEPATH), true);
 		Message msg;
-		bool readHeader = false;
+		array<string> header = getLobbySettingsHeader();
+		uint i = 0;
+		uint headerLines = header.length;
 		while (file++) {
-			string bit = file.line;
-			if (!readHeader) {
-				if (bit == LOBBY_SETTINGS_VERSION) {
-					readHeader = true;
-					continue;
-				} else {
+			string line = file.line;
+			if (i < headerLines) {
+				if (line != header[i]) {
 					return msg;
 				}
-			}
-			if (bit == "1") {
-				msg.write1();
 			} else {
-				msg.write0();
+				if (line == "1") {
+					msg.write1();
+				} else {
+					msg.write0();
+				}
 			}
+			i += 1;
 		}
 		return msg;
 	}
