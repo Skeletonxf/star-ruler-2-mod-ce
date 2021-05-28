@@ -1063,7 +1063,7 @@ class PricedAsteroid : BonusEffect {
 
 #section server
 	void activate(Object@ obj, Empire@ emp) const override {
-		Asteroid@ roid = createAsteroid(obj.position);
+		Asteroid@ roid = createAsteroid(obj.position, delay=true);
 		Region@ reg = obj.region;
 		if(reg !is null) {
 			roid.orbitAround(reg.position);
@@ -1090,7 +1090,7 @@ class OwnedAsteroid : BonusEffect {
 		pos.x += off.x;
 		pos.z += off.y;
 
-		Asteroid@ roid = createAsteroid(pos);
+		Asteroid@ roid = createAsteroid(pos, delay=true);
 		Region@ reg = obj.region;
 		if(reg !is null) {
 			roid.orbitAround(reg.position);
