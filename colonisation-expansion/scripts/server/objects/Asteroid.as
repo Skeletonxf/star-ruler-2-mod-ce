@@ -188,8 +188,11 @@ tidy class AsteroidScript {
 		@icon = StrategicIconNode();
 		if(obj.cargoTypes != 0)
 			icon.establish(obj, 0.015, spritesheet::OreAsteroidIcon, 0);
-		else
-			icon.establish(obj, 0.015, spritesheet::AsteroidIcon, 0);
+		// [[ MODIFY BASE GAME START ]]
+		else {
+			icon.establish(obj, 0.019, spritesheet::AsteroidIcon, 0);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		icon.memorable = true;
 
 		bindMesh(obj, mesh);
