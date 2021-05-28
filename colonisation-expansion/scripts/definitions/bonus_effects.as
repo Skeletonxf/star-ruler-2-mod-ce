@@ -116,7 +116,7 @@ class AddEmpireResourceIncome : EmpireTrigger {
 	Document doc("Adds income to one of the empire-wide resources.");
 	Argument type(AT_EmpireResource, doc="Type of income to add.");
 	Argument amount(AT_Range, doc="Amount of income to add.");
-	
+
 #section server
 	void activate(Object@ obj, Empire@ emp) const override {
 		if(emp is null)
@@ -149,7 +149,7 @@ class AddEmpireResource : EmpireTrigger {
 	Document doc("Adds to one of the empire-wide resources.");
 	Argument type(AT_EmpireResource, doc="Type of resource to add. Money will be added as Special Funds.");
 	Argument amount(AT_Range, doc="Amount of resource to add.");
-	
+
 #section server
 	void activate(Object@ obj, Empire@ emp) const override {
 		if(emp is null)
@@ -328,7 +328,7 @@ class SpawnDryDock : BonusEffect {
 	Argument progress(AT_Range, "0.0", doc="Percentage of the ship already constructed.");
 	Argument free(AT_Boolean, "true", doc="Whether the ship/drydock is free of maintenance.");
 	const Design@ dsg;
-	
+
 #section server
 	bool instantiate() {
 		if(Creeps is null)
@@ -340,7 +340,7 @@ class SpawnDryDock : BonusEffect {
 		}
 		return BonusEffect::instantiate();
 	}
-	
+
 	void activate(Object@ obj, Empire@ emp) const override {
 		if(obj is null)
 			return;
@@ -391,14 +391,14 @@ class MapVision : BonusEffect {
 		Region@ region = obj.region;
 		if(region is null)
 			return;
-		
+
 		set_int visited;
 		array<const SystemDesc@> listA, listB;
 		array<const SystemDesc@>@ border = @listA, nextBorder = @listB;
-		
+
 		border.insertLast(getSystem(region));
 		visited.insert(region.id);
-		
+
 		for(uint hop = 0, hopCnt = arguments[0].integer; hop < hopCnt; ++hop) {
 			for(uint j = 0, jcnt = border.length; j < jcnt; ++j) {
 				const SystemDesc@ sys = border[j];
@@ -411,7 +411,7 @@ class MapVision : BonusEffect {
 					nextBorder.insertLast(borderSys);
 				}
 			}
-			
+
 			array<const SystemDesc@>@ swap = @border;
 			@border = nextBorder;
 			@nextBorder = swap;
@@ -430,7 +430,7 @@ class RandomMapVision : EmpireTrigger {
 	void activate(Object@ obj, Empire@ emp) const override {
 		uint count = min(arguments[0].integer, systemCount);
 		set_int picked;
-		
+
 		for(uint i = 0; i < count; ++i) {
 			for(uint try = 0; try < 5; ++try) {
 				auto@ sys = getSystem(randomi(0, systemCount-1));
@@ -879,7 +879,7 @@ class SpawnOrbital : EmpireTrigger {
 			pos.x += off.x;
 			pos.z += off.y;
 		}
-		
+
 		auto@ orb = createOrbital(pos, def, arguments[1].boolean ? Creeps : emp);
 		if(arguments[2].boolean && !arguments[1].boolean)
 			orb.makeFree();
@@ -1071,6 +1071,9 @@ class PricedAsteroid : BonusEffect {
 		}
 		for(uint i = 1, cnt = arguments.length; i < cnt; ++i)
 			roid.addAvailable(arguments[i].integer, arguments[0].decimal);
+		// [[ MODIFY BASE GAME START ]]
+		roid.initMesh();
+		// [[ MODIFY BASE GAME END ]]
 	}
 #section all
 };
@@ -1097,6 +1100,9 @@ class OwnedAsteroid : BonusEffect {
 		roid.setup(null, emp, arguments[0].integer);
 		for(uint i = 1, cnt = arguments.length; i < cnt; ++i)
 			roid.createResource(arguments[i].integer);
+		// [[ MODIFY BASE GAME START ]]
+		roid.initMesh();
+		// [[ MODIFY BASE GAME END ]]
 	}
 #section all
 };

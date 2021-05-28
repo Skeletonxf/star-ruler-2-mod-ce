@@ -231,6 +231,9 @@ tidy class PlanetScript {
 						}
 						while(randomd() < 0.4);
 					}
+					// [[ MODIFY BASE GAME START ]]
+					roid.initMesh();
+					// [[ MODIFY BASE GAME END ]]
 				}
 			}
 		}
