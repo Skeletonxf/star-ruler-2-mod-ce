@@ -103,6 +103,22 @@ array<string> getLobbySettingsHeader() {
 	}
 	header.insertLast(traits);
 
+	string availableSettings = "Available Settings:";
+	// BlindMind didn't register a function for us to find out the total
+	// number of settings, but string getName(uint index) returns an empty
+	// string when we go out of bounds
+	uint namedSettingIndex = 0;
+	while (true) {
+		string nextSetting = config::getName(namedSettingIndex);
+		if (nextSetting == "") {
+			break;
+		} else {
+			availableSettings = availableSettings + " " + nextSetting;
+			namedSettingIndex += 1;
+		}
+	}
+	header.insertLast(availableSettings);
+
 	header.insertLast("Payload:");
 	return header;
 }
