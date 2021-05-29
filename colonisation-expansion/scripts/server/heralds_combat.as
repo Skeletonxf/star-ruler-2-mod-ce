@@ -70,8 +70,10 @@ void ReactorOverload(Event& evt, double Damage) {
 
 DamageEventStatus NilingAbsorb(DamageEvent& evt, const vec2u& position, double Damage, double Radius)
 {
-	if((evt.flags & typeMask) != DT_Energy)
-		return DE_SkipHex;
+	// [[ MODIFY BASE GAME START ]]
+	//if((evt.flags & typeMask) != DT_Energy)
+	//	return DE_SkipHex;
+	// [[ MODIFY BASE GAME END ]]
 
 	auto@ sys = evt.destination;
 	auto@ bp = evt.blueprint;
@@ -88,7 +90,7 @@ DamageEventStatus NilingAbsorb(DamageEvent& evt, const vec2u& position, double D
 
 	bp.decimal(sys, 0) = value;
 	// [[ MODIFY BASE GAME START ]]
-	evt.damage *= 0.55;
+	//evt.damage *= 0.55;
 	return DE_Continue;
 	// [[ MODIFY BASE GAME END ]]
 }
