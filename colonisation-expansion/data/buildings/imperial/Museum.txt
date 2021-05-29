@@ -10,6 +10,8 @@ Building: Museum
 
 	Size: 3x3
 	Labor Cost: 25
+	Base Maintenance: 25
+	Tile Maintenance: 10
 
 	RequireUnlockTag(MuseumUnlock)
 	CannotRemove()

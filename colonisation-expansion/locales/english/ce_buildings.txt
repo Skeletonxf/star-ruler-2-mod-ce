@@ -98,3 +98,10 @@ BLD_DEFENSE_GRID_DESC_RINGWORLD: <<
 
 	[i]Devastation from carpet bombing is reduced to 20% effectiveness[/i]
 >>
+BLD_MUSEUM_DESC: <<
+	When built, immediately grants 10 bonus influence points.
+
+	Increases the planet's influence generation by 1 stake.
+
+	Cannot be removed once built.
+>>
