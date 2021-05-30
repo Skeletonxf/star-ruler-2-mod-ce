@@ -14,16 +14,12 @@ BLD_DEFENSE_GRID_DESC: <<
 
 	The grid is composed of 10 missile launchers totaling 250 DPS with 450 range.
 
-	[i]If there are enemy fleets in orbit and you do not have any remaining support ships to protect the satellite guidance system, the missile silos are disabled.[/i]
-
 	[i]Devastation from carpet bombing is reduced to 20% effectiveness[/i]
 >>
 BLD_PLANET_CANNON_DESC: <<
-	An enormous railgun on the planet's surface propels large projectiles towards enemy fleets in the system, inflicting damage. Also propels support satellites into orbit, and adds 2 defense generation.
+	An enormous railgun on the planet's surface propels large projectiles towards enemy fleets in the system, inflicting damage. Also propels support satellites into orbit adding 2 local defense generation.
 
 	The cannon deals 200 Damage every 5 seconds at 1500 range.
-
-	[i]If there are enemy fleets in orbit and you do not have any remaining support ships to protect the satellite guidance system, the accelerator cannon is disabled.[/i]
 
 	[i]Devastation from carpet bombing is reduced to 20% effectiveness[/i]
 >>
@@ -93,8 +89,6 @@ BLD_DEFENSE_GRID_DESC_RINGWORLD: <<
 	A massive field of missile silos located on the surface of the planet, capable of firing at nearby enemy fleets.
 
 	The grid is composed of 10 missile launchers totaling 500 DPS with 1000 range.
-
-	[i]If there are enemy fleets in orbit and you do not have any remaining support ships to protect the satellite guidance system, the missile silos are disabled.[/i]
 
 	[i]Devastation from carpet bombing is reduced to 20% effectiveness[/i]
 >>

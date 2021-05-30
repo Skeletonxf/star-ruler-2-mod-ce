@@ -19,5 +19,5 @@ Building: DefenseGrid
 	RequireNotTrait(Ancient)
 
 	RequireEither(RequireNotTrait(StarChildren), RequireNotStatus(StarHabitatsNoPlanetUseSingle))
-	IfNotSiege(RepeatExtended(AddTurret(Missile, Range=450, Damage=25, Reload=1, Speed=150, Tracking=6), Base = 10, Multiply Attribute = StaticDamageFactor))
+	RepeatExtended(AddTurret(Missile, Range=450, Damage=25, Reload=1, Speed=150, Tracking=6), Base = 10, Multiply Attribute = StaticDamageFactor)
 	RecordBonusDPS(250)
