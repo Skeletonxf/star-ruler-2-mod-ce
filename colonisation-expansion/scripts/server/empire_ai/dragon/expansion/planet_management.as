@@ -295,6 +295,8 @@ class PlanetManagement: PlanetEventListener {
 	void considerUnobtaniumMorph(PlanetAI@ plAI, AI& ai) {
 		if (plAI.obj is null)
 			return;
+		if (plAI.resources is null)
+			return;
 
 		if (unobtaniumCandidatePlanets.find(plAI) != -1)
 			return;
