@@ -46,7 +46,7 @@ EXPOSE_CORE_DESC: <<
 	Through extensive drilling and explosives we can open up this planet's molten core, providing a valuable local Tier 2 resource.
 	Unfortunately the process makes the planet inhospitable in the interim, reducing pressure capacity and max population by 12.
 
-	[color=#aaa][i]The drilling is too dangerous on planets with oceans or ice, and hence not available.[/i][/color]
+	[color=#aaa][i]The drilling process is too dangerous on planets with oceans or ice, and hence not available.[/i][/color]
 >>
 EXPOSE_CORE: Expose Molten Core
 CREATE_WATER: Synthesise Water

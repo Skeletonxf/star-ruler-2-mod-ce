@@ -5,6 +5,12 @@ Construction: CreateLocalAsteroidField
 	Icon: ResourceIcons::28
 	Description: Using a large quantity of ore and part of the planet we can construct a local asteroid field on this planet to improve labor generation.
 	Time Cost: 180
+	RequireNotStatus(GasGiant)
+	RequireNotStatus(IceGiant)
+	RequireNotStatus(ArtificialPlanetoid)
+	RequireNotStatus(Ringworld)
+	CE_requirement_effects::RequireNotPlanetResource(LocalAsteroidFieldGasGiant)
+	CE_requirement_effects::RequireNotPlanetResource(LocalAsteroidField)
 	RemoveStatus(MakingAsteroidField)
 	OnStart(AddStatus(MakingAsteroidField))
 	OnCancel(RemoveStatus(MakingAsteroidField))
@@ -14,7 +20,7 @@ Construction: CreateLocalAsteroidField
 	RequirePlanetNotBiome(AncientAtmosphere1)
 	RequirePlanetNotBiome(AncientAtmosphere2)
 	RequirePlanetNotBiome(AncientAtmosphere3)
-	CE_biome_hooks::DealPlanetPercentageTrueDamage(0.3)
+	CE_biome_hooks::DealPlanetPercentageTrueDamage(0.55)
 	ConsumeCargo(Ore, 2000)
 	RequirePlanetNotBiome(Photovoltics)
 	RequirePlanetNotBiome(Artificial)
