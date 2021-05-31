@@ -833,7 +833,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 		@scalableClass = getResourceClass("Scalable");
 
-		potentialColonizations = PotentialColonizationsSummary();
+		@potentialColonizations = PotentialColonizationsSummary(ai);
 	}
 
 	void save(SaveFile& file) {
@@ -1353,7 +1353,28 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		DevelopmentFocus@ priorityFocus;
 		uint levelsAway = 0;
 		for (uint i = 0, cnt = focuses.length; i < cnt; ++i) {
-			levelsAway += max(focuses[i].targetLevel - focuses[i].obj.level, 0);
+			uint levelTargetGap = max(focuses[i].targetLevel - focuses[i].obj.level, 0);
+			levelsAway += levelTargetGap;
+			if (levelTargetGap > 0) {
+				array<ImportData@> requestedUnmet = resources.getRequestedResources(focuses[i].obj);
+				// de deplicate requests into one per spec type
+				array<ResourceSpec@> neededSpecs;
+				array<uint> neededSpecsCount;
+				for (uint j = 0, jcnt = requestedUnmet.length; j < jcnt; ++j) {
+					if (neededSpecs.find(requestedUnmet[j].spec) != -1) {
+						neededSpecsCount[j] += 1;
+						continue;
+					}
+					neededSpecs.insertLast(requestedUnmet[j].spec);
+					neededSpecsCount.insertLast(1);
+				}
+				for (uint j = 0, jcnt = neededSpecs.length; j < jcnt; ++j) {
+					uint availablePotentials = potentialColonizations.hasPotentialsForSpec(neededSpecs[j]);
+					bool sufficientPotentials = neededSpecsCount[j] <= availablePotentials;
+					// TODO: Determine if this is a fatal problem or if we can use a building
+					// TODO: Act on this being a problem
+				}
+			}
 		}
 		if (levelsAway > 5) {
 			// TODO: If we have a lot of unmet focuses we should potentially

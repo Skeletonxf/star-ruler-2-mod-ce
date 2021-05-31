@@ -58,16 +58,25 @@ class PotentialColonizeSource : PotentialColonize {
 // A container for potentialColonizations, with some lazy calculated cached data
 // for slightly more efficient querying
 class PotentialColonizationsSummary {
+	AI@ ai;
 	array<PotentialColonize@> potentialColonizations;
+	array<ResourceSpecQuery@> queries;
 
+	PotentialColonizationsSummary(AI@ ai) {
+		@this.ai = ai;
+	}
 
 	uint get_length() {
 		return potentialColonizations.length;
 	}
 
+	/**
+	 * Clears the list of potentials and invalidates the cached query results,
+	 * for calling prior to repopulating the potentials.
+	 */
 	void reset() {
 		potentialColonizations.length = 0;
-		// TODO: Reset cache
+		queries.length = 0;
 	}
 
 	void add(PotentialColonizeSource@ p) {
@@ -78,6 +87,44 @@ class PotentialColonizationsSummary {
 		// no bounds checks because we only use this for indexing as if we
 		// were indexing the array inside us
 		return cast<PotentialColonizeSource>(potentialColonizations[i]);
+	}
+
+	/**
+	 * Queries how many potential colonisations we have around us that could
+	 * meet this spec.
+	 */
+	uint hasPotentialsForSpec(ResourceSpec@ spec) {
+		for (uint i = 0, cnt = queries.length; i < cnt; ++i) {
+			ResourceSpecQuery@ q = queries[i];
+			if (q.spec.opEquals(spec)) {
+				uint total = 0;
+				for (uint j = 0, meeting = q.meeting.length; j < meeting; ++j) {
+					Planet@ planet = q.meeting[j].pl;
+					if (planet is null || !planet.valid)
+						continue;
+					// if we already colonised this, it's not a potential anymore
+					if (planet.owner is ai.empire)
+						continue;
+					total += 1;
+				}
+				return total;
+			}
+		}
+		array<PotentialColonizeSource@> meeting;
+		for (uint i = 0, cnt = potentialColonizations.length; i < cnt; ++i) {
+			PotentialColonizeSource@ p = get(i);
+			Planet@ planet = p.pl;
+			if (planet is null || !planet.valid)
+				continue;
+			// if we already colonised this, it's not a potential anymore
+			if (planet.owner is ai.empire)
+				continue;
+			if (p.canMeet(spec)) {
+				meeting.insertLast(p);
+			}
+		}
+		queries.insertLast(ResourceSpecQuery(spec, meeting));
+		return meeting.length;
 	}
 
 	void save(SaveFile& file) {
@@ -97,5 +144,15 @@ class PotentialColonizationsSummary {
 			p.load(file);
 			@potentialColonizations[i] = p;
 		}
+	}
+}
+
+class ResourceSpecQuery {
+	ResourceSpec@ spec;
+	array<PotentialColonizeSource@> meeting;
+
+	ResourceSpecQuery(ResourceSpec@ spec, array<PotentialColonizeSource@> meeting) {
+		@this.spec = spec;
+		this.meeting = meeting;
 	}
 }
