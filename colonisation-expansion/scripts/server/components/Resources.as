@@ -788,6 +788,20 @@ tidy class ObjectResources : Component_Resources, Savable {
 		return nativeResources[i].id;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	bool hasNativeResourceType(uint resourceId) const {
+		auto@ type = getResource(resourceId);
+		if (type is null)
+			return false;
+		for (uint i = 0, cnt = nativeResources.length; i < cnt; ++i) {
+			if (nativeResources[i].type is type) {
+				return true;
+			}
+		}
+		return false;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	uint get_nativeResourceTotalLevel() const {
 		uint level = 0;
 		for(uint i = 0, cnt = nativeResources.length; i < cnt; ++i)

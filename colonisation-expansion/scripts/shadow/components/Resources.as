@@ -67,6 +67,20 @@ tidy class ObjectResources : Component_Resources {
 		return nativeResources[i].id;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	bool hasNativeResourceType(uint resourceId) const {
+		auto@ type = getResource(resourceId);
+		if (type is null)
+			return false;
+		for (uint i = 0, cnt = nativeResources.length; i < cnt; ++i) {
+			if (nativeResources[i].type is type) {
+				return true;
+			}
+		}
+		return false;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	uint get_nativeResourceTotalLevel() const {
 		uint level = 0;
 		for(uint i = 0, cnt = nativeResources.length; i < cnt; ++i)
@@ -196,7 +210,7 @@ tidy class ObjectResources : Component_Resources {
 		}
 		return uint(-1);
 	}
-	
+
 	string getDisabledReason(Object& obj, int id) {
 		uint index = getNativeIndex(id);
 		if(index >= nativeResources.length)
@@ -256,7 +270,7 @@ tidy class ObjectResources : Component_Resources {
 			if(resources[i].origin is null || obj !is resources[i].origin)
 				yield(resources[i]);
 	}
-	
+
 	bool get_hasAutoImports(Player& pl, Object& obj) {
 		for(uint i = 0, cnt = queuedImports.length; i < cnt; ++i)
 			if(queuedImports[i].origin is null && pl.emp is queuedImports[i].forEmpire)
@@ -591,7 +605,7 @@ tidy class ObjectResources : Component_Resources {
 			msg >> ImportDisabled;
 		else
 			ImportDisabled = 0;
-		
+
 		if(msg.readBit())
 			msg >> ExportDisabled;
 		else

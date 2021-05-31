@@ -5,6 +5,9 @@ local:
 	safe uint get_nativeResourceCount() const;
 	uint get_nativeResourceType(uint index) const;
 	int get_nativeResourceId(uint index) const;
+	// [[ MODIFY BASE GAME START ]]
+	bool hasNativeResourceType(uint resourceId) const;
+	// [[ MODIFY BASE GAME END ]]
 	uint get_nativeResourceTotalLevel() const;
 	bool get_nativeResourceUsable(uint index) const;
 	bool get_nativeResourceLocked(uint index);
