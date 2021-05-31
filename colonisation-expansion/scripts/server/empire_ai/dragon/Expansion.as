@@ -30,6 +30,7 @@ import empire_ai.dragon.expansion.region_linking;
 import empire_ai.dragon.expansion.development;
 import empire_ai.dragon.expansion.buildings;
 import empire_ai.dragon.expansion.ftl;
+import empire_ai.dragon.expansion.potentials;
 import empire_ai.dragon.logs;
 
 from statuses import getStatusID;
@@ -64,58 +65,6 @@ class Limits {
 		file >> remainingColonizations;
 		file >> currentColonizations;
 		file >> previousColonizations;
-	}
-}
-
-class PotentialColonizeSource : PotentialColonize {
-	// Existing parent class fields, these are needed because
-	// other AI components use them
-	//Planet@ pl;
-	//const ResourceType@ resource;
-	//double weight = 0;
-	PlanetValuables@ valuables;
-
-	PotentialColonizeSource(Planet@ planet, ResourceValuator& valuation) {
-		@valuables = PlanetValuables(planet);
-		// weight is NOT based on resources, we will frequently loop through
-		// potential colonize sources for the best choice to meet a spec,
-		// and hence this is for breaking ties given a spec
-		// we also scale this by distance to our border, to favor expanding
-		// our border at times
-		weight = valuables.getGenericValue(valuation);
-		@resource = getResource(planet.primaryResourceType);
-		@pl = planet;
-	}
-
-	void save(SaveFile& file) {
-		file << pl;
-		if (resource !is null) {
-			file.write1();
-			file.writeIdentifier(SI_Resource, resource.id);
-		} else {
-			file.write0();
-		}
-		file << weight;
-	}
-
-	// only for deserialisation
-	PotentialColonizeSource() {}
-
-	void load(SaveFile& file) {
-		file >> pl;
-		if (file.readBit())
-			@resource = getResource(file.readIdentifier(SI_Resource));
-		file >> weight;
-		@valuables = PlanetValuables(pl);
-	}
-
-	bool canMeet(ResourceSpec@ spec) {
-		// TODO: Should probably just check if the spec is met by this planet
-		// for all specs that aren't for import instead of special casing
-		if (spec.type == RST_Level_Minimum_Or_Class) {
-			return valuables.meets(spec);
-		}
-		return valuables.canExportToMeet(spec);
 	}
 }
 
@@ -349,7 +298,7 @@ class ColonizeForest {
 	// through a system that we're never going to colonise.
 	void checkBorderSystems(Expansion& expansion, AI& ai) {
 		// reset list of potential colonise targets
-		expansion.potentialColonizations.length = 0;
+		expansion.potentialColonizations.reset();
 
 		// check systems inside border
 		for (uint i = 0, cnt = expansion.systems.owned.length; i < cnt; ++i) {
@@ -372,6 +321,8 @@ class ColonizeForest {
 
 		// check home system or all systems we can see if no owned systems
 		if (expansion.systems.owned.length == 0) {
+			// FIXME: We should just check all systems around our units, since
+			// only star children can come back from the dead at this stage
 			Region@ homeSys = ai.empire.HomeSystem;
 			if (homeSys !is null) {
 				auto@ homeAI = expansion.systems.getAI(homeSys);
@@ -447,7 +398,7 @@ class ColonizeForest {
 			p.weight *= sysWeight;
 			//TODO: this should be weighted according to the position of the planet,
 			//we should try to colonize things in favorable positions
-			expansion.potentialColonizations.insertLast(p);
+			expansion.potentialColonizations.add(p);
 		}
 
 		return valuablePlanets;
@@ -518,7 +469,7 @@ class ColonizeForest {
 
 		// evaluate each potential source against the spec to pick one to colonise
 		for (uint i = 0, cnt = expansion.potentialColonizations.length; i < cnt; ++i) {
-			PotentialColonizeSource@ p = cast<PotentialColonizeSource>(expansion.potentialColonizations[i]);
+			PotentialColonizeSource@ p = expansion.potentialColonizations.get(i);
 			// can't use as a source if it doesn't meet the spec
 			if (!p.canMeet(request.spec)) {
 				continue;
@@ -659,7 +610,7 @@ class ColonizeForest {
 
 		// evaluate each potential source against the spec to pick one to colonise
 		for (uint i = 0, cnt = expansion.potentialColonizations.length; i < cnt; ++i) {
-			PotentialColonizeSource@ p = cast<PotentialColonizeSource>(expansion.potentialColonizations[i]);
+			PotentialColonizeSource@ p = expansion.potentialColonizations.get(i);
 			// can't use as a source if it doesn't meet the spec
 			if (!p.canMeet(spec)) {
 				continue;
@@ -818,7 +769,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// Things we might want to colonize to expand (ie, within 1 hop to the border)
 	// Used by the Ancient component, at least for now.
 	// Long term would like to make this flexible enough to play Ancient well
-	array<PotentialColonize@> potentialColonizations;
+	PotentialColonizationsSummary@ potentialColonizations;
 
 	// Things in the queue for colonizing
 	ColonizeForest@ queue;
@@ -881,6 +832,8 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@regionLinking = RegionLinking(planets, construction, resources, systems, budget, this);
 
 		@scalableClass = getResourceClass("Scalable");
+
+		potentialColonizations = PotentialColonizationsSummary();
 	}
 
 	void save(SaveFile& file) {
@@ -894,11 +847,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			cast<ColonizeData2>(colonizing[i]).save(resources, colonyManagement, file);
 		}
 
-		cnt = potentialColonizations.length;
-		file << cnt;
-		for(uint i = 0; i < cnt; ++i) {
-			(cast<PotentialColonizeSource>(potentialColonizations[i])).save(file);
-		}
+		potentialColonizations.save(file);
 
 		queue.save(this, file);
 
@@ -975,13 +924,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			}
 		}
 
-		file >> cnt;
-		potentialColonizations.length = cnt;
-		for(uint i = 0; i < cnt; ++i) {
-			PotentialColonizeSource@ p = PotentialColonizeSource();
-			p.load(file);
-			@potentialColonizations[i] = p;
-		}
+		potentialColonizations.load(file);
 
 		queue.load(this, file);
 
@@ -2046,7 +1989,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	// Returns the PotentialColonize list
 	array<PotentialColonize@>@ getPotentialColonize() {
-		return potentialColonizations;
+		return potentialColonizations.potentialColonizations;
 	}
 
 	// Potentials is the same as getPotentialColonize()
