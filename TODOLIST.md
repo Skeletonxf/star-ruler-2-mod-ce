@@ -7,11 +7,13 @@ This is primarily intended as a developer focused project planning list, rather 
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
   - Expansion AI Component
+    - Teach AI to track what types of resources it can colonise do level chaining with so it knows when to stop trying to finish a focus it can't
+      - Act on this info to reproritise level chains
+    - Teach AI to deliberately colonise morphics and fulrate when it has a planet to export them to
     - Add to AI hooks for Constructions
       - Teach AI to melt ice
       - Teach AI to act on primitive life
     - Add a proper isBuilding method that also checks if the AI is in the process of building a building instead of just if its in the request queue and fix everywhere I called this thinking that's what isBuilding already does
-    - Teach AI how to deal with all of its focuses having requirements it can't meet
     - Scuttle outposts which have ended up in a different region to where the AI created them
       - Thanks Illyia
     - Apply conditions AI hooks to all applicable statuses
@@ -21,6 +23,8 @@ This is primarily intended as a developer focused project planning list, rather 
       - Particularly Megafarms and Hydrogenators
     - Possibly teach the AI to recognise useless planets and either terraform them or replace them with outposts / better colonies in the same system
       - Particularly relevant for a Mechanoid empire that never finds Cremlin Firns or Nitrous Oxide, as claiming useless food/water planets to expand borders is great early/mid game, but costs 50k per system to not replace with outposts late game.
+    - Revisit if the Ancient AI should avoid making moon bases when it doesn't have enough space for a building
+      - Should determine if the moon base would solve the space issue rather than just never doing it
   - Make AI consolidate labor at one shipyard, not multiple
     - The AI can build shipyards for both labor consolidation and staging bases, need to ensure it doesn't build two in the same region
     - May want to make the AI build supply depots instead of shipyards at staging bases too      

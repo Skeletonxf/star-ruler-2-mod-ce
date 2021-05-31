@@ -138,7 +138,8 @@ class Improvement : AIComponent, PlanetEventListener {
 	/**
 	 * Listens to events created by the Planets component, so we can clear the
 	 * flags that we use for moon base construction if the moon base was paid
-	 * for successfully.
+	 * for successfully. This also triggers if planet_management decides to
+	 * make a moon base for just income.
 	 */
 	void onConstructionRequestActioned(ConstructionRequest@ request) {
 		if (request is null)
@@ -170,8 +171,8 @@ class Improvement : AIComponent, PlanetEventListener {
 	 * help with AI with development focuses running out of room.
 	 */
 	void lookToBuildMoonBases() {
-		// don't build moon bases as Star Children or Ancient
-		// star children don't need them as they don't build
+		// don't build moon bases as Star Children or Ancient.
+		// Star children don't need them as they don't build
 		// and Ancient bypasses biome cost/build time mods
 		// so can just build on planet surfaces as normal and
 		// thus doesn't need them

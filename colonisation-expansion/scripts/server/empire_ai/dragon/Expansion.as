@@ -535,11 +535,11 @@ class ColonizeForest {
 			if (plAI is null || plAI.obj is null)
 				return;
 
-			bool alreadyConstructingMoonBase = expansion.planets.isConstructing(plAI.obj, build_moon_base);
+			/* bool alreadyConstructingMoonBase = expansion.planets.isConstructing(plAI.obj, build_moon_base);
 			if (alreadyConstructingMoonBase || plAI.failedToPlaceBuilding) {
 				// we're working on it, no point trying again
 				return;
-			}
+			} */
 
 			// try checking the next building type out of the list on
 			// this tick to see if we can meet the request with a building
@@ -597,7 +597,7 @@ class ColonizeForest {
 	/**
 	 * Colonizes for a resource spec
 	 *
-	 * The assumption is that if we're colonising for a resource, we need a planet,
+	 * The assumption is that if we're colonising for a resource we need a planet,
 	 * so does not try to meet the spec via any other means.
 	 */
 	ColonizeTree@ queueColonizeForResourceSpec(ResourceSpec@ spec, Expansion& expansion, AI& ai) {
@@ -1676,7 +1676,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	void checkBuildingsInProgress() {
 		for (uint i = 0, cnt = genericBuilds.length; i < cnt; ++i) {
 			bool removeTracker = genericBuilds[i].buildingRequest is null;
-			bool aborted = false;
+			bool aborted = removeTracker;
 			if (!removeTracker) {
 				auto@ build = genericBuilds[i].buildingRequest;
 				if (build.canceled) {
@@ -1709,7 +1709,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 				// if this is a gas giant there are probably moons we can start a moon
 				// base with here. Set a flag so we can consider building another
 				// moon base on this planet from the Improvement.as focus phase
-				if (build.couldNotFindLocation) {
+				if (build !is null && build.couldNotFindLocation) {
 					if (LOG) {
 						ai.print("Marking as failed place on "+build.plAI.obj.name);
 					}
