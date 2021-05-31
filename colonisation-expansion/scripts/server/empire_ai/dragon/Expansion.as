@@ -1507,9 +1507,9 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		if (awaitingSource.length > 2) {
 			return;
 		}
-		if (colonizing.length > 2) {
+		/* if (colonizing.length > 2) {
 			return;
-		}
+		} */
 		if (systems.outsideBorder.length > 0) {
 			SystemAI@ sys = systems.outsideBorder[randomi(0, systems.outsideBorder.length-1)];
 			if (sys.obj !is null && sys.timeSpentOutsideBorder > 4 * 60) {
