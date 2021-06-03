@@ -350,6 +350,41 @@ tidy class Ability : Serializable, Savable {
 		return str;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	bool hasTarget(Object@ target) {
+		Target targ;
+		targ.type = TT_Object;
+		targ.filled = true;
+		@targ.obj = target;
+		for (uint i = 0, cnt = targets.targets.length; i < cnt; ++i) {
+			if (targets[i] == targ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool hasTarget(vec3d point) {
+		Target targ;
+		targ.type = TT_Point;
+		targ.filled = true;
+		targ.point = point;
+		for (uint i = 0, cnt = targets.targets.length; i < cnt; ++i) {
+			if (targets[i] == targ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool hasTarget(const Targets@ check) {
+		if (check is null) {
+			return false;
+		}
+		return targets == check;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 #section server
 	bool activate(const Targets@ targs) {
 		if(!canActivate(targs))

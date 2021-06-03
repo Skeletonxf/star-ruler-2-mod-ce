@@ -8,6 +8,9 @@ tidy class AbilityOrder : Order {
 	vec3d target;
 	Object@ objTarget;
 	bool casted = false;
+	// [[ MODIFY BASE GAME START ]]
+	bool recastIfNotActive = false;
+	// [[ MODIFY BASE GAME END ]]
 
 	AbilityOrder(int id, vec3d targ, double range) {
 		abilityId = id;
@@ -39,6 +42,9 @@ tidy class AbilityOrder : Order {
 		file >> objTarget;
 		if(file >= SV_0121)
 			file >> casted;
+		// [[ MODIFY BASE GAME START ]]
+		file >> recastIfNotActive;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void save(SaveFile& file) {
@@ -48,7 +54,16 @@ tidy class AbilityOrder : Order {
 		file << abilityId;
 		file << objTarget;
 		file << casted;
+		// [[ MODIFY BASE GAME START ]]
+		file << recastIfNotActive;
+		// [[ MODIFY BASE GAME END ]]
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void resetForAnotherLoop() {
+		recastIfNotActive = true;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	string get_name() {
 		return "Use Ability";
@@ -64,6 +79,22 @@ tidy class AbilityOrder : Order {
 
 		double realRange = range;
 		realRange += obj.radius;
+
+		// [[ MODIFY BASE GAME START ]]
+		if (recastIfNotActive && casted && !obj.isChanneling(abilityId)) {
+			bool alreadyTargeting = false;
+			if (objTarget !is null) {
+				alreadyTargeting = obj.isTargeting(abilityId, objTarget);
+			} else {
+				alreadyTargeting = obj.isTargeting(abilityId, target);
+			}
+			if (!alreadyTargeting) {
+				// we need to change the target back
+				casted = false;
+			}
+			recastIfNotActive = false;
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		if(objTarget !is null) {
 			realRange += objTarget.radius;

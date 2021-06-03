@@ -107,4 +107,8 @@ tidy class Order {
 		uint8 tp = type;
 		msg << tp;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void resetForAnotherLoop() {}
+	// [[ MODIFY BASE GAME END ]]
 };

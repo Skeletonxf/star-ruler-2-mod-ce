@@ -9,7 +9,7 @@ remote:
 	async relocking void activateAbility(int id);
 	async relocking void activateAbility(int id, vec3d point);
 	async relocking void activateAbility(int id, Object@ target);
-	
+
 server:
 	async relocking void activateAbilityFor(Empire& emp, int id);
 	async relocking void activateAbilityFor(Empire& emp, int id, Object@ target);
@@ -17,7 +17,7 @@ server:
 	async relocking void activateAbilityTypeFor(Empire& emp, int type);
 	async relocking void activateAbilityTypeFor(Empire& emp, int type, Object@ target);
 	async relocking void activateAbilityTypeFor(Empire& emp, int type, vec3d point);
-	
+
 	void initAbilities(const Design@ fromDesign);
 	void destroyAbilities();
 	void abilityTick(double time);
@@ -32,6 +32,10 @@ server:
 	void disableAbility(int id);
 	void enableAbility(int id);
 	bool isChanneling(int id);
+	// [[ MODIFY BASE GAME START ]]
+	bool isTargeting(int id, Object@ target);
+	bool isTargeting(int id, vec3d point);
+	// [[ MODIFY BASE GAME END ]]
 
 	bool isAbilityOnCooldown(int id);
 	double getAbilityRange(int id, Object@ target);

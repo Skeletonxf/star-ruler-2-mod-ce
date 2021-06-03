@@ -867,6 +867,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 						// add the order to the back of the queue
 						@finished.next = null;
 						@finished.prev = null;
+						finished.resetForAnotherLoop();
 						addOrder(obj, finished, true);
 						obj.wake();
 					}

@@ -741,17 +741,25 @@ class Abandon : SingleSelectionOption, QuestionDialogCallback {
 	}
 };
 
+// [[ MODIFY BASE GAME START ]]
 class TriggerAbility : SingleSelectionOption {
 	int id;
-	TriggerAbility(int ID) {
+	bool asOrder = false;
+	TriggerAbility(int ID, bool asOrder = false) {
 		id = ID;
+		this.asOrder = asOrder;
 	}
 
 	void call(Object@ selected) {
-		selected.activateAbility(id);
+		//if (asOrder) {
+		//	obj.addAbilityOrder()
+		//} else {
+			selected.activateAbility(id);
+		//}
 		playOptionSound(sound::order_attack);
 	}
 };
+// [[ MODIFY BASE GAME END ]]
 
 class TargetAbility : MultiOption {
 	int id;
@@ -1523,6 +1531,10 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 
 				addOption(menu, selected, clicked, option,
 					TriggerAbility(abl.id), abl.type.icon);
+				// [[ MODIFY BASE GAME START ]]
+				//addOption(menu, selected, clicked, "Order " + option,
+				//	TriggerAbility(abl.id, asOrder=true), abl.type.icon);
+				// [[ MODIFY BASE GAME END ]]
 			}
 			else if(abl.type.targets[0].type == TT_Object) {
 				if(selected is clicked)
