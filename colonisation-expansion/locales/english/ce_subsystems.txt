@@ -348,3 +348,7 @@ S_REPAIR_SUPPLY_COST: Repair Supply Cost
 STT_REPAIR_SUPPLY_COST: Supply cost to repair the ship.
 S_REPAIR_STAT: Repair
 TOO_MANY_FLOCK_DRIVES: Too many Flock Drives
+S_PIERCE_RESISTANCE_STAT: Pierce Resistance
+STT_PIERCE_RESISTANCE: Pierce Resistance
+S_ARMOR_PIERCE_STAT: Armor Pierce
+STT_ARMOR_PIERCE: Armor Pierce

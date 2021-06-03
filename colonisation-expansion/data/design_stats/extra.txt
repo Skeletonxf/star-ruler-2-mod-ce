@@ -120,8 +120,6 @@ SubsystemStat: RampUpTime
 	Suffix: s
 	Variable: RampUpTime
 
-
-
 GlobalStat: ProjectedShield
 	Name: #S_Projected_Shield
 	Description: #STT_Projected_Shield
@@ -160,6 +158,7 @@ SubsystemStat: Repair
 	Description: #STT_REPAIR
 	Color: #89df89
 	Suffix: s
+	Icon: AttributeIcons::6
 
 	Variable: Repair // Script applies empire repair factor
 
@@ -168,5 +167,22 @@ SubsystemStat: RepairSupplyDrain
 	Description: #STT_REPAIR_SUPPLY_COST
 	Color: #f0ea8a
 	Suffix: /s
+	Icon: AttributeIcons::4
 
 	Variable: RepairSupplyCost  // Script applies empire repair factor
+
+HexStat: PierceResistance
+	Name: #S_PIERCE_RESISTANCE_STAT
+	Description: #STT_PIERCE_RESISTANCE
+	Color: #c5f946
+	Icon: HexagonSubsystems::0 * #20ff20
+
+	Variable: Hex.Resistance
+
+SubsystemStat: ArmorPierce
+	Name: #S_ARMOR_PIERCE_STAT
+	Description: #STT_ARMOR_PIERCE
+	Color: #c5f946
+	Icon: HexagonSubsystems::0 * #20ff20
+
+	Variable: Pierce
