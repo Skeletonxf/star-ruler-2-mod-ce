@@ -60,7 +60,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
     - Replace beams with lines?
   - Make quickbar width configurable
-  - Fix bug with ships becoming unretroffitable if the source retrofitting them gets destroyed before finishing
   - Fix map generation bugs with galaxy mirroring and gas/ice giants
   - Make AI respond to flare bomb and gravitron condensor attacks
   - Investigate issues with Mechanoid AI being able to build gates

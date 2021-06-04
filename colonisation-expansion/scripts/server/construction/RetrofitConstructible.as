@@ -42,12 +42,23 @@ tidy class RetrofitConstructible : Constructible {
 		Constructible::cancel(obj);
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	// Cancel on destroy
+	void remove(Object& obj) {
+		cancel(obj);
+		Constructible::remove(obj);
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void complete(Object& obj) {
 		fleet.finishFleetRetrofit(obj);
 	}
 
 	TickResult tick(Object& obj, double time) override {
-		if(obj.owner !is fleet.owner || obj.region is null) {
+		// [[ MODIFY BASE GAME START ]]
+		// Cancel if no longer valid like the other constructibles
+		if(obj.owner !is fleet.owner || obj.region is null || !obj.valid) {
+			// [[ MODIFY BASE GAME END ]]
 			cancel(obj);
 			return TR_Remove;
 		}
