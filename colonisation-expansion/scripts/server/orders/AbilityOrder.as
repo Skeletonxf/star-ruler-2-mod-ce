@@ -10,6 +10,7 @@ tidy class AbilityOrder : Order {
 	bool casted = false;
 	// [[ MODIFY BASE GAME START ]]
 	bool recastIfNotActive = false;
+	bool hasNoTargets = false;
 	// [[ MODIFY BASE GAME END ]]
 
 	AbilityOrder(int id, vec3d targ, double range) {
@@ -21,14 +22,24 @@ tidy class AbilityOrder : Order {
 	AbilityOrder(int id, Object@ targ, double range) {
 		abilityId = id;
 		@objTarget = targ;
+		// [[ MODIFY BASE GAME START ]]
+		if (targ is null) {
+			hasNoTargets = true;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		this.range = range;
 	}
 
 	bool get_hasMovement() {
-		return true;
+		return !hasNoTargets; // [[ MODIFY BASE GAME ]]
 	}
 
 	vec3d getMoveDestination(const Object& obj) {
+		// [[ MODIFY BASE GAME START ]]
+		if (hasNoTargets) {
+			return obj.position;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		if(objTarget !is null)
 			return objTarget.position;
 		return target;
@@ -44,6 +55,7 @@ tidy class AbilityOrder : Order {
 			file >> casted;
 		// [[ MODIFY BASE GAME START ]]
 		file >> recastIfNotActive;
+		file >> hasNoTargets;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -56,6 +68,7 @@ tidy class AbilityOrder : Order {
 		file << casted;
 		// [[ MODIFY BASE GAME START ]]
 		file << recastIfNotActive;
+		file << hasNoTargets;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -81,18 +94,39 @@ tidy class AbilityOrder : Order {
 		realRange += obj.radius;
 
 		// [[ MODIFY BASE GAME START ]]
-		if (recastIfNotActive && casted && !obj.isChanneling(abilityId)) {
-			bool alreadyTargeting = false;
-			if (objTarget !is null) {
-				alreadyTargeting = obj.isTargeting(abilityId, objTarget);
-			} else {
-				alreadyTargeting = obj.isTargeting(abilityId, target);
-			}
-			if (!alreadyTargeting) {
-				// we need to change the target back
+		if (recastIfNotActive && casted && !obj.isChanneling(abilityId) && !obj.isAbilityOnCooldown(abilityId)) {
+			if (hasNoTargets) {
+				// we are only added to the context menu for targetless abilities that have cooldowns
+				// so just immediately recast
 				casted = false;
+			} else {
+				bool alreadyTargeting = false;
+				if (objTarget !is null) {
+					alreadyTargeting = obj.isTargeting(abilityId, objTarget);
+				} else {
+					alreadyTargeting = obj.isTargeting(abilityId, target);
+				}
+				if (!alreadyTargeting) {
+					// we need to change the target back
+					casted = false;
+				}
 			}
 			recastIfNotActive = false;
+		}
+		if (hasNoTargets) {
+			if (casted) {
+				if (obj.isChanneling(abilityId)) {
+					return OS_BLOCKING;
+				} else {
+					return OS_COMPLETED;
+				}
+			}
+			if (obj.isAbilityOnCooldown(abilityId)) {
+				return OS_BLOCKING;
+			}
+			obj.activateAbility(abilityId);
+			casted = true;
+			return OS_BLOCKING;
 		}
 		// [[ MODIFY BASE GAME END ]]
 

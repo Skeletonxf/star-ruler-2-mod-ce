@@ -5,6 +5,7 @@ Ability: MultiTractor
 
 	Range: 100
 	Cooldown: 15
+	Disable Looping: True
 
 
 	IsStatusToggle(GravityWell)

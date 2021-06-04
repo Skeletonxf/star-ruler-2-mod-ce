@@ -30,6 +30,9 @@ tidy final class AbilityType {
 	// a flag for indicating an ability is a resource transfer ability
 	bool isResourceTransfer = false;
 	const ResourceType@ resource;
+	// Flag for turning off looping on certain abilities that wouldn't work
+	// with it
+	bool disableLooping;
 	// [[ MODIFY BASE GAME END ]]
 
 	array<IAbilityHook@> hooks;
@@ -584,6 +587,9 @@ void loadAbilities(const string& filename) {
 				type.ai.insertLast(hook);
 			else
 				file.error("Could not find AI hook "+value);
+		}
+		else if (key.equals_nocase("Disable Looping")) {
+			type.disableLooping = toBool(value);
 		}
 		// [[ MODIFY BASE GAME END ]]
 		else {

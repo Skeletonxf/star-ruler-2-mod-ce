@@ -6,6 +6,9 @@ This is primarily intended as a developer focused project planning list, rather 
   - Port interdict movement fixes to mod pack once stress tested in a few multiplayer games
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
+  - Review the AI's limitation on scouts being only 2, and make this more flexible
+  - Review the War.as's limitation of only attacking border systems, and make this more flexible
+    - Thanks Illyia
   - Expansion AI Component
     - Teach AI to track what types of resources it can colonise do level chaining with so it knows when to stop trying to finish a focus it can't
       - Act on this info to reproritise level chains
@@ -62,6 +65,8 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make AI respond to flare bomb and gravitron condensor attacks
   - Investigate issues with Mechanoid AI being able to build gates
   - Make the AI's search for things to colonise when it has no systems more robust - Star Children should still be able to recover while they have Motherships but the current code will attempt to recolonise its home system or just give up.
+  - Investigate stored labor being drained by time based constructions
+  - Fix native life emerging when making some planets tier 1/2  
 
 - Not planned for any time soon
   - Colonisation ships similar to Motherships for other races

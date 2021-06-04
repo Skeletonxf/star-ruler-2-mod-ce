@@ -751,11 +751,11 @@ class TriggerAbility : SingleSelectionOption {
 	}
 
 	void call(Object@ selected) {
-		//if (asOrder) {
-		//	obj.addAbilityOrder()
-		//} else {
+		if (asOrder) {
+			selected.addAbilityOrder(id, null, shiftKey);
+		} else {
 			selected.activateAbility(id);
-		//}
+		}
 		playOptionSound(sound::order_attack);
 	}
 };
@@ -1529,11 +1529,12 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 				if(selected !is clicked)
 					continue;
 
-				addOption(menu, selected, clicked, option,
-					TriggerAbility(abl.id), abl.type.icon);
 				// [[ MODIFY BASE GAME START ]]
-				//addOption(menu, selected, clicked, "Order " + option,
-				//	TriggerAbility(abl.id, asOrder=true), abl.type.icon);
+				// let the player make cooldown targetless abilities as an
+				// order so they can loop them
+				bool asOrder = abl.type.cooldown > 0 && !abl.type.disableLooping;
+				addOption(menu, selected, clicked, option,
+					TriggerAbility(abl.id, asOrder=asOrder), abl.type.icon);
 				// [[ MODIFY BASE GAME END ]]
 			}
 			else if(abl.type.targets[0].type == TT_Object) {

@@ -219,6 +219,7 @@ class AbilityFile : FileDef {
 			// Include the fields added to AbilityType
 			field("Resource Transfer", AT_Boolean, "False", doc="Indicate that this ability is used to transfer resources.");
 			field("Resource", AT_PlanetResource, "", doc="Associate a resource with this ability for scripting uses.");
+			field("Disable Looping", AT_Boolean, "False", doc="Indicate that this ability should not allow order looping. Only applies to abilities with no targets that do have cooldowns, as this subset would otherwise allow the user to loop them on the assumption that each effect ends before the next cooldown (should be set to true for targetless cooldown abilities that are toggles, like Cloaked).");
 			// [[ MODIFY BASE GAME END ]]
 	}
 
