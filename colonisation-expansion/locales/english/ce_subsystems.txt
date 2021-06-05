@@ -364,3 +364,21 @@ S_SHIELD_HARMONIZER_DESC: <<
 >>
 S_Flagship_Sheild_Absorb_Percentage: Flagship Percentage
 S_Redirect_Percentage: Redirect Percentage
+S_LIQUIDARMOR_DESC: <<
+	A basin of liquid hydro-metal suspended on the hull of the ship absorbs impacts and spreads them evenly, filling any gaps that are created.
+
+	[img=Plus]High [b][color=#80ff80]health[/color][/b].[/img]
+	[img=Plus]Health flows from high health hexes to connected low health hexes to equalize density.[/img]
+	[img=Plus]Armor on the outside of the ship does not use up interior space.[/img]
+	[img=Plus]Very light.[/img]
+	[img=Minus]Does not provide any Damage Resistance.[/img]
+>>
+S_CRYSTALARMOR_DESC: <<
+	An armor plate constructed with layers of intricate crystalline microstructures that shatter when impacted, absorbing a large amount of damage. The complicated construction of the crystal plates disallows repair in the field, however.
+
+	[img=Plus]Very high health.[/img]
+	[img=Plus]High [b][color=#c6c33a]damage resistance[/color][/b].[/img]
+	[img=Plus]Light.[/img]
+	[img=Minus]Cannot be repaired.[/img]
+	[img=Minus]When a Crystalline Armor hex is destroyed, it is permanently removed from the ship.[/img]
+>>
