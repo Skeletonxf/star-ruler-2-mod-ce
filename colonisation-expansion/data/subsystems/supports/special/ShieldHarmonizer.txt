@@ -31,9 +31,11 @@ Subsystem: ShieldHarmonizer
 
 		AoEPercentage = AoEPercentage
 		Radius = Radius
+		DamageThreshold = ImpactLevel
 	State: int = 0
 	AoEPercentage := min(2.0 * Size / ShipSize, 1.0)
 	Radius := Size + 200
+	ImpactLevel := 150 * HexSize
 	Effect: AddBonusShields
 		Amount = BonusShield
 

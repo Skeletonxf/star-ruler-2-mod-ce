@@ -184,11 +184,6 @@ server:
 	void setFreeRaiding(bool value);
 	void modRaidRange(double value);
 
-	// [[ MODIFY BASE GAME START ]]
-	safe uint get_SupportParticleEffects();
-	void addSupportParticleEffect();
-	// [[ MODIFY BASE GAME END ]]
-
 //Networking
 	void writeLeaderAI(Message& msg) const;
 	bool writeLeaderAIDelta(Message& msg) const;

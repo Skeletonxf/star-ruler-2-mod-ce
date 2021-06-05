@@ -238,7 +238,7 @@ DamageEventStatus ShieldRedirect(DamageEvent& evt, vec2u& position, vec2d& direc
 }
 
 // [[ MODIFY BASE GAME START ]]
-DamageEventStatus ShieldRedirect2(DamageEvent& evt, vec2u& position, vec2d& direction, double ShieldPercentage, double AoEPercentage, double Radius) {
+DamageEventStatus ShieldRedirect2(DamageEvent& evt, vec2u& position, vec2d& direction, double ShieldPercentage, double AoEPercentage, double Radius, double DamageThreshold) {
 	Ship@ ship = cast<Ship>(evt.target);
 	Object@ leader = ship.Leader;
 	if(leader is null || !leader.isShip)
@@ -252,7 +252,7 @@ DamageEventStatus ShieldRedirect2(DamageEvent& evt, vec2u& position, vec2d& dire
 
 	double workingPct = double(evt.destination_status.workingHexes) / double(evt.destination.hexCount);
 	double absorb = min(shield, ShieldPercentage * evt.damage * workingPct);
-	double redirect = min(shieldPercentage, AoEPercentage) * evt.damage * workingPct;
+	double redirect = min(shieldPercentage, AoEPercentage) * max(evt.damage - DamageThreshold, 0.0) * workingPct;
 
 	if(absorb > 0) {
 		evt.damage -= absorb;
@@ -260,12 +260,7 @@ DamageEventStatus ShieldRedirect2(DamageEvent& evt, vec2u& position, vec2d& dire
 	}
 	if (redirect > 0) {
 		evt.damage = max(0.0, evt.damage - redirect);
-		if (flagship.hasLeaderAI) {
-			if (flagship.SupportParticleEffects < 10) {
-				playParticleSystem("NilingExplosion", ship.position, quaterniond(), Radius / 15.0, ship.visibleMask);
-				flagship.addSupportParticleEffect();
-			}
-		}
+		playParticleSystem("NilingExplosion", ship.position, quaterniond(), Radius / 15.0, ship.visibleMask);
 		AoEDamage(evt.target, evt.target, vec3d(), redirect * 0.9, Radius, 10.0);
 	}
 	return DE_Continue;

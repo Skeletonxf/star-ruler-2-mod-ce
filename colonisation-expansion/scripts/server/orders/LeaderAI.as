@@ -130,21 +130,6 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	FleetPlaneNode@ node;
 
 	// [[ MODIFY BASE GAME START ]]
-	// Cache for tracking how many support particle effects were triggered in a
-	// short space of time, to avoid lagging out graphics cards if a lot is
-	// happening at once.
-	uint supportParticleEffects = 0;
-
-	uint get_SupportParticleEffects() {
-		return supportParticleEffects;
-	}
-
-	void addSupportParticleEffect() {
-		supportParticleEffects += 1;
-	}
-	// [[ MODIFY BASE GAME END ]]
-
-	// [[ MODIFY BASE GAME START ]]
 	// Order looping code
 	bool isLooping = false;
 
@@ -1963,11 +1948,6 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 					constructionTimer = randomd(0.5, 3.0);
 			}
 		}
-
-		// [[ MODIFY BASE GAME START ]]
-		// Reset counter
-		supportParticleEffects = 0;
-		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void postSupportRetrofit(Object& obj, Ship@ support, const Design@ prevDesign, const Design@ newDesign) {

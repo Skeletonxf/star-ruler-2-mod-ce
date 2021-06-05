@@ -357,7 +357,7 @@ S_SHIELD_HARMONIZER_DESC: <<
 
 	Harmonizes the support ship with the flagship's inherent shield frequency, contributing to its strength and allowing damage dealt to be partially redirected.
 
-	[img=Plus]While the flagship's shields are up, redirects a percent of incoming damage to attackers as AoE.[/img]
+	[img=Plus]While the flagship's shields are up, redirects a percent of incoming damage above the threshold to attackers as AoE.[/img]
 	[img=Plus]Increases the flagship's shield capacity.[/img]
 	[img=Minus]Redirects a percentage of incoming damage to the flagship's shield.[/img]
 	[img=MenuIcons::3;20]Damage redirected to attackers reduces as the flagship's shield decreases.[/img]
