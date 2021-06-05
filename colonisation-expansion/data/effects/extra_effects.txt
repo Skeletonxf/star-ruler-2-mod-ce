@@ -1,0 +1,6 @@
+Effect: ShieldRedirect2
+	Value: ShieldPercentage
+	Value: AoEPercentage
+	Value: Radius
+
+	GlobalDamage: heralds_combat::ShieldRedirect2

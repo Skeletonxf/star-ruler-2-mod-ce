@@ -81,8 +81,12 @@ DamageEventStatus NilingAbsorb(DamageEvent& evt, const vec2u& position, double D
 	double value = bp.decimal(sys, 0);
 	value += evt.damage;
 
+	bool playedParticles = false;
 	while(value >= Damage) { // [[ MODIFY BASE GAME ]]
-		playParticleSystem("NilingExplosion", evt.target.position, quaterniond(), Radius / 15.0, evt.target.visibleMask);
+		if (!playedParticles) {
+			playParticleSystem("NilingExplosion", evt.target.position, quaterniond(), Radius / 15.0, evt.target.visibleMask);
+			playedParticles = true;
+		}
 		AoEDamage(evt.target, evt.target, vec3d(), Damage * 0.9, Radius, 10.0);
 
 		value -= Damage;
@@ -232,6 +236,42 @@ DamageEventStatus ShieldRedirect(DamageEvent& evt, vec2u& position, vec2d& direc
 	}
 	return DE_Continue;
 }
+
+// [[ MODIFY BASE GAME START ]]
+DamageEventStatus ShieldRedirect2(DamageEvent& evt, vec2u& position, vec2d& direction, double ShieldPercentage, double AoEPercentage, double Radius) {
+	Ship@ ship = cast<Ship>(evt.target);
+	Object@ leader = ship.Leader;
+	if(leader is null || !leader.isShip)
+		return DE_Continue;
+
+	Ship@ flagship = cast<Ship>(leader);
+	double shield = flagship.Shield;
+	double shieldPercentage = flagship.Shield / flagship.MaxShield;
+	if(shield < 0)
+		return DE_Continue;
+
+	double workingPct = double(evt.destination_status.workingHexes) / double(evt.destination.hexCount);
+	double absorb = min(shield, ShieldPercentage * evt.damage * workingPct);
+	double redirect = min(shieldPercentage, AoEPercentage) * evt.damage * workingPct;
+
+	if(absorb > 0) {
+		evt.damage -= absorb;
+		flagship.shieldDamage(absorb);
+	}
+	if (redirect > 0) {
+		evt.damage = max(0.0, evt.damage - redirect);
+		if (flagship.hasLeaderAI) {
+			if (flagship.SupportParticleEffects < 10) {
+				playParticleSystem("NilingExplosion", ship.position, quaterniond(), Radius / 15.0, ship.visibleMask);
+				flagship.addSupportParticleEffect();
+			}
+		}
+		AoEDamage(evt.target, evt.target, vec3d(), redirect * 0.9, Radius, 10.0);
+	}
+	return DE_Continue;
+}
+
+// [[ MODIFY BASE GAME END ]]
 
 void BonusShield(Event& evt, double Amount) {
 	auto@ sys = evt.source;

@@ -186,3 +186,17 @@ SubsystemStat: ArmorPierce
 	Icon: HexagonSubsystems::0 * #20ff20
 
 	Variable: Pierce
+
+SubsystemStat: FlagshipShieldAbsorbPercentage
+	Name: #S_Flagship_Sheild_Absorb_Percentage
+	Icon: AttributeIcons::6 * #8080ff
+	Color: #8080ff
+
+	Variable: ShieldPercentage
+
+SubsystemStat: ShieldHarmonizerRedirectPercentage
+	Name: #S_Redirect_Percentage
+	Icon: AttributeIcons::3 * #ff8000
+	Color: #ff8000
+
+	Variable: AoEPercentage
