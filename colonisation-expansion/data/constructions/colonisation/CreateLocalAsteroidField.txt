@@ -20,7 +20,7 @@ Construction: CreateLocalAsteroidField
 	RequirePlanetNotBiome(AncientAtmosphere1)
 	RequirePlanetNotBiome(AncientAtmosphere2)
 	RequirePlanetNotBiome(AncientAtmosphere3)
-	CE_biome_hooks::DealPlanetPercentageTrueDamage(0.55)
+	CE_biome_hooks::DealPlanetCurrentPercentageTrueDamage(0.55)
 	ConsumeCargo(Ore, 2000)
 	RequirePlanetNotBiome(Photovoltics)
 	RequirePlanetNotBiome(Artificial)
