@@ -15,6 +15,7 @@ import systems;
 import ai.consider;
 from ai.buildings import Buildings, BuildingAI, BuildingUse, AsCreatedResource;
 from ai.resources import AIResources, ResourceAI, DistributeToImportantPlanet, DistributeToHighPopulationPlanet, DistributeToLaborUsing, DistributeAsLocalPressureBoost;
+from ai.constructions import ConstructionAI, AsConstructedResource, ShortTermIncomeLoss;
 
 // It is very important we don't just import the entire resources definition
 // because it defines a Resource class which conflicts with the Resources
@@ -29,6 +30,7 @@ import empire_ai.dragon.expansion.planet_management;
 import empire_ai.dragon.expansion.region_linking;
 import empire_ai.dragon.expansion.development;
 import empire_ai.dragon.expansion.buildings;
+import empire_ai.dragon.expansion.constructions;
 import empire_ai.dragon.expansion.ftl;
 import empire_ai.dragon.expansion.potentials;
 import empire_ai.dragon.logs;
@@ -445,6 +447,170 @@ class ColonizeForest {
 	}
 
 	/**
+	 * Tries to construct a project on the planet requesting an import to meet the request.
+	 * Returns true if it found and queued a construction that meets the request.
+	 */
+	bool queueConstructionForRequest(ImportData@ request, Expansion& expansion, AI& ai) {
+		// If we're looking for any resources that we could find in the universe don't
+		// resort to projects if we haven't even scouted the systems on our border yet.
+		if (!expansion.hasScoutedBorders()) {
+			//bool canMeetArtificialOnly = request.spec.meets(light, fromObj=request.obj, toObj=request.obj);
+			//if (!canMeetArtificialOnly) {
+			return false;
+			//}
+		}
+
+		// Get the PlanetAI for the object making this request
+		Planet@ planet = cast<Planet>(request.obj);
+		if (planet is null)
+			return false;
+
+		PlanetAI@ plAI = expansion.planets.getAI(planet);
+
+		if (plAI is null || plAI.obj is null)
+			return false;
+
+		for (uint i = 0, cnt = getConstructionTypeCount(); i < cnt; ++i) {
+			auto@ type = getConstructionType(i);
+			if (type.ai.length == 0)
+				continue;
+
+			if (!type.canBuild(plAI.obj))
+				continue;
+
+			if (expansion.planets.isConstructing(plAI.obj, type)) {
+				// don't try to make two of the same type on the same planet at once
+				continue;
+			}
+
+			// check all the hooks on this construction type
+			for (uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
+				auto@ hook = cast<ConstructionAI>(type.ai[n]);
+				if (hook is null) {
+					continue;
+				}
+				// Not sure if we want to let the AI spend aggressively for constructions to meet
+				// import requests or not. Don't want the AI having just enough budget but
+				// not doing a project because it doesn't have the development budget especially
+				// if that project is a bottleneck for level chaining that would increase income
+				// overall.
+				/* if (!expansion.budget.canSpend(BT_Development, type.buildCost, type.maintainCost)) {
+					continue;
+				} */
+				auto@ incomeLoss = cast<ShortTermIncomeLoss>(hook);
+				if (incomeLoss !is null) {
+					// check our net budget first
+					if (!expansion.budget.canSpend(BT_Development, incomeLoss.spare_budget.decimal, incomeLoss.spare_budget.decimal)) {
+						continue;
+					}
+				}
+				auto@ resourceConstruction = cast<AsConstructedResource>(hook);
+				if (resourceConstruction !is null) {
+					if (request.spec.meets(getResource(resourceConstruction.resource.integer), fromObj=request.obj, toObj=request.obj)) {
+						auto@ req = expansion.planets.requestConstruction(plAI, plAI.obj, type, priority=2, expire=ai.behavior.genericBuildExpire);
+						if (req !is null) {
+							// got match, close request
+							if (true)
+								ai.print("constructing project "+type.name+" to meet requested resource: "+request.spec.dump(), plAI.obj);
+							// for ease and not making requests even more complicated, use buildingFor with constructions
+							// as well as buildings
+							request.buildingFor = true;
+							auto@ tracker = ConstructionTracker(req);
+							@tracker.importRequestReason = request;
+							expansion.trackConstruction(tracker);
+						}
+						// all done here, met the resource
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Tries to build on the planet requesting an import to meet the request.
+	 * Returns true if it found and queued a building that meets the request.
+	 */
+	bool queueBuildingForRequest(ImportData@ request, Expansion& expansion, AI& ai) {
+		// If we're looking for any resources that we could find in the universe don't
+		// resort to buildings if we haven't even scouted the systems on our border yet.
+		if (!expansion.hasScoutedBorders()) {
+			bool canMeetArtificialOnly = request.spec.meets(light, fromObj=request.obj, toObj=request.obj);
+			if (!canMeetArtificialOnly) {
+				return false;
+			}
+		}
+		// Get the PlanetAI for the object making this request
+		Planet@ planet = cast<Planet>(request.obj);
+		if (planet is null)
+			return false;
+		PlanetAI@ plAI = expansion.planets.getAI(planet);
+
+		if (plAI is null || plAI.obj is null)
+			return false;
+
+		/* bool alreadyConstructingMoonBase = expansion.planets.isConstructing(plAI.obj, build_moon_base);
+		if (alreadyConstructingMoonBase || plAI.failedToPlaceBuilding) {
+			// we're working on it, no point trying again
+			return;
+		} */
+
+		// try checking the next building type out of the list on
+		// this tick to see if we can meet the request with a building
+		for (uint i = 0, cnt = getBuildingTypeCount(); i < cnt; ++i) {
+			auto@ type = getBuildingType(i);
+			if (type.ai.length == 0)
+				continue;
+
+			if (!type.canBuildOn(plAI.obj))
+				continue;
+
+			// FIXME: This only checks if we have queued a desire to make a building
+			// This will return false while the building is actually being built
+			if (expansion.planets.isBuilding(plAI.obj, type)) {
+				// don't try to make two of the same type on the same planet at once
+				continue;
+			}
+
+			// check all the hooks on this building type
+			for (uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
+				auto@ hook = cast<BuildingAI>(type.ai[n]);
+				if (hook is null) {
+					continue;
+				}
+				auto@ resourceBuilding = cast<AsCreatedResource>(hook);
+				if (resourceBuilding !is null) {
+					// our hook is an AsCreatedResource, check if this resource
+					// is what we need to meet the spec (this completely bypasses
+					// most of the logic to how these hooks work in vanilla, but will
+					// also stop the AI waiting for chunks of time when a building is
+					// the only way to meet a resource, so this is intended hackery)
+					if (request.spec.meets(getResource(resourceBuilding.resource.integer), fromObj=request.obj, toObj=request.obj)) {
+						auto@ req = expansion.planets.requestBuilding(plAI, type, priority=2, expire=ai.behavior.genericBuildExpire);
+						if (req !is null) {
+							// got match, close request
+							if (LOG)
+								ai.print("building "+type.name+" to meet requested resource: "+request.spec.dump(), plAI.obj);
+							request.buildingFor = true;
+							auto@ tracker = BuildTracker(req);
+							@tracker.importRequestReason = request;
+							expansion.trackBuilding(tracker);
+						}
+						// all done here, met the resource
+						return true;
+					}
+				}
+			}
+		}
+		if (false && LOG && request.spec.isForImport) {
+			ai.print("failed to find target for requested resource: "+request.spec.dump(), request.obj);
+		}
+		return false;
+	}
+
+	/**
 	 * Enqueues actions to meet resource specs. Primarily colonising planets,
 	 * but also tries to meet requests that can't be met by any known planets
 	 * via buildings. This assumes planets are always cheaper than buildings.
@@ -463,6 +629,11 @@ class ColonizeForest {
 			ai.print("colonize for requested resource: "+request.spec.dump(), request.obj);
 		}
 		ResourceSpec@ spec = request.spec;
+
+		// try constructions first since they typically cost nothing in upkeep
+		if (queueConstructionForRequest(request, expansion, ai)) {
+			return;
+		}
 
 		Planet@ newColony;
 		double bestWeight = 0.0;
@@ -515,82 +686,7 @@ class ColonizeForest {
 			queue.insertLast(ColonizeTree(newColony, request));
 			request.isColonizing = true;
 		} else {
-			// If we're looking for any resources that we could find in the universe don't
-			// resort to buildings if we haven't even scouted the systems on our border yet.
-			if (!expansion.hasScoutedBorders()) {
-				bool canMeetArtificialOnly = request.spec.meets(light, fromObj=request.obj, toObj=request.obj);
-				if (!canMeetArtificialOnly) {
-					return;
-				}
-			}
-			// TODO: Perhaps check if the planet is a Gas Giant first, as we should make a moon
-			// base if we need to build on them
-
-			// Get the PlanetAI for the object making this request
-			Planet@ planet = cast<Planet>(request.obj);
-			if (planet is null)
-				return;
-			PlanetAI@ plAI = expansion.planets.getAI(planet);
-
-			if (plAI is null || plAI.obj is null)
-				return;
-
-			/* bool alreadyConstructingMoonBase = expansion.planets.isConstructing(plAI.obj, build_moon_base);
-			if (alreadyConstructingMoonBase || plAI.failedToPlaceBuilding) {
-				// we're working on it, no point trying again
-				return;
-			} */
-
-			// try checking the next building type out of the list on
-			// this tick to see if we can meet the request with a building
-			for (uint i = 0, cnt = getBuildingTypeCount(); i < cnt; ++i) {
-				auto@ type = getBuildingType(i);
-				if (type.ai.length == 0)
-					continue;
-
-				if (!type.canBuildOn(plAI.obj))
-					continue;
-
-				// FIXME: This only checks if we have queued a desire to make a building
-				// This will return false while the building is actually being built
-				if (expansion.planets.isBuilding(plAI.obj, type)) {
-					// don't try to make two of the same type on the same planet at once
-					continue;
-				}
-
-				// check all the hooks on this building type
-				for (uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
-					auto@ hook = cast<BuildingAI>(type.ai[n]);
-					if (hook is null) {
-						continue;
-					}
-					auto@ resourceBuilding = cast<AsCreatedResource>(hook);
-					if (resourceBuilding !is null) {
-						// our hook is an AsCreatedResource, check if this resource
-						// is what we need to meet the spec (this completely bypasses
-						// most of the logic to how these hooks work in vanilla, but will
-						// also stop the AI waiting for chunks of time when a building is
-						// the only way to meet a resource, so this is intended hackery)
-						if (request.spec.meets(getResource(resourceBuilding.resource.integer), fromObj=request.obj, toObj=request.obj)) {
-							auto@ req = expansion.planets.requestBuilding(plAI, type, priority=2, expire=ai.behavior.genericBuildExpire);
-							if (req !is null) {
-								// got match, close request
-								if (LOG)
-									ai.print("building "+type.name+" to meet requested resource: "+request.spec.dump(), plAI.obj);
-								request.buildingFor = true;
-								auto@ tracker = BuildTracker(req);
-								@tracker.importRequestReason = request;
-								expansion.trackBuilding(tracker);
-							}
-							// all done here, met the resource
-							return;
-						}
-					}
-				}
-			}
-			if (false && LOG && request.spec.isForImport) {
-				ai.print("failed to find target for requested resource: "+request.spec.dump(), request.obj);
-			}
+			queueBuildingForRequest(request, expansion, ai);
 		}
 	}
 
@@ -745,7 +841,7 @@ class ColonizeForest {
  * which doesn't sit on unused resources or colonise resources not needed for
  * levelling.
  */
-class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner, DevelopmentFocuses, ResourceValuationOwner, BuildingTracker, FTLRequirements {
+class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopment, IColonization, ColonizeBudgeting, ColonizationAbilityOwner, DevelopmentFocuses, ResourceValuationOwner, BuildingTracker, ConstructionsTracker, FTLRequirements {
 	Resources@ resources;
 	Planets@ planets;
 	Systems@ systems;
@@ -758,6 +854,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 	// Building hook state
 	array<BuildTracker@> genericBuilds;
 	const BuildingType@ filterType;
+	array<ConstructionTracker@> genericConstructions;
 
 	Actions actions;
 	FTLResourceIncomes ftlIncomeTargets;
@@ -828,7 +925,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
 		@colonyManagement = TerrestrialColonization(planets, ai);
-		@planetManagement = PlanetManagement(planets, budget, this, this, this, ai, log);
+		@planetManagement = PlanetManagement(planets, budget, this, this, this, this, ai, log);
 		@regionLinking = RegionLinking(planets, construction, resources, systems, budget, this);
 
 		@scalableClass = getResourceClass("Scalable");
@@ -871,6 +968,11 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		file << cnt;
 		for (uint i = 0; i < cnt; ++i)
 			genericBuilds[i].save(planets, resources, file);
+
+		cnt = genericConstructions.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i)
+			genericConstructions[i].save(planets, resources, file);
 
 		planetManagement.save(file);
 		regionLinking.save(file);
@@ -958,6 +1060,13 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 			auto@ data = BuildTracker(planets, resources, file);
 			if (data !is null)
 				genericBuilds.insertLast(data);
+		}
+
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			auto@ data = ConstructionTracker(planets, resources, file);
+			if (data !is null)
+				genericConstructions.insertLast(data);
 		}
 
 		planetManagement.load(file);
@@ -1059,6 +1168,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		doColonizations();
 
 		checkBuildingsInProgress();
+		checkConstructionsInProgress();
 		checkColonizationsInProgress();
 		updatePenalties();
 
@@ -1724,6 +1834,47 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		}
 	}
 
+	/**
+	 * Keeps the genericConstructions list up to date, removing items from it
+	 * as we finish or cancel building them.
+	 */
+	void checkConstructionsInProgress() {
+		for (uint i = 0, cnt = genericConstructions.length; i < cnt; ++i) {
+			bool removeTracker = genericConstructions[i].constructionRequest is null;
+			bool aborted = removeTracker;
+			if (!removeTracker) {
+				auto@ build = genericConstructions[i].constructionRequest;
+				if (build.canceled) {
+					removeTracker = true;
+					aborted = true;
+				} else if (build.built) {
+					if (build.getProgress() >= 1.f) {
+						if(build.expires < gameTime) {
+							removeTracker = true;
+						}
+					} else {
+						build.expires = gameTime + 60.0;
+					}
+				}
+			}
+			if (aborted) {
+				if (genericConstructions[i].importRequestReason !is null) {
+					if (genericConstructions[i].importRequestReason.obj !is null)
+						if (LOG) {
+							ai.print("Failed construction project on "+genericConstructions[i].importRequestReason.obj.name);
+						}
+					// reset buildingFor flag so we try to meet this resource
+					// potentially by colonisation again
+					genericConstructions[i].importRequestReason.buildingFor = false;
+				}
+			}
+			if (removeTracker) {
+				genericConstructions.removeAt(i);
+				--i; --cnt;
+			}
+		}
+	}
+
 	// Methods for the Buildings interface and AIResources interface
 	void registerUse(BuildingUse use, const BuildingType& type) {
 		switch(use) {
@@ -1762,6 +1913,18 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 
 	void trackBuilding(BuildTracker@ tracker) {
 		genericBuilds.insertLast(tracker);
+	}
+
+	bool isConstructing(const ConstructionType& type) {
+		for(uint i = 0, cnt = genericConstructions.length; i < cnt; ++i) {
+			if(genericConstructions[i].constructionType() is type)
+				return true;
+		}
+		return false;
+	}
+
+	void trackConstruction(ConstructionTracker@ tracker) {
+		genericConstructions.insertLast(tracker);
 	}
 
 	DevelopmentFocus@ getFocus(Planet& pl) {

@@ -10,6 +10,7 @@ Construction: MeltIce
 	RequireNotTrait(NoResourceUse)
 	RequirePlanetBiome(Ice)
 	//AddStatus(WaterBiome, Max Stacks = 1)
+	AI: AsConstructedResource(MeltWater)
 	TriggerGeneric(CE_biome_hooks::SwapBiome(Ice, Oceanic))
 	GainPlanetResource(MeltWater)
 	OnCancel(AddStatus(FrozenIce))

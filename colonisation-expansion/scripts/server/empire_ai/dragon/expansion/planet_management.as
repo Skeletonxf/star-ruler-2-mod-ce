@@ -3,6 +3,7 @@ import empire_ai.weasel.Budget;
 import empire_ai.weasel.Resources;
 import empire_ai.dragon.expansion.development;
 import empire_ai.dragon.expansion.buildings;
+import empire_ai.dragon.expansion.constructions;
 import empire_ai.dragon.expansion.ftl;
 
 import buildings;
@@ -24,6 +25,7 @@ class PlanetManagement: PlanetEventListener {
 	DevelopmentFocuses@ focuses;
 	FTLRequirements@ ftlRequirements;
 	BuildingTracker@ builds;
+	ConstructionsTracker@ projects;
 	bool log;
 
 	uint nativeLifeStatus = 0;
@@ -60,11 +62,12 @@ class PlanetManagement: PlanetEventListener {
 		}
 	}
 
-	PlanetManagement(Planets@ planets, Budget@ budget, DevelopmentFocuses@ focuses, BuildingTracker@ builds, FTLRequirements@ ftlRequirements, AI& ai, bool log) {
+	PlanetManagement(Planets@ planets, Budget@ budget, DevelopmentFocuses@ focuses, BuildingTracker@ builds, ConstructionsTracker@ projects, FTLRequirements@ ftlRequirements, AI& ai, bool log) {
 		@this.planets = planets;
 		@this.budget = budget;
 		@this.focuses = focuses;
 		@this.builds = builds;
+		@this.projects = projects;
 		@this.ftlRequirements = ftlRequirements;
 		this.log = log;
 
@@ -383,10 +386,12 @@ class PlanetManagement: PlanetEventListener {
 					}
 
 					if (LOG)
-						ai.print("building "+type.name+" to improve income at", plAI.obj);
+						ai.print("constructing project "+type.name+" to improve income at", plAI.obj);
 					auto@ req = planets.requestConstruction(plAI, plAI.obj, type, priority=0.5, expire=ai.behavior.genericBuildExpire);
-					// we don't particularly need to respond to cancellations so
-					// not going to save this request anywhere
+					if (req !is null) {
+						auto@ tracker = ConstructionTracker(req);
+						projects.trackConstruction(tracker);
+					}
 					return;
 				}
 			}
