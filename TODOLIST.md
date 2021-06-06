@@ -10,12 +10,10 @@ This is primarily intended as a developer focused project planning list, rather 
   - Review the War.as's limitation of only attacking border systems, and make this more flexible
     - Thanks Illyia
   - Expansion AI Component
-    - Teach AI to track what types of resources it can colonise do level chaining with so it knows when to stop trying to finish a focus it can't
+    - Teach AI to track what types of resources it can colonise to do level chaining with so it knows when to stop trying to finish a focus it can't
       - Act on this info to reproritise level chains
+    - Teach AI to free up resources by using constructions like Melt Ice
     - Teach AI to deliberately colonise morphics and fulrate when it has a planet to export them to
-    - Add to AI hooks for Constructions
-      - Teach AI to melt ice
-      - Teach AI to act on primitive life
     - Add a proper isBuilding method that also checks if the AI is in the process of building a building instead of just if its in the request queue and fix everywhere I called this thinking that's what isBuilding already does
     - Scuttle outposts which have ended up in a different region to where the AI created them
       - Thanks Illyia
