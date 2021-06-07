@@ -1,0 +1,32 @@
+System: Sys 6363
+	Position: (-400, 0, 0)
+	MakeStar(Temperature = 3400, Radius = 50)
+	MakePlanet(Water, Conditions = False)
+
+System: Sys 6364
+	Position: (5800, 0, -200)
+	MakeStar(Temperature = 4567, Radius = 70)
+	ExpandSystem(500)
+	MakePlanet(Salts, Conditions = False)
+	MakeAsteroidBelt(Count = 20, Cargo = Ore, Cargo Amount = 5:1000, Distribution Chance = 0.0)
+
+System: Sys 6365
+	Position: (4000, 0, 8300)
+	MakeStar(Temperature = 4357, Radius = 67)
+	ExpandSystem(400)
+	MakePlanet(Salts, Conditions = False)
+
+System: Sys 6366
+	Position: (6900, 0, 4500)
+	MakeStar(Temperature = 5423, Radius = 73)
+	ExpandSystem(300)
+	MakePlanet(Salts, Conditions = False)
+	MakePlanet(Water, Conditions = False)
+	MakeAsteroidBelt(Count = 20, Cargo = Ore, Cargo Amount = 5:1000, Distribution Chance = 0.0)
+
+System: Sys 6367
+	Position: (12000, 0, 2800)
+	MakeStar(Temperature = 5423, Radius = 73)
+	ExpandSystem(200)
+	MakePlanet(Water, Conditions = False)
+	MakePlanet(FTL, Conditions = False)

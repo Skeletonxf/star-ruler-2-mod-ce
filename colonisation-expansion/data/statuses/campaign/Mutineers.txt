@@ -1,0 +1,5 @@
+Status: Mutineers
+	Visible To: Nobody
+	ModConstructionHPBonus(+0.4)
+	GiveNeighbourVision()
+	FreeFTLSystem()

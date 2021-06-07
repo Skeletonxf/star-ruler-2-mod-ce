@@ -13,3 +13,11 @@ Scenario: MiningColony
 	Picture: ResourceIcon::6
 
 	Map: TerraCampaign.mining_colony
+
+//Scenario: Mutiny
+//	Name: #MUTINY_NAME
+//	Description: #MUTINY_DESC
+//	Icon: MenuIcons::3
+//	Picture: StatusWar
+//
+//	Map: TerraCampaign.mutiny

@@ -1,0 +1,10 @@
+Trait: Mutineers
+	Name: TODO
+	Description: TODO
+	Icon: StatusWar
+	Color: #ff2160
+	Available: False
+	ModAttribute(PopulationGrowthFactor, Multiply, 0.5)
+	ModAttribute(OverpopulationBenefitFactor, Multiply, 0)
+	ModAttribute(PopulationDecayFactor, Multiply, 0)
+	AddStatusOwnedPlanets(Mutineers)

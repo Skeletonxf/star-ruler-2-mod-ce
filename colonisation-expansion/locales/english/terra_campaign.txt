@@ -160,3 +160,38 @@ MINING_COLONY_VICTORY_TEXT: <<|
 
 	That'll show them!
 >>
+
+MUTINY_NAME: TODO
+MUTINY_DESC: <<|
+	[b]2463 CE:[/b]
+
+	TODO
+>>
+
+MUTINY_INTRO_TITLE: TODO
+MUTINY_INTRO_TEXT: <<|
+	[i]General Nova:[/i]
+
+	TODO
+>>
+
+MUTINY_LOST_TITLE: TODO
+MUTINY_LOST_TEXT: <<|
+	[i]General Nova:[/i]
+
+	TODO
+>>
+
+MUTINY_PLAYER_DEAD_TITLE: Message Received
+MUTINY_PLAYER_DEAD_TEXT: <<|
+	[i]General Nova:[/i]
+
+	The new recruits never last very long.
+>>
+
+MUTINY_VICTORY_TITLE: TODO
+MUTINY_VICTORY_TEXT: <<|
+	[i]General Nova:[/i]
+
+	TODO
+>>
