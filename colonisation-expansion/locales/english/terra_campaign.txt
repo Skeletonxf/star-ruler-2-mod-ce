@@ -161,18 +161,31 @@ MINING_COLONY_VICTORY_TEXT: <<|
 	That'll show them!
 >>
 
-MUTINY_NAME: TODO
+MUTINY_NAME: Extremely valuable crystals
 MUTINY_DESC: <<|
 	[b]2463 CE:[/b]
 
-	TODO
+	[i]General Nova:[/i]
+
+	We're now approaching your first expedition. Headquarters detected a large
+	deposit of the crystals we're using to power your prototype hyperdrives
+	somewhere around here. Just in time too, since you used up so much of your
+	reserves kicking those mute robots out of our colony that your fleets don't
+	have enough left for the return trip.
+
+	Soldiers get unreliable if they start to question if they'll be paid on
+	time.
 >>
 
-MUTINY_INTRO_TITLE: TODO
+MUTINY_INTRO_TITLE: Trouble brewing
 MUTINY_INTRO_TEXT: <<|
 	[i]General Nova:[/i]
 
-	TODO
+	Something's not right. Our sensors are being jammed and I can see mines
+	on your cameras. This region was supposed to be uninhabited!
+
+	You were supposed to just construct the extractor building on the FTL
+	crystals but that may have to wait.
 >>
 
 MUTINY_LOST_TITLE: TODO
