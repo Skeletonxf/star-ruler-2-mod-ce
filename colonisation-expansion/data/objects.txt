@@ -222,7 +222,7 @@ restricted remote:
 	void sendDesign(uint id, const Design@ design);
 server:
 	async relocking void checkOrbit();
-	vodi setMaster(Orbital@ orb);
+	void setMaster(Orbital@ orb);
 	void setBuildPct(double pct);
 	void modDPS(double mod);
 	void setDisabled(bool value)
