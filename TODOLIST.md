@@ -42,6 +42,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Ship constructible support supply free
   - Shock Missiles don't work on shielded orbitals
   - Make some analog to the SupportStation artifact player designable/buildable
+  - Update the combat timer code for Orbitals to match the updated code for Ships
   - Make planet shields protect against carpet bombs, possibly remove the old building/orbital carpet bomb effectiveness counters as they'd get outclassed pretty fast and wouldn't want the AI using suboptimal strategies
   - Make message strip clear notifications when swapping empires
   - Make auto import refresh when resources on already colonised planets become available
@@ -91,6 +92,18 @@ This is primarily intended as a developer focused project planning list, rather 
   - Retest if WhileConsumingCargo still needs to use gameTime directly now that the status tick time bug has been fixed
 
 - Long term plans
+  - Designable Beacons
+    - The entire master/slave system, sharing of labor, and related mechanics are hardcoded to just work on Orbitals
+      Need to change the signature of a few OrbitalScript methods
+      ```
+      safe bool hasMaster();
+      safe bool isMaster(Object@ obj);
+      Orbital@ getMaster();
+      void setMaster(Orbital@ orb);
+      ```
+      Need to make ships capable of holding a Resources component
+        - Update ship script to activate and tick the Resources component correctly
+      Need to update pretty much every hook the Beacon orbital uses to work with non orbital masters
   - Improving the AI
     - Things players can do but AI just doesn't right now
       - Create stations at all

@@ -32,6 +32,21 @@ tidy class ShipScript {
 	}
 
 	void occasional_tick(Ship& ship, float time) {
+		// [[ MODIFY BASE GAME START ]]
+		// Moving updateRegion here since this now does more
+		Region@ reg = ship.region;
+		// [[ MODIFY BASE GAME END ]]
+		if(updateRegion(ship)) {
+			auto@ node = ship.getNode();
+			if(node !is null)
+				node.hintParentObject(ship.region);
+		}
+		// [[ MODIFY BASE GAME START ]]
+		if (ship.hasResources) {
+			ship.changeResourceRegion(reg, ship.region);
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		if(ship.hasLeaderAI)
 			ship.updateFleetStrength();
 
@@ -41,15 +56,20 @@ tidy class ShipScript {
 	}
 
 	double tick(Ship& ship, double time) {
-		if(updateRegion(ship)) {
-			auto@ node = ship.getNode();
-			if(node !is null)
-				node.hintParentObject(ship.region);
-		}
+		// [[ MODIFY BASE GAME START ]]
+		// updateRegion was part of occasional_tick in server Ship.as?
+		// [[ MODIFY BASE GAME END ]]
 
 		ship.moverTick(time);
 		if(ship.hasLeaderAI)
 			ship.leaderTick(time);
+
+		// [[ MODIFY BASE GAME START ]]
+		if (!ship.hasSupportAI) {
+			if (ship.hasResources)
+				ship.resourceTick(time);
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		timer += float(time);
 		if(timer >= 1.f) {
@@ -72,12 +92,20 @@ tidy class ShipScript {
 		leaveRegion(ship);
 		if(ship.hasLeaderAI)
 			ship.leaderDestroy();
+		// [[ MODIFY BASE GAME START ]]
+		if (ship.hasResources)
+			ship.destroyObjResources();
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool onOwnerChange(Ship& ship, Empire@ prevOwner) {
 		regionOwnerChange(ship, prevOwner);
 		if(ship.hasLeaderAI)
 			ship.leaderChangeOwner(prevOwner, ship.owner);
+		// [[ MODIFY BASE GAME START ]]
+		if (ship.hasResources)
+			ship.changeResourceOwner(prevOwner);
+		// [[ MODIFY BASE GAME END ]]
 		return false;
 	}
 
@@ -158,6 +186,13 @@ tidy class ShipScript {
 		}
 
 		// [[ MODIFY BASE GAME START ]]
+		if (msg.readBit()) {
+			ship.activateResources();
+			ship.readResources(msg);
+		}
+		// [[ MODIFY BASE GAME END ]]
+
+		// [[ MODIFY BASE GAME START ]]
 		// Sync bonus mass (shadow can infer mass from design + empire)
 		if (msg.readBit()) {
 			msg >> ship.BonusMass;
@@ -204,6 +239,13 @@ tidy class ShipScript {
 				ship.activateConstruction();
 			ship.readConstruction(msg);
 		}
+		// [[ MODIFY BASE GAME START ]]
+		if (msg.readBit()) {
+			if (!ship.hasResources)
+				ship.activateResources();
+			ship.readResources(msg);
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
 		// Sync bonus mass (shadow can infer mass from design + empire)
@@ -289,6 +331,14 @@ tidy class ShipScript {
 				ship.readConstructionDelta(msg);
 			}
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (msg.readBit()) {
+			if (!ship.hasResources)
+				ship.activateResources();
+			ship.readResourceDelta(msg);
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
 		// Sync bonus mass (shadow can infer mass from design + empire)

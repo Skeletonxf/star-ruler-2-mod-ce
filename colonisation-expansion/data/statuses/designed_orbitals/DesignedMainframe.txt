@@ -1,0 +1,11 @@
+Status: DesignedMainframe
+	Name: #ORB_MAINFRAME
+	Description: #ORB_MAINFRAME_REV_DESC
+	Icon: GuiOrbitalIcons::20
+	Color: #ffe1d7
+	GrantAbility(RemoteScan)
+	ShowRange(18000, #00ff00)
+	AddAccelerationBonus(0.8)
+	// TODO: The game doesn't consider this to be a Mainframe orbital for
+	// combat distance strength purposes, need to make work with ModEfficiencyDistanceToOrbital somehow
+	// TODO: ShowRange doesn't work with Stations

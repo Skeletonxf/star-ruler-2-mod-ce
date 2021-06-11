@@ -1,0 +1,18 @@
+Subsystem: DesignedReplicator
+	Name: #ORB_ANCIENT_REPLICATOR
+	Description: #SYS_ANCIENT_REPLICATOR_DESC
+	BaseColor: #ffffff
+	Tags: Category:Hulls, Hull, Applied:DesignedHull, NoCore,
+	Hull: Station
+	EvaluationOrder: -200
+	Hex.OreCost := 0
+	Hex.BuildCost := 0
+	Hex.LaborCost := 0
+	AddPostModifier: AddBuildCost(max(1000 - HexSum.BuildCost, 0))
+	AddPostModifier: AddLaborCost(max(111 - HexSum.LaborCost, 0))
+	AddPostModifier: AddOreCost(3500)
+	Repair := 300
+	Module: Default
+		Sprite: GuiOrbitalIcons::20
+		DrawMode: 3
+	Hook: AddStatus(DesignedReplicator)

@@ -1,0 +1,14 @@
+Status: DesignedBeacon
+	Name: #ORB_BEACON
+	Description: #ORB_BEACON_DESC
+	Icon: GuiOrbitalIcons::18
+	Color: #998f7a
+	gameplay.extragalactic::RefugeeColonization()
+	GiveTrade()
+	GlobalTradeNode()
+	SetSystemFlag(JumpdriveSafety)
+	ForbidLaborExport()
+	CountAsPlanet()
+	OnEnable(GenerateDefenseShips(15))
+	// TODO: Most of the beacon-like effects are all Orbital based
+	OnEnable(CE_bonus_effects::EnableShipResources())

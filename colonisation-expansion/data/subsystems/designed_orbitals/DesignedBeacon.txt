@@ -1,0 +1,17 @@
+Subsystem: DesignedBeacon
+	Name: #ORB_BEACON
+	Description: #SYS_BEACON_DESC
+	BaseColor: #998f7a
+	Tags: Category:Hulls, Hull, Applied:DesignedHull, NoCore,
+	Hull: Station
+	EvaluationOrder: -200
+	Hex.OreCost := 0
+	Hex.BuildCost := 0
+	Hex.LaborCost := 0
+	Repair := 300
+	SupportCapacity := 256
+	CargoStorage := 1000000
+	Module: Default
+		Sprite: GuiOrbitalIcons::18
+		DrawMode: 3
+	Hook: AddStatus(DesignedBeacon)

@@ -1,0 +1,11 @@
+Status: DesignedReplicator
+	Name: #ORB_ANCIENT_REPLICATOR
+	Description: #ORB_ANCIENT_REPLICATOR_DESC
+	Icon: GuiOrbitalIcons::20
+	Color: #ffffff
+	AddAccelerationBonus(5)
+	GrantAbility(AncientBuildMiner)
+	GrantAbility(AncientBuildTransmuter)
+	GrantAbility(AncientBuildCore)
+	AddStatusToOrbitingPlanet(AncientReplicator, Only Owned = True, Allow Space = True, Set Origin Empire = True)
+	CountAsPlanet()

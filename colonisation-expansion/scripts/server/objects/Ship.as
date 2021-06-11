@@ -143,6 +143,15 @@ tidy class ShipScript {
 			file << false;
 		}
 
+		// [[ MODIFY BASe GAME START ]]
+		if (ship.hasResources) {
+			file << true;
+			file << cast<Savable>(ship.Resources);
+		} else {
+			file << false;
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		file << currentMaintenance;
 		file << ship.isFree;
 		file << ship.isFTLing;
@@ -235,6 +244,14 @@ tidy class ShipScript {
 				file >> cast<Savable>(ship.Orbit);
 			}
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		file >> has;
+		if (has) {
+			ship.activateResources();
+			file >> cast<Savable>(ship.Resources);
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		file >> currentMaintenance;
 		file >> ship.isFree;
@@ -440,6 +457,12 @@ tidy class ShipScript {
 			if(node !is null)
 				node.hintParentObject(ship.region, false);
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (ship.hasResources) {
+			ship.resourcesPostLoad();
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void init(Ship& ship) {
@@ -867,6 +890,10 @@ tidy class ShipScript {
 			ship.destroyConstruction();
 		if(ship.hasAbilities)
 			ship.destroyAbilities();
+		// [[ MODIFY BASE GAME START ]]
+		if (ship.hasResources)
+			ship.destroyObjResources();
+		// [[ MODIFY BASE GAME END ]]
 
 		if(killCredit !is null && killCredit !is ship.owner && killCredit.valid)
 			killCredit.recordStatDelta(stat::ShipsDestroyed, 1);
@@ -907,6 +934,10 @@ tidy class ShipScript {
 		regionOwnerChange(ship, prevOwner);
 		if(ship.hasLeaderAI)
 			ship.leaderChangeOwner(prevOwner, ship.owner);
+		// [[ MODIFY BASE GAME START ]]
+		if (ship.hasResources)
+			ship.changeResourceOwner(prevOwner);
+		// [[ MODIFY BASE GAME END ]]
 		ship.blueprint.ownerChange(ship, prevOwner, ship.owner);
 		return false;
 	}
@@ -1026,6 +1057,11 @@ tidy class ShipScript {
 				if(node !is null)
 					node.hintParentObject(ship.region, false);
 			}
+			// [[ MODIFY BASE GAME START ]]
+			if (ship.hasResources) {
+				ship.changeResourceRegion(reg, ship.region);
+			}
+			// [[ MODIFY BASE GAME END ]]
 
 			if(ship.blueprint.design.dataCount != 0) {
 				uint hookN = 0;
@@ -1325,6 +1361,10 @@ tidy class ShipScript {
 				ship.statusTick(time);
 			if(ship.hasConstruction)
 				ship.constructionTick(time);
+			// [[ MODIFY BASE GAME START ]]
+			if (ship.hasResources)
+				ship.resourceTick(time);
+			// [[ MODIFY BASE GAME END ]]
 		}
 
 		if(d < delay)
@@ -1627,6 +1667,15 @@ tidy class ShipScript {
 		}
 
 		// [[ MODIFY BASE GAME START ]]
+		if (ship.hasResources) {
+			msg.write1();
+			ship.writeResources(msg);
+		} else {
+			msg.write0();
+		}
+		// [[ MODIFY BASE GAME END ]]
+
+		// [[ MODIFY BASE GAME START ]]
 		// Sync bonus mass (shadow can infer mass from design + empire)
 		if (ship.BonusMass != 0.0) {
 			msg.write1();
@@ -1700,6 +1749,14 @@ tidy class ShipScript {
 		else {
 			msg.write0();
 		}
+		// [[ MODIFY BASE GAME START ]]
+		if (ship.hasResources) {
+			msg.write1();
+			ship.writeResources(msg);
+		} else {
+			msg.write0();
+		}
+		// [[ MODIFY BASE GAME END ]]
 		// [[ MODIFY BASE GAME START ]]
 		// Sync bonus mass (shadow can infer mass from design + empire)
 		if (ship.BonusMass != 0.0) {
@@ -1811,6 +1868,18 @@ tidy class ShipScript {
 		else {
 			msg.write0();
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (ship.hasResources) {
+			if (ship.writeResourceDelta(msg)) {
+				used = true;
+			} else {
+				msg.write0();
+			}
+		} else {
+			msg.write0();
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
 		// Sync bonus mass (shadow can infer mass from design + empire)

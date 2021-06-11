@@ -382,3 +382,18 @@ S_CRYSTALARMOR_DESC: <<
 	[img=Minus]Cannot be repaired.[/img]
 	[img=Minus]When a Crystalline Armor hex is destroyed, it is permanently removed from the ship.[/img]
 >>
+SYS_ANCIENT_REPLICATOR_DESC: <<
+	[color=#aaa][i]A designable Replicator hull for extra toughness.[/i][/color]
+
+	[bbloc=#ORB_ANCIENT_REPLICATOR_DESC/]
+>>
+SYS_MAINFRAME_DESC: <<
+	[color=#aaa][i]A designable Mainframe hull for extra toughness.[/i][/color]
+
+	[bbloc=#ORB_MAINFRAME_REV_DESC/]
+>>
+SYS_BEACON_DESC: <<
+	[color=#aaa][i]A designable Beacon hull for extra toughness.[/i][/color]
+
+	[bbloc=#ORB_BEACON_DESC/]
+>>

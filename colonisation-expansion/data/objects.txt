@@ -15,6 +15,7 @@ Ship : objects.Ship::ShipScript {
 	Statuses@ statuses = null
 	Construction@ construction = null
 	Cargo@ cargo = null
+	Resources@ resources = null
 visible:
 	float MaxEnergy = 0
 	float Energy = 0
