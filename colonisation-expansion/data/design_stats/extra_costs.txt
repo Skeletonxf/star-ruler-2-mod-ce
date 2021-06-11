@@ -1,0 +1,23 @@
+GlobalStat: EnergyCost
+	Name: #S_EnergyCost
+	Description: #STT_EnergyCost
+	Icon: CargoIcons::0
+	Color: #7ac1d0
+
+	Variable: Hex.EnergyCargoCost
+
+GlobalStat: DefenseCost
+	Name: #S_DefenseCost
+	Description: #STT_DefenseCost
+	Icon: CargoIcons::1
+	Color: #c9423a
+
+	Variable: Hex.DefenseCargoCost
+
+GlobalStat: ResearchCost
+	Name: #S_ResearchCost
+	Description: #STT_ResearchCost
+	Icon: CargoIcons::2
+	Color: #ae62d7
+
+	Variable: Hex.ResearchCargoCost

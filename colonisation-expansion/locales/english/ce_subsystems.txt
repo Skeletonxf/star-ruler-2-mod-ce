@@ -397,3 +397,9 @@ SYS_BEACON_DESC: <<
 
 	[bbloc=#ORB_BEACON_DESC/]
 >>
+S_EnergyCost: Power Support Cost
+STT_EnergyCost: When building this ship, Power Support obtained by exporting resources with Energy Pressure to a Beacon must be spent from local storage.
+S_ResearchCost: Technology Support Cost
+STT_ResearchCost: When building this ship, Technology Support obtained by exporting resources with Research Pressure to a Beacon must be spent from local storage.
+S_DefenseCost: Defensive Support Cost
+STT_DefenseCost: When building this ship, Defensive Support obtained by exporting resources with Defense Pressure to a Beacon must be spent from local storage.

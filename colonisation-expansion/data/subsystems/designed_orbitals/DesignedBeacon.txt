@@ -11,6 +11,11 @@ Subsystem: DesignedBeacon
 	Repair := 300
 	SupportCapacity := 256
 	CargoStorage := 1000000
+	AddPostModifier: AddLaborCost(max(50 - HexSum.LaborCost, 0))
+	AddPostModifier: AddOreCost(max(5000 - HexSum.OreCost, 0))
+	Hex.EnergyCargoCost := 500
+	Hex.DefenseCargoCost := 500
+	Hex.ResearchCargoCost := 500
 	Module: Default
 		Sprite: GuiOrbitalIcons::18
 		DrawMode: 3
