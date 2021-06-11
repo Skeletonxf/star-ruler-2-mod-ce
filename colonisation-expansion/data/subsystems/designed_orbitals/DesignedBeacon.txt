@@ -2,7 +2,7 @@ Subsystem: DesignedBeacon
 	Name: #ORB_BEACON
 	Description: #SYS_BEACON_DESC
 	BaseColor: #998f7a
-	Tags: Category:Hulls, Hull, Applied:DesignedHull, NoCore,
+	Tags: Category:Hulls, Hull, Applied:DesignedHull, NoCore, RaceSpecial
 	Hull: Station
 	EvaluationOrder: -200
 	Hex.OreCost := 0

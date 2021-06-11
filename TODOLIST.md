@@ -101,9 +101,9 @@ This is primarily intended as a developer focused project planning list, rather 
       Orbital@ getMaster();
       void setMaster(Orbital@ orb);
       ```
-      Need to make ships capable of holding a Resources component
-        - Update ship script to activate and tick the Resources component correctly
+      Ideally find out a way to force set the model + icon for designed racial stations so they can't be hidden from other players by looking like just another station
       Need to update pretty much every hook the Beacon orbital uses to work with non orbital masters
+      Work out how to make the purchase menu GUI usable for something that requires 4 types of cargo to build
   - Improving the AI
     - Things players can do but AI just doesn't right now
       - Create stations at all

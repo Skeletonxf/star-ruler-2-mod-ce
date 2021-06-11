@@ -2,7 +2,7 @@ Subsystem: DesignedMainframe
 	Name: #ORB_MAINFRAME
 	Description: #SYS_MAINFRAME_DESC
 	BaseColor: #ffe1d7
-	Tags: Category:Hulls, Hull, Applied:DesignedHull, NoCore,
+	Tags: Category:Hulls, Hull, Applied:DesignedHull, NoCore, RaceSpecial
 	Hull: Station
 	Elevation: -200
 	Hex.BuildCost := 0

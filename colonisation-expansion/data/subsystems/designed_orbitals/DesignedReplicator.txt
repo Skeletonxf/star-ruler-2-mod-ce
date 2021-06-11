@@ -2,7 +2,7 @@ Subsystem: DesignedReplicator
 	Name: #ORB_ANCIENT_REPLICATOR
 	Description: #SYS_ANCIENT_REPLICATOR_DESC
 	BaseColor: #ffffff
-	Tags: Category:Hulls, Hull, Applied:DesignedHull, NoCore,
+	Tags: Category:Hulls, Hull, Applied:DesignedHull, NoCore, RaceSpecial
 	Hull: Station
 	EvaluationOrder: -200
 	Hex.OreCost := 0
