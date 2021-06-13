@@ -56,9 +56,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - This hurts the First AI's budget
     - Or if they have FTL breeders already unlocked
   - Increase the resolution of the Helium 3 icon to make it clearer
-  - Reenable wormhole networks once reworked to ensure they don't cause FPS drops
-    - Replace beams with lines?
-  - Make quickbar width configurable
   - Fix map generation bugs with galaxy mirroring and gas/ice giants
   - Make AI respond to flare bomb and gravitron condensor attacks
   - Investigate issues with Mechanoid AI being able to build gates
@@ -72,10 +69,9 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to scuttle unneeded FTL income orbitals
   - Consider what to do about the Star Children being locked out of a lot of things only available as buildings
     - Vanilla buildings that Star Children have no equivalents of
-      - Megafarms, Hydrogenators, Research Complexes, Mueseums, Labor Storage, Space Elevator, Planetary Thruster
+      - Megafarms, Hydrogenators, Research Complexes, Mueseums, Labor Storage, Space Elevator
     - Buildings that Star Children already don't need or have alternatives to
-      - FTL Storage, Megacities
-    - Maybe add a way to push planets around with motherships?
+      - FTL Storage, Megacities, Planetary Thruster
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
   - Fix adding local asteroid field not applying asteroid graphics (think this was in community patch already)
   - Get the AI to play invasion properly
@@ -90,6 +86,13 @@ This is primarily intended as a developer focused project planning list, rather 
   - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Retest if WhileConsumingCargo still needs to use gameTime directly now that the status tick time bug has been fixed
+  - Investigate why/how to change all planet resources being enabled/disabled based on the primary resource (which tends to be the most difficult to enable)
+    - Easiest to reproduce by adding local asteroid fields to native tier 2/3 planets
+    - Potentially an exploit here too by putting scalables on tier 3 planets, does the tier 3 resource get enabled because the primary becomes scalable?
+  - Rework wormhole networks once to ensure they don't cause FPS drops
+    - May need to come up with a new non gate-like effect in order to not cause pathing latency issues
+    - Replace beams with lines to fix graphical lag issues?
+  - Make quickbar width configurable
 
 - Long term plans
   - Designable Beacons
@@ -117,3 +120,4 @@ This is primarily intended as a developer focused project planning list, rather 
       - Carpet bomb enemy planets (especially useful vs Mechanoid)
       - Use gates to coordinate surprise attacks on an enemy (the AI is already good at doing rapid attacks with Hyperdrives/Jumpdrives/Fling but gates and slipstreams aren't used as well here)
       - Immediately seek to destroy a player's Senatorial Palace if they start one of the Galatic votes that can achieve the influence victory
+  - Sight range and seeable range should be based on the edge to edge distance of two ships, factoing in the radius of both
