@@ -12,11 +12,15 @@ TRANSFER_ALL_DESC: Transfer all resources that can be transfered onto the target
 ABL_ABANDONED_SATELLITE: Activate Abandoned Satellite
 ABL_BUSTER_MACHINE_DESC: Reactivate the ancient exploratory vessel.
 ABL_PICKUP_SPECIFIC_CARGO: Pickup $1
+ABL_PICKUP_SPECIFIC_CARGO_FIXED: Pickup Some $1
 ABL_PICKUP_SPECIFIC_CARGO_DESC: Order the ship to pick up as much $1 from the target as possible.
 ABL_PICKUP_CARGO: Pickup All Cargo
+ABL_PICKUP_CARGO_FIXED: Pickup Some Cargo
 ABL_TRANSFER_CARGO: Transfer All Cargo
+ABL_TRANSFER_CARGO_FIXED: Transfer Some Cargo
 ABL_TRANSFER_SPECIFIC_CARGO_DESC: Order the ship to transfer all $1 in its stores.
 ABL_TRANSFER_SPECIFIC_CARGO: Transfer All $1
+ABL_TRANSFER_SPECIFIC_CARGO_FIXED: Transfer Some $1
 ABL_AUTOMINE_ORDER: Automine, dropoff here
 ABL_MINE_ASTEROID_DESC: Mine this asteroid for one full load of cargo.
 ABL_CONSUME_PLANET_ORDER: Consume Planet

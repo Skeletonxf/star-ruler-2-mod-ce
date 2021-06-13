@@ -24,6 +24,10 @@ server:
 	void transferAllCargoTo(Object@ other);
 	void transferPrimaryCargoTo(Object@ other, double rate);
 	void transferCargoTo(uint type, Object@ other);
+	// [[ MODIFY BASE GAME START ]]
+	void transferAllCargoToFixed(Object@ other, double limit);
+	void transferCargoToFixed(uint type, Object@ other, double limit);
+	// [[ MODIFY BASE GAME END ]]
 
 	void writeCargo(Message& msg) const;
 	bool writeCargoDelta(Message& msg) const;

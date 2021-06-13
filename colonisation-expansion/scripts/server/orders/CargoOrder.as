@@ -16,13 +16,17 @@ tidy class CargoOrder : Order {
 	int moveId = -1;
 	int canGiveCargoStatusID = -1;
 	int canTakeCargoStatusID = -1;
+	// If non zero, a limit on how much cargo we want to transfer, which
+	// may be less than our actual cargo capacity
+	double capacityLimit = 0;
 
-	CargoOrder(Object@ targ, int id, bool pickup) {
+	CargoOrder(Object@ targ, int id, bool pickup, double capacityLimit = 0) {
 		@target = targ;
 		cargoId = id;
 		this.pickup = pickup;
 		canGiveCargoStatusID = getStatusID("CanGiveCargo");
 		canTakeCargoStatusID = getStatusID("CanTakeCargo");
+		this.capacityLimit = capacityLimit;
 	}
 
 	CargoOrder(SaveFile& file) {
@@ -31,6 +35,7 @@ tidy class CargoOrder : Order {
 		file >> cargoId;
 		file >> pickup;
 		file >> moveId;
+		file >> capacityLimit;
 		canGiveCargoStatusID = getStatusID("CanGiveCargo");
 		canTakeCargoStatusID = getStatusID("CanTakeCargo");
 	}
@@ -41,6 +46,7 @@ tidy class CargoOrder : Order {
 		file << cargoId;
 		file << pickup;
 		file << moveId;
+		file << capacityLimit;
 	}
 
 	string get_name() {
@@ -128,10 +134,18 @@ tidy class CargoOrder : Order {
 		if (distance >= range*range) {
 			obj.moveTo(target, moveId, range * 0.95, enterOrbit = false);
 		} else {
-			if (cargoId == -1) {
-				src.transferAllCargoTo(dest);
+			if (capacityLimit > 0.0) {
+				if (cargoId == -1) {
+					src.transferAllCargoToFixed(dest, capacityLimit);
+				} else {
+					src.transferCargoToFixed(cargoId, dest, capacityLimit);
+				}
 			} else {
-				src.transferCargoTo(cargoId, dest);
+				if (cargoId == -1) {
+					src.transferAllCargoTo(dest);
+				} else {
+					src.transferCargoTo(cargoId, dest);
+				}
 			}
 			if (moveId != -1) {
 				moveId = -1;

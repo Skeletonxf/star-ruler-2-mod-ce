@@ -77,7 +77,7 @@ restricted remote:
 	void addSlipstreamOrder(vec3d target, bool append = false);
 	void addAutoExploreOrder(bool useFTL, bool append = false);
 	// [[ MODIFY BASE GAME START ]]
-	void addCargoOrder(Object& target, int cargoId, bool pickup, bool append = false);
+	void addCargoOrder(Object& target, int cargoId, double quantity, bool pickup, bool append = false);
 	void addAutoMineOrder(Object& target, bool append = false);
 	void addAutoSupplyOrder(Object& source, bool append = false);
 	void addChaseOrder(Object& target, bool append = false);

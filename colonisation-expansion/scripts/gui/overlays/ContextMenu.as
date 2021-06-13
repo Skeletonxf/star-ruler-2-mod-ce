@@ -822,16 +822,76 @@ class TransferCargo : SelectionOption {
 		// null cargo type is interpreted as transfer all cargo types
 		if (type is null) {
 			if (transfer == CT_Pickup) {
-				obj.addCargoOrder(clicked, -1, true, shiftKey);
+				obj.addCargoOrder(clicked, -1, 0.0, true, shiftKey);
 			} else if (transfer == CT_Dropoff) {
-				obj.addCargoOrder(clicked, -1, false, shiftKey);
+				obj.addCargoOrder(clicked, -1, 0.0, false, shiftKey);
 			}
 		} else {
 			if (transfer == CT_Pickup) {
-				obj.addCargoOrder(clicked, type.id, true, shiftKey);
+				obj.addCargoOrder(clicked, type.id, 0.0, true, shiftKey);
+			} else if (transfer == CT_Dropoff) {
+				obj.addCargoOrder(clicked, type.id, 0.0, false, shiftKey);
+			}
+		}
+	}
+}
+
+class FixedQuantityTransferCargo : SelectionOption, IInputDialogCallback {
+	const CargoType@ type;
+	CargoTransfer transfer;
+	Object@ obj;
+	bool shiftKeyMemory = shiftKey;
+
+	FixedQuantityTransferCargo(const CargoType@ type, CargoTransfer transfer) {
+		@this.type = type;
+		this.transfer = transfer;
+	}
+
+	void call(Object@ obj) {
+		if (obj is null || !obj.hasCargo || !obj.hasLeaderAI || !obj.owner.controlled) {
+			return;
+		}
+		// Enqueue the order if the user is shifting when they add this to the orders,
+		// don't require them to hold shift until they confirm the quantity
+		shiftKeyMemory = shiftKey;
+		@this.obj = obj;
+		double maxCapacity = obj.cargoCapacity;
+		InputDialog@ dialog = InputDialog(this, null);
+		dialog.addTitle(locale::CARGO_QUANTITY);
+		dialog.accept.text = locale::SET_CARGO_QUANTIY;
+		dialog.addSpinboxInput(locale::INPUT_CARGO_QUANTITY, defaultValue=min(1000.0, maxCapacity),
+			minValue=0.0, maxValue=maxCapacity, decimals=0, step=1000.0);
+		dialog.addLabel("", FT_Medium, 0.5, true);
+		addDialog(dialog);
+		changeCallback(dialog);
+	}
+
+	void changeCallback(InputDialog@ dialog) {
+		double quantity = dialog.getSpinboxInput(0);
+		double maxCapacity = obj.cargoCapacity;
+
+		dialog.accept.disabled = quantity > maxCapacity || quantity <= 0.0;
+		dialog.setLabel(1, string(quantity) + "/ " + string(maxCapacity));
+	}
+
+	void inputCallback(InputDialog@ dialog, bool accepted) {
+		if (accepted) {
+			double quantity = dialog.getSpinboxInput(0);
+
+			// null cargo type is interpreted as transfer all cargo types
+			if (type is null) {
+				if (transfer == CT_Pickup) {
+					obj.addCargoOrder(clicked, -1, quantity, true, shiftKeyMemory);
 				} else if (transfer == CT_Dropoff) {
-					obj.addCargoOrder(clicked, type.id, false, shiftKey);
+					obj.addCargoOrder(clicked, -1, quantity, false, shiftKeyMemory);
 				}
+			} else {
+				if (transfer == CT_Pickup) {
+					obj.addCargoOrder(clicked, type.id, quantity, true, shiftKeyMemory);
+				} else if (transfer == CT_Dropoff) {
+					obj.addCargoOrder(clicked, type.id, quantity, false, shiftKeyMemory);
+				}
+			}
 		}
 	}
 }
@@ -1609,6 +1669,14 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 					TransferCargo(null, CT_Dropoff),
 					transferAbility.icon
 				);
+				addOption(
+					menu,
+					selected,
+					clicked,
+					locale::ABL_TRANSFER_CARGO_FIXED,
+					FixedQuantityTransferCargo(null, CT_Dropoff),
+					transferAbility.icon
+				);
 			}
 
 			const AbilityType@ pickupAbility = getAbilityType("PickupCargo");
@@ -1621,6 +1689,14 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 					clicked,
 					locale::ABL_PICKUP_CARGO,
 					TransferCargo(null, CT_Pickup),
+					pickupAbility.icon
+				);
+				addOption(
+					menu,
+					selected,
+					clicked,
+					locale::ABL_PICKUP_CARGO_FIXED,
+					FixedQuantityTransferCargo(null, CT_Pickup),
 					pickupAbility.icon
 				);
 			}
@@ -1643,6 +1719,14 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 						TransferCargo(type, CT_Dropoff),
 						type.icon
 					);
+					addOption(
+						menu,
+						selected,
+						clicked,
+						format(locale::ABL_TRANSFER_SPECIFIC_CARGO_FIXED, type.name),
+						FixedQuantityTransferCargo(type, CT_Dropoff),
+						type.icon
+					);
 				}
 				// check if can pickup this type of cargo
 				if (selected.hasStatusEffect(canTakeCargoStatusID)
@@ -1654,6 +1738,14 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 						clicked,
 						format(locale::ABL_PICKUP_SPECIFIC_CARGO, type.name),
 						TransferCargo(type, CT_Pickup),
+						type.icon
+					);
+					addOption(
+						menu,
+						selected,
+						clicked,
+						format(locale::ABL_PICKUP_SPECIFIC_CARGO_FIXED, type.name),
+						FixedQuantityTransferCargo(type, CT_Pickup),
 						type.icon
 					);
 				}

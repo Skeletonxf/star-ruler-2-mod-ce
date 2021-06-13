@@ -70,10 +70,18 @@ tidy class Cargo : CargoStorage, Component_Cargo {
 		return consume(type, amount, partial);
 	}
 
+	// [[ MODIFY BASE GAME START ]]
 	void transferAllCargoTo(Object@ other) {
+		transferAllCargoToFixed(other, 0.0);
+	}
+
+	void transferAllCargoToFixed(Object@ other, double limit) {
 		if(types is null || !other.hasCargo)
 			return;
 		double cap = other.cargoCapacity - other.cargoStored;
+		if (limit > 0.0) {
+			cap = min(cap, limit);
+		}
 		while(cap > 0 && types.length > 0) {
 			auto@ type = types[0];
 			double cons = min(cap / type.storageSize, amounts[0]);
@@ -87,6 +95,7 @@ tidy class Cargo : CargoStorage, Component_Cargo {
 			}
 		}
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void transferPrimaryCargoTo(Object@ other, double rate) {
 		if(types is null || types.length == 0)
@@ -98,7 +107,12 @@ tidy class Cargo : CargoStorage, Component_Cargo {
 			other.addCargo(type.id, realAmount);
 	}
 
+	// [[ MODIFY BASE GAME START ]]
 	void transferCargoTo(uint typeId, Object@ other) {
+		transferCargoToFixed(typeId, other, 0.0);
+	}
+
+	void transferCargoToFixed(uint typeId, Object@ other, double limit) {
 		if(types is null || types.length == 0)
 			return;
 		auto@ type = getCargoType(typeId);
@@ -108,6 +122,9 @@ tidy class Cargo : CargoStorage, Component_Cargo {
 		double stored = getCargoStored(typeId);
 		if(stored != 0.0) {
 			double cap = other.cargoCapacity - other.cargoStored;
+			if (limit > 0.0) {
+				cap = min(cap, limit);
+			}
 			double cons = min(cap / type.storageSize, stored);
 			cons = consume(type, cons, partial=true);
 			if(cons > 0) {
@@ -116,6 +133,7 @@ tidy class Cargo : CargoStorage, Component_Cargo {
 			}
 		}
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	void writeCargo(Message& msg) {
 		msg << this;
