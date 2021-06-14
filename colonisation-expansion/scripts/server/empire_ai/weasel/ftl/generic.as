@@ -651,6 +651,10 @@ class FTLGeneric : FTL {
 		return direct;
 	}
 
+	double getSublightDirectETA(Object& obj, const vec3d& position1, const vec3d& position2) {
+		return newtonArrivalTime(obj.maxAcceleration, position1 - position2, vec3d());
+	}
+
 	// Not a hyperdrive method but fits here best
 	double getFlingETA(Object& obj, const vec3d& position) {
 		// ETA includes all fling beacons we can use, not just ones we built
@@ -729,6 +733,28 @@ class FTLGeneric : FTL {
 			return F_Pass;
 		}
 
+		// check we can actually target the position we want to FTL to (jammers)
+		// might be preventing it
+		double indirectFTLSublightETA = 0;
+		bool ableToHyperdriveToPosition = canHyperdriveTo(ord.obj, toPosition);
+		bool ableToJumpdriveToPosition = canJumpdriveTo(ord.obj, toPosition);
+		bool ableToFlingToPosition = canFlingTo(ord.obj, toPosition);
+		bool ableToSSToPosition = canSlipstreamTo(ord.obj, toPosition);
+		vec3d alternatePosition = toPosition;
+		if ((ableToHyperdrive && !ableToHyperdriveToPosition)
+			|| (ableToJumpdrive && !ableToJumpdriveToPosition)
+			|| (ableToFling && !ableToFlingToPosition)
+			|| (ableToSS && !ableToSSToPosition)) {
+			Region@ likelyBlocked = getRegion(toPosition);
+			if (likelyBlocked !is null) {
+				vec3d offset = toPosition - likelyBlocked.position;
+				offset.y = 0;
+				vec3d direction = offset.normalize();
+				alternatePosition = likelyBlocked.position + (direction * (likelyBlocked.radius + 25.0));
+				indirectFTLSublightETA = getSublightDirectETA(ord.obj, alternatePosition, toPosition);
+			}
+		}
+
 		double hyperdriveETA = INFINITY;
 		double hyperdriveFTLCost = INFINITY;
 		double jumpdriveETA = INFINITY;
@@ -741,15 +767,27 @@ class FTLGeneric : FTL {
 		double sublightFTLCost = 0;
 
 		if (ableToHyperdrive) {
-			hyperdriveETA = getHyperdriveETA(ord.obj, toPosition);
-			hyperdriveFTLCost = hyperdriveCost(ord.obj, toPosition);
+			if (ableToHyperdriveToPosition) {
+				hyperdriveETA = getHyperdriveETA(ord.obj, toPosition);
+				hyperdriveFTLCost = hyperdriveCost(ord.obj, toPosition);
+			} else {
+				hyperdriveETA = getHyperdriveETA(ord.obj, alternatePosition) + indirectFTLSublightETA;
+				hyperdriveFTLCost = hyperdriveCost(ord.obj, alternatePosition);
+			}
 		}
 
 		vec3d doubleHopPosition;
 		bool makeDoubleHop = false;
 		if (ableToJumpdrive) {
-			jumpdriveETA = getJumpdriveETA(ord.obj, ord.obj.position, toPosition);
-			jumpdriveFTLCost = jumpdriveCost(ord.obj, toPosition);
+			vec3d position = toPosition;
+			double otherETA = 0;
+			if (!ableToJumpdriveToPosition) {
+				position = alternatePosition;
+				otherETA += indirectFTLSublightETA;
+			}
+
+			jumpdriveETA = getJumpdriveETA(ord.obj, ord.obj.position, position);
+			jumpdriveFTLCost = jumpdriveCost(ord.obj, position);
 			// consider doing a hop to a safe region first
 			// with the jumpdrive to reach the destination
 			if (jumpdriveETA == INFINITY) {
@@ -762,7 +800,7 @@ class FTLGeneric : FTL {
 					}
 					vec3d hopPos = safeRegions[i].position;
 					hopPos = hopPos + (ord.obj.position -  hopPos).normalized(safeRegions[i].radius * 0.85);
-					double d = hopPos.distanceTo(toPosition);
+					double d = hopPos.distanceTo(position);
 					if (d < bestHop) {
 						bestHop = d;
 						@hopRegion = safeRegions[i];
@@ -770,16 +808,21 @@ class FTLGeneric : FTL {
 					}
 				}
 				jumpdriveETA = JUMPDRIVE_CHARGE_TIME;
-				jumpdriveETA += getJumpdriveETA(ord.obj, doubleHopPosition, toPosition);
+				jumpdriveETA += getJumpdriveETA(ord.obj, doubleHopPosition, position) + otherETA;
 				jumpdriveFTLCost = jumpdriveCost(ord.obj, ord.obj.position, doubleHopPosition);
-				jumpdriveFTLCost += jumpdriveCost(ord.obj, doubleHopPosition, toPosition);
+				jumpdriveFTLCost += jumpdriveCost(ord.obj, doubleHopPosition, position);
 				makeDoubleHop = true;
 			}
 		}
 
 		if (ableToFling) {
-			flingETA = getFlingETA(ord.obj, toPosition);
-			flingFTLCost = flingCost(ord.obj, toPosition);
+			if (ableToFlingToPosition) {
+				flingETA = getFlingETA(ord.obj, toPosition);
+				flingFTLCost = flingCost(ord.obj, toPosition);
+			} else {
+				flingETA = getFlingETA(ord.obj, alternatePosition) + indirectFTLSublightETA;
+				flingFTLCost = flingCost(ord.obj, alternatePosition);
+			}
 		}
 
 		if (ableToSS) {
@@ -790,14 +833,19 @@ class FTLGeneric : FTL {
 				ssETA = INFINITY;
 				ssFTLCost = INFINITY;
 			} else {
-				ssETA = getSSETA(ssGen, ord.obj, toPosition);
-				ssFTLCost = getSSCost(ssGen, toPosition);
+				if (ableToSSToPosition) {
+					ssETA = getSSETA(ssGen, ord.obj, toPosition);
+					ssFTLCost = getSSCost(ssGen, toPosition);
+				} else {
+					ssETA = getSSETA(ssGen, ord.obj, alternatePosition) + indirectFTLSublightETA;
+					ssFTLCost = getSSCost(ssGen, alternatePosition);
+				}
 			}
 		}
 
 		sublightETA = getSublightETA(ord.obj, toPosition);
 
-		// Reserve some FTL if we're saving our FTL for a new beacon
+		// Reserve some FTL if we're saving our FTL for a new fling beacon
 		double availableFTL = usableFTL(ai, ord);
 		if ((buildFling !is null && !buildFling.started) || wantToBuildFling) {
 			availableFTL = min(availableFTL, ai.empire.FTLStored - 250.0);
@@ -830,6 +878,7 @@ class FTLGeneric : FTL {
 		double travelMethod = TRAVEL_SUBLIGHT;
 		double travelETA = sublightETA;
 		double travelCost = 0;
+		bool needSublightAfter = false;
 		// Determine what to prioritize for FTL travel
 		if (ord.priority == MP_Critical) {
 			// choose fastest travel method
@@ -837,68 +886,80 @@ class FTLGeneric : FTL {
 				travelMethod = TRAVEL_HYPERDRIVE;
 				travelETA = hyperdriveETA;
 				travelCost = hyperdriveFTLCost;
+				needSublightAfter = !ableToHyperdriveToPosition;
 			}
 			if (jumpdriveETA < travelETA) {
 				travelMethod = TRAVEL_JUMPDRIVE;
 				travelETA = jumpdriveETA;
 				travelCost = jumpdriveFTLCost;
+				needSublightAfter = !ableToJumpdriveToPosition;
 			}
 			if (flingETA < travelETA) {
 				travelMethod = TRAVEL_FLING;
 				travelETA = flingETA;
 				travelCost = flingFTLCost;
+				needSublightAfter = !ableToFlingToPosition;
 			}
 			// err on the side of caution due to slipstream inaccuracy
 			if ((ssETA * 1.2) < travelETA) {
 				travelMethod = TRAVEL_SLIPSTREAM;
 				travelETA = ssETA;
 				travelCost = ssFTLCost;
+				needSublightAfter = !ableToSSToPosition;
 			}
 		} else {
 			// choose cheapest travel method, being
 			// willing to take FTL over sublight if it substantially
 			// reduces the journey time
-			if ((hyperdriveETA * 3) < sublightETA) {
+			double baseSpeedup = 1.4;
+			if ((hyperdriveETA * (baseSpeedup + (1.6 * (hyperdriveFTLCost / availableFTL)))) < sublightETA) {
 				travelMethod = TRAVEL_HYPERDRIVE;
 				travelETA = hyperdriveETA;
 				travelCost = hyperdriveFTLCost;
+				needSublightAfter = !ableToHyperdriveToPosition;
 			}
-			if ((jumpdriveETA * 3) < sublightETA) {
+			if ((jumpdriveETA * (baseSpeedup + (1.6 * (jumpdriveFTLCost / availableFTL)))) < sublightETA) {
 				if (travelMethod == TRAVEL_SUBLIGHT) {
 					travelMethod = TRAVEL_JUMPDRIVE;
 					travelETA = jumpdriveETA;
 					travelCost = jumpdriveFTLCost;
+					needSublightAfter = !ableToJumpdriveToPosition;
 				} else {
 					if (jumpdriveFTLCost < travelCost) {
 						travelMethod = TRAVEL_JUMPDRIVE;
 						travelETA = jumpdriveETA;
 						travelCost = jumpdriveFTLCost;
+						needSublightAfter = !ableToJumpdriveToPosition;
 					}
 				}
 			}
-			if ((flingETA * 3) < sublightETA) {
+			if ((flingETA * (baseSpeedup + (1.6 * (flingFTLCost / availableFTL)))) < sublightETA) {
 				if (travelMethod == TRAVEL_SUBLIGHT) {
 					travelMethod = TRAVEL_FLING;
 					travelETA = flingETA;
 					travelCost = flingFTLCost;
+					needSublightAfter = !ableToFlingToPosition;
 				} else {
 					if (flingFTLCost < travelCost) {
 						travelMethod = TRAVEL_FLING;
 						travelETA = flingETA;
 						travelCost = flingFTLCost;
+						needSublightAfter = !ableToFlingToPosition;
 					}
 				}
 			}
-			if ((ssETA * 3) < sublightETA) {
+			if ((ssETA * (baseSpeedup + (1.6 * (ssFTLCost / availableFTL)))) < sublightETA) {
 				if (travelMethod == TRAVEL_SUBLIGHT) {
 					travelMethod = TRAVEL_SLIPSTREAM;
 					travelETA = ssETA;
 					travelCost = ssFTLCost;
+					needSublightAfter = false;
 				} else {
 					if (ssFTLCost < travelCost) {
 						travelMethod = TRAVEL_SLIPSTREAM;
 						travelETA = ssETA;
 						travelCost = ssFTLCost;
+						needSublightAfter = false;
 					}
 				}
 			}
@@ -909,20 +970,35 @@ class FTLGeneric : FTL {
 		}
 
 		if (travelMethod == TRAVEL_HYPERDRIVE) {
-			ord.obj.addHyperdriveOrder(toPosition);
+			if (!needSublightAfter) {
+				ord.obj.addHyperdriveOrder(toPosition);
+			} else {
+				ord.obj.addHyperdriveOrder(alternatePosition);
+				ord.obj.addMoveOrder(toPosition, append=true);
+			}
 			return F_Continue;
 		}
 
 		if (travelMethod == TRAVEL_JUMPDRIVE) {
+			vec3d finalPosition = toPosition;
+			if (needSublightAfter) {
+				finalPosition = alternatePosition;
+			}
 			if (makeDoubleHop) {
 				if (log) {
 					ai.print("Making double hop");
 				}
 				ord.obj.addJumpdriveOrder(doubleHopPosition);
-				ord.obj.addJumpdriveOrder(toPosition, append=true);
+				ord.obj.addJumpdriveOrder(finalPosition, append=true);
+				if (needSublightAfter) {
+					ord.obj.addMoveOrder(toPosition, append=true);
+				}
 				return F_Continue;
 			} else {
-				ord.obj.addJumpdriveOrder(toPosition);
+				ord.obj.addJumpdriveOrder(finalPosition);
+				if (needSublightAfter) {
+					ord.obj.addMoveOrder(toPosition, append=true);
+				}
 				return F_Continue;
 			}
 		}
@@ -934,12 +1010,21 @@ class FTLGeneric : FTL {
 				return F_Pass;
 			}
 
-			ord.obj.addFlingOrder(beacon, toPosition);
+			if (!needSublightAfter) {
+				ord.obj.addFlingOrder(beacon, toPosition);
+			} else {
+				ord.obj.addFlingOrder(beacon, alternatePosition);
+				ord.obj.addMoveOrder(toPosition, append=true);
+			}
 			return F_Continue;
 		}
 
 		if (travelMethod == TRAVEL_SLIPSTREAM) {
-			ssGen.addSlipstreamOrder(toPosition, append=true);
+			if (!needSublightAfter) {
+				ssGen.addSlipstreamOrder(toPosition, append=true);
+			} else {
+				ssGen.addSlipstreamOrder(alternatePosition, append=true);
+			}
 			if (ssGen !is ord.obj) {
 				ord.obj.addWaitOrder(ssGen, moveTo=true);
 				ssGen.addSecondaryToSlipstream(ord.obj);

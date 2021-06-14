@@ -28,9 +28,10 @@ This is primarily intended as a developer focused project planning list, rather 
       - Should determine if the moon base would solve the space issue rather than just never doing it
   - Make AI consolidate labor at one shipyard, not multiple
     - The AI can build shipyards for both labor consolidation and staging bases, need to ensure it doesn't build two in the same region
-    - May want to make the AI build supply depots instead of shipyards at staging bases too      
+    - May want to make the AI build supply depots instead of shipyards at staging bases too
   - Make AI able to use the abilties on senatorial palaces and allondium worlds
     - Use the introduced ability AI hooks
+  - Teach AI to sublight out of jammed regions before FTLing rather than always defaulting to sublight if it starts in a jammed system
   - Make War.as AI detect when a system is protected due to an Outpost/Temple and make it only commit one ship to take out the orbital instead of all of its seiging ships (since at the moment they all give up on the capture and then all detect the enemy orbital via findEnemy)
   - Auto researching an FTL unlock should not trigger the vote for the FTL unlock
   - Consider how much if any of the patched First empire stat buffs to port to the AI's heuristics for ship design

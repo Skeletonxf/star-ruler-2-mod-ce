@@ -510,7 +510,7 @@ class ColonizeForest {
 						auto@ req = expansion.planets.requestConstruction(plAI, plAI.obj, type, priority=2, expire=ai.behavior.genericBuildExpire);
 						if (req !is null) {
 							// got match, close request
-							if (true)
+							if (LOG)
 								ai.print("constructing project "+type.name+" to meet requested resource: "+request.spec.dump(), plAI.obj);
 							// for ease and not making requests even more complicated, use buildingFor with constructions
 							// as well as buildings
