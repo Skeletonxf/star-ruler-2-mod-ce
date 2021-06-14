@@ -274,7 +274,7 @@ bool isFTLBlocked(Object& obj) {
 
 const double JUMPDRIVE_COST = 0.06;
 const double JUMPDRIVE_START_COST = 50.0;
-const double JUMPDRIVE_CHARGE_TIME = 25.0;
+const double JUMPDRIVE_CHARGE_TIME = 16.0;
 
 bool canJumpdrive(Object& obj) {
 	Ship@ ship = cast<Ship>(obj);
