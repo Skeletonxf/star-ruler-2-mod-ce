@@ -12,7 +12,9 @@ Subsystem: TorpedoLauncher
 	Hull: Flagship, Station
 
 	Size := HexSize * Hexes
-	Range := Size + 1200
+	BaseRange := 1200
+	RangeScaling := (1.0 + (BaseRange / 500.0))/ 2.0
+	Range := (Size * RangeScaling) + BaseRange
 	Damage := Size * 7.0
 	Reload := 25.0 * min(1.0 + Size/512, 2.0)
 	Speed := max(40, Range / 90)

@@ -12,7 +12,9 @@ Subsystem: MuonBattery
 
 	Size := HexSize * Hexes
 
-	Range := Size + 400
+	BaseRange := 400
+	RangeScaling := (1.0 + (BaseRange / 500.0))/ 2.0
+	Range := (Size * RangeScaling) + BaseRange
 	Damage := Size * 0.49
 	Reload := 0.2 * min(1.0 + Size/512, 2.0)
 	Speed := max(90, Range / 16)

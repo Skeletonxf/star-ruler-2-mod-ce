@@ -15,7 +15,9 @@ Subsystem: SubspaceShredder
 	Tracking := 0.2
 	SupplyCost := Size * 2.0
 
-	Range := 5 + Size
+	BaseRange := 5
+	RangeScaling := (1.0 + (BaseRange / 400.0))/ 2.0
+	Range := (Size * RangeScaling) + BaseRange
 	TravelRange := (Range * 30) - (28 * Size)
 
 	out DPS := 0.25 * (Damage / Reload)

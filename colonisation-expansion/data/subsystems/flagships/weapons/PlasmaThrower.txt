@@ -12,7 +12,9 @@ Subsystem: PlasmaThrower
 	Hull: Flagship, Station
 
 	Size := HexSize * Hexes
-	Range := Size + 500
+	BaseRange := 500
+	RangeScaling := (1.0 + (BaseRange / 500.0))/ 2.0
+	Range := (Size * RangeScaling) + BaseRange
 
 	Duration := 10 * (1.0 + Size/128)
 	DamageOverTime := (Size * 4.0) / Duration

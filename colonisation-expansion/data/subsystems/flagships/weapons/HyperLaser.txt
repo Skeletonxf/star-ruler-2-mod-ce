@@ -15,7 +15,9 @@ Subsystem: HyperLaser
 	BeamDPS := 13.5 * Size
 	Duration := 1.5
 	Cooldown := 6 * min(1.0 + Size/512, 2.0)
-	Range := Size + 350
+	BaseRange := 350
+	RangeScaling := (1.0 + (BaseRange / 500.0))/ 2.0
+	Range := (Size * RangeScaling) + BaseRange
 	Tracking := 0.5
 	SupplyCost := Size * 4.5
 	PowerUse := 10 * Size
