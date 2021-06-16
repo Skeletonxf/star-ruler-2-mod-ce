@@ -90,7 +90,11 @@ class Verdant : Race, RaceDesigns {
 		if(plAI is null)
 			return;
 		Planet@ pl = plAI.obj;
-		if(pl.pressureCap <= 0 && pl.totalPressure >= 1) {
+		// [[ MODIFY BASE GAME START ]]
+		// Planets can get a bit of pressure cap from resources too!
+		// Build a stalk anyway since we still need it to use the pressure on any planet
+		if((pl.pressureCap <= 0 && pl.totalPressure >= 1) || (pl.totalPressure >= 5 && int(pl.pressureCap) < pl.totalPressure)) {
+			// [[ MODIFY BASE GAME END ]]
 			if(planets.isBuilding(plAI.obj, stalk))
 				return;
 			if(pl.getBuildingCount(stalk.id) != 0)
