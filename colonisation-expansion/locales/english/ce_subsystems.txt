@@ -403,3 +403,12 @@ S_ResearchCost: Technology Support Cost
 STT_ResearchCost: When building this ship, Technology Support obtained by exporting resources with Research Pressure to a Beacon must be spent from local storage.
 S_DefenseCost: Defensive Support Cost
 STT_DefenseCost: When building this ship, Defensive Support obtained by exporting resources with Defense Pressure to a Beacon must be spent from local storage.
+S_DRONELAUNCHER_DESC: <<
+	Launches a swarm of centrally controlled drones that track enemy ships, circling around ships in the enemy fleet while dealing damage to anything it passes through.
+
+	[img=Plus]Drones pierce through enemy ships, allowing damage to be dealt many times per drone.[/img]
+	[img=Plus]Very high damage at close range.[/img]
+	[img=Minus]Drones move slowly.[/img]
+	[img=Minus]Significant amounts of [b][color=#00ff80]Control[/color][/b] are required to support the drones.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Drones have a limited lifetime before their power source fails and a new drone needs to be launched. The closer a drone is fired to its target, the more time it will have to assault enemy ships, increasing its effective damage output.[/color][/i][/img]
+>>

@@ -12,14 +12,13 @@ Subsystem: DroneLauncher
 	Hull: Flagship, Station
 
 	Size := HexSize * Hexes
-	BaseRange := 900
+	BaseRange := 350
 	RangeScaling := (1.0 + (BaseRange / 500.0))/ 2.0
 	Range := (Size * RangeScaling) + BaseRange
-	Speed := 80
+	Lifetime := 30
+	Speed := (1.2 * Range) / Lifetime
 	Tracking := 3
 	SupplyCost := Size * 3.0
-
-	Lifetime := 30
 
 	DroneCount := 2.0 * floor(pow(Size, 0.33))
 	Damage := (Size * 5.0) / DroneCount
