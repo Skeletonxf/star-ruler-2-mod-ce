@@ -1,0 +1,23 @@
+Status: ComputerCore
+	Visible To: Nobody
+	Unique: True
+
+	AddStatusInitialCombat(ComputerBoost, 30)
+
+Status: ComputerBoost
+	Name: #STATUS_COMPUTER_BOOST
+	Description: #STATUS_COMPUTER_BOOST_DESC
+	Icon: QuickbarIcons::6
+	Unique: True
+
+	ModFleetEffectivenessSubsystem(Sys.EfficiencyBoost)
+Status: ComputerSinew
+	Visible To: Nobody
+	Unique: True
+	AddStatusInitialCombat(ComputerSinewBoost, 30)
+Status: ComputerSinewBoost
+	Name: #STATUS_COMPUTER_BOOST
+	Description: #STATUS_SINEW_BOOST
+	Icon: Sinew * 00aaff
+	Unique: True
+	CE_ship_effects::HealFleetPerSecondSubsystemVar(Sys.CombatHeal)

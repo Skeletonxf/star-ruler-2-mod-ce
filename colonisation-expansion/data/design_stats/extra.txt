@@ -200,3 +200,11 @@ SubsystemStat: ShieldHarmonizerRedirectPercentage
 	Color: #ff8000
 
 	Variable: AoEPercentage
+
+SubsystemStat: HealBoost
+	Name: #S_REPAIR_BOOST
+	Icon: AttributeIcons::6
+	Color: #199c8c
+	Suffix: /s
+
+	Variable: CombatHeal

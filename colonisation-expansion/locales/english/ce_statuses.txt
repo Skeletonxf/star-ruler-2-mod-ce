@@ -92,3 +92,4 @@ GAS_GIANT_DESC: <<
 
 	[i][color=#aaa]Maximum population reduced by 1. Income reduced by §80k at level 1 and higher. Max population and income can be increased via moon bases.[/color][/i]
 >>
+STATUS_SINEW_BOOST: Intense operations by the flagship's mechanised sinew are rapidly repairing this fleet for the first 30 seconds of any combat.
