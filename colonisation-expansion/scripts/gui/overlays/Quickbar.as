@@ -1309,7 +1309,7 @@ class AllFleets : ObjectMode {
 		uint index = 0;
 		while(receive(objs, obj)) {
 			Ship@ ship = cast<Ship>(obj);
-			if(ship !is null && !ship.blueprint.design.hasTag(ST_Mothership)) {
+			if(ship !is null && ship.valid && !ship.blueprint.design.hasTag(ST_Mothership)) {
 				if(ship.getFleetMaxStrength() < 1000.0)
 					continue;
 				grid.set(index, ship);
