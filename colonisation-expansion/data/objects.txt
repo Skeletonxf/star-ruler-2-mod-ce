@@ -237,6 +237,7 @@ server:
 	void repairOrbital(double amount);
 	// [[ MODIFY BASE GAME START ]]
 	void modProjectedShield(float regen, float capacity);
+	void shieldDamage(double amount);
 	// [[ MODIFY BASE GAME END ]]
 }
 

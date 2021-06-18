@@ -7,7 +7,7 @@ Subsystem: ShieldProjector
 	DamageOrder: -100
 
 	Tags: BaseCost
-	Tags: IsShield, Category:Defense, HasInternals
+	Tags: Category:Defense, HasInternals
 	Tags: HighPowerUse, ExteriorCore, Ability:ShieldProject
 	Hull: Flagship, Station
 

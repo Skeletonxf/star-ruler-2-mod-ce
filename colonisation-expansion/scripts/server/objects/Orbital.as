@@ -1044,6 +1044,16 @@ tidy class OrbitalScript {
 		Health = health / healthMod;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void shieldDamage(Orbital& obj, double amount) {
+		double newShield = clamp(Shield - amount, 0.0, max(MaxShield, Shield));
+		if (Shield != newShield) {
+			deltaShields = true;
+		}
+		Shield = newShield;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void damage(Orbital& obj, DamageEvent& evt, double position, const vec2d& direction) {
 		if(!obj.valid || obj.destroying)
 			return;

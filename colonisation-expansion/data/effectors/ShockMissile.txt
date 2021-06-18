@@ -12,7 +12,12 @@ Effector: ShockMissile
 	Lifetime: 1.05 * Range / Speed
 
 	TargetAlgorithm: SingleTarget
-	CanTarget: isEnemy && isShip && tagIsShield
+	// This is a bit of a hack, since I can't find anything on the C++ side
+	// that suggests how I could diffentiate between orbitals with a shield
+	// and orbitals without one, so don't auto target orbitals, and we'll
+	// just ignore orbitals that were manually targeted that don't have a shield
+	// just like we do for flagships that ran out of their shield.
+	CanTarget: isEnemy && (isShip && tagIsShield) || isOrbital
 	AutoTarget: isEnemy && isShip && tagIsShield
 
 	EfficiencyMode: Reload Only

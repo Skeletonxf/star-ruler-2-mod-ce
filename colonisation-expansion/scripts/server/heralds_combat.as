@@ -199,21 +199,32 @@ void LineDamage(Event& evt, double Damage) {
 }
 
 void DamageShields(Event& evt, double Damage) {
-	if(!evt.target.isShip)
+	// [[ MODIFY BASE GAME START ]]
+	// Orbitals can have shields now too!
+	if(!evt.target.isShip && !evt.target.isOrbital)
 		return;
 
-	Ship@ ship = cast<Ship>(evt.target);
-	if(ship.MaxShield > 0) {
-		ship.shieldDamage(Damage);
-		return;
-	}
+	if (evt.target.isShip) {
+		Ship@ ship = cast<Ship>(evt.target);
+		if(ship.MaxShield > 0) {
+			ship.shieldDamage(Damage);
+			return;
+		}
 
-	//Special case for shield harmonizers
-	if(ship.blueprint.design.hasTag(ST_ShieldHarmonizer)) {
-		Ship@ leader = cast<Ship>(ship.Leader);
-		if(leader !is null)
-			leader.shieldDamage(Damage);
+		//Special case for shield harmonizers
+		if(ship.blueprint.design.hasTag(ST_ShieldHarmonizer)) {
+			Ship@ leader = cast<Ship>(ship.Leader);
+			if(leader !is null)
+				leader.shieldDamage(Damage);
+		}
+	} else {
+		Orbital@ orbital = cast<Orbital>(evt.target);
+		if (orbital.maxShield > 0) {
+			orbital.shieldDamage(Damage);
+			return;
+		}
 	}
+// [[ MODIFY BASE GAME END ]]
 };
 
 DamageEventStatus ShieldRedirect(DamageEvent& evt, vec2u& position, vec2d& direction, double Percentage) {
