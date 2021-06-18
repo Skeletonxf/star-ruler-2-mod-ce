@@ -117,16 +117,18 @@ class RegionLinking {
 			if (planet_i is null || planet_j is null) {
 				continue;
 			}
-			if (planet_i.obj is null || planet_j.obj is null) {
+			Planet@ planet_i_obj = planet_i.obj;
+			Planet@ planet_j_obj = planet_j.obj;
+			if (planet_i_obj is null || planet_j_obj is null) {
 				continue;
 			}
-			if (planet_i.obj.region is planet_j.obj.region) {
+			if (planet_i_obj.region is planet_j_obj.region) {
 				continue;
 			}
-			if (!resources.canTradeBetween(planet_i.obj.region, planet_j.obj.region)) {
+			if (!resources.canTradeBetween(planet_i_obj.region, planet_j_obj.region)) {
 				if (LOG)
-					ai.print("No trade connection found between "+planet_i.obj.name+" and "+planet_j.obj.name);
-				tryToConnectTrade(planet_i.obj.region, planet_j.obj.region, ai.empire);
+					ai.print("No trade connection found between "+planet_i_obj.name+" and "+planet_j_obj.name);
+				tryToConnectTrade(planet_i_obj.region, planet_j_obj.region, ai.empire);
 			}
 		}
 	}
