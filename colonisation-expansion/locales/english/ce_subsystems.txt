@@ -412,10 +412,10 @@ S_DRONELAUNCHER_DESC: <<
 	[img=Minus]Significant amounts of [b][color=#00ff80]Control[/color][/b] are required to support the drones.[/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Drones have a limited lifetime before their power source fails and a new drone needs to be launched. The closer a drone is fired to its target, the more time it will have to assault enemy ships, increasing its effective damage output.[/color][/i][/img]
 >>
-S_COMPUTER_VERDANT_SINEW: Mechanised Sinew
+S_COMPUTER_VERDANT_SINEW: Energised Sinew
 S_REPAIR_BOOST: Repair Boost
 S_COMPUTER_VERDANT_SINEW_DESC: <<
-	Mechanised Sinew holds together, feeds and provides control for all mechanical parts of a verdant ship.
+	Sinew holds together, feeds and provides control for all mechanical parts of a verdant ship.
 
 	[img=ActionBarIcons::0;22;#00ff80]Provides a lot of [b][color=#00ff80]Control[/color][/b] to operate other subsystems.[/img]
 	[img=ActionBarIcons::0;22]All interior and non-armor hexes in the ship must be adjacent to at least one Sinew hex.[/img]
