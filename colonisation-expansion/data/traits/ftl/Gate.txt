@@ -1,28 +1,29 @@
-Trait: Wormhole
-	Name: #TRAIT_WORMHOLE
-	Description: #TRAIT_WORMHOLE_DESC
+Trait: Gate
+	Name: #TRAIT_GATE
+	Description: #TRAIT_GATE_DESC
 	Category: FTL
-	Order: 9
+	Order: 2
 
-	Icon: ActionBarIcons::7
-	Color: 66f4ffff
-
+	Icon: GuiOrbitalIcons::1
+	Color: #8ed2ff
 	Unique: FTL
-	Available: False
 
+	UnlockSubsystem(GateModule)
 
 	LoadDesigns(default)
 	LoadDesigns(not_hyperdrive)
+	LoadDesigns(gate)
 
 	IfHaveTrait(Verdant, LoadDesigns(verdant/default))
 	IfHaveTrait(Verdant, LoadDesigns(verdant/not_hyperdrive))
+	IfHaveTrait(Verdant, LoadDesigns(verdant/gate))
 
 	IfHaveTrait(Devout, LoadDesigns(devout/default))
 	IfHaveTrait(Devout, LoadDesigns(devout/not_hyperdrive))
+	IfHaveTrait(Devout, LoadDesigns(devout/gate))
 
 	IfHaveTrait(Frostkin, LoadDesigns(frostkin/not_hyperdrive))
 	IfHaveTrait(Frostkin, LoadDesigns(frostkin/default))
-	CE_biome_hooks::UnlockTag(Wormhole)
-	ModAttribute(WormholeNetworkUnlocked, Add, 1)
 	IfHaveTrait(Ancient, LoadDesigns(ancient/default))
 	IfHaveTrait(Ancient, LoadDesigns(ancient/not_hyperdrive))
+	IfHaveTrait(Ancient, LoadDesigns(ancient/gate))

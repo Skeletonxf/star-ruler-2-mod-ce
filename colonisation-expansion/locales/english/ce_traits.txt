@@ -62,3 +62,4 @@ FLYING_DESC: <<
 	[vspace=6/][img=ConditionIcons::1 * 33ff55;22;#ffff00]Can build on Gas Giant biomes with no cost increase. Gas Giant maintence and population penalties no longer apply.[/img][vspace=6/][img=PlateArmor;22;#FF0000]No matter how much you insist that Plate Armor would be a really good idea, you can't convince our engineers to put something so heavy on our space ships.[/img]
 
 >>
+TRAIT_FROSTKIN: Frostkin

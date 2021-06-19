@@ -41,7 +41,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Support cap hook
     - LeaderAI leaderInit
     - Ship constructible support supply free
-  - Shock Missiles don't work on shielded orbitals
   - Make some analog to the SupportStation artifact player designable/buildable
   - Update the combat timer code for Orbitals to match the updated code for Ships
   - Make planet shields protect against carpet bombs, possibly remove the old building/orbital carpet bomb effectiveness counters as they'd get outclassed pretty fast and wouldn't want the AI using suboptimal strategies
@@ -64,6 +63,20 @@ This is primarily intended as a developer focused project planning list, rather 
   - Investigate stored labor being drained by time based constructions
   - Fix native life emerging when making some planets tier 1/2  
 
+- Frostkin
+  - Need to disable them colonising planets that have stars around them (SurfaceComponent, ContextMenu, AI should treat as quarantined)
+  - AI support
+  - Grant energy when destroying stars
+  - `safe double get_starTemperature() const;` is not actually synced to the updated Server value for shadow RegionObjects now that star temperature can change
+    - Also appears as though this value is not needed on the client side anyway other than for distinguishing black holes, but should probably work out the best way to sync this rather than leave a potential bug for the future.
+  - Localisation
+  - Design stats for star eater
+  - Instruction popup
+  - Should they really be able to ignore star shielding?
+  - Add temperature indicator to star popup menu
+  - Race icon, description, page
+  - Balancing
+
 - Not planned for any time soon
   - Colonisation ships similar to Motherships for other races
   - AI code to build orbitals like Stations
@@ -83,7 +96,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
   -  Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
-  - Make warheads manually fired (no clue how to do this)
   - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Retest if WhileConsumingCargo still needs to use gameTime directly now that the status tick time bug has been fixed

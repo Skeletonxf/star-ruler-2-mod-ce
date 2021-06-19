@@ -24,5 +24,7 @@ Trait: Sublight
 	IfHaveTrait(Ancient, LoadDesigns(ancient/not_hyperdrive))
 
 
+	IfHaveTrait(Frostkin, LoadDesigns(frostkin/not_hyperdrive))
+	IfHaveTrait(Frostkin, LoadDesigns(frostkin/default))
 	AddFTLStorage(-250)
 	AddFTLIncome(-1)

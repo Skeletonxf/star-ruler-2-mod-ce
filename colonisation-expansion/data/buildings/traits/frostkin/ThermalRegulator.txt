@@ -3,7 +3,7 @@ Building: ThermalRegulator
 	Description: #THERMAL_REGULATOR_DESC
 	Sprite: AncientRuin * fffaa
 	Category: Enhancing
-	Size: 5x6
+	Size: 4x3
 	Base Cost: 500
 	Tile Cost: 25
 	Build Time: 120

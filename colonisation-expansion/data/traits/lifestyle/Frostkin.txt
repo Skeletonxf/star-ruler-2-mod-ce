@@ -2,13 +2,15 @@ Trait: Frostkin
 	Name: #TRAIT_FROSTKIN
 	Description: #TRAIT_FROSTKIN_DESC
 	AI Support: False
-	Order: 10
+	Order: 15
 	Icon: Ice
 	Color: #ffc1d5
-	Costs Points: 2
+	Costs Points: 3
 	Category: Lifestyle
 	Unique: Lifestyle
 
+	SpawnShip(Prometheus, Override Disable Starting = True)
+	SpawnShip(Prometheus, Override Disable Starting = True)
 	TriggerHomeworld(CE_bonus_effects::DestroySystemStars(Quiet = True))
 	TriggerHomeworld(TerraformTo(Antimatter))
 	OnHomeworld(AddPlanetResource(NativeFish))
