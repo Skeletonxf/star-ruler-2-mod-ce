@@ -117,6 +117,8 @@ server:
 	void dealStarDamage(double amount);
 	// [[ MODIFY BASE GAME START ]]
 	void modProjectedShield(float regen, float capacity);
+	void dealStarTemperatureDamage(double amount);
+	void destroyQuiet();
 	// [[ MODIFY BASE GAME END ]]
 }
 

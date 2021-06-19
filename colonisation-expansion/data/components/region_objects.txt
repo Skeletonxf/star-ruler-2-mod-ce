@@ -51,6 +51,9 @@ server:
 	void destroyOwnedBy(uint mask, bool ships = true, bool planets = false);
 	async relocking void requestConstructionOn(Object& onObj, uint constrId);
 	async void renameSystem(string name);
+	// [[ MODIFY BASE GAME START ]]
+	void updateStarTemperature(double amount);
+	// [[ MODIFY BASE GAME END ]]
 
 	safe Object@[] getPickups();
 	safe Object@[] getPlanets();

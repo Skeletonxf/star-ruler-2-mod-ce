@@ -1,0 +1,16 @@
+Status: Frostkin
+	Name: #FROSTKIN
+	Description: #FROSTKIN_DESC
+	Visible To: Nobody
+	IfSystemHasStar(AddStatus(FrostkinDisabled))
+	//CE_deep_space::IfSystemHasNoStars(GrantAbility(FrostkinColonize))
+	AddDummyResource(Starlight)
+Status: FrostkinDisabled
+	Name: #FROSTKIN_OVERHEATED
+	Visible To: Owner
+	SetMaxLevel(0)
+	DisableResourceImport()
+	DisableResourceExport()
+	CannotUseLabor()
+	ModLoyalty(-1000)
+	ForbidLaborExport()

@@ -15,6 +15,21 @@ tidy class StarScript {
 	}
 	// [[ MODIFY BASE GAME END ]]
 
+	// [[ MODIFY BASE GAME START ]]
+	// recalculate temperature based color
+	void refreshTemperatureColor(Star& star) {
+		double temp = star.temperature;
+		Node@ node = star.getNode();
+		if (node is null)
+			return;
+		if (temp != 0.0) {
+			node.color = blackBody(temp, max((temp + 15000.0) / 40000.0, 1.0));
+		} else {
+			node.color = blackBody(16000.0, max((16000.0 + 15000.0) / 40000.0, 1.0));
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void syncInitial(Star& star, Message& msg) {
 		star.temperature = msg.read_float();
 
@@ -66,6 +81,8 @@ tidy class StarScript {
 		star.MaxHealth = msg.read_float();
 		// [[ MODIFY BASE GAME START ]]
 		syncShields(star, msg);
+		star.temperature = msg.read_float();
+		refreshTemperatureColor(star);
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -78,6 +95,11 @@ tidy class StarScript {
 
 		if (msg.readBit()) {
 			syncShields(star, msg);
+		}
+
+		if (msg.readBit()) {
+			star.temperature = msg.read_float();
+			refreshTemperatureColor(star);
 		}
 		// [[ MODIFY BASE GAME END ]]
 	}

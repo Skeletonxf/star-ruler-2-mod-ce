@@ -1,3 +1,9 @@
+import hooks;
+import hook_globals;
+import generic_effects;
+import repeat_hooks;
+from generic_effects import GenericEffect;
+
 // TODO: This is extremely expensive compared to getting object orbits for regions
 // Need some kind of deep space objects manager that can loop through only deep space planets
 Object@ getOrbitObjectInDeepSpace(vec3d destPoint) {
@@ -18,4 +24,24 @@ Object@ getOrbitObjectInDeepSpace(vec3d destPoint) {
 		}
 	}
 	return orbit;
+}
+
+class IfSystemHasNoStars : IfHook {
+	Document doc("Only applies the inner hook if the object is in a system that has no stars.");
+	Argument hookID(AT_Hook, "planet_effects::GenericEffect");
+
+	bool instantiate() override {
+		if(!withHook(hookID.str))
+			return false;
+		return GenericEffect::instantiate();
+	}
+
+#section server
+	bool condition(Object& obj) const override {
+		Region@ reg = obj.region;
+		if(reg is null)
+			return true;
+		return reg.starCount == 0;
+	}
+#section all
 }

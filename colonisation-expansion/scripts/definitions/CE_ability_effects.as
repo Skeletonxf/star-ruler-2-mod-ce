@@ -563,3 +563,21 @@ class TargetFilterStar : TargetFilter {
 		return targ.obj.isStar;
 	}
 };
+
+class TargetFilterNoStarsInRegion : TargetFilter {
+	Document doc("Restricts target to objects in regions that don't have any stars.");
+	Argument allow_null(AT_Boolean, "True", doc="Whether to allow the ability to be triggered on nulls (for example, for toggle deactivates.)");
+
+	string getFailReason(Empire@ emp, uint index, const Target@ targ) const override {
+		return locale::NTRG_STAR;
+	}
+
+	bool isValidTarget(Empire@ emp, uint index, const Target@ targ) const override {
+		if(index != uint(arguments[0].integer))
+			return true;
+		if(targ.obj is null)
+			return allow_null.boolean;
+		Region@ region = targ.obj.region;
+		return region is null || region.starCount == 0;
+	}
+};

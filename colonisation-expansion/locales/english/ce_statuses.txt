@@ -80,7 +80,7 @@ STARFORGE_DESC: <<
 
 	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Building a star forge or any of its upgrades requires large amounts of Ore mined from asteroids.[/color][/b][/img]
 >>
-STATUS_BLOCKADED_DESC: Some of the civilian trade ships carrying this planet's imports were shot down. As a result, the planet produces 1 less of a random non money empire resource for each stack of "Blockaded!". 
+STATUS_BLOCKADED_DESC: Some of the civilian trade ships carrying this planet's imports were shot down. As a result, the planet produces 1 less of a random non money empire resource for each stack of "Blockaded!".
 LOW_ORE: Requires Ore
 LOW_ORE_DESC: This planet requires ore in order for its production to be fully operational. Dysons Spheres only operate at 25% efficiency when lacking ore.
 FRACTURING: Fracturing
@@ -93,3 +93,4 @@ GAS_GIANT_DESC: <<
 	[i][color=#aaa]Maximum population reduced by 1. Income reduced by §80k at level 1 and higher. Max population and income can be increased via moon bases.[/color][/i]
 >>
 STATUS_SINEW_BOOST: Intense operations by the flagship's energised sinew are rapidly repairing this fleet for the first 30 seconds of any combat.
+FROSTKIN_OVERHEATED: Overheated

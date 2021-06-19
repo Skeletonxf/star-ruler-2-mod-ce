@@ -1456,6 +1456,12 @@ tidy class RegionObjects : Component_RegionObjects, Savable {
 		return StarTemperature;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void updateStarTemperature(double amount) {
+		StarTemperature += amount;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	double get_starRadius() const {
 		return StarRadius;
 	}
