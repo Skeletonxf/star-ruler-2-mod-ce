@@ -26,8 +26,22 @@ Object@ getOrbitObjectInDeepSpace(vec3d destPoint) {
 	return orbit;
 }
 
+#section server
+bool regionHasStars(Region@ region, bool ignoreBlackHoles = true) {
+	if (region is null) {
+		return false;
+	}
+	if (ignoreBlackHoles) {
+		bool noStars = region.starCount == 0 || region.starTemperature == 0;
+		return !noStars;
+	} else {
+		return region.starCount > 0;
+	}
+}
+#section all
+
 class IfSystemHasNoStars : IfHook {
-	Document doc("Only applies the inner hook if the object is in a system that has no stars.");
+	Document doc("Only applies the inner hook if the object is in a system that has no stars (ignores black holes).");
 	Argument hookID(AT_Hook, "planet_effects::GenericEffect");
 
 	bool instantiate() override {
@@ -38,10 +52,7 @@ class IfSystemHasNoStars : IfHook {
 
 #section server
 	bool condition(Object& obj) const override {
-		Region@ reg = obj.region;
-		if(reg is null)
-			return true;
-		return reg.starCount == 0;
+		return !regionHasStars(obj.region);
 	}
 #section all
 }
