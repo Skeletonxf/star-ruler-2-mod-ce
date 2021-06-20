@@ -21,6 +21,9 @@ from elements.GuiResources import LEVEL_REQ;
 from overlays.ContextMenu import openContextMenu;
 from overlays.PlanetOverlay import PlanetOverlay;
 from tabs.GalaxyTab import zoomTabTo, openOverlay, toggleSupportOverlay;
+// [[ MODIFY BASE GAME START ]]
+from CE_deep_space import regionHasStars;
+// [[ MODIFY BASE GAME END ]]
 
 //Temporary to avoid allocations
 Resources available;
@@ -162,7 +165,7 @@ class PlanetInfoBar : InfoBar {
 
 	void updateActions() {
 		actions.clear();
-		
+
 		if(pl.owner is playerEmpire) {
 			actions.add(ManageAction());
 			actions.addBasic(pl);
@@ -175,7 +178,9 @@ class PlanetInfoBar : InfoBar {
 			actions.addEmpireAbilities(playerEmpire, pl);
 		}
 		else {
-			if((pl.owner is null || !pl.owner.valid) && !pl.quarantined && playerEmpire.ForbidColonization == 0)
+			// [[ MODIFY BASE GAME START ]]
+			if((pl.owner is null || !pl.owner.valid) && !pl.quarantined && playerEmpire.ForbidColonization == 0 && !(playerEmpire.ForbidStellarColonization > 0 && regionHasStars(pl.region)))
+				// [[ MODIFY BASE GAME END ]]
 				actions.add(ColonizeThisAction());
 		}
 

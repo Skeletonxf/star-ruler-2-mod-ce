@@ -1902,6 +1902,13 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			return;
 		if(!other.isPlanet || other.quarantined)
 			return;
+		// [[ MODIFY BASE GAME START ]]
+		// Aborting here seems to leave the UI in a awkward state where it thinks
+		// there's still a colonise order but there isn't.
+		/* if ((obj.owner.ForbidStellarColonization > 0) && regionHasStars(other.region)) {
+			return;
+		} */
+		// [[ MODIFY BASE GAME END ]]
 		for(uint i = 0, cnt = colonization.length; i < cnt; ++i) {
 			if(colonization[i].target is other) {
 				if(colonization[i].targetPopulation < toPopulation)

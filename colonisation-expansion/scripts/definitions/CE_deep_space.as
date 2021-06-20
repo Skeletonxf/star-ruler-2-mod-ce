@@ -26,7 +26,6 @@ Object@ getOrbitObjectInDeepSpace(vec3d destPoint) {
 	return orbit;
 }
 
-#section server
 bool regionHasStars(Region@ region, bool ignoreBlackHoles = true) {
 	if (region is null) {
 		return false;
@@ -38,7 +37,6 @@ bool regionHasStars(Region@ region, bool ignoreBlackHoles = true) {
 		return region.starCount > 0;
 	}
 }
-#section all
 
 class IfSystemHasNoStars : IfHook {
 	Document doc("Only applies the inner hook if the object is in a system that has no stars (ignores black holes).");

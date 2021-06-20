@@ -64,7 +64,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix native life emerging when making some planets tier 1/2  
 
 - Frostkin
-  - Need to disable them colonising planets that have stars around them (SurfaceComponent, ContextMenu, AI should treat as quarantined)
   - AI support
   - Grant energy when destroying stars
   - `safe double get_starTemperature() const;` is not actually synced to the updated Server value for shadow RegionObjects now that star temperature can change

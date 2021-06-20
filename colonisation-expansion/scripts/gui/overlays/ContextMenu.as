@@ -18,6 +18,7 @@ import constructions;
 from statuses import getStatusID;
 from abilities import getAbilityType;
 import orders;
+from CE_deep_space import regionHasStars;
 // [[ MODIFY BASE GAME END ]]
 
 import dialogs.MessageDialog;
@@ -1151,6 +1152,14 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 	//Colonization
 	if(clicked.isPlanet && playerEmpire.NoAutoColonize == 0) {
 		bool quarantined = clicked.quarantined;
+		// [[ MODIFY BASE GAME START ]]
+		if (!quarantined) {
+			if (playerEmpire.ForbidStellarColonization > 0 && regionHasStars(clicked.region)) {
+				// it may as well be quarantined for us
+				quarantined = true;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 		bool addedColonyOptions = false;
 
 		if(selected !is null && selected.owner is playerEmpire && selected.isPlanet
@@ -1476,9 +1485,16 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 			}
 
 			if(hasUncolonized) {
-				addOption(menu, selected, clicked, format(locale::AUTO_COLONIZE_SYSTEM, region.name), AutoColonizeSystem(), COLONIZE_ICON);
-				if(hasUnderleveled)
-					addOption(menu, selected, clicked, format(locale::AUTO_COLONIZE_SYSTEM_LEVEL, region.name), AutoColonizeSystem(true), Sprite(spritesheet::ResourceClassIcons, 7));
+				// [[ MODIFY BASE GAME START ]]
+				if (playerEmpire.ForbidStellarColonization > 0) {
+					addOption(menu, selected, clicked, format(locale::AUTO_COLONIZE_SYSTEM_BLOCKED, region.name), AutoColonizeSystem(), COLONIZE_ICON);
+					if(hasUnderleveled)
+						addOption(menu, selected, clicked, format(locale::AUTO_COLONIZE_SYSTEM_LEVEL_BLOCKED, region.name), AutoColonizeSystem(true), Sprite(spritesheet::ResourceClassIcons, 7));
+				} else {
+					addOption(menu, selected, clicked, format(locale::AUTO_COLONIZE_SYSTEM, region.name), AutoColonizeSystem(), COLONIZE_ICON);
+					if(hasUnderleveled)
+						addOption(menu, selected, clicked, format(locale::AUTO_COLONIZE_SYSTEM_LEVEL, region.name), AutoColonizeSystem(true), Sprite(spritesheet::ResourceClassIcons, 7));
+				}
 			}
 			if(hasColonizing)
 				addOption(menu, selected, clicked, format(locale::STOP_COLONIZE_SYSTEM, region.name), CancelColonizeSystem());
