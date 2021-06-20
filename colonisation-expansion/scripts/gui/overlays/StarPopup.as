@@ -20,6 +20,7 @@ class StarPopup : Popup {
 	// [[ MODIFY BASE GAME START ]]
 	GuiSprite@ shieldIcon;
 	GuiProgressbar@ shield;
+	GuiText@ temperature;
 	// [[ MODIFY BASE GAME END ]]
 
 	StarPopup(BaseGuiElement@ parent) {
@@ -55,6 +56,10 @@ class StarPopup : Popup {
 
 		@shieldIcon = GuiSprite(health, Alignment(Right-22, Top, Width=22, Height=22), icons::Shield);
 		shieldIcon.visible = false;
+
+		@temperature = GuiText(this, Alignment(Left+4, Bottom-20, Right-8, Bottom));
+		temperature.horizAlign = 1.0;
+		temperature.font = FT_Detail;
 		// [[ MODIFY BASE GAME END ]]
 
 		updateAbsolutePosition();
@@ -158,6 +163,8 @@ class StarPopup : Popup {
 		else
 			name.font = FT_Normal;
 
+		// Update temperature
+		temperature.text = string(floor(obj.temperature)) + " K";
 		// [[ MODIFY BASE GAME START ]]
 		// [[ MODIFY BASE GAME START ]]
 		//Update health
