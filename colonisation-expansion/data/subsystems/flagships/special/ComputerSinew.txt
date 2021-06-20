@@ -23,7 +23,7 @@ Subsystem: ComputerSinew
 
 	OnCheckErrors: designs::checkSinew
 
-	CombatHeal := Repair * 7
+	CombatHeal := Repair * Hexes * 0.1
 	PowerUse := HexSize * 120
 	Requires:
 		Power = PowerUse
