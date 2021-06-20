@@ -316,12 +316,8 @@ tidy class AttackOrder : Order {
 				}
 
 				// [[ MODIFY BASE GAME START ]]
-				// If we're set to close in, and we're already closer than minRange,
-				// don't try to back off because that makes us run away which
-				// is the opposite of closing in
-				double desiredDistanceToTarget = min(minRange, sqrt(distSQ));
-				if(obj.moveTo(target, moveId, desiredDistanceToTarget, enterOrbit=false))
-					obj.setRotation(facing);
+				// We're in the position we want to be, shoot at target
+				obj.setRotation(facing);
 				// [[ MODIFY BASE GAME END ]]
 			}
 		}
