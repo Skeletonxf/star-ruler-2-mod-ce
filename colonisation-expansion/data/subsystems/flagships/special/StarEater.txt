@@ -16,8 +16,8 @@ Subsystem: StarEater
 	Hex.Resistance := 0.2
 	Hex.HP := 18 * HexSize
 
-	ScalingFreezeDamage := 14 * (Size / 250)
-	FreezeDamage := min(ScalingFreezeDamage, 5.0) + sqrt(max(ScalingFreezeDamage - 5.0, 0.0))
+	ScalingFreezeDamage := 40 * (Size / 250)
+	FreezeDamage := min(ScalingFreezeDamage, 15.0) + sqrt(max(ScalingFreezeDamage - 15.0, 0.0))
 	EnergyBuildCost := EnergyBuildCost + 500
 	Hook: SolarEfficiency(0.0, -0.2, -0.8)
 
