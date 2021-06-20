@@ -41,7 +41,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Support cap hook
     - LeaderAI leaderInit
     - Ship constructible support supply free
-  - Shock Missiles don't work on shielded orbitals
   - Make some analog to the SupportStation artifact player designable/buildable
   - Update the combat timer code for Orbitals to match the updated code for Ships
   - Make planet shields protect against carpet bombs, possibly remove the old building/orbital carpet bomb effectiveness counters as they'd get outclassed pretty fast and wouldn't want the AI using suboptimal strategies
@@ -62,7 +61,9 @@ This is primarily intended as a developer focused project planning list, rather 
   - Investigate issues with Mechanoid AI being able to build gates
   - Make the AI's search for things to colonise when it has no systems more robust - Star Children should still be able to recover while they have Motherships but the current code will attempt to recolonise its home system or just give up.
   - Investigate stored labor being drained by time based constructions
-  - Fix native life emerging when making some planets tier 1/2  
+  - Fix native life emerging when making some planets tier 1/2
+  - Check battleworlders can actually colonise at a normalish pace
+    - Their colonisation speed may have been over nerfed
 
 - Not planned for any time soon
   - Colonisation ships similar to Motherships for other races
