@@ -27,7 +27,7 @@ class DealStarTemperatureDamageOverTime : AbilityHook {
 		if (obj.isStar) {
 			Star@ star = cast<Star>(obj);
 			star.dealStarTemperatureDamage(amt);
-			if (star.temperature <= 0) {
+			if (star.temperature <= 1.0) {
 				// finished
 				Target newTarg = storeTarg;
 				@newTarg.obj = null;

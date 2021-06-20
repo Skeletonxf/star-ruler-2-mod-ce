@@ -72,9 +72,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Localisation
   - Design stats for star eater
   - Instruction popup
-  - Should they really be able to ignore star shielding?
-  - Add temperature indicator to star popup menu
-  - Tune down star hp damage so they don't get used as gravitron condensors
   - Race icon, description, page
   - Balancing
 

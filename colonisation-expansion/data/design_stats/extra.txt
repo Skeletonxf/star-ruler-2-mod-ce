@@ -208,3 +208,11 @@ SubsystemStat: HealBoost
 	Suffix: /s
 
 	Variable: CombatHeal
+
+SubsystemStat: FreezeDamage
+	Name: #S_FREEZE_DAMAGE
+	Icon: Ice
+	Color: #ffc1d5
+
+	Suffix: K /s
+	Variable: FreezeDamage

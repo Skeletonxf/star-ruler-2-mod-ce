@@ -13,7 +13,7 @@ Ability: StarEater
 	CooldownOnDeactivate(targ, 60)
 	PersistentBeamEffect(targ, #e45500, Tractor, Width = 8.0)
 
-	CE_object_hooks::DealStarTemperatureDamageOverTime(targ, Sys.FreezeDamage:1600)
+	CE_object_hooks::DealStarTemperatureDamageOverTime(targ, Sys.FreezeDamage:50)
 	OffensiveToTarget(targ)
 
 	CE_ability_effects::NotifyTargetOwner(targ, Temperature attack at $3, Description = Star freezing at $3., Icon = TractorGun::0 * #e45500)

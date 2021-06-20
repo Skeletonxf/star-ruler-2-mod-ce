@@ -239,13 +239,21 @@ tidy class StarScript {
 			// black holes do not take temperature damage
 			return;
 		}
+		if (star.Shield > 0) {
+			// do not damage shielded stars, and do not damage their shields
+			// either
+			return;
+		}
 		tempDelta = true;
 		hpDelta = true;
 		star.temperature -= amount;
-		// deal a tiny bit of % current health so other players know we're
-		// 'damaging' this star, but as we only multiply its hp we can never
-		// reduce the hp to zero with this step
-		star.Health *= 0.995;
+		// deal a tiny bit of health damage so other players know we're
+		// 'damaging' this star, but never reduce the hp to zero with this step
+		if (star.Health > 100.0) {
+			star.Health -= 1;
+		} else {
+			star.Health *= 0.995;
+		}
 		refreshTemperatureColor(star);
 		if (star.temperature <= 1.0) {
 			// kill the star now we've dropped its temperature to almost 0
