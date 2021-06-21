@@ -1,4 +1,6 @@
-Object@ findEnemy(Region@ region, Empire@ emp, uint empireMask, bool fleets = true, bool stations = true, bool planets = false) {
+// [[ MODIFY BASE GAME START ]]
+Object@ findEnemy(Region@ region, Empire@ emp, uint empireMask, bool fleets = true, bool stations = true, bool planets = false, bool ignoreScouts = true) {
+	// [[ MODIFY BASE GAME END ]]
 	array<Object@>@ objs = findInBox(region.position - vec3d(region.radius), region.position + vec3d(region.radius), empireMask);
 	uint offset = randomi(0, objs.length-1);
 	uint cnt = objs.length;
@@ -32,7 +34,7 @@ Object@ findEnemy(Region@ region, Empire@ emp, uint empireMask, bool fleets = tr
 						if(!fleets)
 							continue;
 					}
-					if(obj.getFleetStrength() < 100.0)
+					if(ignoreScouts && obj.getFleetStrength() < 100.0) // [[ MODIFY BASE GAME ]]
 						continue;
 				break;
 				case OT_Orbital:
@@ -53,7 +55,9 @@ Object@ findEnemy(Region@ region, Empire@ emp, uint empireMask, bool fleets = tr
 	return null;
 }
 
-array<Object@>@ findEnemies(Region@ region, Empire@ emp, uint empireMask, bool fleets = true, bool stations = true, bool planets = false) {
+// [[ MODIFY BASE GAME START ]]
+array<Object@>@ findEnemies(Region@ region, Empire@ emp, uint empireMask, bool fleets = true, bool stations = true, bool planets = false, bool ignoreScouts = true) {
+	// [[ MODIFY BASE GAME END ]]
 	array<Object@>@ objs = findInBox(region.position - vec3d(region.radius), region.position + vec3d(region.radius), empireMask);
 	array<Object@> outObjs;
 	for(int i = objs.length-1; i >= 0; --i) {
@@ -87,7 +91,7 @@ array<Object@>@ findEnemies(Region@ region, Empire@ emp, uint empireMask, bool f
 						if(!fleets)
 							remove = true;
 					}
-					if(obj.getFleetStrength() < 100.0)
+					if(ignoreScouts && obj.getFleetStrength() < 100.0) // [[ MODIFY BASE GAME ]]
 						remove = true;
 				break;
 				case OT_Orbital:

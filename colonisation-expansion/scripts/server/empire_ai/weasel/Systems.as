@@ -3,8 +3,14 @@ import empire_ai.weasel.searches;
 
 import systems;
 import system_pathing;
+// [[ MODIFY BASE GAME START ]]
+import empire_ai.dragon.StarAI;
+import empire_ai.dragon.WarAI;
+// [[ MODIFY BASE GAME END ]]
 
-final class SystemAI {
+// [[ MODIFY BASE GAME START ]]
+final class SystemAI: OnStarAttack {
+	// [[ MODIFY BASE GAME END ]]
 	const SystemDesc@ desc;
 	Region@ obj;
 	double prevTick = 0.0;
@@ -14,6 +20,11 @@ final class SystemAI {
 	array<Object@> pickupProtectors;
 	array<Artifact@> artifacts;
 	array<Asteroid@> asteroids;
+	// [[ MODIFY BASE GAME START ]]
+	array<StarAI@> stars;
+	double nextStarCheck = 0;
+	double starsLastDamaged = -1;
+	// [[ MODIFY BASE GAME END ]]
 
 	bool explored = false;
 	bool owned = false;
@@ -90,6 +101,13 @@ final class SystemAI {
 		file << lastStrengthCheck;
 		// [[ MODIFY BASE GAME START ]]
 		file << timeSpentOutsideBorder;
+
+		cnt = stars.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			stars[i].save(file);
+		}
+		file << starsLastDamaged;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -142,6 +160,13 @@ final class SystemAI {
 		file >> lastStrengthCheck;
 		// [[ MODIFY BASE GAME START ]]
 		file >> timeSpentOutsideBorder;
+
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			StarAI@ ai = StarAI(this);
+			ai.load(file);
+		}
+		file >> starsLastDamaged;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -283,6 +308,29 @@ final class SystemAI {
 						planets.insertLast(pl);
 				}
 			}
+
+			// [[ MODIFY BASE GAME START ]]
+			uint starCount = obj.starCount;
+			if (starCount != stars.length) {
+				stars.length = 0;
+				for (uint i = 0, cnt = starCount; i < cnt; ++i) {
+					Star@ star = obj.stars[i];
+					if (star !is null) {
+						stars.insertLast(StarAI(star, this));
+					}
+				}
+			}
+			if (nextStarCheck < gameTime) {
+				if (owned) {
+					nextStarCheck = gameTime + randomd(1.0, 5.0);
+				} else {
+					nextStarCheck = gameTime + randomd(15.0, 25.0);
+				}
+				for (uint i = 0, cnt = stars.length; i < cnt; ++i) {
+					stars[i].focusTick(ai);
+				}
+			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 
 		if(visible) {
@@ -321,6 +369,21 @@ final class SystemAI {
 				}
 			}
 		}
+	}
+
+	void onStarAttack(AI& ai, Star@ star, double previousHP) {
+		starsLastDamaged = gameTime;
+		// We only care about attacks on our territory or black holes
+		if (owned || obj.starTemperature == 0) {
+			cast<WarAI>(ai.war).possibleStarAttack(star);
+		}
+	}
+
+	bool starsDamagedRecently() {
+		if (starsLastDamaged == -1) {
+			return false;
+		}
+		return starsLastDamaged + 30.0 > gameTime;
 	}
 };
 

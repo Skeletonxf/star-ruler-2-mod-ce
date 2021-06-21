@@ -57,7 +57,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Or if they have FTL breeders already unlocked
   - Increase the resolution of the Helium 3 icon to make it clearer
   - Fix map generation bugs with galaxy mirroring and gas/ice giants
-  - Make AI respond to flare bomb and gravitron condensor attacks
+  - Make the AI work out who is attacking its stars instead of assuming anyone with a presence in the system is
   - Investigate issues with Mechanoid AI being able to build gates
   - Make the AI's search for things to colonise when it has no systems more robust - Star Children should still be able to recover while they have Motherships but the current code will attempt to recolonise its home system or just give up.
   - Investigate stored labor being drained by time based constructions
