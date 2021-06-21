@@ -13,6 +13,7 @@ import empire_ai.weasel.Scouting;
 import empire_ai.weasel.Military;
 // [[ MODIFY BASE GAME START ]]
 import empire_ai.weasel.Planets;
+import empire_ai.dragon.WarAI;
 // [[ MODIFY BASE GAME END ]]
 import empire_ai.weasel.searches;
 
@@ -72,6 +73,9 @@ class Battle {
 	bool isUnderSiege = false;
 
 	Planet@ defendPlanet;
+	// [[ MODIFY BASE GAME START ]]
+	Star@ defendStar;
+	// [[ MODIFY BASE GAME END ]]
 	Object@ eliminate;
 
 	Battle() {
@@ -92,6 +96,9 @@ class Battle {
 		file << lastCombat;
 		file << inCombat;
 		file << defendPlanet;
+		// [[ MODIFY BASE GAME START ]]
+		file << defendStar;
+		// [[ MODIFY BASE GAME END ]]
 		file << eliminate;
 		file << isUnderSiege;
 		file << bestCapturePct;
@@ -113,6 +120,9 @@ class Battle {
 		file >> lastCombat;
 		file >> inCombat;
 		file >> defendPlanet;
+		// [[ MODIFY BASE GAME START ]]
+		file >> defendStar;
+		// [[ MODIFY BASE GAME END ]]
 		file >> eliminate;
 		file >> isUnderSiege;
 		file >> bestCapturePct;
@@ -127,6 +137,10 @@ class Battle {
 		Object@ moveTo = system.obj;
 		if(defendPlanet !is null)
 			@moveTo = defendPlanet;
+		// [[ MODIFY BASE GAME START ]]
+		else if(defendStar !is null)
+			@moveTo = defendStar;
+		// [[ MODIFY BASE GAME END ]]
 		else if(eliminate !is null && eliminate.isShip)
 			@moveTo = eliminate;
 		@mission.move = war.movement.move(flAI.obj, moveTo, MP_Critical, spread=true, nearOnly=true);
@@ -171,7 +185,7 @@ class Battle {
 		inCombat = false;
 		bool ourPlanetsPresent = system.obj.PlanetsMask & (ai.allyMask | ai.mask) != 0;
 
-		if((enemyStrength < 0.01 || !ourPlanetsPresent) && defendPlanet is null)
+		if((enemyStrength < 0.01 || !ourPlanetsPresent) && defendPlanet is null && defendStar is null) // [[ MODIFY BASE GAME ]]
 			isUnderSiege = false;
 
 		//Remove lost fleets
@@ -300,6 +314,21 @@ class Battle {
 			for(uint i = 0, cnt = fleets.length; i < cnt; ++i)
 				moveTo(fleets[i], defendPlanet);
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (defendStar !is null) {
+			// Check there are still enemies in the system
+			bool stillUnderAttack = findEnemy(system.obj, ai.empire, ai.enemyMask, ignoreScouts=false) !is null;
+			if (stillUnderAttack) {
+				inCombat = true;
+				isUnderSiege = true;
+				for(uint i = 0, cnt = fleets.length; i < cnt; ++i)
+					moveTo(fleets[i], defendStar);
+			} else {
+				@defendStar = null;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		//Eliminate any remaining threats
 		if(!inCombat) {
@@ -452,6 +481,14 @@ class Battle {
 		}
 
 		//If needed, claim fleets
+		// [[ MODIFY BASE GAME START ]]
+		if (defendStar !is null) {
+			// enemies may attack stars with a 0 combat strength ship
+			// we don't want to undercommit in defense, so assume any such
+			// ship is a credible threat
+			enemyStrength += war.getCombatReadyStrength() * 0.3;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		if(ourStrength < enemyStrength * ai.behavior.battleStrengthOverkill) {
 			FleetAI@ claim;
 			double bestWeight = 0;
@@ -533,6 +570,25 @@ class Battle {
 		miss.fleet.obj.addMoveOrder(pos);
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void moveTo(BattleMission@ miss, Star@ defStar, bool force = false) {
+		if(!miss.arrived)
+			return;
+		if(!force) {
+			if(miss.fleet.obj.hasOrders)
+				return;
+			double dist = miss.fleet.obj.position.distanceTo(defStar.position);
+			if(dist < (defStar.radius * 2.0))
+				return;
+		}
+		vec3d pos = defStar.position;
+		vec2d offset = random2d(defStar.radius * 2.0 * 0.85);
+		pos.x += offset.x;
+		pos.z += offset.y;
+		miss.fleet.obj.addMoveOrder(pos);
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void attack(BattleMission@ miss, Object@ target, bool force = false) {
 		//TODO: make this not chase stuff out of the system like a madman?
 		// (in attack logic as well)
@@ -562,7 +618,7 @@ class Battle {
 	}
 };
 
-class War : AIComponent {
+class War : AIComponent, WarAI {
 	Fleets@ fleets;
 	Intelligence@ intelligence;
 	Relations@ relations;
@@ -695,6 +751,16 @@ class War : AIComponent {
 		return false;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	Battle@ getFightingIn(Region@ reg) {
+		for(uint i = 0, cnt = battles.length; i < cnt; ++i) {
+			if(battles[i].system.obj is reg)
+				return battles[i];
+		}
+		return null;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void tick(double time) override {
 		for(uint i = 0, cnt = battles.length; i < cnt; ++i) {
 			if(!battles[i].tick(ai, this, time)) {
@@ -779,6 +845,9 @@ class War : AIComponent {
 	}
 
 	bool isUnderAttack(SystemAI@ sys) {
+		if (sys.starsDamagedRecently()) {
+			return true;
+		}
 		if(sys.obj.ContestedMask & ai.mask == 0)
 			return false;
 		if(totalEnemySize(sys) < 100) {
@@ -965,6 +1034,48 @@ class War : AIComponent {
 			}
 		} else {
 			bombardPlanetCheck = 0;
+		}
+	}
+
+	void possibleStarAttack(Star@ star) {
+		Region@ region = star.region;
+		if (region is null) {
+			return;
+		}
+		array<Object@>@ enemies = findEnemies(region, ai.empire, ai.otherMask, ignoreScouts=false);
+		// Since we have no idea who may actually be attacking our star, we
+		// go for the safe option and declare war on everyone currently in our
+		// system to ensure no one tries to sneakily attack our star while
+		// at peace with us.
+		array<Empire@> attackingEmpires;
+		// TODO: Filter this list to ships that are capable of attacking stars
+		// instead of assuming every scout is a gravitron condensor
+		for (uint i = 0, cnt = enemies.length; i < cnt; ++i) {
+			Empire@ emp = enemies[i].owner;
+			if (attackingEmpires.find(emp) == -1) {
+				attackingEmpires.insertLast(emp);
+			}
+		}
+		for (uint i = 0, cnt = attackingEmpires.length; i < cnt; ++i) {
+			Relation@ relation = relations.get(attackingEmpires[i]);
+			if (relation is null) {
+				continue;
+			}
+			bool canDeclareWar = relation.canDeclareWar(ai);
+			if (!relation.atWar && canDeclareWar) {
+				relations.declareWar(attackingEmpires[i]);
+			}
+			if (canDeclareWar) {
+				// add a bit of hatred since this empire is probably attacking
+				// our star
+				relation.hate += 15;
+			}
+		}
+		Battle@ battle = getFightingIn(region);
+		if (battle !is null) {
+			if (battle.defendStar is null) {
+				@battle.defendStar = star;
+			}
 		}
 	}
 	// [[ MODIFY BASE GAME END ]]
