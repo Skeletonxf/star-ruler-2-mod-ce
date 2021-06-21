@@ -31,7 +31,9 @@ tidy class StarScript {
 	// [[ MODIFY BASE GAME END ]]
 
 	void syncInitial(Star& star, Message& msg) {
+		// [[ MODIFY BASE GAME START ]]
 		star.temperature = msg.read_float();
+		// [[ MODIFY BASE GAME END ]]
 
 		lightDesc.att_quadratic = 1.f/(2000.f*2000.f);
 

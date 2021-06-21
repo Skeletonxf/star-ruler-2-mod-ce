@@ -17,16 +17,18 @@ tidy class StarScript {
 	// [[ MODIFY BASE GAME END ]]
 
 	void syncInitial(const Star& star, Message& msg) {
+		// [[ MODIFY BASE GAME START ]]
 		msg << float(star.temperature);
 		star.writeOrbit(msg);
-		// [[ MODIFY BASE GAME START ]]
 		syncShields(star, msg);
 		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void save(Star& star, SaveFile& file) {
 		saveObjectStates(star, file);
+		// [[ MODIFY BASE GAME START ]]
 		file << star.temperature;
+		// [[ MODIFY BASE GAME END ]]
 		file << cast<Savable>(star.Orbit);
 		file << star.Health;
 		file << star.MaxHealth;
@@ -104,9 +106,9 @@ tidy class StarScript {
 	void syncDetailed(const Star& star, Message& msg) {
 		msg << float(star.Health);
 		msg << float(star.MaxHealth);
-		msg << float(star.temperature);
 		// [[ MODIFY BASE GAME START ]]
 		syncShields(star, msg);
+		msg << float(star.temperature);
 		// [[ MODIFY BASE GAME END ]]
 	}
 
