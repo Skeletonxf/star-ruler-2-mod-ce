@@ -67,6 +67,9 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Frostkin
   - AI support
+    - Respond to star attacks
+    - Abandon worlds if unable to build lighting systems on them (Star Children only)
+    - Avoid building lighting systems if don't have the energy income to sustain the building (but don't abandon since we might gain it later)
   - Grant energy when destroying stars
   - `safe double get_starTemperature() const;` is not actually synced to the updated Server value for shadow RegionObjects now that star temperature can change
     - Also appears as though this value is not needed on the client side anyway other than for distinguishing black holes, but should probably work out the best way to sync this rather than leave a potential bug for the future.
