@@ -63,3 +63,10 @@ FLYING_DESC: <<
 
 >>
 TRAIT_FROSTKIN: Frostkin
+TRAIT_FROSTKIN_DESC: <<
+	[color=#f00]NO AI SUPPORT (YET)[/color]
+
+	[vspace=6/][img=Ice;22]Perfectly adapted to life in deep space and ice giants, no starlight is needed to develop planets.[/img]
+	[vspace=6/][img=SystemUnderAttack;22]Stars must be destroyed before regions can be colonised. Ships may build a special subsystem to freeze stars to destroy them safely.[/img]
+	[vspace=6/][img=PlanetType::14;22]Cannot use starlight based technology, but can build Thermal Regulators to increase fleet strength.[/img]
+>>

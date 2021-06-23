@@ -425,3 +425,24 @@ S_COMPUTER_VERDANT_SINEW_DESC: <<
 	[img=Plantation;22][b][color=#5fb41c]Only available when the 'Verdant' race option is chosen.[/color][/b][/img]
 >>
 S_FREEZE_DAMAGE: Freezing
+S_STAR_EATER: Star Eater
+S_STAR_EATER_DESC: <<
+	Safely destroys stars by reducing their temperature to near 0K.
+
+	[i][color=#aaa]Many thought safe collapse of stars was not possible, much less that stars could be frozen. They soon realise that even if they can never understand the physics, they better take precautions to prevent their next star being destroyed.[/color][/i]
+
+	Does not work against shielded stars while the shields are up.
+
+	[img=Ice;22][b][color=#ffc1d5]Only available when the 'Frostkin' race option is chosen.[/color][/b][/img]
+>>
+FROSTKIN_SUPPLY: Supply Coolant
+FROSTKIN_SUPPLY_DESC: <<
+	Stores supplies and ammunition for use in combat and sieging planets, and provides power.
+
+	[img=AttributeIcons::4;22]Provides [b][color=#fefc61]Supply Capacity[/color][/b].[/img]
+	[img=ResourceIcon::2;22]Provides [b][color=#42b4bd]Power[/color][/b] to operate other subsystems.[/img]
+	[img=Plus]Does not leak supply capacity when damaged.[/img]
+	[img=Minus]Provides less power and less supply than dedicated subsystems.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Losing required power generation in combat reduces the ship's overall effectiveness.[/color][/i][/img]
+	[img=Ice;22][b][color=#ffc1d5]Only available when the 'Frostkin' race option is chosen.[/color][/b][/img]
+>>

@@ -94,3 +94,4 @@ GAS_GIANT_DESC: <<
 >>
 STATUS_SINEW_BOOST: Intense operations by the flagship's energised sinew are rapidly repairing this fleet for the first 30 seconds of any combat.
 FROSTKIN_OVERHEATED: Overheated
+FROSTKIN_OVERHEATED_DESC: This planet is disabled due to a neraby star

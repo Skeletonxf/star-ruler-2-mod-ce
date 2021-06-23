@@ -5,7 +5,7 @@ Trait: Frostkin
 	Order: 15
 	Icon: Ice
 	Color: #ffc1d5
-	Costs Points: 3
+	Costs Points: 2
 	Category: Lifestyle
 	Unique: Lifestyle
 

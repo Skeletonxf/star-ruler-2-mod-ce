@@ -9,6 +9,6 @@ Building: ThermalRegulator
 	Build Time: 120
 
 	RequireTrait(Frostkin)
-	ModEmpireAttribute(FleetEfficiencyFactor, Multiply, 1.03)
+	ModEmpireAttribute(FleetEfficiencyFactor, Multiply, 1.04)
 	ConflictBuilding(ThermalRegulator)
 	ChangeNativeResourceTo(ThermalRegulator)

@@ -1,6 +1,6 @@
 Subsystem: StarEater
 	Name: #S_STAR_EATER
-	Description: #S_STAR_EATER
+	Description: #S_STAR_EATER_DESC
 
 	BaseColor: #e4d7db
 	TypeColor: #e4d7db
@@ -19,7 +19,6 @@ Subsystem: StarEater
 	ScalingFreezeDamage := 40 * (Size / 250)
 	FreezeDamage := min(ScalingFreezeDamage, 15.0) + sqrt(max(ScalingFreezeDamage - 15.0, 0.0))
 	EnergyBuildCost := EnergyBuildCost + 500
-	Hook: SolarEfficiency(0.0, -0.2, -0.8)
 
 	Module: Default
 		Hex.BuildCost := 3.0 * Hex.BuildCost

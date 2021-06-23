@@ -67,7 +67,6 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Frostkin
   - AI support
-    - Respond to star attacks
     - Abandon worlds if unable to build lighting systems on them (Star Children only)
     - Avoid building lighting systems if don't have the energy income to sustain the building (but don't abandon since we might gain it later)
   - Grant energy when destroying stars
