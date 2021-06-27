@@ -213,8 +213,10 @@ ERROR_GYRO_TOO_SMALL: Gyroscope must fill at least 30% of the ship
 S_NILINGARMOR_DESC: <<
 	Strands of quantum-reactive fibre connect the outer plating to a zero-sized sink hole in spacetime, allowing incoming energy flows to be redirected. When enough energy has been stored, it is channeled back into normal spacetime, creating a strong EM pulse to damage surrounding enemies.
 
-	[img=Plus]Every time the threshold amount of damage is received, an area-of-effect burst is released, damaging all nearby enemies for 90%.[/img]
-	[img=Minus]Provides absolutely no protection against weapon damage, and has no intrinsic Health.[/img]
+	[img=Plus]Every time the threshold amount of damage or greater is received, an area-of-effect burst is released, damaging all nearby enemies for 90% of accumulated damage.[/img]
+	[img=Minus]Provides absolutely no protection against any weapon damage, and has no intrinsic Health.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Area-of-effect burst radius scales with damage absorbed.[/color][/i][/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Cannot reflect more damage in a single burst than the ship's total health, excess absorbed damage will not be utilised.[/color][/i][/img]
 >>
 ANTI_MATTER_GEN_DESC: <<
 	A sustained matter-antimatter annihilation reaction provides continuous power for the ship.

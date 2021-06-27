@@ -81,16 +81,24 @@ DamageEventStatus NilingAbsorb(DamageEvent& evt, const vec2u& position, double D
 	double value = bp.decimal(sys, 0);
 	value += evt.damage;
 
-	bool playedParticles = false;
-	while(value >= Damage) { // [[ MODIFY BASE GAME ]]
-		if (!playedParticles) {
-			playParticleSystem("NilingExplosion", evt.target.position, quaterniond(), Radius / 15.0, evt.target.visibleMask);
-			playedParticles = true;
-		}
-		AoEDamage(evt.target, evt.target, vec3d(), Damage * 0.9, Radius, 10.0);
+	// [[ MODIFY BASE GAME START ]]
+	if (value >= Damage) {
+		// Use a clipped damage accumulated value for the explosion to prevent
+		// ships creating huge explosions by taking multiples of their own HP in
+		// damage
+		double absorbed = max(value, bp.currentHP * bp.hpFactor);
+		// Increase radius if the total damage accumulated in the threshold
+		// value is multiples of our Damage threshold.
+		double radius = Radius * sqrt(max(absorbed / Damage, 1.0));
+		playParticleSystem("NilingExplosion", evt.target.position, quaterniond(), radius / 15.0, evt.target.visibleMask);
+		// Deal AoE damage equal to 90% of the total absorbed damage instead of
+		// the Damage threshold. This also conveniently removes the issue of
+		// needing a while loop
+		AoEDamage(evt.target, evt.target, vec3d(), absorbed * 0.9, radius, 10.0);
 
-		value -= Damage;
+		value = 0;
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	bp.decimal(sys, 0) = value;
 	// [[ MODIFY BASE GAME START ]]
