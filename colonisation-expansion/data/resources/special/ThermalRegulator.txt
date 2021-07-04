@@ -5,3 +5,5 @@ Resource: ThermalRegulator
 	Distribution: 0
 	Frequency: 0
 	Exportable: False
+	Icon: TechIcons::45
+	Small Icon: TechIcons::45

@@ -195,3 +195,4 @@ R_SYRUP_DESC: <<
 
 	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
 >>
+THERMAL_REGULATOR_BLURB: Grants 4% bonus ship efficiency

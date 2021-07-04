@@ -1,4 +1,4 @@
-Template: var/Power, hexVar/BuildCost, tag/IsReactor, !tag/NoCore
+Template: var/Power, hexVar/BuildCost, tag/IsReactor, !tag/NoPowerAmp
 	Module: PowerAmplifier
 		Name: #S_POWER_AMPLIFIER
 		Description: #S_POWER_AMPLIFIER_DESC

@@ -5,7 +5,7 @@ Subsystem: SolarPanel
 	Elevation: 3
 
 	Tags: IsReactor, Category:Control
-	Tags: DefaultUnlock, NonContiguous, NoCore
+	Tags: DefaultUnlock, NonContiguous, NoCore, NoPowerAmp
 	Tags: HeraldsDLC
 	Hull: Flagship, Station
 

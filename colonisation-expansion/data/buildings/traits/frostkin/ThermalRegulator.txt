@@ -1,11 +1,11 @@
 Building: ThermalRegulator
 	Name: #THEMRAL_REGULATOR
 	Description: #THERMAL_REGULATOR_DESC
-	Sprite: AncientRuin * fffaa
+	Sprite: AncientLab * ffffaa
 	Category: Enhancing
-	Size: 4x3
+	Size: 6x4
 	Base Cost: 500
-	Tile Cost: 25
+	Tile Cost: 15
 	Build Time: 120
 
 	RequireTrait(Frostkin)

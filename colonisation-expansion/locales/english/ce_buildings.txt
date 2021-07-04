@@ -100,9 +100,10 @@ BLD_MUSEUM_DESC: <<
 	Cannot be removed once built.
 >>
 THERMAL_REGULATOR_DESC: <<
-	All your ships have 4% increased efficiency.
+	Terraforms the planet to grant 4% increased efficiency to all your ships.
 
 	[i][color=#aaa]Designed to operate at nearly 0K, these planet sized thermal regulators are an enigma to the lucky few scientists that get a chance to study them. They seem to act as a heat sink for flagships and stations, pulling heat away from their electrical components to allow them to operate more efficiently. If these regulators have a maximum range no one has found it.
 
-	The builders seem to understand laws of nature about temperature that no one else can comprehend. Fortunately the buildings are not too difficult to adapt to more conventional operating temperatures once acquired.[/color][/i]
+	The creators seem to understand laws of nature about temperature that no one else can comprehend. Fortunately the buildings are not too difficult to adapt to more conventional operating temperatures once acquired.[/color][/i]
 >>
+THEMRAL_REGULATOR: Thermal Regulator

@@ -9,6 +9,9 @@ Trait: Frostkin
 	Category: Lifestyle
 	Unique: Lifestyle
 
+	ReplaceTechnologyNodes(SolarSatellite, Thrust)
+	ReplaceTechnologyNodes(OrbStarForge, Thrust)
+	ReplaceTechnologyNodes(StarForge, Thrust)
 	ModAttribute(ForbidStellarColonization, Add, 1)
 	SpawnShip(Prometheus, Override Disable Starting = True)
 	SpawnShip(Prometheus, Override Disable Starting = True)
