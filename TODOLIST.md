@@ -62,8 +62,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make the AI's search for things to colonise when it has no systems more robust - Star Children should still be able to recover while they have Motherships but the current code will attempt to recolonise its home system or just give up.
   - Investigate stored labor being drained by time based constructions
   - Fix native life emerging when making some planets tier 1/2
-  - Check battleworlders can actually colonise at a normalish pace
-    - Their colonisation speed may have been over nerfed
 
 - Not planned for any time soon
   - Colonisation ships similar to Motherships for other races
