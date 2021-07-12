@@ -78,6 +78,9 @@ server:
 	void damageAllHexes(double amount, Object@ source = null);
 	void modHPFactor(float pct);
 	void modSupplyConsumeFactor(float mod);
+	// [[ MODIFY BASE GAME START ]]
+	safe float getSupplyConsumeFactor();
+	// [[ MODIFY BASE GAME END ]]
 	safe bool getDisableRegionVision();
 	safe bool getHoldFire();
 	Object@ getLastHitBy();

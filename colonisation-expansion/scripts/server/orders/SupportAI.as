@@ -27,7 +27,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 
 	Object@ leader;
 	int leaderId = 0;
-	
+
 	float psr = randomf(0.f,1.f);
 	float returnTimer = 0.f;
 
@@ -92,7 +92,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 	int get_LeaderID() {
 		return leaderId;
 	}
-	
+
 	void supportIdle(Object& obj) {
 		obj.leaderLock = true;
 		order = SO_Idle;
@@ -109,7 +109,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 		@target = null;
 		@relTarget = null;
 	}
-	
+
 	void supportAttack(Object& obj, Object@ targ) {
 		auto@ ship = cast<Ship>(obj);
 		//Ignore attack orders if there are no weapons
@@ -140,7 +140,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 			default:
 				return;
 		}
-		
+
 		if(obj.isShip) {
 			Ship@ ship = cast<Ship>(obj);
 			if(targ !is null)
@@ -149,7 +149,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 		@target = targ;
 		@relTarget = null;
 	}
-	
+
 	void supportInterfere(Object& obj, Object@ targ, Object@ protect) {
 		if(goal == SG_Shield) {
 			order = SO_Interfere;
@@ -157,7 +157,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 			@relTarget = protect;
 		}
 	}
-	
+
 	void cavalryCharge(Object& obj, Object@ targ) {
 		if(goal == SG_Cavalry) {
 			freeToRaid = true;
@@ -167,7 +167,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 			@checkTarget = targ;
 		}
 	}
-	
+
 	void set_doRaids(bool raid) {
 		freeToRaid = raid;
 	}
@@ -187,7 +187,9 @@ tidy class SupportAI : Component_SupportAI, Savable {
 			if(leaderShip is null)
 				return;
 			double require = ship.MaxSupply - ship.Supply;
-			if(leaderShip.Supply < require)
+			// [[ MODIFY BASE GAME START ]]
+			if(leaderShip.Supply < (require * leaderShip.getSupplyConsumeFactor()))
+			// [[ MODIFY BASE GAME END ]]
 				return;
 			leaderShip.consumeSupply(require);
 			ship.Supply = min(ship.MaxSupply, ship.Supply + require);
@@ -204,13 +206,13 @@ tidy class SupportAI : Component_SupportAI, Savable {
 			ship.Supply = 0;
 		}
 	}
-	
+
 	void supportRetreat(Object& obj) {
 		order = SO_Retreat;
 		@target = null;
 		@relTarget = null;
 	}
-	
+
 	void set_supportEngageRange(double range) {
 		engageRange = range;
 	}
@@ -347,14 +349,14 @@ tidy class SupportAI : Component_SupportAI, Savable {
 
 		return null;
 	}
-	
+
 	double evaluateTarget(Object& obj, Object& targ, double maxDistSQ) {
 		Ship@ ship = cast<Ship>(targ);
 		if(ship is null || !obj.owner.isHostile(targ.owner))
 			return 0;
 		if(targ.position.distanceToSQ(leader.position) > maxDistSQ)
 			return 0;
-		
+
 		switch(goal) {
 			case SG_Brawler:
 				return (1.0 + ship.DPS) * (ship.hasSupportAI ? 1.0 : 0.001);
@@ -371,7 +373,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 			default:
 				return 1.0;
 		}
-		
+
 		return 0;
 	}
 
@@ -381,15 +383,15 @@ tidy class SupportAI : Component_SupportAI, Savable {
 		double b = evaluateTarget(obj, targ, maxDistSQ);
 		if(b <= 0)
 			return prev;
-		
+
 		double a = evaluateTarget(obj, prev, maxDistSQ);
-		
+
 		if(a >= b * 0.9)
 			return prev;
 		else
 			return targ;
 	}
-	
+
 	void supportTick(Object& obj, double time) {
 		Ship@ ship = cast<Ship>(obj);
 
@@ -453,12 +455,12 @@ tidy class SupportAI : Component_SupportAI, Savable {
 					if(detached && !wasDetached)
 						resupplyFromFleet(obj);
 				}
-				
+
 				switch(order) {
 					case SO_Idle:
 						if(!detached && ship.Supply > 1.0e-4)
 							dumpSupplyToFleet(obj);
-					
+
 						switch(goal) {
 							case SG_Shield: {
 								Object@ targ = ship.blueprint.getCombatTarget();
@@ -474,7 +476,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 										break;
 									}
 								}
-								
+
 								if(targ !is null)
 									supportInterfere(obj, leader, targ);
 								}
@@ -505,7 +507,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 									}
 									@checkTarget = null;
 								}
-								
+
 								if(targ !is null && obj.owner.isHostile(targ.owner))
 									supportAttack(obj, targ);
 							}
@@ -528,16 +530,16 @@ tidy class SupportAI : Component_SupportAI, Savable {
 						}
 						else {
 							@target = replaceTarget(obj, target, engageDist*engageDist);
-						
+
 							vec3d dest = leader.position + obj.internalDestination;
 							//If the target is out of range, return to the fleet
 							if(detached || leader.position.distanceToSQ(target.position) > sqr(engageRange + fleetRad)) {
 								supportIdle(obj);
 								break;
 							}
-							
+
 							vec3d fireFrom = obj.leaderLock ? obj.position : dest;
-							
+
 							bool relocate = fireFrom.distanceToSQ(target.position) > engageRange * engageRange || fireFrom.distanceToSQ(leader.position) > fleetRad * fleetRad || obj.isColliding;
 							if(!relocate) {
 								if(obj.leaderLock || obj.position.distanceToSQ(dest) < obj.radius * obj.radius) {
@@ -547,7 +549,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 										relocate = true;
 								}
 							}
-							
+
 							if(relocate) {
 								double innerDist = leader.radius + obj.radius;
 								vec3d dest = random3d(innerDist, fleetRad);
@@ -567,23 +569,23 @@ tidy class SupportAI : Component_SupportAI, Savable {
 					case SO_Interfere:
 						if(target is null || relTarget is null || !target.valid || !relTarget.valid || !obj.owner.isHostile(target.owner) || !obj.inCombat)
 							supportIdle(obj);
-						else {							
+						else {
 							double fleetRad = leader.getFormationRadius();
 							line3dd path = line3dd(leader.position, target.position);
 							double targDist = path.length;
-							
+
 							if(targDist > fleetRad * 4.0) {
 								supportIdle(obj);
 								break;
 							}
-							
+
 							vec3d curDest = leader.position + obj.internalDestination;
 							vec3d pt = path.getClosestPoint(curDest, false);
-							if(obj.leaderLock || pt.distanceToSQ(curDest) > obj.radius * obj.radius) {							
+							if(obj.leaderLock || pt.distanceToSQ(curDest) > obj.radius * obj.radius) {
 								double outerDist = targDist - obj.radius * 1.5 - target.radius;
 								if(outerDist > fleetRad)
 									outerDist = fleetRad;
-								
+
 								double innerDist = leader.radius + obj.radius * 1.5;
 								vec3d dest = path.direction * (innerDist + (outerDist - innerDist) * psr) + random3d(obj.radius * 0.5);
 								int moveId = -1;
@@ -602,10 +604,10 @@ tidy class SupportAI : Component_SupportAI, Savable {
 								break;
 							//TODO: Handle very low supply levels better
 							@target = replaceTarget(obj, target, raidDist*raidDist);
-							
-							vec3d dest = leader.position + obj.internalDestination;							
+
+							vec3d dest = leader.position + obj.internalDestination;
 							vec3d fireFrom = obj.leaderLock ? obj.position : dest;
-							
+
 							bool relocate = obj.position.distanceToSQ(dest) < obj.radius * obj.radius ||
 											fireFrom.distanceToSQ(target.position) > engageRange * engageRange ||
 											dest.distanceToSQ(leader.position) > abandonDist * 0.95;
@@ -617,7 +619,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 										relocate = true;
 								}
 							}
-							
+
 							if(relocate) {
 								double innerDist = target.radius + obj.radius;
 								double rMax = (range == SR_Close ? engageRange * 0.52 : engageRange);
@@ -649,7 +651,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 						}
 						else {
 							@target = replaceTarget(obj, target, engageDist*engageDist);
-							
+
 							vec3d dest = leader.position + obj.internalDestination;
 							double fleetRad = leader.getFormationRadius();
 							//If the target is out of range, return to the fleet
@@ -657,9 +659,9 @@ tidy class SupportAI : Component_SupportAI, Savable {
 								supportIdle(obj);
 								break;
 							}
-							
+
 							vec3d fireFrom = obj.leaderLock ? obj.position : dest;
-							
+
 							bool relocate = fireFrom.distanceToSQ(target.position) > engageRange * engageRange || fireFrom.distanceToSQ(leader.position) > fleetRad * fleetRad || obj.isColliding;
 							if(!relocate) {
 								if(obj.leaderLock || obj.position.distanceToSQ(dest) < obj.radius * obj.radius) {
@@ -669,7 +671,7 @@ tidy class SupportAI : Component_SupportAI, Savable {
 										relocate = true;
 								}
 							}
-							
+
 							if(relocate) {
 								double innerDist = leader.radius + obj.radius;
 								vec3d dest = random3d(innerDist, fleetRad);
