@@ -920,6 +920,7 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@budget = cast<Budget>(ai.budget);
 		@creeping = cast<Creeping>(ai.creeping);
 		@construction = cast<Construction>(ai.construction);
+		@ftlIncomeTargets.ftl = cast<FTLGeneric>(ai.ftl);
 
 		@queue = ColonizeForest(DefaultRaceResourceValuation(ai));
 		RaceColonization@ race;
