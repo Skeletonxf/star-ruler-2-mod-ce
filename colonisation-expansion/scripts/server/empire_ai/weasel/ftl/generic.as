@@ -1716,6 +1716,10 @@ class FTLGeneric : FTL {
 		hasFling = ai.empire.HasFling >= 1;
 		hasSlipstreams = ai.empire.isUnlocked(slipstreamSubsystem);
 	}
+
+	bool hasAnyFTL() {
+		return hasHyperdrives || hasJumpdrives || hasGates || hasFling || hasSlipstreams;
+	}
 };
 
 AIComponent@ createFTLGeneric() {

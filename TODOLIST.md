@@ -52,9 +52,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Fix bug where ordering a battleworld to transfer resources onto another one causes the other one to abort its current movement commands
     - This seems to be a more general vanilla bug with casting an ability on something which is already casting the same ability, can also reproduce with two shield projector ships
   - Teach AI to not put comets on worlds being razed
-  - Prevent AI from deliberately researching/building FTL extractors if they don't have any FTL unlocked
-    - This hurts the First AI's budget
-    - Or if they have FTL breeders already unlocked
+  - Prevent AI from deliberately researching/building FTL extractors if they have FTL breeders already unlocked
   - Increase the resolution of the Helium 3 icon to make it clearer
   - Fix map generation bugs with galaxy mirroring and gas/ice giants
   - Make the AI work out who is attacking its stars instead of assuming anyone with a presence in the system is
@@ -62,8 +60,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make the AI's search for things to colonise when it has no systems more robust - Star Children should still be able to recover while they have Motherships but the current code will attempt to recolonise its home system or just give up.
   - Investigate stored labor being drained by time based constructions
   - Fix native life emerging when making some planets tier 1/2
-  - Check battleworlders can actually colonise at a normalish pace
-    - Their colonisation speed may have been over nerfed
 
 - Frostkin
   - AI support

@@ -1,12 +1,16 @@
 import empire_ai.weasel.WeaselAI;
+from empire_ai.weasel.ftl.generic import FTLGeneric;
 
 // Class for FTL incomes that we are aiming for.
 class FTLResourceIncomes {
 	double FTLIncome = 1.0;
 	double FTLStorage = 0.0;
+	FTLGeneric@ ftl;
 
 	bool requestsFTLStorage(AI& ai) {
-		// TODO: Check we actually have an FTL method
+		if (!ftl.hasAnyFTL()) {
+			return false;
+		}
 		double capacity = ai.empire.FTLCapacity;
 		if(FTLStorage <= capacity)
 			return false;
@@ -16,7 +20,9 @@ class FTLResourceIncomes {
 	}
 
 	bool requestsFTLIncome(AI& ai) {
-		// TODO: Check we actually have an FTL method
+		if (!ftl.hasAnyFTL()) {
+			return false;
+		}
 		double income = ai.empire.FTLIncome;
 		double unused = income - ai.empire.FTLUse;
 		if (unused < FTLIncome) {
