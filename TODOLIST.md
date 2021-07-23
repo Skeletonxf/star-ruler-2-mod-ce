@@ -87,9 +87,11 @@ This is primarily intended as a developer focused project planning list, rather 
   - Investigate why/how to change all planet resources being enabled/disabled based on the primary resource (which tends to be the most difficult to enable)
     - Easiest to reproduce by adding local asteroid fields to native tier 2/3 planets
     - Potentially an exploit here too by putting scalables on tier 3 planets, does the tier 3 resource get enabled because the primary becomes scalable?
-  - Rework wormhole networks once to ensure they don't cause FPS drops
-    - May need to come up with a new non gate-like effect in order to not cause pathing latency issues
-    - Replace beams with lines to fix graphical lag issues?
+  - Wormhole network revamp
+    - Control hubs spawn automatically as before with some kind of wormhole like graphic around level 2 and higher planets (up to 3 per system)
+    - Can select a wormhole network hub and order it to open a wormhole at a target destination
+    - Opened wormhole behaves similarly to a slipstream and closes automatically after some time
+    - Opened wormhole is ONE WAY, can only use to travel to the wormhole network hub not the other direction
   - Make quickbar width configurable
 
 - Long term plans
