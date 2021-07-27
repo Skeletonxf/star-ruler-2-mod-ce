@@ -1,0 +1,14 @@
+Building: ThermalRegulator
+	Name: #THEMRAL_REGULATOR
+	Description: #THERMAL_REGULATOR_DESC
+	Sprite: AncientLab * ffffaa
+	Category: Enhancing
+	Size: 6x4
+	Base Cost: 500
+	Tile Cost: 15
+	Build Time: 120
+
+	RequireTrait(Frostkin)
+	ModEmpireAttribute(FleetEfficiencyFactor, Multiply, 1.04)
+	ConflictBuilding(ThermalRegulator)
+	ChangeNativeResourceTo(ThermalRegulator)

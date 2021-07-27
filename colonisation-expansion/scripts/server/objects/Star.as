@@ -13,19 +13,22 @@ tidy class StarScript {
 	// [[ MODIFY BASE GAME START ]]
 	double shieldRegen = 0.0;
 	bool shieldDelta = false;
+	bool tempDelta = false;
 	// [[ MODIFY BASE GAME END ]]
 
 	void syncInitial(const Star& star, Message& msg) {
+		// [[ MODIFY BASE GAME START ]]
 		msg << float(star.temperature);
 		star.writeOrbit(msg);
-		// [[ MODIFY BASE GAME START ]]
 		syncShields(star, msg);
 		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void save(Star& star, SaveFile& file) {
 		saveObjectStates(star, file);
+		// [[ MODIFY BASE GAME START ]]
 		file << star.temperature;
+		// [[ MODIFY BASE GAME END ]]
 		file << cast<Savable>(star.Orbit);
 		file << star.Health;
 		file << star.MaxHealth;
@@ -105,6 +108,7 @@ tidy class StarScript {
 		msg << float(star.MaxHealth);
 		// [[ MODIFY BASE GAME START ]]
 		syncShields(star, msg);
+		msg << float(star.temperature);
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -127,6 +131,15 @@ tidy class StarScript {
 			shieldDelta = false;
 			msg.write1();
 			syncShields(star, msg);
+		} else {
+			msg.write0();
+		}
+
+		if (tempDelta) {
+			msg.write1();
+			used = true;
+			tempDelta = false;
+			msg << float(star.temperature);
 		} else {
 			msg.write0();
 		}
@@ -209,8 +222,68 @@ tidy class StarScript {
 		// [[ MODIFY BASE GAME END ]]
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	// recalculate temperature based color
+	void refreshTemperatureColor(Star& star) {
+		double temp = star.temperature;
+		Node@ node = star.getNode();
+		if (node is null)
+			return;
+		if (temp != 0.0) {
+			node.color = blackBody(temp, max((temp + 15000.0) / 40000.0, 1.0));
+		} else {
+			node.color = blackBody(16000.0, max((16000.0 + 15000.0) / 40000.0, 1.0));
+		}
+	}
+
+	void dealStarTemperatureDamage(Star& star, double amount) {
+		if (star.temperature <= 1.0) {
+			// black holes do not take temperature damage
+			return;
+		}
+		if (star.Shield > 0) {
+			// do not damage shielded stars, and do not damage their shields
+			// either
+			return;
+		}
+		tempDelta = true;
+		hpDelta = true;
+		star.temperature -= amount;
+		// deal a tiny bit of health damage so other players know we're
+		// 'damaging' this star, but never reduce the hp to zero with this step
+		if (star.Health > 100.0) {
+			star.Health -= 1;
+		} else {
+			star.Health *= 0.995;
+		}
+		refreshTemperatureColor(star);
+		if (star.temperature <= 1.0) {
+			// kill the star now we've dropped its temperature to almost 0
+			// (never actually drop to 0 since 0 is reserved for black holes)
+			star.temperature = 0.1;
+			star.Health = 0;
+			star.destroy();
+		}
+		if (star.region !is null) {
+			star.region.updateStarTemperature(-amount);
+		}
+		// FIXME: Shadow region objects doesn't get updated StarTemperature
+	}
+	// [[ MODIFY BASE GAME END ]]
+
+	// [[ MODIFY BASE GAME START ]]
+	bool quietDestruction = false;
+	void destroyQuiet(Star& star) {
+		quietDestruction = true;
+		star.destroy();
+	}
+	// [[ MODIFY BASE GAME END ]]
+
+	// [[ MODIFY BASE GAME START ]]
 	void destroy(Star& star) {
-		if(!game_ending) {
+		bool noDamage = star.temperature == 0.1;
+		// [[ MODIFY BASE GAME END ]]
+		if(!game_ending && !quietDestruction) {
 			// [[ MODIFY BASE GAME START ]]
 			// Double star explosion radius
 			double explRad = 2 * star.radius;
@@ -231,13 +304,21 @@ tidy class StarScript {
 					// [[ MODIFY BASE GAME END ]]
 				}
 			}
+
+			// [[ MODIFY BASE GAME START ]]
+			if (noDamage) {
+				// explosion radius should be tiny as it deals no damage
+				explRad *= 0.03;
+			}
+			// [[ MODIFY BASE GAME END ]]
+
 			playParticleSystem("StarExplosion", star.position, star.rotation, explRad);
 
 			//auto@ node = createNode("NovaNode");
 			//if(node !is null)
 			//	node.position = star.position;
 			removeAmbientSource(CURRENT_PLAYER, star.id);
-			if(star.region !is null)
+			if(star.region !is null && !noDamage) // [[ MODIFY BASE GAME ]]
 				star.region.addSystemDPS(star.MaxHealth * 0.12);
 
 			// [[ MODIFY BASE GAME START ]]
@@ -266,6 +347,11 @@ tidy class StarScript {
 			}
 			// [[ MODIFY BASE GAME END ]]
 		}
+		// [[ MODIFY BASE GAME START ]]
+		if (!game_ending && quietDestruction) {
+			removeAmbientSource(CURRENT_PLAYER, star.id);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		leaveRegion(star);
 	}
 

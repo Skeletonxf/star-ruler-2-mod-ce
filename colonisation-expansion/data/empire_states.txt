@@ -205,5 +205,7 @@ visible:
 	// [[ MODIFY BASE GAME START ]]
 	attribute double PlanetShieldProjectorFactor = 10;
 	attribute double StarShieldProjectorFactor = 10;
+	// frostkin partial colonisation forbid flag
+	attribute double ForbidStellarColonization = 0;
 	// [[ MODIFY BASE GAME END ]]
 }

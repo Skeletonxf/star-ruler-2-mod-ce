@@ -1,0 +1,14 @@
+Status: Frostkin
+	Visible To: Nobody
+	IfSystemHasStar(AddStatus(FrostkinDisabled), Include Blackholes = False)
+	AddDummyResource(Starlight)
+Status: FrostkinDisabled
+	Name: #FROSTKIN_OVERHEATED
+	Visible To: Owner
+	Description: #FROSTKIN_OVERHEATED_DESC
+	SetMaxLevel(0)
+	DisableResourceImport()
+	DisableResourceExport()
+	CannotUseLabor()
+	ModLoyalty(-1000)
+	ForbidLaborExport()

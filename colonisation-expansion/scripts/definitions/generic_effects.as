@@ -3501,6 +3501,9 @@ tidy final class IfInSystem : IfHook {
 tidy final class IfSystemHasStar : IfHook {
 	Document doc("Only applies the inner hook if the object is in a system that has a star.");
 	Argument hookID(AT_Hook, "planet_effects::GenericEffect");
+	// [[ MODIFY BASE GAME START ]]
+	Argument include_blackholes(AT_Boolean, "True", doc="If blackholes should be counted as stars");
+	// [[ MODIFY BASE GAME END ]]
 
 	bool instantiate() override {
 		if(!withHook(hookID.str))
@@ -3513,7 +3516,13 @@ tidy final class IfSystemHasStar : IfHook {
 		Region@ reg = obj.region;
 		if(reg is null)
 			return false;
-		return reg.starCount > 0;
+		// [[ MODIFY BASE GAME START ]]
+		if (include_blackholes.boolean) {
+			return reg.starCount > 0;
+		} else {
+			return reg.starCount > 0 && reg.starTemperature > 0;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 #section all
 };

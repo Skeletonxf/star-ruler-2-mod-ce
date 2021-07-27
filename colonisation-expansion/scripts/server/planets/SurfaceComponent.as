@@ -18,6 +18,7 @@ from components.ObjectManager import getDefenseDesign;
 from statuses import getStatusID;
 import CE_array_map;
 import CE_biome_statuses;
+from CE_deep_space import regionHasStars;
 // [[ MODIFY BASE GAME END ]]
 import bool getCheatsEverOn() from "cheats";
 const string TAG_SUPPORT("Support");
@@ -1901,6 +1902,13 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			return;
 		if(!other.isPlanet || other.quarantined)
 			return;
+		// [[ MODIFY BASE GAME START ]]
+		// Aborting here seems to leave the UI in a awkward state where it thinks
+		// there's still a colonise order but there isn't.
+		/* if ((obj.owner.ForbidStellarColonization > 0) && regionHasStars(other.region)) {
+			return;
+		} */
+		// [[ MODIFY BASE GAME END ]]
 		for(uint i = 0, cnt = colonization.length; i < cnt; ++i) {
 			if(colonization[i].target is other) {
 				if(colonization[i].targetPopulation < toPopulation)
@@ -1958,6 +1966,18 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			Empire@ owner = obj.owner;
 			Empire@ otherOwner = order.target.owner;
 			bool targetVisible = owner is otherOwner || order.target.isVisibleTo(owner);
+
+			// [[ MODIFY BASE GAME START ]]
+			// Remove orders to a planet which is in a region with a star if the empire cannot
+			// colonise these
+			if (owner !is null && (owner.ForbidStellarColonization > 0) && regionHasStars(order.target.region)) {
+				colonization.removeAt(i);
+				obj.owner.unregisterColonization(obj, order.target);
+				deltaCol = true;
+				--i; --cnt;
+				continue;
+			}
+			// [[ MODIFY BASE GAME END ]]
 
 			//Also remove colonization orders that are directed at colonies owned by foreign empires
 			// but only if we can see the target

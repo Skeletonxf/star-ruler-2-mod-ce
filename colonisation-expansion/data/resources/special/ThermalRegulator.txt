@@ -1,0 +1,9 @@
+Resource: ThermalRegulator
+	Name: #THERMAL_REGULATOR
+	Description: #THERMAL_REGULATOR_DESC
+	Blurb: #THERMAL_REGULATOR_BLURB
+	Distribution: 0
+	Frequency: 0
+	Exportable: False
+	Icon: TechIcons::45
+	Small Icon: TechIcons::45

@@ -1,0 +1,34 @@
+Subsystem: FrostkinSupply
+	Name: #FROSTKIN_SUPPLY
+	Description: #FROSTKIN_SUPPLY_DESC
+	Picture: SubsystemButtonArt::8 * #b3ffef
+	BaseColor: #db0083
+	Elevation: 3
+
+	Tags: NonContiguous, NoCore, HasInternals, Category:Control, RegeneratingSupply
+	Tags: Compressible, IsReactor, Important, RaceSpecial
+	Hull: Flagship, Station
+
+	Size := HexSize * Hexes
+	SupplyCapacity := Size * 3500
+	SupplyRate := Size * 80
+
+	Hex.LaborCost := 0.15 * HexSize + 0.8
+	Hex.BuildCost := 1.5 * HexSize + 2
+	Hex.MaintainCost := 2 * HexSize + 3 - (4 * HexSize / ShipSize^0.5)
+
+	Hex.Resistance := 0.5
+	Hex.HP := 18 * HexSize
+	Hex.Mass := HexSize
+
+	Power := 25 * Size
+	Provides:
+		Power = Power
+	Modifier: SupplyCapacityFactor(factor)
+		SupplyCapacity := SupplyCapacity * factor
+
+	Modifier: Compress(Amount)
+		SupplyCapacity := SupplyCapacity + Base::SupplyCapacity * (Amount / Hexes)
+
+	Module: Default
+		Sprite: SupplyStorage * aa55ff

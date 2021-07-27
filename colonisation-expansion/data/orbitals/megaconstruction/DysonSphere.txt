@@ -22,6 +22,7 @@ Module: DysonSphere
 	Combat Repair: False
 	Can Fling: False
 
+	RequireNotTrait(Frostkin)
 	ConsumeCargo(Ore, 5000)
 	LimitOncePerSystem(RingworldFlag, Any Empire = True)
 	OnEnable(Destroy())

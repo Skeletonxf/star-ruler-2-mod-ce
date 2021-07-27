@@ -22,6 +22,8 @@ Trait: Fling
 	IfHaveTrait(Ancient, LoadDesigns(ancient/not_hyperdrive))
 
 
+	IfHaveTrait(Frostkin, LoadDesigns(frostkin/not_hyperdrive))
+	IfHaveTrait(Frostkin, LoadDesigns(frostkin/default))
 	ModAttribute(HasFling, Add, 1)
 	UnlockTag(HasFling)
 	SpawnOrbital(FlingCore, Free = True)

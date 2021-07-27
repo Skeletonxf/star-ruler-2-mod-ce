@@ -1,0 +1,29 @@
+Trait: Frostkin
+	Name: #TRAIT_FROSTKIN
+	Description: #TRAIT_FROSTKIN_DESC
+	AI Support: False
+	Order: 15
+	Icon: Ice
+	Color: #ffc1d5
+	Costs Points: 2
+	Category: Lifestyle
+	Unique: Lifestyle
+
+	ReplaceTechnologyNodes(SolarSatellite, Thrust)
+	ReplaceTechnologyNodes(OrbStarForge, Thrust)
+	ReplaceTechnologyNodes(StarForge, Thrust)
+	ModAttribute(ForbidStellarColonization, Add, 1)
+	SpawnShip(Prometheus, Override Disable Starting = True)
+	SpawnShip(Prometheus, Override Disable Starting = True)
+	TriggerHomeworld(CE_bonus_effects::DestroySystemStars(Quiet = True))
+	TriggerHomeworld(TerraformTo(Antimatter))
+	OnHomeworld(AddPlanetResource(NativeFish))
+	OnHomeworld(AddPlanetResource(StellarWater))
+	ForbidSubsystem(SupplyModule)
+	UnlockSubsystem(FrostkinSupply)
+	ForbidSubsystem(SolarPanel)
+	ForbidSubsystem(FusionGen)
+	ForbidSubsystem(FissionGen)
+	ForbidSubsystem(SolarSail)
+	AddStatusOwnedPlanets(Frostkin)
+	UnlockSubsystem(StarEater)

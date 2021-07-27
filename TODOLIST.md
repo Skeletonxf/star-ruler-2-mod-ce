@@ -61,6 +61,17 @@ This is primarily intended as a developer focused project planning list, rather 
   - Investigate stored labor being drained by time based constructions
   - Fix native life emerging when making some planets tier 1/2
 
+- Frostkin
+  - AI support
+    - Abandon worlds if unable to build lighting systems on them (Star Children only)
+    - Avoid building lighting systems if don't have the energy income to sustain the building (but don't abandon since we might gain it later)
+  - Grant energy when destroying stars
+  - `safe double get_starTemperature() const;` is not actually synced to the updated Server value for shadow RegionObjects now that star temperature can change
+    - Also appears as though this value is not needed on the client side anyway other than for distinguishing black holes, but should probably work out the best way to sync this rather than leave a potential bug for the future.
+  - Instruction popup
+  - Race icon, description, page
+  - Balancing
+
 - Not planned for any time soon
   - Colonisation ships similar to Motherships for other races
   - AI code to build orbitals like Stations
@@ -80,7 +91,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - This is a vanilla bug that seems to be due to drugs on the client side not refreshing when the resource they were previously filling is provided and the drug switches to providing a different resource server side
   -  Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
-  - Make warheads manually fired (no clue how to do this)
   - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little
   - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Retest if WhileConsumingCargo still needs to use gameTime directly now that the status tick time bug has been fixed
