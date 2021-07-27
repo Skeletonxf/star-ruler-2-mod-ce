@@ -2,6 +2,7 @@ import empire_ai.weasel.Planets;
 import empire_ai.weasel.Colonization;
 import empire_ai.dragon.expansion.colonization;
 import empire_ai.dragon.expansion.colony_data;
+from CE_deep_space import regionHasStars;
 
 class ColonizerPlanet : ColonizationSource {
 	Planet@ planet;
@@ -37,6 +38,8 @@ class ColonizerPlanet : ColonizationSource {
 		if(planet.level == 0)
 			return 0.0;
 		if(!planet.canSafelyColonize)
+			return 0.0;
+		if (ai.empire.ForbidStellarColonization > 0 && regionHasStars(planet.region))
 			return 0.0;
 		double w = 1.0;
 		double pop = planet.population;
