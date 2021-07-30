@@ -6,7 +6,6 @@ Construction: SharePlanet
 	Icon: VoteIcons::1
 	Category: Dillema
 
-	OnStart(RemoveStatus(PossibleNativeLife))
 	RemoveStatus(RemovingNativeLife)
 	OnCancel(RemoveStatus(RemovingNativeLife))
 	OnStart(AddStatus(RemovingNativeLife))

@@ -5,7 +5,6 @@ Status: ParasiteRaze
 	Color: #d04ebe
 	Visible To: Owner
 	WorthPoints(-2000)
-	OnEnable(RemoveStatus(PossibleNativeLife))
 	AddPressureCap(1000)
 	OnEnable(RemoveStatus(NativeLife))
 	IfHaveStatus(RazeWithoutAbandon, OnDisable(AddStatus(ParasiteHomeworldRazed)))

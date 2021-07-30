@@ -7,7 +7,6 @@ Construction: TakePlanet
 	Category: Dillema
 
 	CE_influence_hooks::GrantOthersLeverage(20)
-	OnStart(RemoveStatus(PossibleNativeLife))
 	RemoveStatus(RemovingNativeLife)
 	OnCancel(RemoveStatus(RemovingNativeLife))
 	OnStart(AddStatus(RemovingNativeLife))

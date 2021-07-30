@@ -259,3 +259,33 @@ tidy final class RandomIfElse : BonusEffect {
 	}
 #section all
 };
+
+
+tidy final class IfNotNativeLevel : IfHook {
+	Document doc("Only applies the inner hook if a planet's native resource is not of a specified level.");
+	Argument level(AT_Integer, doc="Required resource level for the effect to not apply.");
+	Argument hookID(AT_Hook, "planet_effects::GenericEffect");
+	Argument exact(AT_Boolean, "False", doc="If set, only disable the hook if the planet is _exactly_ this level. If not set, all planets of the specified level _or higher_ will be affected.");
+	Argument limit(AT_Boolean, "True", doc="Whether to take limit level instead of requirement level.");
+
+	bool instantiate() override {
+		if(!withHook(hookID.str))
+			return false;
+		return GenericEffect::instantiate();
+	}
+
+#section server
+	bool condition(Object& obj) const override {
+		if(!obj.isPlanet)
+			return false;
+		int lv = 0;
+		if(limit.boolean)
+			lv = obj.primaryResourceLimitLevel;
+		else
+			lv = obj.primaryResourceLevel;
+		if(exact.boolean)
+			return !(lv == level.integer);
+		return !(lv >= level.integer);
+	}
+#section all
+};
