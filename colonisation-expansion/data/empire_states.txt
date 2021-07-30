@@ -208,4 +208,7 @@ visible:
 	// frostkin partial colonisation forbid flag
 	attribute double ForbidStellarColonization = 0;
 	// [[ MODIFY BASE GAME END ]]
+	// [[ MODIFY BASE GAME START ]]
+	attribute double BuildSupportSatellitesOnPlanets = 0;
+	// [[ MODIFY BASE GAME END ]]
 }

@@ -37,6 +37,11 @@ tidy class ColonizationEvent : Savable, Serializable {
 // [[ MODIFY BASE GAME START ]]
 const Design@ getDefenseDesign(Empire& owner, double defenseRate, double tolerance = 1.0, bool satellite = false, int maxSize = -1, bool planetDefenseGen = false, bool flagshipDefenseGen = false, bool alphaDefenseGen = false, bool betaDefenseGen = false, bool gammaDefenseGen = false) {
 	// [[ MODIFY BASE GAME END ]]
+	// [[ MODIFY BASE GAME START ]]
+	if (owner.BuildSupportSatellitesOnPlanets > 0 && planetDefenseGen) {
+		satellite = true;
+	}
+	// [[ MODIFY BASE GAME END ]]
 	const Design@ defenseDesign;
 
 	double laborV = defenseRate * 60.0;

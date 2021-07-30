@@ -41,7 +41,7 @@ HELP_BATTLEWORLDERS: <<
 	[color=#aaa][i]Access this window at any time by pressing the [img=MenuIcons::3;22/] button on the right side of the screen.[/i][/color]
 
 	[font=Medium]Planets[/font][vspace=4/]
-	[color=#ccc]All your planets are outfitted with special planetary engines and can move. Planetary Thrusters are already unlocked and can be used to further increase the speed of your planets.[/color]
+	[color=#ccc]All your planets are automatically outfitted with special planetary engines and can move once they are built. Planetary Thrusters are already unlocked and can be used to further increase the speed of your planets. Defense generation will spawn Support Satellites around planets instead of Support Ships[/color]
 
 	[font=Medium]Colonisation[/font][vspace=4/]
 	[color=#ccc]You cannot send colony ships, to colonise planets you must send other planets to them. This also means colonising does not cost you money.[/color]

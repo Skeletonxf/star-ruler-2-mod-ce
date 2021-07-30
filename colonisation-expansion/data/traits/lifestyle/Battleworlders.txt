@@ -8,7 +8,7 @@ Trait: Battleworlders
 	Order: 12
 	Unique: Lifestyle
 
-
+	ModEmpireAttribute(BuildSupportSatellitesOnPlanets, Add, 1)
 	ReplaceTechnologyNodes(InterstellarTrade, Energy)
 	ReplaceTechnologyNodeAt((-5, -8), CelestialStationMaintenance2)
 	TriggerHomeworld(SpawnBuilding(Factory, (6, 5)), Run Post = True)
@@ -22,3 +22,5 @@ Trait: Battleworlders
 	UnlockTag(PlanetaryEngineUnlock)
 	AddStatusOwnedPlanets(Celestial)
 	TriggerHomeworld(SpawnBuilding(CelestialPlanetaryEngine, (10, 2)), Run Post = True)
+	IfHaveTrait(Flying, LoadDesigns(battleworlders/flying))
+	LoadDesigns(battleworlders/default)
