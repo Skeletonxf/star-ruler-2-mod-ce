@@ -463,6 +463,7 @@ class ModEfficiencyDistanceToOwnedPlanets : GenericEffect {
 	Argument maxrange_efficiency(AT_Decimal, doc="Efficiency at maximum range.");
 	Argument minrange(AT_Decimal, doc="Minimum range for min efficiency.");
 	Argument maxrange(AT_Decimal, doc="Maximum range for max efficiency.");
+	Argument same_region_is_min_range(AT_Boolean, "False", doc="Whether to consider a fleet in the same region as an owned planet at min range");
 
 #section server
 	void enable(Object& obj, any@ data) const override {
@@ -481,15 +482,31 @@ class ModEfficiencyDistanceToOwnedPlanets : GenericEffect {
 			double prevValue = value.value;
 			double dist = maxrange.decimal;
 
-			// determine closest planet distance
-			Object@ planet;
-			DataList@ objs = obj.owner.getPlanets();
-			while (receive(objs, planet)) {
-				if (planet.isPlanet) {
-					double planet_dist = planet.position.distanceTo(obj.position);
-					if (planet_dist < dist) {
-						dist = planet_dist;
-						// no need to store the planet
+			bool needToCheckPlanets = true;
+			if (same_region_is_min_range.boolean) {
+				Region@ region = obj.region;
+				Empire@ owner = obj.owner;
+				if (region !is null && owner !is null) {
+					if (region.PlanetsMask & owner.mask != 0) {
+						// even if it's not the nearest planet, an owned planet
+						// is in the same region
+						needToCheckPlanets = false;
+						dist = minrange.decimal;
+					}
+				}
+			}
+
+			if (needToCheckPlanets) {
+				// determine closest planet distance
+				Object@ planet;
+				DataList@ objs = obj.owner.getPlanets();
+				while (receive(objs, planet)) {
+					if (planet.isPlanet) {
+						double planet_dist = planet.position.distanceTo(obj.position);
+						if (planet_dist < dist) {
+							dist = planet_dist;
+							// no need to store the planet
+						}
 					}
 				}
 			}

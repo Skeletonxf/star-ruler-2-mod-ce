@@ -50,7 +50,7 @@ HELP_BATTLEWORLDERS: <<
 	[color=#ccc]You cannot trade resources, but you can transfer resources between your planets if they are close together. You cannot transfer scalable, non exportable or tier 3 resources off planets. You can still transfer other resources onto such planets.[/color]
 
 	[font=Medium]Battle[/font][vspace=4/]
-	[color=#ccc]Your ships are weak compared to other races, but they become extra weak if far away from your planets. Orbitals are not weakened.[/color]
+	[color=#ccc]Your ships become weak when in regions without owned planets or when far from any owned planets in deep space. Orbitals are not weakened.[/color]
 	[color=#ccc]You can build orbitals within a planet's gravitational field to move them with the planet.[/color]
 	[color=#ccc]You can take out early remnants with battleworlds if you build up a support fleet and enable defense for the planet.[/color]
 
