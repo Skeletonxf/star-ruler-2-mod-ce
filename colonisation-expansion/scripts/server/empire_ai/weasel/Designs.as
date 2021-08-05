@@ -202,11 +202,11 @@ tidy final class DesignTarget {
 			double targetAccel = 2.0;
 			if(purpose == DP_Support)
 				targetAccel *= 1.5;
-			else if(purpose == DP_Scout)
-				targetAccel *= 3.0;
 			// [[ MODIFY BASE GAME START ]]
+			else if(purpose == DP_Scout)
+				targetAccel *= 12.0;
 			else if(purpose == DP_Mothership)
-				targetAccel *= 4.0;
+				targetAccel *= 12.0;
 			// [[ MODIFY BASE GAME END ]]
 
 			w *= weight(dsg.total(SV_Thrust) / max(dsg.total(HV_Mass), 0.01), targetAccel);
