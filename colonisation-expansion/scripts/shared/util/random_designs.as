@@ -183,8 +183,15 @@ tidy class Designer {
 			composition.insertLast(Chance(0.5, Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.025, 0.05)));
 			// [[ MODIFY BASE GAME END ]]
 
-			if(power)
-				composition.insertLast(Internal(tag("IsReactor"), 0.04, 0.06));
+			// [[ MODIFY BASE GAME START ]]
+			if (power) {
+				if (owner.hasTrait(getTraitID("Frostkin"))) {
+					composition.insertLast(Internal(tag("IsReactor"), 0.02, 0.04));
+				} else {
+					composition.insertLast(Internal(tag("IsReactor") & notTag("IsFrostkinSupply"), 0.04, 0.06));
+				}
+			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 
 		//Shrine if needed
@@ -200,8 +207,16 @@ tidy class Designer {
 		}
 		// [[ MODIFY BASE GAME END ]]
 
-		if(supply)
-			composition.insertLast(Filler(subsystem("SupplyModule"), 0.09, 0.13));
+		// [[ MODIFY BASE GAME START ]]
+		if (supply) {
+			if (owner.hasTrait(getTraitID("Frostkin"))) {
+				composition.insertLast(Filler(tag("IsSupply"), 0.07, 0.11));
+			} else {
+				// Random ship designer in sandbox shouldn't try to use Supply Coolant
+				composition.insertLast(Filler(tag("IsSupply") & notTag("IsFrostkinSupply"), 0.09, 0.13));
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		if(haveSupport)
 			composition.insertLast(Filler(subsystem("SupportCapModule"), 0.04, 0.14));
@@ -249,14 +264,28 @@ tidy class Designer {
 			composition.insertLast(Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.025, 0.05)); // [[ MODIFY BASE GAME ]]
 			composition.insertLast(Chance(0.5, Internal(tag("ControlCore") & notTag("BadControlForWar"), 0.025, 0.05))); // [[ MODIFY BASE GAME ]]
 
-			composition.insertLast(Internal(tag("IsReactor"), 0.04, 0.06));
+			// [[ MODIFY BASE GAME START ]]
+			if (owner.hasTrait(getTraitID("Frostkin"))) {
+				composition.insertLast(Internal(tag("IsReactor"), 0.02, 0.04));
+			} else {
+				// Random ship designer in sandbox shouldn't try to use Supply Coolant
+				composition.insertLast(Internal(tag("IsReactor") & notTag("IsFrostkinSupply"), 0.04, 0.06));
+			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 
 		//Shrine if needed
 		composition.insertLast(Internal(tag("Prayer"), 0.15, 0.20));
 
 		composition.insertLast(Chance(1.0, Internal(tag("SecondaryDefense"), 0.075, 0.15)));
-		composition.insertLast(Filler(subsystem("SupplyModule"), 0.09, 0.13));
+		// [[ MODIFY BASE GAME START ]]
+		if (owner.hasTrait(getTraitID("Frostkin"))) {
+			composition.insertLast(Filler(tag("IsSupply"), 0.07, 0.11));
+		} else {
+			// Random ship designer in sandbox shouldn't try to use Supply Coolant
+			composition.insertLast(Filler(tag("IsSupply") & notTag("IsFrostkinSupply"), 0.09, 0.13));
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
 		// Utility stuff like Fleet Computers
@@ -562,8 +591,16 @@ tidy class Designer {
 	}
 
 	void primeSys(const SubsystemDef@ def, double frequency) {
-		if(def.hasTag(ST_HighPowerUse))
-			composition.insertLast(Internal(tag("IsReactor"), frequency * 0.2, frequency * 0.3));
+		// [[ MODIFY BASE GAME START ]]
+		if(def.hasTag(ST_HighPowerUse)) {
+			if (owner.hasTrait(getTraitID("Frostkin"))) {
+				composition.insertLast(Internal(tag("IsReactor"), frequency * 0.2, frequency * 0.3));
+			} else {
+				// Random ship designer in sandbox shouldn't try to use Supply Coolant
+				composition.insertLast(Internal(tag("IsReactor") & notTag("IsFrostkinSupply"), frequency * 0.2, frequency * 0.3));
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 		if(def.hasTag(ST_RangeForRaid))
 			composition.insertLast(Internal(subsystem("SupportAmmoStorage"), frequency * 0.1, frequency * 0.25));
 	}

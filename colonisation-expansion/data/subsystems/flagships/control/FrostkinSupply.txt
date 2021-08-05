@@ -5,7 +5,7 @@ Subsystem: FrostkinSupply
 	BaseColor: #db0083
 	Elevation: 3
 
-	Tags: NonContiguous, NoCore, HasInternals, Category:Control, RegeneratingSupply
+	Tags: NonContiguous, NoCore, HasInternals, Category:Control, RegeneratingSupply, IsSupply, IsFrostkinSupply
 	Tags: Compressible, IsReactor, Important, RaceSpecial
 	Hull: Flagship, Station
 
