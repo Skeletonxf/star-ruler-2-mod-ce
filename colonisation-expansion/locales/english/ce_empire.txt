@@ -60,3 +60,6 @@ HELP_BATTLEWORLDERS: <<
 	[font=Medium]FTL[/font][vspace=4/]
 	[color=#ccc]If you're using Slipstreams or Gates, remember you can send planets through them! A planet cannot enter a gate orbiting it, but it can enter slipstreams created in orbit.[/color]
 >>
+TRAIT_MOON_BASE_DESC: <<
+	Your homeworld starts with a large moon base already constructed.
+>>
