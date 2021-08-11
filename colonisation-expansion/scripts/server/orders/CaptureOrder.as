@@ -4,7 +4,7 @@ tidy class CaptureOrder : Order {
 	Planet@ target;
 	vec3d offset;
 	int moveId = -1;
-	bool reachedTarget = false;
+	bool reachedTarget = false; // [[ MODIFY BASE GAME ]]
 
 	CaptureOrder(Planet& targ) {
 		@target = targ;
@@ -19,7 +19,7 @@ tidy class CaptureOrder : Order {
 		msg >> target;
 		msg >> offset;
 		msg >> moveId;
-		msg >> reachedTarget;
+		msg >> reachedTarget; // [[ MODIFY BASE GAME ]]
 	}
 
 	void save(SaveFile& msg) {
@@ -27,7 +27,7 @@ tidy class CaptureOrder : Order {
 		msg << target;
 		msg << offset;
 		msg << moveId;
-		msg << reachedTarget;
+		msg << reachedTarget; // [[ MODIFY BASE GAME ]]
 	}
 
 	OrderType get_type() {
@@ -68,9 +68,9 @@ tidy class CaptureOrder : Order {
 				target.annex(obj.owner);
 				return OS_COMPLETED;
 			}
+			// [[ MODIFY BASE GAME START ]]
 			reachedTarget = true;
 		}
-		// [[ MODIFY BASE GAME START ]]
 		else {
 			// if we fell back out of range, do not allow the movement order
 			// to finish (this has a side effect of resetting our path, so
