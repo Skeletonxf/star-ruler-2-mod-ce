@@ -96,12 +96,14 @@ This is primarily intended as a developer focused project planning list, rather 
   - Investigate why/how to change all planet resources being enabled/disabled based on the primary resource (which tends to be the most difficult to enable)
     - Easiest to reproduce by adding local asteroid fields to native tier 2/3 planets
     - Potentially an exploit here too by putting scalables on tier 3 planets, does the tier 3 resource get enabled because the primary becomes scalable?
+  - Should buildings like Refineries only work based on the primary resource? This could change to an invalid one after construction with local asteroid field and expose molten core.
   - Wormhole network revamp
     - Control hubs spawn automatically as before with some kind of wormhole like graphic around level 2 and higher planets (up to 3 per system)
     - Can select a wormhole network hub and order it to open a wormhole at a target destination
     - Opened wormhole behaves similarly to a slipstream and closes automatically after some time
     - Opened wormhole is ONE WAY, can only use to travel to the wormhole network hub not the other direction
   - Make quickbar width configurable
+  - The AI should hold back its faster ships so that the slower ones catch up before it brings the group into combat so that on large maps and sublight/gates AI they don't get split up from different travel speeds.
 
 - Long term plans
   - Designable Beacons
