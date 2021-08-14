@@ -16,3 +16,15 @@ class HealFleetPerSecondSubsystemVar : GenericEffect {
 	}
 #section all
 };
+
+int rollRandomTechDrops(double shipSize) {
+	double roll = randomd(0, shipSize);
+	double threshold = randomd(0, config::TECH_DROP_THRESHOLD);
+	double remaining = roll - threshold;
+	int drops = 0;
+	while (remaining > 0) {
+		drops += 1;
+		remaining -= config::TECH_DROP_INCREMENT;
+	}
+	return drops;
+}
