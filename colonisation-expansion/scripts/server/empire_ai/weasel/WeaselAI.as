@@ -50,12 +50,15 @@ import AIComponent@ createMechanoid() from "empire_ai.weasel.race.Mechanoid";
 import AIComponent@ createMechanoid2() from "empire_ai.dragon.race.Mechanoid";
 import AIComponent@ createStarChildren() from "empire_ai.weasel.race.StarChildren";
 import AIComponent@ createStarChildren2() from "empire_ai.dragon.race.StarChildren";
-// [[ MODIFY BASE GAME END ]]
 import AIComponent@ createExtragalactic() from "empire_ai.weasel.race.Extragalactic";
 import AIComponent@ createExtragalactic2() from "empire_ai.dragon.race.Extragalactic";
+// [[ MODIFY BASE GAME END ]]
 import AIComponent@ createLinked() from "empire_ai.weasel.race.Linked";
 import AIComponent@ createDevout() from "empire_ai.weasel.race.Devout";
 import AIComponent@ createAncient() from "empire_ai.weasel.race.Ancient";
+// [[ MODIFY BASE GAME START ]]
+import AIComponent@ createFrostkin() from "empire_ai.dragon.race.Frostkin";
+// [[ MODIFY BASE GAME END ]]
 
 import AIComponent@ createInvasion() from "empire_ai.weasel.misc.Invasion";
 import bool hasInvasionMap() from "Invasion.InvasionMap";
