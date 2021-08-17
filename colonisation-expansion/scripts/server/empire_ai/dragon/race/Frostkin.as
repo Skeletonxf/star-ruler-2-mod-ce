@@ -94,24 +94,33 @@ class FreezeMission : Mission {
 class Frostkin : Race {
 	Construction@ construction;
 	Movement@ movement;
-	Planets@ planets;
+	Systems@ systems;
 	Fleets@ fleets;
 	Designs@ designs;
 
 	int freezeAbilityID = -1;
 
+	uint systemCheckIndex = 0;
+	uint borderCheckIndex = 0;
+
 	array<FleetAI@> starEaters;
 
 	void save(SaveFile& file) override {
+		file << systemCheckIndex;
+		file << borderCheckIndex;
+		fleets.saveFleetList(file, starEaters);
 	}
 
 	void load(SaveFile& file) override {
+		file >> systemCheckIndex;
+		file >> borderCheckIndex;
+		starEaters = fleets.loadFleetList(file);
 	}
 
 	void create() override {
 		@construction = cast<Construction>(ai.construction);
 		@movement = cast<Movement>(ai.movement);
-		@planets = cast<Planets>(ai.planets);
+		@systems = cast<Systems>(ai.systems);
 		@fleets = cast<Fleets>(ai.fleets);
 		@designs = cast<Designs>(ai.designs);
 
@@ -129,9 +138,7 @@ class Frostkin : Race {
 	uint chkInd = 0;
 	void focusTick(double time) override {
 		checkStarEaters();
-		ai.print("found "+string(starEaters.length)+" star eaters");
-		//checkOwnedPlanets();
-		//clearRegions();
+		clearRegions();
 	}
 
 	void checkStarEaters() {
@@ -155,6 +162,32 @@ class Frostkin : Race {
 				--i; --cnt;
 			}
 		}
+	}
+
+	void clearRegions() {
+		if (systems.owned.length == 0) {
+			return;
+		}
+		systemCheckIndex = (systemCheckIndex+1) % systems.owned.length;
+		checkSystem(systems.owned[systemCheckIndex]);
+
+		if (systems.border.length == 0) {
+			return;
+		}
+		borderCheckIndex = (borderCheckIndex+1) % systems.border.length;
+		SystemAI@ borderAI = systems.border[borderCheckIndex];
+		checkSystem(systems.border[systemCheckIndex]);
+	}
+
+	void checkSystem(SystemAI@ systemAI) {
+		if (systemAI.obj is null || systemAI.totalTemperature() == 0) {
+			return;
+		}
+		tryClear(systemAI);
+	}
+
+	void tryClear(SystemAI@ systemAI) {
+		// TODO
 	}
 }
 

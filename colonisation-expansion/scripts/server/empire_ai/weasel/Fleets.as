@@ -618,6 +618,28 @@ class Fleets : AIComponent {
 		mission.start(ai, fleet);
 		return fleet;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void saveFleetList(SaveFile& file, array<FleetAI@> fleetsList) {
+		uint cnt = fleetsList.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			saveAI(file, fleetsList[i]);
+		}
+	}
+
+	array<FleetAI@> loadFleetList(SaveFile& file) {
+		uint cnt = 0;
+		file >> cnt;
+		array<FleetAI@> fleetsList;
+		for (uint i = 0; i < cnt; ++i) {
+			auto@ flAI = loadAI(file);
+			if (flAI !is null)
+				fleetsList.insertLast(flAI);
+		}
+		return fleetsList;
+	}
+	// [[ MODIFY BASE GAME END ]]
 };
 
 AIComponent@ createFleets() {

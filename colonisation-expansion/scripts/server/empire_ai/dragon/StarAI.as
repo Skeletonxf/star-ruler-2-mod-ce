@@ -57,4 +57,8 @@ class StarAI {
 		lastKnownShield = currentShield;
 		lastKnownMaxShield = currentMaxShield;
 	}
+
+	double temperature() {
+		return star.temperature;
+	}
 }

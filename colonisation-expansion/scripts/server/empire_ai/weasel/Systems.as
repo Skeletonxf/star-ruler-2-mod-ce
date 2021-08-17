@@ -385,6 +385,14 @@ final class SystemAI: OnStarAttack {
 		}
 		return starsLastDamaged + 30.0 > gameTime;
 	}
+
+	double totalTemperature() {
+		double total = 0.0;
+		for (uint i = 0, cnt = stars.length; i < cnt; ++i) {
+			total += stars[i].temperature();
+		}
+		return total;
+	}
 };
 
 class Systems : AIComponent {
