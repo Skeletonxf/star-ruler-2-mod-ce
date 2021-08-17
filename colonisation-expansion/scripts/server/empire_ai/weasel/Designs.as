@@ -17,6 +17,9 @@ enum DesignPurpose {
 	DP_Gate,
 	DP_Slipstream,
 	DP_Mothership,
+	// [[ MODIFY BASE GAME START ]]
+	DP_StarEater,
+	// [[ MODIFY BASE GAME END ]]
 	DP_Miner,
 
 	DP_COUNT,
@@ -62,6 +65,9 @@ tidy final class DesignTarget {
 			case DP_Gate: return DT_Station;
 			case DP_Slipstream: return DT_Flagship;
 			case DP_Mothership: return DT_Flagship;
+			// [[ MODIFY BASE GAME START ]]
+			case DP_StarEater: return DT_Flagship;
+			// [[ MODIFY BASE GAME END ]]
 		}
 		return DT_Flagship;
 	}
@@ -129,6 +135,10 @@ tidy final class DesignTarget {
 			break;
 			case DP_Mothership:
 				designer.composeMothership();
+			// [[ MODIFY BASE GAME START ]]
+			case DP_StarEater:
+				designer.composeStarEater();
+			// [[ MODIFY BASE GAME END ]]
 			break;
 		}
 	}
@@ -207,6 +217,8 @@ tidy final class DesignTarget {
 				targetAccel *= 12.0;
 			else if(purpose == DP_Mothership)
 				targetAccel *= 12.0;
+			else if(purpose == DP_StarEater)
+				targetAccel *= 6.0;
 			// [[ MODIFY BASE GAME END ]]
 
 			w *= weight(dsg.total(SV_Thrust) / max(dsg.total(HV_Mass), 0.01), targetAccel);
@@ -581,6 +593,10 @@ final class Designs : AIComponent {
 
 		if(dsg.hasTag(ST_Mothership))
 			return DP_Mothership;
+		// [[ MODIFY BASE GAME START ]]
+		if(dsg.hasTag(ST_IsStarEater))
+			return DP_StarEater;
+		// [[ MODFIY BASE GAME END ]]
 		if(dsg.hasTag(ST_Gate))
 			return DP_Gate;
 		if(dsg.hasTag(ST_Slipstream))

@@ -334,6 +334,12 @@ tidy class Designer {
 		hexLimit = 225;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void composeStarEater() {
+		// TODO
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void composeScout() {
 		composition.length = 0;
 

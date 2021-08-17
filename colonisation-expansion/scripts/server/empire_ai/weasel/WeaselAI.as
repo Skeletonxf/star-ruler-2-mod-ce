@@ -462,9 +462,11 @@ final class AI : AIController, Savable {
 			|| empire.hasTrait(getTraitID("StarChildren"))
 			|| empire.hasTrait(getTraitID("Extragalactic"))
 			// TODO || empire.hasTrait(getTraitID("Ancient"))
+		;
+		bool expansionRaceReleaseSupport = empire.hasTrait(getTraitID("Mechanoid"))
+			|| empire.hasTrait(getTraitID("Frostkin"))
 			// TODO || empire.hasTrait(getTraitID("Battleworlders"))
 		;
-		bool expansionRaceReleaseSupport = empire.hasTrait(getTraitID("Mechanoid"));
 		bool expansionComponent = expansionRaceReleaseSupport || (behavior.dragonComponents && expansionRaceSupported);
 		if (expansionComponent) {
 			print("Enabling Dragon Expansion component");
@@ -550,6 +552,10 @@ final class AI : AIController, Savable {
 			@race = add(createDevout());
 		else if(empire.hasTrait(getTraitID("Ancient")))
 			@race = add(createAncient());
+		// [[ MODIFY BASE GAME START ]]
+		else if(empire.hasTrait(getTraitID("Frostkin")))
+			@race = add(createFrostkin());
+		// [[ MODFIY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
 		if (empire.hasTrait(getTraitID("ParasiteTrait"))) {

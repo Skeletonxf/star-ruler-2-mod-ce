@@ -100,6 +100,8 @@ class Frostkin : Race {
 
 	int freezeAbilityID = -1;
 
+	array<FleetAI@> starEaters;
+
 	void save(SaveFile& file) override {
 	}
 
@@ -126,9 +128,33 @@ class Frostkin : Race {
 
 	uint chkInd = 0;
 	void focusTick(double time) override {
-		//checkStarEaters();
+		checkStarEaters();
+		ai.print("found "+string(starEaters.length)+" star eaters");
 		//checkOwnedPlanets();
 		//clearRegions();
+	}
+
+	void checkStarEaters() {
+		// Detect star eaters
+		for (uint i = 0, cnt = fleets.fleets.length; i < cnt; ++i) {
+			auto@ flAI = fleets.fleets[i];
+			if (flAI.fleetClass != FC_StarEater)
+				continue;
+
+			if (starEaters.find(flAI) == -1) {
+				// Add to our tracking list
+				starEaters.insertLast(flAI);
+			}
+		}
+
+		// Stop tracking invalid star eaters
+		for (uint i = 0, cnt = starEaters.length; i < cnt; ++i) {
+			Object@ obj = starEaters[i].obj;
+			if (obj is null || !obj.valid || obj.owner !is ai.empire) {
+				starEaters.removeAt(i);
+				--i; --cnt;
+			}
+		}
 	}
 }
 

@@ -2,7 +2,7 @@
 // ------
 // Manages data about fleets and missions, as well as making sure fleets
 // return to their station after a mission.
-// 
+//
 
 import empire_ai.weasel.WeaselAI;
 
@@ -15,6 +15,10 @@ enum FleetClass {
 	FC_Combat,
 	FC_Slipstream,
 	FC_Mothership,
+	// [[ MODIFY BASE GAME START ]]
+	// A frostkin star eater ship
+	FC_StarEater,
+	// [[ MODIFY BASE GAME END ]]
 
 	FC_ALL
 };
@@ -521,6 +525,10 @@ class Fleets : AIComponent {
 				flAI.fleetClass = FC_Slipstream;
 			else if(designClass == DP_Mothership)
 				flAI.fleetClass = FC_Mothership;
+			// [[ MODIFY BASE GAME START ]]
+			else if(designClass == DP_StarEater)
+				flAI.fleetClass = FC_StarEater;
+			// [[ MODIFY BASE GAME END ]]
 			else
 				flAI.fleetClass = FC_Combat;
 
