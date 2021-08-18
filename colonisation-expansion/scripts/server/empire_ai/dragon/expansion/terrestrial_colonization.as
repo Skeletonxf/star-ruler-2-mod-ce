@@ -39,8 +39,6 @@ class ColonizerPlanet : ColonizationSource {
 			return 0.0;
 		if(!planet.canSafelyColonize)
 			return 0.0;
-		if (ai.empire.ForbidStellarColonization > 0 && regionHasStars(planet.region))
-			return 0.0;
 		double w = 1.0;
 		double pop = planet.population;
 		double maxPop = planet.maxPopulation;

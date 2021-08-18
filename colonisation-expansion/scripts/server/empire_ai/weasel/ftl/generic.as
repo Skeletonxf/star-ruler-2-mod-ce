@@ -159,6 +159,7 @@ class FTLGeneric : FTL {
 	Systems@ systems;
 	Budget@ budget;
 	Fleets@ fleets;
+	Movement@ movement;
 
 	// Fling data
 	array<FlingRegion@> trackedFling;
@@ -204,7 +205,7 @@ class FTLGeneric : FTL {
 		@systems = cast<Systems>(ai.systems);
 		@budget = cast<Budget>(ai.budget);
 		@fleets = cast<Fleets>(ai.fleets);
-		/* @movement = cast<Movement>(ai.movement); */
+		@movement = cast<Movement>(ai.movement);
 		safetyFlag = getSystemFlag("JumpdriveSafety");
 
 		checkAvailableFTLMethods();
@@ -638,17 +639,7 @@ class FTLGeneric : FTL {
 	}
 
 	double getSublightETA(Object& obj, const vec3d& position) {
-		double direct = newtonArrivalTime(obj.maxAcceleration, position - obj.position, vec3d());
-		// estimate using pathing distance that includes wormholes/gates
-		double pathDistance = cast<Movement>(ai.movement).getPathDistance(obj.position, position, obj.maxAcceleration);
-		double pathEstimate = pathDistance * obj.maxAcceleration;
-		// path estimate time doesn't consider acceleration properly
-		// so only use it if it is substantially shorter than direct
-		// (which implies there's a shortcut like a wormhole/gate)
-		if ((pathEstimate * 1.4) < direct) {
-			return pathEstimate;
-		}
-		return direct;
+		return movement.getApproximateETA(obj, position);
 	}
 
 	double getSublightDirectETA(Object& obj, const vec3d& position1, const vec3d& position2) {

@@ -31,6 +31,10 @@ final class ScoutingMission : Mission {
 		if(fleet.fleetClass != FC_Scout) {
 			if(fleet.fleetClass == FC_Mothership)
 				return 0.0;
+			// [[ MODIFY BASE GAME START ]]
+			if(fleet.fleetClass == FC_StarEater)
+				return 0.0;
+			// [[ MODIFY BASE GAME END ]]
 			if(gameTime > ai.behavior.scoutAllTimer)
 				return 0.0;
 		}

@@ -354,6 +354,13 @@ class ColonizeForest {
 			return 1;
 		}
 
+		if (ai.empire.ForbidStellarColonization > 0 && regionHasStars(sys.obj)) {
+			// we can't colonise this yet, so don't add the planets to our
+			// potentials because we don't want to try and fail to colonise and
+			// then penalty set them
+			return 1;
+		}
+
 		// Add weighting to planets in systems we don't have any planets in,
 		// as they will expand our borders
 		double sysWeight = 1.0;

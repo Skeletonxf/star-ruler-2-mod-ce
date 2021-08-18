@@ -347,6 +347,22 @@ class Movement : AIComponent {
 		//Update our gate navigation list
 		getOddityGates(oddities);
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	double getApproximateETA(Object& obj, const vec3d& position) {
+		double direct = newtonArrivalTime(obj.maxAcceleration, position - obj.position, vec3d());
+		// estimate using pathing distance that includes wormholes/gates
+		double pathDistance = getPathDistance(obj.position, position, obj.maxAcceleration);
+		double pathEstimate = pathDistance * obj.maxAcceleration;
+		// path estimate time doesn't consider acceleration properly
+		// so only use it if it is substantially shorter than direct
+		// (which implies there's a shortcut like a wormhole/gate)
+		if ((pathEstimate * 1.4) < direct) {
+			return pathEstimate;
+		}
+		return direct;
+	}
+	// [[ MODIFY BASE GAME END ]]
 };
 
 AIComponent@ createMovement() {

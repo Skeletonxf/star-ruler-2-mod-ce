@@ -17,9 +17,9 @@ import oddity_navigation;
 from abilities import getAbilityID;
 from statuses import getStatusID;
 
-// TODO: star killer mission
-// TODO: star killer ship type
-// TODO: frostkin AI component
+// TODO: Constructing thermal regulators
+// TODO: Order a clear on systems with remnants in that cause trouble for star eaters
+// TODO: Designing and constructing star eaters
 
 double HEALTH_ABORT_THRESHOLD = 0.9;
 double HEALTH_MISSION_THRESHOLD = 0.95;
@@ -48,7 +48,11 @@ class FreezeMission : Mission {
 		uint priority = MP_Normal;
 		if (gameTime < 30.0 * 60.0) // TODO: This should not be hardcoded to game time
 			priority = MP_Critical;
-		@move = cast<Movement>(ai.movement).move(fleet.obj, target, priority);
+		if (target is null) {
+			@move = cast<Movement>(ai.movement).move(fleet.obj, region.position, priority);
+		} else {
+			@move = cast<Movement>(ai.movement).move(fleet.obj, target.position, priority);
+		}
 	}
 
 	void tick(AI& ai, FleetAI& fleet, double time) override {
@@ -60,10 +64,38 @@ class FreezeMission : Mission {
 			cast<Fleets>(ai.fleets).returnToBase(fleet, MP_Critical);
 			return;
 		}
+		if (target is null || !target.valid) {
+			// Move onto next star in region
+			SystemAI@ systemAI = cast<Systems>(ai.systems).getAI(region);
+			if (systemAI is null) {
+				onCancel(ai);
+				return;
+			}
+			if (systemAI.totalTemperature() == 0) {
+				//ai.print("finished mission in "+region.name);
+				onComplete(ai);
+				return;
+			}
+			for (uint i = 0, cnt = systemAI.stars.length; i < cnt && target is null; ++i) {
+				StarAI@ star = systemAI.stars[i];
+				if (star.temperature() == 0) {
+					continue;
+				}
+				@target = star.star;
+			}
+			if (target is null) {
+				// this should never happen
+				ai.print("Should have found a star in "+region.name+" since temperature is not 0");
+				onCancel(ai);
+				return;
+			}
+		}
 		if (move !is null) {
 			if (move.failed || move.completed) {
 				retries += 1;
-				@move = cast<Movement>(ai.movement).move(fleet.obj, target, priority);
+				if (move.failed) {
+					@move = cast<Movement>(ai.movement).move(fleet.obj, target, priority);
+				}
 				if (retries > 2 || move.completed) {
 					int ablId = cast<Frostkin>(ai.race).freezeAbilityID;
 					fleet.obj.activateAbilityTypeFor(ai.empire, ablId, target);
@@ -74,9 +106,8 @@ class FreezeMission : Mission {
 			}
 		}
 		else {
-			if (target is null || !target.valid) {
-				// TODO: Move onto next star in region
-			}
+			// may want to monitor how long this freeze is taking and retry
+			// if necessary
 		}
 	}
 
@@ -88,6 +119,11 @@ class FreezeMission : Mission {
 			}
 			// TODO
 		}
+	}
+
+	void onComplete(AI& ai) {
+		completed = true;
+		cast<Systems>(ai.systems).bump(region);
 	}
 }
 
@@ -171,23 +207,49 @@ class Frostkin : Race {
 		systemCheckIndex = (systemCheckIndex+1) % systems.owned.length;
 		checkSystem(systems.owned[systemCheckIndex]);
 
-		if (systems.border.length == 0) {
+		if (systems.outsideBorder.length == 0) {
 			return;
 		}
-		borderCheckIndex = (borderCheckIndex+1) % systems.border.length;
-		SystemAI@ borderAI = systems.border[borderCheckIndex];
-		checkSystem(systems.border[systemCheckIndex]);
+		borderCheckIndex = (borderCheckIndex+1) % systems.outsideBorder.length;
+		SystemAI@ borderAI = systems.outsideBorder[borderCheckIndex];
+		checkSystem(systems.outsideBorder[borderCheckIndex]);
 	}
 
 	void checkSystem(SystemAI@ systemAI) {
-		if (systemAI.obj is null || systemAI.totalTemperature() == 0) {
+		if (systemAI.obj is null || !systemAI.explored || systemAI.totalTemperature() == 0) {
 			return;
 		}
 		tryClear(systemAI);
 	}
 
 	void tryClear(SystemAI@ systemAI) {
-		// TODO
+		Region@ region = systemAI.obj;
+		FleetAI@ chosen = findFastestStarEater(region);
+		if (chosen !is null) {
+			FreezeMission mission;
+			@mission.region = region;
+			//ai.print("Starting freeze mission with "+chosen.obj.name+" at "+region.name);
+			fleets.performMission(chosen, mission);
+		}
+	}
+
+	FleetAI@ findFastestStarEater(Region@ region) {
+		FleetAI@ fastest;
+		double bestTime = INFINITY;
+		for (uint i = 0, cnt = starEaters.length; i < cnt; ++i) {
+			FleetAI@ flAI = starEaters[i];
+			if (flAI.mission !is null || flAI.flagshipHealth < HEALTH_MISSION_THRESHOLD) {
+				continue;
+			}
+			double travelTime = movement.getApproximateETA(flAI.obj, region.position);
+			// TODO: Estimate freeze time since we know total temp to freeze and
+			// our freeze rate
+			if (travelTime < bestTime) {
+				@fastest = flAI;
+				bestTime = travelTime;
+			}
+		}
+		return fastest;
 	}
 }
 

@@ -1,7 +1,6 @@
 Trait: Frostkin
 	Name: #TRAIT_FROSTKIN
 	Description: #TRAIT_FROSTKIN_DESC
-	AI Support: False
 	Order: 15
 	Icon: Ice
 	Color: #ffc1d5

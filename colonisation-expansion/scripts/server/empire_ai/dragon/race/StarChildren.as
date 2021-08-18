@@ -588,21 +588,6 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		return motherships;
 	}
 
-	// Borrowed from generic FTL, really need to enhance Movement.as directly
-	double getApproximateETA(Object& obj, const vec3d& position) {
-		double direct = newtonArrivalTime(obj.maxAcceleration, position - obj.position, vec3d());
-		// estimate using pathing distance that includes wormholes/gates
-		double pathDistance = movement.getPathDistance(obj.position, position, obj.maxAcceleration);
-		double pathEstimate = pathDistance * obj.maxAcceleration;
-		// path estimate time doesn't consider acceleration properly
-		// so only use it if it is substantially shorter than direct
-		// (which implies there's a shortcut like a wormhole/gate)
-		if ((pathEstimate * 1.4) < direct) {
-			return pathEstimate;
-		}
-		return direct;
-	}
-
 	ColonizationSource@ getClosestSource(vec3d position) {
 		MothershipColonizer@ fastest;
 		double bestTime = INFINITY;
@@ -618,7 +603,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 				continue;
 			}
 
-			double travelTime = getApproximateETA(flAI.obj, position);
+			double travelTime = movement.getApproximateETA(flAI.obj, position);
 			if (travelTime < bestTime) {
 				@fastest = mothership;
 				bestTime = travelTime;
@@ -648,7 +633,7 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 				continue;
 			}
 
-			double travelTime = getApproximateETA(flAI.obj, colony.position);
+			double travelTime = movement.getApproximateETA(flAI.obj, colony.position);
 
 			int mothershipPopulation = flAI.obj.getStatusStackCountAny(mothershipPopulationID);
 

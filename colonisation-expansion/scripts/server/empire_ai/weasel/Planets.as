@@ -979,10 +979,6 @@ class Planets : AIComponent {
 				continue;
 			if(plAI.obj.owner !is ai.empire)
 				continue;
-			// [[ MODIFY BASE GAME START ]]
-			if (ai.empire.ForbidStellarColonization > 0 && regionHasStars(plAI.obj.region))
-				continue;
-			// [[ MODIFY BASE GAME END ]]
 
 			PotentialSource src;
 			@src.pl = planets[i].obj;
