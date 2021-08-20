@@ -60,6 +60,22 @@ HELP_BATTLEWORLDERS: <<
 	[font=Medium]FTL[/font][vspace=4/]
 	[color=#ccc]If you're using Slipstreams or Gates, remember you can send planets through them! A planet cannot enter a gate orbiting it, but it can enter slipstreams created in orbit.[/color]
 >>
+
+HELP_FROSTKIN: <<
+	[font=Big]Frostkin[/font][vspace=4/]
+	You've chosen to play as a race with the [color=#ffc1d5]Frostkin[/color] trait. Here's a few quick tips to get you started!
+	[color=#aaa][i]Access this window at any time by pressing the [img=MenuIcons::3;22/] button on the right side of the screen.[/i][/color]
+
+	[font=Medium]Stars[/font][vspace=4/]
+	[color=#ccc]You need to freeze or otherwise destroy stars before you can colonise planets around them. Star Eater subsystems are most effective since they destroy stars safely, but you can also use other weapons like Gravitron Condensors in the late game. It is still possible to claim systems before you can settle them via Outposts.[/color]
+
+	[font=Medium]Energy[/font][vspace=4/]
+	[color=#ccc]Most means of generating energy from starlight are not available, but you can use stolen stellar infrastructure from other empires.[/color]
+
+	[font=Medium]Cooling[/font][vspace=4/]
+	[color=#ccc]You can construct one Thermal Regulator per planet to grant empire wide fleet strength buffs. However, other empires can also steal these buildings from you. Thermal Regulators replace the resource on the planet they are constructed at so are best suited to level 0 planets.[/color]
+>>
+
 TRAIT_MOON_BASE_DESC: <<
 	Your homeworld starts with a large moon base already constructed.
 >>

@@ -2136,12 +2136,16 @@ class HelpOverlay : GuiOverlay {
 
 string HELP_TEXT;
 HelpOverlay@ overlay;
-void addHelpText(const string& str) {
+// [[ MODIFY BASE GAME START ]]
+void addHelpText(const string& str, bool showPopup = true) {
+	// [[ MODIFY BASE GAME END ]]
 	if(HELP_TEXT.length != 0)
 		HELP_TEXT += "\n\n\n[hr/]\n";
 	HELP_TEXT += str;
 
-	if(!isLoadedSave) {
+	// [[ MODIFY BASE GAME ]]
+	if(!isLoadedSave && showPopup) {
+		// [[ MODIFY BASE GAME END ]]
 		if(overlay is null || overlay.parent is null) {
 			showHelp();
 		}
@@ -2174,6 +2178,8 @@ void checkHelp() {
 	// [[ MODIFY BASE GAME START ]]
 	else if(playerEmpire.hasTrait(getTraitID("Battleworlders")))
 		addHelpText(locale::HELP_BATTLEWORLDERS);
+	else if(playerEmpire.hasTrait(getTraitID("Frostkin")))
+		addHelpText(locale::HELP_FROSTKIN, showPopup=false);
 	// [[ MODIFY BASE GAME END ]]
 }
 
