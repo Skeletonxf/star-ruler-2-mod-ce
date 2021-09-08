@@ -1078,7 +1078,10 @@ class BEAMS {
 		else
 			hideBeam(rallyBeam);
 
-		if(obj.isStar) {
+		// [[ MODIFY BASE GAME START ]]
+		// Show trade links when hovering over planets too (not all regions have stars in them)
+		if(obj.isStar || obj.isPlanet) {
+			// [[ MODIFY BASE GAME END ]]
 			//Update trade link beams
 			uint tradeInd = 0;
 			Region@ reg = obj.region;
