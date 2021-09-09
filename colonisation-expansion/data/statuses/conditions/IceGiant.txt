@@ -4,4 +4,4 @@ Status: IceGiant
 	Icon: Ice
 	Color: #ffffff
 
-	AI: NegativeEnergyIncome(3, 1, True)
+	AI: NegativeEnergyIncome(3, 1)

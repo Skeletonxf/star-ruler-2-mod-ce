@@ -13,7 +13,7 @@ import buildings;
 import systems;
 
 import ai.consider;
-from ai.buildings import Buildings, BuildingAI, BuildingUse, AsCreatedResource;
+from ai.buildings import Buildings, BuildingAI, BuildingUse, AsCreatedResource, EnergyMaintenance;
 from ai.resources import AIResources, ResourceAI, DistributeToImportantPlanet, DistributeToHighPopulationPlanet, DistributeToLaborUsing, DistributeAsLocalPressureBoost;
 from ai.constructions import ConstructionAI, AsConstructedResource, ShortTermIncomeLoss;
 
@@ -587,6 +587,20 @@ class ColonizeForest {
 				if (hook is null) {
 					continue;
 				}
+				auto@ energyMaint = cast<EnergyMaintenance>(hook);
+				if (energyMaint !is null) {
+					double energyCost = energyMaint.energy_maintenance.decimal;
+					//int minLevel = energyMaint.min_level.integer;
+					// this building costs energy, we should check we can afford
+					// it before construction
+					// TODO: Abandon stuff we can't afford
+					double weight = resourceValuator.devalueEnergyCosts(energyCost, 1.0);
+					if (weight <= 0.0) {
+						// try for a different building to meet this request
+						continue;
+					}
+				}
+
 				auto@ resourceBuilding = cast<AsCreatedResource>(hook);
 				if (resourceBuilding !is null) {
 					// our hook is an AsCreatedResource, check if this resource

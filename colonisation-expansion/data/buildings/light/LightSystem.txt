@@ -10,5 +10,6 @@ Building: LightSystem
 	RequireEither(RequireNotTrait(StarChildren), RequireNotStatus(StarHabitatsNoPlanetUseSingle))
 	RequireNotTrait(Ancient)
 	AI:AsCreatedResource(ArtificialLight, 30, 0, 0)
+	AI:EnergyMaintenance(3, 1)
 	ConflictBuilding(LightSystem)
 	AddStatus(ArtificiallyLit)

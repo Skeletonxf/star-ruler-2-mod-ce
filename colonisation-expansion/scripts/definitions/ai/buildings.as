@@ -178,4 +178,10 @@ class AsFTLIncome : BuildingAI {
 	// that FTL income is needed, so there's no methods/implementation here
 	// as this won't use the Consider hook system.
 }
+
+class EnergyMaintenance : BuildingAI {
+	Document doc("This building adds energy maintenance costs when built.");
+	Argument energy_maintenance(AT_Decimal, "3", doc="Energy maintenance per second.");
+	Argument min_level(AT_Integer, "1", doc="Minimum level the planet needs to be at for the energy income to be required.");
+}
 // [[ MODIFY BASE GAME END ]]
