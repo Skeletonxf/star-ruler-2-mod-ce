@@ -27,14 +27,18 @@ In practise in the early game you start out limited by food much like in vanilla
 The AI already understands how to change exports as it gains food and hence works with this rework quite well. I think this system feels much better and also more realistic. As your empire expands being limited by 'food planets' feels a little silly and food planets being as common as they are in vanilla clashes with a lot of expectations about how rare life is.
 ### Gas and ice giants
 Ice Giants and Gas Giants are intended to be more difficult to colonise than rock planets, but provide useful ways to keep expanding your economy once your borders are constrained.
-### Additional subsystems/hulls for low maintence exploration and mining ships
-Scouting and mining cost much less in maintence.
+### Additional subsystems/hulls for low maintenance exploration and mining ships
+Scouting and mining cost much less in maintenance.
 #### Mining logistics improvements
-Ships ordered to mine can now mine cross systems, and will only stop if you deplete all asteroids known to your empire. Mining asteroid belts is a lot more efficient than in vanilla. You can also queue transfer and dropoff cargo orders if you'll meet the requirements by the time the ship would execute the order. (ie you can order an ore pickup and immediately queue the ore dropoff because you'll have ore to dropoff by the time you need it). Cargo pickups and dropoffs can now be done per cargo type. Orders can also be setup to infinitely loop, so you can automate hauling of ore with ease (or attack the supply lines of another player).
+Ships ordered to automatically mine can now mine cross systems, and will only stop if you deplete all asteroids known to your empire. Mining asteroid belts is a lot more efficient than in vanilla. You can also queue transfer and dropoff cargo orders if you'll meet the requirements by the time the ship would execute the order. You can order an ore pickup and immediately queue the ore dropoff because you'll have ore to dropoff by the time you need it. Cargo pickups and dropoffs can now be done per cargo type. Orders can also be setup to infinitely loop, so you can automate hauling of ore with ease. Cargo can also be picked up in specific quantities instead of as much as possible, letting you transport exactly what you need. Destroyed objects holding cargo will drop the cargo as asteroids, allowing you to steal from enemies if you attack their supply lines.
+#### Multi tractor beam
+Did you want to steal LOADS of asteroids from your enemies at once? What about relocate one of your planets without building a Planetary Thruster? This subsystem is for you.
+#### Tractor beam formula
+Tractor beams actually scale in strength when you put them on bigger ships, so a big ship can always tractor around a small ship. Vanilla was based on acceleration so a medium ship quickly reached enough mass that no ship could have enough acceleration to be able to tractor it.
 ### Support ship shields
 You can now put shields on supports, and Devout can unlock shrines for supports.
-### Tweaks to motherships
-Mothership max population scales with ship size and provides labor. Note that the max pop for any ship design still avoids creating net positive income as with vanilla for balancing, however carefully designed large motherships can become very cost effective.
+### Shield projectors
+You can now build ships with a shield subsystem that applies to the shield to the ship's target, letting you put shields on allied planets, stars, stations and orbitals.
 ### Dilemma conditions that appear on planets and force you to make hard decisions
 There's several of these, and the AI handles the main one. I don't want to spoil them for your first playthough :)
 ### Completely reworked research grid with similar research grouped together
@@ -49,6 +53,8 @@ Carpet Bombs can now be directly countered by making certain buildings or orbita
 Gravitron Condensors now have a ramp up time which caues them to deal less than 100% damage when they start firing at a new target. Players can also unlock Shield Projectors to project a shield onto stars and planets to protect them from Gravitron attacks.
 ### Railgun Impulse
 The keystone of vanilla that removed pierce from Railguns and replaced it with impulses is now a modifier, so can be applied to only the ships you want it on. Among other uses, these can be used to punch a shield projector away from its target to break the sheild so you can get back to blowing up the opponent's star.
+### Warheads
+Warheads will no longer automatically fire at the nearest worthless enemy scout, they have to be manually fired.
 ### Rebalanced hulls
 The Titan and Collosus hulls are much more viable than vanilla, and the Destroyer hull is nerfed. Other hulls have slight tweaks to make them fit niches more strongly, and in particular the Carrier hull is the biggest beneficiary of the added local defense generation from support command subsystems.
 ### Diplomatic Victory
@@ -73,15 +79,29 @@ Ships can be ordered to keep distance from their targets, which allows for mobil
 Ships can also chase a target, which can be used to hunt down enemies or fly your own ships together in a formation.
 Ships can also loop their orders infinitely which makes scouting more automatable.
 A number of tweaks have also been made to the Quickbar and Planets Tab to expose more useful information to players. First players can now keep better track of all their Replicators. Nylli and Mono players can keep much better track of their population. Players can also now easily check which planets they can still make moon bases at and where their ore is.
-### Biology traits such as Aquatic or Flying
+In singleplayer, if the last game you played was with a compatible version of the mod, you can restore the settings of the previous lobby with a single click.
+### Notable tweaks to lifestyles
+#### Mechanoid
+The cost to build 1 billion population is flat, so it becomes more affordable as the game goes on and your empire expands instead of less.
+#### Star Children
+Mothership max population scales with ship size and provides labor. Exploits that allowed for printing money with retrofitted motherships are removed. Carefully designed large motherships can become very cost effective as motherships now become more cost effective as they get bigger.
+#### Ancient
+Ancient empires are no longer incapable of producing pressure of non primary resources on planets, and are allowed to unlock and build Planetary Thrusters.
+### Biology traits
 These traits have positive and negative factors together. New races featuring these traits:
+#### Aquatic
+Planets need an additional water resource and one less food resource. A subtle change but it has a large impact on your trade links.
 #### Parasite
 This trait makes you get only half of the pressure from planetary resources, but allows you to raze planets down to nothing, gaining massively increased resource production while doing so. Includes dedicated AI support.
+#### Flying
+You just can't convince your avian friends that plate armour is worth it. However, Gas giants are easier to colonise.
 ### Battleworlders
 The battleworlders lifestyle makes every planet a battleworld, and lets your empire conquer the galaxy from the comfort of its own planets. No AI support at this time. Inspired by Philip Reeve's Mortal Engines series and Darloth's / Dalo Lorn's Ringworlders. Balancing far from final.
 A number of Quality of Life changes to mobile planets in general have also been made, including: planets no longer grant everyone vision of them if they go into deep space, memory of objects are now lost if they leave regions or move around in deep space, planets can be ordered to attack, and planets in deep space can be seiged or annexed.
+### Frostkin
+The frostkin lifestyle denounces starlight based technology and replaces it with life in deep space, destruction of stars, and thermal regulators that buff your entire fleet. A number of quality of life changes to planets outside of regions in general have also been made. It is now possible to import resources to planets in deep space with an unlockable building, and build orbitals/stations around a planet's orbit even when it is in deep space.
 ### Improved AI
-The AI can build moon bases, and all FTL income/storage buildings. The AI can make use of multiple FTL abilities unlocked at once. It will seek to counter carpet bombing if it sees an opponent with them (AIs cannot do carpet bombing raids themselves yet).
+The AI can build moon bases, and all FTL income/storage buildings. The AI can make use of multiple FTL abilities unlocked at once. If it wants to travel to an FTL jammed system, it will FTL to just outside the region. It will seek to counter carpet bombing if it sees an opponent with them (AIs cannot do carpet bombing raids themselves yet).
 #### Military
 The AI will be much more eager to build military flagships when it has spare money than vanilla, and it will prepare designs in advance. It makes use of more subsystems in its designs when it unlocks them such as Fleet Computers and Simulators.
 #### Colonisation and Development
