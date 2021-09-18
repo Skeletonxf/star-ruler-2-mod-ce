@@ -10,4 +10,5 @@ Status: ExtraResearch
 	AddToNativeResource( AddPressure(Research, 1) ) #version<147
 	AddToNativeResource( AddPressureEmpireAttribute(Research, PlanetConditionMultiplier) ) #version>=147
 
+	AI: ExtraPressure()
 	AI: ResearchIncome()

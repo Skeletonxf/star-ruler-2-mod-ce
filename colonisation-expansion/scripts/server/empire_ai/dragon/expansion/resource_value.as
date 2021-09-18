@@ -4,7 +4,7 @@ import empire_ai.weasel.WeaselAI;
 from resources import ResourceType;
 from resources import Resource;
 import statuses;
-from ai.statuses import StatusAI, NegativeEnergyIncome, ResearchIncome;
+from ai.statuses import StatusAI, NegativeEnergyIncome, ResearchIncome, NegativePopulationCap, NegativePressureCap, ResearchBoost, ExtraPressure;
 
 interface ResourceValuationOwner {
 	void setResourceValuation(RaceResourceValuation@ race);
@@ -175,7 +175,23 @@ class PlanetValuables {
 					}
 					auto@ researchIncome = cast<ResearchIncome>(hook);
 					if (researchIncome !is null) {
-						weight += 0.5;
+						weight += 0.3;
+					}
+					auto@ extraPressure = cast<ExtraPressure>(hook);
+					if (extraPressure !is null) {
+						weight += extraPressure.pressure.integer * 0.2;
+					}
+					auto@ researchBoost = cast<ResearchBoost>(hook);
+					if (researchBoost !is null) {
+						weight += 0.3;
+					}
+					auto@ negPressure = cast<NegativePressureCap>(hook);
+					if (negPressure !is null) {
+						weight -= 0.1;
+					}
+					auto negPop = cast<NegativePopulationCap>(hook);
+					if (negPop !is null) {
+						weight -= 0.4;
 					}
 				}
 			}

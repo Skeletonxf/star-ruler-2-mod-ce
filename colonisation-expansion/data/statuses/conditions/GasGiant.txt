@@ -3,5 +3,8 @@ Status: GasGiant
 	Description: #GAS_GIANT_DESC
 	Icon: ConditionIcons::1 * 33ff55
 	Color: #40ff83
+
 	IfNotHaveTrait(Flying, PlanetLevelIncomeMod(-40, -80, 0))
 	IfNotHaveTrait(Flying, AddMaxPopulation(-1))
+
+	AI: NegativePopulationCap()

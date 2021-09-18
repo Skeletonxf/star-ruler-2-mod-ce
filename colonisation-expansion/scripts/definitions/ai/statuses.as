@@ -12,6 +12,28 @@ class NegativeEnergyIncome : StatusAI {
 	Argument min_level(AT_Integer, "1", doc="Minimum level the planet needs to be at for the energy income to be required.");
 }
 
+// TODO: Dragon First AI should care about this
+class UnremovableDefaultBuilding : StatusAI {
+	Document doc("This condition adds a building we can't remove.");
+}
+
+class NegativePopulationCap : StatusAI {
+	Document doc("This status/condition reduces max population.");
+}
+
+class NegativePressureCap : StatusAI {
+	Document doc("This status/condition reduces pressure capacity.");
+}
+
 class ResearchIncome : StatusAI {
-	Document doc("This status grants research income.");
+	Document doc("This status/condition grants research income.");
+}
+
+class ResearchBoost : StatusAI {
+	Document doc("This status/condition grants research points.");
+}
+
+class ExtraPressure : StatusAI {
+	Document doc("This status/condition grants extra pressure points.");
+	Argument pressure(AT_Integer, "1", doc="Pressure granted.");
 }
