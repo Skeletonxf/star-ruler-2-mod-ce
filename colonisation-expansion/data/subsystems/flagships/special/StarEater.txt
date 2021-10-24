@@ -7,7 +7,7 @@ Subsystem: StarEater
 	Elevation: 2
 
 	Tags: BaseCost, Category:Equipment, HasInternals, ExteriorCore
-	Tags: Ability:StarEater, IsStarEater,
+	Tags: Ability:StarEater, IsStarEater, CanAttackStars,
 	Hull: Flagship
 
 	Size := HexSize * Hexes

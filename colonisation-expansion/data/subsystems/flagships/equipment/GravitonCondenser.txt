@@ -7,7 +7,7 @@ Subsystem: GravitonCondenser
 	Elevation: 2
 
 	Tags: BaseCost, Category:Equipment, HasInternals, ExteriorCore
-	Tags: Ability:GravitonCondenser
+	Tags: Ability:GravitonCondenser, CanAttackStars,
 	Hull: Flagship
 
 	Size := HexSize * Hexes
