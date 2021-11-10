@@ -322,7 +322,12 @@ tidy final class DesignTarget {
 				settings.behavior = SG_Brawler;
 				dsg.setSettings(settings);
 			}
-			else if(dsg.totalHP > 50 * dsg.size) {
+			// [[ MODIFY BASE GAME START ]]
+			// The AI's supports are always very fragile but so are the carriers
+			// so make sure about half our fleet are set to shield
+			else if (randomd() < 0.6) {
+			//else if(dsg.totalHP > 50 * dsg.size) {
+				// [[ MODIFY BASE GAME END ]]
 				DesignSettings settings;
 				settings.behavior = SG_Shield;
 				dsg.setSettings(settings);
