@@ -15,7 +15,7 @@ Subsystem: SupportPlasmaThrower
 	RangeScaling := (1.0 + (BaseRange / 400.0))/ 2.0
 	Range := (Size * RangeScaling) + BaseRange
 
-	Duration := 5 * (1.0 + Size/64)
+	Duration := 75 * (1.0 + Size/64)
 	DamageOverTime := (Size * 5.0) / Duration
 
 	out DPS := (DamageOverTime * Duration) / Reload
@@ -25,10 +25,10 @@ Subsystem: SupportPlasmaThrower
 	Modifier: DamageFactor(factor)
 		DamageOverTime := DamageOverTime * factor
 
-	Reload := 5.0 * min(1.0 + Size/512, 2.0)
+	Reload := 1.0 * min(1.0 + Size/512, 2.0)
 	Speed := max(200, Range / 10)
 	Spread := 0.015 / max(Range / 600, 1)
-	Tracking := 0.2
+	Tracking := 2
 	FireArc := 1.5
 	Pierce := 0.0
 	SupplyCost := Size * 1.0
