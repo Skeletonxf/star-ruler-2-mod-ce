@@ -366,6 +366,8 @@ S_SHIELD_HARMONIZER_DESC: <<
 >>
 S_Flagship_Sheild_Absorb_Percentage: Flagship Percentage
 S_Redirect_Percentage: Redirect Percentage
+S_TRACKING: Tracking
+S_TRAVEL_RANGE: Travel Range
 S_LIQUIDARMOR_DESC: <<
 	A basin of liquid hydro-metal suspended on the hull of the ship absorbs impacts and spreads them evenly, filling any gaps that are created.
 

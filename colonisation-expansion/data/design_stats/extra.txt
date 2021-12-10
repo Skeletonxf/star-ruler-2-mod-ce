@@ -216,3 +216,18 @@ SubsystemStat: FreezeDamage
 
 	Suffix: K /s
 	Variable: FreezeDamage
+
+SubsystemStat: Tracking
+	Name: #S_TRACKING
+	Icon: ActionBarIcons::16
+	Color: #f9c5d0
+
+	Variable: Tracking
+
+SubsystemStat: TravelRange
+	Name: #S_TRAVEL_RANGE
+	Icon: AttributeIcons::4 * #8000ff
+	Color: #ae6383
+	Suffix: u
+
+	Variable: TravelRange
