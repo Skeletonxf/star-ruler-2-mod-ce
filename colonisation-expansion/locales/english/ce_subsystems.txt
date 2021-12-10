@@ -448,3 +448,12 @@ FROSTKIN_SUPPLY_DESC: <<
 	[img=MenuIcons::3;20][i][color=#aaa]Losing required power generation in combat reduces the ship's overall effectiveness.[/color][/i][/img]
 	[img=Ice;22][b][color=#ffc1d5]Only available when the 'Frostkin' race option is chosen.[/color][/b][/img]
 >>
+S_PLASMATHROWER_DESC: <<
+	Launches concentrated clouds of dense plasma at enemy vessels. The plasma covers the outside of the ship, dealing damage in a wide area.
+
+	[img=Plus]Deals damage over time for a set duration around the side of the ship that was hit.[/img]
+	[img=Plus]Damage lasts a long time and keeps the target in combat.[/img]
+	[img=Minus]Limited firing arc.[/img]
+	[img=Minus]Plasma projectiles may miss.[/img]
+	[img=Minus]Very ineffective at penetrating through armor.[/img]
+>>
