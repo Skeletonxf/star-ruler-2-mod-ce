@@ -457,5 +457,5 @@ S_PLASMATHROWER_DESC: <<
 	[img=Plus]Damage lasts a long time and keeps the target in combat.[/img]
 	[img=Minus]Limited firing arc.[/img]
 	[img=Minus]Plasma projectiles may miss.[/img]
-	[img=Minus]Very ineffective at penetrating through armor.[/img]
+	[img=Minus]Very ineffective at penetrating through armor, and even more mitigated by damage resist than lasers.[/img]
 >>
