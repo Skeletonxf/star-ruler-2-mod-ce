@@ -50,6 +50,15 @@ final class OrbitalAI {
 				@around = obj.getOrbitingAround();
 		}
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void scuttle(AI& ai) {
+		if (obj is null || !obj.valid || obj.owner !is ai.empire) {
+			return;
+		}
+		cast<Orbital>(obj).scuttle();
+	}
+	// [[ MODIFY BASE GAME END ]]
 };
 
 // [[ MODIFY BASE GAME START ]]

@@ -7,6 +7,7 @@ import empire_ai.weasel.Development;
 import empire_ai.weasel.Budget;
 import empire_ai.weasel.Creeping;
 import empire_ai.weasel.Construction;
+import empire_ai.weasel.Orbitals;
 
 import planet_levels;
 import buildings;
@@ -942,13 +943,14 @@ class Expansion : AIComponent, Buildings, ConsiderFilter, AIResources, IDevelopm
 		@creeping = cast<Creeping>(ai.creeping);
 		@construction = cast<Construction>(ai.construction);
 		@ftlIncomeTargets.ftl = cast<FTLGeneric>(ai.ftl);
+		Orbitals@ orbitals = cast<Orbitals>(ai.orbitals);
 
 		@queue = ColonizeForest(DefaultRaceResourceValuation(ai));
 		RaceColonization@ race;
 		@race = cast<RaceColonization>(ai.race);
 		@colonyManagement = TerrestrialColonization(planets, ai);
 		@planetManagement = PlanetManagement(planets, budget, this, this, this, this, ai, log);
-		@regionLinking = RegionLinking(planets, construction, resources, systems, budget, this);
+		@regionLinking = RegionLinking(planets, construction, resources, systems, budget, this, orbitals);
 
 		@scalableClass = getResourceClass("Scalable");
 

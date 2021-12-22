@@ -1,11 +1,14 @@
 import empire_ai.weasel.Planets;
 import empire_ai.weasel.Construction;
 import empire_ai.weasel.Resources;
+import empire_ai.weasel.Orbitals;
 import empire_ai.dragon.expansion.colonization;
 import system_pathing;
 import orbitals;
 
 import empire_ai.dragon.logs;
+
+import CE_logic_helpers;
 
 class AvoidOutpostMarker {
 	Region@ region;
@@ -40,22 +43,46 @@ class LinkBuild {
 	}
 }
 
+class BuiltOutpost {
+	OrbitalAI@ orbitalAI;
+	Region@ region;
+
+	bool isInIntendedRegion() {
+		if (orbitalAI is null || orbitalAI.obj is null || !orbitalAI.obj.valid) {
+			return false;
+		}
+		Region@ actual = orbitalAI.obj.region;
+		if (region is null && actual !is null) {
+			@region = actual;
+		}
+		return region is null || region is actual;
+	}
+
+	void save(SaveFile& file, Orbitals& orbitals) {
+		file << region;
+		orbitals.saveAI(file, orbitalAI);
+	}
+
+	void load(SaveFile& file, Orbitals& orbitals) {
+		file >> region;
+		@orbitalAI = orbitals.loadAI(file);
+	}
+}
+
 /**
  * Responsible for letting the AI reconnect broken trade links and
  * expand through empty or occupied systems
  *
  * No more abusing the AI by boxing it in!
  */
-// TODO: We should hook into the Orbitals AI component as it tracks orbitals
-// we've made, as we should scuttle outposts that get removed from the region
-// we built them in
-class RegionLinking {
+class RegionLinking: OrbitalEventListener {
 	Planets@ planets;
 	Construction@ construction;
 	Resources@ resources;
 	Systems@ systems;
 	Budget@ budget;
 	ColonizationAbilityOwner@ colonization;
+	Orbitals@ orbitals;
 
 	double lastCheckedRegionsLinked = 0;
 	const OrbitalModule@ outpost;
@@ -71,15 +98,20 @@ class RegionLinking {
 	// a set of the ids in penalties
 	set_int penaltySet;
 
-	RegionLinking(Planets@ planets, Construction@ construction, Resources@ resources, Systems@ systems, Budget@ budget, ColonizationAbilityOwner@ colonization) {
+	NextIndex nextOrbital;
+	array<BuiltOutpost> builtOutposts;
+
+	RegionLinking(Planets@ planets, Construction@ construction, Resources@ resources, Systems@ systems, Budget@ budget, ColonizationAbilityOwner@ colonization, Orbitals@ orbitals) {
 		@this.planets = planets;
 		@this.construction = construction;
 		@this.resources = resources;
 		@this.systems = systems;
 		@this.budget = budget;
 		@this.colonization = colonization;
+		@this.orbitals = orbitals;
 		@this.outpost = getOrbitalModule("TradeOutpost");
 		@this.starTemple = getOrbitalModule("Temple");
+		orbitals.listeners.insertLast(this);
 	}
 
 	// Check roughly every 20 seconds or so that we can connect trade lines
@@ -93,6 +125,7 @@ class RegionLinking {
 		}
 		checkLinkBuilds(ai);
 		updatePenalties();
+		monitorOutposts(ai);
 	}
 
 	void checkRegionsLinked(AI& ai) {
@@ -270,6 +303,65 @@ class RegionLinking {
 		}
 	}
 
+	void monitorOutposts(AI& ai) {
+		uint orbitalCount = orbitals.orbitals.length;
+		if (orbitalCount != 0) {
+			OrbitalAI@ orbitalAI = orbitals.orbitals[nextOrbital.next(orbitalCount)];
+			if (orbitalAI !is null && orbitalAI.obj !is null && (orbitalAI.type is outpost || orbitalAI.type is starTemple)) {
+				monitorOutpost(orbitalAI, ai);
+			}
+		}
+	}
+
+	void onRemovedOrbitalAI(OrbitalAI@ orbitalAI) {
+		if (orbitalAI !is null) {
+			for (uint i = 0, cnt = builtOutposts.length; i < cnt; ++i) {
+				BuiltOutpost outpost = builtOutposts[i];
+				if (outpost !is null && outpost.orbitalAI is orbitalAI) {
+					builtOutposts.removeAt(i);
+					--i; --cnt;
+				}
+			}
+		}
+	}
+
+	void monitorOutpost(OrbitalAI@ orbitalAI, AI& ai) {
+		for (uint i = 0, cnt = builtOutposts.length; i < cnt; ++i) {
+			BuiltOutpost outpost = builtOutposts[i];
+			if (outpost !is null && outpost.orbitalAI is orbitalAI) {
+				if (!outpost.isInIntendedRegion()) {
+					builtOutposts.removeAt(i);
+					--i; --cnt;
+					// did it get tractored?
+					orbitalAI.scuttle(ai);
+					Region@ missing = outpost.region;
+					if (missing !is null) {
+						if (LOG) {
+							ai.print("Outpost removed from "+missing.name);
+						}
+						double nextAllowedOutpostTime = gameTime + ai.behavior.colonizePenalizeTime;
+						AvoidOutpostMarker@ penalty = AvoidOutpostMarker(missing, nextAllowedOutpostTime);
+						penalties.insertLast(penalty);
+						penaltySet.insert(penalty.region.id);
+					}
+				}
+				return;
+			}
+		}
+		// add this new outpost to our list
+		BuiltOutpost outpost;
+		@outpost.region = orbitalAI.obj.region;
+		@outpost.orbitalAI = orbitalAI;
+		if (LOG) {
+			if (outpost.region !is null) {
+				ai.print("Registered built outpost at "+outpost.region.name);
+			} else {
+				ai.print("Registered built outpost");
+			}
+		}
+		builtOutposts.insertLast(outpost);
+	}
+
 	void save(SaveFile& file) {
 		file << lastCheckedRegionsLinked;
 		uint cnt = linkBuilds.length;
@@ -282,6 +374,12 @@ class RegionLinking {
 		file << cnt;
 		for (uint i = 0; i < cnt; ++i) {
 			penalties[i].save(file);
+		}
+		nextOrbital.save(file);
+		cnt = builtOutposts.length;
+		file << cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			builtOutposts[i].save(file, orbitals);
 		}
 	}
 
@@ -303,6 +401,15 @@ class RegionLinking {
 			if (penalty.region !is null) {
 				penalties.insertLast(penalty);
 				penaltySet.insert(penalty.region.id);
+			}
+		}
+		nextOrbital.load(file);
+		file >> cnt;
+		for (uint i = 0; i < cnt; ++i) {
+			BuiltOutpost outpost;
+			outpost.load(file, orbitals);
+			if (outpost.orbitalAI !is null) {
+				builtOutposts.insertLast(outpost);
 			}
 		}
 	}

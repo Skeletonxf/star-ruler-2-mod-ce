@@ -16,8 +16,6 @@ This is primarily intended as a developer focused project planning list, rather 
     - Teach AI to deliberately colonise morphics and fulrate when it has a planet to export them to
     - AI still seems to be making megafarms it has no need for
     - Add a proper isBuilding method that also checks if the AI is in the process of building a building instead of just if its in the request queue and fix everywhere I called this thinking that's what isBuilding already does
-    - Scuttle outposts which have ended up in a different region to where the AI created them
-      - Thanks Illyia
     - Implement custom ColonizeAbility interface for Ancient AI empires
       - Make AI idle Replicators that aren't building anything go colonise something rather than just sit around being useless
     - Make AI destroy buildings it no longer needs
