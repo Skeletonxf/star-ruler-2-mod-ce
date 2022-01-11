@@ -1,6 +1,6 @@
-FORESTRY_NOTIFICATION_1: $3 [color=#17c757]forested its first food[/color]
-FORESTRY_NOTIFICATION_2: $3 [color=#17c757]forested its second food[/color]
-FORESTRY_NOTIFICATION_3: $3 [color=#17c757]forested its third food[/color]
+FORESTRY_NOTIFICATION_1: $3 [color=#17c757]forested food 1/3[/color]
+FORESTRY_NOTIFICATION_2: $3 [color=#17c757]forested food 2/3[/color]
+FORESTRY_NOTIFICATION_3: $3 [color=#17c757]forested food 3/3[/color]
 MESSAGE_NEED_BASE_MATS: $3 [color=#ffaaaa]requires base materials[/color]
 MESSAGE_NATIVES_DISCOVERED: [color=#ffc83f]Natives discovered at[/color] $3
 MESSAGE_BLOCKADED: $3 [color=#ff9000]blockaded![/color]
