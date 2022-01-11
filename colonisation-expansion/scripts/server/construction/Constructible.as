@@ -51,6 +51,22 @@ tidy class Constructible : Serializable {
 		return true;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void changeOwner(Empire@ prevOwner, Empire@ newOwner) {
+		if (!started) {
+			return;
+		}
+		if (maintainCost != 0) { // Transfer maintenance costs!
+			if (prevOwner !is null) {
+				prevOwner.modMaintenance(-maintainCost, MoT_Construction);
+			}
+			if (newOwner !is null) {
+				newOwner.modMaintenance(maintainCost, MoT_Construction);
+			}
+		}
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void remove(Object& obj) {
 		if(started) {
 			started = false;
@@ -110,7 +126,7 @@ tidy class Constructible : Serializable {
 		msg << paid;
 		msg << repeated;
 	}
-	
+
 	void load(SaveFile& msg) {
 		msg >> id;
 		msg >> started;

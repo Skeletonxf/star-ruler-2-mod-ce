@@ -929,6 +929,10 @@ tidy class ShipScript {
 		}
 		if(ship.hasAbilities)
 			ship.abilityOwnerChange(prevOwner, ship.owner);
+		// [[ MODIFY BASE GAME START ]]
+		if(ship.hasConstruction)
+			ship.constructionChangeOwner(prevOwner, ship.owner);
+		// [[ MODIFY BASE GAME END ]]
 		if(ship.hasStatuses)
 			ship.changeStatusOwner(prevOwner, ship.owner);
 		regionOwnerChange(ship, prevOwner);
