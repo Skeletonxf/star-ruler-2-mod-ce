@@ -57,10 +57,10 @@ tidy class Constructible : Serializable {
 			return;
 		}
 		if (maintainCost != 0) { // Transfer maintenance costs!
-			if (prevOwner !is null) {
+			if (prevOwner !is null && prevOwner.valid) {
 				prevOwner.modMaintenance(-maintainCost, MoT_Construction);
 			}
-			if (newOwner !is null) {
+			if (newOwner !is null && newOwner.valid) {
 				newOwner.modMaintenance(maintainCost, MoT_Construction);
 			}
 		}
