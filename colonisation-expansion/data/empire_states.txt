@@ -100,6 +100,9 @@ visible:
 	attribute double ForbidSecondaryUnlock = 0
 	attribute double DrydockCostFactor = 1
 	attribute double HasPopulation = 1
+	// [[ MODIFY BASE GAME START ]]
+	attribute double ShowFakePopulationOnUI = 1;
+	// [[ MODIFY BASE GAME END ]]
 	attribute double ForbidTerraform = 0
 	attribute double HasFlux = 0
 	// [[ MODIFY BASE GAME START ]]

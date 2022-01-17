@@ -1,0 +1,5 @@
+FAKE_PLANET_POPULATION_TIP: <<|
+	[b]Connections[/b]
+
+	How many billion connections to the planet. The more connections a planet has, the higher its base income.
+>>

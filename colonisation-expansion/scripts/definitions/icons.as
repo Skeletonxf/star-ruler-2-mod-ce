@@ -1,6 +1,9 @@
 namespace icons {
 	const Sprite Loyalty(spritesheet::AttributeIcons, 1);
 	const Sprite Population(spritesheet::ResourceIcon, 8);
+	// [[ MODIFY BASE GAME START ]]
+	const Sprite FakePopulation(spritesheet::ResourceIcon, 7);
+	// [[ MODIFY BASE GAME END ]]
 	const Sprite Pressure(spritesheet::AttributeIcons, 0);
 	const Sprite Effectiveness(spritesheet::StatusIcons, 0);
 
@@ -43,12 +46,12 @@ namespace icons {
 	const Sprite ProjectDefense(spritesheet::ActionBarIcons, 3);
 	const Sprite ColonizeThis(spritesheet::ActionBarIcons, 4);
 	const Sprite UnderSiege(spritesheet::QuickbarIcons, 7);
-	
+
 	const Sprite Hyperdrive(spritesheet::ActionBarIcons, 5);
 	const Sprite Slipstream(spritesheet::ActionBarIcons, 6);
 	const Sprite Gate(spritesheet::ActionBarIcons, 7);
 	const Sprite Fling(spritesheet::ActionBarIcons, 8);
-	
+
 	const Sprite Explore(spritesheet::ActionBarIcons, 9);
 	const Sprite HyperExplore(spritesheet::ActionBarIcons, 10);
 

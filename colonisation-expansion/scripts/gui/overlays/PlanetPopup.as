@@ -358,7 +358,8 @@ class PlanetPopup : Popup {
 			cargo.update(pl);
 
 		//Update population display
-		if(colonized && owner.HasPopulation != 0) {
+		// [[ MODIFY BASE GAME START ]]
+		if(colonized && (owner.HasPopulation != 0 || owner.ShowFakePopulationOnUI != 0)) {
 			double pop = pl.population, maxPop = pl.maxPopulation;
 			if(pop < 1.0)
 				popValue.text = toString(pl.population, 1);
@@ -366,6 +367,11 @@ class PlanetPopup : Popup {
 				popValue.text = toString(pl.population, 0);
 			else
 				popValue.text = toString(floor(pl.population), 0) + "/" + toString(pl.maxPopulation, 0);
+			if (owner.HasPopulation != 0) {
+				popIcon.desc = icons::Population;
+			} else {
+				popIcon.desc = icons::FakePopulation;
+			}
 			popValue.color = Color(0xffffffff);
 			popValue.visible = true;
 			popIcon.visible = true;
@@ -374,6 +380,7 @@ class PlanetPopup : Popup {
 			popValue.visible = false;
 			popIcon.visible = false;
 		}
+		// [[ MODIFY BASE GAME END ]]
 
 		//Update loyalty display
 		if(colonized) {

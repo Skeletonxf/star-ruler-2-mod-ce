@@ -392,7 +392,8 @@ class SurfaceDisplay : DisplayBox {
 		resetVars();
 
 		if(pl.visible) {
-			if(pl.owner.valid && pl.owner.HasPopulation != 0) {
+			// [[ MODIFY BASE GAME START ]]
+			if(pl.owner.valid && (pl.owner.HasPopulation != 0 || pl.owner.ShowFakePopulationOnUI != 0)) {
 				Color popColor = colors::White;
 				if(!pl.primaryResourceUsable) {
 					if(pl.population < getPlanetLevelRequiredPop(pl, pl.resourceLevel) && !pl.inCombat) {
@@ -400,8 +401,13 @@ class SurfaceDisplay : DisplayBox {
 					}
 				}
 				string popText = standardize(pl.population, true) + " / " + standardize(pl.maxPopulation, true);
-				addVariable(icons::Population, popText, locale::PLANET_POPULATION_TIP, popColor);
+				if (pl.owner.HasPopulation != 0) {
+					addVariable(icons::Population, popText, locale::PLANET_POPULATION_TIP, popColor);
+				} else {
+					addVariable(icons::FakePopulation, popText, locale::FAKE_PLANET_POPULATION_TIP, popColor);
+				}
 			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 		if(pl.owner is playerEmpire) {
 			auto@ scTrait = getTrait("StarChildren");
@@ -1243,9 +1249,11 @@ class ResourceDisplay : DisplayBox {
 					reqDisplay.visible = true;
 					reqLabel.visible = true;
 
-					popReq.visible = reqDisplay.length == 0 && owner.HasPopulation != 0;
+					// [[ MODIFY BASE GAME START ]]
+					popReq.visible = reqDisplay.length == 0 && (owner.HasPopulation != 0 || owner.ShowFakePopulationOnUI != 0);
 					if(popReq.visible)
 						popReq.text = format(locale::POP_REQ, standardize(lvl.requiredPop, true));
+					// [[ MODIFY BASE GAME END ]]
 
 					reqLabel.tooltip = format(locale::REQ_FOR_LEVEL, toString(lv + 1));
 					modID = newMod;
@@ -1263,9 +1271,11 @@ class ResourceDisplay : DisplayBox {
 					reqDisplay.visible = true;
 					reqLabel.visible = true;
 
-					popReq.visible = reqDisplay.length == 0 && owner.HasPopulation != 0;
+					// [[ MODIFY BASE GAME START ]]
+					popReq.visible = reqDisplay.length == 0 && (owner.HasPopulation != 0 || owner.ShowFakePopulationOnUI != 0);
 					if(popReq.visible)
 						popReq.text = format(locale::POP_REQ, standardize(lvl.requiredPop, true));
+					// [[ MODIFY BASE GAME END ]]
 
 					reqLabel.text = format(locale::REQUIRED_RESOURCES, toString(lv+1));
 					reqLabel.tooltip = format(locale::REQ_FOR_LEVEL, toString(lv + 1));

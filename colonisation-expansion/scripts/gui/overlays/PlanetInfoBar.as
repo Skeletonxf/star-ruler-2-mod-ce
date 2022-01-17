@@ -355,7 +355,16 @@ class PlanetInfoBar : InfoBar {
 
 			//Update condition display
 			levelBox.visible = colonized;
-			popBox.visible = colonized && owner.HasPopulation != 0;
+			// [[ MODIFY BASE GAME START ]]
+			popBox.visible = colonized && (owner.HasPopulation != 0 || owner.ShowFakePopulationOnUI != 0);
+			if (popBox.visible) {
+				if (owner.HasPopulation != 0) {
+					popIcon.desc = icons::Population;
+				} else {
+					popIcon.desc = icons::FakePopulation;
+				}
+			}
+			// [[ MODIFY BASE GAME END ]]
 			if(colonized || statuses.length == 0) {
 				if(statuses.length != 0) {
 					uint prevCnt = statusIcons.length, cnt = statuses.length;
