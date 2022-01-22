@@ -795,7 +795,7 @@ class Planets : AIComponent {
 			if(!constructing[i].tick(ai, this, time)) {
 				// [[ MODIFY BASE GAME START ]]
 				// Tell everything that is listening
-				for (uint j = 0, cnt = listeners.length; j < cnt; ++j) {
+				for (uint j = 0, jcnt = listeners.length; j < jcnt; ++j) {
 					listeners[i].onConstructionRequestActioned(constructing[i]);
 				}
 				// [[ MODIFY BASE GAME END ]]
