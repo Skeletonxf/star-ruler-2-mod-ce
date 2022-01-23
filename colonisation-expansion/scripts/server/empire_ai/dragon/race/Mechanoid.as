@@ -21,6 +21,8 @@ import oddity_navigation;
 
 import empire_ai.dragon.logs;
 
+import CE_logic_helpers;
+
 const double MAX_POP_BUILDTIME = 3.0 * 60.0;
 
 // Simplified mirror of transfer cost formula for use in Mechanoid AI
@@ -152,8 +154,8 @@ class Mechanoid2 : Race, ColonizationAbility {
 	// wrapper around potential source to implement the colonisation ability
 	// interfaces, tracks our planets that are populated enough to colonise with
 	array<ColonizationSource@> planetSources;
-	uint planetIndex = 0;
-	uint sourceIndex = 0;
+	NextIndex nextPlanet;
+	NextIndex nextSource;
 
 	// population requests, this is not saved to file as we will repopulate it
 	// quickly enough on reloading of a save and saving to a file would
@@ -227,8 +229,10 @@ class Mechanoid2 : Race, ColonizationAbility {
 	void checkForSources() {
 		uint planetCount = planets.planets.length;
 		uint sourceCount = planetSources.length;
-		planetIndex = (planetIndex + 1) % planetCount;
-		auto@ plAI = planets.planets[planetIndex];
+		if (planetCount == 0) {
+			return;
+		}
+		auto@ plAI = planets.planets[nextPlanet.next(planetCount)];
 		for (uint i = 0; i < sourceCount; ++i) {
 			 auto@ source = cast<ColonizerMechanoidPlanet>(planetSources[i]);
 			 if (source.planet is plAI.obj) {
@@ -241,8 +245,10 @@ class Mechanoid2 : Race, ColonizationAbility {
 
 	void checkSources() {
 		uint sourceCount = planetSources.length;
-		sourceIndex = (sourceIndex + 1) % sourceCount;
-		auto@ source = cast<ColonizerMechanoidPlanet>(planetSources[sourceIndex]);
+		if (sourceCount == 0) {
+			return;
+		}
+		auto@ source = cast<ColonizerMechanoidPlanet>(planetSources[nextSource.next(sourceCount)]);
 
 		// Make pop requests when we are not meeting our resource level
 		double pop = source.planet.population;

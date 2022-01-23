@@ -21,6 +21,8 @@ from buildings import getBuildingType, BuildingType;
 
 from ai.orbitals import OrbitalAIHook, IsEmpireWideSingleUse;
 
+import CE_logic_helpers;
+
 const double FTL_EXTRACTOR_MIN_HELD_BASE_TIMER = 3 * 60.0;
 
 /**
@@ -66,7 +68,7 @@ class Improvement : AIComponent, PlanetEventListener {
 	int hasDefensesStatusID = -1;
 	int nonCombatDefensesOrdered = 0;
 
-	uint orbitalTypeIndex = 0;
+	NextIndex nextOrbitalType;
 
 	void create() {
 		@planets = cast<Planets>(ai.planets);
@@ -109,7 +111,7 @@ class Improvement : AIComponent, PlanetEventListener {
 		construction.saveConstruction(file, ftlStorageBuild);
 		file << carpetBombCheck;
 		file << nonCombatDefensesOrdered;
-		file << orbitalTypeIndex;
+		nextOrbitalType.save(file);
 	}
 
 	void load(SaveFile& file) {
@@ -117,7 +119,7 @@ class Improvement : AIComponent, PlanetEventListener {
 		@ftlStorageBuild = construction.loadConstruction(file);
 		file >> carpetBombCheck;
 		file >> nonCombatDefensesOrdered;
-		file >> orbitalTypeIndex;
+		nextOrbitalType.load(file);
 	}
 
 	void start() {
@@ -424,8 +426,11 @@ class Improvement : AIComponent, PlanetEventListener {
 	}
 
 	void lookToBuildSingleUseOrbitals() {
-		orbitalTypeIndex = (orbitalTypeIndex + 1) % getOrbitalModuleCount();
-		const OrbitalModule@ type = getOrbitalModule(orbitalTypeIndex);
+		uint orbitalModuleCount = getOrbitalModuleCount();
+		if (orbitalModuleCount == 0) {
+			return;
+		}
+		const OrbitalModule@ type = getOrbitalModule(nextOrbitalType.next(orbitalModuleCount));
 		for(uint n = 0, ncnt = type.ai.length; n < ncnt; ++n) {
 			auto@ hook = cast<OrbitalAIHook>(type.ai[n]);
 			if (hook is null) {
