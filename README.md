@@ -10,9 +10,11 @@ I consider this mod at playable status now. It should be stable and balanced eno
 
 ## Installation
 
-Although you can use GitHub's Download Zip button to download the latest version of this mod I suggest you go to the [releases page](https://github.com/Skeletonxf/star-ruler-2-mod-ce/releases) to download the latest released version. Extract the mod out of the colonisation-expansion folder and place it into the mods folder of a [Star Ruler 2](https://github.com/BlindMindStudios/StarRuler2-Source) installation.
+Although you can use GitHub's Download Zip button to download the latest version of this mod, for the latest release version go to the [tags page](https://github.com/Skeletonxf/star-ruler-2-mod-ce/tags). Extract the mod out of the colonisation-expansion folder and place it into the mods folder of a [Star Ruler 2](https://github.com/BlindMindStudios/StarRuler2-Source) installation.
 
 Alternatively you can use [Star Ruler 2 Mod Manager](https://github.com/DaloLorn/SR2ModManager) to install and update this mod.
+
+Note: as with most mods, nearly every commit and almost every release is a save compatible breaking change, so typically you would not want to update your copy of CE until you have finished playing a game with it.
 
 ## Features
 
