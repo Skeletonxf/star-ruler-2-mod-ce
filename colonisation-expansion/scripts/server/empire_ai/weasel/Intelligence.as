@@ -406,7 +406,7 @@ final class Intel {
 
 		// [[ MODIFY BASE GAME START ]]
 		// Look through our intel on enemy fleets to see if the enemy
-		// has made carpet bombs, if so we will need to build defense stations
+		// has made carpet bombs, if so we will need to build shield projectors
 		// on our valuable worlds as a counter measure
 		if (!hasMadeCarpetBombs) {
 			for(uint i = 0, cnt = fleets.length; i < cnt; ++i) {

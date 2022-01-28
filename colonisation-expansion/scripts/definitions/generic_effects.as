@@ -5176,6 +5176,32 @@ class AddBonusShield : GenericEffect {
 };
 
 // [[ MODIFY BASE GAME START ]]
+class AddBonusPlanetShield : GenericEffect {
+	Document doc("Add a bonus shield to a planet while this effect is active.");
+	Argument capacity(AT_Decimal, "0", doc="Base amount of shields to add (scaled by empire factors).");
+	Argument regen(AT_Decimal, "0", doc="Regen of shields to add (per second).");
+
+#section server
+	void enable(Object& obj, any@ data) const override {
+		Planet@ planet = cast<Planet>(obj);
+		if (planet is null) {
+			return;
+		}
+		planet.modProjectedShield(regen.decimal, capacity.decimal);
+	}
+
+	void disable(Object& obj, any@ data) const override {
+		Planet@ planet = cast<Planet>(obj);
+		if (planet is null) {
+			return;
+		}
+		planet.modProjectedShield(-regen.decimal, -capacity.decimal);
+	}
+#section all
+};
+// [[ MODIFY BASE GAME END ]]
+
+// [[ MODIFY BASE GAME START ]]
 // Tracks design and empire support cap multiplier to stay in sync
 class SupportCapacityData {
 	double multiplier = 1;

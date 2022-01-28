@@ -328,6 +328,7 @@ SHIELDPROJECTOR_DESC: <<
 	[img=Minus]Weakened shields allow some damage through.[/img]
 	[img=Minus]Does not protect the vessel.[/img]
 	[img=MenuIcons::3;20]Can protect other ships, orbitals, planets, and stars, including allies.[/img]
+	[img=MenuIcons::3;20]While shields are up, bombardment effects from carpet bombs are substantially reduced.[/img]
 >>
 S_Projected_Shield: Projected Shield Capacity
 STT_Projected_Shield: Maximum hitpoints of the Projected shield.
@@ -458,4 +459,9 @@ S_PLASMATHROWER_DESC: <<
 	[img=Minus]Limited firing arc.[/img]
 	[img=Minus]Plasma projectiles may miss.[/img]
 	[img=Minus]Very ineffective at penetrating through armor, and even more mitigated by damage resist than lasers.[/img]
+>>
+S_CARPETBOMB_DESC: <<
+	A heavy, multiple warhead weapon designed to devastate a planet's surface and population.
+
+	[img=MenuIcons::3;20]Bombardment effects are substantially reduced on planets with shields, and do not damage the shields. Devastation is reduced to 25% effectiveness if shields are at full strength.[/img]
 >>

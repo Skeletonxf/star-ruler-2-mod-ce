@@ -41,7 +41,7 @@ This is primarily intended as a developer focused project planning list, rather 
     - Ship constructible support supply free
   - Make some analog to the SupportStation artifact player designable/buildable
   - Update the combat timer code for Orbitals to match the updated code for Ships
-  - Make planet shields protect against carpet bombs, possibly remove the old building/orbital carpet bomb effectiveness counters as they'd get outclassed pretty fast and wouldn't want the AI using suboptimal strategies
+  - Teach AI to protect against carpet bombs with shield projectors
   - Make message strip clear notifications when swapping empires
   - Make auto import refresh when resources on already colonised planets become available
   - Make nebulae griefing not work while the planet is in combat.
@@ -124,7 +124,7 @@ This is primarily intended as a developer focused project planning list, rather 
       - Create battleworlds
       - Use slipstreams to speed up colony ships
       - Attack enemy territory that doesn't border AI's owned systems
-      - Carpet bomb enemy planets (especially useful vs Mechanoid)
+      - Carpet bomb enemy planets
       - Use gates to coordinate surprise attacks on an enemy (the AI is already good at doing rapid attacks with Hyperdrives/Jumpdrives/Fling but gates and slipstreams aren't used as well here)
       - Immediately seek to destroy a player's Senatorial Palace if they start one of the Galatic votes that can achieve the influence victory
   - Sight range and seeable range should be based on the edge to edge distance of two ships, factoing in the radius of both

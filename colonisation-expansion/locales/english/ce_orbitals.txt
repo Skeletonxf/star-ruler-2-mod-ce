@@ -33,7 +33,7 @@ DYSON_SPHERE_DESC: <<
 >>
 RESOURCE_CLASS_Photovoltics: Photovoltic cells
 LOW_ORBIT_DEFENSE_GRID: Reduces the population loss from planetary bombardment by 75%.
-ORB_DEFENSE_SATELLITE_BLURB: Increases support strength, fires missiles, allows independent support action. Grants protection against carpet bombing.
+ORB_DEFENSE_SATELLITE_BLURB: Increases support strength, fires missiles, allows independent support action.
 ORB_DEFENSE_SATELLITE_DESC: <<
 	A military satellite constructed in low planetary orbit grants improved defensive capabilities to the planet and its support ships.
 
@@ -44,8 +44,6 @@ ORB_DEFENSE_SATELLITE_DESC: <<
 	Costs 500 Energy to construct in addition to its build cost.
 
 	Only one tactical satellite may be constructed in orbit of every planet.
-
-	[i]Devastation from carpet bombing is reduced to 20% effectiveness[/i]
 >>
 MINI_WORMHOLE: Wormhole Network
 WORMHOLE_NETWORK_CONTROL_HUB: Wormhole Network Control Hub

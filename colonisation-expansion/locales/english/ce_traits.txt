@@ -70,3 +70,4 @@ TRAIT_FROSTKIN_DESC: <<
 	[vspace=6/][img=SystemUnderAttack;22]Stars must be destroyed before regions can be colonised. Ships may build a special subsystem to freeze stars to destroy them safely.[/img]
 	[vspace=6/][img=PlanetType::14;22]Cannot use starlight based technology, but can build Thermal Regulators to increase fleet strength.[/img]
 >>
+TRAIT_MECHANOID_DESC: [vspace=3/] [img=ResourceIcon::6;22]Additional [b]population[/b] must be constructed with labor instead of growing. Each unit of population provides extra labor.[/img] [vspace=3/][img=ActionBarIcons::1;22]Can instantaneously transfer population between planets to colonize, costing [img=ResourceIcon::3;20/] FTL Energy.[/img] [vspace=3/][img=ResourceIcons::5;22]Does [b]not[/b] require any food or water to level up planets.[/img] [vspace=3/][img=GuiOrbitalIcons::5;22]Cannot use shipyards or dry docks.[/img]

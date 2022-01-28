@@ -19,6 +19,7 @@ from statuses import getStatusID;
 import CE_array_map;
 import CE_biome_statuses;
 from CE_deep_space import regionHasStars;
+import CE_shield_helpers;
 // [[ MODIFY BASE GAME END ]]
 import bool getCheatsEverOn() from "cheats";
 const string TAG_SUPPORT("Support");
@@ -2638,11 +2639,9 @@ tidy class SurfaceComponent : Component_SurfaceComponent, Savable {
 			double decay = (Population * 0.25 * double(bombardDecay) / 60.0) * time;
 			// [[ MODIFY BASE GAME START ]]
 			// Create a counter to carpet bombs, allow attacked empire to use
-			// any defense building or a Tactical Satellite to substantially
-			// reduce the population loss.
-			if (obj.hasStatusEffect(getStatusID("HasDefenses")) || obj.hasStatusEffect(getStatusID("DefenseSatellite"))) {
-				decay *= 0.2;
-			}
+			// shield projectors to substantially reduce the population loss.
+			double shieldMitigation = 0.25 + (0.75 * (1.0 - getShieldPercentageOf(obj)));
+			decay *= shieldMitigation;
 			// [[ MODIFY BASE GAME END ]]
 			Population = max(1.0, Population - decay);
 			calculatePopVars(obj);

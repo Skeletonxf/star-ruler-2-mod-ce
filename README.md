@@ -50,7 +50,7 @@ Just because you have a 300 labor planet shouldn't mean you can build an outpost
 ### Massively nerfed ship stat bonuses from research
 I found in many games of unmodded Star Ruler my ships were either orders of magnitude stronger than my opponent's or orders of magnitude weaker. Nerfing stat bonuses makes ships much closer in strength even if one empire is ahead in terms of eco/research. To get more powerful ships you actually have to have the economy to field larger ships rather than just stacking multipliers that turn ks of combat strength into Ms of combat strength for free.
 ### Rebalanced Carpet Bombs
-Carpet Bombs can now be directly countered by making certain buildings or orbitals which reduce the effectiveness, but more importantly it is not possible to abuse edge cases in the subsystem variable code to make extremely cheap ships that can delevel tier 2+ planets in seconds.
+Carpet Bombs can now be directly countered by applying shields to planets which reduce the effectiveness, but more importantly it is not possible to abuse edge cases in the subsystem variable code to make extremely cheap ships that can delevel tier 2+ planets in seconds. Mechanoid planets generate extremely weak shields which will heavily reduce the effectiveness of carpet bombs while the shields are up. The shields won't mean anything against a Gravitron Condensor, but in the early game Mono won't have to worry so much about losing all their population to cheap carpet bombers.
 ### Counters to Gravitron Condensors
 Gravitron Condensors now have a ramp up time which caues them to deal less than 100% damage when they start firing at a new target. Players can also unlock Shield Projectors to project a shield onto stars and planets to protect them from Gravitron attacks.
 ### Railgun Impulse
@@ -103,7 +103,7 @@ A number of Quality of Life changes to mobile planets in general have also been 
 ### Frostkin
 The frostkin lifestyle denounces starlight based technology and replaces it with life in deep space, destruction of stars, and thermal regulators that buff your entire fleet. A number of quality of life changes to planets outside of regions in general have also been made. It is now possible to import resources to planets in deep space with an unlockable building, and build orbitals/stations around a planet's orbit even when it is in deep space.
 ### Improved AI
-The AI can build moon bases, and all FTL income/storage buildings. The AI can make use of multiple FTL abilities unlocked at once. If it wants to travel to an FTL jammed system, it will FTL to just outside the region. It will seek to counter carpet bombing if it sees an opponent with them (AIs cannot do carpet bombing raids themselves yet).
+The AI can build moon bases, and all FTL income/storage buildings. The AI can make use of multiple FTL abilities unlocked at once. If it wants to travel to an FTL jammed system, it will FTL to just outside the region.
 #### Military
 The AI will be much more eager to build military flagships when it has spare money than vanilla, and it will prepare designs in advance. It makes use of more subsystems in its designs when it unlocks them such as Fleet Computers and Simulators.
 #### Colonisation and Development

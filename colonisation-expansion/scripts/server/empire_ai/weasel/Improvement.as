@@ -22,6 +22,7 @@ from buildings import getBuildingType, BuildingType;
 from ai.orbitals import OrbitalAIHook, IsEmpireWideSingleUse;
 
 import CE_logic_helpers;
+import CE_shield_helpers;
 
 const double FTL_EXTRACTOR_MIN_HELD_BASE_TIMER = 3 * 60.0;
 
@@ -361,7 +362,8 @@ class Improvement : AIComponent, PlanetEventListener {
 				// nothing to protect from carpet bombs
 				return;
 			}
-			if (planet.hasStatusEffect(hasDefensesStatusID)) {
+			if (getShieldPercentageOf(planet) > 0.5) {
+				// shielded planets are mitigated from carpet bombs
 				return;
 			}
 			// Mechanoid are particularly vulnurable to carpet bomb
@@ -395,31 +397,10 @@ class Improvement : AIComponent, PlanetEventListener {
 				buildPriority = 2;
 			}
 
-			if (planet.hasStatusEffect(ringworldStatusID) || planet.hasStatusEffect(artificialPlanetoidStatusID)) {
-				if (!planets.isBuilding(planet, largeDefenseGrid)) {
-					if (budget.canSpend(BT_Development, 300, 100)) {
-						planets.requestBuilding(plAI, largeDefenseGrid, priority=buildPriority);
-						if (!planetUnderSiege) {
-							nonCombatDefensesOrdered += 1;
-						}
-						if (log) {
-							ai.print("Building defense grid at "+planet.name);
-						}
-					}
-				}
-			} else {
-				if (!planets.isBuilding(planet, defenseGrid)) {
-					if (budget.canSpend(BT_Development, 300, 100)) {
-						planets.requestBuilding(plAI, defenseGrid, priority=buildPriority);
-						if (!planetUnderSiege) {
-							nonCombatDefensesOrdered += 1;
-						}
-						if (log) {
-							ai.print("Building defense grid at "+planet.name);
-						}
-					}
-				}
-			}
+			// TODO: Actually defend this planet with a shield projector
+			/* if (!planetUnderSiege) {
+				nonCombatDefensesOrdered += 1;
+			} */
 		} else {
 			carpetBombCheck = 0;
 		}
