@@ -9,3 +9,7 @@ SET_CARGO_QUANTIY: Confirm
 INPUT_CARGO_QUANTITY: Capacity
 AUTO_COLONIZE_SYSTEM_BLOCKED: Colonize planets in $1 (currently blocked)
 AUTO_COLONIZE_SYSTEM_LEVEL_BLOCKED: Colonize planets in $1 and Auto-Import (currently blocked)
+LABOR_PLANETS_AT_LEAST: Planets/Orbitals with more Labor than
+SET_MIN_LABOR_TITLE: Configure Planets/Orbitals with Labor
+SET_MIN_LABOR_LABEL: Labor
+SET_MIN_LABOR: Confirm

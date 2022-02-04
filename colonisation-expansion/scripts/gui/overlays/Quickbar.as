@@ -34,6 +34,9 @@ import void openOverlay(Object@ obj) from "tabs.GalaxyTab";
 import void doQuickExport(Object@,bool) from "commands";
 import void doQuickExport(const array<Object@>&,bool) from "commands";
 from gui import animate_speed;
+// [[ MODIFY BASE GAME START ]]
+import dialogs.InputDialog;
+// [[ MODIFY BASE GAME END ]]
 
 export Quickbar;
 
@@ -59,6 +62,10 @@ class Quickbar : BaseGuiElement, Savable {
 	GuiButton@ quickButton;
 	GuiButton@ helpButton;
 	Empire@ prevEmpire;
+	// [[ MODIFY BASE GAME START ]]
+	GuiButton@ minLaborButton;
+	LaborPlanets@ laborPlanets;
+	// [[ MODIFY BASE GAME END ]]
 
 	Quickbar(IGuiElement@ parent) {
 		super(parent, recti());
@@ -69,6 +76,12 @@ class Quickbar : BaseGuiElement, Savable {
 		@helpButton = GuiButton(this, recti());
 		helpButton.setIcon(Sprite(spritesheet::MenuIcons, 3));
 		helpButton.noClip = true;
+
+		// [[ MODIFY BASE GAME START ]]
+		@minLaborButton = GuiButton(this, recti());
+		minLaborButton.setIcon(icons::Labor);
+		minLaborButton.noClip = true;
+		// [[ MODIFY BASE GAME END ]]
 
 		refresh();
 	}
@@ -116,7 +129,10 @@ class Quickbar : BaseGuiElement, Savable {
 		add(ColonizingPlanets(this));
 		add(ColonizeSafePlanets(this), closed=true);
 		add(SiegePlanets(this));
-		add(LaborPlanets(this), closed=true);
+		// [[ MODIFY BASE GAME START ]]
+		@laborPlanets = LaborPlanets(this);
+		add(laborPlanets, closed=true);
+		// [[ MODIFY BASE GAME END ]]
 		add(DefenseTargets(this), closed=true);
 		// [[ MODIFY BASE GAME ]]
 		add(FlingBeacons(this), closed=(flingTrait is null || !playerEmpire.hasTrait(flingTrait.id)));
@@ -140,6 +156,9 @@ class Quickbar : BaseGuiElement, Savable {
 			file << getClass(modes[i]).name;
 			file << modes[i].closed;
 		}
+		// [[ MODIFY BASE GAME START ]]
+		file << laborPlanets.minLabor;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void load(SaveFile& file) {
@@ -158,6 +177,10 @@ class Quickbar : BaseGuiElement, Savable {
 				}
 			}
 		}
+		// [[ MODIFY BASE GAME START ]]
+		file >> laborPlanets.minLabor;
+		laborPlanets.refreshMarkupTooltip();
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool get_isRoot() const override {
@@ -196,6 +219,12 @@ class Quickbar : BaseGuiElement, Savable {
 			showHelp();
 			return true;
 		}
+		// [[ MODIFY BASE GAME START ]]
+		if(evt.caller is minLaborButton && evt.type == GUI_Clicked) {
+			configureLabor();
+			return true;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		return BaseGuiElement::onGuiEvent(evt);
 	}
 
@@ -218,6 +247,15 @@ class Quickbar : BaseGuiElement, Savable {
 			if(helpButton !is null)
 				helpButton.rect = quickButton.rect - vec2i(36, 0);
 			height += quickButton.size.height + 4;
+			// [[ MODIFY BASE GAME START ]]
+			if(minLaborButton !is null) {
+				if (helpButton !is null && helpButton.visible) {
+					minLaborButton.rect = quickButton.rect - vec2i(72, 0);
+				} else {
+					minLaborButton.rect = quickButton.rect - vec2i(36, 0);
+				}
+			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 		// now show all open modes
 		for(uint i = 0, cnt = modes.length; i < cnt; ++i) {
@@ -270,7 +308,49 @@ class Quickbar : BaseGuiElement, Savable {
 		if(changed)
 			updateAbsolutePosition();
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void configureLabor() {
+		ConfigureLabor(laborPlanets).call();
+	}
+	// [[ MODIFY BASE GAME END ]]
 };
+
+// [[ MODIFY BASE GAME START ]]
+class ConfigureLabor : GuiContextOption, IInputDialogCallback {
+	LaborPlanets@ laborPlanets;
+
+	ConfigureLabor(LaborPlanets@ laborPlanets) {
+		@this.laborPlanets = laborPlanets;
+	}
+
+	void call() {
+		InputDialog@ dialog = InputDialog(this, null);
+		dialog.addTitle(locale::SET_MIN_LABOR_TITLE);
+		dialog.accept.text = locale::SET_MIN_LABOR;
+		dialog.addSpinboxInput(locale::SET_MIN_LABOR_LABEL, defaultValue=laborPlanets.minLabor,
+			minValue=0.0, maxValue=1000000000, decimals=0, step=1.0);
+		dialog.addLabel("", FT_Medium, 0.5, true);
+		addDialog(dialog);
+		changeCallback(dialog);
+	}
+
+	void changeCallback(InputDialog@ dialog) {
+		double labor = dialog.getSpinboxInput(0);
+		dialog.accept.disabled = labor < 0.0;
+		dialog.setLabel(1, locale::LABOR_PLANETS_AT_LEAST + " " + string(labor));
+	}
+
+	void inputCallback(InputDialog@ dialog, bool accepted) {
+		if (accepted) {
+			double labor = dialog.getSpinboxInput(0);
+			laborPlanets.minLabor = int(labor);
+			laborPlanets.longUpdate();
+			laborPlanets.refreshMarkupTooltip();
+		}
+	}
+}
+// [[ MODIFY BASE GAME END ]]
 
 class QuickbarMode : BaseGuiElement {
 	GuiSprite@ picture;
@@ -286,6 +366,12 @@ class QuickbarMode : BaseGuiElement {
 		@picture = GuiSprite(this, Alignment(Left+2, Top+0.5f-18, Left+31, Top+0.5f+18), icon);
 		setMarkupTooltip(picture, name, hoverStyle=false);
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	void refreshMarkupTooltip() {
+		setMarkupTooltip(picture, name, hoverStyle=false);
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	string get_name() {
 		return "---";
@@ -1124,15 +1210,24 @@ class ColonizeSafePlanets : ObjectMode {
 };
 
 class LaborPlanets : ObjectMode {
+	// [[ MODIFY BASE GAME START ]]
+	int minLabor = 1;
+	// [[ MODIFY BASE GAME END ]]
+
 	LaborPlanets(IGuiElement@ parent) {
 		super(parent);
 		color = Color(0x606080ff);
 		grid.showManage = true;
+		// [[ MODIFY BASE GAME START ]]
+		refreshMarkupTooltip();
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool filter(ObjectData@ dat) {
-		if(dat.obj.getResourceProduction(TR_Labor) > 0)
+		// [[ MODIFY BASE GAME START ]]
+		if(dat.obj.getResourceProduction(TR_Labor) > minLabor)
 			return true;
+		// [[ MODIFY BASE GAME END ]]
 		return false;
 	}
 
@@ -1141,7 +1236,9 @@ class LaborPlanets : ObjectMode {
 	}
 
 	string get_name() override {
-		return locale::LABOR_PLANETS;
+		// [[ MODIFY BASE GAME START ]]
+		return locale::LABOR_PLANETS_AT_LEAST + " " + string(minLabor);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void longUpdate() override {
