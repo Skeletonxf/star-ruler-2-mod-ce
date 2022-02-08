@@ -14,7 +14,7 @@ Subsystem: ShieldHarmonizer
 	Size := HexSize * Hexes
 
 	ShieldPercentage := max(0.95 - (2.0 * Size / ShipSize), 0.0) + 0.05
-	BonusShield := Size * 3.0
+	BonusShield := Size * 20
 
 	Hex.HP := 18 * HexSize
 	Hex.Resistance := 0.2

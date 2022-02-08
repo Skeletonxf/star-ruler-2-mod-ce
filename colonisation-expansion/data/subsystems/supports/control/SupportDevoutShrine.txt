@@ -11,8 +11,8 @@ Subsystem: SupportDevoutShrine
 	Prayer := Hexes * 2
 
 	Size := HexSize * Hexes
-	ShieldCapacity := Size * 25
-	ShieldRegen := Size * 0.25
+	ShieldCapacity := Size * 100
+	ShieldRegen := Size
 	ShieldHexes := Hexes
 
 	Hex.Resistance := 0.2

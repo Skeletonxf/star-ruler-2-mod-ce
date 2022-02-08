@@ -11,8 +11,8 @@ Subsystem: SupportShieldGen
 	Hull: Support, Satellite
 
 	Size := HexSize * Hexes
-	ShieldCapacity := Size * 10.0
-	ShieldRegen := Size * 0.5
+	ShieldCapacity := Size * 40.0
+	ShieldRegen := Size * 2
 	ShieldHexes := Hexes
 
 	Hex.Resistance := 0.3
