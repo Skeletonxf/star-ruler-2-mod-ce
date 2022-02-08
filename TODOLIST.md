@@ -57,6 +57,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Investigate issues with Mechanoid AI being able to build gates
   - Make the AI's search for things to colonise when it has no systems more robust - Star Children should still be able to recover while they have Motherships but the current code will attempt to recolonise its home system or just give up.
   - Investigate stored labor being drained by time based constructions
+  - Fix vanilla treating unused resources which are less than their planet's level as not unused for the purposes of the UI and auto import
 
 - Frostkin
   - AI support

@@ -816,6 +816,19 @@ class FreeResources : ObjectMode {
 		}
 		if(!dat.resource.usable)
 			return false;
+		// [[ MODIFY BASE GAME START ]]
+		// but a water/food planet can be raised to level 1 with just extra food and water
+		// which brings the resourceLevel up to 1 when the obj.level may still be 0
+		// due to pop, and this doesn't use up the primary exportable water/food
+		// resource but this filter returns true
+		// and when the planet does level up to level 1, the level of the resource
+		// type is still 0 so the isMaterial check returns true because the planet's
+		// level of 1 exceeds the resource type level of 0, but again this never
+		// used up the primary exportable water/food resource which should
+		// still register as free
+		// This also needs fixing in the code which determines which planets are
+		// used to meet auto imports requests
+		// [[ MODIFY BASE GAME END ]]
 		if(obj.isPlanet) {
 			if(type.isMaterial(obj.level))
 				return false;

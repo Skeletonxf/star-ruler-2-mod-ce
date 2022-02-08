@@ -1205,11 +1205,21 @@ tidy class ObjectManager : Component_ObjectManager, Savable {
 		//Find in currently colonized planets
 		for(uint i = 0, cnt = planets.length; i < cnt; ++i) {
 			Planet@ pl = planets[i];
+			// [[ MODIFY BASE GAME START ]]
+			// Shouldn't we be checking every exportable resource the planet
+			// has here?
+			// [[ MODIFY BASE GAME END ]]
 			const ResourceType@ type = getResource(pl.primaryResourceType);
 			if(type is null || !type.exportable)
 				continue;
 			if(!imp.satisfies(type))
 				continue;
+			// [[ MODIFY BASE GAME START ]]
+			// This makes us skip over resources which are not used in the
+			// level chain when their types have a level less than that of
+			// the planet's own level (which can happen if a food/water planet
+			// gains additional food/water)?
+			// [[ MODIFY BASE GAME END ]]
 			if(type.isMaterial(pl.level))
 				continue;
 			if(!pl.nativeResourceUsable[0])
