@@ -7,4 +7,5 @@ Status: GasGiant
 	IfNotHaveTrait(Flying, PlanetLevelIncomeMod(-40, -80, 0))
 	IfNotHaveTrait(Flying, AddMaxPopulation(-1))
 
-	AI: NegativePopulationCap()
+	RemoveAllStatus(NoxiousAtmosphere)
+	AI:NegativePopulationCap()
