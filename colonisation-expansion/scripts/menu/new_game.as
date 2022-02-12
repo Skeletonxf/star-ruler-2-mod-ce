@@ -2131,12 +2131,18 @@ string getAIName(EmpireSettings& settings) {
 		text += "?";
 
 	int cheatLevel = 0;
-	if(settings.cheatWealth > 0)
-		cheatLevel += ceil(double(settings.cheatWealth) / 10.0);
+	// [[ MODIFY BASE GAME START ]]
+	if(settings.cheatWealthNonInfluence > 0)
+		cheatLevel += ceil(double(settings.cheatWealthNonInfluence) / 10.0);
+	if(settings.cheatWealthInfluence > 0)
+		cheatLevel += ceil(double(settings.cheatWealthInfluence) / 10.0);
 	if(settings.cheatStrength > 0)
 		cheatLevel += settings.cheatStrength;
-	if(settings.cheatAbundance > 0)
-		cheatLevel += settings.cheatAbundance;
+	if(settings.cheatAbundanceNonInfluence > 0)
+		cheatLevel += settings.cheatAbundanceNonInfluence;
+	if(settings.cheatAbundanceInfluence > 0)
+		cheatLevel += settings.cheatAbundanceInfluence;
+	// [[ MODIFY BASE GAME END ]]
 
 	if(cheatLevel > 0) {
 		if(cheatLevel > 3)
@@ -2169,12 +2175,18 @@ class AIPopup : BaseGuiElement {
 	// [[ MODIFY BASE GAME END ]]
 	GuiCheckbox@ legacy;
 
-	GuiCheckbox@ wealth;
-	GuiSpinbox@ wealthAmt;
+	// [[ MODIFY BASE GAME START ]]
+	GuiCheckbox@ wealthNonInfluence;
+	GuiSpinbox@ wealthAmtNonInfluence;
 	GuiCheckbox@ strength;
 	GuiSpinbox@ strengthAmt;
-	GuiCheckbox@ abundance;
-	GuiSpinbox@ abundanceAmt;
+	GuiCheckbox@ abundanceNonInfluence;
+	GuiSpinbox@ abundanceAmtNonInfluence;
+	GuiCheckbox@ wealthInfluence;
+	GuiSpinbox@ wealthAmtInfluence;
+	GuiCheckbox@ abundanceInfluence;
+	GuiSpinbox@ abundanceAmtInfluence;
+	// [[ MODIFY BASE GAME END ]]
 	GuiCheckbox@ privileged;
 
 	GuiButton@ okButton;
@@ -2187,7 +2199,7 @@ class AIPopup : BaseGuiElement {
 
 		recti pos = recti_area(
 				vec2i(around.absolutePosition.botRight.x, around.absolutePosition.topLeft.y),
-				vec2i(600, 200));
+				vec2i(630, 260)); // [[ MODIFY BASE GAME +30, +60 ]]
 		if(pos.botRight.y > screenSize.y)
 			pos += vec2i(0, screenSize.y - pos.botRight.y);
 		if(pos.botRight.x > screenSize.x)
@@ -2247,24 +2259,36 @@ class AIPopup : BaseGuiElement {
 		cheatHeading.stroke = colors::Black;
 		cheatHeading.text = locale::AI_CHEATS;
 
-		pos = recti_area(vec2i(260+165, 36), vec2i(170, 30));
+		pos = recti_area(vec2i(260+165, 36), vec2i(170, 60)); // [[ MODIFY BASE GAME +0, +30 ]]
 
-		@wealth = GuiCheckbox(this, recti_area(pos.topLeft, vec2i(110, 30)), locale::AI_WEALTH);
-		setMarkupTooltip(wealth, locale::AI_WEALTH_DESC);
-		@wealthAmt = GuiSpinbox(this, recti_area(pos.topLeft+vec2i(115, 0), vec2i(50, 30)), 10, 0, 1000, 1, 0);
+		// [[ MODIFY BASE GAME START ]]
+		@wealthNonInfluence = GuiCheckbox(this, recti_area(pos.topLeft, vec2i(110+30, 30)), locale::AI_WEALTH_NON_INFLUENCE);
+		setMarkupTooltip(wealthNonInfluence, locale::AI_WEALTH_NON_INFLUENCE_DESC);
+		@wealthAmtNonInfluence = GuiSpinbox(this, recti_area(pos.topLeft+vec2i(115+30, 0), vec2i(50, 30)), 10, 0, 1000, 1, 0);
 		pos += vec2i(0, 30);
 
-		@strength = GuiCheckbox(this, recti_area(pos.topLeft, vec2i(110, 30)), locale::AI_STRENGTH);
+		@wealthInfluence = GuiCheckbox(this, recti_area(pos.topLeft, vec2i(110+30, 30)), locale::AI_WEALTH_INFLUENCE);
+		setMarkupTooltip(wealthInfluence, locale::AI_WEALTH_INFLUENCE_DESC);
+		@wealthAmtInfluence = GuiSpinbox(this, recti_area(pos.topLeft+vec2i(115+30, 0), vec2i(50, 30)), 10, 0, 1000, 1, 0);
+		pos += vec2i(0, 30);
+
+		@strength = GuiCheckbox(this, recti_area(pos.topLeft, vec2i(110+30, 30)), locale::AI_STRENGTH);
 		setMarkupTooltip(strength, locale::AI_STRENGTH_DESC);
-		@strengthAmt = GuiSpinbox(this, recti_area(pos.topLeft+vec2i(115, 0), vec2i(50, 30)), 1, 0, 100, 1, 0);
+		@strengthAmt = GuiSpinbox(this, recti_area(pos.topLeft+vec2i(115+30, 0), vec2i(50, 30)), 1, 0, 100, 1, 0);
 		pos += vec2i(0, 30);
 
-		@abundance = GuiCheckbox(this, recti_area(pos.topLeft, vec2i(110, 30)), locale::AI_ABUNDANCE);
-		setMarkupTooltip(abundance, locale::AI_ABUNDANCE_DESC);
-		@abundanceAmt = GuiSpinbox(this, recti_area(pos.topLeft+vec2i(115, 0), vec2i(50, 30)), 1, 0, 100, 1, 0);
+		@abundanceNonInfluence = GuiCheckbox(this, recti_area(pos.topLeft, vec2i(110+30, 30)), locale::AI_ABUNDANCE_NON_INFLUENCE);
+		setMarkupTooltip(abundanceNonInfluence, locale::AI_ABUNDANCE_NON_INFLUENCE_DESC);
+		@abundanceAmtNonInfluence = GuiSpinbox(this, recti_area(pos.topLeft+vec2i(115+30, 0), vec2i(50, 30)), 1, 0, 100, 1, 0);
 		pos += vec2i(0, 30);
 
-		@privileged = GuiCheckbox(this, pos, locale::AI_PRIVILEGED);
+		@abundanceInfluence = GuiCheckbox(this, recti_area(pos.topLeft, vec2i(110+30, 30)), locale::AI_ABUNDANCE_INFLUENCE);
+		setMarkupTooltip(abundanceInfluence, locale::AI_ABUNDANCE_INFLUENCE_DESC);
+		@abundanceAmtInfluence = GuiSpinbox(this, recti_area(pos.topLeft+vec2i(115+30, 0), vec2i(50, 30)), 1, 0, 100, 1, 0);
+		pos += vec2i(0, 30);
+		// [[ MODIFY BASE GAME END ]]
+
+		@privileged = GuiCheckbox(this, recti_area(pos.topLeft, vec2i(110+30, 30)), locale::AI_PRIVILEGED); // [[ MODIFY BASE GAME ]]
 		setMarkupTooltip(privileged, locale::AI_PRIVILEGED_DESC);
 		pos += vec2i(0, 30);
 
@@ -2287,20 +2311,32 @@ class AIPopup : BaseGuiElement {
 		if(legacy.checked)
 			legacy.visible = true;
 
-		wealth.checked = setup.settings.cheatWealth > 0;
-		wealthAmt.visible = wealth.checked;
-		if(wealth.checked)
-			wealthAmt.value = setup.settings.cheatWealth;
+		// [[ MODIFY BASE GAME START ]]
+		wealthNonInfluence.checked = setup.settings.cheatWealthNonInfluence > 0;
+		wealthAmtNonInfluence.visible = wealthNonInfluence.checked;
+		if(wealthNonInfluence.checked)
+			wealthAmtNonInfluence.value = setup.settings.cheatWealthNonInfluence;
+
+		wealthInfluence.checked = setup.settings.cheatWealthInfluence > 0;
+		wealthAmtInfluence.visible = wealthInfluence.checked;
+		if(wealthInfluence.checked)
+			wealthAmtInfluence.value = setup.settings.cheatWealthInfluence;
 
 		strength.checked = setup.settings.cheatStrength > 0;
 		strengthAmt.visible = strength.checked;
 		if(strength.checked)
 			strengthAmt.value = setup.settings.cheatStrength;
 
-		abundance.checked = setup.settings.cheatAbundance > 0;
-		abundanceAmt.visible = abundance.checked;
-		if(abundance.checked)
-			abundanceAmt.value = setup.settings.cheatAbundance;
+		abundanceNonInfluence.checked = setup.settings.cheatAbundanceNonInfluence > 0;
+		abundanceAmtNonInfluence.visible = abundanceNonInfluence.checked;
+		if(abundanceNonInfluence.checked)
+			abundanceAmtNonInfluence.value = setup.settings.cheatAbundanceNonInfluence;
+
+		abundanceInfluence.checked = setup.settings.cheatAbundanceInfluence > 0;
+		abundanceAmtInfluence.visible = abundanceInfluence.checked;
+		if(abundanceInfluence.checked)
+			abundanceAmtInfluence.value = setup.settings.cheatAbundanceInfluence;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void apply() {
@@ -2325,11 +2361,18 @@ class AIPopup : BaseGuiElement {
 		else
 			setup.settings.type = ET_WeaselAI;
 
-		wealthAmt.visible = wealth.checked;
-		if(wealthAmt.visible)
-			setup.settings.cheatWealth = wealthAmt.value;
+		// [[ MODIFY BASE GAME START ]]
+		wealthAmtNonInfluence.visible = wealthNonInfluence.checked;
+		if(wealthAmtNonInfluence.visible)
+			setup.settings.cheatWealthNonInfluence = wealthAmtNonInfluence.value;
 		else
-			setup.settings.cheatWealth = 0;
+			setup.settings.cheatWealthNonInfluence = 0;
+
+		wealthAmtInfluence.visible = wealthInfluence.checked;
+		if(wealthAmtInfluence.visible)
+			setup.settings.cheatWealthInfluence = wealthAmtInfluence.value;
+		else
+			setup.settings.cheatWealthInfluence = 0;
 
 		strengthAmt.visible = strength.checked;
 		if(strengthAmt.visible)
@@ -2337,11 +2380,18 @@ class AIPopup : BaseGuiElement {
 		else
 			setup.settings.cheatStrength = 0;
 
-		abundanceAmt.visible = abundance.checked;
-		if(abundanceAmt.visible)
-			setup.settings.cheatAbundance = abundanceAmt.value;
+		abundanceAmtNonInfluence.visible = abundanceNonInfluence.checked;
+		if(abundanceAmtNonInfluence.visible)
+			setup.settings.cheatAbundanceNonInfluence = abundanceAmtNonInfluence.value;
 		else
-			setup.settings.cheatAbundance = 0;
+			setup.settings.cheatAbundanceNonInfluence = 0;
+
+		abundanceAmtInfluence.visible = abundanceInfluence.checked;
+		if(abundanceAmtInfluence.visible)
+			setup.settings.cheatAbundanceInfluence = abundanceAmtInfluence.value;
+		else
+			setup.settings.cheatAbundanceInfluence = 0;
+		// [[ MODIFY BASE GAME END ]]
 
 		setup.settings.difficulty = difficulties.selected;
 		setup.settings.aiFlags = flags;

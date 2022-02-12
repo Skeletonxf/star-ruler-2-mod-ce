@@ -24,3 +24,19 @@ AI_DRAGON_DESC: <<
 	is set to hard.
 >>
 PREVIOUS_LOBBY: Load Previous Lobby
+
+AI_WEALTH_INFLUENCE: Wealth (I)
+AI_WEALTH_INFLUENCE_DESC: <<
+	Give the AI a static amount of influence resources for the entire game.
+>>
+
+AI_ABUNDANCE_INFLUENCE: Abundance (I)
+AI_ABUNDANCE_INFLUENCE_DESC: Increase the amount of influence income the AI gets from their planets.
+
+AI_WEALTH_NON_INFLUENCE: Wealth (NI)
+AI_WEALTH_NON_INFLUENCE_DESC: <<
+	Give the AI a static amount of free resources (except Influence) of all types for the entire game.
+>>
+
+AI_ABUNDANCE_NON_INFLUENCE: Abundance (NI)
+AI_ABUNDANCE_NON_INFLUENCE_DESC: Increase the amount of resource income (except Influence) the AI gets from their planets.

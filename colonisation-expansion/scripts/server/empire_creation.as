@@ -88,33 +88,44 @@ void init() {
 
 		//Apply generic AI cheats
 		if(settings.type != ET_Player) {
-			if(settings.cheatWealth > 0) {
-				double factor = settings.cheatWealth;
+			// [[ MODIFY BASE GAME START ]]
+			if(settings.cheatWealthNonInfluence > 0) {
+				double factor = settings.cheatWealthNonInfluence;
 				emp.modResearchRate(0.75 * factor);
 				emp.modTotalBudget(100 * factor);
 				emp.modEnergyIncome(0.5 * factor);
 				emp.modDefenseRate(1.0 * factor / 60.0);
-				emp.modInfluenceIncome(0.5 * factor);
 				emp.FactoryLaborMod += factor;
 				emp.PopulationGrowthFactor += 0.1 * factor;
 
 				emp.modFTLCapacity(125.0 * factor);
 				emp.modFTLIncome(0.5 * factor);
 
-				emp.cheatLevel += settings.cheatWealth / 10;
+				emp.cheatLevel += settings.cheatWealthNonInfluence / 10;
 			}
-			if(settings.cheatAbundance > 0) {
-				double factor = 1.0 + double(settings.cheatAbundance) * 0.5;
+			if(settings.cheatWealthInfluence > 0) {
+				double factor = settings.cheatWealthInfluence;
+				emp.modInfluenceIncome(0.5 * factor);
+				emp.cheatLevel += settings.cheatWealthInfluence / 10;
+			}
+			if(settings.cheatAbundanceNonInfluence > 0) {
+				double factor = 1.0 + double(settings.cheatAbundanceNonInfluence) * 0.5;
 				emp.MoneyGenerationFactor *= factor;
 				emp.LaborGenerationFactor *= factor;
 				emp.ResearchGenerationFactor *= factor;
 				emp.EnergyGenerationFactor *= factor;
 				emp.DefenseGenerationFactor *= factor;
 				emp.PopulationGrowthFactor *= factor;
+
+				emp.cheatLevel += settings.cheatAbundanceNonInfluence;
+			}
+			if(settings.cheatAbundanceInfluence > 0) {
+				double factor = 1.0 + double(settings.cheatAbundanceInfluence) * 0.5;
 				emp.modInfluenceFactor(sqrt(factor) - 1.0);
 
-				emp.cheatLevel += settings.cheatAbundance;
+				emp.cheatLevel += settings.cheatAbundanceInfluence;
 			}
+			// [[ MODIFY BASE GAME END ]]
 			if(settings.cheatStrength > 0) {
 				double factor = 1.0 + double(settings.cheatStrength) * 0.5;
 				factor = sqrt(factor);

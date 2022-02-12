@@ -50,9 +50,13 @@ class EmpireSettings : Serializable {
 	int team = -1;
 
 	int aiFlags = 0;
-	int cheatWealth = 0;
+	// [[ MODIFY BASE GAME START ]]
+	int cheatWealthNonInfluence = 0;
 	int cheatStrength = 0;
-	int cheatAbundance = 0;
+	int cheatAbundanceNonInfluence = 0;
+	int cheatWealthInfluence = 0;
+	int cheatAbundanceInfluence = 0;
+	// [[ MODIFY BASE GAME END ]]
 
 	EmpireSettings() {
 		type = ET_WeaselAI;
@@ -117,9 +121,14 @@ class EmpireSettings : Serializable {
 		msg >> team;
 
 		msg >> aiFlags;
-		msg >> cheatWealth;
+		// [[ MODIFY BASE GAME START ]]
+		msg >> cheatWealthNonInfluence;
 		msg >> cheatStrength;
-		msg >> cheatAbundance;
+		msg >> cheatAbundanceNonInfluence;
+		msg >> cheatWealthInfluence;
+		msg >> cheatAbundanceInfluence;
+
+		// [[ MODIFY BASE GAME END ]]
 
 		uint cnt = 0;
 		msg >> cnt;
@@ -150,9 +159,13 @@ class EmpireSettings : Serializable {
 		msg << team;
 
 		msg << aiFlags;
-		msg << cheatWealth;
+		// [[ MODIFY BASE GAME START ]]
+		msg << cheatWealthNonInfluence;
 		msg << cheatStrength;
-		msg << cheatAbundance;
+		msg << cheatAbundanceNonInfluence;
+		msg << cheatWealthInfluence;
+		msg << cheatAbundanceInfluence;
+		// [[ MODIFY BASE GAME END ]]
 
 		msg << traits.length;
 		for(uint i = 0, cnt = traits.length; i < cnt; ++i)
@@ -188,9 +201,11 @@ class EmpireSettings : Serializable {
 	void copyAISettingsFrom(const EmpireSettings& other) {
 		difficulty = other.difficulty;
 		aiFlags = other.aiFlags;
-		cheatWealth = other.cheatWealth;
+		cheatWealthNonInfluence = other.cheatWealthNonInfluence;
 		cheatStrength = other.cheatStrength;
-		cheatAbundance = other.cheatAbundance;
+		cheatAbundanceNonInfluence = other.cheatAbundanceNonInfluence;
+		cheatWealthInfluence = other.cheatWealthInfluence;
+		cheatAbundanceInfluence = other.cheatAbundanceInfluence;
 	}
 	// [[ MODIFY BASE GAME END ]]
 };
