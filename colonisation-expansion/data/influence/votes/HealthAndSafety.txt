@@ -1,0 +1,28 @@
+Vote: HealthAndSafety
+	Name: #HEALTH_AND_SAFETY
+	Description: #HEALTH_AND_SAFETY_DESC
+	Color: #ff56e5
+	Icon: CardIcons::44 * #ff56e5
+	AI: BadIfMilitaryOrEconomyWeak(Importance = 8)
+	AI: GoodIfMilitaryAndEconomyStronk(Importance = 4)
+	MultiplyNegativeSpeed(0.5)
+	CreateEffect(Pass, HealthAndSafetyMeasures)
+Effect: HealthAndSafetyMeasures
+	Name: #HEALTH_AND_SAFETY
+	Description: #HEALTH_AND_SAFETY_DESC
+	Color: #ff56e5
+	Icon: CardIcons::44 * #ff56e5
+	OnAllEmpires(EnableModifier(LaborCostFactor(1.07)))
+	OnAllEmpires(EnableModifier(BuildCostFactor(1.07)))
+Card: RaiseHealthAndSafety
+	Name: #HEALTH_AND_SAFETY
+	Description: #HEALTH_AND_SAFETY_DESC
+	Color: #ff56e5
+	Class: Vote
+	Base Play Cost: 7
+	Rarity: Rare
+	AI: PlayWhenEconomyStronkAndBuiltUp()
+	Icon: CardIcons::44 * #ff56e5
+	Base Purchase Cost: 10
+	RequireContact()
+	StartVote(HealthAndSafety)

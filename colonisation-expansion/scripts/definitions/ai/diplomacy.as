@@ -1048,3 +1048,71 @@ class PlayAsCreatedResource : CardAI {
 	}
 #section all
 };
+
+uint getMilitarisation(AIDiplomacy& ai) {
+	uint totalMilitaryFlagships = 0;
+	DataList@ objs = ai.empire.getFlagships();
+	Object@ obj;
+	uint total = 0;
+	while(receive(objs, obj)) {
+		Ship@ ship = cast<Ship>(obj);
+		if(ship !is null && ship.valid && !ship.blueprint.design.hasTag(ST_Mothership)) {
+			if(ship.getFleetMaxStrength() < 1000.0)
+				continue;
+			++totalMilitaryFlagships;
+		}
+	}
+	return totalMilitaryFlagships;
+}
+
+// [[ MODIFY BASE GAME START ]]
+class PlayWhenEconomyStronkAndBuiltUp : CardAI {
+	Document doc("Play this card if we have a strong economy and lots of military flagships already.");
+	Argument weight(AT_Decimal, "1.0", doc="Weight of the card in relation to other cards.");
+
+#section server
+	void considerAct(AIDiplomacy& ai, const InfluenceCard@ card, any@ data, Targets& targs, double& weight) const override {
+		bool richEnough = ai.empire.EstNextBudget > 2500;
+		uint totalMilitaryFlagships = getMilitarisation(ai);
+		if (!richEnough || totalMilitaryFlagships < 4)
+			weight *= 0.0;
+		else
+			weight *= this.weight.decimal;
+	}
+#section all
+};
+
+class BadIfMilitaryOrEconomyWeak : VoteAI {
+	Document doc("This vote is bad if our military or economy are weak.");
+	Argument weight(AT_Decimal, "2.0", doc="Just how bad is this vote?");
+	Argument importance(AT_Decimal, "1.0", doc="Importance multiplier to the vote.");
+
+#section server
+	void consider(AIDiplomacy& ai, VoteState& state, const InfluenceVote@ vote) const {
+		bool richEnough = ai.empire.EstNextBudget > 2500;
+		uint totalMilitaryFlagships = getMilitarisation(ai);
+		if (!richEnough || totalMilitaryFlagships < 4) {
+			state.weightOppose *= this.weight.decimal;
+			state.priority *= this.importance.decimal;
+		}
+	}
+#section all
+};
+
+class GoodIfMilitaryAndEconomyStronk : VoteAI {
+	Document doc("This vote is good if our military and economy are strong.");
+	Argument weight(AT_Decimal, "2.0", doc="Just how good is this vote?");
+	Argument importance(AT_Decimal, "1.0", doc="Importance multiplier to the vote.");
+
+#section server
+	void consider(AIDiplomacy& ai, VoteState& state, const InfluenceVote@ vote) const {
+		bool richEnough = ai.empire.EstNextBudget > 2500;
+		uint totalMilitaryFlagships = getMilitarisation(ai);
+		if (richEnough && totalMilitaryFlagships >= 4) {
+			state.weightSupport *= this.weight.decimal;
+			state.priority *= this.importance.decimal;
+		}
+	}
+#section all
+};
+// [[ MODIFY BASE GAME END ]]
