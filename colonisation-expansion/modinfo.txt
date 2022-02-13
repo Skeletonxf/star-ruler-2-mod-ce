@@ -1,4 +1,4 @@
-	Name: Colonisation Expansion v1.9
+	Name: Colonisation Expansion v1.9.1
 	Compatibility: 200
 	Description: <<
 		[vspace=3/] [img=Campfire;22]Adds a number of conditions and ways to develop planets.[/img]
