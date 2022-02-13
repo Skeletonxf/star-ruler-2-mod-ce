@@ -23,5 +23,6 @@ Card: RaiseHealthAndSafety
 	AI: PlayWhenEconomyStronkAndBuiltUp()
 	Icon: CardIcons::44 * #ff56e5
 	Base Purchase Cost: 7
+	Frequency: 0
 	RequireContact()
 	StartVote(HealthAndSafety)
