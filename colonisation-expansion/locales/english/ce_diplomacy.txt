@@ -80,7 +80,7 @@ HEALTH_AND_SAFETY: Health and Safety improvements
 HEALTH_AND_SAFETY_DESC: <<
 	The standards on spaceships can always be improved, whether it be more mandatory training for crew or safer standards for ship building.
 
-	[img=QuickbarIcons::6;32]If the vote passes, while the effect is active, ships and stations cost 7% more money and labor to construct. However, these standards will save lives.[/img]
+	[img=QuickbarIcons::6;32]If the vote passes, while the effect is active, ships and stations require 7% more labor to construct. However, these standards will save lives.[/img]
 	[img=QuickbarIcons::3;32]Voting to reject this effect takes twice as long as it is very difficult to argue against saving lives.[/img]
-	[img=MenuIcons::3;32]Raising health and safety standards can make militarisation more difficult, but you wouldn't construct your own military first and then raise everyone else's costs would you?[/img]
+	[img=MenuIcons::3;32]Raising health and safety standards can make militarisation more difficult, but you wouldn't construct your own military first and then raise everyone else's labor costs would you?[/img]
 >>

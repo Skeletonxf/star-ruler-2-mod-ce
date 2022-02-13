@@ -127,7 +127,6 @@ class EmpireSettings : Serializable {
 		msg >> cheatAbundanceNonInfluence;
 		msg >> cheatWealthInfluence;
 		msg >> cheatAbundanceInfluence;
-
 		// [[ MODIFY BASE GAME END ]]
 
 		uint cnt = 0;

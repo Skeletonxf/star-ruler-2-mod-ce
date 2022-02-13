@@ -13,16 +13,15 @@ Effect: HealthAndSafetyMeasures
 	Color: #ff56e5
 	Icon: CardIcons::44 * #ff56e5
 	OnAllEmpires(EnableModifier(LaborCostFactor(1.07)))
-	OnAllEmpires(EnableModifier(BuildCostFactor(1.07)))
 Card: RaiseHealthAndSafety
 	Name: #HEALTH_AND_SAFETY
 	Description: #HEALTH_AND_SAFETY_DESC
 	Color: #ff56e5
 	Class: Vote
-	Base Play Cost: 7
+	Base Play Cost: 6
 	Rarity: Rare
 	AI: PlayWhenEconomyStronkAndBuiltUp()
 	Icon: CardIcons::44 * #ff56e5
-	Base Purchase Cost: 10
+	Base Purchase Cost: 7
 	RequireContact()
 	StartVote(HealthAndSafety)
