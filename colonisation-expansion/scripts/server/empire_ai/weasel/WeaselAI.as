@@ -490,7 +490,9 @@ final class AI : AIController, Savable {
 		@designs = add(createDesigns());
 		@construction = add(createConstruction());
 		// [[ MODIFY BASE GAME START ]]
-		if (behavior.dragonComponents || difficulty >= 2) {
+		// I think Military2 is stable enough now to always be enabled, weasel Military
+		// can choke in enough situations we don't really want the AI ever using it.
+		if (true || behavior.dragonComponents || difficulty >= 2) {
 			print("Enabling Dragon Military component");
 			@military = add(createMilitary2());
 		} else {
