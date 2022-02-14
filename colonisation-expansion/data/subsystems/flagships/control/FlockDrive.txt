@@ -45,7 +45,7 @@ Subsystem: FlockDriveSupport
 	BaseColor: #c2fffd
 	Elevation: 4
 
-	Tags: BaseCost, Category:Control, BadFiller, ForbidRemnant, SingleHexSubsystem, RaceSpecial
+	Tags: Category:Control, BadFiller, ForbidRemnant, SingleHexSubsystem, RaceSpecial
 	Tags: HasInternals
 	Tags: NoBulkhead, Important
 	Hull: Support
@@ -66,6 +66,8 @@ Subsystem: FlockDriveSupport
 	AddPostModifier: SupplyDrainFactor(max(0.003 * Sum.Thrust * (Sum.Thrust / HexSum.Mass), 0.1))
 
 	FlockDrives := 1
+	Hex.BuildCost := 0.75 * HexSize
+	Hex.LaborCost := 0.07 * HexSize
 	Assert: Sum.FlockDrives == 1
 		Message: #ERROR_ONLY_ONE
 	Assert: Hexes <= 1
@@ -77,5 +79,4 @@ Subsystem: FlockDriveSupport
 		Hex.HP := 2 * Hex.HP
 		Hex.Resistance := 0.35
 
-		Hex.BuildCost := 5 * Hex.BuildCost
-		Hex.Mass := 5 * Hex.Mass
+		Hex.BuildCost := 2 * Hex.BuildCost
