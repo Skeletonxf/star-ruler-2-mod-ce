@@ -2,7 +2,7 @@
 	"__VERSION__": 1,
 	"name": "Miner",
 	"size": 300,
-	"hull": "$FlagTiny",
+	"hull": "$1FlagTiny",
 	"type": "Flagship",
 	"gridWidth": 28,
 	"gridHeight": 23,
