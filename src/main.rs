@@ -5,6 +5,9 @@ use std::fs;
 use std::fs::ReadDir;
 use std::path::PathBuf;
 
+/// This isn't Colonisation Expansion, this is a collection of sanity checks for Colonisation
+/// Expansion's source code to be ran in CI.
+
 fn main() {
     std::process::exit(match check_design_files() {
         Ok(_) => 0,
@@ -63,6 +66,7 @@ fn check_design_folder(from: ReadDir) -> Result<(), Box<dyn Error>> {
 
 #[derive(Deserialize, Debug)]
 struct SR2DesignFile<'a> {
+    // we only need to parse the hull field which is always at the top level
     hull: &'a str,
 }
 
