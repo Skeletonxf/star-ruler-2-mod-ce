@@ -24,6 +24,8 @@ Trait: Gate
 
 	IfHaveTrait(Frostkin, LoadDesigns(frostkin/not_hyperdrive))
 	IfHaveTrait(Frostkin, LoadDesigns(frostkin/default))
+	IfHaveTrait(Frostkin, LoadDesigns(frostkin/gate))
+
 	IfHaveTrait(Ancient, LoadDesigns(ancient/default))
 	IfHaveTrait(Ancient, LoadDesigns(ancient/not_hyperdrive))
 	IfHaveTrait(Ancient, LoadDesigns(ancient/gate))

@@ -2,7 +2,7 @@
 	"__VERSION__": 1,
 	"name": "Battleship",
 	"size": 200,
-	"hull": "MoiraiFlagHuge",
+	"hull": "$1FlagHuge",
 	"type": "Flagship",
 	"gridWidth": 28,
 	"gridHeight": 23,
