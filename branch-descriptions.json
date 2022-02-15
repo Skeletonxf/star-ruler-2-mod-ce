@@ -1,3 +1,3 @@
 {
-    "master": "This branch is used for active development and is not guarenteed to be stable, balanced, or compatible with game saves made in future or past versions. When choosing a version of CE to download, you should pick from the tagged releases, which are snapshots of stable commits from master. In some cases tagged versions are backwards compatible with game saves for previous versions, but you should not assume they will be unless the tag is specifically stated to be so."
+    "master": "This branch is used for active development and is not guaranteed to be stable, balanced, or compatible with game saves made in future or past versions. When choosing a version of CE to download, you should pick from the tagged releases, which are snapshots of stable commits from master. In some cases tagged versions are backwards compatible with game saves for previous versions, but you should not assume they will be unless the tag is specifically stated to be so."
 }
