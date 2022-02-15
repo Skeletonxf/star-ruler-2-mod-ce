@@ -9,7 +9,7 @@ fn main() {
     std::process::exit(match check_design_files() {
         Ok(_) => 0,
         Err(error) => {
-            eprintln!("Error scanning design files: {:?}", error);
+            eprintln!("Error scanning design files: {}", error);
             1
         }
     })
