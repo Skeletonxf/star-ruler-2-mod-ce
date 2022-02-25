@@ -308,6 +308,11 @@ class DiplomacyAI : AIDiplomacy {
 				}
 			}
 
+			// [[ MODIFY BASE GAME START ]]
+			// TODO: Don't vote if the vote is worth less to us than our card stockpile!!!!!
+			// especially for zeitgeists
+			// [[ MODIFY BASE GAME END ]]
+
 			//See if we can play some cards into it
 			double totalWeight = 0.0;
 
@@ -575,9 +580,14 @@ class DiplomacyAI : AIDiplomacy {
 			availInfluence += reservedInfluence;
 
 		double availSupport = min(availInfluence * (double(totalSupport) / double(totalSupportCost)), double(totalSupport));
-		if(availSupport < gap * pow(0.5, margin))
-			return false;
-		return true;
+		// [[ MODIFY BASE GAME START ]]
+		// If margin is 1, we need at least as much support as the gap
+		// (even this could be an underestimation since our opponent can
+		// continue voting against us)
+		// If margin is 2, we only consider half as much support as the gap
+		// because we won't be nearly as committed to it passing by ourselves
+		return availSupport >= gap * 2.0 * pow(0.5, margin);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool canFail(VoteData@ state, double margin = 1.0) {
@@ -591,9 +601,14 @@ class DiplomacyAI : AIDiplomacy {
 			availInfluence += reservedInfluence;
 
 		double availSupport = min(availInfluence * (double(totalSupport) / double(totalSupportCost)), double(totalSupport));
-		if(availSupport < gap * pow(0.5, margin))
-			return false;
-		return true;
+		// [[ MODIFY BASE GAME START ]]
+		// If margin is 1, we need at least as much support as the gap
+		// (even this could be an underestimation since our opponent can
+		// continue voting against us)
+		// If margin is 2, we only consider half as much support as the gap
+		// because we won't be nearly as committed to it passing by ourselves
+		return availSupport >= gap * 2.0 * pow(0.5, margin);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void makeOffer(VoteData@ state) {

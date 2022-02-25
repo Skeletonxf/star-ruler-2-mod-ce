@@ -4,6 +4,8 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Port config of min labor filter to mod pack
+  - Teach the AI to value hoarding some stockpile of cards and be way less willing to waste them on unimportant votes
+  - Teach the AI to vote on zeitgeists based on contribPoints instead of just points when it's determining if it thinks it can win
   - Port interdict movement fixes to mod pack once stress tested in a few multiplayer games
   - Stress test teaching of dummy resources to the AI
     - Can unhack Ancient AI components and CP once sure fully working (I think it properly tracks dummy resource changes now?)
