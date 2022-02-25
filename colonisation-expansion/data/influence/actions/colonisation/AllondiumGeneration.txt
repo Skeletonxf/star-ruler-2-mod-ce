@@ -28,5 +28,5 @@ Vote: AllondiumGeneration
 	CancelOnLost(planet)
 	Trigger(planet, AddStatus(GiveAllondium))
 
-	AI: GoodFor(planet, Importance = 6)
-	AI: BadForNot(planet, Importance = 5)
+	AI: GoodFor(planet, Importance = 5)
+	AI: BadForNot(planet, Importance = 4)

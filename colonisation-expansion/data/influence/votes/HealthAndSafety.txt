@@ -3,8 +3,8 @@ Vote: HealthAndSafety
 	Description: #HEALTH_AND_SAFETY_DESC
 	Color: #ff56e5
 	Icon: CardIcons::44 * #ff56e5
-	AI: BadIfMilitaryOrEconomyWeak(Importance = 8)
-	AI: GoodIfMilitaryAndEconomyStronk(Importance = 4)
+	AI: BadIfMilitaryOrEconomyWeak(Importance = 4)
+	AI: GoodIfMilitaryAndEconomyStronk(Importance = 3)
 	MultiplyNegativeSpeed(0.5)
 	CreateEffect(Pass, HealthAndSafetyMeasures)
 Effect: HealthAndSafetyMeasures
