@@ -532,9 +532,15 @@ class DiplomacyAI : AIDiplomacy {
 		claimInfluenceVoteOffer_server(empire, state.voteId, state.pursueOffer);
 	}
 
-	double getVoteGap(VoteData@ state) {
+	// [[ MODIFY BASE GAME START ]]
+	// Looks like this returns how many points we need to close the gap in
+	// support from where we are to where we want to be. Negative values are
+	// good because the vote's already going the way we want.
+	// Seems odd that vanilla guesses which way we want from the VoteData state
+	// when this is called during the AI deciding which way it wants to vote
+	double getVoteGap(VoteData@ state, bool wantToPass) {
 		double gap = 0.0;
-		if(state.side) {
+		if(wantToPass) {
 			if(!state.isRace) {
 				gap = state.vote.totalAgainst - state.vote.totalFor;
 			}
@@ -556,10 +562,11 @@ class DiplomacyAI : AIDiplomacy {
 		}
 		return gap;
 	}
+	// [[ MODIFY BASE GAME END ]]
 
 	bool canPass(VoteData@ state, double margin = 1.0) {
 		//Check whether we can realistically pass this vote
-		double gap = getVoteGap(state);
+		double gap = getVoteGap(state, true); // [[ MODIFY BASE GAME ]]
 		if(gap < 0)
 			return true;
 
@@ -575,7 +582,7 @@ class DiplomacyAI : AIDiplomacy {
 
 	bool canFail(VoteData@ state, double margin = 1.0) {
 		//Check whether we can realistically fail this vote
-		double gap = getVoteGap(state);
+		double gap = getVoteGap(state, false); // [[ MODIFY BASE GAME ]]
 		if(gap < 0)
 			return true;
 
@@ -590,7 +597,7 @@ class DiplomacyAI : AIDiplomacy {
 	}
 
 	void makeOffer(VoteData@ state) {
-		int needSupp = getVoteGap(state);
+		int needSupp = getVoteGap(state, state.side);  // [[ MODIFY BASE GAME ]]
 		if(needSupp <= 0)
 			return;
 
