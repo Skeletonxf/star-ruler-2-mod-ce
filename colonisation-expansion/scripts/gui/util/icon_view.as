@@ -191,9 +191,11 @@ void drawFleetIcon(Ship@ leader, const recti& pos, bool showStrength = true) {
 void drawRegionIcon(Region@ region, const recti& pos) {
 	if (region !is null && region.starCount > 0) {
 		for (uint i = 0, cnt = region.starCount; i < cnt; ++i) {
-			int height = pos.height / region.starCount;
-			int width = pos.width / region.starCount;
-			drawStarIcon(region.stars[i], recti_area(pos.topLeft.x + (i * width), pos.topLeft.y + (i * height), width, height));
+			recti innerPos = pos.padded(0.2 * pos.width, 0.2 * pos.height);
+			int height = innerPos.height / region.starCount;
+			int width = innerPos.width / region.starCount;
+			recti starPos = recti_area(innerPos.topLeft.x + (i * width), innerPos.topLeft.y + (i * height), width, height);
+			drawStarIcon(region.stars[i], starPos, padding=false);
 		}
 		return;
 	}
@@ -242,7 +244,7 @@ void drawObjectIcon(Object@ obj, const recti& pos, Resource@ r) {
 
 // [[ MODIFY BASE GAME START ]]
 quaterniond internalRotation;
-void drawStarIcon(Star@ star, const recti& pos) {
+void drawStarIcon(Star@ star, const recti& pos, bool padding=true) {
 	Draw3D@ draw;
 	if(star.temperature > 0) {
 		@draw = DrawStar(star);
@@ -251,6 +253,10 @@ void drawStarIcon(Star@ star, const recti& pos) {
 		return;
 	}
 	draw.preRender(star);
-	draw.draw(pos.padded(0.2 * pos.width, 0.2 * pos.height), internalRotation);
+	if (padding) {
+		draw.draw(pos.padded(0.2 * pos.width, 0.2 * pos.height), internalRotation);
+	} else {
+		draw.draw(pos, internalRotation);
+	}
 }
 // [[ MODIFY BASE GAME END ]]
