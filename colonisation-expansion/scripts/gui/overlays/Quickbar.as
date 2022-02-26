@@ -1361,7 +1361,7 @@ class ContestedSystems : ObjectMode {
 
 	bool filter(ObjectData@ dat) {
 		return dat.obj.region !is null
-			&& dat.obj.region.ContestedMask & playerEmpire.mask == 0;
+			&& dat.obj.region.ContestedMask & playerEmpire.mask != 0;
 	}
 
 	void longUpdate() override {
