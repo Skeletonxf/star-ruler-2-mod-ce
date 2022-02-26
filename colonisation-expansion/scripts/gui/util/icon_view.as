@@ -3,6 +3,10 @@ import planet_types;
 import resources;
 import orbitals;
 from gui import gui_root;
+// [[ MODIFY BASE GAME START ]]
+import elements.Gui3DObject;
+from elements.Gui3DObject import DrawStar, DrawBlackhole;
+// [[ MODIFY BASE GAME END ]]
 
 export drawPlanetIcon;
 void drawPlanetIcon(Planet@ obj, const recti& pos) {
@@ -147,7 +151,7 @@ void drawFleetIcon(Ship@ leader, const recti& pos, double barCur, double barMax,
 	}
 
 	dsg.icon.draw(pos.padded(0.2 * pos.width), color);
-	
+
 	if(barMax != 0) {
 		double pct = clamp(barCur / barMax, 0.0, 1.0);
 
@@ -170,7 +174,7 @@ void drawFleetIcon(Ship@ leader, const recti& pos, double barCur, double barMax,
 void drawFleetIcon(Ship@ leader, const recti& pos, bool showStrength = true) {
 	if(leader is null || !leader.valid)
 		return;
-	
+
 	double maxStr = 0, curStr = 0;
 	if(showStrength) {
 		if(leader.supportCount > 0 && pos.height >= 30) {
@@ -183,7 +187,17 @@ void drawFleetIcon(Ship@ leader, const recti& pos, bool showStrength = true) {
 	drawFleetIcon(leader, pos, curStr, maxStr);
 }
 
+// [[ MODIFY BASE GAME START ]]
 void drawRegionIcon(Region@ region, const recti& pos) {
+	if (region !is null && region.starCount > 0) {
+		for (uint i = 0, cnt = region.starCount; i < cnt; ++i) {
+			int height = pos.height / region.starCount;
+			int width = pos.width / region.starCount;
+			drawStarIcon(region.stars[i], recti_area(pos.topLeft.x + (i * width), pos.topLeft.y + (i * height), width, height));
+		}
+		return;
+	}
+	// [[ MODIFY BASE GAME END ]]
 	material::SystemUnderAttack.draw(pos);
 }
 
@@ -201,6 +215,10 @@ void drawObjectIcon(Object@ obj, const recti& pos) {
 		icons::Artifact.draw(pos);
 	else if(obj.isRegion)
 		drawRegionIcon(cast<Region>(obj), pos);
+	// [[ MODIFY BASE GAME START ]]
+	else if(obj.isStar)
+		drawStarIcon(cast<Star>(obj), pos);
+	// [[ MODIFY BASE GAME END ]]
 }
 
 void drawObjectIcon(Object@ obj, const recti& pos, Resource@ r) {
@@ -216,4 +234,23 @@ void drawObjectIcon(Object@ obj, const recti& pos, Resource@ r) {
 		icons::Artifact.draw(pos);
 	else if(obj.isRegion)
 		drawRegionIcon(cast<Region>(obj), pos);
+	// [[ MODIFY BASE GAME START ]]
+	else if(obj.isStar)
+		drawStarIcon(cast<Star>(obj), pos);
+	// [[ MODIFY BASE GAME END ]]
 }
+
+// [[ MODIFY BASE GAME START ]]
+quaterniond internalRotation;
+void drawStarIcon(Star@ star, const recti& pos) {
+	Draw3D@ draw;
+	if(star.temperature > 0) {
+		@draw = DrawStar(star);
+	} else {
+		drawRegionIcon(null, pos);
+		return;
+	}
+	draw.preRender(star);
+	draw.draw(pos.padded(0.2 * pos.width, 0.2 * pos.height), internalRotation);
+}
+// [[ MODIFY BASE GAME END ]]

@@ -13,3 +13,4 @@ LABOR_PLANETS_AT_LEAST: Planets/Orbitals with more Labor than
 SET_MIN_LABOR_TITLE: Configure Planets/Orbitals with Labor
 SET_MIN_LABOR_LABEL: Labor
 SET_MIN_LABOR: Confirm
+CONTESTED_SYSTEMS: Contested Systems

@@ -146,6 +146,7 @@ class Quickbar : BaseGuiElement, Savable {
 			add(Motherships(this));
 		add(DefenseStations(this), closed=true);
 		add(ArtifactMode(this));
+		add(ContestedSystems(this), closed=true);
 		updateAbsolutePosition();
 	}
 
@@ -1340,6 +1341,52 @@ class SiegePlanets : ObjectMode {
 		return locale::UNDER_SIEGE_PLANETS;
 	}
 };
+
+// [[ MODIFY BASE GAME START ]]
+class ContestedSystems : ObjectMode {
+	ContestedSystems(IGuiElement@ parent) {
+		super(parent);
+		color = Color(0xe8e812ff);
+
+		grid.activateTooltip(format("[font=Medium]$1[/font]", "$1"));
+	}
+
+	Sprite get_icon() override {
+		return Sprite(material::SystemUnderAttack);
+	}
+
+	string get_name() override {
+		return locale::CONTESTED_SYSTEMS;
+	}
+
+	bool filter(ObjectData@ dat) {
+		return dat.obj.region !is null
+			&& dat.obj.region.ContestedMask & playerEmpire.mask == 0;
+	}
+
+	void longUpdate() override {
+		uint index = 0;
+
+		array<Region@> contestedRegions;
+
+		for(uint i = 0, cnt = empirePlanets.length; i < cnt; ++i) {
+			if(!filter(empirePlanets[i]))
+				continue;
+			Region@ region = empirePlanets[i].obj.region;
+			bool seen = false;
+			for (uint j = 0, jcnt = contestedRegions.length; j < jcnt && !seen; ++j) {
+				seen = contestedRegions[j] is region;
+			}
+			if (!seen) {
+				contestedRegions.insertLast(region);
+				grid.set(index, cache(region));
+				++index;
+			}
+		}
+		grid.truncate(index);
+	}
+};
+// [[ MODIFY BASE GAME END ]]
 
 class FlingBeacons : ObjectMode {
 	FlingBeacons(IGuiElement@ parent) {
