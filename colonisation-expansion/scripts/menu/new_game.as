@@ -1518,6 +1518,13 @@ class RaceChooser : GuiOverlay {
 		backButton.font = FT_Medium;
 		backButton.buttonIcon = icons::Back;
 
+		// [[ MODIFY BASE GAME START ]]
+		// When reopening the RaceChooser we may already have changed our
+		// shipset so don't allow `selectRace` to reset it.
+		if (!isInitial) {
+			chosenShipset = true;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		selectRace(curSelection);
 		updateAbsolutePosition();
 		updateAbsolutePosition();
