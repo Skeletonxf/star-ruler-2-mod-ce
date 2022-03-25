@@ -1542,7 +1542,7 @@ class RaceChooser : GuiOverlay {
 		GuiOverlay::close();
 	}
 
-	void selectRace(uint select) {
+	void selectRace(uint select, bool isManual = false) { // [[ MODIFY BASE GAME ]]
 		for(uint i = 0, cnt = presetButtons.length; i < cnt; ++i)
 			presetButtons[i].pressed = i == select;
 
@@ -1577,7 +1577,15 @@ class RaceChooser : GuiOverlay {
 		descScroll.updateAbsolutePosition();
 		@selectedRace = preset;
 
-		if(!chosenShipset) {
+		// [[ MODIFY BASE GAME START ]]
+		// We need to select the preset's shipset when the user changes their preset
+		// but not when the user just wants to customise their existing race. Above
+		// we set chosenShipset to true when the user reopens the RaceChooser
+		// which then also turns off selecting preset shipsets, so we need to
+		// select the preset shipset anyway if the user manually switches between
+		// presets.
+		if(!chosenShipset || isManual) {
+			// [[ MODIFY BASE GAME END ]]
 			setup.settings.shipset = preset.shipset;
 			for(uint i = 0, cnt = shipsets.length; i < cnt; ++i) {
 				if(shipsets.items[i].ident == preset.shipset) {
@@ -1666,7 +1674,9 @@ class RaceChooser : GuiOverlay {
 				for(uint i = 0, cnt = presetButtons.length; i < cnt; ++i) {
 					if(evt.caller.isChildOf(presetButtons[i])) {
 						hasChosenRace = true;
-						selectRace(i);
+						// [[ MODIFY BASE GAME START ]]
+						selectRace(i, isManual = true);
+						// [[ MODIFY BASE GAME END ]]
 						return true;
 					}
 				}
