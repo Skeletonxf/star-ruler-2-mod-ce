@@ -22,6 +22,7 @@ from orders.ChaseOrder import ChaseOrder;
 from orders.ConsumePlanetOrder import ConsumePlanetOrder;
 from orders.LoopOrder import LoopOrder;
 from orders import OrderType;
+import CE_hull_colors;
 // [[ MODIFY BASE GAME END ]]
 from resources import getBuildCost, getMaintenanceCost, MoneyType, getLaborCost;
 import abilities;
@@ -2759,6 +2760,16 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		if(sourceCnt == 0)
 			return;
 
+		// [[ MODIFY BASE GAME START ]]
+		LeaderDefense leaderDefense;
+		leaderDefense.getFor(obj);
+		bool planetDefenseGen = leaderDefense.planetDefense;
+		bool flagshipDefenseGen = leaderDefense.flagshipDefense;
+		bool alphaDefenseGen = leaderDefense.alphaDefense;
+		bool betaDefenseGen = leaderDefense.betaDefense;
+		bool gammaDefenseGen = leaderDefense.gammaDefense;
+		// [[ MODIFY BASE GAME END ]]
+
 		//Try to refresh ghosts first
 		bool done = false;
 		while(!done) {
@@ -2768,6 +2779,10 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 				GroupData@ dat = groupData[i];
 				if(dat.dsg.hasTag(ST_Satellite))
 					continue;
+				// [[ MODIFY BASE GAME START ]]
+				if(!meetsColorCompatibility(dat.dsg, planetDefenseGen, flagshipDefenseGen, alphaDefenseGen, betaDefenseGen, gammaDefenseGen))
+					continue;
+				// [[ MODIFY BASE GAME END ]]
 				if(dat.ghost > 0) {
 					uint need = dat.ghost;
 					if(!keepGhosts) {
@@ -2814,6 +2829,10 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 				GroupData@ dat = otherData[j];
 				if(dat.dsg.hasTag(ST_Satellite))
 					continue;
+				// [[ MODIFY BASE GAME START ]]
+				if(!meetsColorCompatibility(dat.dsg, planetDefenseGen, flagshipDefenseGen, alphaDefenseGen, betaDefenseGen, gammaDefenseGen))
+					continue;
+				// [[ MODIFY BASE GAME END ]]
 				uint sup = uint(dat.dsg.size);
 				uint amt = min(dat.amount, supplyLeft / sup);
 				if(amt > 0) {

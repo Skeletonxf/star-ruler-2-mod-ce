@@ -16,6 +16,9 @@ import research;
 import empire_effects;
 import repeat_hooks;
 import planet_types;
+// [[ MODIFY BASE GAME START ]]
+import CE_hull_colors;
+// [[ MODIFY BASE GAME END ]]
 #section server
 import object_creation;
 from components.ObjectManager import getDefenseDesign;
@@ -3930,20 +3933,13 @@ class AddLocalDefenseAdjacentFlags : GenericEffect {
 			tickDefense = 0;
 
 		// [[ MODIFY BASE GAME START ]]
-		bool planetDefense = obj.isPlanet;
-		bool flagshipDefense = obj.isShip;
-		bool alphaDefense = false;
-		bool betaDefense = false;
-		bool gammaDefense = false;
-		if (flagshipDefense) {
-			Ship@ ship = cast<Ship>(obj);
-			if (ship !is null) {
-				const Design@ dsg = ship.blueprint.design;
-				alphaDefense = dsg.hasTag(ST_IsAlphaDefense);
-				betaDefense = dsg.hasTag(ST_IsBetaDefense);
-				gammaDefense = dsg.hasTag(ST_IsGammaDefense);
-			}
-		}
+		LeaderDefense leaderDefense;
+		leaderDefense.getFor(obj);
+		bool planetDefense = leaderDefense.planetDefense;
+		bool flagshipDefense = leaderDefense.flagshipDefense;
+		bool alphaDefense = leaderDefense.alphaDefense;
+		bool betaDefense = leaderDefense.betaDefense;
+		bool gammaDefense = leaderDefense.gammaDefense;
 		// [[ MODIFY BASE GAME END ]]
 
 		if(dat.design is null) {

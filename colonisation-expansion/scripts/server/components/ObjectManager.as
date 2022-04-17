@@ -7,6 +7,7 @@ import cargo;
 // [[ MODIFY BASE GAME START ]]
 import systems;
 import system_pathing;
+import CE_hull_colors;
 // [[ MODIFY BASE GAME END ]]
 
 tidy class ColonizationEvent : Savable, Serializable {
@@ -70,23 +71,8 @@ const Design@ getDefenseDesign(Empire& owner, double defenseRate, double toleran
 		if(dsg.hasTag(ST_HasMaintenanceCost))
 			continue;
 		// [[ MODIFY BASE GAME START ]]
-		if (planetDefenseGen && dsg.hasTag(ST_IsNotSpawnPlanets))
+		if (!meetsColorCompatibility(dsg, planetDefenseGen, flagshipDefenseGen, alphaDefenseGen, betaDefenseGen, gammaDefenseGen))
 			continue;
-		if (flagshipDefenseGen && dsg.hasTag(ST_IsOnlySpawnPlanets))
-			continue;
-		bool coloredCheck = alphaDefenseGen || betaDefenseGen || gammaDefenseGen;
-		if (coloredCheck) {
-			// accept supports which meet any of the (up to) three color checks
-			// the spawning object applies
-			// (if supports had to meet all checks this would always fail for
-			// more than one color set on the spawning object)
-			bool met = (alphaDefenseGen && dsg.hasTag(ST_IsAlphaDefense))
-				|| (betaDefenseGen && dsg.hasTag(ST_IsBetaDefense))
-				|| (gammaDefenseGen && dsg.hasTag(ST_IsGammaDefense));
-			if (!met) {
-				continue;
-			}
-		}
 		// [[ MODIFY BASE GAME END ]]
 		if(hasDesignCosts(dsg))
 			continue;
