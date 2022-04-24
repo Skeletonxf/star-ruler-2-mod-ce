@@ -24,6 +24,10 @@ import designs;
 import design_settings;
 from traits import getTraitID;
 
+// [[ MODIFY BASE GAME START ]]
+import CE_hull_colors;
+// [[ MODIFY BASE GAME END ]]
+
 import Tab@ createDesignOverviewTab() from "tabs.DesignOverviewTab";
 import const Design@ createRandomDesign(uint type, int size, Empire@ emp) from "util.random_designs";
 from tabs.tabbar import browseTab, popTab, ActiveTab;
@@ -3674,6 +3678,10 @@ class DesignEditor : Tab {
 	void draw() {
 		//Draw the global background
 		skin.draw(SS_DesignEditorBG, SF_Normal, AbsolutePosition);
+		// [[ MODIFY BASE GAME START ]]
+		// Draw the spawning colors tint
+		skin.draw(SS_HexPattern, SF_Normal, AbsolutePosition, colorForDesign(design));
+		// [[ MODIFY BASE GAME END ]]
 
 		//Top bar
 		vec2i topLeft = AbsolutePosition.topLeft;

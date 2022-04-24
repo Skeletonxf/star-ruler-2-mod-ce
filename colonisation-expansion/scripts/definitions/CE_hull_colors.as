@@ -47,3 +47,31 @@ class LeaderDefense {
 		}
 	}
 }
+
+Color noOverlay = Color(0x00000000);
+Color alphaDefenseOverlay = Color(0x93eff41e);
+Color betaDefenseOverlay = Color(0x9ffa921e);
+Color gammaDefenseOverlay = Color(0xd8f4501e);
+Color omegaDefenseOverlay = Color(0xb979c31e);
+Color alphaBetaDefenseOverlay = alphaDefenseOverlay.interpolate(betaDefenseOverlay, 0.5);
+Color betaGammaDefenseOverlay = betaDefenseOverlay.interpolate(gammaDefenseOverlay, 0.5);
+Color alphaGammaDefenseOverlay = alphaDefenseOverlay.interpolate(gammaDefenseOverlay, 0.5);
+Color alphaBetaGammaDefenseOverlay = alphaDefenseOverlay.interpolate(betaDefenseOverlay, 0.33).interpolate(gammaDefenseOverlay, 0.33);
+
+Color colorForDesign(const Design@ dsg) {
+	if (dsg is null) {
+		return noOverlay;
+	}
+	if (dsg.hasTag(ST_IsOmegaDefense)) return omegaDefenseOverlay;
+
+	if (dsg.hasTag(ST_IsAlphaDefense) && dsg.hasTag(ST_IsBetaDefense) && dsg.hasTag(ST_IsGammaDefense)) return alphaBetaGammaDefenseOverlay;
+
+	if (dsg.hasTag(ST_IsAlphaDefense) && dsg.hasTag(ST_IsBetaDefense)) return alphaBetaDefenseOverlay;
+	if (dsg.hasTag(ST_IsBetaDefense) && dsg.hasTag(ST_IsGammaDefense)) return betaGammaDefenseOverlay;
+	if (dsg.hasTag(ST_IsAlphaDefense) && dsg.hasTag(ST_IsGammaDefense)) return alphaGammaDefenseOverlay;
+
+	if (dsg.hasTag(ST_IsAlphaDefense)) return alphaDefenseOverlay;
+	if (dsg.hasTag(ST_IsBetaDefense)) return betaDefenseOverlay;
+	if (dsg.hasTag(ST_IsGammaDefense)) return gammaDefenseOverlay;
+	return noOverlay;
+}
