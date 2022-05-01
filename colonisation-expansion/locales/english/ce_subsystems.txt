@@ -465,3 +465,12 @@ S_CARPETBOMB_DESC: <<
 
 	[img=MenuIcons::3;20]Bombardment effects are substantially reduced on planets with shields, and do not damage the shields. Devastation is reduced to 25% effectiveness if shields are at full strength.[/img]
 >>
+S_HYPERLASER_DESC: <<
+	A brief laser with energy densities nearly high enough to spontaneously generate matter.
+
+	[img=Plus]Accurate and instant beam lock-on.[/img]
+	[img=Plus]Deals damage very quickly.[/img]
+	[img=Plus]Higher overall DPS than the regular Laser.[/img]
+	[img=Minus]Higher power and supply costs than the regular Laser.[/img]
+	[img=Minus]Very limited turret firing arc.[/img]
+>>
