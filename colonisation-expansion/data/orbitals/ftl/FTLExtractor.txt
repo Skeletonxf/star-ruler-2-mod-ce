@@ -12,6 +12,6 @@ Module: FTLExtractor
 	Material: GenericPBR_FTLStorage
 	Maintenance: 75
 	Blurb: #FTL_EXTRACTOR_BLURB
+	AddRampingFTLIncome(0.301, 180)
 	RequireUnlockTag(HasFTLExtractor)
 	BreakOrbitOnFTL()
-	AddFTLIncome(0.3)

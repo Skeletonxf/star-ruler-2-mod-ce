@@ -138,6 +138,52 @@ class AddFTLIncome : EmpireEffect, TriggerableGeneric {
 #section all
 };
 
+// [[ MODIFY BASE GAME START ]]
+class AddRampingFTLIncome : EmpireEffect, TriggerableGeneric {
+	Document doc("Increase FTL income per second.");
+	Argument rate(AT_Decimal, doc="Maximum rate per second to add.");
+	Argument total_time(AT_Decimal, doc="Seconds to lerp from 0 to max rate.");
+
+#section server
+	void enable(Empire& owner, any@ data) const override {
+		double amount = 0;
+		data.store(amount);
+	}
+
+	void disable(Empire& owner, any@ data) const override {
+		double amount = 0;
+		data.retrieve(amount);
+
+		owner.modFTLIncome(-amount);
+	}
+
+	void tick(Empire& owner, any@ data, double time) const override {
+		double amount = 0;
+		data.retrieve(amount);
+
+		double gain = rate.decimal * (time / total_time.decimal);
+		double newAmount = min(amount + gain, rate.decimal);
+		if(amount != newAmount) {
+			owner.modFTLIncome(newAmount - amount);
+			data.store(newAmount);
+		}
+	}
+
+	void save(any@ data, SaveFile& file) const override {
+		double amount = 0;
+		data.retrieve(amount);
+		file << amount;
+	}
+
+	void load(any@ data, SaveFile& file) const override {
+		double amount = 0;
+		file >> amount;
+		data.store(amount);
+	}
+#section all
+};
+// [[ MODIFY BASE GAME END ]]
+
 class AddFTLStorage : EmpireEffect, TriggerableGeneric {
 	Document doc("Increase FTL storage cap.");
 	Argument amount(AT_Integer, doc="Amount of extra storage to add.");
@@ -242,7 +288,7 @@ class PeriodicInfluenceCard : EmpireEffect {
 		for(uint i = 0, cnt = args.length; i < cnt; ++i) {
 			auto@ card = getInfluenceCardType(args[i]);
 			if(card is null) {
-				error("PeriodicInfluenceCrad() Error: could not find influence card "+args[i]);
+				error("PeriodicInfluenceCard() Error: could not find influence card "+args[i]);
 			}
 			else {
 				cards.insertLast(card);

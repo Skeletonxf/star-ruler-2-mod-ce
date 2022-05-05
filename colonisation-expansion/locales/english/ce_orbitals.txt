@@ -6,7 +6,7 @@ FTL_EXTRACTOR: FTL Hyperfield Extractor
 FTL_EXTRACTOR_DESC: <<
 	A massive orbital that extracts FTL energy from the hyperfield. The process is stable, but difficult to keep under control during conflict.
 
-	[img=$FTL;20/] +0.3 FTL/s
+	[img=$FTL;20/] +0.3 FTL/s after 3 minute ramp up
 
 	[b][color=#ff8080]Extremely low health.[/color][/b]
 >>
