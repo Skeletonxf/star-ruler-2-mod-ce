@@ -84,3 +84,16 @@ HEALTH_AND_SAFETY_DESC: <<
 	[img=QuickbarIcons::3;32]Voting to reject this effect takes twice as long as it is very difficult to argue against saving lives.[/img]
 	[img=MenuIcons::3;32]Raising health and safety standards can make militarisation more difficult, but you wouldn't construct your own military first and then raise everyone else's labor costs would you?[/img]
 >>
+ZEITGEIST_ENERGY_DESC: <<
+	[b]Zeitgeist Effect[/b]
+	If this vote passes, it becomes the current Zeitgeist effect. While active:
+
+	[b]*[/b] [offset=20]The energy generation rate of all empires is increased by 25%[/offset]
+
+	[b]*[/b] [offset=20]All empires* will be able to construct Solar Engine orbitals to generate more energy.[/offset]
+
+	[img=QuickbarIcons::6;32]If the vote passes, the most supportive empire will receive a bonus [b]+2 energy per second[/b] base generation rate while this zeitgeist is active.[/img]
+	[img=QuickbarIcons::3;32]If the vote fails, the most opposing empire will receive an instant bonus of [b]§800k special funds[/b].[/img]
+	[i]* - Except Frostkin empires
+	[i]Only one zeitgeist effect can be active at the same time. Passing a new zeitgeist will remove any previously active ones.[/i]
+>>
