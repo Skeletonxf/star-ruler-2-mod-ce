@@ -37,12 +37,22 @@ tidy class RetrofitConstructible : Constructible {
 		return format(locale::BUILD_RETROFIT, fleet.name);
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	bool cancelled = false;
+
 	void cancel(Object& obj) {
+		if (cancelled) {
+			// cancel may be called followed by remove, but sometimes we might
+			// only be called with remove. In both cases, we need to cancel
+			// exactly once.
+			return;
+		}
+		// probably don't need to serialise this?
+		cancelled = true;
 		fleet.stopFleetRetrofit(obj);
 		Constructible::cancel(obj);
 	}
 
-	// [[ MODIFY BASE GAME START ]]
 	// Cancel on destroy
 	void remove(Object& obj) {
 		cancel(obj);
