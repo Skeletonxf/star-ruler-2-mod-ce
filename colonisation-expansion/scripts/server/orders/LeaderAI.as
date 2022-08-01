@@ -97,6 +97,9 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 
 	bool FreeRaiding = false;
 	double RaidRange = 3000.0; // [[ MODIFY BASE GAME: 1000 -> 3000, to better accomodate other scaling changes ]]
+	// [[ MODIFY BASE GAME START ]]
+	bool raidDelta = false;
+	// [[ MODIFY BAES GAME END ]]
 
 	//Whether to automaticall pluck supports of planets
 	bool autoFill = true;
@@ -136,6 +139,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 
 	void setLooping(bool isLoop = true) {
 		isLooping = isLoop;
+		orderDelta = true;
 	}
 
 	bool isLoopingOrders() {
@@ -2551,12 +2555,18 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 
 	void setFreeRaiding(bool value) {
 		FreeRaiding = value;
+		// [[ MODIFY BASE GAME START ]]
+		raidDelta = true;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void modRaidRange(double value) {
 		RaidRange += value;
 		if(engageType == ER_RaidingOnly)
 			engagementRange = RaidRange;
+		// [[ MODIFY BASE GAME START ]]
+		raidDelta = true;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	Object@ getAttackTarget() {
@@ -2941,6 +2951,10 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		writeGroup(msg);
 		writeOrders(obj, msg);
 		msg << allowSatellites;
+		// [[ MODIFY BASE GAME START ]]
+		msg << float(RaidRange);
+		msg << FreeRaiding;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool writeLeaderAIDelta(const Object& obj, Message& msg) {
@@ -2965,6 +2979,17 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		else {
 			msg.write0();
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		if (raidDelta) {
+			msg.write1();
+			msg << float(RaidRange);
+			msg << FreeRaiding;
+			raidDelta = false;
+		} else {
+			msg.write0();
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		return true;
 	}

@@ -30,6 +30,8 @@ tidy class LeaderAI : Component_LeaderAI {
 	bool allowSatellites = false;
 	// [[ MODIFY BASE GAME START ]]
 	bool isLooping = false;
+	double RaidRange = 3000.0;
+	bool FreeRaiding = false;
 	// [[ MODIFY BASE GAME END ]]
 
 	AutoMode autoMode = AM_AreaBound;
@@ -519,6 +521,16 @@ tidy class LeaderAI : Component_LeaderAI {
 		return groupData[ind].ghost;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	double get_raidRange() {
+		return RaidRange;
+	}
+
+	bool get_freeRaiding() {
+		return FreeRaiding;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	void readOrders(Message& msg) {
 		msg.readAlign();
 		uint cnt = msg.read_uint();
@@ -679,6 +691,10 @@ tidy class LeaderAI : Component_LeaderAI {
 		readGroup(msg);
 		readOrders(msg);
 		msg >> allowSatellites;
+		// [[ MODIFY BASE GAME START ]]
+		RaidRange = msg.read_float();
+		msg >> FreeRaiding;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void readLeaderAIDelta(Message& msg) {
@@ -686,5 +702,11 @@ tidy class LeaderAI : Component_LeaderAI {
 			readGroupDelta(msg);
 		if(msg.readBit())
 			readOrders(msg);
+		// [[ MODIFY BASE GAME START ]]
+		if (msg.readBit()) {
+			RaidRange = msg.read_float();
+			msg >> FreeRaiding;
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 };

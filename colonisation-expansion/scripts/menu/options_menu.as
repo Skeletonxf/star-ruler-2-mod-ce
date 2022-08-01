@@ -211,6 +211,16 @@ class GameOptions : OptionsBox {
 			locale::OPT_ROTATE_OBJS, "bRotateUIObjects"
 		));
 
+		// [[ MODIFY BASE GAME START ]]
+		y += 34;
+		GuiEngineToggle raidToggle(
+			panel, recti_area(8, y, 278, 28),
+			locale::OPT_DISPLAY_RAID_RANGE, "bDisplayRaidRange"
+		);
+		setMarkupTooltip(raidToggle, locale::OPTTT_DISPLAY_RAID_RANGE);
+		options.insertLast(raidToggle);
+		// [[ MODIFY BASE GAME END ]]
+
 		y += 38;
 		options.insertLast(GuiEngineToggle(
 			panel, recti_area(8, y,  550, 28),

@@ -40,3 +40,10 @@ AI_WEALTH_NON_INFLUENCE_DESC: <<
 
 AI_ABUNDANCE_NON_INFLUENCE: Abundance (NI)
 AI_ABUNDANCE_NON_INFLUENCE_DESC: Increase the amount of resource income (except Influence) the AI gets from their planets.
+
+OPT_DISPLAY_RAID_RANGE: Display Raid Range
+OPTTT_DISPLAY_RAID_RANGE: <<
+	When toggled on, selecting an object owned by your empire will always display its raiding range as a dim orange circle.
+
+	Displaying weapon range (with the toggle firing arc display keybind) always displays the raid range of objects owned by your empire, regardless of this setting.
+>>

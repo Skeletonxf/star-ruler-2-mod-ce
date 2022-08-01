@@ -749,6 +749,9 @@ const Color TRADE_LINK_BEAM_COLOR(0x888888ff);
 
 const Color DISABLED_BEAM_COLOR(0xff0000ff);
 const Color DISABLED_BEAM_COLOR2(0xff9000ff);
+// MODIFY BASE GAME START
+const Color RAID_RANGE_COLOR(0xff880088);
+// MODIFY BASE GAME END
 
 vec3d strategicPosition(Object& obj) {
 	if(obj.isPlanet)
@@ -972,6 +975,12 @@ class BEAMS {
 
 		//Update movement beams
 		uint movInd = 0;
+		// [[ MODIFY BASE GAME START ]]
+		// Raid range indicator code ported from Rising Stars
+		uint rangeInd = 0;
+		bool showWeapons = (altKey || SHOW_FIREARCS) && (!isHover || !obj.selected);
+		// [[ MODIFY BASE GAME END ]]
+
 		if(obj.owner !is null && obj.owner.controlled) { // [[ MODIFY BASE GAME ]]
 			vec3d atPos = obj.node_position;
 			uint ordCnt = 0;
@@ -1018,6 +1027,12 @@ class BEAMS {
 						atPos = dest;
 					}
 				}
+				// [[ MODIFY BASE GAME START ]]
+				if (obj.SupplyCapacity > 0 && !obj.freeRaiding && (settings::bDisplayRaidRange || showWeapons)) {
+					addPlane(ranges, rangeInd, obj.node_position,
+						obj.raidRange, RAID_RANGE_COLOR);
+				}
+				// [[ MODIFY BASE GAME END ]]
 			}
 		}
 		truncateBeams(moveBeams, movInd);
@@ -1031,8 +1046,11 @@ class BEAMS {
 			regionY = region.position.y;
 		else
 			regionY = myY;
-		uint rangeInd = 0;
-		bool showWeapons = (altKey || SHOW_FIREARCS) && (!isHover || !obj.selected);
+		// [[ MODIFY BASE GAME START ]]
+		// Moved further up
+		//uint rangeInd = 0;
+		//bool showWeapons = (altKey || SHOW_FIREARCS) && (!isHover || !obj.selected);
+		// [[ MODIFY BASE GAME END ]]
 
 		bool hasHeight = obj.region !is null && abs(myY - regionY) >= 1.0;
 		if(hasHeight) {

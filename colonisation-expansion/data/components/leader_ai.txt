@@ -21,6 +21,10 @@ local:
 	safe uint get_SupplyUsed() const;
 	safe uint get_SupplyCapacity() const;
 	safe uint get_SupplyAvailable() const;
+	// [[ MODIFY BASE GAME START ]]
+	safe double get_raidRange();
+	safe bool get_freeRaiding();
+	// [[ MODIFY BASE GAME END ]]
 
 restricted local:
 	safe bool get_hasOrders();
@@ -179,8 +183,11 @@ server:
 
 	void set_engageRange(double radius);
 
-	safe bool get_freeRaiding();
-	safe double get_raidRange();
+	// [[ MODIFY BASE GAME START ]]
+	// Now available to clients
+	//safe bool get_freeRaiding();
+	//safe double get_raidRange();
+	// [[ MODIFY BASE GAME END ]]
 	void setFreeRaiding(bool value);
 	void modRaidRange(double value);
 

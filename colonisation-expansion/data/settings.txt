@@ -23,6 +23,10 @@ Category: Game
 		Default: True
 	Bool: bMenuBGScreenshot
 		Default: False
+	// [[ MODIFY BASE GAME START ]]
+	Bool: bDisplayRaidRange
+		Default: True
+	// [[ MODIFY BASE GAME END ]]
 Category: Interface
 	String: sSkinName
 		Default: Default
