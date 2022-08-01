@@ -73,6 +73,7 @@ This is primarily intended as a developer focused project planning list, rather 
   - Safe jump range of jump drives, fling range of fling beacons, range/accuracy of slipstreams, and range/speed of hyperdrives should scale to a limited extent if the galaxy system spacing is larger than default
   - Add a UI filter to ignore forestry messages in the message bar
   - Split unused resources quickbar entry into unused food/water and everything else
+  - Consider adding buttons to the InfoBar that can toggle firing arcs and display raid range behaviour - there are keyboard shortcuts for this but even I forget about them from time to time.
 
 - Frostkin
   - AI support
