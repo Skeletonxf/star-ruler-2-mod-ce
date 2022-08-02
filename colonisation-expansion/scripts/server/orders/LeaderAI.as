@@ -2958,8 +2958,10 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	}
 
 	bool writeLeaderAIDelta(const Object& obj, Message& msg) {
-		if(!delta && !orderDelta)
+		// [[ MODIFY BASE GAME START ]]
+		if(!delta && !orderDelta && !raidDelta)
 			return false;
+		// [[ MODIFY BASE GAME END ]]
 		msg.write1();
 
 		if(delta) {
