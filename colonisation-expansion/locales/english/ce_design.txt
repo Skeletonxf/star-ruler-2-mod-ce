@@ -2,3 +2,10 @@ S_ExperienceRate: Experience Rate
 S_LOCAL_DEFENSE: Local Defense
 STT_S_LOCAL_DEFENSE: Amount of local defense generation while in friendly space.
 S_RAMP_UP_TIME: Ramp Up Time
+S_COMBAT_TIME: Combat Time
+STT_COMBAT_TIME: <<
+	Total amount of supply capacity divided by supply used while firing all weapons in combat in minutes.
+
+	Will underestimate combat time if the supply usage drops due to damage or supply is regenerated during combat.
+	Will overestimate combat time on carriers as the support ships' combat use is not included in this calculation.
+>>

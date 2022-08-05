@@ -29,6 +29,7 @@ int SUPPORT_CAPACITY_CUSTOM_VARIABLE = -3;
 int REPAIR_CUSTOM_VARIABLE = -4;
 int TOTAL_MAINT_DISCOUNT_VARIABLE = -5;
 int SUPPLY_DRAIN_CUSTOM_VARIABLE = -6;
+int COMBAT_TIME_FORMULA = -7;
 
 class DesignStat {
 	uint index = 0;
@@ -258,6 +259,15 @@ namespace design_stats {
 			}
 			return dsg.total(SV_SupplyDrain); // should never happen
 		}
+		else if ((type == SVT_CustomVariable) && (var == COMBAT_TIME_FORMULA)) {
+			double supplyPerSecond = getValue(dsg, sys, hex, SVT_CustomVariable, SUPPLY_DRAIN_CUSTOM_VARIABLE, aggregate);
+			double supplyCapacity = dsg.total(SV_SupplyCapacity);
+			if (supplyCapacity == 0.0 || supplyPerSecond == 0.0) {
+				return 0.0;
+			}
+			double secondsOfSupply = supplyCapacity / supplyPerSecond;
+			return secondsOfSupply / 60.0;
+		}
 		// [[ MODIFY BASE GAME END ]]
 		return 0.0;
 	}
@@ -456,6 +466,10 @@ void loadStats(const string& filename) {
 		else if (key == "SupplyDrainFormula") {
 			stat.varType = SVT_CustomVariable;
 			stat.variable = SUPPLY_DRAIN_CUSTOM_VARIABLE;
+		}
+		else if (key == "CombatTimeFormula") {
+			stat.varType = SVT_CustomVariable;
+			stat.variable = COMBAT_TIME_FORMULA;
 		}
 		else if (key == "TotalMaintDiscountFormula") {
 			stat.varType = SVT_CustomVariable;

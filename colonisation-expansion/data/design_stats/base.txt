@@ -53,6 +53,18 @@ GlobalStat: SupplyCap
 
 		SupplyDrainFormula: // [[ MODIFY BASE GAME: Custom formula for supply drain based on bonus repair ]]
 
+	// [[ MODIFY BASE GAME START ]]
+	GlobalStat: CombatTime
+		Name: #S_COMBAT_TIME
+		Description: #STT_COMBAT_TIME
+		Color: #aaa
+		Secondary: SupplyCap
+		Suffix: minutes
+		AlwaysShow: False
+
+		CombatTimeFormula:
+	// [[ MODIFY BASE GAME END ]]
+
 GlobalStat: SupportSupplyCapacity
 	Name: #S_SUPPLYCAP_SUPPORT
 	Description: #STT_SUPPLYCAP_SUPPORT
