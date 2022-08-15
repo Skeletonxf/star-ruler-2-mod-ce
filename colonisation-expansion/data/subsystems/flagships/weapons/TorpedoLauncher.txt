@@ -19,7 +19,7 @@ Subsystem: TorpedoLauncher
 	Reload := 25.0 * min(1.0 + Size/512, 2.0)
 	Speed := max(40, Range / 90)
 	Tracking := 1.5
-	Radius := 10.0 + (log(Size) / log(2) * 10.0)
+	Radius := ((ShipSize + Size)/2)^(1/2.5) * 10
 	SupplyCost := Size * 4.0
 	Hex.Mass := HexSize
 
