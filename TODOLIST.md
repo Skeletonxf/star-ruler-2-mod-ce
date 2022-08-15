@@ -3,6 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Ring Habitats, and possibly other orbitals using LimitInOrbitStatus only prevent building multiple orbitals in orbit, they don't stop the effects stacking on the same planet if players tractor or FTL orbitals around.
   - Port config of min labor filter to mod pack
   - Teach the AI to value hoarding some stockpile of cards and be way less willing to waste them on unimportant votes
   - Teach the AI to vote on zeitgeists based on contribPoints instead of just points when it's determining if it thinks it can win
