@@ -508,7 +508,10 @@ class LimitInOrbitStatus : OrbitalEffect {
 
 #section server
 	void onEnable(Orbital& obj, any@ data) const override {
-		Region@ target = getRegion(obj.position);
+		// [[ MODIFY BASE GAME START ]]
+		// Enforcing max_stacks has been moved to shouldEnable and shouldDisable
+		// so nothing to do here now
+		/* Region@ target = getRegion(obj.position);
 		// [[ MODIFY BASE GAME START ]]
 		Object@ orbit;
 		if (target is null) {
@@ -526,8 +529,37 @@ class LimitInOrbitStatus : OrbitalEffect {
 		if(count >= max_stacks.integer) {
 			obj.destroy();
 			return;
-		}
+		} */
+		// [[ MODIFY BASE GAME END ]]
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	bool shouldDisable(Orbital& obj, any@ data) const override {
+		Region@ target = getRegion(obj.position);
+		Object@ orbit;
+		if (target is null) {
+			@orbit = getOrbitObjectInDeepSpace(obj.position);
+		} else {
+			@orbit = target.getOrbitObject(obj.position);
+		}
+		if(orbit is null)
+			return true;
+		return int(orbit.getStatusStackCountAny(status.integer)) > max_stacks.integer;
+	}
+
+	bool shouldEnable(Orbital& obj, any@ data) const override {
+		Region@ target = getRegion(obj.position);
+		Object@ orbit;
+		if (target is null) {
+			@orbit = getOrbitObjectInDeepSpace(obj.position);
+		} else {
+			@orbit = target.getOrbitObject(obj.position);
+		}
+		if(orbit is null)
+			return false;
+		return int(orbit.getStatusStackCountAny(status.integer)) < max_stacks.integer;
+	}
+	// [[ MODIFY BASE GAME END ]]
 #section all
 };
 
