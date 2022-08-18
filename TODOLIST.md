@@ -3,7 +3,6 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
-  - Ring Habitats, and possibly other orbitals using LimitInOrbitStatus only prevent building multiple orbitals in orbit, they don't stop the effects stacking on the same planet if players tractor or FTL orbitals around.
   - Port config of min labor filter to mod pack
   - Teach the AI to value hoarding some stockpile of cards and be way less willing to waste them on unimportant votes
   - Teach the AI to vote on zeitgeists based on contribPoints instead of just points when it's determining if it thinks it can win
@@ -75,6 +74,9 @@ This is primarily intended as a developer focused project planning list, rather 
   - Add a UI filter to ignore forestry messages in the message bar
   - Split unused resources quickbar entry into unused food/water and everything else
   - Consider adding buttons to the InfoBar that can toggle firing arcs and display raid range behaviour - there are keyboard shortcuts for this but even I forget about them from time to time.
+  - Teach the AI to make orbitals that have no upkeep costs when it's got excess of the required resources
+    - solar satellites (free money pressure!!)
+    - ring habitats (free taxes!!)
 
 - Frostkin
   - AI support
