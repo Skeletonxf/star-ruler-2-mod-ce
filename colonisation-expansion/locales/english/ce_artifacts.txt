@@ -2,3 +2,5 @@ ART_DEEPSPACE_COMET_DESC: A comet that can be harvested to provide water for a p
 ART_ABANDONED_SATELLITE: Abandoned Satellite
 ART_ABANDONED_SATELLITE_DESC: An ancient exploratory vessel. [b]Must be moved to owned territory to activate.[/b]
 NTRG_NO_CARGO: Must target object without cargo storage.
+ART_SKIP_DRIVE_DESC: An equippable experimental drive system that uses raw energy to FTL very short distances. Uses are unlimited.
+ART_ION_CANNON_DESC: An equippable beam cannon that temporarily disables enemy engines and FTL. Uses are unlimited.

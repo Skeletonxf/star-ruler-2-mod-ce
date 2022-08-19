@@ -96,3 +96,5 @@ STATUS_SINEW_BOOST: Intense operations by the flagship's energised sinew are rap
 FROSTKIN_OVERHEATED: Overheated
 FROSTKIN_OVERHEATED_DESC: This planet is disabled due to a neraby star
 FTL_EXTRACTOR_READY: Fully online
+STATUS_SKIP_DRIVE_DESC: This flagship has a skip drive equipped. Skip drives are instant teleportation, but use up large amounts of energy.
+STATUS_ION_CANNON_DESC: This flagship has an ion cannon equipped. Firing an ion cannon temporarily prevents the targeted ship from moving or using FTL.
