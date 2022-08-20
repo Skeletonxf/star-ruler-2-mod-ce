@@ -14,7 +14,6 @@ Ability: IonCannon
 	RelativeSizeEnergyCost(targ, Factor = 0.75)
 	TriggerBeamEffect(targ, 4.0, #ff8d00, Tractor, Width = 2)
 
-	AddStatusTo(targ, Entangled, Sys.Duration:120)
+	AddStatusTo(targ, Entangled, Duration = Sys.Duration:50)
 
-	ShowSubsystemVariable(Sys.Duration:120, Format = #TIME_S, Name = #DURATION, Icon = ContextIcons::1, Color = #80baff)
-
+	ShowSubsystemVariable(Sys.Duration:50, #DURATION, Icon = ContextIcons::1, Color = #80baff, Format = #TIME_S)
