@@ -2,10 +2,18 @@ Object.Statuses : components.Statuses::Statuses {
 local:
 	Status@[] getStatusEffects();
 	bool hasStatusEffect(uint typeId);
+	// [[ MODIFY BASE GAME START ]]
+	int getStatusEffectOfType(uint typeId);
+	// [[ MODIFY BASE GAME END ]]
 
 	safe uint get_statusEffectCount();
 	uint get_statusEffectType(uint index);
 	uint get_statusEffectStacks(uint index);
+	// [[ MODIFY BASE GAME START ]]
+	// NOTE: The status type must be set to showDuration or the server doesn't
+	// use bandwidth sending this to the client and we'll return -2.0 instead
+	double get_statusEffectDuration(uint index);
+	// [[ MODIFY BASE GAME END ]]
 	Object@ get_statusEffectOriginObject(uint index);
 	Empire@ get_statusEffectOriginEmpire(uint index);
 

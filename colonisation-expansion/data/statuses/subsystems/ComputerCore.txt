@@ -9,6 +9,7 @@ Status: ComputerBoost
 	Description: #STATUS_COMPUTER_BOOST_DESC
 	Icon: QuickbarIcons::6
 	Unique: True
+	Show Duration: True
 
 	ModFleetEffectivenessSubsystem(Sys.EfficiencyBoost)
 Status: ComputerSinew
@@ -20,4 +21,5 @@ Status: ComputerSinewBoost
 	Description: #STATUS_SINEW_BOOST
 	Icon: Sinew * 00aaff
 	Unique: True
+	Show Duration: True
 	CE_ship_effects::HealFleetPerSecondSubsystemVar(Sys.CombatHeal)

@@ -35,6 +35,7 @@ tidy final class StatusType {
 	array<IStatusHook@> hooks;
 	// [[ MODIFY BASE GAME START ]]
 	array<Hook@> ai;
+	bool showDuration = false;
 	// [[ MODIFY BASE GAME END ]]
 
 	string def_conditionType;
@@ -439,6 +440,9 @@ void loadStatus(const string& filename) {
 				status.ai.insertLast(hook);
 			else
 				file.error("Could not find AI hook "+value);
+		}
+		else if(key.equals_nocase("Show Duration")) {
+			status.showDuration = toBool(value);
 		}
 		// [[ MODIFY BASE GAME END ]]
 		else {

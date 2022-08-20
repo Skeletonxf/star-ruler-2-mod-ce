@@ -2,6 +2,9 @@
 import elements.BaseGuiElement;
 import elements.MarkupTooltip;
 import statuses;
+// [[ MODIFY BASE GAME START ]]
+import util.formatting;
+// [[ MODIFY BASE GAME END ]]
 
 export GuiStatusBox;
 export updateStatusBoxes;
@@ -9,15 +12,18 @@ export updateStatusBoxes;
 class GuiStatusBox : BaseGuiElement {
 	Status status;
 	Object@ fromObject;
+	// [[ MODIFY BASE GAME START ]]
+	MarkupTooltip@ lazyTooltip;
+	// [[ MODIFY BASE GAME END ]]
 
 	GuiStatusBox(IGuiElement@ parent) {
 		super(parent, recti());
-		addLazyMarkupTooltip(this, width=350);
+		@lazyTooltip = addLazyMarkupTooltip(this, width=350);
 	}
 
 	GuiStatusBox(IGuiElement@ parent, const recti& pos) {
 		super(parent, pos);
-		addLazyMarkupTooltip(this, width=350);
+		@lazyTooltip = addLazyMarkupTooltip(this, width=350);
 		updateAbsolutePosition();
 	}
 
@@ -26,6 +32,22 @@ class GuiStatusBox : BaseGuiElement {
 	}
 
 	string get_tooltip() {
+		// [[ MODIFY BASE GAME START ]]
+		if (status.type.showDuration) {
+			int index = fromObject.getStatusEffectOfType(status.type.id);
+			if (index != -1) {
+				double duration = fromObject.get_statusEffectDuration(index);
+				if (duration > 0) {
+					lazyTooltip.LazyUpdate = true;
+					return status.getTooltip(valueObject=fromObject) + "\nDuration: " + format(locale::TIME_S, toString(duration, 0));
+				}
+			}
+			lazyTooltip.LazyUpdate = false;
+			return status.getTooltip(valueObject=fromObject);
+		} else {
+			lazyTooltip.LazyUpdate = false;
+		}
+		// [[ MODIFY BASE GAME END ]]
 		return status.getTooltip(valueObject=fromObject);
 	}
 

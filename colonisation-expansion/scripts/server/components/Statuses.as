@@ -73,6 +73,34 @@ tidy class Statuses : Component_Statuses, Savable {
 		return statuses[index].stacks;
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	double get_statusEffectDuration(uint index) {
+		if(index >= statuses.length)
+			return 0.0;
+		uint statusTypeID = statuses[index].type.id;
+		if (!statuses[index].type.showDuration) {
+			return -2.0;
+		}
+		// We can have multiple stacks of instances of the same status (type)
+		// but all instances tick down at the same time, so we just need
+		// to find the longest lasting instance (-1 is permanent)
+		double duration = 0.0;
+		for(uint i = 0, cnt = instances.length; i < cnt; ++i) {
+			StatusInstance@ instance = instances[i];
+			if (instance.status.type.id == statusTypeID) {
+				if (instance.timer == -1.0) {
+					duration = -1.0;
+					continue;
+				}
+				if (duration != -1.0 && instance.timer > duration) {
+					duration = instance.timer;
+				}
+			}
+		}
+		return duration;
+	}
+	// [[ MODIFY BASE GAME END ]]
+
 	Object@ get_statusEffectOriginObject(uint index) {
 		if(index >= statuses.length)
 			return null;
@@ -126,6 +154,16 @@ tidy class Statuses : Component_Statuses, Savable {
 		}
 		return false;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	int getStatusEffectOfType(uint typeId) {
+		for(uint i = 0, cnt = statuses.length; i < cnt; ++i) {
+			if(statuses[i].type.id == typeId)
+				return i;
+		}
+		return -1;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	int addStatus(Object& obj, double timer, uint typeId, Empire@ boundEmpire = null, Region@ boundRegion = null, Empire@ originEmpire = null, Object@ originObject = null) {
 		const StatusType@ type = getStatusType(typeId);
@@ -340,6 +378,31 @@ tidy class Statuses : Component_Statuses, Savable {
 		msg.writeSmall(cnt);
 		for(uint i = 0; i < cnt; ++i)
 			msg << statuses[i];
+		// [[ MODIFY BASE GAME START ]]
+		// We'd have deltas literally every frame if we tried to sync the
+		// current timer on each instance because it updates in real time, so
+		// instead we sync the time as of the netcode sync and the timer, and
+		// approximate the present time timer on the client each frame.
+		// Since the server still uses the real timer, any rounding disrepances
+		// will fix themselves when something makes us write the statuses again.
+		msg << gameTime;
+		cnt = instances.length;
+		msg.writeSmall(cnt);
+		for (uint i = 0; i < cnt; ++i) {
+			StatusInstance@ instance = instances[i];
+			// The client only needs to care about a timers in a few
+			// statuses when they're not infinite, so don't waste network
+			// bandwidth writing the timer or the status type if the instance
+			// isn't on a timer or it's not a type we need to display in the client
+			if (instance.timer == -1.0 || !instance.status.type.showDuration) {
+				msg.write0();
+			} else {
+				msg.write1();
+				msg << float(instance.timer);
+				msg << instance.status.type.id;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool writeStatusDelta(Message& msg) {
