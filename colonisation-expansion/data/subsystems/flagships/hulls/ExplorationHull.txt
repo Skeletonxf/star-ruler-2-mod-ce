@@ -12,6 +12,8 @@ Subsystem: ExplorationHull
 	AddShipModifier: HpFactor(0.2)
 	AddShipModifier: MassFactor(0.4)
 	AddShipModifier: MaintCostFactor(0.34)
+	Assert: TagCount.OffensiveUtility == 0
+		Message: #ERROR_CANNOT_HAVE_WEAPONS
 	Assert: TagCount.CanAttackStars == 0
 		Message: #ERROR_CANNOT_HAVE_WEAPONS
 	Assert: Sum.StellarDamage == 0

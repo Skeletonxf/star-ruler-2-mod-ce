@@ -8,7 +8,7 @@ Subsystem: TroopPods
 	Tags: HeraldsDLC
 	Tags: Category:Equipment, Troops, NonContiguous, NoCore
 	Tags: Ability:TroopPods
-	Tags: HasInternals
+	Tags: HasInternals, OffensiveUtility
 	Hull: Flagship, Station
 
 	Hex.LaborCost := 0.10 * HexSize + 0.8
