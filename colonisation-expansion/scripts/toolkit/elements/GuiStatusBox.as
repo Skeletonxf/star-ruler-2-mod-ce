@@ -18,12 +18,16 @@ class GuiStatusBox : BaseGuiElement {
 
 	GuiStatusBox(IGuiElement@ parent) {
 		super(parent, recti());
+		// [[ MODIFY BASE GAME START ]]
 		@lazyTooltip = addLazyMarkupTooltip(this, width=350);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	GuiStatusBox(IGuiElement@ parent, const recti& pos) {
 		super(parent, pos);
+		// [[ MODIFY BASE GAME START ]]
 		@lazyTooltip = addLazyMarkupTooltip(this, width=350);
+		// [[ MODIFY BASE GAME END ]]
 		updateAbsolutePosition();
 	}
 
