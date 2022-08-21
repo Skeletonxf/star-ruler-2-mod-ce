@@ -131,7 +131,7 @@ class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListene
 			fleetCheckIndex = (fleetCheckIndex + 1) % fleetCount;
 			FleetAI@ flAI = fleets.fleets[fleetCheckIndex];
 			if (flAI !is null && flAI.obj !is null && flAI.obj.hasAbilities) {
-				register(flAI.obj);
+				@flAI.abilities = register(flAI.obj);
 			}
 		}
 	}
@@ -162,6 +162,13 @@ class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListene
 	void remove(AbilityAI@ data) {
 		data.remove(ai, this);
 		abilityObjects.remove(data);
+		Ship@ ship = cast<Ship>(data.obj);
+		if (ship !is null) {
+			FleetAI@ flAI = fleets.getAI(data.obj);
+			if (flAI !is null) {
+				@flAI.abilities = null;
+			}
+		}
 	}
 
 	void removedAbilityAI(AbilityAI@ abilityAI) {

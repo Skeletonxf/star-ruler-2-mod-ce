@@ -104,6 +104,9 @@ final class FleetAI {
 	double filled = 0.0;
 	double idleSince = 0.0;
 	double fillStaticSince = 0.0;
+	// [[ MODIFY BASE START ]]
+	AbilityAI@ abilities;
+	// [[ MODIFY BASE GAME END ]]
 
 	void save(Fleets& fleets, SaveFile& file) {
 		file << fleetClass;
@@ -114,6 +117,10 @@ final class FleetAI {
 		file << stationedFactory;
 
 		fleets.saveMission(file, mission);
+		// [[ MODIFY BASE GAME START ]]
+		bool hasAbilities = abilities !is null;
+		file << hasAbilities;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void load(Fleets& fleets, SaveFile& file) {
@@ -125,6 +132,13 @@ final class FleetAI {
 		file >> stationedFactory;
 
 		@mission = fleets.loadMission(file);
+		// [[ MODIFY BASE GAME START ]]
+		bool hasAbilities = false;
+		file >> hasAbilities;
+		if (hasAbilities) {
+			@abilities = fleets.abilities.register(obj);
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool get_isHome() {
@@ -249,12 +263,19 @@ final class FleetAI {
 		}
 		return true;
 	}
+
+	// [[ MODIFY BASE START ]]
+	// TODO: Methods for firing any ion cannon abilities we have
+	// [[ MODIFY BASE GAME END ]]
 };
 
 class Fleets : AIComponent {
 	Systems@ systems;
 	Designs@ designs;
 	Movement@ movement;
+	// [[ MODIFY BASE GAME START ]]
+	AbilitiesComponentI@ abilities;
+	// [[ MODIFY BASE GAME END ]]
 
 	array<FleetAI@> fleets;
 
@@ -270,6 +291,9 @@ class Fleets : AIComponent {
 		@systems = cast<Systems>(ai.systems);
 		@designs = cast<Designs>(ai.designs);
 		@movement = cast<Movement>(ai.movement);
+		// [[ MODIFY BASE GAME START ]]
+		@abilities = cast<AbilitiesComponentI>(ai.abilities);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void save(SaveFile& file) {

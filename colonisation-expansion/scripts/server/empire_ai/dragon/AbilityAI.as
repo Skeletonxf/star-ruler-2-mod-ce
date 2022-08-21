@@ -66,6 +66,7 @@ class CanFireIonCannonAbility : AbilityTypeAI {
 interface AbilitiesComponentI {
 	void remove(AbilityAI@ data);
 	void removedAbilityAI(AbilityAI@ abilityAI);
+	AbilityAI@ register(Object& obj);
 }
 
 class AbilityAI {
