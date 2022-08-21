@@ -1,14 +1,13 @@
 import empire_ai.weasel.WeaselAI;
 import empire_ai.weasel.Orbitals;
 import empire_ai.weasel.Planets;
+import empire_ai.weasel.Fleets;
 
 import abilities;
-from ai.abilities import AbilitiesAI, AsCreatedCard;
+from ai.abilities import AbilitiesAI, AsCreatedCard, CanFireIonCannon;
 
 /**
  * CE mod code for the AI to track abilities on objects it owns.
- *
- * TODO: Fleets can have abilities too!
  */
 
 /**
@@ -33,12 +32,17 @@ AbilityTypeAI@ abilityTypeAIFactory(const Ability@ ability) {
 	if (type.ai.length == 0)
 		return null;
 
+	// TODO: Multiple ability (hooks) on one object
 	for (uint i = 0, cnt = type.ai.length; i < cnt; ++i) {
 		auto@ hook = cast<AbilitiesAI>(type.ai[i]);
 		if (hook !is null) {
 			auto@ buyCard = cast<AsCreatedCard>(hook);
 			if (buyCard !is null) {
 				return AsCreatedCardAbility(ability, buyCard);
+			}
+			auto@ utilityWeapon = cast<CanFireIonCannon>(hook);
+			if (utilityWeapon !is null) {
+				return CanFireIonCannonAbility(ability);
 			}
 		}
 	}
@@ -54,6 +58,12 @@ class AsCreatedCardAbility : AbilityTypeAI {
 	AsCreatedCardAbility(const Ability@ type, AsCreatedCard@ buyCard) {
 		@this.type = type;
 		@this.buyCard = buyCard;
+	}
+}
+
+class CanFireIonCannonAbility : AbilityTypeAI {
+	CanFireIonCannonAbility(const Ability@ type) {
+		@this.type = type;
 	}
 }
 
@@ -92,6 +102,8 @@ class AbilityAI {
 			}
 		}
 
+		// TODO: Once we're tracking more than one kind of ability an object
+		// can have this is going to need to return the number
 		return this.abilities.length > 0;
 	}
 
@@ -136,23 +148,27 @@ interface AbilitiesEventListener {
 	void onRemovedAbilityAI(AbilityAI@ abilityAI);
 }
 
-class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListener {
+class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListener, FleetEventListener {
 	Planets@ planets;
 	Orbitals@ orbitals;
+	Fleets@ fleets;
 
 	array<AbilityAI@> abilityObjects;
 	uint abilityObjectIndex = 0;
 
 	uint planetCardCheckIndex = 0;
 	uint orbitalCardCheckIndex = 0;
+	uint fleetCheckIndex = 0;
 
 	array<AbilitiesEventListener@> listeners;
 
 	void create() {
 		@planets = cast<Planets>(ai.planets);
 		@orbitals = cast<Orbitals>(ai.orbitals);
+		@fleets = cast<Fleets>(ai.fleets);
 		planets.listeners.insertLast(this);
 		orbitals.listeners.insertLast(this);
+		fleets.listeners.insertLast(this);
 	}
 
 	Empire@ get_empire() {
@@ -162,6 +178,7 @@ class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListene
 	void save(SaveFile& file) {
 		file << planetCardCheckIndex;
 		file << orbitalCardCheckIndex;
+		file << fleetCheckIndex;
 		uint cnt = abilityObjects.length;
 		file << cnt;
 		for(uint i = 0; i < cnt; ++i) {
@@ -174,6 +191,7 @@ class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListene
 	void load(SaveFile& file) {
 		file >> planetCardCheckIndex;
 		file >> orbitalCardCheckIndex;
+		file >> fleetCheckIndex;
 		uint cnt = 0;
 		file >> cnt;
 		for(uint i = 0; i < cnt; ++i) {
@@ -222,7 +240,7 @@ class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListene
 	}
 
 	void focusTick(double time) override {
-		// Check through our planets and orbitals one index at a time
+		// Check through our planets, orbitals and fleets one index at a time
 
 		if (abilityObjects.length != 0) {
 			abilityObjectIndex = (abilityObjectIndex + 1) % abilityObjects.length;
@@ -230,7 +248,6 @@ class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListene
 			data.tick(ai, this);
 		}
 
-		// Look at the next planet and orbital in our empire
 		uint planetCount = planets.planets.length;
 		if (planetCount != 0) {
 			planetCardCheckIndex = (planetCardCheckIndex + 1) % planetCount;
@@ -245,6 +262,14 @@ class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListene
 			OrbitalAI@ orbitalAI = orbitals.orbitals[orbitalCardCheckIndex];
 			if (orbitalAI !is null && orbitalAI.obj !is null && orbitalAI.obj.hasAbilities) {
 				register(orbitalAI.obj);
+			}
+		}
+		uint fleetCount = fleets.fleets.length;
+		if (fleetCount != 0) {
+			fleetCheckIndex = (fleetCheckIndex + 1) % fleetCount;
+			FleetAI@ flAI = fleets.fleets[fleetCheckIndex];
+			if (flAI !is null && flAI.obj !is null && flAI.obj.hasAbilities) {
+				register(flAI.obj);
 			}
 		}
 	}
@@ -277,7 +302,6 @@ class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListene
 		abilityObjects.remove(data);
 	}
 
-	// [[ MODIFY BASE GAME START ]]
 	void removedAbilityAI(AbilityAI@ abilityAI) {
 		// Tell everything that is listening
 		for (uint i = 0, cnt = listeners.length; i < cnt; ++i) {
@@ -307,8 +331,13 @@ class AbilitiesComponent : AIComponent, PlanetEventListener, OrbitalEventListene
 			onRemovedAbilityObject(orbAI.obj);
 		}
 	}
+	void onRemovedFleetAI(FleetAI@ flAI) {
+		if (flAI !is null) {
+			onRemovedAbilityObject(flAI.obj);
+		}
+	}
+
 	void onConstructionRequestActioned(ConstructionRequest@ request) {}
-	// [[ MODIFY BASE GAME END ]]
 };
 
 AIComponent@ createAbilities() {

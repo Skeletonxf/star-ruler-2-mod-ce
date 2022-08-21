@@ -10,3 +10,7 @@ class AsCreatedCard : AbilitiesAI {
 	Document doc("This ability grants a particular type of card to the empire.");
 	Argument card(AT_InfluenceCard, doc="Card type given.");
 }
+
+class CanFireIonCannon : AbilitiesAI {
+	Document doc("This ability grants the ship the ability to manually fire a weapon like an Ion Cannon that can stop enemy ships from moving.");
+}

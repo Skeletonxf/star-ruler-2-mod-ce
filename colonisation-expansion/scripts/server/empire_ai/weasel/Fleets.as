@@ -74,6 +74,21 @@ class Mission {
 	}
 };
 
+// [[ MODIFY BASE GAME START ]]
+/**
+ * An interface for other components to register themselves as listeners onto
+ * the Fleets component so they can respond to fleet changes without having
+ * to go though all the effort of tracking each fleet they care about
+ * along its entire lifetime.
+ */
+interface FleetEventListener {
+	/**
+	 * A FleetAI that was previously tracked is no longer valid for tracking
+	 */
+	void onRemovedFleetAI(FleetAI@ flAI);
+}
+// [[ MODIFY BASE GAME END ]]
+
 final class FleetAI {
 	uint fleetClass;
 	Object@ obj;
@@ -242,6 +257,10 @@ class Fleets : AIComponent {
 	int nextMissionId = 0;
 	double totalStrength = 0;
 	double totalMaxStrength = 0;
+
+	// [[ MODIFY BASE GAME START ]]
+	array<FleetEventListener@> listeners;
+	// [[ MODIFY BASE GAME END ]]
 
 	void create() {
 		@systems = cast<Systems>(ai.systems);
@@ -491,6 +510,12 @@ class Fleets : AIComponent {
 	void tick(double time) override {
 		for(uint i = 0, cnt = fleets.length; i < cnt; ++i) {
 			if(!fleets[i].tick(ai, this, time)) {
+				// [[ MODIFY BASE GAME START ]]
+				// Tell everything that is listening
+				for (uint j = 0, jcnt = listeners.length; j < jcnt; ++j) {
+					listeners[j].onRemovedFleetAI(fleets[i]);
+				}
+				// [[ MODIFY BASE GAME END ]]
 				fleets.removeAt(i);
 				--i; --cnt;
 				continue;

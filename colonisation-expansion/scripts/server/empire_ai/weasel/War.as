@@ -376,6 +376,15 @@ class Battle {
 						inCombat = true;
 						for(uint i = 0, cnt = fleets.length; i < cnt; ++i)
 							attack(fleets[i], eliminate, force=true);
+
+						// [[ MODIFY BASE GAME START ]]
+						// If we're very confident we can win this battle
+						// we should try to pin down the enemy with any ion
+						// cannons we have
+						for(uint i = 0, cnt = fleets.length; i < cnt; ++i) {
+
+						}
+						// [[ MODIFY BASE GAME END ]]
 					}
 				}
 			}
