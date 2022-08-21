@@ -10,6 +10,10 @@ import empire_ai.weasel.Systems;
 import empire_ai.weasel.Designs;
 import empire_ai.weasel.Movement;
 
+// [[ MODIFY BASE GAME START ]]
+import empire_ai.dragon.AbilityAI;
+// [[ MODIFY BASE GAME END ]]
+
 enum FleetClass {
 	FC_Scout,
 	FC_Combat,
