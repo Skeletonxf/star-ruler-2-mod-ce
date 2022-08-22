@@ -3,7 +3,7 @@ Ability: IonCannon
 	Description: #ABL_ION_CANNON_DESC
 	Icon: HexagonSubsystems::6 * #ff8d00
 
-	Range: 600
+	Range: 300
 	Energy Cost: 500
 	Cooldown: 60
 
@@ -17,4 +17,4 @@ Ability: IonCannon
 	AddStatusTo(targ, Entangled, Duration = Sys.Duration:50)
 
 	ShowSubsystemVariable(Sys.Duration:50, #DURATION, Icon = ContextIcons::1, Color = #80baff, Format = #TIME_S)
-	AI: CanFireIonCannon()
+	AI:CanFireIonCannon()

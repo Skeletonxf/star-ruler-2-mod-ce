@@ -15,7 +15,7 @@ Subsystem: IonCannon
 	Hex.Resistance := 0.2
 	Hex.HP := 18 * HexSize
 
-	Duration := 300 * (Size / ShipSize * 5)
+	Duration := 45 + ((300 * (Size / ShipSize * 5)) ^ 0.7)
 
 	Requires:
 		Command = 1

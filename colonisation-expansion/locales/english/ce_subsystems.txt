@@ -474,3 +474,11 @@ S_HYPERLASER_DESC: <<
 	[img=Minus]Higher power and supply costs than the regular Laser.[/img]
 	[img=Minus]Very limited turret firing arc.[/img]
 >>
+S_ION_CANNON_DESC: <<
+	A highly charged energy beam temporarily overloads an enemy's drive systems.
+
+	[img=Plus]Disables enemy sublight engines and FTL capabilities.[/img]
+	[img=ResourceIcon::2;22]Costs [b][color=#42b4bd]Energy[/color][/b] to fire, based on the relative sizes of the ship and enemy ship.[/img]
+	[img=MenuIcons::3;20][color=#aaa]Can fire ion cannon on enemy ships.[/color][/img]
+	[img=MenuIcons::3;20][color=#aaa]Duration of incapacitating effect is dependent on number of hexes of the ion cannon.[/color][/img]
+>>
