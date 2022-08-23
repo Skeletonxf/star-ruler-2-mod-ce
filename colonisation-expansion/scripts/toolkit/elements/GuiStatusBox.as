@@ -43,7 +43,9 @@ class GuiStatusBox : BaseGuiElement {
 				double duration = fromObject.get_statusEffectDuration(index);
 				if (duration > 0) {
 					lazyTooltip.LazyUpdate = true;
-					return status.getTooltip(valueObject=fromObject) + "\nDuration: " + format(locale::TIME_S, toString(duration, 0));
+					return status.getTooltip(valueObject=fromObject) +
+						"\n" + locale::DURATION + ": " +
+						format(locale::TIME_S, toString(duration, 0));
 				}
 			}
 			lazyTooltip.LazyUpdate = false;
