@@ -237,12 +237,14 @@ tidy class Mover : Component_Mover, Savable {
 	bool FTL = false;
 	double FTLSpeed = 1.0;
 
+	// [[ MODIFY BASE GAME START ]]
 	// counter for movement interdiction effects, 0 is no effects, values
 	// greater than one all block self movement, but are counted so they can
 	// gracefully be disabled and only allow movement when they all run out
 	// values less than 0 are an error, but better to have negatives than
 	// underflow
 	int movementInterdicted = 0;
+	// [[ MODIFY BASE GAME END ]]
 
 	Mover() {
 	}
