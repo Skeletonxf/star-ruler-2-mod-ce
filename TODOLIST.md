@@ -4,6 +4,7 @@ This is primarily intended as a developer focused project planning list, rather 
 
 - Bug list / issues to fix
   - Port config of min labor filter to mod pack
+  - Expand status duration tooltips to work with FlareRadiation'd planets
   - Teach the AI to value hoarding some stockpile of cards and be way less willing to waste them on unimportant votes
   - Teach the AI to vote on zeitgeists based on contribPoints instead of just points when it's determining if it thinks it can win
   - Stress test teaching of dummy resources to the AI
