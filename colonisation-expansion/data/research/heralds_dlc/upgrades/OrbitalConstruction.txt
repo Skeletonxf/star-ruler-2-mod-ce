@@ -1,0 +1,33 @@
+Technology: OrbitalConstruction
+	Name: #R_ORBITAL_CONSTRUCTION
+	Description: #R_ORBITAL_CONSTRUCTION_DESC:10%
+
+	Icon: techConstruction*#c82986
+	Symbol: GuiOrbitalIcons::0
+	Color: #c82986
+
+	Class: Boost
+	Category: Basic Upgrades
+
+	Point Cost: 500
+	Time Cost: 60
+
+	ModAttribute(OrbitalLaborCostFactor, Multiply, 0.90)
+	ModAttribute(OrbitalBuildCostFactor, Multiply, 0.90)
+
+Technology: OrbitalConstruction2
+	Name: #R_ORBITAL_CONSTRUCTION2
+	Description: #R_ORBITAL_CONSTRUCTION_DESC:20%
+
+	Icon: techConstruction*#91176f
+	Symbol: GuiOrbitalIcons::0
+	Color: #91176f
+
+	Class: Upgrade
+	Category: Basic Upgrades
+
+	Point Cost: 800
+	Time Cost: 140
+
+	ModAttribute(OrbitalLaborCostFactor, Multiply, 0.8)
+	ModAttribute(OrbitalBuildCostFactor, Multiply, 0.8)
