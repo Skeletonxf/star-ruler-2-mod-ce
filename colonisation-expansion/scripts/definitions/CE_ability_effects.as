@@ -550,6 +550,7 @@ class TargetFilterPlanet : TargetFilter {
 class TargetFilterStar : TargetFilter {
 	Document doc("Restricts target to stars.");
 	Argument allow_null(AT_Boolean, "True", doc="Whether to allow the ability to be triggered on nulls (for example, for toggle deactivates.)");
+	Argument allow_blackholes(AT_Boolean, "True", doc="If black holes are considered stars.");
 
 	string getFailReason(Empire@ emp, uint index, const Target@ targ) const override {
 		return locale::NTRG_STAR;
@@ -560,7 +561,16 @@ class TargetFilterStar : TargetFilter {
 			return true;
 		if(targ.obj is null)
 		 	return allow_null.boolean;
-		return targ.obj.isStar;
+		if (targ.obj.isStar) {
+			if (allow_blackholes.boolean) {
+				return true;
+			} else {
+				Star@ star = cast<Star>(targ.obj);
+				return star !is null && star.temperature != 0.0;
+			}
+		} else {
+			return false;
+		}
 	}
 };
 
