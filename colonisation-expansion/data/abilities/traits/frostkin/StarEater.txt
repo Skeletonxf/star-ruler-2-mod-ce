@@ -12,7 +12,7 @@ Ability: StarEater
 	CooldownOnDeactivate(targ, 60)
 	PersistentBeamEffect(targ, #e45500, Tractor, Width = 8.0)
 
-	CE_object_hooks::DealStarTemperatureDamageOverTime(targ, Sys.FreezeDamage:50)
+	CE_object_hooks::DealStarTemperatureDamageOverTime(targ, Sys.FreezeDamage:50, 1.5)
 	OffensiveToTarget(targ)
 
 	CE_ability_effects::TargetFilterStar(Allow Blackholes = False)

@@ -39,7 +39,7 @@ NTRG_PLANET: Must target planet.
 NTRG_STAR: Must target star.
 STAR_EATER: Freeze Star
 STAR_EATER_DESC: <<
-	Safely destroy the star by freezing it. Explosion will not cause damage.
+	Safely destroy the star by freezing it. Explosion will not cause damage. Produces energy while reducing the star's temperature.
 
 	[i][color=#aaa]Does not work against shielded stars while the shields are up.[/color][/i]
 >>
