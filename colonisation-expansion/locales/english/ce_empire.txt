@@ -35,6 +35,44 @@ RACE_LOCUSTO_LORE: <<|
 	We just want to live.
 >>
 
+RACE_FROSTKIN: Rogue #13
+RACE_FROSTKIN_TAGLINE: Some things are better left alone
+RACE_FROSTKIN_LORE: <<|
+	[font=Medium]Terra Expedition #6[/font]
+
+	Log received 3034/04/23 13:58
+	[hr/]
+	We arrived on this rogue safely for the third time. No sign of activity. First time we had to leave immediately when we discovered our equipment couldn't handle the cold. Second time we couldn't break through the ice. I think it's ice. It would probably be the atmosphere anywhere else.
+
+	Log received 3034/04/24 02:09
+	[hr/]
+	Our first diving team didn't come back. I'd have gone after them myself if we had spare equipment. Relying on the juniors to perform a rescue mission is not a good start.
+
+	Log received 3034/04/25 19:53
+	[hr/]
+	I'm getting very uneasy about this. I've never known so much equipment left in the field to spontaneously break and our diving team are going to run out of oxygen if they don't come back within another day
+
+	Log received 3034/04/26 05:30
+	[hr/]
+	If this is the last message I send for the next 48 hour period send backup immediately. I know it's 7 different protocol violations to use the emergency mech for diving but I have to get some light in the crater we made. If I blind some fish too bad.
+
+	Log received 3034/04/28 21:34
+	[hr/]
+	[color=#b7c886]Automated Message: Unusual seismic activity detected[/color]
+
+	Log received 3034/04/28 22:21
+	[hr/]
+	[color=#b7c886]Automated Message: Unexpected power loss in peripheral subsystems[/color]
+
+	Log received 3034/04/28 22:27
+	[hr/]
+	[color=#b7c886]Automated Message: System dropped below minimum recommended operating temperature[/color]
+
+	Log received 3034/04/28 22:29
+	[hr/]
+	[color=#b7c886]Automated Message: DISCONNECTED[/color]
+>>
+
 HELP_BATTLEWORLDERS: <<
 	[font=Big]Battleworlders[/font][vspace=4/]
 	You've chosen to play as a race with the [color=#aaffaa]Battleworlder[/color] trait. Here's a few quick tips to get you started!

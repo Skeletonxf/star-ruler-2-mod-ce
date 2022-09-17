@@ -143,3 +143,17 @@ Preset: Locusto
 	Trait: Empire
 	Trait: Gate
 	Trait: Euphoric
+
+Preset: Frostkin
+	Name: #RACE_FROSTKIN
+	Tagline: #RACE_FROSTKIN_TAGLINE
+	Lore: #RACE_FROSTKIN_LORE
+	Portrait: emp_portrait_frostkin
+	Shipset: Farum
+
+	Trait: Frostkin
+	Trait: Aquatic
+	Trait: Communism
+	Trait: Sublight
+	Trait: Manifest Destiny
+	Trait: Technocratic
