@@ -991,11 +991,13 @@ tidy final class TractorData {
 	// [[ MODIFY BASE GAME START ]]
 	// Cache bonus mass as the tractored object can change mass in some circumstances
 	double tractorMass = 0;
+	// Similarly, cache the bonus mass we apply to the tractored object
+	double targetTractorMass = 0;
 	// [[ MODIFY BASE GAME END ]]
 };
 
 class TractorObject : AbilityHook {
-	Document doc("The object tracked in the specified target is tractored continually.");
+	Document doc("The object tracked in the specified target is tractored continually (both the tractor and target will be weighed down by the other if they are flagships).");
 	Argument objTarg(TT_Object);
 	Argument max_distance(AT_Decimal, "200", doc="Maximum distance to tractor.");
 	Argument allow_ftl(AT_Boolean, "False", doc="Whether to allow tractoring in FTL.");
@@ -1032,15 +1034,22 @@ class TractorObject : AbilityHook {
 			// remove the mass we cached that we gained
 			if(abl.obj !is null && abl.obj.isShip)
 				cast<Ship>(abl.obj).modMass(-td.tractorMass);
+			// and the mass we apply from ourselves onto the target
+			if(prev.isShip)
+				cast<Ship>(prev).modMass(-td.targetTractorMass);
 		}
 		// update the cache
 		td.tractorMass = 0;
+		td.targetTractorMass = 0;
 		if(next !is null) {
 			// update the cache
 			td.tractorMass = getMassFor(next);
+			td.targetTractorMass = getMassFor(abl.obj);
 			// add the mass we just cached
 			if(abl.obj !is null && abl.obj.isShip)
 				cast<Ship>(abl.obj).modMass(td.tractorMass);
+			if(next.isShip)
+				cast<Ship>(next).modMass(td.targetTractorMass);
 		}
 
 		// [[ MODIFY BASE GAME END ]]
@@ -1073,6 +1082,14 @@ class TractorObject : AbilityHook {
 			if(abl.obj !is null) {
 				if(abl.obj.isShip)
 					cast<Ship>(abl.obj).modMass(diff);
+			}
+		}
+		double currentTractorBaseMass = getMassFor(abl.obj);
+		if (currentTractorBaseMass != td.targetTractorMass) {
+			double diff = currentTractorBaseMass - td.targetTractorMass;
+			td.targetTractorMass += diff;
+			if(target.isShip) {
+				cast<Ship>(target).modMass(diff);
 			}
 		}
 		// [[ MODIFY BASE GAME END ]]
@@ -1182,6 +1199,7 @@ class TractorObject : AbilityHook {
 		file << td.prevPosition;
 		// [[ MODIFY BASE GAME START ]]
 		file << td.tractorMass;
+		file << td.targetTractorMass;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -1201,6 +1219,7 @@ class TractorObject : AbilityHook {
 		}
 		// [[ MODIFY BASE GAME START ]]
 		file >> td.tractorMass;
+		file >> td.targetTractorMass;
 		// [[ MODIFY BASE GAME END ]]
 	}
 #section all

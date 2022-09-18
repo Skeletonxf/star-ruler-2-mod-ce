@@ -5,8 +5,6 @@ This is primarily intended as a developer focused project planning list, rather 
 - Bug list / issues to fix
   - Port UI quickbar/order looping to modpack
   - Add UI visibility for the acceleration, mass and related stats on ship tooltips.
-  - Make Tractor Beams less prone to disconnecting when used on ships.
-    - This seems to be a combination of the force being applied at full strength even when the target is already next to the tractor, and the tractor not automatically slowing down if the target is close to the end of the tether on the opposite side of the tractor's direction. The latter especially seems like the reason for sufficiently sized tugs not being able to tug certain objects in practise.
   - Port config of min labor filter to mod pack
   - Expand status duration tooltips to work with FlareRadiation'd planets
   - Teach the AI to value hoarding some stockpile of cards and be way less willing to waste them on unimportant votes
