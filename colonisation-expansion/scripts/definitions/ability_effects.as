@@ -1154,43 +1154,16 @@ class TractorObject : AbilityHook {
 
 			double tracForce = 0.0;
 			// [[ MODIFY BASE GAME START ]]
-			// If our target has no mass, we should apply as much force to it
-			// as our thrust, since F = ma, and this way we push it as much as
-			// our engines can push ourselves.
-			// However, since our target has mass, our own effective acceleration drops
-			// since our thrust is fixed, so F = (m + m') a' where a' is our
-			// reduced acceleration, and m' is the bonus mass from our target.
-			// Since the edge case for infinite target mass should mean we can't
-			// push it at all, we can scale the impulse we apply to our target to
-			// be in proportion to a' / a. If the target weights nearly nothing,
-			// we will be able to push it almost as if we are not carrying anything,
-			// whereas if the target is way heavier than us our ability to push it
-			// will drop proprotionally to our effective acceleration.
-			// Hence I = k(a' / a) for some k factor
-			// Then I = k((F / (m + m')) / (F / m))
-			// Then I = k((1 / (m + m')) / (1 / m))
-			// Then I = k(m / (m + 'm'))
-			// We additionally scale by our thrust to get the end result
-			// I = a * m * (m / (m + m')) = a' m'
-			// Where a' is the acceleration that we apply to the target from the
-			// impulse.
-			// a' = (a * m * (m / (m + m'))) / m'
-			// Which ultimately means our ability to accelerate our target is based
-			// on the difference between our masses. If the target is a fraction
-			// of our mass, we can move it more or less as fast as we can move
-			// ourselves.
-			if (abl.obj.hasMover) {
-				double ourMass = getMassFor(abl.obj); // ignores bonus mass
-				double bonusMass = td.tractorMass;
-				double scaleFactor = ourMass / (ourMass + bonusMass);
-				double ourThrust = ourMass * abl.obj.maxAcceleration;
-				tracForce = time * ourThrust * scaleFactor;
-				// The vanilla calculation is just broken horribly?
-				// Acceleration doesn't scale with ship size, but the mass of
-				// the target we need to move does.
-				//tracForce = abl.obj.maxAcceleration * time;
-			}
+			// target.impulse actually applies an acceleration to the target (it's
+			// not an impulse since the units it takes are `m*s^-1` instead of
+			// `kg*m*s^-1`).
+			// maxAcceleration is already calculated as `thrust / (mass + bonus mass)`
+			// so combined, these two factors mean the vector argument we give to
+			// impulse will scaled down to the acceleration we're currently able to move
+			// at, in units of `m*s^-1`.
 			// [[ MODIFY BASE GAME END ]]
+			if(abl.obj.hasMover)
+				tracForce = abl.obj.maxAcceleration * time;
 
 			vec3d force = dir.normalized(min(tracForce, dir.length));
 			target.impulse(force);

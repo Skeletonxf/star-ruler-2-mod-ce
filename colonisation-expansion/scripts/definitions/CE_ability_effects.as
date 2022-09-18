@@ -255,10 +255,13 @@ class TractorNearby : AbilityHook {
 				target.position = target.position.interpolate(target.position + target.velocity, interp);
 				target.acceleration = target.acceleration.interpolate(abl.obj.acceleration, interp);
 			} else if (target.hasMover) {
-				// This follows the same logic as the tweaks to TractorObject
-				double scaleFactor = ourMass / (ourMass + targetMass);
-				double ourThrust = ourMass * abl.obj.maxAcceleration;
-				double tracForce = time * ourThrust * scaleFactor;
+				// This follows the same logic as the understanding in TractorObject
+				// Our maxAcceleration isn't recalculated the moment we adjust mass,
+				// but it should asyncronously cause the tick in the Ship.as to recalculate
+				// our maxAcceleration based on the ship's thrust and new bonus mass.
+				// In this case, it's better for controllability if we're imparting the
+				// same amount of acceleration to different mass objects anyway.
+				double tracForce = abl.obj.maxAcceleration * time;
 				vec3d force = dir.normalized(min(tracForce, dir.length));
 				target.impulse(force);
 			}
