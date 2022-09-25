@@ -148,7 +148,7 @@ Preset: Frostkin
 	Name: #RACE_FROSTKIN
 	Tagline: #RACE_FROSTKIN_TAGLINE
 	Lore: #RACE_FROSTKIN_LORE
-	Portrait: emp_portrait_frostkin
+	Portrait: emp_portrait_frostkin2
 	Shipset: Farum
 
 	Trait: Frostkin
