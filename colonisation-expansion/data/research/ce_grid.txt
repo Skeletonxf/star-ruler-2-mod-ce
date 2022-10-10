@@ -60,7 +60,6 @@ Grid: ColonisationExpansionGrid
 	SupportCap: -9,0
 	ImpCivConstructionRate: -3,-3
 	PlanetSupport2: -4,-6
-	Energy: -6,3
 	Range: 5,1
 	Bulkhead: 2,-1
 	FlagHealth2: 0,-9
@@ -79,15 +78,10 @@ Grid: ColonisationExpansionGrid
 	EmergencySupplies: -2,-12
 	AugmentReload: 3,3
 	OreProcessor: -1,-8
-	SkipDrive: -5,4
-	Energy: -6,4
-	FlareBomb: -6,5
 	DroneCount: 9,-5
 	Energy: -2,4
 	SubspaceShredder: 2,3
 	DeflectorArray: -1,5
-	QuantumCompressor: -7,4
-	QuantumBattery: -7,3
 	SolarSatellite: -4,2
 	VacuumTelescope: -3,-8
 	ConstructionBay: -3,-5
@@ -106,9 +100,6 @@ Grid: ColonisationExpansionGrid
 	ArtificialMoon: -4,-13
 	ArtificialPlanetoid: -4,-12
 	HighEnergyHurdle: -4,-11
-	Disruptor: -7,6
-	EnergyHurdle: -5,3
-	IonCannon: -6,2
 	Construction: -7,-1
 	EnergyHurdle: 3,-9
 	Population: -6,-3
@@ -116,12 +107,6 @@ Grid: ColonisationExpansionGrid
 	ImpDecaySpeed: -3,-7
 	ImpDecaySpeed2: -4,-8
 	ImpDecaySpeed2: -7,-9
-	HighEnergyHurdle: -8,5
-	MoneyHurdle: -8,6
-	Energy: -9,7
-	HighEnergyHurdle: -10,7
-	MoneyHurdle: -10,8
-	EnergyStorage: -11,9
 	Ringworld: -6,-16
 	InfluenceHurdle: -6,-15
 	ImpTileDevelopment: -6,-8
@@ -134,11 +119,8 @@ Grid: ColonisationExpansionGrid
 	ImpTileDevelopment2: -7,-13
 	ImpDecaySpeed: -8,-11
 	FactoryLabor2: -9,-14
-	EnergyStorage: -7,5
-	Energy: -9,6
 	FTL: -3,9
 	DevFTL: -3,8
-	SysWarpdrive: -5,7
 	Energy: -3,6
 	FTL: -4,7
 	FTLCost: -3,7
@@ -294,3 +276,16 @@ Grid: ColonisationExpansionGrid
 	Projection: -2,11
 	Projection2: -1,12
 	ProjectileImpulse: 6,-4
+	Energy: -6,3
+	Energy: -4,4
+	EnergyStorage: -5,4
+	Energy: -5,2
+	Energy: -6,5
+	QuantumBattery: -6,2
+	QuantumCompressor: -7,3
+	EnergyHurdle: -6,6
+	IonCannon: -5,5
+	SkipDrive: -5,6
+	EnergyStorage: -7,7
+	FlareBomb: -8,7
+	EnergyHurdle: -4,6

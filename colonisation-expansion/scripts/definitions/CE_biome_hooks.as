@@ -566,7 +566,6 @@ enum FTLUnlock {
 	FTLU_Gate,
 	FTLU_Slipstream,
 	FTLU_Fling,
-	FTLU_Warpdrive,
 };
 
 void unlockDesign(string path, Empire@ emp, bool limitShipset=true, bool retryWithoutLimit=true) {
@@ -591,7 +590,6 @@ class UnlockRandomFTL : EmpireTrigger {
 		bool hasGates = emp.isUnlocked(gateSubsystem);
 		bool hasFling = emp.HasFling >= 1;
 		bool hasSlipstreams = emp.isUnlocked(slipstreamSubsystem);
-		bool hasWarpdrive = emp.isUnlocked(warpdriveSubsystem);
 
 		array<FTLUnlock> unlockPool = array<FTLUnlock>();
 		if (!hasHyperdrives)
@@ -606,14 +604,10 @@ class UnlockRandomFTL : EmpireTrigger {
 			unlockPool.insertLast(FTLU_Fling);
 
 		if (unlockPool.length == 0) {
-			if (!hasWarpdrive) {
-				unlockPool.insertLast(FTLU_Warpdrive);
-			} else {
-				// How did this user unlock all the FTL types and still try to
-				// win this vote?
-				// TODO: Some consolation prize
-				return;
-			}
+			// How did this user unlock all the FTL types and still try to
+			// win this vote?
+			// TODO: Some consolation prize
+			return;
 		}
 
 		// randomi generates a number in the inclusive range
@@ -660,12 +654,6 @@ class UnlockRandomFTL : EmpireTrigger {
 			if(emp.player is null)
 				return;
 			sendClientMessage(emp.player, "Fling Beacons unlocked", "You have unlocked Fling Beacons through a galactic senate vote");
-		}
-		if (unlock == FTLU_Warpdrive) {
-			emp.setUnlocked(warpdriveSubsystem, true);
-			if(emp.player is null)
-				return;
-			sendClientMessage(emp.player, "Warpdrives unlocked", "You have unlocked Warpdrives through a galactic senate vote");
 		}
 	}
 #section all
