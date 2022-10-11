@@ -170,6 +170,22 @@ class RequireSubsystemUnlocked : Requirement {
 	}
 };
 
+// [[ MODIFY BASE GAME START ]]
+class RequireSubsystemNotUnlocked : Requirement {
+	Document doc("This requires a particular subsystem to be not unlocked.");
+	Argument subsystem(AT_Subsystem, doc="Identifier of the subsystem to check.");
+
+	bool meets(Object& obj, bool ignoreState = false) const {
+		Empire@ owner = obj.owner;
+		if(owner is null || !owner.valid)
+			return false;
+		if(!owner.isUnlocked(getSubsystemDef(subsystem.integer)))
+			return true;
+		return false;
+	}
+};
+// [[ MODIFY BASE GAME END ]]
+
 class InDLC : Requirement {
 	Document doc("This is a subsystem that is only available if a particular dlc is installed.");
 	Argument dlc(AT_UnlockTag, doc="Name of the DLC.");

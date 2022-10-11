@@ -1,0 +1,6 @@
+Subsystem: CuriositasHull
+	Hull: Flagship
+	Tags: Category:Hulls, Hull, Applied, NoCore, CannotDonate, Disabled
+	AddShipModifier: SupplyCostFactor(0.7)
+	AddShipModifier: ThrustFactor(1.2)
+	Hook: AddStatus(Curiositas)

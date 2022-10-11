@@ -63,3 +63,9 @@ CANCEL_CREATE_WATER_DESC: <<
 
 	Does not refund the cost.
 >>
+REVERSE_ENGINEER_SKIP_DRIVE: Reverse Engineer Skip Drive
+UPGRADE_CURIOSITAS: Retrofit Upscale
+UPGRADE_CURIOSITAS_DESC: Increases the size of the flagship by 256
+REVERSE_ENGINEER_SKIP_DRIVE_DESC: Unlocks the Skip Drive subsystem
+COPY_SHIP: Copy Ship
+COPY_SHIP_DESC: Create another flagship based on this design.

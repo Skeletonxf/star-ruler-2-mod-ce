@@ -6,7 +6,7 @@ Trait: Ancient Vessel
 
 	Costs Points: 1
 
-	Icon: StatusWar
+	Icon: StatusWar * #faa
 	Color: #aaffaa
 
-	SpawnShip(Thereus, Design From = Creeps)
+	SpawnShip(Curiositas, Design From = Creeps)

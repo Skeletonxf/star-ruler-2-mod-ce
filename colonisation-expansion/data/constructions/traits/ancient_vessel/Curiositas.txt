@@ -1,0 +1,34 @@
+Construction: ReverseEngineerSkipDrive
+	Name: #REVERSE_ENGINEER_SKIP_DRIVE
+	Icon: GuiOrbitalIcons::2 * #ff0000
+	Category: Reverse Engineering
+	Build Cost: 1000
+	Time Cost: 120
+	Description: #REVERSE_ENGINEER_SKIP_DRIVE_DESC
+	ConsumeEnergy(1000)
+	UnlockSubsystem(SkipDrive)
+	RequireSubsystemNotUnlocked(SkipDrive)
+	RequireStatus(Curiositas)
+Construction: UpgradeFlagship
+	Name: #UPGRADE_CURIOSITAS
+	Icon: ResourceIcon::6
+	Category: Upgrades
+	Build Cost: 2000
+	Time Cost: 120
+	Maintenance Cost: 200
+	Description: #UPGRADE_CURIOSITAS_DESC
+	AddMaintainCostAttribute(CuriositasUpgrades, Multiply = 100)
+	OnCancel(ModAttribute(CuriositasUpgrades, Add, -1))
+	OnStart(ModAttribute(CuriositasUpgrades, Add, 1))
+	AddBuildCostAttribute(CuriositasUpgrades, Multiply = 1000)
+	RetrofitUpscale(Add = 256)
+Construction: DuplicateFlagship
+	Name: #COPY_SHIP
+	Description: #COPY_SHIP_DESC
+	Build Cost: 3000
+	Time Cost: 120
+	Icon: Industrious
+	Category: Production
+	SpawnShip(Curiositas, Design From = Creeps)
+	ConsumeResearch(1000)
+	ConsumeEnergy(2000)
