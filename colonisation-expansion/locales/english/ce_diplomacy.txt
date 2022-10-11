@@ -1,14 +1,3 @@
-WARPDRIVE_RESEARCH: Warpdrive Research
-WARPDRIVE_RESEARCH_DESC: <<
-	News has spread all over the galaxy of a disturbance in the hyperfield, indicating a breakthrough in FTL technology. The galactic senate proposes further research into this phenomena.
-
-	[img=QuickbarIcons::6;32]If the vote passes, all empires will permanently unlock Warpdrives, and the most supportive empire will unlock a random FTL they don't have.[/img]
-
->>
-WARPDRIVE_RESEARCH_OBTAINED_DESC: <<
-	All empires have permanently unlocked Warpdrives
-
->>
 HYPERDRIVE_RESEARCH: Hyperdrive Research
 HYPERDRIVE_RESEARCH_DESC: <<
 	News has spread all over the galaxy of a disturbance in the hyperfield, indicating a breakthrough in FTL technology. The galactic senate proposes further research into this phenomena.
@@ -75,7 +64,7 @@ CARD_INNOVATION_REV_DESC: <<
 	[i]When purchased, immediately gain a random unlock on the research grid. This can enable you to bypass hurdles and start researching in a new region of the grid that would otherwise cost a lot of research to reach.[/i]
 >>
 CLAUSE_FTL: Share FTL
-CLAUSE_FTL_DESC: All empires that have signed this treaty will synchronise their FTL technology, giving each other mutual access to Gates and Fling Beacons. 
+CLAUSE_FTL_DESC: All empires that have signed this treaty will synchronise their FTL technology, giving each other mutual access to Gates and Fling Beacons.
 HEALTH_AND_SAFETY: Health and Safety improvements
 HEALTH_AND_SAFETY_DESC: <<
 	The standards on spaceships can always be improved, whether it be more mandatory training for crew or safer standards for ship building.

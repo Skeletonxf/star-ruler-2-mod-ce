@@ -558,7 +558,6 @@ const SubsystemDef@ hyperdriveSubsystem = getSubsystemDef("Hyperdrive");
 const SubsystemDef@ jumpdriveSubsystem = getSubsystemDef("Jumpdrive");
 const SubsystemDef@ gateSubsystem = getSubsystemDef("GateModule");
 const SubsystemDef@ slipstreamSubsystem = getSubsystemDef("Slipstream");
-const SubsystemDef@ warpdriveSubsystem = getSubsystemDef("Warpdrive");
 
 enum FTLUnlock {
 	FTLU_Hyperdrive,

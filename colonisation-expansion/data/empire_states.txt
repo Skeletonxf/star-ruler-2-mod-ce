@@ -163,7 +163,6 @@ visible:
 	attribute double ResearchUnlockedHyperdrive = 0
 	attribute double ResearchUnlockedJumpdrive = 0
 	attribute double ResearchUnlockedSlipstream = 0
-	attribute double ResearchUnlockedWarpdrive = 0
 	attribute double ResearchUnlockedWormholeNetwork = 0
 	// [[ MODIFY BASE GAME END ]]
 	// [[ MODIFY BASE GAME START ]]
