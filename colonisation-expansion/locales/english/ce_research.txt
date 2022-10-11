@@ -166,3 +166,9 @@ R_MOD_PROJECTILE_IMPULSE_DESC: <<
 
 	[bbloc=#S_RAILGUN_KNOCKBACK_DESC/]
 >>
+R_SYS_PROJECTOR_TRACTOR_BEAM: Projector Tractor Beam
+R_SYS_PROJECTOR_TRACTOR_BEAM_DESC: <<
+	[color=#aaa][i]Unlocks the Projector Tractor Beam subsystem.[/i][/color]
+
+	[bbloc=#S_PROJECTOR_TRACTOR_BEAM_DESC/]
+>>

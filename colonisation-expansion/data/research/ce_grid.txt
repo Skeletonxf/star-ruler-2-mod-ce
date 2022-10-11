@@ -289,3 +289,4 @@ Grid: ColonisationExpansionGrid
 	EnergyStorage: -7,7
 	FlareBomb: -8,7
 	EnergyHurdle: -4,6
+	SysProjectorTractorBeam: -3,13

@@ -475,3 +475,22 @@ S_ION_CANNON_DESC: <<
 	[img=MenuIcons::3;20][color=#aaa]Can fire ion cannon on enemy ships.[/color][/img]
 	[img=MenuIcons::3;20][color=#aaa]Duration of incapacitating effect is dependent on number of hexes of the ion cannon.[/color][/img]
 >>
+S_PROJECTOR_TRACTOR_BEAM: Projector Tractor Beam
+S_PROJECTOR_TRACTOR_BEAM_DESC: <<
+	Uses shield projection technology to envelop a target in a shield that applies thrust to other objects. The objects are kept suspended at the same relative position and velocity, letting the ship to move them.
+
+	[img=Plus]Provides both the Shield Projector and Tractor Beam abilities.[/img]
+	[img=Plus]More space efficient, with smaller minimum size requirements for the Tractor Beam and more efficacy for the Shield Projector beyond the minimum size.[/img]
+	[img=Minus]More expensive per hex than either dedicated subsystem.[/img]
+	[img=MenuIcons::3;20]May target different objects with each ability.[/img]
+
+>>
+S_TRACTOR_BEAM_DESC: <<
+	Sophisticated graviton emitters combined with an inertial dampening field allow the ship to apply its thrust to other objects. The objects are kept suspended at the same relative position and velocity, letting the ship to move them.
+
+	[img=MenuIcons::3;20][color=#aaa]Can use tractor beam on artifacts, asteroids, orbitals and other ships.[/color][/img]
+	[img=MenuIcons::3;20][color=#aaa]Other ships will us their own thrust to attempt to break away from the tractor beam.[/color][/img]
+	[img=ResourceIcon::3;20;#f00][color=#aaa]Ships under the effect of a tractor beam cannot use their FTL drives.[/color][/img]
+	[img=MenuIcons::3;20][color=#aaa]Tractor is weighed down by the target and vice versa.[/color][/img]
+	[img=MenuIcons::3;20][color=#aaa]Most effective against targets that have significantly less mass/thrust relative to the tractor.[/color][/img]
+>>

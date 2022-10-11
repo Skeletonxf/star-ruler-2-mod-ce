@@ -1,0 +1,36 @@
+Subsystem: ProjectorTractorBeam
+	Name: #S_PROJECTOR_TRACTOR_BEAM
+	Description: #S_PROJECTOR_TRACTOR_BEAM_DESC
+	BaseColor: #00aeff
+	TypeColor: #00aeff
+	Elevation: 2
+
+	Tags: BaseCost, Category:Equipment, HasInternals, ExteriorCore
+	Tags: Ability:TractorBeam, HighPowerUse, ExteriorCore, Ability:ShieldProject
+	Hull: Flagship
+
+	Size := HexSize * Hexes
+	ExcessSize := max((Size / ShipSize) - 0.2, 0) * ShipSize
+	Hex.Mass := HexSize
+
+	Hex.Resistance := 0.5
+	Hex.HP := 18 * HexSize
+
+	ProjShieldCapacity := (Size * 90) + (ExcessSize * 30)
+	ProjShieldRegen := (Size * 0.8) + (ExcessSize * 0.27)
+	PowerUse := (10 * Size) + (ExcessSize * 3)
+	Projectors := Projectors + 1
+	Assert: Size / ShipSize > 0.20
+		Message: #ERROR_TOO_SMALL
+
+	Requires:
+		Command = 1
+
+		Power = PowerUse
+	Module: Default
+		Hex.BuildCost := 3.0 * Hex.BuildCost
+
+	Module: Core
+		Hex.BuildCost := 3.0 * Hex.BuildCost
+		Sprite: TractorGun::0 * #8bb800
+		DrawMode: 1

@@ -1,0 +1,17 @@
+Technology: SysProjectorTractorBeam
+	Name: #R_SYS_PROJECTOR_TRACTOR_BEAM
+	Description: #R_SYS_PROJECTOR_TRACTOR_BEAM_DESC
+
+	Class: Unlock
+	Category: Subsystems
+
+	Point Cost: 500
+	Time Cost: 90
+
+	Icon: TractorGun::0 * #8bb800
+	Color: #00aeff
+
+	UnlockSubsystem(ProjectorTractorBeam)
+	SkipOnUnlockedSubsystem(ProjectorTractorBeam)
+
+	SecondaryInfluenceCost(10)
