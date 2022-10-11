@@ -10,9 +10,9 @@ I consider this mod at playable status now. It should be stable and balanced eno
 
 ## Installation
 
-Although you can use GitHub's Download Zip button to download the latest version of this mod, for the latest release version go to the [tags page](https://github.com/Skeletonxf/star-ruler-2-mod-ce/tags). Extract the mod out of the colonisation-expansion folder and place it into the mods folder of a [Star Ruler 2](https://github.com/BlindMindStudios/StarRuler2-Source) installation.
+You can use GitHub's Download Zip button to download the latest version of this mod. For more stable versions, go to the [tags page](https://github.com/Skeletonxf/star-ruler-2-mod-ce/tags) to get the latest release version. Extract the mod out of the `colonisation-expansion` folder and place it into the mods folder of a [Star Ruler 2](https://github.com/BlindMindStudios/StarRuler2-Source) installation.
 
-Alternatively you can use [Star Ruler 2 Mod Manager](https://github.com/DaloLorn/SR2ModManager) to install and update this mod.
+Alternatively you can use [Star Ruler 2 Launchpad](https://github.com/OpenSRProject/OpenStarRuler-Launchpad) to install and update this mod.
 
 Note: as with most mods, nearly every commit and almost every release is a save compatible breaking change, so typically you would not want to update your copy of CE until you have finished playing a game with it.
 
@@ -35,8 +35,6 @@ Scouting and mining cost much less in maintenance.
 Ships ordered to automatically mine can now mine cross systems, and will only stop if you deplete all asteroids known to your empire. Mining asteroid belts is a lot more efficient than in vanilla. You can also queue transfer and dropoff cargo orders if you'll meet the requirements by the time the ship would execute the order. You can order an ore pickup and immediately queue the ore dropoff because you'll have ore to dropoff by the time you need it. Cargo pickups and dropoffs can now be done per cargo type. Orders can also be setup to infinitely loop, so you can automate hauling of ore with ease. Cargo can also be picked up in specific quantities instead of as much as possible, letting you transport exactly what you need. Destroyed objects holding cargo will drop the cargo as asteroids, allowing you to steal from enemies if you attack their supply lines.
 #### Multi tractor beam
 Did you want to steal LOADS of asteroids from your enemies at once? What about relocate one of your planets without building a Planetary Thruster? This subsystem is for you.
-#### Tractor beam formula
-Tractor beams actually scale in strength when you put them on bigger ships, so a big ship can always tractor around a small ship. Vanilla was based on acceleration so a medium ship quickly reached enough mass that no ship could have enough acceleration to be able to tractor it.
 ### Support ship shields
 You can now put shields on supports, and Devout can unlock shrines for supports.
 ### Shield projectors
@@ -69,8 +67,6 @@ Secret projects are no longer secret, you will be able to unlock any of them if 
 The Flare Bomb is a player designable subsystem now, so you can field flare bomb ships that are sufficiently armoured.
 ### Ability to unlock all types of FTL and FTL income orbital from the research grid
 For balancing this is a costly research path to go down and provides few other benefits. Each unlock also starts a vote to give the technology to all empires. This makes getting extra FTL technology a tradeoff as you might not keep it exclusive to just you, and then your research points have been wasted on something your opponents got for free.
-#### Supplementary new FTL
-Jumpdrives can be unlocked for Stations
 ### FTL Sharing
 New treaty clause that shares access of Gates and Fling beacons between signatories.
 ### Colonise interstellar space
@@ -82,6 +78,10 @@ Ships can also chase a target, which can be used to hunt down enemies or fly you
 Ships can also loop their orders infinitely which makes scouting more automatable.
 A number of tweaks have also been made to the Quickbar and Planets Tab to expose more useful information to players. First players can now keep better track of all their Replicators. Nylli and Mono players can keep much better track of their population. Players can also now easily check which planets they can still make moon bases at and where their ore is.
 In singleplayer, if the last game you played was with a compatible version of the mod, you can restore the settings of the previous lobby with a single click.
+### New maps
+Battle it out with all 6 of your neighbours on a grid.
+### More traits
+Start with a ringworld! gamble on random tech unlocks! take Evangelical alongside your lifestyle!
 ### Notable tweaks to lifestyles
 #### Mechanoid
 The cost to build 1 billion population is flat, so it becomes more affordable as the game goes on and your empire expands instead of less.
