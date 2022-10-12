@@ -3,6 +3,7 @@
 This is primarily intended as a developer focused project planning list, rather than something to read. I'm making it public because it's easier for me to keep track of if its in the repository, and it still has some value as a 'where CE is going' indicator.
 
 - Bug list / issues to fix
+  - Stored labor is depleted by time based constructions
   - Port UI quickbar/order looping to modpack
   - Add UI visibility for the acceleration, mass and related stats on ship tooltips.
   - Port config of min labor filter to mod pack

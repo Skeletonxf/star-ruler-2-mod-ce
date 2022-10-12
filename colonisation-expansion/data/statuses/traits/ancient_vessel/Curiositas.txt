@@ -2,4 +2,5 @@ Status: Curiositas
 	Visible To: Nobody
 	WorthPoints(500)
 	ArtifactOnDestroy(SkipDrive)
-	AddLaborStorage(100)
+Status: UpscaledCuriositas
+	Visible To: Nobody

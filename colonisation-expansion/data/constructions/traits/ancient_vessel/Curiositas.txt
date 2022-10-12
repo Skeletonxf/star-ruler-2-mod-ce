@@ -17,10 +17,11 @@ Construction: UpgradeFlagship
 	Time Cost: 120
 	Maintenance Cost: 200
 	Description: #UPGRADE_CURIOSITAS_DESC
-	AddMaintainCostAttribute(CuriositasUpgrades, Multiply = 100)
-	OnCancel(ModAttribute(CuriositasUpgrades, Add, -1))
-	OnStart(ModAttribute(CuriositasUpgrades, Add, 1))
-	AddBuildCostAttribute(CuriositasUpgrades, Multiply = 1000)
+	AddMaintainCostStatusCount(UpscaledCuriositas, Multiply = 25)
+	AddBuildCostStatusCount(UpscaledCuriositas, Multiply = 1000)
+	OnCancel(RemoveStatusInstance(UpscaledCuriositas))
+	OnStart(AddStatus(UpscaledCuriositas))
+	RequireStatus(Curiositas)
 	RetrofitUpscale(Add = 256)
 Construction: DuplicateFlagship
 	Name: #COPY_SHIP
@@ -29,6 +30,7 @@ Construction: DuplicateFlagship
 	Time Cost: 120
 	Icon: Industrious
 	Category: Production
+	RequireStatus(Curiositas)
 	SpawnShip(Curiositas, Design From = Creeps)
 	ConsumeResearch(1000)
 	ConsumeEnergy(2000)
