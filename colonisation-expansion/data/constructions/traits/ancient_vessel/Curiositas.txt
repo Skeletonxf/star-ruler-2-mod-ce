@@ -17,7 +17,21 @@ Construction: UpgradeFlagship
 	Time Cost: 120
 	Maintenance Cost: 200
 	Description: #UPGRADE_CURIOSITAS_DESC
+	CE_requirement_effects::RequireNotInvasionMap()
 	AddMaintainCostStatusCount(UpscaledCuriositas, Multiply = 25)
+	AddBuildCostStatusCount(UpscaledCuriositas, Multiply = 1000)
+	OnCancel(RemoveStatusInstance(UpscaledCuriositas))
+	OnStart(AddStatus(UpscaledCuriositas))
+	RequireStatus(Curiositas)
+	RetrofitUpscale(Add = 256)
+Construction: UpgradeFlagshipInvasion
+	Name: #UPGRADE_CURIOSITAS
+	Icon: ResourceIcon::6
+	Category: Upgrades
+	Build Cost: 2000
+	Time Cost: 120
+	Description: #UPGRADE_CURIOSITAS_DESC
+	CE_requirement_effects::RequireInvasionMap()
 	AddBuildCostStatusCount(UpscaledCuriositas, Multiply = 1000)
 	OnCancel(RemoveStatusInstance(UpscaledCuriositas))
 	OnStart(AddStatus(UpscaledCuriositas))
