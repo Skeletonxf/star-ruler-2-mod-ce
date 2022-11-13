@@ -9,7 +9,7 @@ Card: Cultivation
 	Rarity: Epic
 
 	Base Purchase Cost: 3
-	Base Play Cost: 10
+	Base Play Cost: 6
 
 	Target: planet = Object
 	TargetFilterOwned(planet)
