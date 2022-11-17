@@ -194,7 +194,7 @@ class StatusFile : FileDef {
 			field("Collapses", AT_Boolean, "False", doc="A status that collapses will show a stack count instead of being a separate status for each instance. The status hooks are responsible for dealing with stack counts on an individual basis.");
 			field("Visible To", AT_Selection, "Everybody", doc="Which empires the status can be seen by when looking at the object.").setOptions(visibilities);
 			// [[ MODIFY BASE GAME START ]]
-			field("Show Duration", AT_Boolean, "False", doc="The duration of instances of this status should be visible to end users. (WIP: Only implemented for status boxes on ships)");
+			field("Show Duration", AT_Boolean, "False", doc="The duration of instances of this status should be visible to end users. (WIP: Only implemented for status boxes on ships and planets)");
 			// [[ MODIFY BASE GAME END ]]
 	}
 

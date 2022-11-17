@@ -317,6 +317,9 @@ class PlanetPopup : Popup {
 					icon.noClip = true;
 					@statusIcons[i] = icon;
 				}
+				// [[ MODIFY BASE GAME START ]]
+				@icon.fromObject = pl;
+				// [[ MODIFY BASE GAME END ]]
 				icon.update(statuses[i]);
 			}
 		}

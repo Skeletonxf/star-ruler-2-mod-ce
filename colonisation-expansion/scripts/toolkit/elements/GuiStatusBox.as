@@ -37,7 +37,7 @@ class GuiStatusBox : BaseGuiElement {
 
 	string get_tooltip() {
 		// [[ MODIFY BASE GAME START ]]
-		if (status.type.showDuration) {
+		if (status.type.showDuration && fromObject !is null) {
 			int index = fromObject.getStatusEffectOfType(status.type.id);
 			if (index != -1) {
 				double duration = fromObject.get_statusEffectDuration(index);
