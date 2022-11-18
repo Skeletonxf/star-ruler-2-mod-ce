@@ -1,0 +1,10 @@
+Status: Blockaded
+	Name: #STATUS_BLOCKADED
+	Description: #STATUS_BLOCKADED_DESC
+	Icon: QuickbarIcons::7
+	Color: #ff9000
+
+	Collapses: True
+	Show Duration: True
+	ReduceProductionPerStack(1)
+	RemoveOnOwnerChange()
