@@ -1,0 +1,69 @@
+Subsystem: BoringMissiles
+	Name: #BORING_MISSILELAUNCHER_NAME
+	Description: #BORING_MISSILELAUNCHER_DESC
+	BaseColor: #f92cf5
+	TypeColor: #f92cf5
+	Picture: SubsystemButtonArt::4
+	Elevation: 2
+
+	Tags: BaseCost
+	Tags: WeaponBase, MissileBase, Category:Weapons, Rotatable, Disabled
+	Tags: ExteriorCore, Weapon, IsExplosiveWeapon, HasInternals, SecondaryDPS, Homing
+	Hull: Flagship, Station
+
+	Size := HexSize * Hexes
+	BaseRange := 650
+	RangeScaling := (1.0 + (BaseRange / 500.0))/ 2.0
+	Range := (Size * RangeScaling) + BaseRange
+	Reload := 14.25 * min(1.0 + Size/512, 2.0)
+	Speed := max(85, Range / 30)
+
+	Damage := Size * 8
+	Duration := 150 * (1.0 + Size/96)
+	DamageOverTime := (Size * 3.0) / Duration
+
+	out DPS := ((Damage + (DamageOverTime * Duration)) * 4) / Reload
+	out SupplyDrain := SupplyCost
+	out SupplyFireCost := SupplyCost * Reload
+
+	Tracking := 3
+	SupplyCost := Size * 2.0
+
+	Hex.HP := 18 * HexSize
+	Hex.Resistance := 0.2
+	Hex.Mass := HexSize
+
+	Modifier: DamageFactor(factor)
+		DamageOverTime := DamageOverTime * factor
+
+	Spread := 0.015 / max(Range / 600, 1)
+
+	Requires:
+		Command = 1
+
+	Module: Default
+
+	Module: Core
+		Hex.HP := Hex.HP * 3
+		Hex.BuildCost := 5.0 * Hex.BuildCost
+		Hex.Mass := 5.0 * Hex.Mass
+
+		Sprite: MissileLauncher::0
+		DrawMode: 1
+
+		Hex.DamageResist := ShipSize / 64.0
+		Effect: DamageResist
+			Resist = Hex.DamageResist
+
+	Effector: BoringMissile
+		Range = Range
+		DamageOverTime = DamageOverTime
+		Duration = Duration
+		Reload = Reload
+		Speed = Speed
+		Tracking = Tracking
+		Spread = Spread
+		SupplyCost = SupplyCost * (Reload / 4)
+		FireDelay = Reload / 4
+		PodSize = 4
+		Damage = Damage

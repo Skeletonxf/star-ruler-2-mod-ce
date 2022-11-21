@@ -494,3 +494,4 @@ S_TRACTOR_BEAM_DESC: <<
 	[img=MenuIcons::3;20][color=#aaa]Tractor is weighed down by the target and vice versa.[/color][/img]
 	[img=MenuIcons::3;20][color=#aaa]Most effective against targets that have significantly less mass/thrust relative to the tractor.[/color][/img]
 >>
+BORING_MISSILELAUNCHER_NAME: Boring Missile Launcher

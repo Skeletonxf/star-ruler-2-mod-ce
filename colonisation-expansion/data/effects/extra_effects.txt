@@ -5,3 +5,15 @@ Effect: ShieldRedirect2
 	Value: DamageThreshold
 
 	GlobalDamage: heralds_combat::ShieldRedirect2
+
+Effect: ApplyBoringMissileDoT
+	Value: DPS = 0
+	Value: Duration = 0
+	Value: Damage = 0
+
+	End: CE_combat::ApplyBoringMissileDoT
+
+Effect: BoringMissileOverTime
+	Value: DPS = 0
+
+	Tick: CE_combat::BoringMissileDamage

@@ -1,0 +1,58 @@
+Effector: BoringMissile
+	Value: Range
+	Value: DamageOverTime
+	Value: Duration
+	Value: Reload
+	Value: FireDelay
+	Value: PodSize = 1
+	Value: Speed
+	Value: Tracking = 3
+	Value: Spread = 0.01
+	Value: SupplyCost = 0
+	Value: Damage = 0
+
+	Range: Range
+	Speed: Speed
+	Tracking: Tracking
+	Lifetime: 1.05 * Range / Speed
+	Spread: Spread
+
+	TargetAlgorithm: SingleTarget
+	CanTarget: isEnemy && isDamageable
+	AutoTarget: isEnemy && (isShip || (isOrbital || isColonyShip || isCivilian || isFreighter) * 0.5)
+
+	EfficiencyMode: Reload Only
+	Activation: Magazine(FireDelay, PodSize, Reload)
+	OnTrigger: combat::WeaponFire(SupplyCost)
+
+	Effect: ApplyBoringMissileDoT
+		DPS = DamageOverTime
+		Duration = Duration
+		Damage = Damage
+
+	PhysicalType: Missile
+		GfxType: Sprite
+		GfxSize: 4.0
+		PhysicalSize: 3.45
+		FireSfx: missile_launch
+		FireSfx: missile_launch_2
+		FireSfx: missile_launch_3
+		ImpactSfx: missile_impact
+		ImpactSfx: missile_impact_2
+		ImpactSfx: missile_impact_3
+		TrailCol: 99990000, 00000000
+		Color: ff8000ff
+		Material: Missile
+		ImpactGfx: ImpactFlareMissile
+
+	Skin: Skin1
+		Color: ff00ffff
+		TrailCol: 99009900, 00000000
+
+	Skin: Skin2
+		Color: 00ff00ff
+		TrailCol: 00990000, 00000000
+
+	Skin: Skin3
+		Color: 006bffff
+		TrailCol: 00409900, 00000000
