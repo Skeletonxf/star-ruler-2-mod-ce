@@ -9,4 +9,4 @@ Trait: Ancient Vessel
 	Icon: StatusWar * #faa
 	Color: #aaffaa
 
-	SpawnShip(Curiositas, Design From = Creeps)
+	SpawnShip(Curiositas, Design From = Creeps, , Add Status = CuriositasSpawnNerfs, Override Disable Starting = True)

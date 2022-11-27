@@ -19,7 +19,7 @@ Construction: UpgradeFlagship
 	Description: #UPGRADE_CURIOSITAS_DESC
 	CE_requirement_effects::RequireNotInvasionMap()
 	AddMaintainCostStatusCount(UpscaledCuriositas, Multiply = 25)
-	AddBuildCostStatusCount(UpscaledCuriositas, Multiply = 1000)
+	AddBuildCostStatusCount(UpscaledCuriositas, Multiply = 500)
 	OnCancel(RemoveStatusInstance(UpscaledCuriositas))
 	OnStart(AddStatus(UpscaledCuriositas))
 	RequireStatus(Curiositas)
@@ -32,7 +32,7 @@ Construction: UpgradeFlagshipInvasion
 	Time Cost: 120
 	Description: #UPGRADE_CURIOSITAS_DESC
 	CE_requirement_effects::RequireInvasionMap()
-	AddBuildCostStatusCount(UpscaledCuriositas, Multiply = 1000)
+	AddBuildCostStatusCount(UpscaledCuriositas, Multiply = 500)
 	OnCancel(RemoveStatusInstance(UpscaledCuriositas))
 	OnStart(AddStatus(UpscaledCuriositas))
 	RequireStatus(Curiositas)

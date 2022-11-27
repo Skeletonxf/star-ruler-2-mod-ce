@@ -98,3 +98,13 @@ FROSTKIN_OVERHEATED_DESC: This planet is disabled due to a neraby star
 FTL_EXTRACTOR_READY: Fully online
 STATUS_SKIP_DRIVE_DESC: This flagship has a skip drive equipped. Skip drives are instant teleportation, but use up large amounts of energy.
 STATUS_ION_CANNON_DESC: This flagship has an ion cannon equipped. Firing an ion cannon temporarily prevents the targeted ship from moving or using FTL.
+CURIOSITAS_SPAWN_NERF: Refurbishment
+CURIOSITAS_SPAWN_NERF_DESC: <<
+	Undergoing major refurbishment and repairs to adapt the vessel to its new crew.
+	Fleet effectiveness is reduced by 30%
+>>
+CURIOSITAS_SPAWN_NERF2: Resupply
+CURIOSITAS_SPAWN_NERF_DESC2: <<
+	Undergoing extensive resupply from nearby planets.
+	Fleet effectiveness is reduced up to 40% when far away from owned planets.
+>>
