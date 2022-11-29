@@ -17,9 +17,15 @@ Subsystem: SupportCapModule
 	Hex.Mass := HexSize
 
 	Defense := SupportCapacity / 120
-	Hook: AddLocalDefense(Defense, Global Factor = 0.0, Owned Space Only = True)
+
+	Modifier: LocalDefenseGenFactor(factor)
+		Defense := Defense * factor
+
 	Modifier: SupportCapacityFactor(factor)
 		SupportCapacity := SupportCapacity * factor
+
+	Hook: AddLocalDefense(Defense, Global Factor = 0.0, Owned Space Only = True)
+
 
 	Module: Default
 		Sprite: SupportCommand

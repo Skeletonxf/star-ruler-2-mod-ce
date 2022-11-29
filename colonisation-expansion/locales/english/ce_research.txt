@@ -172,3 +172,11 @@ R_SYS_PROJECTOR_TRACTOR_BEAM_DESC: <<
 
 	[bbloc=#S_PROJECTOR_TRACTOR_BEAM_DESC/]
 >>
+R_IMP_SUPPORT_DEF: Assembly
+R_IMP_SUPPORT_DEF_BLURB: Flagship Local Defense +$1
+R_IMP_SUPPORT_DEF_DESC: <<
+	[i][color=#aaa]Improved assembly and labor for a carrier and its support fleet.[/color][/i]
+
+	Increases the local defense generation of all support command subsystems by $1.
+>>
+R_IMP_SUPPORT_DEF2: Assembly 2

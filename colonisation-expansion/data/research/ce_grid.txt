@@ -153,7 +153,6 @@ Grid: ColonisationExpansionGrid
 	HighEnergyHurdle: 9,0
 	FleetComputer: -8,-2
 	SupportCap2: -7,0
-	SupportWeight: -9,-1
 	SupportCap: -2,0
 	BldSpire: -7,-2
 	HyperLaser: 5,-1
@@ -205,7 +204,6 @@ Grid: ColonisationExpansionGrid
 	PlanetSupport: -3,-6
 	BroadcastAntenna: -11,1
 	CloakPlating: -11,-1
-	ImpImpConstructionRate2: -10,1
 	ImpCivConstructionRate: -6,-7
 	AllondiumGeneration: -8,-7
 	ShieldHardener: 0,8
@@ -239,8 +237,6 @@ Grid: ColonisationExpansionGrid
 	InterstellarTrade: -2,-14
 	GravitronicsEnhancer: 6,9
 	Prosperity: -5,1
-	SupportWeight: -9,-2
-	SupportWeight: -10,-3
 	Construction: -4,1
 	CreateWater: -5,-9
 	CivFTL: -8,-4
@@ -290,3 +286,13 @@ Grid: ColonisationExpansionGrid
 	FlareBomb: -8,7
 	EnergyHurdle: -4,6
 	SysProjectorTractorBeam: -3,13
+	SupportWeight: -9,1
+	ImpImpConstructionRate2: -9,-1
+	SupportWeight: -9,2
+	SupportWeight: -10,3
+	SupportDef: -9,-2
+	SupportDef: -10,-3
+	SupportDef: -10,-4
+	SupportDef2: -11,-4
+	SupportDef2: -11,-5
+	SupportDef: -10,-5
