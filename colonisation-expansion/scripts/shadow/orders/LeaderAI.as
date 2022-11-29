@@ -29,6 +29,7 @@ tidy class LeaderAI : Component_LeaderAI {
 	bool AllowFillFrom = false;
 	bool allowSatellites = false;
 	// [[ MODIFY BASE GAME START ]]
+	bool autoBuild = true;
 	bool isLooping = false;
 	double RaidRange = 3000.0;
 	bool FreeRaiding = false;
@@ -544,6 +545,7 @@ tidy class LeaderAI : Component_LeaderAI {
 		msg >> autoFill >> autoBuy >> AllowFillFrom;
 		// [[ MODIFY BASE GAME START ]]
 		msg >> isLooping;
+		msg >> autoBuild;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -564,6 +566,10 @@ tidy class LeaderAI : Component_LeaderAI {
 	}
 
 	// [[ MODIFY BASE GAME START ]]
+	bool get_autoBuildSupports() {
+		return autoBuild;
+	}
+
 	bool isLoopingOrders() {
 		return isLooping;
 	}

@@ -3769,6 +3769,13 @@ class AddLocalDefense : GenericEffect {
 		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
+		if (obj.hasLeaderAI && !obj.autoBuildSupports) {
+			// Don't build if user said not to
+			tickDefense = 0;
+		}
+		// [[ MODIFY BASE GAME END ]]
+
+		// [[ MODIFY BASE GAME START ]]
 		bool planetDefense = obj.isPlanet;
 		bool flagshipDefense = obj.isShip;
 		bool alphaDefense = false;
@@ -3931,6 +3938,13 @@ class AddLocalDefenseAdjacentFlags : GenericEffect {
 		double tickDefense = secondDefense * time;
 		if(disable_in_combat.boolean && obj.inCombat)
 			tickDefense = 0;
+
+		// [[ MODIFY BASE GAME START ]]
+		if (obj.hasLeaderAI && !obj.autoBuildSupports) {
+			// Don't build if user said not to
+			tickDefense = 0;
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		// [[ MODIFY BASE GAME START ]]
 		LeaderDefense leaderDefense;

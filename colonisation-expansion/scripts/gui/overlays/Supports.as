@@ -371,6 +371,9 @@ class GroupDisplay : BaseGuiElement {
 	GuiButton@ clearButton;
 	GuiCheckbox@ autoBuy;
 	GuiCheckbox@ autoFill;
+	// [[ MODIFY BASE GAME START ]]
+	GuiCheckbox@ autoBuild;
+	// [[ MODIFY BASE GAME END ]]
 	GuiCheckbox@ allowFillFrom;
 
 	GroupDisplay(Object@ obj, SupportOverlay@ Overlay, int offset = 0) {
@@ -408,6 +411,11 @@ class GroupDisplay : BaseGuiElement {
 		setMarkupTooltip(autoBuy, locale::TT_AUTO_BUY_SUPPORTS);
 		@allowFillFrom = GuiCheckbox(this, Alignment(Left+8, Bottom-offset-29, Left+0.5f-15, Bottom-offset-3), locale::ALLOW_FILL_FROM_SUPPORTS);
 		setMarkupTooltip(allowFillFrom, locale::TT_ALLOW_FILL_FROM_SUPPORTS);
+
+		// [[ MODIFY BASE GAME START ]]
+		@autoBuild = GuiCheckbox(this, Alignment(Left+0.5f-5+3, Bottom-offset-2, Right-25, Bottom-offset+24), locale::AUTO_LOCAL_DEFENSE_GEN);
+		setMarkupTooltip(autoBuild, locale::TT_AUTO_LOCAL_DEFENSE_GEN);
+		// [[ MODIFY BASE GAME END ]]
 
 		update();
 	}
@@ -487,6 +495,10 @@ class GroupDisplay : BaseGuiElement {
 		rebuyButton.visible = !leader.isPlanet;
 		clearButton.visible = !leader.isPlanet;
 		autoBuy.checked = leader.autoBuySupports;
+		// [[ MODIFY BASE GAME START ]]
+		autoBuild.visible = true;
+		autoBuild.checked = leader.autoBuildSupports;
+		// [[ MODIFY BASE GAME END ]]
 
 		if(autoFill.visible) {
 			autoFill.checked = leader.autoFillSupports;
@@ -585,6 +597,12 @@ class GroupDisplay : BaseGuiElement {
 				leader.allowFillFrom = allowFillFrom.checked;
 				return true;
 			}
+			// [[ MODIFY BASE GAME START ]]
+			if(evt.caller is autoBuild) {
+				leader.autoBuildSupports = autoBuild.checked;
+				return true;
+			}
+			// [[ MODIFY BASE GAME END ]]
 		}
 		else if(evt.type == GUI_Animation_Complete) {
 			animating = false;

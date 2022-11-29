@@ -3,3 +3,7 @@ STATUS_SHIPLEVEL_DESC: <<
 
 	Destroy enemy flagships or use a simulator to train your crew to increase a ship's veterancy level.
 >>
+AUTO_LOCAL_DEFENSE_GEN: Auto Build
+TT_AUTO_LOCAL_DEFENSE_GEN: <<
+	When checked, the fleet will automatically build new support ships if it has local defense generation until the fleet is full.
+>>

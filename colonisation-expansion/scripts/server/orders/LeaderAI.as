@@ -109,6 +109,12 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 	bool rememberGhosts = true;
 	//Whether fleets can autofill from this
 	bool AllowFillFrom = false;
+	// [[ MODIFY BASE GAME START ]]
+	// Whether to automatically build new supports with local defense generation
+	// until full
+	// TODO: Default to false for sandbox
+	bool autoBuild = true;
+	// [[ MODIFY BASE GAME END ]]
 
 	AutoState autoState = AS_None;
 	vec3d initialPosition;
@@ -324,6 +330,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 
 		// [[ MODIFY BASE GAME START ]]
 		msg >> isLooping;
+		msg >> autoBuild;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -394,6 +401,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 
 		// [[ MODIFY BASE GAME START ]]
 		msg << isLooping;
+		msg << autoBuild;
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -1222,6 +1230,17 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		autoBuy = value;
 		orderDelta = true;
 	}
+
+	// [[ MODIFY BASE GAME START ]]
+	bool get_autoBuildSupports() {
+		return autoBuild;
+	}
+
+	void set_autoBuildSupports(bool value) {
+		autoBuild = value;
+		orderDelta = true;
+	}
+	// [[ MODIFY BASE GAME END ]]
 
 	bool get_autoFillSupports() {
 		return autoFill;
@@ -2871,6 +2890,7 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 		msg << autoFill << autoBuy << AllowFillFrom;
 		// [[ MODIFY BASE GAME START ]]
 		msg << isLooping;
+		msg << autoBuild;
 		// [[ MODIFY BASE GAME END ]]
 	}
 

@@ -54,6 +54,7 @@ restricted local:
 	safe bool get_autoBuySupports() const;
 	safe bool get_autoFillSupports() const;
 	safe bool get_allowFillFrom() const;
+	safe bool get_autoBuildSupports() const;
 	// [[ MODIFY BASE GAME START ]]
 	safe bool isLoopingOrders() const;
 	// [[ MODIFY BASE GAME END ]]
@@ -118,6 +119,9 @@ restricted remote:
 	void set_autoBuySupports(bool value);
 	void set_autoFillSupports(bool value);
 	void set_allowFillFrom(bool value);
+	// [[ MODIFY BASE GAME START ]]
+	void set_autoBuildSupports(bool value);
+	// [[ MODIFY BASE GAME END ]]
 
 	void addExperience(double amount);
 	void resetLevelExperience(bool resetLevels = false);
