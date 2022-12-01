@@ -35,7 +35,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Make AI able to use the abilties on senatorial palaces and allondium worlds
     - Use the introduced ability AI hooks
   - Prevent support ships automatically transfering onto flagships with non matching hull colors
-  - Make the AoE for torpedoes and warheads scale better (formula for self defense and nilling fiber is much closer to useful)
   - Teach AI to sublight out of jammed regions before FTLing rather than always defaulting to sublight if it starts in a jammed system
   - Make War.as AI detect when a system is protected due to an Outpost/Temple and make it only commit one ship to take out the orbital instead of all of its seiging ships (since at the moment they all give up on the capture and then all detect the enemy orbital via findEnemy)
   - Auto researching an FTL unlock should not trigger the vote for the FTL unlock
@@ -59,7 +58,6 @@ This is primarily intended as a developer focused project planning list, rather 
   - Teach AI to not put comets on worlds being razed
   - Prevent AI from deliberately researching/building FTL extractors if they have FTL breeders already unlocked
   - Increase the resolution of the Helium 3 icon to make it clearer
-  - Fix map generation bugs with galaxy mirroring and gas/ice giants
   - Make the AI work out who is attacking its stars instead of assuming anyone with a presence in the system is
   - Investigate issues with Mechanoid AI being able to build gates
   - Make the AI's search for things to colonise when it has no systems more robust - Star Children should still be able to recover while they have Motherships but the current code will attempt to recolonise its home system or just give up.
@@ -147,4 +145,4 @@ This is primarily intended as a developer focused project planning list, rather 
       - Carpet bomb enemy planets
       - Use gates to coordinate surprise attacks on an enemy (the AI is already good at doing rapid attacks with Hyperdrives/Jumpdrives/Fling but gates and slipstreams aren't used as well here)
       - Immediately seek to destroy a player's Senatorial Palace if they start one of the Galatic votes that can achieve the influence victory
-  - Sight range and seeable range should be based on the edge to edge distance of two ships, factoing in the radius of both
+  - Sight range and seeable range should be based on the edge to edge distance of two ships, factoring in the radius of both

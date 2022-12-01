@@ -54,8 +54,8 @@ restricted local:
 	safe bool get_autoBuySupports() const;
 	safe bool get_autoFillSupports() const;
 	safe bool get_allowFillFrom() const;
-	safe bool get_autoBuildSupports() const;
 	// [[ MODIFY BASE GAME START ]]
+	safe bool get_autoBuildSupports() const;
 	safe bool isLoopingOrders() const;
 	// [[ MODIFY BASE GAME END ]]
 
