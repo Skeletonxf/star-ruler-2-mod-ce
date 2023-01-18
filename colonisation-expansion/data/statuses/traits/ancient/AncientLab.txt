@@ -1,0 +1,5 @@
+Status: AncientLab
+	Visible To: Nobody
+
+	AddResource(Research, 1)
+	AddResourceEmpireAttribute(Research, ResearchComplexExtraPressure)

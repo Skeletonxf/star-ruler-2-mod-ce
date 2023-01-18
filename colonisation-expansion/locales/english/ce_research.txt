@@ -180,3 +180,4 @@ R_IMP_SUPPORT_DEF_DESC: <<
 	Increases the local defense generation of all support command subsystems by $1.
 >>
 R_IMP_SUPPORT_DEF2: Assembly 2
+R_LABORATORIES_DESC: Research Complex buildings and Labs give $1 additional Research Pressure.

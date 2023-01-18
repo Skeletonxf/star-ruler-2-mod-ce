@@ -71,7 +71,6 @@ Trait: Ancient
 	ReplaceTechnologyNodes(HydroponicsSatellite, FoundryLabor2)
 	ReplaceTechnologyNodes(KeyFTL, Thrust2)
 	ReplaceTechnologyNodes(Population, FoundryLabor)
-	ReplaceTechnologyNodes(Laboratories, FoundryLabor2)
 
 	ReplaceTechnologyNodes(InterstellarTrade, Thrust2)
 	ReplaceTechnologyNodes(BldSpire, Thrust2)
