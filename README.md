@@ -132,3 +132,18 @@ My own AngelScript code in this mod is licensed under the MIT license. Most of t
 The empire portraits `frostkin2.png` and `locusto2.png` were created by running [Stable Diffusion img2img](https://github.com/cmdr2/stable-diffusion-ui) on the originals that I drew, `frostkin.png` and `locusto.png` respectively. While Stable Diffusion img2img is still a 'tool' the same way Krita is in so far as I am the only copyright holder to 'make' the image, the nature of using a model that's been taught how to draw on a wealth of (copyrighted) images scraped from the internet is a little more fuzzy than learning how to draw that well myself (which would of course also involve learning from existing copyrighted images, but one can be more certain that they didn't copy something verbatim when they're the artist).
 
 Some parts of this mod are derived from the MIT licensed code in [Rising Stars](https://github.com/DaloLorn/Rising-Stars) by Dalo Lorn. Also contains some parts from the MIT licensed code by scitor in [Industrial Revolution](https://github.com/scitor/SR2-IndustrialRevolution), and portions of the MIT licensed code by Darloth in [New Movement Physics](https://github.com/darloth/SR2-NewMovement).
+
+## Frequently asked questions
+
+### Where are the release notes?
+Every [tagged release](https://github.com/Skeletonxf/star-ruler-2-mod-ce/tags) contains a summary of changes. For more detailed changes see the individual commit messages in the git history.
+
+### Will there be a Steam workshop release?
+I own the game on Steam, however I rarely use the Steam distribution and consequently would not keep a Steam workshop version up to date with the GitHub releases. There may be a Steam workshop release in the future. In such a release I would likely disable some less tested / unfinished features. GitHub will always be the primary release model for this mod. You should check out the [OpenSR launchpad](https://github.com/OpenSRProject/OpenStarRuler-Launchpad) for assistance with installing and updating mods over git.
+
+### Is this mod compatible with the modpack?
+The modpack, formerly the community patch, contains a number of bugs fixes and non gameplay changing enhancements to vanilla. I ported and continue to port many of these from CE to the modpack and hence they are already included in CE.
+
+Modding in SR2 consists of providing files which override the vanilla or other mod versions. When two mods both change a file, they are incompatible unless one mod declares itself as depending on the other. The child mod must copy all the conflicted file changes into its sources and apply its own on top. In a large mod like CE this inevitability necessities distributing parts of mods you depend on in your own source code. Unfortunately some of the authors of the modpack chose not to open source some/all of their contributions, and hence those changes remain proprietary and not in CE. In order to include only the open source changes from the modpack I've had to manually port such fixes that didn't originate from CE (mostly fixes originating from Rising Stars by Dalo Lorn), even for files that CE doesn't otherwise modify itself (although this list is ever-shrinking).
+
+So in summary, CE *mostly* bundles the modpack inside its own sources, just as all big mods that depend on the modpack have to do one conflicting file at a time.
