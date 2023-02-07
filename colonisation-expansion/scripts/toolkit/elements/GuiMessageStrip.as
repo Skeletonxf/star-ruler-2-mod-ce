@@ -6,16 +6,28 @@ import elements.MarkupTooltip;
 import notifications;
 import notifications.notifications;
 
+class MessageStripNotification {
+	Notification@ notification;
+	Empire@ empire;
+
+	MessageStripNotification(Notification@ notification, Empire& empire) {
+		@this.notification = notification;
+		@this.empire = empire;
+	}
+}
+
 class GuiMessageStrip : BaseGuiElement {
 	uint nextNotify = 0;
 	array<Notification@> unhandled;
-	array<Notification@> handled;
+	array<MessageStripNotification@> handled;
 	array<GuiMarkupText@> items;
 	GuiMarkupText@ overflow;
 
 	int padding = 2;
 	int margin = 17;
 	double minGameTime = 0.0;
+
+	Empire@ currentEmpire;
 
 	GuiMessageStrip(IGuiElement@ parent, Alignment@ align) {
 		super(parent, align);
@@ -33,7 +45,9 @@ class GuiMessageStrip : BaseGuiElement {
 			nextNotify = latest;
 		}
 
-		bool needsUpdate = unhandled.length != 0;
+		bool empireChange = currentEmpire !is emp;
+		bool needsUpdate = unhandled.length != 0 || empireChange;
+		@currentEmpire = emp;
 
 		if (!needsUpdate) {
 			return;
@@ -42,19 +56,19 @@ class GuiMessageStrip : BaseGuiElement {
 		// Handle all unhandled
 		if (unhandled.length > 0) {
 			for (uint i = 0, cnt = unhandled.length; i < cnt; ++i)
-				handle(unhandled[i]);
+				handle(unhandled[i], emp);
 			unhandled.length = 0;
 		}
 
-		updateMessages();
+		updateMessages(empireChange);
 	}
 
-	void updateMessages() {
+	void updateMessages(bool force = false) {
 		// sync items.length to handled.length
 		uint oldCnt = items.length;
 		uint newCnt = handled.length;
 
-		if (newCnt == oldCnt) {
+		if (newCnt == oldCnt && !force) {
 			return;
 		}
 
@@ -74,17 +88,20 @@ class GuiMessageStrip : BaseGuiElement {
 		bool overflow = false;
 		int x = padding;
 		for (uint i = 0; i < newCnt; ++i) {
-			string label = getLabel(handled[i]);
+			string label = getLabel(handled[i].notification);
 			items[i].text = label;
 			items[i].flexHeight = false;
 			items[i].expandWidth = true;
-			items[i].visible = true;
+			bool visible = handled[i].empire is currentEmpire;
+			items[i].visible = visible;
 			items[i].updateAbsolutePosition();
 			int w = items[i].textWidth + margin;
 			items[i].rect = recti_area(x, 27, w, 47);
-			x += w + padding;
-			if (x > size.width) {
-				overflow = true;
+			if (visible) {
+				x += w + padding;
+				if (x > size.width) {
+					overflow = true;
+				}
 			}
 		}
 
@@ -93,13 +110,16 @@ class GuiMessageStrip : BaseGuiElement {
 			int x = size.width - padding;
 			for (uint index = newCnt; index > 0; --index) {
 				uint i = index - 1;
-				items[i].visible = true;
+				bool visible = handled[i].empire is currentEmpire;
+				items[i].visible = visible;
 				items[i].updateAbsolutePosition();
 				int w = items[i].textWidth + margin;
 				items[i].rect = recti_area(x - w, 27, x, 47);
-				x -= w + padding;
-				if (x < 0) {
-					items[i].visible = false;
+				if (visible) {
+					x -= w + padding;
+					if (x < 0) {
+						items[i].visible = false;
+					}
 				}
 			}
 			toggleOverflowIndicator(true);
@@ -119,13 +139,13 @@ class GuiMessageStrip : BaseGuiElement {
 		overflow.rect = recti_area(0, 27, w, 47);
 	}
 
-	void handle(Notification@ notification) {
+	void handle(Notification@ notification, Empire& emp) {
 		if (notification.time <= minGameTime)
 			return;
 		if (getLabel(notification) != "") {
 			string newLabel = getLabel(notification);
 			for (uint i = 0, cnt = handled.length; i < cnt; ++i) {
-				if (getLabel(handled[i]) == newLabel) {
+				if (getLabel(handled[i].notification) == newLabel) {
 					// we already had this notification from earlier, remove
 					// the old one
 					handled.removeAt(i);
@@ -133,7 +153,7 @@ class GuiMessageStrip : BaseGuiElement {
 					break;
 				}
 			}
-			handled.insertLast(notification);
+			handled.insertLast(MessageStripNotification(notification, emp));
 		}
 	}
 
@@ -165,7 +185,7 @@ class GuiMessageStrip : BaseGuiElement {
 		uint i = uint(index);
 		if (i < handled.length) {
 			if (goTo) {
-				gotoNotification(handled[i]);
+				gotoNotification(handled[i].notification);
 			}
 			handled.removeAt(i);
 			updateMessages();

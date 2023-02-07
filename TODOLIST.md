@@ -11,11 +11,9 @@ This is primarily intended as a developer focused project planning list, rather 
 - Techs for upgrading sybsystem labor
 - Stored labor is depleted by time based constructions
 - Prevent support ships automatically transfering onto flagships with non matching hull colors
-- Auto researching an FTL unlock should not trigger the vote for the FTL unlock
 - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
 - Make some analog to the SupportStation artifact player designable/buildable
 - Make chase order aim to be behind the target
-- Make message strip clear notifications when swapping empires
 - Make auto import refresh when resources on already colonised planets become available
 - Make nebulae griefing not work while the planet is in combat.
 - Investigate what happens to civilian trade ships when target is in deep space
@@ -106,6 +104,7 @@ This is primarily intended as a developer focused project planning list, rather 
 - Teach AI to scuttle unneeded FTL income orbitals
 
 ## Not planned for any time soon
+  - Auto researching an FTL unlock should not trigger the vote for the FTL unlock (tried already unsuccessfully to fix this, not priority for now)
   - AI support for arkship upgrades
   - AI support for playing Battleworlders
   - Consider making carpet bombing able to destroy tiles via the SurfaceGrid's destroyRandomTile method
