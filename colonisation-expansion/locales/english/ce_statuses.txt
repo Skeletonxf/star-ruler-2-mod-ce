@@ -28,7 +28,7 @@ DYSON_SPHERE_FULL_DESC: <<
 	[img=ResourceIconsSmall::11;22;#91692c][b][color=#91692c]Building a dyson sphere requires large amounts of Ore mined from asteroids, and additional ore per second for full efficiency.[/color][/b][/img]
 	[color=#aaa]
 	[offset=10]I asked you to build me a Dyson [b]Sphere[/b], why did you build me a Dyson [b]Swarm[/b]?[/offset]
-	[offset=30]Sorry my leader, our enginners thought it best not to block out so much light that our planets became inhospitable. If you desire more energy you could always extend the Dyson Swarm to have more layers?[/offset]
+	[offset=30]Sorry my leader, our engineers thought it best not to block out so much light that our planets became inhospitable. If you desire more energy you could always extend the Dyson Swarm to have more layers?[/offset]
 	[/color]
 >>
 FULLY_FORESTED_DESC: <<
