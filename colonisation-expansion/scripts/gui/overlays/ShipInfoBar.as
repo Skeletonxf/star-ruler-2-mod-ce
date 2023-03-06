@@ -529,12 +529,27 @@ class ShipInfoBar : InfoBar {
 		}
 
 		double resupply = 0.0;
-		if(design !is null)
+		if (design !is null) {
 			resupply = design.total(SV_SupplyRate);
-		setMarkupTooltip(supply, format(locale::TT_SHIP_SUPPLY,
-			standardize(curSup), standardize(totSup),
-			standardize(resupply * 0.12f), standardize(resupply)),
-			width = 350);
+		}
+		// MODIFY BASE GAME START
+
+		setMarkupTooltip(
+			supply,
+			format(locale::TT_SHIP_SUPPLY,
+				standardize(curSup),
+				standardize(totSup),
+				standardize(resupply * 0.12f),
+				standardize(resupply)
+			) + "\n\n" +
+			format(locale::TT_SHIP_SUPPLY_CONTINUED,
+				standardize(ship.maxAcceleration),
+				standardize(ship.Mass + ship.BonusMass),
+				standardize(ship.blueprint.getEfficiencySum(SV_TurnThrust))
+			),
+			width = 350
+		);
+		// MODIFY BASE GAME END
 	}
 
 	IGuiElement@ elementFromPosition(const vec2i& pos) override {

@@ -7,3 +7,18 @@ AUTO_LOCAL_DEFENSE_GEN: Auto Build
 TT_AUTO_LOCAL_DEFENSE_GEN: <<
 	When checked, the fleet will automatically build new support ships if it has local defense generation until the fleet is full.
 >>
+TT_SHIP_SUPPLY: <<
+	[font=Medium]Fleet Supply[/font]
+	The total remaining supplies stored in this fleet. Supplies are used to fire weapons and to capture planets. Fleets are resupplied out of combat. Running low on supplies decreases the fleet's efficiency and DPS.
+
+	[b]Current Supply[/b] [offset=230]$1[/offset]
+	[b]Supply Storage[/b] [offset=230]$2[/offset]
+
+	[b]Resupply (Neutral Space)[/b] [offset=230]$3/sec[/offset]
+	[b]Resupply (Friendly Space)[/b] [offset=230]$4/sec[/offset]
+>>
+TT_SHIP_SUPPLY_CONTINUED: <<
+	[b]Acceleration[/b] [offset=230]$1 u/s²[/offset]
+	[b]Mass[/b] [offset=230]$2[/offset]
+	[b]Turn Rate[/b] [offset=230]$3 rad/s[/offset]
+>>
