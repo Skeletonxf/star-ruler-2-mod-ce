@@ -190,7 +190,9 @@ tidy class OrbitalScript {
 
 	float timer = 0.f;
 	double prevFleet = 0.0;
-	void occasional_tick(Orbital& obj) {
+	// [[ MODIFY BASE GAME START ]]
+	void occasional_tick(Orbital& obj, float time) {
+		// [[ MODIFY BASE GAME END ]]
 		Region@ prevRegion = obj.region;
 		if(updateRegion(obj)) {
 			Region@ newRegion = obj.region;
@@ -245,11 +247,13 @@ tidy class OrbitalScript {
 		obj.moverTick(time);
 
 		//Tick occasional stuff
-		timer -= float(time);
-		if(timer <= 0.f) {
-			occasional_tick(obj);
-			timer = 1.f;
+		// [[ MODIFY BASE GAME START ]]
+		timer += float(time);
+		if(timer > 1.f) {
+			occasional_tick(obj, timer);
+			timer = 0.f;
 		}
+		// [[ MODIFY BASE GAME END ]]
 
 		return delay;
 	}

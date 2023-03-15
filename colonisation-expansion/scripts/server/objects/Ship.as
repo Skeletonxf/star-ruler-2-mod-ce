@@ -1047,6 +1047,9 @@ tidy class ShipScript {
 		}
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	// Combat state moved to combatable
+	// [[ MODIFY BASE GAME END ]]
 	bool prevEngaged = false;
 	bool inFTL = false;
 	void occasional_tick(Ship& ship, float time) {

@@ -6,6 +6,7 @@ import saving;
 import util.target_search;
 // [[ MODIFY BASE GAME START ]]
 import CE_deep_space;
+import objects.Combatable;
 // [[ MODIFY BASE GAME END ]]
 
 const int STRATEGIC_RING = -1;
@@ -42,6 +43,7 @@ tidy class OrbitalScript {
 	double Shield = 0;
 	double MaxShield = 0;
 	double ShieldRegen = 0;
+	Combatable@ combatable = Combatable();
 	// [[ MODIFY BASE GAME END ]]
 
 	Orbital@ master;
@@ -109,6 +111,9 @@ tidy class OrbitalScript {
 		}
 
 		file << cast<Savable>(obj.Mover);
+		// [[ MODIFY BASE GAME START ]]
+		combatable.save(file);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void load(Orbital& obj, SaveFile& file) {
@@ -184,6 +189,10 @@ tidy class OrbitalScript {
 			file >> cast<Savable>(obj.Mover);
 		else
 			obj.maxAcceleration = 0;
+
+		// [[ MODIFY BASE GAME START ]]
+		combatable.load(file);
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	void makeFree(Orbital& obj) {
@@ -934,8 +943,9 @@ tidy class OrbitalScript {
 
 	float timer = 0.f;
 	double prevFleet = 0.0;
-	float combatTimer = 0.f;
-	void occasional_tick(Orbital& obj) {
+	// [[ MODIFY BASE GAME START ]]
+	void occasional_tick(Orbital& obj, float time) {
+		// [[ MODIFY BASE GAME END ]]
 		Region@ prevRegion = obj.region;
 		if(updateRegion(obj)) {
 			Region@ newRegion = obj.region;
@@ -959,12 +969,11 @@ tidy class OrbitalScript {
 
 		//Update in combat flags
 		bool engaged = obj.engaged;
-		if(engaged)
-			combatTimer = 20.f;
-		else
-			combatTimer -= 1.f;
+		// [[ MODIFY BASE GAME START ]]
+		combatable.occasional_tick(time, engaged);
 
-		obj.inCombat = combatTimer > 0.f;
+		obj.inCombat = combatable.inCombat();
+		// [[ MODIFY BASE GAME END ]]
 		obj.engaged = false;
 
 		if(engaged && prevRegion !is null)
@@ -984,7 +993,9 @@ tidy class OrbitalScript {
 			obj.updateFleetStrength();
 
 		//Order support ships to attack
-		if(combatTimer > 0.f) {
+		// [[ MODIFY BASE GAME START ]]
+		if(combatable.inCombat()) {
+			// [[ MODIFY BASE GAME END ]]
 			if(obj.hasLeaderAI && obj.supportCount > 0) {
 				Object@ target = findEnemy(obj, obj, obj.owner, obj.position, 700.0);
 				if(target !is null) {
@@ -1193,17 +1204,32 @@ tidy class OrbitalScript {
 			obj.abilityTick(time);
 
 		//Tick occasional stuff
-		timer -= float(time);
-		if(timer <= 0.f) {
-			occasional_tick(obj);
-			timer = 1.f;
+		// [[ MODIFY BASE GAME START ]]
+		timer += float(time);
+		if(timer > 1.f) {
+			occasional_tick(obj, timer);
+			timer = 0.f;
 		}
+		// [[ MODIFY BASE GAME END ]]
 
 		//Repair
 		if(!disabled && ((core !is null && core.type.combatRepair) || !obj.inCombat)) {
-			double recover = time * ((MaxHealth + MaxArmor) / RECOVERY_TIME);
-			if(obj.inCombat)
+			// [[ MODIFY BASE GAME START ]]
+			// heal 0.5% per second of max hp if we are really really out of combat
+			// and home
+			// combined with combat timers of 25 seconds, and a 60 second out of combat
+			// timer, this takes 80 seconds longer than vanilla's 5 seconds to kick
+			// in at full speed, so will take a total of about 264 seconds, which
+			// is a little longer than the vanilla formula that does just over 180
+			// seconds. The key part though, is that in-combat and in-recent-combat
+			// repair will be much weaker, allowing enemies to keep the damage up even
+			// with weapons that have modest cooldowns.
+			double recover = 0.005 * (MaxHealth + MaxArmor) * time;
+			//double recover = time * ((MaxHealth + MaxArmor) / RECOVERY_TIME);
+			if (obj.inCombat || combatable.inRecentCombat()) {
+				// [[ MODIFY BASE GAME END ]]
 				recover *= COMBAT_RECOVER_RATE;
+			}
 
 			if(Health < MaxHealth) {
 				double take = min(recover, MaxHealth - Health);
