@@ -7,6 +7,9 @@ from generic_effects import RegionChangeable, LeaderChangeable;
 from influence_global import giveRandomReward, DiplomacyEdictType;
 from designs import getDesignMesh;
 from statuses import getStatusID;
+// [[ MODIFY BASE GAME START ]]
+import objects.Combatable;
+// [[ MODIFY BASE GAME END ]]
 
 MeshDesc shipMesh;
 
@@ -41,10 +44,7 @@ const float EXTINGUISH_CHANCE = 0.2f;
 const float FIRE_DPS = 0.25;
 
 // [[ MODIFY BASE GAME START ]]
-// How much time a ship needs to be out of combat for before we consider
-// it to not have recently been in combat, at which point we may enable
-// things like % hp based repair again.
-const float TIME_OUTSIDE_COMBAT_STILL_RECENT = 60;
+// combat managed in dedicated class to share between object types
 // [[ MODIFY BASE GAME END ]]
 
 tidy class ShipScript {
@@ -74,7 +74,7 @@ tidy class ShipScript {
 	float bonusShield = 0;
 	float supplyConsumeFactor = 1.f;
 	// [[ MODIFY BASE GAME START ]]
-	float recentlyInCombatTimer = 0.0;
+	Combatable@ combatable = Combatable();
 
 	float projectedShieldRegen = 0;
 	float projectedShieldCapacity = 0;
@@ -183,9 +183,9 @@ tidy class ShipScript {
 		file << supplyConsumeFactor;
 		file << bonusEffectiveness;
 		// [[ MODIFY BASE GAME START ]]
-		file << recentlyInCombatTimer;
 		file << projectedShieldRegen;
 		file << projectedShieldCapacity;
+		combatable.save(file);
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -301,9 +301,9 @@ tidy class ShipScript {
 		if(ship.hasSupportAI)
 			ship.supportPostLoad();
 		// [[ MODIFY BASE GAME START ]]
-		file >> recentlyInCombatTimer;
 		file >> projectedShieldRegen;
 		file >> projectedShieldCapacity;
+		combatable.load(file);
 		// [[ MODIFY BASE GAME END ]]
 	}
 
@@ -1047,7 +1047,6 @@ tidy class ShipScript {
 		}
 	}
 
-	float combatTimer = 0.f;
 	bool prevEngaged = false;
 	bool inFTL = false;
 	void occasional_tick(Ship& ship, float time) {
@@ -1125,20 +1124,11 @@ tidy class ShipScript {
 			ship.blueprint.holdFire = false;
 
 		// [[ MODIFY BASE GAME START ]]
-		if(engaged) {
-			// 5 -> 25, even lasers struggle to maintain sub 5 seconds continual damage
-			combatTimer = 25.f;
-			recentlyInCombatTimer = TIME_OUTSIDE_COMBAT_STILL_RECENT;
-		} else {
-			combatTimer -= time;
-			if (combatTimer <= 0.f) {
-				recentlyInCombatTimer -= time;
-			}
-		}
+		combatable.occasional_tick(time, engaged);
 		// [[ MODIFY BASE GAME END ]]
 
 		{
-			bool nowCombat = combatTimer > 0.f;
+			bool nowCombat = combatable.inCombat();
 			if(ship.inCombat != nowCombat) {
 				ship.inCombat = nowCombat;
 				barDelta = true;
@@ -1418,7 +1408,7 @@ tidy class ShipScript {
 				if (region !is null && region.TradeMask & ship.owner.mask != 0) {
 					ownedSpace = true;
 				}
-				bool recentlyInCombat = recentlyInCombatTimer > 0;
+				bool recentlyInCombat = combatable.inRecentCombat();
 				if(inCombat || !ownedSpace || recentlyInCombat) {
 					// [[ MODIFY BASE GAME END ]]
 					if(repairCost < 0) {
