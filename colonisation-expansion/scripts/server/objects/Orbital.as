@@ -1157,11 +1157,19 @@ tidy class OrbitalScript {
 		// [[ MODIFY BASE GAME END ]]
 	}
 
-	void setBuildPct(Orbital& obj, double pct) {
-		if(obj.inCombat)
+	// [[ MODIFY BASE GAME START ]]
+	void setBuildPct(Orbital& obj, double pct, bool force = true, double initial = 0.01) {
+		if (obj.inCombat || combatable.inRecentCombat()) {
 			return;
-		Health = (0.01 + pct * 0.99) * MaxHealth;
-		Armor = (0.01 + pct * 0.99) * MaxArmor;
+		}
+		if (force) {
+			Health = (initial + pct * (1 - initial)) * MaxHealth;
+			Armor = (initial + pct * (1 - initial)) * MaxArmor;
+		} else {
+			Health = max(Health, (initial + pct * (1 - initial)) * MaxHealth);
+			Armor = max(Armor, (initial + pct * (1 - initial)) * MaxArmor);
+		}
+		// [[ MODIFY BASE GAME END ]]
 		deltaHP = true;
 	}
 

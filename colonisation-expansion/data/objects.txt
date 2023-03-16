@@ -229,7 +229,9 @@ restricted remote:
 server:
 	async relocking void checkOrbit();
 	void setMaster(Orbital@ orb);
-	void setBuildPct(double pct);
+	// [[ MODIFY BASE GAME START ]]
+	void setBuildPct(double pct, bool force = true, double initial = 0.01);
+	// [[ MODIFY BASE GAME END ]]
 	void modDPS(double mod);
 	void setDisabled(bool value)
 	void setContested(bool value);

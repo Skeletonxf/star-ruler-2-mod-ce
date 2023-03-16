@@ -3,6 +3,10 @@ import orbitals;
 import object_creation;
 import attributes;
 
+// [[ MODIFY BASE GAME START ]]
+const double ORBITAL_STARTING_HP = 0.25;
+// [[ MODIFY BASE GAME END ]]
+
 tidy class OrbitalConstructible : Constructible {
 	const OrbitalModule@ def;
 	vec3d position;
@@ -56,6 +60,9 @@ tidy class OrbitalConstructible : Constructible {
 			return false;
 		}
 		@target = createOrbital(position, def, obj.owner, disabled=true);
+		// [[ MODIFY BASE GAME START ]]
+		target.setBuildPct(ORBITAL_STARTING_HP);
+		// [[ MODIFY BASE GAME END ]]
 		return true;
 	}
 
@@ -71,7 +78,10 @@ tidy class OrbitalConstructible : Constructible {
 					maxHealth *= curLabor / totalLabor;
 				if(maxHealth != 0)
 					pct = clamp((target.health + target.armor) / maxHealth, 0.0, 1.0);
-				pct = clamp((pct-0.01) / 0.99, 0.0, 1.0);
+				// [[ MODIFY BASE GAME START ]]
+				// Mirror starting HP and % of hp during build here to keep refunds accurate
+				pct = clamp((pct-ORBITAL_STARTING_HP) / (1 - ORBITAL_STARTING_HP), 0.0, 1.0);
+				// [[ MODIFY BASE GAME END ]]
 				buildCost = int(double(buildCost) * pct);
 			}
 		}
@@ -95,7 +105,9 @@ tidy class OrbitalConstructible : Constructible {
 			cancel(obj);
 			return TR_Remove;
 		}
-		target.setBuildPct(curLabor / totalLabor);
+		// [[ MODIFY BASE GAME START ]]
+		target.setBuildPct(curLabor / totalLabor, force = false, initial = ORBITAL_STARTING_HP);
+		// [[ MODIFY BASE GAME END ]]
 		return TR_UsedLabor;
 	}
 
