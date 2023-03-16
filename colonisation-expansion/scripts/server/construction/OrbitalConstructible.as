@@ -61,7 +61,7 @@ tidy class OrbitalConstructible : Constructible {
 		}
 		@target = createOrbital(position, def, obj.owner, disabled=true);
 		// [[ MODIFY BASE GAME START ]]
-		target.setBuildPct(ORBITAL_STARTING_HP);
+		target.setBuildPct(0, initial = ORBITAL_STARTING_HP);
 		// [[ MODIFY BASE GAME END ]]
 		return true;
 	}

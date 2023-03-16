@@ -5,6 +5,10 @@ import object_creation;
 import ship_groups;
 import util.formatting;
 
+// [[ MODIFY BASE GAME START ]]
+const double STATION_STARTING_HP = 0.25;
+// [[ MODIFY BASE GAME END ]]
+
 tidy class StationConstructible : ShipConstructible {
 	double laborPenalty = 1.0;
 	vec3d position;
@@ -57,7 +61,9 @@ tidy class StationConstructible : ShipConstructible {
 				obj.owner, disabled=true,
 				nameOverride=name);
 		target.modMaxHealth(hp);
-		target.setBuildPct(0.0);
+		// [[ MODIFY BASE GAME START ]]
+		target.setBuildPct(0, initial = STATION_STARTING_HP);
+		// [[ MODIFY BASE GAME END ]]
 		return true;
 	}
 
@@ -73,7 +79,10 @@ tidy class StationConstructible : ShipConstructible {
 					maxHealth *= curLabor / totalLabor;
 				if(maxHealth != 0)
 					pct = clamp((target.health + target.armor) / maxHealth, 0.0, 1.0);
-				pct = clamp((pct-0.01) / 0.99, 0.0, 1.0);
+				// [[ MODIFY BASE GAME START ]]
+				// Mirror starting HP and % of hp during build here to keep refunds accurate
+				pct = clamp((pct-STATION_STARTING_HP) / (1 - STATION_STARTING_HP), 0.0, 1.0);
+				// [[ MODIFY BASE GAME END ]]
 				buildCost = int(double(buildCost) * pct);
 			}
 		}
@@ -87,7 +96,9 @@ tidy class StationConstructible : ShipConstructible {
 			cancel(obj);
 			return TR_Remove;
 		}
-		target.setBuildPct(curLabor / totalLabor);
+		// [[ MODIFY BASE GAME START ]]
+		target.setBuildPct(curLabor / totalLabor, force = false, initial = STATION_STARTING_HP);
+		// [[ MODIFY BASE GAME END ]]
 		return TR_UsedLabor;
 	}
 

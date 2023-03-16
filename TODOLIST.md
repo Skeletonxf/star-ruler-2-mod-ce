@@ -7,7 +7,6 @@ This is primarily intended as a developer focused project planning list, rather 
 ### Misc / general
 - Make kill credit behaviour of ships to apply to orbitals as well
 - Apply combat repair tweaks to civilian ships too
-- Review spawning in hp for orbitals
 - Techs for upgrading sybsystem labor
 - Stored labor is depleted by time based constructions
 - Prevent support ships automatically transfering onto flagships with non matching hull colors
