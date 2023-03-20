@@ -1,7 +1,7 @@
 Construction: CreateWater
 	Name: #CREATE_WATER
 	Description: #CREATE_WATER_DESC
-	Build Cost: 2000
+	Build Cost: 750
 	Category: Terraforming
 	Icon: DesignationIcons::2 * ffaaff
 	Time Cost: 1
@@ -21,7 +21,7 @@ Construction: CreateWaterAquatic
 	Name: #CREATE_WATER
 	Description: #CREATE_WATER_DESC
 	Time Cost: 1
-	Build Cost: 1500
+	Build Cost: 500
 	Category: Terraforming
 	Icon: DesignationIcons::2 * ffaaff
 	RequireTrait(Aquatic)
