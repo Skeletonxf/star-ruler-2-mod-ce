@@ -1,0 +1,19 @@
+Technology: ArtilleryHull
+	Name: #R_SYS_ARTILLERY_HULL
+	Description: #R_SYS_ARTILLERY_HULL_DESC
+	Class: Unlock
+	Category: Subsystems
+
+	DLC: Heralds
+	DLC Replace: Health
+
+	Point Cost: 600
+	Time Cost: 120
+
+	Icon: HullSubsystems::1
+	Color: #c60bff
+
+	UnlockSubsystem(ArtilleryHull)
+	SkipOnUnlockedSubsystem(ArtilleryHull)
+
+	SecondaryMoneyCost(1000)

@@ -296,3 +296,4 @@ Grid: ColonisationExpansionGrid
 	SupportDef2: -11,-4
 	SupportDef2: -11,-5
 	SupportDef: -10,-5
+	ArtilleryHull: 3,5

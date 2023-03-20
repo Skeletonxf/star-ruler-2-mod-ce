@@ -1,0 +1,22 @@
+Subsystem: ArtilleryHull
+	Name: #S_ARTILLERY_HULL
+	Description: #S_ARTILLERY_HULL_DESC
+
+	Tags: Applied:Hull, Category:Hulls, NoCore
+	Tags: HeraldsDLC
+	Hull: Flagship
+	EvaluationOrder: -200
+	BaseColor: #c60bff
+
+
+	AddShipModifier: HpFactor(0.9)
+	AddShipModifier: ArmorResistFactor(0.9)
+	AddShipModifier: MassFactor(0.8)
+	AddShipModifier: tag/Weapon::RangeFactor(2.5)
+
+	Assert: ShipSize >= 300
+		Message: #ERROR_MIN_SIZE:$1:300
+
+	Module: Default
+		Sprite: HullSubsystems::1
+		DrawMode: 3

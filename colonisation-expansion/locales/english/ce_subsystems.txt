@@ -182,7 +182,7 @@ S_SPINAL_MOUNT_HULL_DESC: <<
 	[img=Plus]Increases the health of weapon hexes by 50%.[/img]
 	[img=Plus]Increases the health of the weapon turret hex by 400%.[/img]
 	[img=Minus]Only one weapon is allowed.[/img]
-	[img=Minus]Weapon drains 50% more supply while firing.[/img]
+	[img=Minus]Weapon drains 25% more supply while firing.[/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Spinal Mount Hulls can only be used on ships of size 300 or greater.[/color][/i][/img]
 >>
 S_SUPERSTRUCTURE_HULL_DESC: <<
@@ -493,4 +493,14 @@ S_TRACTOR_BEAM_DESC: <<
 	[img=ResourceIcon::3;20;#f00][color=#aaa]Ships under the effect of a tractor beam cannot use their FTL drives.[/color][/img]
 	[img=MenuIcons::3;20][color=#aaa]Tractor is weighed down by the target and vice versa.[/color][/img]
 	[img=MenuIcons::3;20][color=#aaa]Most effective against targets that have significantly less mass/thrust relative to the tractor.[/color][/img]
+>>
+S_ARTILLERY_HULL: Artillery Hull
+S_ARTILLERY_HULL_DESC: <<
+	A hull optimized to shoot enemies from a safe distance at the expense of some survivability.
+
+	[img=Plus]Weapon range increased by 150%.[/img]
+	[img=Plus]Decreases mass by 20%.[/img]
+	[img=Minus]Reduces health by 10%.[/img]
+	[img=Minus]Reduces armor resistance by 10%.[/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Artillery Hulls can only be used on ships of size 300 or greater.[/color][/i][/img]
 >>
