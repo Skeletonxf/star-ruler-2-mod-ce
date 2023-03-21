@@ -2,7 +2,7 @@ Subsystem: SpinalMountHull
 	Name: #S_SPINAL_MOUNT_HULL
 	Description: #S_SPINAL_MOUNT_HULL_DESC
 
-	Tags: Applied:Hull, Category:Hulls, NoCore
+	Tags: Category:Hulls, Hull, Applied, NoCore,
 	Tags: HeraldsDLC
 	Tags: OverrideHexArcLimit
 	Hull: Flagship
@@ -10,11 +10,13 @@ Subsystem: SpinalMountHull
 	BaseColor: #8edcef
 
 	AddShipModifier: tag/Weapon::FireArcFactor(100.0)
-	AddShipModifier: tag/Weapon::HpFactor(1.5)
 	AddShipModifier: tag/Weapon::CoreHealthFactor(5.0)
-	AddShipModifier: tag/Weapon::DamageFactor(2.0)
-	AddShipModifier: tag/Weapon::SupplyCostFactor(1.25)
-	AddShipModifier: tag/Weapon::RangeFactor(1.5)
+	AddShipModifier: tag/Weapon::DamageFactor(2.5)
+	AddShipModifier: tag/Weapon::SupplyCostFactor(1.5)
+	AddShipModifier: MassFactor(1.3)
+	AddShipModifier: ThrustFactor(0.7)
+	AddShipModifier: TurnThrustFactor(0.7)
+	AddShipModifier: RepairSupplyCostFactor(2)
 
 	Assert: ShipSize >= 300
 		Message: #ERROR_MIN_SIZE:$1:300

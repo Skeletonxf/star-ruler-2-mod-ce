@@ -174,16 +174,18 @@ ERROR_INCOMPATIBLE_HULL_TITAN: Colossus is not compatible with the Titan hull
 ERROR_INCOMPATIBLE_HULL_MOTHERSHIP: Colossus is not compatible with Motherships
 ERROR_INCOMPATIBLE_HULL_MOTHERSHIP_T: Titan is not compatible with Motherships
 S_SPINAL_MOUNT_HULL_DESC: <<
-	A hull built completely around a single massive weapon turret, allowing its weapon to fire in any direction.
+	A hull built completely around a single massive weapon turret, allowing its weapon to fire in any direction with much greater power, at the expense of mobility and tenacity.
 
 	[img=Plus]Weapon turret can fire in any direction.[/img]
-	[img=Plus]Increases weapon damage by 100%.[/img]
-	[img=Plus]Increases weapon range by 50%.[/img]
-	[img=Plus]Increases the health of weapon hexes by 50%.[/img]
+	[img=Plus]Increases weapon damage by 150%.[/img]
 	[img=Plus]Increases the health of the weapon turret hex by 400%.[/img]
 	[img=Minus]Only one weapon is allowed.[/img]
-	[img=Minus]Weapon drains 25% more supply while firing.[/img]
+	[img=Minus]Mass increased by 30%.[/img]
+	[img=Minus]Thrust and turn thrust reduced by 30%.[/img]
+	[img=Minus]Weapon drains 50% more supply while firing.[/img]
+	[img=Minus]Repairs drain 100% more supply in combat.[/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Spinal Mount Hulls can only be used on ships of size 300 or greater.[/color][/i][/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Can be applied together with most other hulls.[/color][/i][/img]
 >>
 S_SUPERSTRUCTURE_HULL_DESC: <<
 	A hull reinforced with superhard materials derived from asteroid ore in order to more easily construct and maintain the ship.
