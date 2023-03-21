@@ -4,7 +4,6 @@ Subsystem: SpinalMountHull
 
 	Tags: Category:Hulls, Hull, Applied, NoCore,
 	Tags: HeraldsDLC
-	Tags: OverrideHexArcLimit
 	Hull: Flagship
 	EvaluationOrder: -200
 	BaseColor: #8edcef

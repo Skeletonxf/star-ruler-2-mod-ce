@@ -176,8 +176,8 @@ ERROR_INCOMPATIBLE_HULL_MOTHERSHIP_T: Titan is not compatible with Motherships
 S_SPINAL_MOUNT_HULL_DESC: <<
 	A hull built completely around a single massive weapon turret, allowing its weapon to fire in any direction with much greater power, at the expense of mobility and tenacity.
 
-	[img=Plus]Weapon turret can fire in any direction.[/img]
 	[img=Plus]Increases weapon damage by 150%.[/img]
+	[img=Plus]Weapon turret may fire in any direction if unobstructed.[/img]
 	[img=Plus]Increases the health of the weapon turret hex by 400%.[/img]
 	[img=Minus]Only one weapon is allowed.[/img]
 	[img=Minus]Mass increased by 30%.[/img]
