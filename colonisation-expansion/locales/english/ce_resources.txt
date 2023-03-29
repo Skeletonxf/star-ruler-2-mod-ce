@@ -197,3 +197,4 @@ R_SYRUP_DESC: <<
 >>
 THERMAL_REGULATOR_BLURB: Grants 4% bonus ship efficiency
 THERMAL_REGULATOR: Thermal Regulator
+ANCIENT_ARTIFICIAL_LIGHT_DESC: Heat and light are problems only for physical beings.

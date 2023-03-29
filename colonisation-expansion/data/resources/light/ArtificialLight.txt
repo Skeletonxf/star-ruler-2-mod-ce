@@ -38,3 +38,4 @@ Resource: AncientArtificialLight
 	Frequency: 0
 	Small Icon: FusionReactor
 	Icon: FusionReactor
+	Description: #ANCIENT_ARTIFICIAL_LIGHT_DESC
