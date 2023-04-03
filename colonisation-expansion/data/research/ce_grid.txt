@@ -233,8 +233,6 @@ Grid: ColonisationExpansionGrid
 	InfiniteHealth: 3,-11
 	Gyroscope: 4,6
 	SupplyStorage: -1,-12
-	FTLHurdle: -2,-13
-	InterstellarTrade: -2,-14
 	GravitronicsEnhancer: 6,9
 	Prosperity: -5,1
 	Construction: -4,1
@@ -297,3 +295,11 @@ Grid: ColonisationExpansionGrid
 	SupportDef2: -11,-5
 	SupportDef: -10,-5
 	ArtilleryHull: 3,5
+	FTLHurdle: -1,-13
+	InterstellarTrade: 0,-14
+	ConstructionBay1: -2,-13
+	ConstructionBay1: -2,-14
+	ConstructionBay1: -2,-15
+	ConstructionBay2: -1,-16
+	ConstructionBay2: -3,-14
+	ConstructionBay1: -2,-16

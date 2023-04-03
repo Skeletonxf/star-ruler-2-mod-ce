@@ -1,0 +1,51 @@
+Technology: Construction
+	Name: #R_CONSTRUCTION
+	Description: #R_CONSTRUCTION_DESC:15%
+
+	Icon: techConstruction*#00cc8f
+	Color: #00cc8f
+
+	Class: Boost
+	Category: Basic Upgrades
+
+	Point Cost: 500
+	Time Cost: 100
+
+	ModAttribute(ImperialBldConstructionRate, Multiply, 1.15)
+	ModAttribute(BuildingCostFactor, Multiply, 0.85)
+
+Technology: Construction2
+	Name: #R_CONSTRUCTION2
+	Description: #R_CONSTRUCTION_DESC:30%
+
+	Icon: techConstruction*#00cc8f
+	Color: #00cc41
+
+	Class: Upgrade
+	Category: Basic Upgrades
+
+	Point Cost: 800
+	Time Cost: 140
+
+	ModAttribute(ImperialBldConstructionRate, Multiply, 1.3)
+	ModAttribute(BuildingCostFactor, Multiply, 0.7)
+Technology: ConstructionBay1
+	Name: #R_CONSTRUCTION_BAY
+	Description: #R_CONSTRUCTION_BAY_DESC:5%
+	Icon: techShipYard
+	Color: #fca404
+	Point Cost: 500
+	Time Cost: 80
+	Category: Basic Upgrades
+	CE_technology_hooks::RequireSubsystemUnlocked(ConstructionBay)
+	AddModifier(ConstructionBay::LaborFactor(1.05))
+Technology: ConstructionBay2
+	Name: #R_CONSTRUCTION_BAY2
+	Icon: techShipYard
+	Color: #fca404
+	Description: #R_CONSTRUCTION_BAY_DESC:10%
+	Category: Basic Upgrades
+	Point Cost: 800
+	Time Cost: 120
+	AddModifier(ConstructionBay::LaborFactor(1.10))
+	CE_technology_hooks::RequireSubsystemUnlocked(ConstructionBay)

@@ -10,18 +10,22 @@ Subsystem: ConstructionBay
 
 	Size := HexSize * Hexes
 
-	LaborIncome := Size / 4
+	LaborIncome := Size / 4.5
+	LaborIncomeFactor := 1.0
+	TotalLaborIncome := LaborIncome * LaborIncomeFactor
 
 	Hook: AllowConstruction(Ships = True, Orbitals = True, Asteroids = True)
-	Hook: AddLaborIncome(LaborIncome)
+	Hook: AddLaborIncome(TotalLaborIncome)
 	Hook: AddStatus(ConstructionBay)
 
+	Modifier: LaborFactor(factor)
+		LaborIncomeFactor := LaborIncomeFactor * factor
 	Module: Core
 		Sprite: ComputerCore * #fca404
 
-		Hex.BuildCost := Hex.BuildCost + LaborIncome * 50
-		Hex.LaborCost := Hex.BuildCost + LaborIncome * 3
-		Hex.MaintainCost := Hex.MaintainCost + LaborIncome * 13
+		Hex.BuildCost := Hex.BuildCost + LaborIncome * 57
+		Hex.LaborCost := Hex.BuildCost + LaborIncome * 3.38
+		Hex.MaintainCost := Hex.MaintainCost + LaborIncome * 15
 
 	Module: Default
 		Sprite: SupplyStorage * #fca404

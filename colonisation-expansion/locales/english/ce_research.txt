@@ -187,3 +187,10 @@ R_SYS_ARTILLERY_HULL_DESC: <<
 
 	[bbloc=#S_ARTILLERY_HULL_DESC/]
 >>
+R_CONSTRUCTION_BAY: Space construction
+R_CONSTRUCTION_BAY_DESC: <<
+	Increases the labor output of the construction bay by $1.
+
+	[i][color=#aaa]The construction bay must be unlocked first.[/color][/i]
+>>
+R_CONSTRUCTION_BAY2: Space construction 2
