@@ -4,15 +4,15 @@ Status: CuriositasSpawnNerf1
 	Icon: TabDesigns
 	Color: #7029ff
 	Show Duration: True
-	AddFleetEffectiveness(-0.3)
+	AddFleetEffectiveness(-0.45)
 Status: CuriositasSpawnNerf2
 	Name: #CURIOSITAS_SPAWN_NERF2
 	Description: #CURIOSITAS_SPAWN_NERF_DESC2
 	Icon: SupplyStorage
 	Color: #fbff11
 	Show Duration: True
-	CE_biome_hooks::ModEfficiencyDistanceToOwnedPlanets(0.0, -0.4, 1000, 25000, Same Region Is Min Range = True)
+	CE_biome_hooks::ModEfficiencyDistanceToOwnedPlanets(0.0, -0.45, 1000, 25000, Same Region Is Min Range = True)
 Status: CuriositasSpawnNerfs
 	Visible To: Nobody
-	AddStatus(CuriositasSpawnNerf2, Duration = 1200)
-	AddStatus(CuriositasSpawnNerf1, Duration = 420)
+	AddStatus(CuriositasSpawnNerf2, Duration = 1800)
+	AddStatus(CuriositasSpawnNerf1, Duration = 600)

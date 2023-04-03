@@ -101,10 +101,10 @@ STATUS_ION_CANNON_DESC: This flagship has an ion cannon equipped. Firing an ion 
 CURIOSITAS_SPAWN_NERF: Refurbishment
 CURIOSITAS_SPAWN_NERF_DESC: <<
 	Undergoing major refurbishment and repairs to adapt the vessel to its new crew.
-	Fleet effectiveness is reduced by 30%
+	Fleet effectiveness is reduced by 45%
 >>
 CURIOSITAS_SPAWN_NERF2: Resupply
 CURIOSITAS_SPAWN_NERF_DESC2: <<
 	Undergoing extensive resupply from nearby planets.
-	Fleet effectiveness is reduced up to 40% when far away from owned planets.
+	Fleet effectiveness is reduced up to 45% when far away from owned planets.
 >>
