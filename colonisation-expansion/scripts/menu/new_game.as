@@ -424,6 +424,10 @@ class NewGame : BaseGuiElement {
 			auto@ preset = getRacePreset((index+i) % cnt);
 			if(preset.dlc.length != 0 && !hasDLC(preset.dlc))
 				continue;
+			// [[ MODIFY BASE GAME START ]]
+			if (!preset.aiSupport)
+				continue;
+			// [[ MODIFY BASE GAME END ]]
 			bool has = false;
 			for(uint n = 0, ncnt = empires.length; n < ncnt; ++n) {
 				if(empires[n].settings.raceName == preset.name) {
@@ -439,6 +443,10 @@ class NewGame : BaseGuiElement {
 			auto@ preset = getRacePreset((index+i) % cnt);
 			if(preset.dlc.length != 0 && !hasDLC(preset.dlc))
 				continue;
+			// [[ MODIFY BASE GAME START ]]
+			if (!preset.aiSupport)
+				continue;
+			// [[ MODIFY BASE GAME END ]]
 			return preset;
 		}
 		return getRacePreset(index);

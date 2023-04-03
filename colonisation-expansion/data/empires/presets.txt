@@ -125,6 +125,7 @@ Preset: Wandi
 	Portrait: emp_portrait_harrian
 	Shipset: Farum
 	Hard: True
+	AI Support: False
 
 	Trait: Battleworlders
 	Trait: Slipstream
