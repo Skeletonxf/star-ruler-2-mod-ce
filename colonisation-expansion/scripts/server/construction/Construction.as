@@ -644,10 +644,16 @@ tidy class Construction : Component_Construction, Savable {
 		//Handle the queue
 		double tick = time * LaborIncome * LaborFactor;
 		double prevMaximumStored = max(storedLabor, laborStorage);
+		// [[ MODIFY BASE GAME START ]]
+		double storedLaborToTake = 0.0;
+		// [[ MODIFY BASE GAME END ]]
 		if(queue.length != 0 && storedLabor > 0) {
 			double takeLabor = min(storedLabor, max(prevMaximumStored, 1.0) * time / config::LABOR_STORAGE_DUMP_TIME);
 			tick += takeLabor;
-			storedLabor -= takeLabor;
+			// [[ MODIFY BASE GAME START ]]
+			storedLaborToTake = takeLabor;
+			//storedLabor -= takeLabor;
+			// [[ MODIFY BASE GAME END ]]
 		}
 
 		uint index = 0;
@@ -690,6 +696,11 @@ tidy class Construction : Component_Construction, Savable {
 						tick = 0;
 					break;
 					case TR_VanishLabor:
+						// [[ MODIFY BASE GAME START ]]
+						// Don't consumed stored labor if the tick result indicates a time
+						// based construction (which doesn't use labor properly)
+						storedLaborToTake = 0.0;
+						// [[ MODIFY BASE GAME END ]]
 						tick = 0;
 					break;
 					case TR_UnusedLabor:
@@ -702,6 +713,9 @@ tidy class Construction : Component_Construction, Savable {
 					index += 1;
 			}
 		}
+		// [[ MODIFY BASE GAME START ]]
+		storedLabor -= storedLaborToTake;
+		// [[ MODIFY BASE GAME END ]]
 		if(tick > 0 && storedLabor < prevMaximumStored) {
 			storedLabor = min(prevMaximumStored, storedLabor + tick);
 			deltaStored = true;

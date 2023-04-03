@@ -5,7 +5,9 @@ from resources import MoneyType;
 enum TickResult {
 	TR_Remove,      //Remove this constructible from the queue
 	TR_UsedLabor,   //Mark as using labor, use it
-	TR_VanishLabor, //Don't mark as using labor, but use it
+	// [[ MODIFY BASE GAME START ]]
+	TR_VanishLabor, //Don't mark as using labor, but use it (don't consume stored labor though)
+	// [[ MODIFY BASE GAME END ]]
 	TR_UnusedLabor, //Don't mark as using labor, pass labor through
 };
 
