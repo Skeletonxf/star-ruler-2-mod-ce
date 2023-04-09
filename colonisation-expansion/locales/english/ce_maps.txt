@@ -8,3 +8,6 @@ LATTICE_MAP: Lattice
 LATTICE_MAP_DESC: A bizarre uniform grid with strange relics of a lost age.
 LATTICE_LINK_CORNERS: Link edges
 LATTICE_RELICS_ENABLED: Enable relics
+
+CONTRAIL_MAP: Contrail
+CONTRAIL_MAP_DESC: A long trail of stars following a runaway black hole
