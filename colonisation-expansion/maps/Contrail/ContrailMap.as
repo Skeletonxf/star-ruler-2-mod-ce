@@ -66,13 +66,11 @@ class ContrailMap : Map {
 		// length (as other systems fill in the gaps the spacing should trend
 		// back to specified).
 		double galaxyRadius = (systemCount / 8.0) * spacing * 1.3;
-		print(galaxyAngle);
-		print(galaxyDirection);
 
 		// Place black hole at one end
 		const SystemType@ blackHoleType = getSystemType("CoreBlackhole");
 		if (blackHoleType is null) {
-			print("Black hole type does not exist");
+			print("FATAL: Black hole type does not exist");
 			return;
 		}
 		vec3d blackHolePosition = galaxyDirection * (galaxyRadius * -1);
@@ -90,8 +88,11 @@ class ContrailMap : Map {
 
 		// Initalise buckets to track placed stars so we can avoid placing stars
 		// too close together
+		// We group stars into buckets based on the distance along the spine
+		// so we don't have to waste CPU time comparing star positions that are
+		// guaranteed to be far enough away
 		array<ContrailBucket@> buckets;
-		uint bucketCount = 3 + (systemCount / 20);
+		uint bucketCount = 3 + (systemCount / 15);
 		for (uint i = 0; i < bucketCount; ++i) {
 			buckets.insertLast(ContrailBucket());
 		}
@@ -143,7 +144,7 @@ class ContrailMap : Map {
 				vec3d position = blackHolePosition + (unitVector(angle) * distance);
 				uint bClosest = bucket(bucketCount, distance, galaxyRadius);
 				bool tooClose = false;
-				for (uint b = uint(max(int(bClosest - 1), 0)); b < min(bClosest + 1, bucketCount - 1) && !tooClose; ++b) {
+				for (uint b = uint(max(int(bClosest) - 1, 0)); b <= min(bClosest + 1, bucketCount - 1) && !tooClose; ++b) {
 					ContrailBucket@ bucket = buckets[b];
 					for (uint s = 0; s < bucket.systems.length && !tooClose; ++s) {
 						ContrailSystem@ sPos = bucket.systems[s];
@@ -168,10 +169,7 @@ class ContrailMap : Map {
 					b.systems.insertLast(ContrailSystem(angle, distance, position));
 				}
 			}
-			print("Failures for i " + string(i) + " : " + string(failures));
 		}
-
-		// TODO: Reserve 10% of the systems to fill in the largest gaps
 	}
 
 	vec3d unitVector(double angle, double elevation = 0.0) {
@@ -184,13 +182,14 @@ class ContrailMap : Map {
 
 	// Keep factor in 0-1 range but reduce exponentially as fraction increases
 	// to reduce variation of stars furthest away from black hole
+	// This creates the triangle-like shape as the max angle delta tends to 0
 	double fractionToAngleFactor(double fraction) {
-		return pow(1 - fraction, 2.2);
+		return pow(1 - fraction, 2.8);
 	}
 
-	double bucket(uint buckets, double distance, double galaxyRadius) {
-		double fraction = (distance / (2 * galaxyRadius));
-		double fractionalBucket = buckets * fraction;
+	uint bucket(uint buckets, double distance, double galaxyRadius) {
+		double fraction = (distance / (2.0 * galaxyRadius));
+		double fractionalBucket = double(buckets) * fraction;
 		return max(min(uint(floor(fractionalBucket)), buckets - 1), 0);
 	}
 #section all
