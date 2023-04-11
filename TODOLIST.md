@@ -7,7 +7,6 @@ This is primarily intended as a developer focused project planning list, rather 
 ### Misc / general
 - Make kill credit behaviour of ships to apply to orbitals as well
 - Apply combat repair tweaks to civilian ships too
-- Techs for upgrading subsystem labor
 - Prevent support ships automatically transfering onto flagships with non matching hull colors
 - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
 - Make some analog to the SupportStation artifact player designable/buildable

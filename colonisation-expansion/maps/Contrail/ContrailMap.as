@@ -51,6 +51,11 @@ class ContrailMap : Map {
 		bool flatten = getSetting(M_Flatten, 0.0) != 0.0;
 		bool mirror = false;
 
+		uint players = estPlayerCount;
+		if (players == 0) {
+			players = 1;
+		}
+
 		// Pick angle
 		double galaxyAngle = randomd(3.14, -3.14);
 		// Generate unit vector in direction
@@ -73,6 +78,16 @@ class ContrailMap : Map {
 		vec3d blackHolePosition = galaxyDirection * (galaxyRadius * -1);
 		addSystem(blackHolePosition, sysType=blackHoleType.id);
 
+		int nebulaType = -1;
+		{
+			const SystemType@ _nebulaType = getSystemType("ContrailNebula");
+			if (_nebulaType is null) {
+				print("Contrail Nebula type does not exist");
+			} else {
+				nebulaType = _nebulaType.id;
+			}
+		}
+
 		// Initalise buckets to track placed stars so we can avoid placing stars
 		// too close together
 		array<ContrailBucket@> buckets;
@@ -87,6 +102,7 @@ class ContrailMap : Map {
 		// Place spine
 		double angleDelta = 0.0;
 		uint spineCount = systemCount / 4;
+		uint possibleHomeworldsGiven = 0;
 		for (uint i = 1; i < spineCount; ++i) {
 			double fraction = double(i) / double(spineCount);
 			// Keep angle within 1.6 radians each direction but let it vary a
@@ -96,8 +112,16 @@ class ContrailMap : Map {
 			double distance = baseDistance + (i * spacing * 1.3);
 			vec3d position = blackHolePosition + (unitVector(angle) * distance);
 			SystemData@ sys = addSystem(position);
-			// TODO: Pick homeworlds properly
-			addPossibleHomeworld(sys);
+			if (fraction < 0.1 && randomd(0.0, 1.0) > 0.3) {
+				sys.systemType = nebulaType;
+			}
+
+			if ((double(i) / double(spineCount)) >= (double(possibleHomeworldsGiven) / double(players))) {
+				// Suggest homeworlds equally spaced along the spine
+				// as the number of estimated players
+				possibleHomeworldsGiven += 1;
+				addPossibleHomeworld(sys);
+			}
 
 			ContrailBucket@ b = buckets[bucket(bucketCount, distance, galaxyRadius)];
 			b.systems.insertLast(ContrailSystem(angle, distance, position));
@@ -137,6 +161,9 @@ class ContrailMap : Map {
 				} else {
 					foundSpot = true;
 					SystemData@ sys = addSystem(position);
+					if (fraction < 0.1 && randomd(0.0, 1.0) > 0.3) {
+						sys.systemType = nebulaType;
+					}
 					ContrailBucket@ b = buckets[bucket(bucketCount, distance, galaxyRadius)];
 					b.systems.insertLast(ContrailSystem(angle, distance, position));
 				}
@@ -144,7 +171,6 @@ class ContrailMap : Map {
 			print("Failures for i " + string(i) + " : " + string(failures));
 		}
 
-		// TODO: Systems bordering the black hole should be nebulae
 		// TODO: Reserve 10% of the systems to fill in the largest gaps
 	}
 
