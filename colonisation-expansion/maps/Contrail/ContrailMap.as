@@ -97,20 +97,25 @@ class ContrailMap : Map {
 			buckets.insertLast(ContrailBucket());
 		}
 
-		double maxAngleDelta = 1.4;
+		double maxAngleDelta = 1.1 + randomd(0.05, -0.05);
 		double baseDistance = 5.0 * spacing;
+		// max cross axis (next to black hole) follows from sin(a) = opposite/hypotenuse
+		// since the baseDistance is effectively the hypotenuse and the maxAngleDelta
+		// is the angle opposite the cross axis distance
+		double maximumCrossAxis = baseDistance * sin(maxAngleDelta);
 
 		// Place spine
 		double angleDelta = 0.0;
 		uint spineCount = systemCount / 4;
 		uint possibleHomeworldsGiven = 0;
+
 		for (uint i = 1; i < spineCount; ++i) {
 			double fraction = double(i) / double(spineCount);
-			// Keep angle within 1.6 radians each direction but let it vary a
-			// bit along each star in the spine
-			angleDelta = fractionToAngleFactor(fraction) * randomd(-maxAngleDelta, maxAngleDelta) * 0.25;
-			double angle = galaxyAngle + angleDelta;
 			double distance = baseDistance + (i * spacing * 1.3);
+			// Keep angle within 1.4 radians each direction but let it vary a
+			// bit along each star in the spine
+			angleDelta = fractionToAngleFactor(fraction, maximumCrossAxis, distance) * randomd(-maxAngleDelta, maxAngleDelta) * 0.25;
+			double angle = galaxyAngle + angleDelta;
 			vec3d position = blackHolePosition + (unitVector(angle) * distance);
 			SystemData@ sys = addSystem(position);
 			if (fraction < 0.1 && randomd(0.0, 1.0) > 0.3) {
@@ -137,10 +142,10 @@ class ContrailMap : Map {
 			while (!foundSpot) {
 				// bias the fraction towards 0
 				double fraction = pow(baseFraction, 4.5);
-				angleDelta = fractionToAngleFactor(fraction) * randomd(-maxAngleDelta, maxAngleDelta);
-				double angle = galaxyAngle + angleDelta;
 				// Calculate distance based off fraction to align systems within the existing spine
 				double distance = baseDistance + ((galaxyRadius * (2.0 + randomd(0.01, -0.01))) * fraction);
+				angleDelta = fractionToAngleFactor(fraction, maximumCrossAxis, distance) * randomd(-maxAngleDelta, maxAngleDelta);
+				double angle = galaxyAngle + angleDelta;
 				vec3d position = blackHolePosition + (unitVector(angle) * distance);
 				uint bClosest = bucket(bucketCount, distance, galaxyRadius);
 				bool tooClose = false;
@@ -183,8 +188,14 @@ class ContrailMap : Map {
 	// Keep factor in 0-1 range but reduce exponentially as fraction increases
 	// to reduce variation of stars furthest away from black hole
 	// This creates the triangle-like shape as the max angle delta tends to 0
-	double fractionToAngleFactor(double fraction) {
-		return pow(1 - fraction, 2.8);
+	double fractionToAngleFactor(double fraction, double maximumCrossAxis, double distance) {
+		// pick angle such that cross axis scales linearly from max to 0
+		// again we can use the rule that sin(a) = opposite/hypotenuse
+		double scaledMaximumCrossAxis = (1 - fraction) * maximumCrossAxis;
+		return asin(scaledMaximumCrossAxis / distance);
+		// This works much better than lerping the angle directly because trying
+		// to just lerp the angle has to counteract increased distance from the
+		// black hole also leading to increased cross axis at the projected point
 	}
 
 	uint bucket(uint buckets, double distance, double galaxyRadius) {
