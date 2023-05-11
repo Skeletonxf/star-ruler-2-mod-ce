@@ -41,7 +41,7 @@ class ContrailMap : Map {
 	void makeSettings() {
 		Number(locale::SYSTEM_COUNT, M_SystemCount, DEFAULT_SYSTEM_COUNT, decimals=0, step=10, min=10, halfWidth=true);
 		Number(locale::SYSTEM_SPACING, M_SystemSpacing, DEFAULT_SPACING, decimals=0, step=1000, min=MIN_SPACING, halfWidth=true);
-		Toggle(locale::FLATTEN, M_Flatten, true, halfWidth=true);
+		Toggle(locale::FLATTEN, M_Flatten, false, halfWidth=true);
 	}
 
 #section server
@@ -67,6 +67,8 @@ class ContrailMap : Map {
 		// back to specified).
 		double galaxyRadius = (systemCount / 8.0) * spacing * 1.3;
 
+		double elevationTiltAngle = randomd(3.14, -3.14) * 0.3;
+
 		// Place black hole at one end
 		const SystemType@ blackHoleType = getSystemType("CoreBlackhole");
 		if (blackHoleType is null) {
@@ -74,7 +76,7 @@ class ContrailMap : Map {
 			return;
 		}
 		vec3d blackHolePosition = galaxyDirection * (galaxyRadius * -1);
-		addSystem(blackHolePosition, sysType=blackHoleType.id);
+		addSystem(blackHolePosition + elevation(-0.1, elevationTiltAngle, flatten, galaxyRadius), sysType=blackHoleType.id);
 
 		int nebulaType = -1;
 		{
@@ -116,7 +118,7 @@ class ContrailMap : Map {
 			// bit along each star in the spine
 			angleDelta = fractionToAngleFactor(fraction, maximumCrossAxis, distance) * randomd(-maxAngleDelta, maxAngleDelta) * 0.25;
 			double angle = galaxyAngle + angleDelta;
-			vec3d position = blackHolePosition + (unitVector(angle) * distance);
+			vec3d position = blackHolePosition + (unitVector(angle) * distance) + elevation(fraction, elevationTiltAngle, flatten, galaxyRadius);
 			SystemData@ sys = addSystem(position);
 			if (fraction < 0.1 && randomd(0.0, 1.0) > 0.3) {
 				sys.systemType = nebulaType;
@@ -146,7 +148,7 @@ class ContrailMap : Map {
 				double distance = baseDistance + ((galaxyRadius * (2.0 + randomd(0.01, -0.01))) * fraction);
 				angleDelta = fractionToAngleFactor(fraction, maximumCrossAxis, distance) * randomd(-maxAngleDelta, maxAngleDelta);
 				double angle = galaxyAngle + angleDelta;
-				vec3d position = blackHolePosition + (unitVector(angle) * distance);
+				vec3d position = blackHolePosition + (unitVector(angle) * distance) + elevation(fraction, elevationTiltAngle, flatten, galaxyRadius);
 				uint bClosest = bucket(bucketCount, distance, galaxyRadius);
 				bool tooClose = false;
 				for (uint b = uint(max(int(bClosest) - 1, 0)); b <= min(bClosest + 1, bucketCount - 1) && !tooClose; ++b) {
@@ -177,8 +179,19 @@ class ContrailMap : Map {
 		}
 	}
 
-	vec3d unitVector(double angle, double elevation = 0.0) {
-		return vec3d(cos(angle), elevation, sin(angle));
+	vec3d unitVector(double angle) {
+		return vec3d(cos(angle), 0, sin(angle));
+	}
+
+	vec3d elevation(double fraction, double elevationTiltAngle, bool flatten, double galaxyRadius) {
+		if (flatten) {
+			return vec3d(0.0, 0.0, 0.0);
+		}
+		double fractionPastHalfWayPoint = fraction - 0.5;
+		// Given an angle and a fraction (adjacent), we can calculate the
+		// opposite as tan(a) * adjacen
+		double opposite = tan(elevationTiltAngle) * fractionPastHalfWayPoint;
+		return vec3d(0.0, opposite * (galaxyRadius * 0.6), 0.0);
 	}
 
 	double clamp(double angle, double maxAngle) {
