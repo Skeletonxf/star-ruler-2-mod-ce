@@ -875,7 +875,8 @@ tidy class LeaderAI : Component_LeaderAI, Savable {
 						@ord.prev.next = next;
 					}
 					// [[ MODIFY BASE GAME START ]]
-					// TODO: Should mark which orders are compatible with looping
+					// Abilities that don't work with looping are blocked on
+					// the UI so we don't need to handle them here
 					if (isLooping && finished.type != OT_Loop) {
 						// add the order to the back of the queue
 						@finished.next = null;

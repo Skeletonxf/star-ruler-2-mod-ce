@@ -537,7 +537,6 @@ class SetLooping: Option {
 		if(obj is null || !obj.hasLeaderAI || !obj.owner.controlled) {
 			return;
 		}
-		//obj.setLooping(loop);
 		obj.addLoopOrder(shiftKey, loop);
 	}
 }
@@ -1495,6 +1494,7 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 					if(hasUnderleveled)
 						addOption(menu, selected, clicked, format(locale::AUTO_COLONIZE_SYSTEM_LEVEL, region.name), AutoColonizeSystem(true), Sprite(spritesheet::ResourceClassIcons, 7));
 				}
+				// [[ MODIFY BASE GAME END ]]
 			}
 			if(hasColonizing)
 				addOption(menu, selected, clicked, format(locale::STOP_COLONIZE_SYSTEM, region.name), CancelColonizeSystem());
@@ -1546,6 +1546,7 @@ bool openContextMenu(Object& clicked, Object@ selected = null) {
 		else if(selected.canBuildShips)
 			addOption(menu, selected, clicked, format(locale::RALLY_TO, clicked.name), Rally(), COLONIZE_ICON);
 
+	// [[ MODIFY BASE GAME START ]]
 	// LeaderAI order looping toggle
 	if(selected !is null && selected.owner.controlled && selected.hasLeaderAI && selected is clicked) {
 		if (!selected.isLoopingOrders()) {
