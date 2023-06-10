@@ -25,8 +25,11 @@ from statuses import getStatusID;
 // on explored neighbouring systems and requests are drying up
 // Make the AI not put command computers on motherships
 
-double HEALTH_ABORT_THRESHOLD = 0.9;
-double HEALTH_MISSION_THRESHOLD = 0.95;
+double HEALTH_ABORT_THRESHOLD = 0.97;
+double HEALTH_MISSION_THRESHOLD = 0.99;
+
+// TODO: Idle motherships need to be kept out of danger too
+// and we should avoid ordering motherships into danger
 
 class HabitatMission : Mission {
 	Planet@ target;
@@ -282,6 +285,8 @@ class StarChildren2 : Race, ColonizationAbility, RaceResourceValuation {
 		// Design a mothership
 		// Code borrowed from Verdant to look through our default designs
 		// to find the predesigned small mothership
+		// TODO: Add lightly armored designs and use those instead so the AI
+		// is less prone to suiciding its motherships by accident
 		ReadLock lock(ai.empire.designMutex);
 		for(uint i = 0, cnt = ai.empire.designCount; i < cnt; ++i) {
 			const Design@ dsg = ai.empire.getDesign(i);
