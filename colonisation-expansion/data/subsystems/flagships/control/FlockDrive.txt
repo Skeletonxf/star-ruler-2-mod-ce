@@ -58,7 +58,7 @@ Subsystem: FlockDriveSupport
 	Hex.Mass := HexSize
 
 	Repair := 1
-	RepairSupplyCost := 2
+	RepairSupplyCost := 0.5
 	out SupplyDrain := RepairSupplyCost
 
 	AddPostModifier: RepairFactor(max(0.003 * Sum.Thrust * (Sum.Thrust / HexSum.Mass), 0.1))
