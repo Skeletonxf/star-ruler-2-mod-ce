@@ -3,7 +3,7 @@ Technology: KeyFTL
 	Description: #R_KEY_FTL_DESC
 	Class: Keystone
 
-	Point Cost: 750
+	Point Cost: 10
 	Time Cost: 10
 
 	Icon: FtlIcon
