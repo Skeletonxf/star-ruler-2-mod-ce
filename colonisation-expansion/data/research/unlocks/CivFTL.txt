@@ -1,7 +1,7 @@
 Technology: CivFTL
 	Name: #CIVILIAN_FTL
 	Description: #CIVILIAN_FTL_DESC
-	Class: Unlock
+	Class: Keystone
 	Category: Civilian
 	Point Cost: 500
 	Time Cost: 60
