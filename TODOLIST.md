@@ -45,6 +45,8 @@ This is primarily intended as a developer focused project planning list, rather 
 ### Map gen
 - Rouge brown dwarfs with their own systems???
 ### AI
+- FleetAI should monitor its non combat ships regardless of what mission they're doing and make them abort/flee if they find themselves in combat
+  - Ideally flee instructions should also check the destination and route there is safe but that might be challenging to build in knowledge about
 - Teach the AI to value hoarding some stockpile of cards and be way less willing to waste them on unimportant votes
   - AI contribution to votes should be related to how far the vote is progressed and not overcommit on winning votes
 - Teach the AI to vote on zeitgeists based on contribPoints instead of just points when it's determining if it thinks it can win
