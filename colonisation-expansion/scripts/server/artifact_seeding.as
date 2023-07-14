@@ -31,7 +31,7 @@ void tick(double time) {
 	}
 
 	if(storedEnergy >= config::ENERGY_PER_SEEDSHIP) {
-		storedEnergy = 0.0;
+		storedEnergy -= config::ENERGY_PER_SEEDSHIP;
 		Ship@ ship = createShip(vec3d(1e10, 1e10, 1e10),
 			Creeps.getDesign("Seed Ship"), Creeps, free = true);
 		ship.addStatus(getStatusID("SeedShip"));
