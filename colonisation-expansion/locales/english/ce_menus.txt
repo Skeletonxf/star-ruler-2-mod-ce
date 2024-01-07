@@ -47,3 +47,22 @@ OPTTT_DISPLAY_RAID_RANGE: <<
 
 	Displaying weapon range (with the toggle firing arc display keybind) always displays the raid range of objects owned by your empire, regardless of this setting.
 >>
+NGTT_RESOURCE_SCARCITY: <<
+	When enabled, larger maps will contain barren planets to keep the amount of resources available to empires scarce and at a managable level.
+
+	Percentages above 100% will further decrease the amount of resources in the universe, while percentages below 100% will limit the scarcity effect and generate more resources.
+
+	NB: This can be unbalancing as some races such as the First can make much more use out of barren planets than most terrestrial ones.
+>>
+NGTT_REMNANT_OCCURANCE: <<
+	How frequently remnants are spawned at the start of the game.
+
+	NB: The AI may struggle without cheats if this is raised past 200%
+>>
+NGTT_ENABLE_TERRAFORMING: <<
+	When terraforming is enabled, empires will be able to change the resources on their planets to any basic Tier 1 resource at will.
+
+	To terraform a resource, select a planet with labor and right click another planet to terraform.
+
+	NB: The AI cannot use this ability, and CE adds a number of soft terraforming options that are always enabled and planet specific regardless of this setting, some of which the AI can make use of and in general are more interesting than turning every planet into Textiles
+>>
