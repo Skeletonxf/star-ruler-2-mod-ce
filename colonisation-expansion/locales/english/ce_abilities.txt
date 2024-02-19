@@ -43,3 +43,8 @@ STAR_EATER_DESC: <<
 
 	[i][color=#aaa]Does not work against shielded stars while the shields are up.[/color][/i]
 >>
+ABL_GENERATE_WATER_DESC: <<
+	Adds a water resource to the targeted planet.
+
+	The water cannot be exported.
+>>
