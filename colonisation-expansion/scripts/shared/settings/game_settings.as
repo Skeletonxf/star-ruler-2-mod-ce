@@ -67,6 +67,11 @@ class EmpireSettings : Serializable {
 			if(trait.defaultTrait)
 				traits.insertLast(trait);
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		// Enable Dragon by default
+		aiFlags |= AIF_Dragon;
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	bool hasTrait(const Trait@ trait) {
