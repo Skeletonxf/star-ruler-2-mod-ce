@@ -302,6 +302,12 @@ final class Resources : AIComponent {
 	// [[ MODIFY BASE GAME START ]]
 	// Links an import to a source. This is also somewhat confusingly used to
 	// 'link' a planet's native resource to itself
+	// NB: Both places vanilla calls this first check
+	// `if(request.spec.meets(res.resource, res.obj, res.obj))`
+	// to ensure the spec meets the request, this is likely extremely important
+	// because otherwise this link method might try linking an unexportable
+	// resource off planet so should be replicated if calling this method
+	// in any new code.
 	// [[ MODIFY BASE GAME END ]]
 	void link(ImportData@ req, ExportData@ source) {
 		//Manage the data
