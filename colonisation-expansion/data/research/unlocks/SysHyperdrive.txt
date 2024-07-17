@@ -17,6 +17,10 @@ Technology: SysHyperdrive
 
 	UnlockSubsystem(Hyperdrive)
 	SkipOnUnlockedSubsystem(Hyperdrive)
+	CE_design_hooks::LoadDesigns(hyperdrive)
+	CE_design_hooks::LoadDesigns(verdant/hyperdrive)
+	CE_design_hooks::LoadDesigns(devout/hyperdrive)
+	CE_design_hooks::LoadDesigns(ancient/hyperdrive)
 
 	CE_biome_hooks::StartVoteIfAllAttributeLT(HyperdriveResearch, True, ResearchUnlockedHyperdrive)
 	SecondaryFTLCost(1000)

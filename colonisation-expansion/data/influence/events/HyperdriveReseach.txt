@@ -22,3 +22,7 @@ Effect: HyperdriveResearch
 	Color: #cf5fde
 	ModAttributeAll(ResearchUnlockedHyperdrive, Add, 1)
 	OnAllEmpires(CE_biome_hooks::UnlockSubsystem(Hyperdrive))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(hyperdrive))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(verdant/hyperdrive))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(devout/hyperdrive))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(ancient/hyperdrive))

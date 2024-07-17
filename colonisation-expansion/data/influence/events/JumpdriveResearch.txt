@@ -22,3 +22,7 @@ Effect: JumpdriveResearch
 	Color: #cf5fde
 	ModAttributeAll(ResearchUnlockedJumpdrive, Add, 1)
 	OnAllEmpires(CE_biome_hooks::UnlockSubsystem(Jumpdrive))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(jumpdrive))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(verdant/jumpdrive))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(devout/jumpdrive))
+	OnAllEmpires(CE_design_hooks::LoadDesignsEffect(ancient/jumpdrive))

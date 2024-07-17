@@ -17,6 +17,10 @@ Technology: SysJumpdrive
 
 	UnlockSubsystem(Jumpdrive)
 	SkipOnUnlockedSubsystem(Jumpdrive)
+	CE_design_hooks::LoadDesigns(jumpdrive)
+	CE_design_hooks::LoadDesigns(verdant/jumpdrive)
+	CE_design_hooks::LoadDesigns(devout/jumpdrive)
+	CE_design_hooks::LoadDesigns(ancient/jumpdrive)
 
 	CE_biome_hooks::StartVoteIfAllAttributeLT(JumpdriveResearch, True, ResearchUnlockedJumpdrive)
 	SecondaryFTLCost(1000)

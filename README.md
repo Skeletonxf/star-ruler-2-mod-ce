@@ -133,6 +133,8 @@ The empire portraits `frostkin2.png` and `locusto2.png` were created by running 
 
 Some parts of this mod are derived from the MIT licensed code in [Rising Stars](https://github.com/DaloLorn/Rising-Stars) by Dalo Lorn. Also contains some parts from the MIT licensed code by scitor in [Industrial Revolution](https://github.com/scitor/SR2-IndustrialRevolution), and portions of the MIT licensed code by Darloth in [New Movement Physics](https://github.com/darloth/SR2-NewMovement).
 
+Some ship designs were provided by MysticVoid7x9 licensed under Creative Commons [CC-BY license](https://creativecommons.org/licenses/by/4.0/) with minor tweaks made for the mod.
+
 ## Frequently asked questions
 
 ### Where are the release notes?
