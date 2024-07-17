@@ -7,7 +7,7 @@ Ability: GenerateWater
 	Energy Cost: 500
 	ReduceEnergyCostSystemFlag(0.75, CheapArtifacts)
 
-	Target: targ = Empire
+	Target: targ = Object
 	TargetFilterType(targ, Planet)
 	TargetFilterOwned(targ)
 
