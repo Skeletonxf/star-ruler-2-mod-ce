@@ -34,11 +34,11 @@ Subsystem: SolarSail
 	SolarThrustDeepSpace := 1
 	SolarThrustNormal := 1
 	SolarThrustMax := 1
-	MaxThrust := 8 * Hexes * HexSize^0.5
+	MaxThrust := 12 * Hexes * HexSize^0.5
 	Hex.MaintainCost := 0
-	SolarThrust := 7.0 * Hexes * HexSize^0.5
+	SolarThrust := 9.0 * Hexes * HexSize^0.5
 	SolarPower := 5.0 * Hexes * HexSize^0.5
-	Thrust := 1 * Hexes * HexSize^0.5
+	Thrust := 3 * Hexes * HexSize^0.5
 	MaxTurnThrust := TurnThrust
 	Hook: subsystem_extra_effects::SolarThrust(SolarThrustDeepSpace, SolarThrustNormal, SolarThrustMax)
 	Assert: Hexes == ExteriorHexes
