@@ -264,7 +264,12 @@ class Scouting : AIComponent {
 
 	void start() {
 		@scoutDesign = DesignTarget(DP_Scout, 16);
-		scoutDesign.targetMaintenance = 40;
+		// [[ MODIFY BASE GAME START ]]
+		// Drop target maint as exploration hull that is alawys applied to AI
+		// scout designs slashes maint costs so vanilla's 40 here is just going
+		// to encourage the AI to put too much armour on the design
+		scoutDesign.targetMaintenance = 20;
+		// [[ MODIFY BASE GAME END ]]
 		designs.design(scoutDesign);
 	}
 

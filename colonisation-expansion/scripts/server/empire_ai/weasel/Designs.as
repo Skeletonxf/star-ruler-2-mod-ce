@@ -214,7 +214,7 @@ tidy final class DesignTarget {
 				targetAccel *= 1.5;
 			// [[ MODIFY BASE GAME START ]]
 			else if(purpose == DP_Scout)
-				targetAccel *= 12.0;
+				targetAccel *= 18.0;
 			else if(purpose == DP_Mothership)
 				targetAccel *= 12.0;
 			else if(purpose == DP_StarEater)

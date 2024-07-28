@@ -364,7 +364,13 @@ tidy class Designer {
 		composition.insertLast(Chance(0.5, Internal(tag("GeneralUtility") & notTag("SingleHexSubsystem"), 0.025, 0.10)));
 		// [[ MODIFY BASE GAME END ]]
 
-		composition.insertLast(ArmorLayer(tag("PrimaryArmor"), HM_DownLeft | HM_UpLeft | HM_Down | HM_Up, 1, 1));
+		// [[ MODIFY BASE GAME START ]]
+		// A shield is more than enough protection on a scout, we don't need the
+		// AI designer to plaster it in armour too
+		if (!owner.hasTrait(getTraitID("Devout"))) {
+			composition.insertLast(ArmorLayer(tag("PrimaryArmor"), HM_DownLeft | HM_UpLeft | HM_Down | HM_Up, 1, 1));
+		}
+		// [[ MODIFY BASE GAME END ]]
 	}
 
 	Tag@ tag(const string& value) {

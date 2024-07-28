@@ -7,6 +7,16 @@ import empire_ai.weasel.Planets;
 
 import buildings;
 
+// [[ MODIFY BASE GAME START ]]
+// This is a little hacky but since AI doesn't import designs with these names
+// later from any source and won't edit existing designs unless a player takes
+// control this will do for ignoring designs the AI doesn't make good use of.
+// We can ignore Scout because the verdant race gets a Scout MkI that is better
+// and the Explorer class of default designs are also just generally better at
+// scouting so it should really pick from those instead.
+array<string> ignoreDefaultDesigns = {"Sail", "Scout"};
+// [[ MODIFY BASE GAME END ]]
+
 class Verdant : Race, RaceDesigns {
 	Designs@ designs;
 	IDevelopment@ development; // [[ MODIFY BASE GAME ]]
@@ -38,6 +48,16 @@ class Verdant : Race, RaceDesigns {
 				continue;
 			if(dsg.updated !is null)
 				continue;
+			// [[ MODIFY BASE GAME START ]]
+			bool ignoredDesign = false;
+			for(uint j = 0, jcnt = ignoreDefaultDesigns.length; j < jcnt && !ignoredDesign; ++j) {
+				if(dsg.name == ignoreDefaultDesigns[j]) {
+					ignoredDesign = true;
+				}
+			}
+			if (ignoredDesign)
+				continue;
+			// [[ MODIFY BASE GAME END ]]
 
 			uint goal = designs.classify(dsg, DP_Unknown);
 			if(goal == DP_Unknown)
