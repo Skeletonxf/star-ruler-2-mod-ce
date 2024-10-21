@@ -1,6 +1,6 @@
 {
 	"__VERSION__": 1,
-	"name": "Gunship MkI",
+	"name": "Gunship",
 	"size": 1,
 	"hull": "$1Tiny",
 	"type": "Support",

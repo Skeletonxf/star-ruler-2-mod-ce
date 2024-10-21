@@ -1,6 +1,6 @@
 {
 	"__VERSION__": 1,
-	"name": "Heavy Gunship MkI",
+	"name": "Heavy Gunship",
 	"size": 8,
 	"hull": "$1Large",
 	"type": "Support",
