@@ -14,7 +14,12 @@ import buildings;
 // We can ignore Scout because the verdant race gets a Scout MkI that is better
 // and the Explorer class of default designs are also just generally better at
 // scouting so it should really pick from those instead.
-array<string> ignoreDefaultDesigns = {"Sail", "Scout"};
+// We ignore the vanilla flagship designs because Verdant races get Mk I
+// versions that are designed with actual armour and generally better, though
+// still not as durable as heavily optimised player ships, but hopefully
+// more than competitive with other AI random designs till the tech tree has
+// loads of unused stuff.
+array<string> ignoreDefaultDesigns = {"Sail", "Scout", "Heavy Carrier", "Battleship", "Dreadnaught"};
 // [[ MODIFY BASE GAME END ]]
 
 class Verdant : Race, RaceDesigns {
