@@ -12,7 +12,7 @@ I consider this mod at playable status now. It should be stable and balanced eno
 
 You can use GitHub's Download Zip button to download the latest version of this mod. For more stable versions, go to the [tags page](https://github.com/Skeletonxf/star-ruler-2-mod-ce/tags) to get the latest release version. Extract the mod out of the `colonisation-expansion` folder and place it into the mods folder of a [Star Ruler 2](https://github.com/BlindMindStudios/StarRuler2-Source) installation.
 
-Alternatively you can use [Star Ruler 2 Launchpad](https://github.com/OpenSRProject/OpenStarRuler-Launchpad) to install and update this mod.
+Alternatively you can use the [OpenSR Launchpad](https://github.com/OpenSRProject/OpenStarRuler-Launchpad) to install and update this mod.
 
 Note: as with most mods, nearly every commit and almost every release is a save compatible breaking change, so typically you would not want to update your copy of CE until you have finished playing a game with it.
 
@@ -140,12 +140,12 @@ Some ship designs were provided by MysticVoid7x9 licensed under Creative Commons
 ### Where are the release notes?
 Every [tagged release](https://github.com/Skeletonxf/star-ruler-2-mod-ce/tags) contains a summary of changes. For more detailed changes see the individual commit messages in the git history.
 
-### Will there be a Steam workshop release?
-I own the game on Steam, however I rarely use the Steam distribution and consequently would not keep a Steam workshop version up to date with the GitHub releases. There may be a Steam workshop release in the future. In such a release I would likely disable some less tested / unfinished features. GitHub will always be the primary release model for this mod. You should check out the [OpenSR launchpad](https://github.com/OpenSRProject/OpenStarRuler-Launchpad) for assistance with installing and updating mods over git.
+### Will there be a Steam Workshop release?
+I own the game on Steam, however I rarely use the Steam distribution and consequently would not keep a Steam Workshop version up to date with the GitHub releases. There may be a Steam Workshop release in the future. In such a release I would likely disable some less tested / unfinished features. GitHub will always be the primary release model for this mod. You should check out the [OpenSR Launchpad](https://github.com/OpenSRProject/OpenStarRuler-Launchpad) for assistance with installing and updating mods over Git.
 
-### Is this mod compatible with the modpack?
-The modpack, formerly the community patch, contains a number of bugs fixes and non gameplay changing enhancements to vanilla. I ported and continue to port many of these from CE to the modpack and hence they are already included in CE.
+### Is this mod compatible with the OpenSR Modpack?
+The Modpack, formerly the Community Patch, contains a number of bug fixes and non gameplay changing enhancements to vanilla. I ported and continue to port many of these from CE to the Modpack and hence they are already included in CE.
 
-Modding in SR2 consists of providing files which override the vanilla or other mod versions. When two mods both change a file, they are incompatible unless one mod declares itself as depending on the other. The child mod must copy all the conflicted file changes into its sources and apply its own on top. In a large mod like CE this inevitability necessities distributing parts of mods you depend on in your own source code. Unfortunately some of the authors of the modpack chose not to open source some/all of their contributions, and hence those changes remain proprietary and not in CE. In order to include only the open source changes from the modpack I've had to manually port such fixes that didn't originate from CE (mostly fixes originating from Rising Stars by Dalo Lorn), even for files that CE doesn't otherwise modify itself (although this list is ever-shrinking).
+Modding in SR2 consists of providing files which override the vanilla or other mod versions. When two mods both change a file, they are incompatible unless one mod declares itself as depending on the other. The child mod must copy all the conflicted file changes into its sources and apply its own on top. In a large mod like CE this inevitably necessitates distributing parts of mods you depend on in your own source code. Unfortunately some of the authors of the Modpack chose not to open source some/all of their contributions, and hence those changes remain proprietary and not in CE. In order to include only the open source changes from the Modpack I've had to manually port such fixes that didn't originate from CE (mostly fixes originating from Rising Stars by Dalo Lorn), even for files that CE doesn't otherwise modify itself (although this list is ever-shrinking).
 
-So in summary, CE *mostly* bundles the modpack inside its own sources, just as all big mods that depend on the modpack have to do one conflicting file at a time.
+So in summary, CE *mostly* bundles the Modpack inside its own sources, just as all big mods that depend on the modpack have to do one conflicting file at a time.
