@@ -1,4 +1,6 @@
 import saving;
+import attributes;
+from influence_global import giveRandomReward, DiplomacyEdictType;
 
 // How much time a ship needs to be out of combat for before we consider
 // it to not have recently been in combat, at which point we may enable
@@ -8,6 +10,7 @@ const float TIME_OUTSIDE_COMBAT_STILL_RECENT = 60;
 class Combatable {
 	float recentlyInCombatTimer = 0.0;
 	float combatTimer = 0.f;
+	Empire@ killCredit;
 
 	void save(SaveFile& file) {
 		file << recentlyInCombatTimer;
@@ -38,5 +41,32 @@ class Combatable {
 
 	bool inRecentCombat() {
 		return recentlyInCombatTimer > 0.0;
+	}
+
+	void rewardKiller(double maintenanceOfDestroyed, Empire@ owner, double fleetStrength) {
+		Empire@ master = killCredit.SubjugatedBy;
+		if(master !is null && master.getEdictType() == DET_Conquer) {
+			if(master.getEdictEmpire() is owner) {
+				giveRandomReward(killCredit, double(maintenanceOfDestroyed) / 100.0);
+			}
+		}
+
+		if (owner !is null) {
+			double reward = killCredit.DestroyShipReward + owner.ShipDestroyBounty;
+			if(reward > 0.001) {
+				reward = floor(reward * maintenanceOfDestroyed);
+				if(reward >= 1.0)
+					killCredit.addBonusBudget(int(reward));
+			}
+		}
+
+		if(owner.major && fleetStrength >= 1000.0)
+			killCredit.modAttribute(EA_EnemyFlagshipsDestroyed, AC_Add, 1.0);
+
+		if(owner !is null && owner.valid && killCredit !is owner)
+			owner.recordStatDelta(stat::ShipsLost, 1);
+
+		if(killCredit !is null && killCredit !is owner && killCredit.valid)
+			killCredit.recordStatDelta(stat::ShipsDestroyed, 1);
 	}
 }

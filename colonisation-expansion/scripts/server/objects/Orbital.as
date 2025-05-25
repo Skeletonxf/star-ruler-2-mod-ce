@@ -873,8 +873,21 @@ tidy class OrbitalScript {
 	}
 
 	void destroy(Orbital& obj) {
-		if(obj.inCombat && !game_ending)
+		// [[ MODIFY BASE GAME START ]]
+		// Added kill credits from combatable
+		if(combatable.killCredit !is null && !game_ending) {
 			playParticleSystem("ShipExplosion", obj.position, obj.rotation, obj.radius, obj.visibleMask);
+			auto@ region = obj.region;
+			if (region !is null && combatable.killCredit !is obj.owner) {
+				// TODO: Can we infer the actual size of the object here rather
+				// than fix it to 250?
+				region.grantExperience(combatable.killCredit, 250 * config::EXPERIENCE_GAIN_FACTOR, combatOnly=true);
+			}
+
+			// TODO: Can we sum the actual maintenance of the object here rather
+			// than fix it to 100?
+			combatable.rewardKiller(100, obj.owner, 0.0);
+		}
 
 		for(uint i = 0, cnt = sections.length; i < cnt; ++i) {
 			auto@ sec = sections[i];
@@ -884,6 +897,7 @@ tidy class OrbitalScript {
 			if(sec.type.maintenance != 0 && obj.owner !is null && obj.owner.valid && !isFree)
 				obj.owner.modMaintenance(-sec.type.maintenance, MoT_Orbitals);
 		}
+		// [[ MODIFY BASE GAME END ]]
 
 		if(icon !is null) {
 			if(obj.region !is null)
@@ -967,6 +981,14 @@ tidy class OrbitalScript {
 		if(icon !is null)
 			icon.visible = obj.isVisibleTo(playerEmpire);
 
+		// [[ MODIFY BASE GAME START ]]
+		// Also take vision from the empire that last hit this orbital, if any, to
+		// aide them with tracking this orbital
+		if (combatable.killCredit !is null) {
+			obj.donatedVision |= combatable.killCredit.mask;
+		}
+		// [[ MODIFY BASE GAME END ]]
+
 		//Update in combat flags
 		bool engaged = obj.engaged;
 		// [[ MODIFY BASE GAME START ]]
@@ -1025,6 +1047,14 @@ tidy class OrbitalScript {
 		else {
 			@lastHitBy = null;
 		}
+
+		// [[ MODIFY BASE GAME START ]]
+		//Clear kill credits after short spans of time
+		if(combatable.killCredit !is null && !obj.inCombat) {
+			@combatable.killCredit = null;
+			@lastHitBy = null;
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		//Update module requirements
 		checkSections(obj);
@@ -1141,6 +1171,9 @@ tidy class OrbitalScript {
 				}
 			}
 
+			// [[ MODIFY BASE GAME START ]]
+			@combatable.killCredit = evt.obj.owner;
+			// [[ MODIFY BASE GAME END ]]
 			@lastHitBy = evt.obj;
 		}
 

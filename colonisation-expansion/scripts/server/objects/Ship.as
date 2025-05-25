@@ -49,7 +49,9 @@ const float FIRE_DPS = 0.25;
 
 tidy class ShipScript {
 	Object@ lastHitBy;
-	Empire@ killCredit;
+	// [[ MODIFY BASE GAME START ]]
+	// Moved kill credits to combatable to share implementation with OrbitalScript
+	// [[ MODIFY BASE GAME END ]]
 	uint bpStatusID = 0;
 	bool barDelta = false, onFire = false, needRepair = true, shieldDelta = false;
 	int prevSupply = 0;
@@ -813,7 +815,9 @@ tidy class ShipScript {
 		}
 
 		//Assuming we've been hit recently, the likely cause of death is explosion
-		if(killCredit !is null && !game_ending) {
+		// [[ MODIFY BASE GAME START ]]
+		// Moved kill credits to combatable
+		if(combatable.killCredit !is null && !game_ending) {
 			auto size = ship.blueprint.design.size;
 			if(size < 16)
 				playParticleSystem("ShipExplosionLight", ship.position, ship.rotation, ship.radius, ship.visibleMask);
@@ -829,28 +833,12 @@ tidy class ShipScript {
 				uint debris = uint(log(size) / log(2.0));
 				if(debris > 0)
 					region.addShipDebris(ship.position, debris);
-				if(killCredit !is ship.owner && ship.hasLeaderAI)
-					region.grantExperience(killCredit, size * config::EXPERIENCE_GAIN_FACTOR, combatOnly=true);
+				if(combatable.killCredit !is ship.owner && ship.hasLeaderAI)
+					region.grantExperience(combatable.killCredit, size * config::EXPERIENCE_GAIN_FACTOR, combatOnly=true);
 			}
 
-
 			if(ship.hasLeaderAI && currentMaintenance != 0) {
-				Empire@ master = killCredit.SubjugatedBy;
-				if(master !is null && master.getEdictType() == DET_Conquer) {
-					if(master.getEdictEmpire() is ship.owner) {
-						giveRandomReward(killCredit, double(currentMaintenance) / 100.0);
-					}
-				}
-
-				double reward = killCredit.DestroyShipReward + ship.owner.ShipDestroyBounty;
-				if(reward > 0.001) {
-					reward = floor(reward * currentMaintenance);
-					if(reward >= 1.0)
-						killCredit.addBonusBudget(int(reward));
-				}
-
-				if(ship.owner.major && ship.getFleetMaxStrength() >= 1000.0)
-					killCredit.modAttribute(EA_EnemyFlagshipsDestroyed, AC_Add, 1.0);
+				combatable.rewardKiller(currentMaintenance, ship.owner, ship.getFleetMaxStrength());
 			}
 		}
 
@@ -859,9 +847,8 @@ tidy class ShipScript {
 				ship.owner.points -= int(double(ship.blueprint.design.size) * SHIP_SIZE_POINTS);
 				ship.owner.recordStatDelta(statType(ship), -1);
 			}
-			if(killCredit !is ship.owner)
-				ship.owner.recordStatDelta(stat::ShipsLost, 1);
 		}
+		// [[ MODIFY BASE GAME END ]]
 
 		if(lastHitBy !is null && lastHitBy !is ship)
 			ship.lastHit = lastHitBy.id;
@@ -894,10 +881,6 @@ tidy class ShipScript {
 		if (ship.hasResources)
 			ship.destroyObjResources();
 		// [[ MODIFY BASE GAME END ]]
-
-		if(killCredit !is null && killCredit !is ship.owner && killCredit.valid)
-			killCredit.recordStatDelta(stat::ShipsDestroyed, 1);
-
 		leaveRegion(ship);
 	}
 
@@ -1107,8 +1090,8 @@ tidy class ShipScript {
 		// [[ MODIFY BASE GAME START ]]
 		// Also take vision from the empire that last hit this ship, if any, to
 		// aide them with tracking this ship
-		if (killCredit !is null) {
-			ship.donatedVision |= killCredit.mask;
+		if (combatable.killCredit !is null) {
+			ship.donatedVision |= combatable.killCredit.mask;
 		}
 		// [[ MODIFY BASE GAME END ]]
 
@@ -1307,8 +1290,10 @@ tidy class ShipScript {
 		}
 
 		//Clear kill credits after short spans of time
-		if(killCredit !is null && !ship.inCombat) {
-			@killCredit = null;
+		// [[ MODIFY BASE GAME START ]]
+		if(combatable.killCredit !is null && !ship.inCombat) {
+			@combatable.killCredit = null;
+			// [[ MODIFY BASE GAME END ]]
 			@lastHitBy = null;
 		}
 
@@ -1508,7 +1493,7 @@ tidy class ShipScript {
 			}
 
 			@lastHitBy = source;
-			@killCredit = source.owner;
+			@combatable.killCredit = source.owner; // MODIFY BASE GAME
 		}
 	}
 
@@ -1535,7 +1520,7 @@ tidy class ShipScript {
 			}
 
 			@lastHitBy = evt.obj;
-			@killCredit = evt.obj.owner;
+			@combatable.killCredit = evt.obj.owner; // MODIFY BASE GAME
 		}
 		ship.engaged = true;
 		ship.blueprint.damage(ship, evt, direction);
@@ -1586,7 +1571,7 @@ tidy class ShipScript {
 	}
 
 	Empire@ getKillCredit() {
-		return killCredit;
+		return combatable.killCredit; // MODIFY BASE GAME
 	}
 
 	void syncInitial(const Ship& ship, Message& msg) {
