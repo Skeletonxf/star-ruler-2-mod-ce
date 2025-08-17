@@ -298,22 +298,22 @@ BETA: Beta
 ALPHA_DESC_SUPPORT: <<
 	Spawn at Alpha local defense.
 
-	[i][color=#aaa]Alpha support ships and satellites will only spawn at flagships and stations with an Alpha hull.[/color][/i]
+	[i][color=#aaa]Alpha support ships and satellites will only spawn at or transfer automatically to flagships and stations with an Alpha hull.[/color][/i]
 >>
 BETA_DESC_SUPPORT: <<
 	Spawn at Beta local defense.
 
-	[i][color=#aaa]Beta support ships and satellites will only spawn at flagships and stations with a Beta hull.[/color][/i]
+	[i][color=#aaa]Beta support ships and satellites will only spawn at or transfer automatically to flagships and stations with a Beta hull.[/color][/i]
 >>
 GAMMA_DESC_SUPPORT: <<
 	Spawn at Gamma local defense.
 
-	[i][color=#aaa]Gamma support ships and satellites will only spawn at flagships and stations with a Gamma hull.[/color][/i]
+	[i][color=#aaa]Gamma support ships and satellites will only spawn at or transfer automatically to flagships and stations with a Gamma hull.[/color][/i]
 >>
 OMEGA_DESC_SUPPORT: <<
 	Spawn at planets.
 
-	[i][color=#aaa]Omega support ships and satellites will only spawn at planets.[/color][/i]
+	[i][color=#aaa]Omega support ships and satellites will only spawn at planets and will not automatically transfer to flagships.[/color][/i]
 >>
 SHIELDPROJECTOR: Shield Projector
 SHIELDPROJECTOR_DESC: <<
