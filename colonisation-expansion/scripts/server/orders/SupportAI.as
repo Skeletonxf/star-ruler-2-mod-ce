@@ -1,5 +1,8 @@
 import saving;
 import design_settings;
+// [[ MODIFY BASE GAME START ]]
+import CE_hull_colors;
+// [[ MODIFY BASE GAME END ]]
 
 //Time needed for a support ship to expire if left without a leader
 const double SUPPORT_EXPIRE_TIME = 3.0 * 60.0;
@@ -335,8 +338,24 @@ tidy class SupportAI : Component_SupportAI, Savable {
 				if(check.isShip && check.hasSupportAI && check.LeaderID != 0)
 					@check = cast<Ship>(check).Leader;
 				if(check !is null && check.hasLeaderAI) {
-					if(pos.distanceToSQ(check.position) < MAX_LEADER_RESCUE_DIST_SQ && check.canTakeSupport(size, pickup=true))
-						return check;
+					// [[ MODIFY BASE GAME START ]]
+					if (pos.distanceToSQ(check.position) < MAX_LEADER_RESCUE_DIST_SQ && check.canTakeSupport(size, pickup=true)) {
+						// Check the hull colours are compatibile even if we
+						// are able to transfer to this ship
+						LeaderDefense leaderDefense;
+						leaderDefense.getFor(check);
+						bool planetDefenseGen = leaderDefense.planetDefense;
+						bool flagshipDefenseGen = leaderDefense.flagshipDefense;
+						bool alphaDefenseGen = leaderDefense.alphaDefense;
+						bool betaDefenseGen = leaderDefense.betaDefense;
+						bool gammaDefenseGen = leaderDefense.gammaDefense;
+						Ship@ ship = cast<Ship>(obj);
+						const Design@ dsg = ship.blueprint.design;
+						if (meetsColorCompatibility(dsg, planetDefenseGen, flagshipDefenseGen, alphaDefenseGen, betaDefenseGen, gammaDefenseGen)) {
+							return check;
+						}
+					}
+					// [[ MODIFY BASE GAME END ]]
 				}
 			}
 

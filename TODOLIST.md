@@ -8,7 +8,6 @@ This is primarily intended as a developer focused project planning list, rather 
 - Work out why hooks to import jumpdrive and hyperdrive designs appear to not be working like their gate and slipstream versions do
   - Does SR2 only import a design if the name isn't already taken? Maybe we need to suffix every ship design so the not_hyperdrive designs can be non conflicting with the hyperdrive and jumpdrive versions?
 - Apply combat repair tweaks to civilian ships too
-- Prevent support ships automatically transfering onto flagships with non matching hull colors
 - Possibly make the defense grids provide an effectiveness boost to supports in orbit of the planet
 - Make some analog to the SupportStation artifact player designable/buildable
 - Make auto import refresh when resources on already colonised planets become available
