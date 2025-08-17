@@ -278,8 +278,12 @@ tidy final class TechnologyNode : Serializable, Savable {
 		if(available && queued && !bought) {
 			double cost = getPointCost(emp);
 			if(cost > 0) {
-				if(emp.ResearchPoints >= type.pointCost && canUnlock(emp))
+				// [[ MODIFY BASE GAME START ]]
+				// Use point cost not base cost of tech to factor in
+				// cost discounts
+				if(emp.ResearchPoints >= cost && canUnlock(emp))
 					emp.research(id);
+				// [[ MODIFY BASE GAME END ]]
 			}
 			else {
 				if(canUnlock(emp))
