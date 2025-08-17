@@ -1072,6 +1072,14 @@ class TiedSubsystemUnlock : EmpireEffect {
 			emp.setUnlocked(getSubsystemDef(subsystem.integer), false);
 	}
 
+	// [[ MODIFY BASE GAME START ]]
+	void ownerChange(Object& obj, any@ data, Empire@ prevOwner, Empire@ newOwner) const override {
+		// This is generally not the right way to do it,
+		// but it works because TiedSubsystemUnlock doesn't persist any data.
+		disable(prevOwner, data);
+		enable(newOwner, data);
+	}
+	// [[ MODIFY BASE GAME END ]]
 #section all
 };
 
