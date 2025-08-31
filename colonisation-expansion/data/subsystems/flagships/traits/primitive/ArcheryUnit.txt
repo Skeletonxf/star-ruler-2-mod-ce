@@ -1,62 +1,62 @@
-//Subsystem: ArcheryUnit
-//	Name: Archery Unit
-//	Description: If you're reading this, sorry, this isn't going to be available for many months.
-//	BaseColor: #fbffdb
-//	TypeColor: #fbffdb
-//	Elevation: 2
-//
-//	Tags: LowMaint, Category:Weapons
-//	Tags: WeaponBase, Rotatable, HexLimitArc
-//	Tags: ExteriorCore, Weapon, IsProjWeapon, IsRailgun, HasInternals, MainDPS
-//	Tags: Crewed, Control, ControlCore
-//	Hull: Flagship, Station
-//
-//	Size := HexSize * Hexes
-//
-//	Range := 400
-//	Damage := Size * 0.21
-//	Reload := 0.1 * min(1.0 + Size/512, 2.0)
-//	Speed := 40
-//	Tracking := 15
-//	FireArc := 1.5
-//	SupplyCost := Size * 0.5
-//
-//	Hex.HP := 18 * HexSize
-//	Hex.Resistance := 0.2
-//	Hex.Mass := HexSize
-//
-//	Crew := floor(20 * Size)
-//	Command := floor(0.2 * Hexes)
-//
-//	Repair := 1 * HexSize * (Hexes-1)
-//	RepairSupplyCost := 2.0 * Repair
-//	out SupplyDrain := RepairSupplyCost
-//
-//	Provides:
-//		Crew = Crew
-//		Command = Command
-//
-//	Module: Default
-//
-//	Module: Core
-//		Hex.HP := Hex.HP * 3
-//		Hex.BuildCost := 5.0 * Hex.BuildCost
-//		Hex.Mass := 5.0 * Hex.Mass
-//
-//		Sprite: Railgun::0
-//		DrawMode: 1
-//
-//	Effector: Railgun
-//		Range = Range
-//		Damage = Damage
-//		Reload = Reload
-//		Speed = Speed
-//		Tracking = Tracking
-//		Spread = 0
-//		FireArc = FireArc
-//		TargetTolerance = max(pi,FireArc + pi/4)
-//		FireTolerance = 0
-//		Pierce = 0
-//		SupplyCost = SupplyCost * Reload
-//		CapOnTarget = 24
-//		IgnoreDR = 0
+Subsystem: ArcheryUnit
+	Name: #S_ARCHERY_UNIT
+	Description: #S_ARCHERY_UNIT_DESC
+	BaseColor: #fbffdb
+	TypeColor: #fbffdb
+	Elevation: 2
+
+	Tags: LowMaint, Category:Weapons
+	Tags: WeaponBase, Rotatable, HexLimitArc
+	Tags: ExteriorCore, Weapon, IsProjWeapon, IsRailgun, HasInternals, MainDPS
+	Tags: Crewed, Control, ControlCore
+	Hull: Flagship, Station
+
+	Size := HexSize * Hexes
+
+	Range := 100
+	Damage := Size * 0.21
+	Reload := 0.1 * min(1.0 + Size/512, 2.0)
+	Speed := 40
+	Tracking := 15
+	FireArc := 1.5
+	SupplyCost := Size * 0.5
+
+	Hex.HP := 18 * HexSize
+	Hex.Resistance := 0.2
+	Hex.Mass := HexSize
+
+	Crew := floor(20 * Size)
+	Command := floor(0.2 * Hexes)
+
+	Repair := 0.5 * HexSize * (Hexes-1)
+	RepairSupplyCost := 2.0 * Repair
+	out SupplyDrain := RepairSupplyCost
+
+	Provides:
+		Crew = Crew
+		Command = Command
+
+	Module: Default
+
+	Module: Core
+		Hex.HP := Hex.HP * 3
+		Hex.BuildCost := 5.0 * Hex.BuildCost
+		Hex.Mass := 5.0 * Hex.Mass
+
+		Sprite: Railgun::0
+		DrawMode: 1
+
+	Effector: Railgun
+		Range = Range
+		Damage = Damage
+		Reload = Reload
+		Speed = Speed
+		Tracking = Tracking
+		Spread = 0
+		FireArc = FireArc
+		TargetTolerance = max(pi,FireArc + pi/4)
+		FireTolerance = 0
+		Pierce = 0
+		SupplyCost = SupplyCost * Reload
+		CapOnTarget = 24
+		IgnoreDR = 0

@@ -1,0 +1,9 @@
+Grid: MicroclinersGrid
+	Science: 0,0
+	FactoryLabor: -1,-1
+	Thrust: 0,1
+	Repair: -1,1
+	FlagHealth2: 0,-1
+	SupportWeight: -1,0
+	SupplyStorage: 1,0
+	SysMicroclinersLaser: 1,1

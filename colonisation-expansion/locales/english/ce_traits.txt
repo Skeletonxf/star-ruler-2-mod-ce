@@ -70,3 +70,4 @@ TRAIT_ANCIENT_VESSEL_DESC: <<
 	This proud vessel has long flown over our planet. Now, we shall reclaim it. Start with a Remnant Flagship.
 	[color=#aaa][i]The only ship you'll ever need?[/i][/color]
 >>
+TRAIT_MICROCLINERS: Microcliners

@@ -1,0 +1,10 @@
+Technology: SysMicroclinersLaser
+	Name: #R_SYS_MICROCLINERS_LASER
+	Description: #R_SYS_MICROCLINERS_LASER_DESC
+	Class: Unlock
+	Point Cost: 100
+	Time Cost: 60
+	Icon: Laser::0
+	Color: #f9464d
+	Category: Microcliners
+	UnlockSubsystem(Laser)

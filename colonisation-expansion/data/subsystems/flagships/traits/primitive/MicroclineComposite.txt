@@ -1,42 +1,42 @@
-//Subsystem: MicroclineComposite
-//	Name: Microcline Composite
-//	Description: If you're reading this, sorry, this isn't going to be available for many months.
-//	BaseColor: #eaf5f9
-//	TypeColor: #eaf5f9
-//	Picture: ResourceIconsSmall::73
-//	Elevation: 0
-//
-//	Tags: LowMaint, Category:Propulsion, VectorThrust
-//	Tags: Engine, GivesThrust, HasInternals
-//	Tags: NoCore, NonContiguous, Defense, IsArmor, ResistArmor, PrimaryArmor, PassExterior
-//	Hull: Flagship
-//
-//	Size := HexSize * Hexes
-//	Thrust := 25 * Size
-//	TurnThrust := 5 * Size
-//	Hex.Mass := HexSize
-//
-//
-//	Hex.Resistance := 0.3
-//	Hex.HP := 24 * HexSize
-//
-//	MaxThrust := Thrust
-//	MaxTurnThrust := TurnThrust
-//	SupplyCost := Size * 0.3
-//
-//	Requires:
-//		Command = ceil(Hexes / 5)
-//
-//	DamageResist := ShipSize / 16.0
-//	OnCheckErrors: designs::checkCoversAllDirections
-//
-//	Ship.ExternalHexes := Ship.ExternalHexes + Hexes
-//	Effect: ReduceDamage
-//		ProjResist = DamageResist
-//		EnergyResist = DamageResist
-//		ExplResist = DamageResist
-//		MinimumPercent = 1/6
-//
-//	Module: Default
-//		Sprite: ResourceIconsSmall::73
-//		Hex.BuildCost := 2 * Hex.BuildCost
+Subsystem: MicroclineComposite
+	Name: #S_MICROCLINE_COMPOSITE
+	Description: #S_MICROCLINE_COMPOSITE_DESC
+	BaseColor: #eaf5f9
+	TypeColor: #eaf5f9
+	Picture: ResourceIconsSmall::73
+	Elevation: 0
+
+	Tags: LowMaint, Category:Propulsion, VectorThrust
+	Tags: Engine, GivesThrust, HasInternals
+	Tags: NoCore, NonContiguous, Defense, IsArmor, ResistArmor, PrimaryArmor, PassExterior
+	Hull: Flagship
+
+	Size := HexSize * Hexes
+	Thrust := 20 * Size
+	TurnThrust := 5 * Size
+	Hex.Mass := HexSize
+
+
+	Hex.Resistance := 0.3
+	Hex.HP := 24 * HexSize
+
+	MaxThrust := Thrust
+	MaxTurnThrust := TurnThrust
+	SupplyCost := Size * 0.3
+
+	Requires:
+		Command = ceil(Hexes / 5)
+
+	DamageResist := ShipSize / 16.0
+	OnCheckErrors: designs::checkCoversAllDirections
+
+	Ship.ExternalHexes := Ship.ExternalHexes + Hexes
+	Effect: ReduceDamage
+		ProjResist = DamageResist
+		EnergyResist = DamageResist
+		ExplResist = DamageResist
+		MinimumPercent = 1/6
+
+	Module: Default
+		Sprite: FleetComputer * aaeeff
+		Hex.BuildCost := 2 * Hex.BuildCost

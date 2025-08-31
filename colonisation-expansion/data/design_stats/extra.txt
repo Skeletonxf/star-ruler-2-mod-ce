@@ -231,3 +231,12 @@ SubsystemStat: TravelRange
 	Suffix: u
 
 	Variable: TravelRange
+
+GlobalStat: ExplosiveBoost
+	Name: #S_EXPLOSIVE_BOOST
+	Description: #STT_EXPLOSIVE_BOOST
+	Icon: ResourceIconsSmall::73
+	Color: #ffffff
+	Suffix: u/s²
+
+	Variable: ExplosiveBoost

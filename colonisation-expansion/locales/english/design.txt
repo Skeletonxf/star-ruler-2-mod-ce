@@ -206,6 +206,9 @@ STT_OreCost: When building this ship, Ore mined from asteroids must be spent fro
 S_PRAYER: Prayer
 STT_PRAYER: The amount of prayer the shrine on the ship provides. Ships must have at least as much Prayer as they do Control.
 
+S_EXPLOSIVE_BOOST: Explosive Boost
+STT_EXPLOSIVE_BOOST: Additional acceleration in the first 30 seconds of combat.
+
 S_DPS_SMALL: DPS
 S_DAMAGE: Damage
 S_BEAMDPS: Beam DPS

@@ -108,3 +108,5 @@ CURIOSITAS_SPAWN_NERF_DESC2: <<
 	Undergoing extensive resupply from nearby planets.
 	Fleet effectiveness is reduced up to 45% when far away from owned planets.
 >>
+STATUS_EXPLOSIVE_BOOST: Explosive Boost
+STATUS_EXPLOSIVE_BOOST_DESC: Jettisoned explosives are increasing this fleet's speed for the first 30 seconds of any combat.

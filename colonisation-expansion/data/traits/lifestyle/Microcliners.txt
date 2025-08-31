@@ -1,0 +1,17 @@
+Trait: Microcliners
+	Name: #TRAIT_MICROCLINERS
+	Description: #TRAIT_MICROCLINERS_DESC
+	Order: 20
+
+	Icon: ResourceIconsSmall::73
+	Color: #ffffff
+
+	Category: Lifestyle
+	Unique: Lifestyle
+	Available: False
+	ForbidSubsystem(RocketEngine)
+	IfHaveTrait(Hyperdrive, LoadDesigns(microcliners/hyperdrive))
+	UnlockSubsystem(ExplosiveBooster)
+	UnlockSubsystem(ArcheryUnit)
+	UnlockSubsystem(MicroclineComposite)
+	ReplaceTechnologyGrid(MicroclinersGrid)

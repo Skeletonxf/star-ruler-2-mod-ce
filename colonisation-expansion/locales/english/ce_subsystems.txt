@@ -506,3 +506,15 @@ S_ARTILLERY_HULL_DESC: <<
 	[img=Minus]Reduces armor resistance by 10%.[/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Artillery Hulls can only be used on ships of size 300 or greater.[/color][/i][/img]
 >>
+S_ARCHERY_UNIT: Archery Unit
+S_ARCHERY_UNIT_DESC: Crewed archers providing both control and weapons.
+S_MICROCLINE_COMPOSITE: Microcline Composite
+S_MICROCLINE_COMPOSITE_DESC: Provides thrust and protection.
+S_EXPLOSIVE_BOOSTER_DESC: <<
+	An explosive boosting device capable of providing rapid thrust.
+
+	[img=QuickbarIcons::6;22]For the first 30 seconds of any combat, the speed of the entire fleet is boosted by an amount dependent on the size of the Explosive Booster.[/img]
+	[img=ActionBarIcons::0;22;#00ff80]Provides a modest amount of [b][color=#00ff80]Control[/color][/b] to operate other subsystems.[/img]
+	[img=Plus]Slowly repairs the vessel.[/img]
+>>
+S_EXPLOSIVE_BOOSTER: Explosive Booster

@@ -194,3 +194,9 @@ R_CONSTRUCTION_BAY_DESC: <<
 	[i][color=#aaa]The construction bay must be unlocked first.[/color][/i]
 >>
 R_CONSTRUCTION_BAY2: Space construction 2
+R_SYS_MICROCLINERS_LASER: Laser
+R_SYS_MICROCLINERS_LASER_DESC: <<
+	[color=#aaa][i]Unlocks the Laser subsystem.[/i][/color]
+
+	[bbloc=#LASER_DESC/]
+>>

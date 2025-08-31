@@ -1,0 +1,14 @@
+Status: ExplosiveBooster
+	Visible To: Nobody
+	Unique: True
+
+	AddStatusInitialCombat(ExplosiveBoost, 30)
+
+Status: ExplosiveBoost
+	Name: #STATUS_EXPLOSIVE_BOOST
+	Description: #STATUS_EXPLOSIVE_BOOST_DESC
+	Icon: QuickbarIcons::6
+	Unique: True
+	Show Duration: True
+
+	AddAccelerationBonus(Sys.ExplosiveBoost)
