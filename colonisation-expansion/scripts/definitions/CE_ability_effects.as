@@ -6,6 +6,9 @@ import abilities;
 from abilities import AbilityHook;
 from ability_effects import getMassFor;
 import target_filters;
+#section server
+from objects.Oddity import createMiniWormhole;
+#section all
 
 class NotifyTargetOwner : AbilityHook {
 	Document doc("Notify the target empire of an event.");
@@ -73,6 +76,78 @@ class FlingToTarget : AbilityHook {
 	}
 #section all
 };
+
+tidy final class TargetMiniWormholeData {
+	bool hasWormhole = false;
+	Oddity@ wormhole;
+};
+
+class SpawnTargetMiniWormhole : AbilityHook {
+	Document doc("Spawn a wormhole to a specified location while the ability is active.");
+	Argument destination(TT_Point);
+
+#section server
+	void create(Ability@ abl, any@ data) const override {
+		TargetMiniWormholeData wormholeData;
+		data.store(@wormholeData);
+	}
+
+	bool canActivate(const Ability@ abl, const Targets@ targs, bool ignoreCost) const override {
+		vec3d to = destination.fromConstTarget(targs).point;
+		if (abl.obj is null) {
+			return false;
+		}
+		vec3d from = abl.obj.position;
+		// TODO: Check target positions aren't in FTL jammed systems
+		return true;
+	}
+
+	void activate(Ability@ abl, any@ data, const Targets@ targs) const override {
+		vec3d point = destination.fromConstTarget(targs).point;
+		TargetMiniWormholeData@ wormholeData;
+		data.retrieve(@wormholeData);
+
+		if (wormholeData.wormhole !is null) {
+			removeWormhole(wormholeData);
+		}
+		if (abl.obj !is null) {
+			spawnWormhole(abl.obj.position, point, wormholeData);
+		}
+	}
+
+	void spawnWormhole(vec3d from, vec3d to, TargetMiniWormholeData@ wormholeData) {
+		@wormholeData.wormhole = createMiniWormhole(from, to, -1);
+		wormholeData.hasWormhole = true;
+	}
+
+	void removeWormhole(TargetMiniWormholeData@ wormholeData) {
+		if (wormholeData.wormhole.getLink() !is null) {
+			wormholeData.wormhole.getLink().destroy();
+		}
+		wormholeData.wormhole.destroy();
+		wormholeData.hasWormhole = false;
+		@wormholeData.wormhole = null;
+	}
+
+	void save(Ability@ abl, any@ data, SaveFile& file) const override {
+		TargetMiniWormholeData@ wormholeData;
+		data.retrieve(@wormholeData);
+		file << wormholeData.hasWormhole;
+		file << wormholeData.wormhole;
+	}
+
+	void load(Ability@ abl, any@ data, SaveFile& file) const override {
+		TargetMiniWormholeData wormholeData;
+		data.store(@wormholeData);
+		file >> wormholeData.hasWormhole;
+		file >> wormholeData.wormhole;
+	}
+
+	// TODO: We should record the region we opened the rift from and
+	// close it if our abl.obj has changed region
+#section all
+};
+
 
 tidy final class StellarDamageData {
 	double timeFiring = 0;

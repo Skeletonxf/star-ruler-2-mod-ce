@@ -1,0 +1,11 @@
+Trait: RiftiumDiscovery
+	Name: #RIFTIUM_DISCOVERY
+	Description: #RIFTIUM_DESCOVERY_DESC
+	Icon: ActionBarIcons::6
+	Order: 20
+	Costs Points: 2
+	AI Support: False
+	Color: 66f4ffff
+	Category: FTL
+	//TriggerHomeSystem(SpawnPlanet(Resource = Riftium, Owned = True, In System = True), Run Post = True)
+	TriggerHomeworld(SpawnPlanet(Resource = Riftium, Owned = True, In System = True))

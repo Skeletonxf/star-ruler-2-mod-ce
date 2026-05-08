@@ -71,3 +71,5 @@ TRAIT_ANCIENT_VESSEL_DESC: <<
 	[color=#aaa][i]The only ship you'll ever need?[/i][/color]
 >>
 TRAIT_MICROCLINERS: Microcliners
+RIFTIUM_DISCOVERY: Riftium discovery
+RIFTIUM_DESCOVERY_DESC: We have discovered a planet in our home system with a special resource that can tear rifts through space to open wormholes.

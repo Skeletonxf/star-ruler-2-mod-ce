@@ -48,3 +48,10 @@ ABL_GENERATE_WATER_DESC: <<
 
 	The water cannot be exported.
 >>
+RIFTIUM_ABILITY: Open Rift 1
+RIFTIUM_ABILITY_DESC: Open a persistent rift to the target destination.
+RIFTIUM_ABILITY_1: Open Rift 2
+RIFTIUM_ABILITY_2: Open Rift 2
+RIFTIUM_ABILITY_3: Open Rift 3
+RIFTIUM_ABILITY_4: Open Rift 4
+RIFTIUM_ABILITY_5: Open Rift 5

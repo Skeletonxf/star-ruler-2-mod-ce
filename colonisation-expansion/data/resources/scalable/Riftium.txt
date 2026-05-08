@@ -1,0 +1,24 @@
+Resource: Riftium
+	Name: #RIFTIUM
+	Description: #RIFTIUM_DESC
+	Blurb: #RIFTIUM_BLURB
+	Native Biome: Crystallic
+	Icon: ActionBarIcons::6
+	Small Icon: ActionBarIcons::6
+	Unique: True
+	Limitless Level: True
+	Rarity: Unique
+	Require Contestation: 20
+	Can Be Terraformed: False
+	Exportable: False
+	IfLevel(5, GrantAbility(Rift4))
+	IfLevel(4, GrantAbility(Rift3))
+	IfLevel(3, GrantAbility(Rift2))
+	IfLevel(2, GrantAbility(Rift1))
+	IfLevel(1, GrantAbility(Rift))
+	IfLevel(5, AddFTLIncome(+0.5))
+	IfLevel(4, AddFTLIncome(+0.4))
+	IfLevel(3, AddFTLIncome(+0.3))
+	IfLevel(2, AddFTLIncome(+0.2))
+	IfLevel(1, AddFTLIncome(+0.1))
+	AddFTLIncome(+0.1)
