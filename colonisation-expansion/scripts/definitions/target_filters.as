@@ -1527,6 +1527,29 @@ class TargetFilterSameRegion : TargetFilter {
 #section all
 };
 
+// [[ MODIFY BASE GAME START ]]
+class TargetFilterRegionNotFTLJammed : TargetFilter {
+	Document doc("The targeted point must be a location that is not jammed.");
+	Argument destination(TT_Point);
+
+	string getFailReason(Empire@ emp, uint index, const Target@ targ) const override {
+		return locale::NO_JAMMED_RIFT;
+	}
+
+#section game
+	bool isValidTarget(Empire@ emp, uint index, const Target@ targ) const override {
+		if(index != uint(arguments[0].integer))
+			return true;
+		Region@ region = getRegion(targ.point);
+		if (region is null || emp is null) {
+			return true;
+		}
+		return region.BlockFTLMask & emp.mask == 0;
+	}
+#section all
+};
+// [[ MODIFY BASE GAME END ]]
+
 class TargetFilterMinimumMaxPopulation : TargetFilter {
 	Document doc("Only allow planets with at least a specific amount of max population.");
 	Argument object(TT_Object);

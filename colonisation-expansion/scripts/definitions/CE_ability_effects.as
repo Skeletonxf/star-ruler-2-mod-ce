@@ -8,6 +8,7 @@ from ability_effects import getMassFor;
 import target_filters;
 #section server
 from objects.Oddity import createMiniWormhole;
+from regions.regions import getRegion;
 #section all
 
 class NotifyTargetOwner : AbilityHook {
@@ -82,6 +83,22 @@ tidy final class TargetMiniWormholeData {
 	Oddity@ wormhole;
 };
 
+#section server
+bool isLocationJammed(vec3d location, Empire@ owner) {
+		Region@ region = getRegion(location);
+		if (region is null) {
+			// deep space can't be jammed
+			return false;
+		}
+		if (owner is null) {
+			// should never be null but we have to handle anyway, if there's no
+			// owner we should probably stop so pretend it's jammed
+			return true;
+		}
+		return region.BlockFTLMask & owner.mask != 0;
+}
+#section all
+
 class SpawnTargetMiniWormhole : AbilityHook {
 	Document doc("Spawn a wormhole to a specified location while the ability is active.");
 	Argument destination(TT_Point);
@@ -98,8 +115,7 @@ class SpawnTargetMiniWormhole : AbilityHook {
 			return false;
 		}
 		vec3d from = abl.obj.position;
-		// TODO: Check target positions aren't in FTL jammed systems
-		return true;
+		return !isLocationJammed(to, abl.obj.owner) && !isLocationJammed(from, abl.obj.owner);
 	}
 
 	void activate(Ability@ abl, any@ data, const Targets@ targs) const override {
@@ -148,6 +164,28 @@ class SpawnTargetMiniWormhole : AbilityHook {
 #section all
 };
 
+class RequireObjectNotFTLJammed : AbilityHook {
+	Document doc("Ability can only be used if the object is not jammed.");
+
+	bool canActivate(const Ability@ abl, const Targets@ targs, bool ignoreCost) const override {
+		if (abl.obj is null) {
+			return false;
+		}
+		Empire@ owner = abl.obj.owner;
+		if (owner is null) {
+			return false;
+		}
+		Region@ region = abl.obj.region;
+		if (region is null) {
+			return true;
+		}
+		return region.BlockFTLMask & owner.mask == 0;
+	}
+
+	string getFailReason(const Ability@ abl, uint index, const Target@ targ) const override {
+		return locale::NO_JAMMED_RIFT;
+	}
+};
 
 tidy final class StellarDamageData {
 	double timeFiring = 0;

@@ -4,6 +4,9 @@ Ability: Rift
 	Icon: ActionBarIcons::6
 	Cooldown: 30
 	Target: rift = Point
+
+	CE_ability_effects::RequireObjectNotFTLJammed()
+	TargetFilterRegionNotFTLJammed(rift)
 	CE_ability_effects::SpawnTargetMiniWormhole(rift)
 Ability: Rift1
 	Name: #RIFTIUM_ABILITY_2
@@ -11,6 +14,8 @@ Ability: Rift1
 	Icon: ActionBarIcons::6 * ffa
 	Cooldown: 30
 	Target: rift = Point
+	CE_ability_effects::RequireObjectNotFTLJammed()
+	TargetFilterRegionNotFTLJammed(rift)
 	CE_ability_effects::SpawnTargetMiniWormhole(rift)
 Ability: Rift2
 	Name: #RIFTIUM_ABILITY_3
@@ -18,6 +23,8 @@ Ability: Rift2
 	Icon: ActionBarIcons::6 * aff
 	Cooldown: 30
 	Target: rift = Point
+	CE_ability_effects::RequireObjectNotFTLJammed()
+	TargetFilterRegionNotFTLJammed(rift)
 	CE_ability_effects::SpawnTargetMiniWormhole(rift)
 Ability: Rift3
 	Name: #RIFTIUM_ABILITY_4
@@ -25,6 +32,8 @@ Ability: Rift3
 	Icon: ActionBarIcons::6 * ff5
 	Cooldown: 30
 	Target: rift = Point
+	CE_ability_effects::RequireObjectNotFTLJammed()
+	TargetFilterRegionNotFTLJammed(rift)
 	CE_ability_effects::SpawnTargetMiniWormhole(rift)
 Ability: Rift4
 	Name: #RIFTIUM_ABILITY_5
@@ -32,4 +41,6 @@ Ability: Rift4
 	Icon: ActionBarIcons::6 * 5ff
 	Cooldown: 30
 	Target: rift = Point
+	CE_ability_effects::RequireObjectNotFTLJammed()
+	TargetFilterRegionNotFTLJammed(rift)
 	CE_ability_effects::SpawnTargetMiniWormhole(rift)
