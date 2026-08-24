@@ -39,7 +39,7 @@ StrategicIconNode@ makeOddityVisuals(Oddity& obj, uint type, bool fromCreation =
 		auto@ gfx = PersistentGfx();
 		gfx.establish(obj, "Wormhole", 1.0/3.0);
 
-		if (type == Odd_Wormhole) {
+		if (type == Odd_Wormhole || type == Odd_MiniWormhole) {
 			@icon = StrategicIconNode();
 			icon.establish(obj, 0.0325, spritesheet::OrbitalIcons, 4);
 			icon.memorable = true;
