@@ -518,3 +518,12 @@ S_EXPLOSIVE_BOOSTER_DESC: <<
 	[img=Plus]Slowly repairs the vessel.[/img]
 >>
 S_EXPLOSIVE_BOOSTER: Explosive Booster
+SHIPCOMPUTER_DESC: <<
+	An autonomous computer capable of controlling numerous ship systems.
+
+	[img=ActionBarIcons::0;22;#00ff80]Provides a lot of [b][color=#00ff80]Control[/color][/b] to operate other subsystems.[/img]
+	[img=QuickbarIcons::6;22]For the first 30 seconds of any combat, the strength of the entire fleet is boosted by a percentage dependent on the size of the Control Computer.[/img]
+	[img=Plus]Slowly repairs the vessel without draining supplies.[/img]
+	[img=Minus]Requires power to run.[/img]
+	[img=Minus]Ship is destroyed if no control remains.[/img]
+>>
