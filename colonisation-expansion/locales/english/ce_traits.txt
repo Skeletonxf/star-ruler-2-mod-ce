@@ -73,3 +73,18 @@ TRAIT_ANCIENT_VESSEL_DESC: <<
 TRAIT_MICROCLINERS: Microcliners
 RIFTIUM_DISCOVERY: Riftium discovery
 RIFTIUM_DESCOVERY_DESC: We have discovered a planet in our home system with a special resource that can tear rifts through space to open wormholes.
+TRAIT_SECRETIVE: Shrouded in Secrecy
+TRAIT_DESCRIPTION: Your home system starts as a nebulae, turning gas giants into nebulae is unlocked immediately and the process costs you 75% less energy, money and time.
+TRAIT_ANARCHY_GOV_DESC: <<
+	[vspace=6/][b][color=#0f0]Bonus:[/color][/b] [offset=140]None[/offset].
+	[vspace=6/][b][color=#f00]Starting Fleet:[/color][/b] [offset=140]1x Scout.[/offset]
+	[vspace=6/][b][color=#0087c7]Starting Cards:[/color][/b] [offset=140]None.[/offset]
+	[dlc=Heralds][vspace=6/][b][color=#63ebdb]Starting Attitude:[/color][/b] [offset=140]None.[/offset][/dlc]
+>>
+TRAIT_RANDOM_GOVERNMENT_DESC: <<
+	Automatically get assigned a random Government trait when the game starts.
+
+	You cannot receive "Anarchy" in this way.
+
+	You will receive a bonus of [b][color=#d1cb6a]§200k Special Funds[/color][/b] at the beginning of the game.
+>>

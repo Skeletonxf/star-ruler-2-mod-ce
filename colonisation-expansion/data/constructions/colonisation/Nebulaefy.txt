@@ -24,6 +24,7 @@ Construction: Nebulaefy1
 	CE_biome_hooks::SpawnNebula(Color = #e666f0)
 	ConsumeEnergy(1500)
 	Destroy(Quiet = True)
+	RequireNotTrait(Secretive)
 
 Construction: Nebulaefy2
 	Name: #MAKE_NEBULAE
@@ -51,6 +52,7 @@ Construction: Nebulaefy2
 	CE_biome_hooks::SpawnNebula(Color = #2aff13)
 	ConsumeEnergy(1500)
 	Destroy(Quiet = True)
+	RequireNotTrait(Secretive)
 
 Construction: Nebulaefy3
 	Name: #MAKE_NEBULAE
@@ -78,6 +80,7 @@ Construction: Nebulaefy3
 	CE_biome_hooks::SpawnNebula(Color = #10bbf0)
 	ConsumeEnergy(1500)
 	Destroy(Quiet = True)
+	RequireNotTrait(Secretive)
 
 Construction: Nebulaefy4
 	Name: #MAKE_NEBULAE
@@ -86,6 +89,7 @@ Construction: Nebulaefy4
 	Description: #MAKE_NEBULAE_DESC:#fffb49
 	Time Cost: 60
 	Build Cost: 500
+
 	OnStart(AddStatus(CreatingNebulae))
 	OnCancel(RemoveStatus(CreatingNebulae))
 	RequireNotStatus(CreatingNebulae)
@@ -105,3 +109,116 @@ Construction: Nebulaefy4
 	CE_biome_hooks::SpawnNebula(Color = #fffb49)
 	ConsumeEnergy(1500)
 	Destroy(Quiet = True)
+	RequireNotTrait(Secretive)
+
+Construction: Nebulaefy1A
+	Name: #MAKE_NEBULAE
+	Category: Development
+	Icon: Nebulas::5 * #e666f0
+	Description: #MAKE_NEBULAE_DESC:#e666f0
+	Time Cost: 15
+	Build Cost: 125
+	OnStart(AddStatus(CreatingNebulae))
+	OnCancel(RemoveStatus(CreatingNebulae))
+	RequireNotStatus(CreatingNebulae)
+	OnStart(AddRegionStatus(CreatingNebulaeInRegion, Empire Limited = False))
+	OnCancel(CE_biome_hooks::RemoveRegionStatus(CreatingNebulaeInRegion, Empire Limited = False))
+	CE_biome_hooks::RemoveRegionStatus(CreatingNebulaeInRegion, Empire Limited = False)
+	RequireNotStatus(CreatingNebulaeInRegion)
+	RequireNotStatus(LimitedSight)
+	RequireStatus(GasGiant)
+	RequirePlanet()
+	RequireNotTrait(NoResourceUse)
+	RequireNotStatus(MinimalDevelopment)
+	RequireInSystem()
+	RequireUnlockTag(MakeNebula)
+	CE_biome_hooks::RequireNotHomeworld()
+	AddRegionStatus(LimitedSight, Empire Limited = False)
+	CE_biome_hooks::SpawnNebula(Color = #e666f0)
+	ConsumeEnergy(375)
+	Destroy(Quiet = True)
+	RequireTrait(Secretive)
+
+Construction: Nebulaefy2A
+	Name: #MAKE_NEBULAE
+	Category: Development
+	Icon: Nebulas::6 * #2aff13
+	Description: #MAKE_NEBULAE_DESC:#2aff13
+	Time Cost: 15
+	Build Cost: 125
+	OnStart(AddStatus(CreatingNebulae))
+	OnCancel(RemoveStatus(CreatingNebulae))
+	RequireNotStatus(CreatingNebulae)
+	OnStart(AddRegionStatus(CreatingNebulaeInRegion, Empire Limited = False))
+	OnCancel(CE_biome_hooks::RemoveRegionStatus(CreatingNebulaeInRegion, Empire Limited = False))
+	CE_biome_hooks::RemoveRegionStatus(CreatingNebulaeInRegion, Empire Limited = False)
+	RequireNotStatus(CreatingNebulaeInRegion)
+	RequireNotStatus(LimitedSight)
+	RequireStatus(GasGiant)
+	RequirePlanet()
+	RequireNotTrait(NoResourceUse)
+	RequireNotStatus(MinimalDevelopment)
+	RequireInSystem()
+	RequireUnlockTag(MakeNebula)
+	CE_biome_hooks::RequireNotHomeworld()
+	AddRegionStatus(LimitedSight, Empire Limited = False)
+	CE_biome_hooks::SpawnNebula(Color = #2aff13)
+	ConsumeEnergy(375)
+	Destroy(Quiet = True)
+	RequireTrait(Secretive)
+
+Construction: Nebulaefy3A
+	Name: #MAKE_NEBULAE
+	Category: Development
+	Icon: Nebulas::10 * #10bbf0
+	Description: #MAKE_NEBULAE_DESC:#10bbf0
+	Time Cost: 15
+	Build Cost: 125
+	OnStart(AddStatus(CreatingNebulae))
+	OnCancel(RemoveStatus(CreatingNebulae))
+	RequireNotStatus(CreatingNebulae)
+	OnStart(AddRegionStatus(CreatingNebulaeInRegion, Empire Limited = False))
+	OnCancel(CE_biome_hooks::RemoveRegionStatus(CreatingNebulaeInRegion, Empire Limited = False))
+	CE_biome_hooks::RemoveRegionStatus(CreatingNebulaeInRegion, Empire Limited = False)
+	RequireNotStatus(CreatingNebulaeInRegion)
+	RequireNotStatus(LimitedSight)
+	RequireStatus(GasGiant)
+	RequirePlanet()
+	RequireNotTrait(NoResourceUse)
+	RequireNotStatus(MinimalDevelopment)
+	RequireInSystem()
+	RequireUnlockTag(MakeNebula)
+	CE_biome_hooks::RequireNotHomeworld()
+	AddRegionStatus(LimitedSight, Empire Limited = False)
+	CE_biome_hooks::SpawnNebula(Color = #10bbf0)
+	ConsumeEnergy(375)
+	Destroy(Quiet = True)
+	RequireTrait(Secretive)
+
+Construction: Nebulaefy4A
+	Name: #MAKE_NEBULAE
+	Category: Development
+	Icon: Nebulas::9 * #fffb49
+	Description: #MAKE_NEBULAE_DESC:#fffb49
+	Time Cost: 15
+	Build Cost: 125
+	OnStart(AddStatus(CreatingNebulae))
+	OnCancel(RemoveStatus(CreatingNebulae))
+	RequireNotStatus(CreatingNebulae)
+	OnStart(AddRegionStatus(CreatingNebulaeInRegion, Empire Limited = False))
+	OnCancel(CE_biome_hooks::RemoveRegionStatus(CreatingNebulaeInRegion, Empire Limited = False))
+	CE_biome_hooks::RemoveRegionStatus(CreatingNebulaeInRegion, Empire Limited = False)
+	RequireNotStatus(CreatingNebulaeInRegion)
+	RequireNotStatus(LimitedSight)
+	RequireStatus(GasGiant)
+	RequirePlanet()
+	RequireNotTrait(NoResourceUse)
+	RequireNotStatus(MinimalDevelopment)
+	RequireInSystem()
+	RequireUnlockTag(MakeNebula)
+	CE_biome_hooks::RequireNotHomeworld()
+	AddRegionStatus(LimitedSight, Empire Limited = False)
+	CE_biome_hooks::SpawnNebula(Color = #fffb49)
+	ConsumeEnergy(375)
+	Destroy(Quiet = True)
+	RequireTrait(Secretive)
