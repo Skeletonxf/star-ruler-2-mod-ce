@@ -129,6 +129,13 @@ class SystemPlaneNodeScript {
 	void establish(Node& node, Region& region) {
 		@obj = region;
 		origin = region.position;
+		// [[ MODIFY BASE GAME START ]]
+		// NB: Spawning new planets makes the SystemDesc bigger, but post game
+		// start this is never applied to the region's size, the radius, OuterRadius
+		// and InnerRadius all stay the same. Because they stay the same, we don't
+		// need to ever tick and check if they've changed, as next to nothing other
+		// than map generation code cares about the SystemDesc radius.
+		// [[ MODIFY BASE GAME END ]]
 		outerRadius = region.OuterRadius;
 		innerRadius = region.InnerRadius;
 

@@ -431,8 +431,15 @@ class MakePlanet : MapHook {
 			radius += 5;
 			radius *= 2;
 		}
-		// [[ MODIFY BASE GAME END ]]
 
+		// NB: This radius change is bugged (vanilla). The SystemDesc never
+		// tells the region it has gotten larger, and in turn BlindMind never
+		// added code to RegionScript to sync radius changes. It's simplest if
+		// we just leave this be, as to properly support region size changes
+		// we should at a minimum sync OuterRadius increases, and then handle
+		// the updates in the UI for various client nodes like SystemPlane, maybe
+		// Territory and so on.
+		// [[ MODIFY BASE GAME END ]]
 		system.radius += spacing;
 
 		double pos = system.radius;
