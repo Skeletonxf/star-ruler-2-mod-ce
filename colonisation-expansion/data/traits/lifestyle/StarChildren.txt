@@ -32,7 +32,7 @@ Trait: StarChildren
 	UnlockSubsystem(MothershipHull)
 
 	TriggerHomeworld(SpawnShip(Mothership, Override Disable Starting = True, Set Home = True))
-	TriggerHomeworld(DestroySystemPlanet(0, Quiet = True))
+	TriggerHomeworld(DestroySystemPlanet(0, Quiet = True), Run Post = True)
 
 	ReplaceTechnologyNodes(ImpFactoryLabor, ImpMothershipLabor)
 	ReplaceTechnologyNodes(ImpFactoryLabor2, ImpMothershipLabor2)
