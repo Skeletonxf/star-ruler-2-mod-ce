@@ -1,10 +1,10 @@
 Trait: AnarchyGov
-	Name: #TRAIT_ANARCHY
+	Name: #TRAIT_ANARCHY_GOV
 	Description: #TRAIT_ANARCHY_GOV_DESC
 	Order: 7
 	Category: Government
 	Gives Points: 1
-	Icon: VoteIcons::6
-	Color: #fff87d
+	Icon: Forestry1
+	Color: #bdff97
 	Unique: Government
 	SpawnShip(Scout)

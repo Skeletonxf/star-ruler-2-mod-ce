@@ -88,3 +88,4 @@ TRAIT_RANDOM_GOVERNMENT_DESC: <<
 
 	You will receive a bonus of [b][color=#d1cb6a]§200k Special Funds[/color][/b] at the beginning of the game.
 >>
+TRAIT_ANARCHY_GOV: Government: Fledgling
