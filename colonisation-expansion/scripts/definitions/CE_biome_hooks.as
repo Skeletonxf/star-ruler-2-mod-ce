@@ -14,7 +14,7 @@ import util.design_export;
 #section server
 from objects.Oddity import createMiniWormhole;
 from objects.Oddity import createNebula;
-import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
+import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true, bool expandSystem = false) from "map_effects";
 import void filterToResourceTransferAbilities(array<Ability>&) from "CE_resource_transfer";
 import CE_array_map;
 import influence_global;
@@ -146,7 +146,7 @@ class SpawnDamagedPlanet : BonusEffect {
 				point.z += off.y;
 			}
 		}
-		auto@ planet = spawnPlanetSpec(point, resource.str, true, radius.fromRange(), physics.boolean);
+		auto@ planet = spawnPlanetSpec(point, resource.str, true, radius.fromRange(), physics.boolean, false);
 		if(owned.boolean && emp !is null)
 			planet.colonyShipArrival(emp, 1.0);
 		if(add_status.integer != -1)

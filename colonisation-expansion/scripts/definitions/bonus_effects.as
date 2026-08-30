@@ -39,7 +39,7 @@ import object_creation;
 import systems;
 import influence_global;
 import void makeCreepCamp(const vec3d& pos, const CampType@ type, Region@ region = null) from "map_effects";
-import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) from "map_effects";
+import Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true, bool expandSystem = false) from "map_effects";
 import achievements;
 from construction.Constructible import Constructible;
 from Invasion.InvasionMap import increaseInvasionStrength;
@@ -1447,7 +1447,9 @@ class SpawnPlanet : BonusEffect {
 				point.z += off.y;
 			}
 		}
-		auto@ planet = spawnPlanetSpec(point, resource.str, true, radius.fromRange(), physics.boolean);
+		// [[ MODIFY BASE GAME START ]]
+		auto@ planet = spawnPlanetSpec(point, resource.str, true, radius.fromRange(), physics.boolean, false);
+		// [[ MODIFY BASE GAME END ]]
 		if(owned.boolean && emp !is null)
 			planet.colonyShipArrival(emp, 1.0);
 		if(add_status.integer != -1)

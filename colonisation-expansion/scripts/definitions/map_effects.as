@@ -438,9 +438,11 @@ class MakePlanet : MapHook {
 		// we just leave this be, as to properly support region size changes
 		// we should at a minimum sync OuterRadius increases, and then handle
 		// the updates in the UI for various client nodes like SystemPlane, maybe
-		// Territory and so on.
-		// [[ MODIFY BASE GAME END ]]
+		// Territory and so on. Instead of changing this directly, we make the
+		// bonus effects that spawn planets into existing systems set the spacing
+		// to 0 so they don't try to expand the system.
 		system.radius += spacing;
+		// [[ MODIFY BASE GAME END ]]
 
 		double pos = system.radius;
 		if(spacing == 0)
@@ -641,7 +643,8 @@ class MakePlanet : MapHook {
 };
 
 #section server
-Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true) {
+// [[ MODIFY BASE GAME START ]]
+Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool distributeResource = true, double radius = 0.0, bool physics = true, bool expandSystem = false) {
 	MakePlanet plHook;
 	plHook.initClass();
 	plHook.resource.str = resourceSpec;
@@ -650,6 +653,10 @@ Planet@ spawnPlanetSpec(const vec3d& point, const string& resourceSpec, bool dis
 	plHook.rings.boolean = false;
 	plHook.conditions.boolean = false;
 	plHook.physics.boolean = physics;
+	if (!expandSystem) {
+		plHook.orbit_spacing.set(0);
+	}
+	// [[ MODIFY BASE GAME END ]]
 	if(radius != 0)
 		plHook.radius.set(radius);
 	plHook.instantiate();
