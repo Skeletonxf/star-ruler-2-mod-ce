@@ -605,7 +605,8 @@ class UnlockRandomFTL : EmpireTrigger {
 		if (unlockPool.length == 0) {
 			// How did this user unlock all the FTL types and still try to
 			// win this vote?
-			// TODO: Some consolation prize
+			emp.modFTLIncome(1.0);
+			sendClientMessage(emp.player, "FTL Income increased", "You have gained 1 FTL/s due to already unlocking all FTL types");
 			return;
 		}
 

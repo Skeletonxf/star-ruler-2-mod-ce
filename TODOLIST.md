@@ -113,7 +113,6 @@ This is primarily intended as a developer focused project planning list, rather 
   -  Fix vanilla bug making planets that vision was obtained of through the Space Program trait erronously appear as level 255 until scouted
   - Make the random FTL unlock certain to not unlock the one you get from the vote (no idea what order they currently run in, or how to control the order)
   - Some kind of tech stealing / reverse engineering mechanic to reduce snowballing a little
-  - Provide a benefit for being the most supportive empire on FTL votes when all FTL tech is already unlocked
   - Retest if WhileConsumingCargo still needs to use gameTime directly now that the status tick time bug has been fixed
   - Investigate why/how to change all planet resources being enabled/disabled based on the primary resource (which tends to be the most difficult to enable)
     - Easiest to reproduce by adding local asteroid fields to native tier 2/3 planets
