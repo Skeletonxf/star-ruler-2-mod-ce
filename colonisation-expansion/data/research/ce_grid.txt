@@ -120,18 +120,14 @@ Grid: ColonisationExpansionGrid
 	ImpDecaySpeed: -8,-11
 	FactoryLabor2: -9,-14
 	FTL: -3,9
-	DevFTL: -3,8
-	Energy: -3,6
 	FTL: -4,7
 	FTLCost: -3,7
 	ImpDecaySpeed: -4,-9
 	ShipComputer: 1,-2
-	OrbFTLExtractor: -1,2
 	TroopPods: 7,-3
 	BoosterEngine: 1,4
 	Thrust: 2,5
 	Ramjet: 2,6
-	EnergyHurdle: -4,9
 	DevFTL: -4,10
 	ShieldCap: -2,8
 	Thrust: 2,4
@@ -244,25 +240,8 @@ Grid: ColonisationExpansionGrid
 	PlanetaryEngine: 2,7
 	Thrust: 3,8
 	SysShieldProjector: -2,9
-	FTLHurdle: -6,13
-	FTL: -5,13
-	EnergyHurdle: -4,12
-	SysJumpdrive: -8,9
-	HyperfieldSequencing: -8,12
-	SysHyperdrive: -8,11
-	FTL: -7,10
-	EnergyHurdle: -6,10
-	SoftFTLHurdle: -7,11
-	SysFling: -5,14
-	FTL: -5,9
-	FTLHurdle: -5,11
-	FTLHurdle: -5,10
-	SysSlipstream: -4,14
 	FTLCost: -8,15
-	HighEnergyHurdle: -7,14
 	SysGateModule: -7,13
-	DevFTL: -6,12
-	FTL2: -7,15
 	Projection: -2,10
 	Projection: -3,11
 	Projection: -2,12
@@ -274,14 +253,10 @@ Grid: ColonisationExpansionGrid
 	Energy: -4,4
 	EnergyStorage: -5,4
 	Energy: -5,2
-	Energy: -6,5
 	QuantumBattery: -6,2
 	QuantumCompressor: -7,3
 	EnergyHurdle: -6,6
 	IonCannon: -5,5
-	SkipDrive: -5,6
-	EnergyStorage: -7,7
-	FlareBomb: -8,7
 	EnergyHurdle: -4,6
 	SysProjectorTractorBeam: -3,13
 	SupportWeight: -9,1
@@ -303,3 +278,38 @@ Grid: ColonisationExpansionGrid
 	ConstructionBay2: -1,-16
 	ConstructionBay2: -3,-14
 	ConstructionBay1: -2,-16
+	DevFTL: -2,6
+	OrbFTLExtractor: -3,8
+	Energy: -1,2
+	SoftFTLHurdle: -4,9
+	FlareBomb: -8,5
+	SkipDrive: -5,7
+	Energy: -5,6
+	EnergyStorage: -7,5
+	MoneyHurdle: -5,8
+	FTLHurdle: -6,8
+	SysJumpdrive: -7,8
+	FTLHurdle: -6,9
+	SysHyperdrive: -7,10
+	FTLHurdle: -6,12
+	FTL: -9,9
+	FTLMastery2: -7,11
+	MoneyHurdle: -6,10
+	FTL2: -8,14
+	MoneyHurdle: -4,13
+	FTLHurdle: -4,14
+	FTL: -5,11
+	EnergyHurdle: -4,12
+	DevFTL: -5,10
+	SysFling: -5,15
+	FTLMastery: -4,16
+	FTLMastery2: -5,14
+	MoneyHurdle: -5,12
+	HyperfieldSequencing: -8,11
+	FTLMastery: -8,9
+	FTLHurdle: -6,13
+	FTLMastery2: -7,14
+	MoneyHurdle: -3,14
+	FTLHurdle: -3,15
+	SysSlipstream: -3,16
+	FTL: -5,17

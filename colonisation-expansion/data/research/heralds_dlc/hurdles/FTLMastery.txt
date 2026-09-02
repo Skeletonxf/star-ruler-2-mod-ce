@@ -1,0 +1,21 @@
+Technology: FTLMastery
+	Name: #FTL_MASTERY
+	Description: #FTL_MASTERY_DESC:2
+	Icon: ResourceIcon::3 * f5f
+	Class: Boost
+	Category: Hurdles
+	Symbol: QuickbarIcons::3
+	Time Cost: 20
+	Color: #ff0000
+	SecondaryFTLCost(1)
+	CE_technology_hooks::RequireEmpireDistinctFTLTypesGTE(2, #FTL_TYPES_REQUIRED)
+Technology: FTLMastery2
+	Name: #FTL_MASTERY_2
+	Blurb: #FTL_MASTERY_DESC:3
+	Category: Hurdles
+	Symbol: QuickbarIcons::3
+	Icon: ResourceIcon::3 * f5f
+	Color: #ff0000
+	Time Cost: 40
+	SecondaryFTLCost(1)
+	CE_technology_hooks::RequireEmpireDistinctFTLTypesGTE(3, #FTL_TYPES_REQUIRED)

@@ -38,3 +38,61 @@ class RequireEither : TechnologyHook {
 		return hook1.canUnlock(node, emp) || hook2.canUnlock(node, emp);
 	}
 };
+
+// Cache system defs to check things are unlocked
+const SubsystemDef@ hyperdriveSubsystem = getSubsystemDef("Hyperdrive");
+const SubsystemDef@ jumpdriveSubsystem = getSubsystemDef("Jumpdrive");
+const SubsystemDef@ gateSubsystem = getSubsystemDef("GateModule");
+const SubsystemDef@ slipstreamSubsystem = getSubsystemDef("Slipstream");
+
+class RequireEmpireDistinctFTLTypesGTE : TechnologyHook {
+	Document doc("This technology can only be researched if an empire has at least a particular value of different FTL types unlocked.");
+	Argument value(AT_Decimal, doc="Required value.");
+	Argument text(AT_Locale, doc="Requirement text to display.");
+
+	double countFTL(Empire& emp) {
+		if (emp is null) {
+			return 0;
+		}
+		double distinctFTL = 0;
+		bool hasHyperdrives = emp.isUnlocked(hyperdriveSubsystem);
+		bool hasJumpdrives = emp.isUnlocked(jumpdriveSubsystem);
+		bool hasGates = emp.isUnlocked(gateSubsystem);
+		bool hasFling = emp.HasFling >= 1;
+		bool hasSlipstreams = emp.isUnlocked(slipstreamSubsystem);
+		if (hasHyperdrives) {
+			distinctFTL += 1;
+		}
+		if (hasJumpdrives) {
+			distinctFTL += 1;
+		}
+		if (hasGates) {
+			distinctFTL += 1;
+		}
+		if (hasFling) {
+			distinctFTL += 1;
+		}
+		if (hasSlipstreams) {
+			distinctFTL += 1;
+		}
+		return distinctFTL;
+	}
+
+	bool canUnlock(TechnologyNode@ node, Empire& emp) const override {
+		return countFTL(emp) >= value.decimal;
+	}
+
+	void addToDescription(TechnologyNode@ node, Empire@ emp, string& desc) const override {
+		double count = countFTL(emp);
+
+		Color col;
+		if(count >= value.decimal)
+			col = colors::Green;
+		else
+			col = colors::Red;
+
+		string req = format(text.str, standardize(count,true), standardize(value.decimal,true));
+		req = format(locale::RESEARCH_REQ, req, toString(col));
+		desc += "\n\n"+req;
+	}
+};
