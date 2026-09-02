@@ -26,7 +26,6 @@ This is primarily intended as a developer focused project planning list, rather 
 - Automatic senate vote for gravitron condensor ban when someone researches gravitron tech?
 ### UI
 - Make damage (kill credit) grant vision on all damagables instead of just ships
-- Allow viewing old votes
 - See if can create trade offer mechanic
 - Warn when exiting a design that isn't saved
 - Port UI quickbar/order looping to modpack
