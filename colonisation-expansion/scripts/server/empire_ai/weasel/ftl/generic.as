@@ -142,6 +142,21 @@ class SSRegion : Savable {
 	}
 };
 
+class WormholePlanetRegion : Savable {
+	Region@ region;
+	Object@ obj;
+
+	void save(SaveFile& file) {
+		file << region;
+		file << obj;
+	}
+
+	void load(SaveFile& file) {
+		file >> region;
+		file >> obj;
+	}
+};
+
 // Travel types to consider in move orders
 enum FTLTravelMethod {
 	TRAVEL_SUBLIGHT = 1,
@@ -149,6 +164,7 @@ enum FTLTravelMethod {
 	TRAVEL_HYPERDRIVE = 3,
 	TRAVEL_JUMPDRIVE = 4,
 	TRAVEL_SLIPSTREAM = 5,
+	TRAVEL_WORMHOLE = 6,
 };
 
 class FTLGeneric : FTL {
@@ -160,6 +176,7 @@ class FTLGeneric : FTL {
 	Budget@ budget;
 	Fleets@ fleets;
 	Movement@ movement;
+	Planets@ planets;
 
 	// Fling data
 	array<FlingRegion@> trackedFling;
@@ -187,6 +204,9 @@ class FTLGeneric : FTL {
 	BuildFlagship@ buildSS;
 	double nextBuildTrySS = 15.0 * 60.0;
 
+	// Wormhole planets data
+	array<WormholePlanetRegion@> wormholePlanets;
+
 	// Tracking available FTL methods
 	// Note: This is only relevant for building, not for using each of these
 	// If we obtain additional FTL methods through non building means
@@ -197,6 +217,8 @@ class FTLGeneric : FTL {
 	bool hasFling = false;
 	bool hasSlipstreams = false;
 
+	const ResourceType@ riftium;
+
 	void create() override {
 		@military = cast<IMilitary>(ai.military);
 		@designs = cast<Designs>(ai.designs);
@@ -206,7 +228,9 @@ class FTLGeneric : FTL {
 		@budget = cast<Budget>(ai.budget);
 		@fleets = cast<Fleets>(ai.fleets);
 		@movement = cast<Movement>(ai.movement);
+		@planets = cast<Planets>(ai.planets);
 		safetyFlag = getSystemFlag("JumpdriveSafety");
+		@riftium = getResource("Riftium");
 
 		checkAvailableFTLMethods();
 	}
@@ -266,6 +290,13 @@ class FTLGeneric : FTL {
 			file << cnt;
 			for(uint i = 0; i < cnt; ++i)
 				file << unassignedSS[i];
+		}
+		{
+			// Wormhole planets data
+			uint cnt = wormholePlanets.length;
+			file << cnt;
+			for(uint i = 0; i < cnt; ++i)
+				file << wormholePlanets[i];
 		}
 	}
 
@@ -342,6 +373,16 @@ class FTLGeneric : FTL {
 				file >> obj;
 				if(obj !is null)
 					unassignedSS.insertLast(obj);
+			}
+		}
+		{
+			// Wormhole planets data
+			uint cnt = 0;
+			file >> cnt;
+			for(uint i = 0; i < cnt; ++i) {
+				WormholePlanetRegion gt;
+				file >> gt;
+				wormholePlanets.insertLast(gt);
 			}
 		}
 	}
@@ -628,6 +669,62 @@ class FTLGeneric : FTL {
 		return max(SLIPSTREAM_CHARGE_TIME, getSublightETA(obj, ssGen.position));
 	}
 
+	// Wormhole planet methods
+	WormholePlanetRegion@ getWormhole(Region@ reg) {
+		for(uint i = 0, cnt = wormholePlanets.length; i < cnt; ++i) {
+			if(wormholePlanets[i].region is reg)
+				return wormholePlanets[i];
+		}
+		return null;
+	}
+
+	void removeWormhole(WormholePlanetRegion@ gt) {
+		/* if(gt.obj !is null && gt.obj.valid && gt.obj.owner is ai.empire)
+			unassignedWormholePlanets.insertLast(gt.obj); */
+		wormholePlanets.remove(gt);
+	}
+
+	Object@ getClosestWormhole(const vec3d& position) {
+		Object@ closest;
+		double minDist = INFINITY;
+		for(uint i = 0, cnt = wormholePlanets.length; i < cnt; ++i) {
+			Object@ obj = wormholePlanets[i].obj;
+			if(obj is null)
+				continue;
+			double d = obj.position.distanceTo(position);
+			if(d < minDist) {
+				minDist = d;
+				@closest = obj;
+			}
+		}
+		return closest;
+	}
+
+	WormholePlanetRegion@ getClosestWormholeRegion(const vec3d& position) {
+		WormholePlanetRegion@ closest;
+		double minDist = INFINITY;
+		for(uint i = 0, cnt = wormholePlanets.length; i < cnt; ++i) {
+			double d = wormholePlanets[i].region.position.distanceTo(position);
+			if(d < minDist) {
+				minDist = d;
+				@closest = wormholePlanets[i];
+			}
+		}
+		return closest;
+	}
+
+	bool trackingWormholePlanets(Object@ obj) {
+		for(uint i = 0, cnt = wormholePlanets.length; i < cnt; ++i) {
+			if(wormholePlanets[i].obj is obj)
+				return true;
+		}
+		return false;
+	}
+
+	double getWormholeETA(Object@ wormholePlanet, Object& obj, const vec3d& position) {
+		return max(0.0, getSublightETA(obj, wormholePlanet.position));
+	}
+
 	// Hyperengine methods
 	double getHyperdriveETA(Object& obj, const vec3d& position) {
 		double charge = HYPERDRIVE_CHARGE_TIME;
@@ -719,8 +816,19 @@ class FTLGeneric : FTL {
 		if (ableToSS) {
 			ableToSS = canSlipstream(ssGen);
 		}
+		bool ableToWormhole = true;
+		//Check if we have a wormhole planet in this region
+		auto@ w = getWormhole(ord.obj.region);
+		if (w is null || w.obj is null) {
+			ableToWormhole = false;
+		}
+		Object@ wormholePlanet = ableToWormhole ? w.obj : null;
+		if (ableToWormhole) {
+			ableToWormhole = canWormhole(wormholePlanet);
+		}
+		ableToWormhole = false; // TODO: Need to code issuing actual ability orders
 
-		if (!ableToFling && !ableToHyperdrive && !ableToJumpdrive && !ableToSS) {
+		if (!ableToFling && !ableToHyperdrive && !ableToJumpdrive && !ableToSS && !ableToWormhole) {
 			return F_Pass;
 		}
 
@@ -731,11 +839,13 @@ class FTLGeneric : FTL {
 		bool ableToJumpdriveToPosition = canJumpdriveTo(ord.obj, toPosition);
 		bool ableToFlingToPosition = canFlingTo(ord.obj, toPosition);
 		bool ableToSSToPosition = canSlipstreamTo(ord.obj, toPosition);
+		bool ableToWormholeToPosition = canWormholeTo(ord.obj, toPosition);
 		vec3d alternatePosition = toPosition;
 		if ((ableToHyperdrive && !ableToHyperdriveToPosition)
 			|| (ableToJumpdrive && !ableToJumpdriveToPosition)
 			|| (ableToFling && !ableToFlingToPosition)
-			|| (ableToSS && !ableToSSToPosition)) {
+			|| (ableToSS && !ableToSSToPosition)
+			|| (ableToWormhole && !ableToWormholeToPosition)) {
 			Region@ likelyBlocked = getRegion(toPosition);
 			if (likelyBlocked !is null) {
 				vec3d offset = toPosition - likelyBlocked.position;
@@ -756,6 +866,8 @@ class FTLGeneric : FTL {
 		double ssFTLCost = INFINITY;
 		double sublightETA = INFINITY;
 		double sublightFTLCost = 0;
+		double wormholeETA = INFINITY;
+		double wormholeFTLCost = 0;
 
 		if (ableToHyperdrive) {
 			if (ableToHyperdriveToPosition) {
@@ -834,6 +946,24 @@ class FTLGeneric : FTL {
 			}
 		}
 
+		if (ableToWormhole) {
+			//Check if we already have a link
+			if (hasOddityLink(wormholePlanet.region, toPosition, SS_MAX_DISTANCE, minDuration=60.0)) {
+				// we've already paid for this so set wormhole estimates
+				// to infinity and let sublight 'win'
+				wormholeETA = INFINITY;
+				wormholeFTLCost = INFINITY;
+			} else {
+				if (ableToWormholeToPosition) {
+					wormholeETA = getWormholeETA(wormholePlanet, ord.obj, toPosition);
+					wormholeFTLCost = 0;
+				} else {
+					wormholeETA = getWormholeETA(wormholePlanet, ord.obj, alternatePosition) + indirectFTLSublightETA;
+					wormholeFTLCost = 0;
+				}
+			}
+		}
+
 		sublightETA = getSublightETA(ord.obj, toPosition);
 
 		// Reserve some FTL if we're saving our FTL for a new fling beacon
@@ -860,9 +990,13 @@ class FTLGeneric : FTL {
 		if (ssFTLCost > availableFTL) {
 			ssETA = INFINITY;
 		}
+		if (wormholeFTLCost > availableFTL) {
+			wormholeETA = INFINITY;
+		}
 
 		if (hyperdriveFTLCost == INFINITY && jumpdriveFTLCost == INFINITY
-				&& flingFTLCost == INFINITY && ssFTLCost == INFINITY) {
+				&& flingFTLCost == INFINITY && ssFTLCost == INFINITY
+				&& wormholeFTLCost == INFINITY) {
 			return F_Pass;
 		}
 
@@ -897,6 +1031,12 @@ class FTLGeneric : FTL {
 				travelETA = ssETA;
 				travelCost = ssFTLCost;
 				needSublightAfter = !ableToSSToPosition;
+			}
+			if (wormholeETA < travelETA) {
+				travelMethod = TRAVEL_WORMHOLE;
+				travelETA = wormholeETA;
+				travelCost = wormholeFTLCost;
+				needSublightAfter = !ableToWormholeToPosition;
 			}
 		} else {
 			// choose cheapest travel method, being
@@ -950,6 +1090,21 @@ class FTLGeneric : FTL {
 						travelMethod = TRAVEL_SLIPSTREAM;
 						travelETA = ssETA;
 						travelCost = ssFTLCost;
+						needSublightAfter = false;
+					}
+				}
+			}
+			if ((wormholeETA * (baseSpeedup + (1.6 * (wormholeFTLCost / availableFTL)))) < sublightETA) {
+				if (travelMethod == TRAVEL_SUBLIGHT) {
+					travelMethod = TRAVEL_WORMHOLE;
+					travelETA = wormholeETA;
+					travelCost = wormholeFTLCost;
+					needSublightAfter = false;
+				} else {
+					if (wormholeFTLCost < travelCost) {
+						travelMethod = TRAVEL_WORMHOLE;
+						travelETA = wormholeETA;
+						travelCost = wormholeFTLCost;
 						needSublightAfter = false;
 					}
 				}
@@ -1026,6 +1181,22 @@ class FTLGeneric : FTL {
 			return F_Continue;
 		}
 
+		if (travelMethod == TRAVEL_WORMHOLE) {
+			if (!needSublightAfter) {
+				//wormholePlanet.addSlipstreamOrder(toPosition, append=true);
+			} else {
+				//wormholePlanet.addSlipstreamOrder(alternatePosition, append=true);
+			}
+			if (wormholePlanet !is ord.obj) {
+				ord.obj.addWaitOrder(wormholePlanet, moveTo=true);
+				//wormholePlanet.addSecondaryToSlipstream(ord.obj);
+			}
+			else {
+				ord.obj.addMoveOrder(toPosition, append=true);
+			}
+			return F_Continue;
+		}
+
 		return F_Pass;
 	}
 
@@ -1040,6 +1211,9 @@ class FTLGeneric : FTL {
 
 		manageSSGensList();
 		detectNewSS();
+
+		manageWormholePlanetsList();
+		detectNewWormholePlanets();
 
 		updateOrbitalsForStagingBases();
 		updateSSForStagingBases();
@@ -1158,6 +1332,23 @@ class FTLGeneric : FTL {
 		}
 	}
 
+	void manageWormholePlanetsList() {
+		for(uint i = 0, cnt = wormholePlanets.length; i < cnt; ++i) {
+			WormholePlanetRegion@ w = wormholePlanets[i];
+			Object@ obj = w.obj;
+			if(obj is null || !obj.valid || obj.owner !is ai.empire) {
+				wormholePlanets.removeAt(i);
+				--i; --cnt;
+			} else {
+				// Planets can rarely move regions so we should ensure our
+				// tracking is up to date.
+				if (obj.region !is w.region) {
+					@w.region = obj.region;
+				}
+			}
+		}
+	}
+
 	void detectNewOrbitals() {
 		{
 			//Detect new beacons
@@ -1191,6 +1382,40 @@ class FTLGeneric : FTL {
 				continue;
 			if(!trackingSSGen(flAI.obj))
 				unassignedSS.insertLast(flAI.obj);
+		}
+	}
+
+	uint wormholePlanetCheck = 0;
+	void detectNewWormholePlanets() {
+		//Detect new wormholes
+		uint plCnt = planets.planets.length;
+		if(plCnt != 0) {
+			for(uint n = 0; n < min(plCnt, 5); ++n) {
+				wormholePlanetCheck = (wormholePlanetCheck+1) % plCnt;
+				auto@ plAI = planets.planets[wormholePlanetCheck];
+
+				// See if this planet has riftium
+				bool hasRiftium = false;
+				for (uint r = 0, rcnt = plAI.resources.length; r < rcnt && !hasRiftium; ++r) {
+					if (plAI.resources[r].resource is null) {
+						continue;
+					}
+					if (plAI.resources[r].resource.id == riftium.id) {
+						hasRiftium = true;
+					}
+				}
+				if (!hasRiftium) {
+					continue;
+				}
+
+				if (!trackingWormholePlanets(plAI.obj)) {
+					print("Found new wormhole planet of " + plAI.obj.name);
+					WormholePlanetRegion w;
+					@w.obj = plAI.obj;
+					@w.region = plAI.obj.region;
+					wormholePlanets.insertLast(w);
+				}
+			}
 		}
 	}
 

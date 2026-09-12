@@ -182,6 +182,31 @@ bool canSlipstream(Object& obj) {
 	return ship.blueprint.hasTagActive(ST_Slipstream);
 }
 
+// [[ MODIFY BASE GAME START ]]
+bool canWormhole(Object& obj) {
+	Planet@ planet = cast<Planet>(obj);
+	if(planet is null)
+		return false;
+	if(isFTLBlocked(planet))
+		return false;
+	return true; // TODO: Check ability is available
+}
+
+bool canWormholeTo(Object& obj, const vec3d& point) {
+	auto@ reg = obj.region;
+	if(reg !is null) {
+		if(reg.BlockFTLMask & obj.owner.mask != 0)
+			return false;
+	}
+	@reg = getRegion(point);
+	if(reg !is null) {
+		if(reg.BlockFTLMask & obj.owner.mask != 0)
+			return false;
+	}
+	return true;
+}
+// [[ MODIFY BASE GAME END ]]
+
 int slipstreamCost(Object& obj, int scale, double distance) {
 	Region@ reg = obj.region;
 	Empire@ owner = obj.owner;
