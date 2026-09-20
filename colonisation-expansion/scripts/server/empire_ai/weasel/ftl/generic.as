@@ -69,6 +69,12 @@ const SubsystemDef@ jumpdriveSubsystem = getSubsystemDef("Jumpdrive");
 const SubsystemDef@ gateSubsystem = getSubsystemDef("GateModule");
 const SubsystemDef@ slipstreamSubsystem = getSubsystemDef("Slipstream");
 
+int riftium1 = -1;
+int riftium2 = -1;
+int riftium3 = -1;
+int riftium4 = -1;
+int riftium5 = -1;
+
 void init() {
 	// Fling data
 	flingModule = getOrbitalModuleID("FlingCore");
@@ -77,6 +83,12 @@ void init() {
 	unpackAbility = getAbilityID("GateUnpack");
 	packedStatus = getStatusID("GatePacked");
 	unpackedStatus = getStatusID("GateUnpacked");
+	// Why did I name them like this?
+	riftium1 = getAbilityID("Rift");
+	riftium2 = getAbilityID("Rift1");
+	riftium3 = getAbilityID("Rift2");
+	riftium4 = getAbilityID("Rift3");
+	riftium5 = getAbilityID("Rift4");
 }
 
 class FlingRegion : Savable {
@@ -154,6 +166,65 @@ class WormholePlanetRegion : Savable {
 	void load(SaveFile& file) {
 		file >> region;
 		file >> obj;
+	}
+
+	bool hasNewRiftAvailable() {
+		if (obj is null || !obj.isPlanet) {
+			return false;
+		}
+		Planet@ planet = cast<Planet>(obj);
+		// getAbilityOfType already factors in cooldowns and disabled
+		// states so if we get the ability back it's ready to use.
+		int rift1 = planet.findAbilityOfType(riftium1);
+		int rift2 = planet.findAbilityOfType(riftium2);
+		int rift3 = planet.findAbilityOfType(riftium3);
+		int rift4 = planet.findAbilityOfType(riftium4);
+		int rift5 = planet.findAbilityOfType(riftium5);
+		return rift1 != -1 || rift2 != -1 || rift3 != -1 || rift4 != -1 || rift5 != -1;
+	}
+
+	bool openNewRift(vec3d destination) {
+		if (obj is null || !obj.isPlanet) {
+			return false;
+		}
+		Planet@ planet = cast<Planet>(obj);
+		// getAbilityOfType already factors in cooldowns and disabled
+		// states so if we get the ability back it's ready to use.
+		int rift1 = planet.findAbilityOfType(riftium1);
+		int rift2 = planet.findAbilityOfType(riftium2);
+		int rift3 = planet.findAbilityOfType(riftium3);
+		int rift4 = planet.findAbilityOfType(riftium4);
+		int rift5 = planet.findAbilityOfType(riftium5);
+		array<int> ready;
+		if (rift1 != -1) {
+			ready.insertLast(rift1);
+		}
+		if (rift2 != -1) {
+			ready.insertLast(rift2);
+		}
+		if (rift3 != -1) {
+			ready.insertLast(rift3);
+		}
+		if (rift4 != -1) {
+			ready.insertLast(rift4);
+		}
+		if (rift5 != -1) {
+			ready.insertLast(rift5);
+		}
+		// For now we just choose randomly from the available rifts.
+		// This is quite short sighted because we may actually be benefitting
+		// from keeping some of them open, but reopening any rifts we needed
+		// when we are sitting on 3+ abilities available will hopefully be quite
+		// easy since the AI doesn't really use slipstream style FTL for tactical
+		// manveovers anyway.
+		if (ready.length == 0) {
+			return false;
+		}
+		int selectedRift = ready[randomi(0, ready.length - 1)];
+		// Don't use ability orders here, they don't work for planets without
+		// a Mover component.
+		planet.activateAbility(selectedRift, destination);
+		return true;
 	}
 };
 
@@ -824,9 +895,11 @@ class FTLGeneric : FTL {
 		}
 		Object@ wormholePlanet = ableToWormhole ? w.obj : null;
 		if (ableToWormhole) {
-			ableToWormhole = canWormhole(wormholePlanet);
+			// Wormhole network abilities also have cooldowns, so we may
+			// not have any available wormholes even if we have a wormhole
+			// planet that isn't jammed.
+			ableToWormhole = canWormhole(wormholePlanet) && w.hasNewRiftAvailable();
 		}
-		ableToWormhole = false; // TODO: Need to code issuing actual ability orders
 
 		if (!ableToFling && !ableToHyperdrive && !ableToJumpdrive && !ableToSS && !ableToWormhole) {
 			return F_Pass;
@@ -1094,7 +1167,7 @@ class FTLGeneric : FTL {
 					}
 				}
 			}
-			if ((wormholeETA * (baseSpeedup + (1.6 * (wormholeFTLCost / availableFTL)))) < sublightETA) {
+			if ((wormholeETA * (baseSpeedup /*+ (1.6 * (wormholeFTLCost / availableFTL))*/)) < sublightETA) {
 				if (travelMethod == TRAVEL_SUBLIGHT) {
 					travelMethod = TRAVEL_WORMHOLE;
 					travelETA = wormholeETA;
@@ -1183,13 +1256,16 @@ class FTLGeneric : FTL {
 
 		if (travelMethod == TRAVEL_WORMHOLE) {
 			if (!needSublightAfter) {
-				//wormholePlanet.addSlipstreamOrder(toPosition, append=true);
+				w.openNewRift(toPosition);
 			} else {
-				//wormholePlanet.addSlipstreamOrder(alternatePosition, append=true);
+				w.openNewRift(alternatePosition);
 			}
 			if (wormholePlanet !is ord.obj) {
-				ord.obj.addWaitOrder(wormholePlanet, moveTo=true);
-				//wormholePlanet.addSecondaryToSlipstream(ord.obj);
+				// Because wormholes always open instantly we don't need to faff
+				// around with issuing wait orders, the rift *will* be open in time
+				// where the planet was at the time of opening.
+				ord.obj.addMoveOrder(wormholePlanet.position, append=true);
+				ord.obj.addMoveOrder(toPosition, append=true);
 			}
 			else {
 				ord.obj.addMoveOrder(toPosition, append=true);
@@ -1409,7 +1485,9 @@ class FTLGeneric : FTL {
 				}
 
 				if (!trackingWormholePlanets(plAI.obj)) {
-					print("Found new wormhole planet of " + plAI.obj.name);
+					if (log) {
+						ai.print("Found new wormhole planet of " + plAI.obj.name);
+					}
 					WormholePlanetRegion w;
 					@w.obj = plAI.obj;
 					@w.region = plAI.obj.region;
