@@ -25,3 +25,4 @@ Resource: HomeworldWater
 	Frequency: 0
 	Exportable: False
 	Description: #HOMEWORLD_WATER_DESC
+	Display Weight: -1

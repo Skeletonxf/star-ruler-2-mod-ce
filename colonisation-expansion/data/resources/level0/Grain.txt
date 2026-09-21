@@ -21,7 +21,6 @@ Resource: HomeworldGrain
 	Icon: ResourceIcons::3 * afa
 	Small Icon: ResourceIconsSmall::20 * afa
 	Description: #HOMEWORLDFOOD_DESC
-	Rarity: Rare
 	Frequency: 0
 	Exportable: False
 	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)
