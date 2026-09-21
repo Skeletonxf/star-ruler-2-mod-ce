@@ -13,3 +13,15 @@ Resource: Grain
 	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)
 	AddOverpopulation(1) #version<105
 	AddToNativeResource(AddOverpopulation(1)) #version<71
+Resource: HomeworldGrain
+	Name: #GRAIN
+	Blurb: #FOOD_BLURB
+	Native Biome: Forest
+	Class: Food
+	Icon: ResourceIcons::3 * afa
+	Small Icon: ResourceIconsSmall::20 * afa
+	Description: #HOMEWORLDFOOD_DESC
+	Rarity: Rare
+	Frequency: 0
+	Exportable: False
+	TriggerPeriodic(AddCargo(Forestation, 1), Interval = 6)

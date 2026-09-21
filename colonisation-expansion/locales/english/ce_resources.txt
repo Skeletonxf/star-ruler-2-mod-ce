@@ -211,3 +211,19 @@ RIFTIUM_BLURB: <<
 	Generates [levels=$1;#00c0ff]0.1/0.2/0.4/0.7/1.1/1.6[/levels] [img=ResourceIcon::3;20/] FTL/s.
 	Provides the ability to opens Rifts to other locations.
 >>
+HOMEWORLD_WATER_DESC: <<
+	[i]Water and food on the same planet, what a rare event![/i]
+
+	Leveling planets up to Level 1 requires [img=ResourceClassIcons::4;20/] Water.
+
+	[color=#ff7070][b]Homeworld water cannot be exported.[/b][/color]
+>>
+HOMEWORLDFOOD_DESC: <<
+	[i]Water and food on the same planet, what a rare event![/i]
+
+	Leveling planets up requires [img=ResourceClassIcons::3;20/] Food.
+
+	[i][color=#aaa]This resource gradually forests planets, creating Forest biomes from Rock and up to 3 new food resources.[/color][/i]
+
+	[color=#ff7070][b]Homeworld food cannot be exported.[/b][/color]
+>>

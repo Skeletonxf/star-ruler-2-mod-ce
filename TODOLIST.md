@@ -5,7 +5,6 @@ This is primarily intended as a developer focused project planning list, rather 
 ## Bug list / issues to fix
 
 ### Misc / general
-- Make sure the AI never exports its homeworld's food or water resource to another resource it started the game with like a ringworld or riftium planet as it instantly traps the AI with no pop growth
 - Work out why hooks to import jumpdrive and hyperdrive designs appear to not be working like their gate and slipstream versions do
   - Does SR2 only import a design if the name isn't already taken? Maybe we need to suffix every ship design so the not_hyperdrive designs can be non conflicting with the hyperdrive and jumpdrive versions?
 - Apply combat repair tweaks to civilian ships too

@@ -3,9 +3,9 @@ System: HomeSystem
 		BonusHealth(20000000000)
 
 	RepeatHomeworlds()
-		MakePlanet(RandomType:Food:Rare, Radius = 10, Grid Size = (18, 11), Conditions = False, Moons = False)
+		MakePlanet(HomeworldGrain, Radius = 10, Grid Size = (18, 11), Conditions = False, Moons = False)
 			BonusHealth(5000000000)
-			AddPlanetResource(Water)
+			AddPlanetResource(HomeworldWater)
 			AddResource(Labor, +1)
 			OnPlanet( AddIncome(130) )
 			AddPopulation(3.0)
