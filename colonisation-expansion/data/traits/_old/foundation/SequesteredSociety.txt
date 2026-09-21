@@ -7,6 +7,10 @@ Trait: SequesteredSociety
 	Color: #aaffaa
 
 	Costs Points: 1
-	Available: False
+	Conflict: ParasiteTrait
+	Conflict: StarChildren
+	Conflict: Extragalactic
 
+	TriggerHomeworld(AddCargo(Forestation, 150))
+	TriggerHomeworld(AddCargo(Ore, 5000))
 	TriggerHomeworld(DevelopTiles(500))

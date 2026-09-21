@@ -89,3 +89,9 @@ TRAIT_RANDOM_GOVERNMENT_DESC: <<
 	You will receive a bonus of [b][color=#d1cb6a]§200k Special Funds[/color][/b] at the beginning of the game.
 >>
 TRAIT_ANARCHY_GOV: Government: Fledgling
+TRAIT_SEQUESTERED_SOCIETY_DESC: We have lived a quiet life so far but now is the time to reach for the stars. Your homeworld begins with all its tiles fully developed, 5000 ore and 150 forestation.
+TRAIT_SPACE_PROGRAM_DESC: <<
+	We have examined our surroundings for decades. Nearby systems are pre-scouted at the start of the game.
+
+	A spy probe spawns in an owned system every 4 minutes.
+>>

@@ -1,0 +1,14 @@
+Trait: SpaceProgram
+	Name: #TRAIT_SPACE_PROGRAM
+	Description: #TRAIT_SPACE_PROGRAM_DESC
+	Category: Foundation
+	Order: 0
+
+	Color: #aaffaa
+	Icon: SpaceProgram
+
+	Costs Points: 1
+
+	TriggerPeriodic(TriggerRandomSystem(SpawnArtifact(Type = SpyProbe, In System = True, Owned = True), Has Planets = True), Interval = 240)
+
+	TriggerHomeworld( MapVision(3) )
