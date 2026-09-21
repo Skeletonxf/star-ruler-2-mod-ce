@@ -51,6 +51,7 @@ class ResourceValuator {
 	RaceResourceValuation@ race;
 	const ResourceClass@ scalableClass;
 	const ResourceType@ ftlCrystals;
+	const ResourceType@ riftium;
 	const ResourceType@ altar;
 	const ResourceType@ razed;
 
@@ -58,6 +59,7 @@ class ResourceValuator {
 		@this.race = race;
 		@scalableClass = getResourceClass("Scalable");
 		@ftlCrystals = getResource("FTL");
+		@riftium = getResource("Riftium");
 		@altar = getResource("Altar");
 		@razed = getResource("Razed");
 	}
@@ -90,6 +92,10 @@ class ResourceValuator {
 		// FTL crystals is extremely useful for levelling
 		if (ftlCrystals !is null && resource.id == ftlCrystals.id) {
 			value += 20;
+		}
+		// Riftium isn't quite as good but it's a close second
+		if (riftium !is null && resource.id == riftium.id) {
+			value += 10;
 		}
 		value = devalueUselessResources(resource, value);
 		if (race !is null) {
