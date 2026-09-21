@@ -522,7 +522,11 @@ final class Resources : AIComponent {
 		//Get the requirement list
 		const PlanetLevel@ lvl = getPlanetLevel(obj, targetLevel);
 		if(lvl is null) {
-			ai.print("Error: could not find planet level", obj, targetLevel);
+			// [[ MODIFY BASE GAME START ]]
+			if(log) {
+				ai.print("Error: could not find planet level", obj, targetLevel);
+			}
+			// [[ MODIFY BASE GAME END ]]
 			return; //Welp, can't do nothing here
 		}
 
