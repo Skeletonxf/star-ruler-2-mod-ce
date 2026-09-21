@@ -145,6 +145,24 @@ Preset: Locusto
 	Trait: Gate
 	Trait: Euphoric
 
+Preset: Dreamers
+	Name: #RACE_DREAMERS
+	Tagline: #RACE_DREAMERS_TAGLINE
+	Lore: #RACE_DREAMERS_LORE
+	Portrait: emp_portrait_feyh
+	Shipset: Farum
+
+	Trait: Communism
+	Trait: Sublight
+	Trait: Devout
+	Trait: Flying
+	Trait: Evangelical
+	Trait: Decentralised
+	Trait: Lavish
+	Trait: Rigid
+	Trait: RiftiumDiscovery
+	Trait: StartingRingworld
+
 Preset: Frostkin
 	Name: #RACE_FROSTKIN
 	Tagline: #RACE_FROSTKIN_TAGLINE

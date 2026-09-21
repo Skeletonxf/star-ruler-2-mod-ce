@@ -117,3 +117,15 @@ HELP_FROSTKIN: <<
 TRAIT_MOON_BASE_DESC: <<
 	Your homeworld starts with a large moon base already constructed.
 >>
+
+RACE_DREAMERS: Somni
+RACE_DREAMERS_TAGLINE: This war must end.
+RACE_DREAMERS_LORE: <<|
+	You younger empires see only the 'empty' planets in the galaxy and think of dominion. Brothers and sisters, don't you know that travelling through the galaxy ever faster in a race to claim as much as possible won't ever satisfy you?
+
+	There will never be peace in this galaxy while you cannot even achieve peace amongst yourselves. You have not yet achieved harmony in even your home system.
+
+	The gods will not be enamoured by your 'faster than light' technology. Do you not know how many other lifeforms are learning everything from first principles while you look at their 'empty' planets with glee?
+
+	If you insist on claiming everything, we must intervene to show you a better way. We do not take any pleasure in violence, but it is the only language you speak.
+>>
