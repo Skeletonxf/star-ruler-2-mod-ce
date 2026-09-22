@@ -114,9 +114,7 @@ HELP_FROSTKIN: <<
 	[color=#ccc]You can construct one Thermal Regulator per planet to grant empire wide fleet strength buffs. However, other empires can also steal these buildings from you. Thermal Regulators replace the resource on the planet they are constructed at so are best suited to level 0 planets.[/color]
 >>
 
-TRAIT_MOON_BASE_DESC: <<
-	Your homeworld starts with a large moon base already constructed.
->>
+TRAIT_MOON_BASE_DESC: Your homeworld starts with a large moon base already constructed, gaining an extra 2 maximum population as usual.
 
 RACE_DREAMERS: Somni
 RACE_DREAMERS_TAGLINE: This war must end.

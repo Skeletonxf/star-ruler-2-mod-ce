@@ -8,5 +8,8 @@ Trait: MoonBase
 	Icon: PlanetType::4
 
 	Costs Points: 1
+	Conflict: StarChildren
+	Conflict: Extragalactic
 
+	TriggerHomeworld(TriggerGeneric(AddMaxPopulation(2)))
 	TriggerHomeworld( AddSurfaceArea(Moon, (8, 8)) )
