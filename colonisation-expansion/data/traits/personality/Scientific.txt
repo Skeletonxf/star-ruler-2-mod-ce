@@ -10,4 +10,5 @@ Trait: Scientific
 
 	Costs Points: 1
 
+	GainResearchWhenAttributeUps(ResearchUnlocksDone, Multiply = 100, Modified = False, Penalized = False)
 	empire_effects::AddResearchIncome(1)
