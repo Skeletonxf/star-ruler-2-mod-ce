@@ -149,7 +149,7 @@ Preset: Dreamers
 	Name: #RACE_DREAMERS
 	Tagline: #RACE_DREAMERS_TAGLINE
 	Lore: #RACE_DREAMERS_LORE
-	Portrait: emp_portrait_feyh
+	Portrait: emp_portrait_somni
 	Shipset: Farum
 
 	Trait: Communism
