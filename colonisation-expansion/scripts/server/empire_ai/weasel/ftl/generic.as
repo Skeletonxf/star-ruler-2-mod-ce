@@ -653,6 +653,9 @@ class FTLGeneric : FTL {
 
 	// Slipstream methods
 	SSRegion@ getSS(Region@ reg) {
+		if (reg is null) {
+			return null;
+		}
 		for(uint i = 0, cnt = trackedSS.length; i < cnt; ++i) {
 			if(trackedSS[i].region is reg)
 				return trackedSS[i];
@@ -874,16 +877,29 @@ class FTLGeneric : FTL {
 		if(!targetPosition(ord, toPosition))
 			return F_Pass;
 
+		Region@ targetRegion = getRegion(toPosition);
+
 		bool ableToHyperdrive = canHyperdrive(ord.obj);
 		bool ableToJumpdrive = canJumpdrive(ord.obj);
 		bool ableToFling = canFling(ord.obj);
 		bool ableToSS = true;
-		//Check if we have a slipstream generator in this region
-		auto@ ss = getSS(ord.obj.region);
+		// Check if we have a slipstream generator in this region or the
+		// region we're going to
+		SSRegion@ ss = getSS(ord.obj.region);
+		SSRegion@ reverseSS = getSS(targetRegion);
+		bool useReverseSS = false;
 		if (ss is null || ss.obj is null || !ss.arrived) {
-			ableToSS = false;
+			// We may be able to instead have a slipstream generator at the target
+			// open a slipstream to us rather than needing a slipstream generator
+			// at our current region.
+			if (reverseSS !is null) {
+				useReverseSS = true;
+				ableToSS = reverseSS.obj !is null && reverseSS.arrived;
+			} else {
+				ableToSS = false;
+			}
 		}
-		Object@ ssGen = ableToSS ? ss.obj : null;
+		Object@ ssGen = ableToSS ? (useReverseSS ? reverseSS.obj : ss.obj) : null;
 		if (ableToSS) {
 			ableToSS = canSlipstream(ssGen);
 		}
@@ -905,13 +921,13 @@ class FTLGeneric : FTL {
 			return F_Pass;
 		}
 
-		// check we can actually target the position we want to FTL to (jammers)
+		// check we can actually target the position we want to FTL to as jammers
 		// might be preventing it
 		double indirectFTLSublightETA = 0;
 		bool ableToHyperdriveToPosition = canHyperdriveTo(ord.obj, toPosition);
 		bool ableToJumpdriveToPosition = canJumpdriveTo(ord.obj, toPosition);
 		bool ableToFlingToPosition = canFlingTo(ord.obj, toPosition);
-		bool ableToSSToPosition = canSlipstreamTo(ord.obj, toPosition);
+		bool ableToSSToPosition = useReverseSS ? (ssGen !is null && canSlipstreamTo(ssGen, ord.obj.position)) : canSlipstreamTo(ord.obj, toPosition);
 		bool ableToWormholeToPosition = canWormholeTo(ord.obj, toPosition);
 		vec3d alternatePosition = toPosition;
 		if ((ableToHyperdrive && !ableToHyperdriveToPosition)
@@ -920,6 +936,14 @@ class FTLGeneric : FTL {
 			|| (ableToSS && !ableToSSToPosition)
 			|| (ableToWormhole && !ableToWormholeToPosition)) {
 			Region@ likelyBlocked = getRegion(toPosition);
+			// TODO: When we're opening a slipstream from the region we want to go to
+			// there may be scenarios where we're deployed in a jammed region but the
+			// slipstream generator is not, in which case this logic also needs
+			// reversing and we should open a slipstream just outside our current
+			// region to sublight to.
+			// TODO: Check FTL jamming flags on likelyBlocked and alternativelyBlocked
+			// to determine which ones are actually blocked or not here.
+			Region@ alternativelyBlocked = ord.obj.region;
 			if (likelyBlocked !is null) {
 				vec3d offset = toPosition - likelyBlocked.position;
 				offset.y = 0;
@@ -1003,18 +1027,29 @@ class FTLGeneric : FTL {
 
 		if (ableToSS) {
 			//Check if we already have a link
-			if (hasOddityLink(ss.region, toPosition, SS_MAX_DISTANCE, minDuration=60.0)) {
+			if (hasOddityLink(useReverseSS ? reverseSS.region : ss.region, useReverseSS ? ord.obj.position : toPosition, SS_MAX_DISTANCE, minDuration=60.0)) {
 				// we've already paid for this so set slipstream estimates
 				// to infinity and let sublight 'win'
 				ssETA = INFINITY;
 				ssFTLCost = INFINITY;
 			} else {
 				if (ableToSSToPosition) {
-					ssETA = getSSETA(ssGen, ord.obj, toPosition);
-					ssFTLCost = getSSCost(ssGen, toPosition);
+					if (useReverseSS) {
+						// Slipstream will open at our position but we'll have to sublight
+						// after the slipstream opens to get to our actual destination.
+						ssETA = SLIPSTREAM_CHARGE_TIME + getSublightDirectETA(ord.obj, ssGen.position, toPosition);
+						ssFTLCost = getSSCost(ssGen, ord.obj.position);
+					} else {
+						ssETA = getSSETA(ssGen, ord.obj, toPosition);
+						ssFTLCost = getSSCost(ssGen, toPosition);
+					}
 				} else {
-					ssETA = getSSETA(ssGen, ord.obj, alternatePosition) + indirectFTLSublightETA;
-					ssFTLCost = getSSCost(ssGen, alternatePosition);
+					if (useReverseSS) {
+						// Not supported yet, leave ETA and cost at infinity for now
+					} else {
+						ssETA = getSSETA(ssGen, ord.obj, alternatePosition) + indirectFTLSublightETA;
+						ssFTLCost = getSSCost(ssGen, alternatePosition);
+					}
 				}
 			}
 		}
@@ -1239,18 +1274,37 @@ class FTLGeneric : FTL {
 		}
 
 		if (travelMethod == TRAVEL_SLIPSTREAM) {
-			if (!needSublightAfter) {
-				ssGen.addSlipstreamOrder(toPosition, append=true);
+			if (useReverseSS) {
+				// TODO: Support workarounds to jamming for reverse slipstream routing
+				ssGen.addSlipstreamOrder(ord.obj.position, append=true);
+				if (ssGen !is ord.obj) {
+					ord.obj.addWaitOrder(ssGen, moveTo=false);
+					// After the slipstream opens the secondary will terminate the wait
+					// order with a move to the slipstream generator, then after that
+					// we'll still need to move to the intended destination on the
+					// other side.
+					ssGen.addSecondaryToSlipstream(ord.obj);
+					ord.obj.addMoveOrder(toPosition, append=true);
+				} else {
+					// I don't think this case is possible but let's handle it just
+					// in case.
+					ord.obj.addMoveOrder(toPosition, append=true);
+				}
 			} else {
-				ssGen.addSlipstreamOrder(alternatePosition, append=true);
+				if (!needSublightAfter) {
+					ssGen.addSlipstreamOrder(toPosition, append=true);
+				} else {
+					ssGen.addSlipstreamOrder(alternatePosition, append=true);
+				}
+				if (ssGen !is ord.obj) {
+					ord.obj.addWaitOrder(ssGen, moveTo=true);
+					ssGen.addSecondaryToSlipstream(ord.obj);
+				}
+				else {
+					ord.obj.addMoveOrder(toPosition, append=true);
+				}
 			}
-			if (ssGen !is ord.obj) {
-				ord.obj.addWaitOrder(ssGen, moveTo=true);
-				ssGen.addSecondaryToSlipstream(ord.obj);
-			}
-			else {
-				ord.obj.addMoveOrder(toPosition, append=true);
-			}
+
 			return F_Continue;
 		}
 
