@@ -878,6 +878,7 @@ class FTLGeneric : FTL {
 			return F_Pass;
 
 		Region@ targetRegion = getRegion(toPosition);
+		vec3d objPosition = ord.obj.position;
 
 		bool ableToHyperdrive = canHyperdrive(ord.obj);
 		bool ableToJumpdrive = canJumpdrive(ord.obj);
@@ -927,29 +928,39 @@ class FTLGeneric : FTL {
 		bool ableToHyperdriveToPosition = canHyperdriveTo(ord.obj, toPosition);
 		bool ableToJumpdriveToPosition = canJumpdriveTo(ord.obj, toPosition);
 		bool ableToFlingToPosition = canFlingTo(ord.obj, toPosition);
-		bool ableToSSToPosition = useReverseSS ? (ssGen !is null && canSlipstreamTo(ssGen, ord.obj.position)) : canSlipstreamTo(ord.obj, toPosition);
+		bool ableToSSToPosition = useReverseSS ? (ssGen !is null && canSlipstreamTo(ssGen, objPosition)) : canSlipstreamTo(ord.obj, toPosition);
 		bool ableToWormholeToPosition = canWormholeTo(ord.obj, toPosition);
 		vec3d alternatePosition = toPosition;
+		double indirectReverseFTLSublightETA = 0;
+		vec3d alternateReversePosition = toPosition;
 		if ((ableToHyperdrive && !ableToHyperdriveToPosition)
 			|| (ableToJumpdrive && !ableToJumpdriveToPosition)
 			|| (ableToFling && !ableToFlingToPosition)
 			|| (ableToSS && !ableToSSToPosition)
 			|| (ableToWormhole && !ableToWormholeToPosition)) {
 			Region@ likelyBlocked = getRegion(toPosition);
-			// TODO: When we're opening a slipstream from the region we want to go to
-			// there may be scenarios where we're deployed in a jammed region but the
-			// slipstream generator is not, in which case this logic also needs
-			// reversing and we should open a slipstream just outside our current
-			// region to sublight to.
-			// TODO: Check FTL jamming flags on likelyBlocked and alternativelyBlocked
-			// to determine which ones are actually blocked or not here.
-			Region@ alternativelyBlocked = ord.obj.region;
+			// The only reason we would be able to FTL in general with a method
+			// but not to the specific target is FTL jamming as that's all the family
+			// of canXTo functions check for. This would need adjustments if that
+			// changes in the future.
 			if (likelyBlocked !is null) {
 				vec3d offset = toPosition - likelyBlocked.position;
 				offset.y = 0;
 				vec3d direction = offset.normalize();
 				alternatePosition = likelyBlocked.position + (direction * (likelyBlocked.radius + 25.0));
 				indirectFTLSublightETA = getSublightDirectETA(ord.obj, alternatePosition, toPosition);
+			}
+			// For reverse slipstreams, if the slipstream generator in our target
+			// region is jammed there's nothing we could do, but if our ship is
+			// jammed we could open a slipstream just outside our current region
+			// to get to the target instead.
+			Region@ alternativelyBlocked = ord.obj.region;
+			if (alternativelyBlocked !is null) {
+				vec3d offset = objPosition - alternativelyBlocked.position;
+				offset.y = 0;
+				vec3d direction = offset.normalize();
+				alternateReversePosition = alternativelyBlocked.position + (direction * (alternativelyBlocked.radius + 25.0));
+				indirectReverseFTLSublightETA = getSublightDirectETA(ord.obj, objPosition, alternateReversePosition);
 			}
 		}
 
@@ -986,7 +997,7 @@ class FTLGeneric : FTL {
 				otherETA += indirectFTLSublightETA;
 			}
 
-			jumpdriveETA = getJumpdriveETA(ord.obj, ord.obj.position, position);
+			jumpdriveETA = getJumpdriveETA(ord.obj, objPosition, position);
 			jumpdriveFTLCost = jumpdriveCost(ord.obj, position);
 			// consider doing a hop to a safe region first
 			// with the jumpdrive to reach the destination
@@ -999,7 +1010,7 @@ class FTLGeneric : FTL {
 						continue;
 					}
 					vec3d hopPos = safeRegions[i].position;
-					hopPos = hopPos + (ord.obj.position -  hopPos).normalized(safeRegions[i].radius * 0.85);
+					hopPos = hopPos + (objPosition -  hopPos).normalized(safeRegions[i].radius * 0.85);
 					double d = hopPos.distanceTo(position);
 					if (d < bestHop) {
 						bestHop = d;
@@ -1009,7 +1020,7 @@ class FTLGeneric : FTL {
 				}
 				jumpdriveETA = JUMPDRIVE_CHARGE_TIME;
 				jumpdriveETA += getJumpdriveETA(ord.obj, doubleHopPosition, position) + otherETA;
-				jumpdriveFTLCost = jumpdriveCost(ord.obj, ord.obj.position, doubleHopPosition);
+				jumpdriveFTLCost = jumpdriveCost(ord.obj, objPosition, doubleHopPosition);
 				jumpdriveFTLCost += jumpdriveCost(ord.obj, doubleHopPosition, position);
 				makeDoubleHop = true;
 			}
@@ -1027,7 +1038,7 @@ class FTLGeneric : FTL {
 
 		if (ableToSS) {
 			//Check if we already have a link
-			if (hasOddityLink(useReverseSS ? reverseSS.region : ss.region, useReverseSS ? ord.obj.position : toPosition, SS_MAX_DISTANCE, minDuration=60.0)) {
+			if (hasOddityLink(useReverseSS ? reverseSS.region : ss.region, useReverseSS ? objPosition : toPosition, SS_MAX_DISTANCE, minDuration=60.0)) {
 				// we've already paid for this so set slipstream estimates
 				// to infinity and let sublight 'win'
 				ssETA = INFINITY;
@@ -1038,14 +1049,18 @@ class FTLGeneric : FTL {
 						// Slipstream will open at our position but we'll have to sublight
 						// after the slipstream opens to get to our actual destination.
 						ssETA = SLIPSTREAM_CHARGE_TIME + getSublightDirectETA(ord.obj, ssGen.position, toPosition);
-						ssFTLCost = getSSCost(ssGen, ord.obj.position);
+						ssFTLCost = getSSCost(ssGen, objPosition);
 					} else {
 						ssETA = getSSETA(ssGen, ord.obj, toPosition);
 						ssFTLCost = getSSCost(ssGen, toPosition);
 					}
 				} else {
 					if (useReverseSS) {
-						// Not supported yet, leave ETA and cost at infinity for now
+						// If our slipstream works but can't target our region, our region
+						// is jammed so we need to add in sublight time to the alternate
+						// position to catch the slipstream.
+						ssETA = max(SLIPSTREAM_CHARGE_TIME, indirectReverseFTLSublightETA) + getSublightDirectETA(ord.obj, ssGen.position, toPosition);
+						ssFTLCost = getSSCost(ssGen, objPosition);
 					} else {
 						ssETA = getSSETA(ssGen, ord.obj, alternatePosition) + indirectFTLSublightETA;
 						ssFTLCost = getSSCost(ssGen, alternatePosition);
@@ -1259,8 +1274,8 @@ class FTLGeneric : FTL {
 
 		if (travelMethod == TRAVEL_FLING) {
 			//Make sure we're in range of a beacon we can use
-			Object@ beacon = ord.obj.owner.getClosestFriendlyFlingBeacon(ord.obj.position);
-			if (beacon is null || beacon.position.distanceTo(ord.obj.position) > FLING_BEACON_RANGE) {
+			Object@ beacon = ord.obj.owner.getClosestFriendlyFlingBeacon(objPosition);
+			if (beacon is null || beacon.position.distanceTo(objPosition) > FLING_BEACON_RANGE) {
 				return F_Pass;
 			}
 
@@ -1275,8 +1290,23 @@ class FTLGeneric : FTL {
 
 		if (travelMethod == TRAVEL_SLIPSTREAM) {
 			if (useReverseSS) {
-				// TODO: Support workarounds to jamming for reverse slipstream routing
-				ssGen.addSlipstreamOrder(ord.obj.position, append=true);
+				if (!ableToSSToPosition) {
+					// Slipstream is opening just outside our jammed region
+					// instead, so queue up both the sublight move to receive
+					// it and the slipstream tear.
+					ssGen.addSlipstreamOrder(alternateReversePosition, append=true);
+					ord.obj.addMoveOrder(alternateReversePosition, append=true);
+					// Depending on slipstream inaccuracy this could send the ship
+					// over to a position the slipstream isn't actually located at
+					// instead of seeking the actual location of the oddity but
+					// this is probably preferable to the ship standing still until
+					// the slipstream is opened, as the most likely scenario for this
+					// strategic manveover is to pull a ship out of enemy (+jammed)
+					// territory, in which case standing still for the chargeup time
+					// is the worst thing we could do!
+				} else {
+					ssGen.addSlipstreamOrder(objPosition, append=true);
+				}
 				if (ssGen !is ord.obj) {
 					ord.obj.addWaitOrder(ssGen, moveTo=false);
 					// After the slipstream opens the secondary will terminate the wait
