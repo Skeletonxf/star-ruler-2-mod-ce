@@ -907,15 +907,24 @@ class FTLGeneric : FTL {
 		bool ableToWormhole = true;
 		//Check if we have a wormhole planet in this region
 		auto@ w = getWormhole(ord.obj.region);
+		auto@ reverseW = getWormhole(targetRegion);
+		bool useReverseWormhole = false;
 		if (w is null || w.obj is null) {
-			ableToWormhole = false;
+			// We may be able to instead have a riftium planet at the target
+			// open a wormhole to us rather than needing one at our current region.
+			if (reverseW !is null) {
+				useReverseWormhole = true;
+				ableToWormhole = reverseW.obj !is null;
+			} else {
+				ableToWormhole = false;
+			}
 		}
-		Object@ wormholePlanet = ableToWormhole ? w.obj : null;
+		Object@ wormholePlanet = ableToWormhole ? (useReverseWormhole ? reverseW.obj : w.obj) : null;
 		if (ableToWormhole) {
 			// Wormhole network abilities also have cooldowns, so we may
 			// not have any available wormholes even if we have a wormhole
 			// planet that isn't jammed.
-			ableToWormhole = canWormhole(wormholePlanet) && w.hasNewRiftAvailable();
+			ableToWormhole = canWormhole(wormholePlanet) && (useReverseWormhole ? reverseW.hasNewRiftAvailable() : w.hasNewRiftAvailable());
 		}
 
 		if (!ableToFling && !ableToHyperdrive && !ableToJumpdrive && !ableToSS && !ableToWormhole) {
@@ -929,7 +938,7 @@ class FTLGeneric : FTL {
 		bool ableToJumpdriveToPosition = canJumpdriveTo(ord.obj, toPosition);
 		bool ableToFlingToPosition = canFlingTo(ord.obj, toPosition);
 		bool ableToSSToPosition = useReverseSS ? (ssGen !is null && canSlipstreamTo(ssGen, objPosition)) : canSlipstreamTo(ord.obj, toPosition);
-		bool ableToWormholeToPosition = canWormholeTo(ord.obj, toPosition);
+		bool ableToWormholeToPosition = useReverseWormhole ? (wormholePlanet !is null && canWormholeTo(wormholePlanet, objPosition)) : canWormholeTo(ord.obj, toPosition);
 		vec3d alternatePosition = toPosition;
 		double indirectReverseFTLSublightETA = 0;
 		vec3d alternateReversePosition = toPosition;
@@ -950,9 +959,9 @@ class FTLGeneric : FTL {
 				alternatePosition = likelyBlocked.position + (direction * (likelyBlocked.radius + 25.0));
 				indirectFTLSublightETA = getSublightDirectETA(ord.obj, alternatePosition, toPosition);
 			}
-			// For reverse slipstreams, if the slipstream generator in our target
+			// For reverse slipstreams/wormholes, if the generator in our target
 			// region is jammed there's nothing we could do, but if our ship is
-			// jammed we could open a slipstream just outside our current region
+			// jammed we could open one just outside our current region
 			// to get to the target instead.
 			Region@ alternativelyBlocked = ord.obj.region;
 			if (alternativelyBlocked !is null) {
@@ -1078,10 +1087,24 @@ class FTLGeneric : FTL {
 				wormholeFTLCost = INFINITY;
 			} else {
 				if (ableToWormholeToPosition) {
-					wormholeETA = getWormholeETA(wormholePlanet, ord.obj, toPosition);
+					if (useReverseWormhole) {
+						// Wormholes open instantly so there is no charge time to wait for.
+						// This is a little optimistic because ships may occasionally
+						// overshoot the wormhole but that should be rare.
+						wormholeETA = getSublightDirectETA(ord.obj, wormholePlanet.position, toPosition);
+					} else {
+						wormholeETA = getWormholeETA(wormholePlanet, ord.obj, toPosition);
+					}
 					wormholeFTLCost = 0;
 				} else {
-					wormholeETA = getWormholeETA(wormholePlanet, ord.obj, alternatePosition) + indirectFTLSublightETA;
+					if (useReverseWormhole) {
+						// If our riftium planet works but can't target our region, it
+						// is jammed so we need to add in sublight time to the alternate
+						// position to catch the wormhole.
+						wormholeETA = indirectReverseFTLSublightETA + getSublightDirectETA(ord.obj, wormholePlanet.position, toPosition);
+					} else {
+						wormholeETA = getWormholeETA(wormholePlanet, ord.obj, alternatePosition) + indirectFTLSublightETA;
+					}
 					wormholeFTLCost = 0;
 				}
 			}
@@ -1217,7 +1240,8 @@ class FTLGeneric : FTL {
 					}
 				}
 			}
-			if ((wormholeETA * (baseSpeedup /*+ (1.6 * (wormholeFTLCost / availableFTL))*/)) < sublightETA) {
+			// Wormhole FTL costs are always 0 so part of the calculation cancels out
+			if ((wormholeETA * baseSpeedup) < sublightETA) {
 				if (travelMethod == TRAVEL_SUBLIGHT) {
 					travelMethod = TRAVEL_WORMHOLE;
 					travelETA = wormholeETA;
@@ -1339,20 +1363,36 @@ class FTLGeneric : FTL {
 		}
 
 		if (travelMethod == TRAVEL_WORMHOLE) {
-			if (!needSublightAfter) {
-				w.openNewRift(toPosition);
+			if (useReverseWormhole) {
+				if (!ableToWormholeToPosition) {
+					// Wormhole is opening just outside our jammed region
+					// instead, so queue up both the sublight move to receive
+					// it and the wormhole tear.
+					reverseW.openNewRift(alternateReversePosition);
+					// Because wormholes always open instantly we don't need to faff
+					// around with issuing wait orders, the rift *will* be open in time
+					// where the ship was at the time of opening.
+					ord.obj.addMoveOrder(alternateReversePosition, append=true);
+				} else {
+					reverseW.openNewRift(objPosition);
+				}
+				ord.obj.addMoveOrder(toPosition, append=true);
 			} else {
-				w.openNewRift(alternatePosition);
-			}
-			if (wormholePlanet !is ord.obj) {
-				// Because wormholes always open instantly we don't need to faff
-				// around with issuing wait orders, the rift *will* be open in time
-				// where the planet was at the time of opening.
-				ord.obj.addMoveOrder(wormholePlanet.position, append=true);
-				ord.obj.addMoveOrder(toPosition, append=true);
-			}
-			else {
-				ord.obj.addMoveOrder(toPosition, append=true);
+				if (!needSublightAfter) {
+					w.openNewRift(toPosition);
+				} else {
+					w.openNewRift(alternatePosition);
+				}
+				if (wormholePlanet !is ord.obj) {
+					// Because wormholes always open instantly we don't need to faff
+					// around with issuing wait orders, the rift *will* be open in time
+					// where the planet was at the time of opening.
+					ord.obj.addMoveOrder(wormholePlanet.position, append=true);
+					ord.obj.addMoveOrder(toPosition, append=true);
+				}
+				else {
+					ord.obj.addMoveOrder(toPosition, append=true);
+				}
 			}
 			return F_Continue;
 		}
