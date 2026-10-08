@@ -99,6 +99,7 @@ S_DESTROYER_HULL_DESC: <<
 	[img=Plus]Increases health by 200%.[/img]
 	[img=Plus]Increases armor resistance by 50%.[/img]
 	[img=Plus]Decreases mass by 30%.[/img]
+	[img=Plus]Increases weapon damage and reload speed by 25%.[/img]
 	[img=Plus]More internal space available.[/img]
 	[img=Minus]Cannot have any support command on the flagship.[/img]
 	[img=Minus]Weapon range reduced by 30%.[/img]
