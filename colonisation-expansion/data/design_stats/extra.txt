@@ -240,3 +240,11 @@ GlobalStat: ExplosiveBoost
 	Suffix: u/s²
 
 	Variable: ExplosiveBoost
+
+SubsystemStat: Impulse
+	Name: #S_IMPULSE
+	Color: #a0d8bc
+	Icon: TechIcons::57
+
+	Suffix: N
+	Variable: Impulse

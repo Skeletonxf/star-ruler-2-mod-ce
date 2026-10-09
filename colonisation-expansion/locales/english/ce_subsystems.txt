@@ -528,3 +528,4 @@ SHIPCOMPUTER_DESC: <<
 	[img=Minus]Requires power to run.[/img]
 	[img=Minus]Ship is destroyed if no control remains.[/img]
 >>
+S_IMPULSE: Impulse
