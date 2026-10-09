@@ -16,12 +16,10 @@ Subsystem: DestroyerHull
 	AddShipModifier: tag/Weapon::RangeFactor(0.7)
 	AddShipModifier: tag/Weapon::DamageFactor(1.25)
 	AddShipModifier: tag/Weapon::ReloadFactor(0.75)
+	AddShipModifier: SupportCapacityFactor(0.5)
 
 	Assert: ShipSize >= 300
 		Message: #ERROR_MIN_SIZE:$1:300
-
-	Assert: Sum.SupportCapacity == 0
-		Message: #ERROR_CANNOT_HAVE_SUPPORT
 
 	Module: Default
 		Sprite: HullSubsystems::1

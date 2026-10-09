@@ -48,7 +48,6 @@ Grid: ColonisationExpansionGrid
 	PlanetSupport: -4,-4
 	Population: -5,-3
 	Health: 2,-5
-	Health: 3,-6
 	ArmorDR: 4,-4
 	ArmorHealth: 3,-5
 	FlagHealth: 2,-6
@@ -218,7 +217,6 @@ Grid: ColonisationExpansionGrid
 	InfiniteShields: 1,13
 	Abundance: -6,-4
 	Nebulaefication: -8,-9
-	DestroyerHull: 1,-7
 	Health2: 2,-7
 	Health2: 3,-8
 	SuperstructureHull: -1,-9
@@ -313,3 +311,5 @@ Grid: ColonisationExpansionGrid
 	FTLHurdle: -3,15
 	SysSlipstream: -3,16
 	FTL: -5,17
+	DestroyerHull: 2,-4
+	Health: 1,-7

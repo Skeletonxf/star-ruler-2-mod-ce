@@ -94,22 +94,21 @@ S_JUMPDRIVE_DESC: <<
 >>
 ERROR_SIMULATOR_TOO_BIG: Simulator cannot exceed 20% of the ship
 S_DESTROYER_HULL_DESC: <<
-	A hull optimized to fit many different weapon turrets at the cost of being unable to field a support fleet.
+	A hull optimized to fit many different weapon turrets at the cost of being unable to field as large of a support fleet.
 
 	[img=Plus]Increases health by 200%.[/img]
 	[img=Plus]Increases armor resistance by 50%.[/img]
 	[img=Plus]Decreases mass by 30%.[/img]
 	[img=Plus]Increases weapon damage and reload speed by 25%.[/img]
 	[img=Plus]More internal space available.[/img]
-	[img=Minus]Cannot have any support command on the flagship.[/img]
 	[img=Minus]Weapon range reduced by 30%.[/img]
+	[img=Minus]Any support command on the flagship is reduced by 50%.[/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Destroyer Hulls can only be used on ships of size 300 or greater.[/color][/i][/img]
 >>
 S_CARRIER_HULL_DESC: <<
 	A hull specifically designed to control and maintain a large fleet of support ships.
 
-	[img=Plus]Doubles any support capacity.[/img]
-	[img=Plus]Increases supply capacity by 100%.[/img]
+	[img=Plus]Increases support command and supply capacity by 50%.[/img]
 	[img=Plus]Increases health by 100%.[/img]
 	[img=Minus]Cannot have any weapons on the flagship.[/img]
 	[img=Minus]Less internal space available.[/img]
@@ -502,10 +501,11 @@ S_ARTILLERY_HULL_DESC: <<
 	A hull optimized to shoot enemies from a safe distance at the expense of some survivability.
 
 	[img=Plus]Weapon range increased by 150%.[/img]
-	[img=Plus]Decreases mass by 20%.[/img]
+	[img=Plus]Decreases mass by 40%.[/img]
 	[img=Minus]Reduces health by 10%.[/img]
 	[img=Minus]Reduces armor resistance by 10%.[/img]
 	[img=MenuIcons::3;20][i][color=#aaa]Artillery Hulls can only be used on ships of size 300 or greater.[/color][/i][/img]
+	[img=MenuIcons::3;20][i][color=#aaa]Recommended for use with the Keep Distance behaviour to keep the ship out of direct enemy fire.[/color][/i][/img]
 >>
 S_ARCHERY_UNIT: Archery Unit
 S_ARCHERY_UNIT_DESC: Crewed archers providing both control and weapons.

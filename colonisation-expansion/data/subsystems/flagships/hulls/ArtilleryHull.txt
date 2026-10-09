@@ -11,7 +11,7 @@ Subsystem: ArtilleryHull
 
 	AddShipModifier: HpFactor(0.9)
 	AddShipModifier: ArmorResistFactor(0.9)
-	AddShipModifier: MassFactor(0.8)
+	AddShipModifier: MassFactor(0.6)
 	AddShipModifier: tag/Weapon::RangeFactor(2.5)
 
 	Assert: ShipSize >= 300
