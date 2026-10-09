@@ -119,7 +119,10 @@ tidy final class DesignTarget {
 				designer.composeScout();
 			break;
 			case DP_Combat:
-				designer.composeFlagship();
+				// [[ MODIFY BASE GAME START ]]
+				// Easy AI doesn't use advanced hulls
+				designer.composeFlagship(advancedHulls = ai.difficulty >= 1);
+				// [[ MODIFY BASE GAME END ]]
 			break;
 			case DP_Defense:
 				designer.composeStation();

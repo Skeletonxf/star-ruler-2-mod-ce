@@ -83,6 +83,7 @@ tidy class Designer {
 
 	// [[ MODIFY BASE GAME START ]]
 	bool favorJumpdriveOverHyperdrive = false;
+	const SubsystemDef@ destroyerHull = getSubsystemDef("DestroyerHull");
 	// [[ MODIFY BASE GAME END ]]
 
 	Designer(uint type, int size, Empire@ emp, const string& className = "Combat", bool compose = true) {
@@ -146,10 +147,21 @@ tidy class Designer {
 	}
 
 	// [[ MODIFY BASE GAME START ]]
-	void composeFlagship(bool haveSupport = true, bool tryFTL = true, bool supply = true, bool weapons = true, bool power = true, bool clear = true, bool isRemnant = false) {
+	void composeFlagship(bool haveSupport = true, bool tryFTL = true, bool supply = true, bool weapons = true, bool power = true, bool clear = true, bool isRemnant = false, bool advancedHulls = false) {
 		// [[ MODIFY BASE GAME END ]]
 		if(clear)
 			composition.length = 0;
+
+		// [[ MODIFY BASE GAME START ]]
+		if (advancedHulls) {
+			if (owner.isUnlocked(destroyerHull) && size >= 300) {
+				// The AI designs flagships with weapons + modest support command, so
+				// we might as well apply the destroyer hull if it is unlocked.
+				composition.insertLast(Applied(tag("DestroyerHull")));
+				hexLimit += 30;
+			}
+		}
+		// [[ MODIFY BASE GAME END ]]
 
 		//Weapons for flagships
 		if(weapons) {
@@ -240,8 +252,12 @@ tidy class Designer {
 
 		//Armor
 		composition.insertLast(ArmorLayer(tag("PrimaryArmor"), HM_DownLeft | HM_UpLeft | HM_Down | HM_Up, 1, 1));
-		for(int i = 0; i < 1 + size / 400 && i < 4; ++i)
-			composition.insertLast(Chance(0.33, ArmorLayer(tag("PrimaryArmor"), HM_DownLeft | HM_UpLeft, 1, 1)));
+		// [[ MODIFY BASE GAME START ]]
+		for(int i = 0; i < 3; ++i)
+			// Raise chance of armor up from 1/3, since 2 layers is usually ideal
+			// and shifting probability of 3 layers up a bit too should help in general.
+			composition.insertLast(Chance(0.75 / (i + 1), ArmorLayer(tag("PrimaryArmor"), HM_DownLeft | HM_UpLeft, 1, 1)));
+			// [[ MODIFY BASE GAME END ]]
 	}
 
 	void composeStation(bool clear = true) {
@@ -639,7 +655,11 @@ tidy class Designer {
 		applied.length = 0;
 	}
 
-	const Design@ design(uint maxTries = 128) {
+	// [[ MODIFY BASE GAME START ]]
+	// Lots of modded subsystems can cause a design to have an error so raise
+	// tries up to compensate.
+	const Design@ design(uint maxTries = 500 /*128*/) {
+			// [[ MODIFY BASE GAME END ]]
 		for(uint i = 0; i < maxTries; ++i) {
 			const Design@ dsg = _design();
 			if(dsg is null)
