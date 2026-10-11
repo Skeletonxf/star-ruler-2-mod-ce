@@ -313,3 +313,5 @@ Grid: ColonisationExpansionGrid
 	FTL: -5,17
 	DestroyerHull: 2,-4
 	Health: 1,-7
+	SysForcefieldCore: 0,7
+	SysForcefieldEmitter: 2,12

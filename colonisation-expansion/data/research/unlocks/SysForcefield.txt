@@ -1,0 +1,35 @@
+Technology: SysForcefieldCore
+	Name: #R_SYS_FORCEFIELD_CORE
+	Description: #R_SYS_FORCEFIELD_DESC
+
+	Class: Unlock
+	Category: Subsystems
+
+	Point Cost: 500
+	Time Cost: 90
+
+	Icon: ShieldHarmonizer * #00a4ef
+	Color: #00a4db
+
+	UnlockSubsystem(Forcefield)
+	SkipOnUnlockedSubsystem(Forcefield)
+
+	SecondaryFTLCost(500)
+
+Technology: SysForcefieldEmitter
+	Name: #R_SYS_FORCEFIELD_EMITTER
+	Description: #R_SYS_FORCEFIELD_EMITTER_DESC
+
+	Class: Unlock
+	Category: Subsystems
+
+	Point Cost: 500
+	Time Cost: 90
+
+	Icon: FissionReactor * #00a4ef
+	Color: #00a4db
+
+
+	SkipOnUnlockedModule(Emitter)
+	UnlockModule(Emitter)
+	SecondaryFTLCost(500)

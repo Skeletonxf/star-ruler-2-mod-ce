@@ -276,4 +276,3 @@ SubsystemStat: ForcefieldSize
 	Color: #8080ff
 
 	Variable: SupportedSize
-	Secondary: UsedSize

@@ -209,3 +209,15 @@ FTL_MASTERY: FTL Mastery
 FTL_MASTERY_DESC: To progress further, we must unlock at least $1 FTL types.
 FTL_TYPES_REQUIRED: Unlock $2 FTL types. [b]( $1 / $2 )[/b]
 FTL_MASTERY_2: FTL Grand Mastery
+R_SYS_FORCEFIELD_CORE: Forcefield
+R_SYS_FORCEFIELD_DESC: <<
+	[color=#aaa][i]Unlocks the Forcefield subsystem.[/i][/color]
+
+	[bbloc=#S_FORCEFIELD_DESC/]
+>>
+R_SYS_FORCEFIELD_EMITTER: Larger Forcefields
+R_SYS_FORCEFIELD_EMITTER_DESC: <<
+	[color=#aaa][i]Unlocks the Forcefield Emitter module, which can be used to expand Forcefields beyond 5 hexes.[/i][/color]
+
+	[bbloc=#FORCEFIELD_EMITTER_DESC/]
+>>
