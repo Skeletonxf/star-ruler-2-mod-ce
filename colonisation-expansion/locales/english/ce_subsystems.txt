@@ -543,7 +543,7 @@ S_FORCEFIELD_DESC: <<
 	[img=Plus]Can be used to protect exposed hexes like weapon cores.[/img]
 	[img=Plus]Only emitters count towards the ship's hex limit, power consumption, and costs. Additional emitters increase the amount of damage a forcefield can absorb before failing.[/img]
 	[img=Plus]Has extremely high pierce resistance while active.[/img]
-	[img=Minus]High build costs and power consumption.[/img]
+	[img=Minus]A large numbers of emitters can lead to high costs and power consumption.[/img]
 	[img=Minus]Destroying any Forcefield Emitter will deactivate the forcefield immediately.[/img]
 	[img=MenuIcons::3;22][i][color=#aaa]Each Forcefield Emitter supports up to 5 forcefield hexes. Each emitter cannot touch more than two of its forcefield hexes.[/color][/i][/img]
 >>
