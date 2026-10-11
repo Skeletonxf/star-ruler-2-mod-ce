@@ -529,3 +529,29 @@ SHIPCOMPUTER_DESC: <<
 	[img=Minus]Ship is destroyed if no control remains.[/img]
 >>
 S_IMPULSE: Impulse
+
+ERROR_FORCEFIELD_SHAPE: Forcefield Emitter cannot touch more than two of its forcefield hexes.
+ERROR_FORCEFIELD_EMITTERCOUNT: Only 5 forcefield hexes are supported per emitter.
+S_FORCEFIELD_STAT: Capacity
+S_FORCEFIELD_REGEN: Regeneration
+S_FORCEFIELD_SIZE: Supported Size
+S_USED_FORCEFIELD_SIZE: Forcefield Size
+S_FORCEFIELD: Forcefield
+S_FORCEFIELD_DESC: <<
+	A small armour-like solidified shield able to protect a small area of the ship. It can be extended in size and durability with additional Forcefield Emitter modifiers.
+
+	[img=Plus]Can be used to protect exposed hexes like weapon cores.[/img]
+	[img=Plus]Only emitters count towards the ship's hex limit, power consumption, and costs. Additional emitters increase the amount of damage a forcefield can absorb before failing.[/img]
+	[img=Minus]High build costs and power consumption.[/img]
+	[img=Minus]Destroying any Forcefield Emitter will deactivate the forcefield immediately.[/img]
+	[img=MenuIcons::3;22][i][color=#aaa]Each Forcefield Emitter supports up to 5 forcefield hexes. Each emitter cannot touch more than two of its forcefield hexes.[/color][/i][/img]
+>>
+FORCEFIELD_EMITTER: Forcefield Emitter
+FORCEFIELD_EMITTER_DESC: <<
+	This emitter improves the projection range and resilience of a forcefield, allowing it to cover a greater area and withstand more damage.
+
+	[img=Plus]Supports another 5 hexes of forcefield.[/img]
+	[img=Plus]Significantly increases the effectiveness of the forcefield.[/img]
+	[img=Minus]Increases cost and power consumption of the forcefield, akin to a new forcefield core.[/img]
+	[img=MenuIcons::3;22][i][color=#aaa]As with forcefield cores, each emitter modifier cannot touch more than two of its forcefield hexes.[/color][/i][/img]
+>>

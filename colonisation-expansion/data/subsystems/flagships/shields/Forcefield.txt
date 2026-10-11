@@ -1,0 +1,110 @@
+Subsystem: Forcefield
+	Name: #S_FORCEFIELD
+	Description: #S_FORCEFIELD_DESC
+	BaseColor: #00a4db
+	Elevation: 2
+
+	Tags: Category:Defense, PassExterior, BadFiller, Ephemeral
+	Tags: Forcefield, HasInternals, ExternalSpace, NoQuantumBattery, HighPowerUse
+	Hull: Flagship, Station
+
+	EmitterCount := 1
+	Size := HexSize * EmitterCount
+	PowerUse := 30 * Size
+	BaseHP := 20 * HexSize
+
+	BaseForcefieldRegen := 2 * Size
+	ForcefieldRegenMod := 1
+	ForcefieldRegen := BaseForcefieldRegen * ForcefieldRegenMod
+
+	BaseForcefieldCapacity := 100 * Size
+	BaseForcefieldMult := 1
+	ForcefieldCapacityMod := 1
+	ForcefieldCapacity := BaseForcefieldCapacity * ForcefieldCapacityMod
+	ForcefieldCapacityMult := BaseForcefieldMult * ForcefieldCapacityMod
+
+	Ship.ExternalHexes := Ship.ExternalHexes + Hexes - EmitterCount
+	State: double = ForcefieldCapacity
+	State: double = 1
+	State: double = ForcefieldCapacityMult
+
+	SupportedSize := EmitterCount * 5
+	UsedSize := Hexes - EmitterCount
+
+	Assert: Hexes <= EmitterCount * 6
+		Unique: True
+		Message: #ERROR_FORCEFIELD_EMITTERCOUNT
+
+	OnCheckErrors: forcefield::checkForcefield
+
+	Modifier: SetBreakThreshold(factor)
+		Hex.BreakThreshold := if(Hex.IsEmitter == 0 && Hex.BreakThreshold < factor, factor, Hex.BreakThreshold)
+
+	Requires:
+		Command = 1
+		Power = PowerUse
+
+	Module: Core
+		Sprite: ShieldHarmonizer * #00a4ef
+		Hex.Mass := 3 * HexSize
+		Hex.Resistance := 0.1
+
+		Hex.BuildCost := 3 * HexSize
+		Hex.LaborCost := 2 * HexSize
+		Hex.MaintainCost := 2 * HexSize
+		Hex.IsEmitter := 1
+		Color: #00a4db
+
+	Module: Emitter
+		Sprite: FissionReactor * #00a4ef
+		Hex.Mass := 3 * HexSize
+		Hex.Resistance := 0.1
+		Hex.HP := 14 * HexSize
+
+		Hex.BuildCost := 3 * HexSize
+		Hex.LaborCost := 2 * HexSize
+		Hex.MaintainCost := 2 * HexSize
+		Hex.IsEmitter := 1
+		Color: #00a4db
+		Vital: True
+		Name: #FORCEFIELD_EMITTER
+		Description: #FORCEFIELD_EMITTER_DESC
+
+		EmitterCount := EmitterCount + 1
+
+
+	Module: Default
+		Hex.HP := ForcefieldCapacity / (Hexes - EmitterCount)
+		Hex.Resistance := 99
+		Hex.Mass := 0
+
+		Hex.BuildCost := 0
+		Hex.LaborCost := 0
+		Hex.MaintainCost := 0
+		Color: #00a4db
+
+	Modifier: AddHP(amount)
+		Hex.HP := if(Hex.IsEmitter > 0, Hex.HP + amount, Hex.HP)
+
+	Modifier: ShieldCapacityFactor(factor)
+		BaseForcefieldCapacity := BaseForcefieldCapacity + Base::BaseForcefieldCapacity * (factor - 1)
+		BaseForcefieldMult := BaseForcefieldMult + Base::BaseForcefieldMult * (factor - 1)
+	Modifier: ShieldCapacityMult(factor)
+		ForcefieldCapacityMod := ForcefieldCapacityMod * factor
+
+	Modifier: ShieldRegenFactor(factor)
+		BaseForcefieldRegen := BaseForcefieldRegen + Base::BaseForcefieldRegen * (factor - 1)
+	Modifier: ShieldRegenMult(factor)
+		ForcefieldRegenMod := ForcefieldRegenMod * factor
+
+	Effect: ForcefieldNoRepair
+
+	Effect: ForcefieldBase
+		Regen = ForcefieldRegen
+		Capacity = ForcefieldCapacity
+		CapacityMult = ForcefieldCapacityMult
+
+	Effect: ForcefieldShutdown
+
+	Effect: ForcefieldDamage
+		Capacity = ForcefieldCapacity

@@ -1,0 +1,18 @@
+Effect: ForcefieldBase
+	Value: Regen
+	Value: Capacity
+	Value: CapacityMult
+
+	Tick: forcefield_effects::ForcefieldTick
+
+Effect: ForcefieldDamage
+	Value: Capacity
+
+	Damage: forcefield_effects::ForcefieldDamage
+
+Effect: ForcefieldShutdown
+
+	End: forcefield_effects::ForcefieldShutdown
+
+Effect: ForcefieldNoRepair
+	Start: forcefield_effects::ForcefieldNoRepair

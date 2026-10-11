@@ -2,11 +2,11 @@
 
 *Become a type II civilisation as you engineer the galaxy to your whims, or die trying*
 
-This is a mod for Star Ruler 2. It is now growing into a mod that provides many features to make the game feel more rich without drastically changing the gameplay. This mod provides many options to build an empire up vertically (as opposed to building an empire up by taking more systems), as well as the start of a single player campaign, and improved AI code.
+This is a mod for Star Ruler 2. It provides many features to make the game feel more rich without drastically changing the gameplay. This mod provides many options to build an empire up vertically (as opposed to building an empire up by taking more systems), as well as the start of a single player campaign, and improved AI code.
 
 ## Status
 
-I consider this mod at playable status now. It should be stable and balanced enough to play with.
+I consider this mod at mature status now. It should be stable and balanced enough to play with. There are still some rough edges that lack extensive play testing, but the major revamps are complete and verified.
 
 ## Installation
 
@@ -50,7 +50,7 @@ I found in many games of unmodded Star Ruler my ships were either orders of magn
 ### Rebalanced Carpet Bombs
 Carpet Bombs can now be directly countered by applying shields to planets which reduce the effectiveness, but more importantly it is not possible to abuse edge cases in the subsystem variable code to make extremely cheap ships that can delevel tier 2+ planets in seconds. Mechanoid planets generate extremely weak shields which will heavily reduce the effectiveness of carpet bombs while the shields are up. The shields won't mean anything against a Gravitron Condensor, but in the early game Mono won't have to worry so much about losing all their population to cheap carpet bombers.
 ### Counters to Gravitron Condensors
-Gravitron Condensors now have a ramp up time which caues them to deal less than 100% damage when they start firing at a new target. Players can also unlock Shield Projectors to project a shield onto stars and planets to protect them from Gravitron attacks.
+Gravitron Condensors now have a ramp up time which causes them to deal less than 100% damage when they start firing at a new target. Players can also unlock Shield Projectors to project a shield onto stars and planets to protect them from Gravitron attacks.
 ### Railgun Impulse
 The keystone of vanilla that removed pierce from Railguns and replaced it with impulses is now a modifier, so can be applied to only the ships you want it on. Among other uses, these can be used to punch a shield projector away from its target to break the sheild so you can get back to blowing up the opponent's star.
 ### Warheads
@@ -66,7 +66,7 @@ Secret projects are no longer secret, you will be able to unlock any of them if 
 ### Designable Flare Bombs
 The Flare Bomb is a player designable subsystem now, so you can field flare bomb ships that are sufficiently armoured.
 ### Ability to unlock all types of FTL and FTL income orbital from the research grid
-For balancing this is a costly research path to go down and provides few other benefits. Each unlock also starts a vote to give the technology to all empires. This makes getting extra FTL technology a tradeoff as you might not keep it exclusive to just you, and then your research points have been wasted on something your opponents got for free.
+For balancing this is a costly research path to go down and provides few other benefits. Each unlock also starts a vote to give the technology to all empires. This makes getting extra FTL technology a trade-off as you might not keep it exclusive to just you, and then your research points have been wasted on something your opponents got for free.
 ### FTL Sharing
 New treaty clause that shares access of Gates and Fling beacons between signatories.
 ### Colonise interstellar space
@@ -79,9 +79,9 @@ Ships can also loop their orders infinitely which makes scouting more automatabl
 A number of tweaks have also been made to the Quickbar and Planets Tab to expose more useful information to players. First players can now keep better track of all their Replicators. Nylli and Mono players can keep much better track of their population. Players can also now easily check which planets they can still make moon bases at and where their ore is.
 In singleplayer, if the last game you played was with a compatible version of the mod, you can restore the settings of the previous lobby with a single click.
 ### New maps
-Battle it out with all 6 of your neighbours on a grid.
+Battle it out with all 6 of your neighbours on a grid, or take over a galaxy being dragged across the cosmos by a blackhole.
 ### More traits
-Start with a ringworld! gamble on random tech unlocks! take Evangelical alongside your lifestyle!
+Start with a ringworld! gamble on random tech unlocks! take Evangelical alongside your lifestyle! customise your biology!
 ### Notable tweaks to lifestyles
 #### Mechanoid
 The cost to build 1 billion population is flat, so it becomes more affordable as the game goes on and your empire expands instead of less.
@@ -109,7 +109,7 @@ The AI will be much more eager to build military flagships when it has spare mon
 #### Colonisation and Development
 What's stronger than a weasel? A dragon!
 
-The gradually being released Dragon AI features completely overhauled colonisation and development code. It is much less prone to colonising itself into debt, uses non Terrestial colonisation methods better, and makes smarter decisions about acquiring resources to level planets. It is much harder for it to get boxed in, as it makes use of outposts to expand through systems that the weasel AI would get stuck at.
+The Dragon AI features completely overhauled colonisation and development code. It is much less prone to colonising itself into debt, uses non Terrestial colonisation methods better, and makes smarter decisions about acquiring resources to level planets. It is much harder for it to get boxed in, as it makes use of outposts to expand through systems that the weasel AI would get stuck at. 'Dragon'/'weasel' are not two entirely different AIs, the 'dragon' AIs make use of many existing 'weasel' AI subsystems and there is no plan to replace them all with further 'dragon' ones.
 ##### Race specific improvements
 ###### Mechanoid
 Non Mechanoid dragon AIs also can now use Unobtanium. The dragon Mechanoid AI also actually works.
@@ -118,13 +118,17 @@ The colonisation logic for dragon Star Children AIs was overhauled and should no
 ###### Extragalactic
 Heralds AIs will make good use of Expedite Relocation to colonise faster.
 #### Diplomacy
-The AI can now make a Senatorial Palace if it becomes Senate Leader.
+The AI can now make a Senatorial Palace if it becomes Senate Leader. It still doesn't know how to pursue a diplomatic victory however.
 ### Improvements ported from other mods
 #### Non exclusive hulls from Rising Stars by Dalo Lorn
 #### Readable Global Toolbar tooltips from Industrial Revolution by scitor
 #### Civilian ship navigation improvements from Industrial Revolution by scitor
 #### Lateral thrust from New Movement Physics by Darloth
+#### Forcefield subsystems from Rising Stars by Dalo Lorn
 #### Some miscellaneous exploit fixes from Rising Stars by Dalo Lorn
+
+## Known rough edges
+Frostkin has minimal balance testing at this time.
 
 ## Copying and license info
 My own AngelScript code in this mod is licensed under the MIT license. Most of the AngelScript code in this repository comes from the source code of Star Ruler 2 by [Blind Mind Studios](https://github.com/BlindMindStudios/StarRuler2-Source) which is also MIT licensed. The assets in Star Ruler 2 were placed under the Creative Commons CC-BY-NC license, which permits free non commercial use. The art assets I've added in this mod are licensed under the Creative Commons [CC-BY license](https://creativecommons.org/licenses/by/4.0/) instead, which permits commercial use just as the MIT license does. I try not to accidently commit any of the CC-BY-NC SR2 assets or derivations of them into this repository. However this mod does include the CC-BY-NC Bromma and Farum shipsets (`data/shipsets/bromma` and `data/shipsets/farum` respectively) released as part of the open sourcing of SR2 as these are not present in the Steam version of the game and cause cross play issues if not modded in to ensure all clients have them.

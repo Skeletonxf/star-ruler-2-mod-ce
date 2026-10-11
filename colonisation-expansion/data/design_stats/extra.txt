@@ -248,3 +248,32 @@ SubsystemStat: Impulse
 
 	Suffix: N
 	Variable: Impulse
+
+SubsystemStat: ForcefieldCapacity
+	Name: #S_FORCEFIELD_STAT
+	Icon: AttributeIcons::6
+	Color: #8080ff
+
+	Variable: ForcefieldCapacity
+
+SubsystemStat: ForcefieldRegen
+	Name: #S_FORCEFIELD_REGEN
+	Icon: AttributeIcons::6
+	Color: #8080ff
+
+	Variable: ForcefieldRegen
+
+SubsystemStat: ForcefieldSize
+	Name: #S_USED_FORCEFIELD_SIZE
+	Icon: ActionBarIcons::0 * #0080ff
+	Color: #8080ff
+
+	Variable: UsedSize
+
+SubsystemStat: ForcefieldSize
+	Name: #S_FORCEFIELD_SIZE
+	Icon: ActionBarIcons::0 * #0080ff
+	Color: #8080ff
+
+	Variable: SupportedSize
+	Secondary: UsedSize
