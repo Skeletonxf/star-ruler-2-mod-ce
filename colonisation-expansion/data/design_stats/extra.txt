@@ -105,7 +105,8 @@ GlobalStat: ExperienceRate
 	Icon: PointsIcon
 
 	Suffix: s
-	Variable: VeterancyThresholdRate
+	Variable: Ship.VeterancyThreshold
+	DivBy: Rate
 
 GlobalStat: Defense
 	Name: #S_LOCAL_DEFENSE

@@ -28,6 +28,7 @@ Subsystem: Simulator
 
 	Hook: ExperienceOverTimeFromCombat(Rate)
 
+	Ship.VeterancyThreshold := ShipSize
 	Requires:
 		Command = 3
 
