@@ -98,12 +98,14 @@ GlobalStat: BombardmentCost
 
 	 Variable: BombardCost
 
-SubsystemStat: ExperienceRate
+GlobalStat: ExperienceRate
 	Name: #S_ExperienceRate
+	Description: #STT_Experience_Rate
 	Color: #f17757
+	Icon: PointsIcon
 
-	Suffix: /s
-	Variable: Rate
+	Suffix: s
+	Variable: VeterancyThresholdRate
 
 GlobalStat: Defense
 	Name: #S_LOCAL_DEFENSE

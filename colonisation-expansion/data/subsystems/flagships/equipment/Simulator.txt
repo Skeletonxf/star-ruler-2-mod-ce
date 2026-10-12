@@ -15,13 +15,19 @@ Subsystem: Simulator
 	Hex.Resistance := 0.2
 	Hex.HP := 18 * HexSize
 
-	Rate := (Size / 60) * 2
+	Rate := (Size / 60) * 2.5
+
+	Ship.SimulatorSize := Ship.SimulatorSize + Hexes
+	VeterancyThresholdRate := ShipSize / Rate
+
+	Assert: ShipTotalHexes - Ship.ExternalHexes >= floor(Sum.HexLimit * 0.7)
+		Message: #ERROR_MUST_BE_FILLED
+
 	Assert: Ship.SimulatorSize <= Sum.HexLimit * 0.2
 		Message: #ERROR_SIMULATOR_TOO_BIG
 
-	Hook: ExperienceOverTime(Rate, True)
+	Hook: ExperienceOverTimeFromCombat(Rate)
 
-	Ship.SimulatorSize := Ship.SimulatorSize + Hexes
 	Requires:
 		Command = 3
 

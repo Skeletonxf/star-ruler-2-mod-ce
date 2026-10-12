@@ -5372,7 +5372,7 @@ class ExperienceOverTime : GenericEffect {
 			return;
 		}
 
-		timer = 0.0;
+		timer -= 10.0; // [[ MODIFY BASE GAME, don't lose excess time above 10 ]]
 		data.store(timer);
 		obj.addExperience(10.0 * amount.decimal);
 	}
@@ -5390,6 +5390,60 @@ class ExperienceOverTime : GenericEffect {
 	}
 #section all
 };
+
+// [[ MODIFY BASE GAME START ]]
+class ExperienceOverTimeFromCombat : GenericEffect {
+	Document doc("Grant experience over time to this fleet, while in combat only.");
+	Argument amount(AT_Decimal, "0", doc="Amount of experience per second to add while in combat.");
+
+#section server
+	void enable(Object& obj, any@ data) const override {
+		double timer = 0.0;
+		data.store(timer);
+	}
+
+	bool checkCombatTagged(Object& obj) const {
+		return obj.inCombat;
+		// May want to broaden this in the future to just needing to
+		// be in the same region as something fighting, but contested
+		// mask might be too easily cheesed?
+		/* Region@ reg = obj.region;
+		if(reg is null)
+			return false;
+		return reg.ContestedMask & obj.owner.mask != 0 */
+	}
+
+	void tick(Object& obj, any@ data, double time) const override {
+		double timer = 0.0;
+		data.retrieve(timer);
+
+		if(checkCombatTagged(obj))
+			timer += time;
+
+		if(timer < 10.0) {
+			data.store(timer);
+			return;
+		}
+
+		timer -= 10.0;
+		data.store(timer);
+		obj.addExperience(10.0 * amount.decimal);
+	}
+
+	void save(any@ data, SaveFile& file) const override {
+		double timer = 0;
+		data.retrieve(timer);
+		file << timer;
+	}
+
+	void load(any@ data, SaveFile& file) const override {
+		double timer = 0;
+		file >> timer;
+		data.store(timer);
+	}
+#section all
+};
+// [[ MODIFY BASE GAME END ]]
 
 class GrantAllVision : GenericEffect {
 	Document doc("Grant vision over the system this effect is in to all empires.");

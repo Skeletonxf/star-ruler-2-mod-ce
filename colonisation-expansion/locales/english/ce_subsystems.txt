@@ -78,10 +78,11 @@ S_POWER_AMPLIFIER_DESC: <<
 >>
 INSUFICIENT_CONTROL: Low Power Computer must provide at least 1 Control
 S_SIMULATOR_DESC: <<
-	A realistic combat simulator that the ship's crew can train at when not following any other orders.
+	An advanced combat computer that can provide realtime feedback and analysis to the ship's crew to improve their effectiveness.
 
-	[img=Plus]The ship slowly gains veterancy levels while stationed in a friendly system. The larger the simulator, the faster it gains experience.[/img]
+	[img=Plus]The ship gains veterancy levels while in combat. The larger the simulator relative to the other ship subsystems, the faster it gains experience.[/img]
 	[img=MenuIcons::3;20][color=#aaa]Increasing the size of the ship increases the experience rate of the simulator but also increases the total experience required for each level by equal amounts.[/color][/img]
+	[img=MenuIcons::3;20][color=#aaa]Requires at least 70% of available interior space is filled. The simulator can't coach a skeleton crew![/color][/img]
 >>
 S_JUMPDRIVE_DESC: <<
 	Allows the ship to make subspace jumps to other locations within range. Larger jump drive subsystems allow for larger safe jump distances.
@@ -556,3 +557,4 @@ FORCEFIELD_EMITTER_DESC: <<
 	[img=Minus]Increases cost and power consumption of the forcefield, akin to a new forcefield core.[/img]
 	[img=MenuIcons::3;22][i][color=#aaa]As with forcefield cores, each emitter modifier cannot touch more than two of its forcefield hexes.[/color][/i][/img]
 >>
+S_SIMULATOR: Coaching Simulator

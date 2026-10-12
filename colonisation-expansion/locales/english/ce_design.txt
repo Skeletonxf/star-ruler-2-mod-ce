@@ -1,4 +1,4 @@
-S_ExperienceRate: Experience Rate
+S_ExperienceRate: Veterancy Rate
 S_LOCAL_DEFENSE: Local Defense
 STT_S_LOCAL_DEFENSE: Amount of local defense generation while in friendly space.
 S_RAMP_UP_TIME: Ramp Up Time
@@ -8,4 +8,9 @@ STT_COMBAT_TIME: <<
 
 	Will underestimate combat time if the supply usage drops due to damage or supply is regenerated during combat.
 	Will overestimate combat time on carriers as the support ships' combat use is not included in this calculation.
+>>
+STT_Experience_Rate: <<
+	Amount of time required to go from 0 xp to a full level of veterancy from simulators while in combat.
+
+	Other sources of xp such as killing enemy ships will speed this process up. Additional veterancy levels require increasingly more xp per levels already acquired and will take progressively longer.
 >>
