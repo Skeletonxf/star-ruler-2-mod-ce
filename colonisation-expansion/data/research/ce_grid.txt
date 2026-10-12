@@ -10,7 +10,6 @@ Grid: ColonisationExpansionGrid
 	ShieldGen: -2,5
 	ShieldReg: -1,6
 	ShieldCap: -1,7
-	ShieldReg: -1,8
 	PowerAmplifier: -3,5
 	Health: 0,-1
 	StationMaintenance: -1,-6
@@ -123,7 +122,6 @@ Grid: ColonisationExpansionGrid
 	FTLCost: -3,7
 	ImpDecaySpeed: -4,-9
 	ShipComputer: 1,-2
-	TroopPods: 7,-3
 	BoosterEngine: 1,4
 	Thrust: 2,5
 	Ramjet: 2,6
@@ -140,7 +138,6 @@ Grid: ColonisationExpansionGrid
 	Damage: 2,0
 	Damage: 6,0
 	Defense: 7,-1
-	Simulator: 9,-2
 	Defense: 8,-3
 	DroneLauncher: 9,-4
 	ArmorDR2: 4,-3
@@ -201,7 +198,6 @@ Grid: ColonisationExpansionGrid
 	CloakPlating: -11,-1
 	ImpCivConstructionRate: -6,-7
 	AllondiumGeneration: -8,-7
-	ShieldHardener: 0,8
 	ShieldCap2: 1,10
 	ShieldHarmonizer: -1,9
 	ShieldReg2: 0,10
@@ -315,3 +311,7 @@ Grid: ColonisationExpansionGrid
 	Health: 1,-7
 	SysForcefieldCore: 0,7
 	SysForcefieldEmitter: 2,12
+	Simulator: -10,1
+	ShieldReg: 0,8
+	ShieldHardener: -1,8
+	TroopPods: 7,-2
